@@ -12,3 +12,5 @@ yarn-error.log
 /docker_server.env
 /docker/dbdata/
 .idea
+composer.lock
+.env.example
