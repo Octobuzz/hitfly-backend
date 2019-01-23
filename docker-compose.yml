@@ -1,0 +1,41 @@
+version: '3.2'
+services:
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - '9090:80'
+    volumes:
+      - './docker/nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - './:/var/www/html'
+      - './storage/logs/nginx:/var/log/nginx'
+    depends_on:
+      - php
+      - maria
+  maria:
+    container_name: maria_db
+    restart: always
+    volumes:
+      - './docker/mariadb/my.cnf:/etc/mysql/my.cnf'
+      - './docker/dbdata/:/var/lib/mysql'
+    ports:
+      - '53306:3306'
+    build:
+      context: docker/mariadb
+      dockerfile: Dockerfile
+    env_file:
+      - docker_server.env
+  php:
+    container_name: php_docker
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - './:/var/www/html'
+      - './docker/php/config/php.ini:/usr/local/etc/php/php.ini'
+    links:
+      - "maria:maria"
+    env_file:
+      - docker_server.env
+
