@@ -43,26 +43,26 @@ return [
      'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_SECRET'),
-        'redirect' =>  env('APP_URL') . 'public/login/google/callback'
+        'redirect' =>  env('APP_URL') . '/digico/public/api/v1/login/google/callback'
     ],
 
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_SECRET'),
-        'redirect' => env('APP_URL') . 'public/login/facebook/callback'
+        'redirect' => env('APP_URL') . '/digico/public/api/v1/login/facebook/callback'
     ],
 
     'vkontakte' => [
         'client_id' => env('VKONTAKTE_CLIENT_ID'),
         'client_secret' => env('VKONTAKTE_SECRET'),
-        'redirect' =>  env('APP_URL') . 'public/login/vkontakte/callback'
+        'redirect' =>  env('APP_URL') . '/digico/public/api/v1/login/vkontakte/callback'
     ],
 
     'odnoklassniki' => [
         'client_id' => env('ODNOKLASSNIKI_ID'),
         'client_secret' => env('ODNOKLASSNIKI_SECRET'),
         'client_public' => env('ODNOKLASSNIKI_PUBLIC'),
-        'redirect' =>  env('APP_URL') . 'public/login/odnoklassniki/callback'
+        'redirect' =>  env('APP_URL') . '/digico/public/api/v1/login/odnoklassniki/callback'
     ],
 
 ];
