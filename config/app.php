@@ -229,7 +229,7 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         //Socialite added
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        
+
 
     ],
 
