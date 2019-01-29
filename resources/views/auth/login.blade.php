@@ -64,6 +64,14 @@
                                 @endif
                             </div>
                         </div>
+
+
+                        <div class="panel-heading">Login with VK</div>
+                        <div class="panel-body">
+                            <a class="btn btn-primary" href="api/v1/login/vkontakte">
+                                VK Login
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
