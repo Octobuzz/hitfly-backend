@@ -16,3 +16,6 @@ Route::redirect('/', 'login', 301);
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+//форма входа
+Route::get('/registerBySocial/{id}', 'RegisterController@registerBySocial')->name('registerBySocial');
+

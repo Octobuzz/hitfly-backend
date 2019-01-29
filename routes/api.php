@@ -12,15 +12,12 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-/*
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-*/
 
-//api-авторизация
-Route::group(['namespace' => 'Auth'], function () {
-    Route::get('/login/{provider}', 'SocialController@redirectToProvider');
-    Route::get('/login/{provider}/callback', 'SocialController@handleProviderCallback');
+Route::group(['prefix' => 'v1'], function () {
+    //api-авторизация
+    Route::group(['namespace' => 'Api\v1'], function () {
+        Route::get('/login/{provider}', 'SocialController@redirectToProvider');
+        Route::get('/login/{provider}/callback', 'SocialController@handleProviderCallback');
+    });
 });
 
