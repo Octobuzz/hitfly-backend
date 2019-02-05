@@ -28,3 +28,10 @@
     
     storage/logs/nginx/
     
+
+##Админ панель
+
+    php artisan db:seed --class=UserSeeder
+
+    Пользователь: admin
+    Пароль: admin

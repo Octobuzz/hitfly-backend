@@ -13,3 +13,9 @@ yarn-error.log
 /docker/dbdata/
 .idea
 .env.example
+/public/mix-manifest.json
+/public/vendor/
+/resources/lang/
+/public/css/
+/public/js/
+/composer.phar
