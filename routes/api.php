@@ -22,6 +22,10 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('', 'GenreController@index');
             Route::get('/{genre}', 'GenreController@genre');
         });
+        Route::group(['prefix' => '/music_group'], function () {
+            Route::get('', 'MusicGroupController@index');
+            Route::get('/{musicGroup}', 'MusicGroupController@byId');
+        });
 
     });
 
