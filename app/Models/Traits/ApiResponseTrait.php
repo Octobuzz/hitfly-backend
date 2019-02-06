@@ -10,8 +10,8 @@ trait ApiResponseTrait
      * Send a failed response with a msg
      *
      * @param  string $message
-     * @param  $status
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  int|null $status
+     * @return \Illuminate\Http\JsonResponse
      */
     public function sendFailedResponse($message, $status = null, $result = false)
     {
@@ -25,9 +25,9 @@ trait ApiResponseTrait
     /**
      * Send a successful response
      *
-     * @param array $data
-     * @param $status
-     * @return \Illuminate\Http\RedirectResponse
+     * @param $data
+     * @param int|null $status
+     * @return \Illuminate\Http\JsonResponse
      */
     public function sendSuccessResponse($data, $status = null, $result = true)
     {

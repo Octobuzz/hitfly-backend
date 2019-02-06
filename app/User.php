@@ -6,7 +6,6 @@ use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-
 class User extends Administrator implements JWTSubject
 {
     use Notifiable;
@@ -17,7 +16,7 @@ class User extends Administrator implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'username','email', 'password',
+        'username', 'email', 'password',
     ];
 
     /**
@@ -29,14 +28,13 @@ class User extends Administrator implements JWTSubject
         'password', 'remember_token',
     ];
 
-    public function getJWTIdentifier() 
+    public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims() 
+    public function getJWTCustomClaims()
     {
         return [];
     }
-
 }

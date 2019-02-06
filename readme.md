@@ -31,6 +31,8 @@
 
 ##Админ панель
 
+Загрузка тестового администратора 
+        
     php artisan db:seed --class=UserSeeder
 
     Пользователь: admin
