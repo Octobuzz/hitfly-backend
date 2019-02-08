@@ -125,5 +125,7 @@ class UserSeeder extends Seeder
         // add role to menu.
         \Encore\Admin\Auth\Database\Menu::find(2)->roles()->save(\Encore\Admin\Auth\Database\Role::first());
         \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        factory(\App\User::class, 30)->create();
     }
 }

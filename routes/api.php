@@ -18,15 +18,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['namespace' => 'Api\v1'], function () {
         Route::get('/login/{provider}', 'SocialController@redirectToProvider');
         Route::get('/login/{provider}/callback', 'SocialController@handleProviderCallback');
-        Route::group(['prefix' => '/genre'], function () {
-            Route::get('', 'GenreController@index');
-            Route::get('/{genre}', 'GenreController@genre');
-        });
-        Route::group(['prefix' => '/music_group'], function () {
-            Route::get('', 'MusicGroupController@index');
-            Route::get('/{musicGroup}', 'MusicGroupController@byId');
-        });
-
     });
 
 });

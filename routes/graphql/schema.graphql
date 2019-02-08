@@ -1,0 +1,71 @@
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+
+
+type Query {
+
+    users: [User!]! @paginate(type: "paginator" model: "App\\User")
+    user(id: ID @eq): User @find(model: "App\\User")
+
+    genres: [Genre!]!  @paginate(type: "paginator" model: "App\\Models\\Genre")
+    genre(id: ID @eq): Genre @find(model: "App\\Models\\Genre")
+
+    musicGroups: [MusicGroup!]! @paginate(type: "paginator" model: "App\\Models\\MusicGroup")
+    musicGroup(id: ID @eq): Genre @find(model: "App\\Models\\MusicGroup")
+
+    albums: [Album!]! @paginate(type: "paginator" model: "App\\Models\\Album")
+    album(id: ID @eq): Album @find(model: "App\\Models\\Album")
+
+}
+
+type Mutation {
+    createUser(
+        name: String @rules(apply: ["required"])
+        email: String @rules(apply: ["required", "email", "unique:users,email"])
+    ): User @create(model: "App\\User")
+    updateUser(
+        id: ID @rules(apply: ["required"])
+        name: String
+        email: String @rules(apply: ["email"])
+    ): User @update(model: "App\\User")
+    deleteUser(
+        id: ID @rules(apply: ["required"])
+    ): User @delete(model: "App\\User")
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type Genre @model(class: "App\\Models\\Genre") {
+    id: ID!
+    name: String!
+    image: String
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type MusicGroup @model(class: "App\\Models\\MusicGroup") {
+    id: ID!
+    name: String!
+    avatarGroup: String @rename(attribute: "avatar_group")
+    careerStartYear: DateTime! @rename(attribute: "career_start_year")
+    genre: Genre @belongsTo
+    description: String
+    albums: [Album!]!  @hasMany(type: "connection")
+
+}
+
+type Album  @model(class: "App\\Models\\Album") {
+    id: ID!
+    title: String!
+    author: String!
+    year: DateTime!
+    cover: String!
+    musicGroup: MusicGroup @belongsTo
+}

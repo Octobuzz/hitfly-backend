@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call('UserSeeder');
         $this->call('GenreSeeder');
         $this->call('MusicGroupSeeder');
+        $this->call('AlbumsSeeder');
     }
 }

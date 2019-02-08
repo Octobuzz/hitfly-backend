@@ -8,10 +8,10 @@ $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
         'description' => $faker->paragraph,
         'career_start_year' => $faker->dateTime,
         'genre_id' => function(){
-            return factory(\App\Models\Genre::class)->create()->id;
+            return \App\Models\Genre::inRandomOrder()->first()->id;
         },
         'creator_group_id' => function(){
-            return factory(\App\User::class)->create()->id;
+            return \App\User::inRandomOrder()->first()->id;
         }
     ];
 });

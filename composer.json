@@ -15,6 +15,7 @@
         "laravel/framework": "5.7.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "^1.0",
+        "nuwave/lighthouse": "^2.6",
         "socialiteproviders/manager": "^3.3",
         "socialiteproviders/odnoklassniki": "^1.0",
         "socialiteproviders/vkontakte": "^4.0",
@@ -22,10 +23,12 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
+        "barryvdh/laravel-ide-helper": "^2.5",
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.14",
         "fzaninotto/faker": "^1.4",
+        "mll-lab/laravel-graphql-playground": "^0.3.3",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
         "phpunit/phpunit": "^7.0"
@@ -71,6 +74,11 @@
         ],
         "fix": [
             "php-cs-fixer fix --ansi"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta"
         ]
     }
 }
