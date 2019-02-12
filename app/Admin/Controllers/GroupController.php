@@ -2,8 +2,10 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Group;
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
+use App\Models\MusicGroup;
+use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -79,14 +81,17 @@ class GroupController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Group);
+        $grid = new Grid(new MusicGroup());
 
         $grid->id('Id');
-        $grid->creator_group_id('Creator group id');
+        $grid->creator_group_id('Создатель группы')->display(function ($genreId){
+            return User::find($genreId)->username;
+        });;
         $grid->name('Name');
-        $grid->career_start_year('Career start year');
-        $grid->genre_id('Genre id');
-        $grid->created_at('Created at');
+        $grid->career_start_year('Год начала');
+        $grid->genre_id('Жанр')->display(function ($genreId){
+            return Genre::find($genreId)->name;
+        });
 
         return $grid;
     }
@@ -99,7 +104,7 @@ class GroupController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Group::findOrFail($id));
+        $show = new Show(MusicGroup::findOrFail($id));
 
         $show->id('Id');
         $show->creator_group_id('Creator group id');
@@ -113,6 +118,7 @@ class GroupController extends Controller
         $show->updated_at('Updated at');
         $show->deleted_at('Deleted at');
 
+
         return $show;
     }
 
@@ -123,15 +129,26 @@ class GroupController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Group);
+        $form = new Form(new MusicGroup);
 
-        $form->number('creator_group_id', 'Creator group id');
-        $form->text('avatar_group', 'Avatar group');
-        $form->text('name', 'Name');
-        $form->datetime('career_start_year', 'Career start year')->default(date('Y-m-d H:i:s'));
-        $form->number('type_music_group_id', 'Type music group id');
-        $form->number('genre_id', 'Genre id');
-        $form->textarea('description', 'Description');
+        $form->select('creator_group_id', 'Создатель группы')->options(function ($id){
+            $user = User::find($id);
+
+            if ($user) {
+                return [$user->id => $user->name];
+            }
+        })->ajax('/admin/api/users');
+        $form->text('avatar_group', 'Аватар');
+        $form->text('name', 'Название группы');
+        $form->datetime('career_start_year', 'Год начала')->default(date('Y'));
+        $form->select('genre_id', 'Жанр')->options(function ($id){
+            $genre = Genre::find($id);
+
+            if ($genre) {
+                return [$genre->id => $genre->name];
+            }
+        })->ajax('/admin/api/genres');
+        $form->textarea('description', 'Описание');
 
         return $form;
     }

@@ -19,7 +19,7 @@ type Query {
 
 }
 
-type Mutation {
+type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: ["jwt.auth"]) {
     createUser(
         name: String @rules(apply: ["required"])
         email: String @rules(apply: ["required", "email", "unique:users,email"])
@@ -32,6 +32,31 @@ type Mutation {
     deleteUser(
         id: ID @rules(apply: ["required"])
     ): User @delete(model: "App\\User")
+
+    createMusicGroup(
+        name: String @rules(apply: ["required"])
+        avatarGroup: String
+        career_start_year: DateTime! @rules(apply: ["required"])
+        description: String
+    ): MusicGroup
+        @create(model: "App\\Models\\MusicGroup")
+        @inject(context: "user.id", name: "creator_group_id")
+
+#    updateMusicGroup(
+#        id: ID @rules(apply: ["required"])
+#        name: String @rules(apply: ["required"])
+#        avatarGroup: String
+#        careerStartYear: DateTime @rules(apply: ["required"])
+#        creatorGroup: String  @rules(apply: ["required"])
+#        description: String
+#    ): MusicGroup
+#
+#
+#    deleteMusicGroup(
+#        id: ID @rules(apply: ["required"])
+#    ): MusicGroup @create(model: "App\\Models\\MusicGroup")
+
+
 }
 
 type User {
@@ -54,8 +79,9 @@ type MusicGroup @model(class: "App\\Models\\MusicGroup") {
     id: ID!
     name: String!
     avatarGroup: String @rename(attribute: "avatar_group")
-    careerStartYear: DateTime! @rename(attribute: "career_start_year")
+    career_start_year: DateTime! @rename(attribute: "career_start_year")
     genre: Genre @belongsTo
+    creatorGroup: User! @belongsTo(relation: "user")
     description: String
     albums: [Album!]!  @hasMany(type: "connection")
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -56,9 +57,8 @@ class MusicGroup extends Model
         'name',
         'avatar_group',
         'career_start_year',
-        'type_music_group_id',
-        'genre_id',
-        'description',
+        'creator_group_id',
+        'description'
     ];
 
     protected $hidden = [
@@ -75,5 +75,10 @@ class MusicGroup extends Model
     public function albums(): HasMany
     {
         return $this->hasMany(Album::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_group_id');
     }
 }

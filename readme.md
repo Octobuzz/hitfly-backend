@@ -40,6 +40,13 @@
 
 
 ## GraphQL 
+Usage
+By default, the playground is reachable at /graphql-playground
+
+
+
+http://localhost:9090/graphql
+
 
        {
          genres(count: 3, page: 1){

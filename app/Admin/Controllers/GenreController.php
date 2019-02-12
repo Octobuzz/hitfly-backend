@@ -9,6 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
@@ -82,11 +83,7 @@ class GenreController extends Controller
         $grid = new Grid(new Genre);
 
         $grid->id('Id');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
-        $grid->deleted_at('Deleted at');
         $grid->name('Name');
-        $grid->image('Image');
 
         return $grid;
     }
@@ -102,11 +99,7 @@ class GenreController extends Controller
         $show = new Show(Genre::findOrFail($id));
 
         $show->id('Id');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
-        $show->deleted_at('Deleted at');
         $show->name('Name');
-        $show->image('Image');
 
         return $show;
     }
@@ -124,5 +117,12 @@ class GenreController extends Controller
         $form->image('image', 'Image');
 
         return $form;
+    }
+
+    public function getGenres(Request $request)
+    {
+        $q = $request->get('q');
+
+        return Genre::where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
     }
 }
