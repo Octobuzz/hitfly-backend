@@ -98,7 +98,7 @@ class CreateAdminTables extends Migration
         $connection = config('admin.database.connection') ?: config('database.default');
 
         Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table){
-            $table->dropColumn('username');
+            $table->renameColumn('username', 'name');
             $table->dropColumn('avatar');
         });
 

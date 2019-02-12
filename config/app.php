@@ -230,6 +230,7 @@ return [
         //Socialite added
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
+        'GraphQL' => Nuwave\Lighthouse\Support\Facades\GraphQLFacade::class,
 
     ],
 

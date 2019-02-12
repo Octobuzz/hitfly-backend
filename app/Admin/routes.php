@@ -12,5 +12,6 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
     $router->resource('/genre', GenreController::class);
+    $router->resource('/group', GroupController::class);
 
 });

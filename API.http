@@ -16,3 +16,15 @@ GET http://127.0.0.1:9090/api/v1/genre/64
 Accept: application/json
 
 ###
+
+## Запрос списков групп
+GET http://127.0.0.1:9090/api/v1/music_group
+Accept: application/json
+
+###
+
+## Запрос одной группы
+GET http://127.0.0.1:9090/api/v1/music_group/82
+Accept: application/json
+
+###

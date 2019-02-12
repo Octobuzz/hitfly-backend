@@ -37,3 +37,51 @@
 
     Пользователь: admin
     Пароль: admin
+
+
+## GraphQL 
+
+       {
+         genres(count: 3, page: 1){
+          paginatorInfo{
+           total,
+           lastPage
+         }
+           
+         	data{
+           	id,
+             name,
+         	} 
+         }
+       }
+       
+       
+##### REPONSE 
+       
+       {
+         "data": {
+           "genres": {
+             "paginatorInfo": {
+               "total": 871,
+               "lastPage": 291
+             },
+             "data": [
+               {
+                 "id": "64",
+                 "name": "Kieran Hamill III"
+               },
+               {
+                 "id": "65",
+                 "name": "Garett Powlowski"
+               },
+               {
+                 "id": "66",
+                 "name": "Ms. Yvonne Kuhic"
+               }
+             ]
+           }
+         }
+       }
+        
+        
+        
