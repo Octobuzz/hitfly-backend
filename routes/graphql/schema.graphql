@@ -19,7 +19,7 @@ type Query {
 
 }
 
-type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: ["jwt.auth"]) {
+type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: []) {
     createUser(
         name: String @rules(apply: ["required"])
         email: String @rules(apply: ["required", "email", "unique:users,email"])
@@ -33,6 +33,8 @@ type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: ["j
         id: ID @rules(apply: ["required"])
     ): User @delete(model: "App\\User")
 
+
+    # Музыкальные группы
     createMusicGroup(
         name: String @rules(apply: ["required"])
         avatarGroup: String
@@ -42,19 +44,7 @@ type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: ["j
         @create(model: "App\\Models\\MusicGroup")
         @inject(context: "user.id", name: "creator_group_id")
 
-#    updateMusicGroup(
-#        id: ID @rules(apply: ["required"])
-#        name: String @rules(apply: ["required"])
-#        avatarGroup: String
-#        careerStartYear: DateTime @rules(apply: ["required"])
-#        creatorGroup: String  @rules(apply: ["required"])
-#        description: String
-#    ): MusicGroup
-#
-#
-#    deleteMusicGroup(
-#        id: ID @rules(apply: ["required"])
-#    ): MusicGroup @create(model: "App\\Models\\MusicGroup")
+    deleteMusicGroup(id: ID!): MusicGroup @delete(globalId: true )
 
 
 }
