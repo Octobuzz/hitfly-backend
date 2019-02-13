@@ -17,6 +17,9 @@ type Query {
     albums: [Album!]! @paginate(type: "paginator" model: "App\\Models\\Album")
     album(id: ID @eq): Album @find(model: "App\\Models\\Album")
 
+    tracks: [Track!]! @paginate(type: "paginator" model: "App\\Models\\Track")
+    track(id: ID @eq): Track @find(model: "App\\Models\\Track")
+
 }
 
 type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: []) {
@@ -51,7 +54,7 @@ type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: [])
 
 type User {
     id: ID!
-    name: String!
+    username: String!
     email: String!
     created_at: DateTime!
     updated_at: DateTime!
@@ -65,13 +68,25 @@ type Genre @model(class: "App\\Models\\Genre") {
     updated_at: DateTime!
 }
 
+type Track @model(class: "App\\Models\\Track"){
+    id: ID!
+    track_name: String!
+    album: Album @belongsTo(attribute: "album")
+    genre: Genre @belongsTo(attribute: "genre")
+    user: User @belongsTo(attribute: "user")
+    singer: String
+    track_date: String
+    song_text: String
+    filename: String
+}
+
 type MusicGroup @model(class: "App\\Models\\MusicGroup") {
     id: ID!
     name: String!
-    avatarGroup: String @rename(attribute: "avatar_group")
-    career_start_year: DateTime! @rename(attribute: "career_start_year")
+    avatar_group: String
+    career_start_year: DateTime!
     genre: Genre @belongsTo
-    creatorGroup: User! @belongsTo(relation: "user")
+    creator_group: User! @belongsTo(relation: "user")
     description: String
     albums: [Album!]!  @hasMany(type: "connection")
 
@@ -79,9 +94,9 @@ type MusicGroup @model(class: "App\\Models\\MusicGroup") {
 
 type Album  @model(class: "App\\Models\\Album") {
     id: ID!
-    title: String!
+    title: String
     author: String!
     year: DateTime!
     cover: String!
-    musicGroup: MusicGroup @belongsTo
+    music_group: MusicGroup @belongsTo
 }

@@ -28,3 +28,17 @@ GET http://127.0.0.1:9090/api/v1/music_group/82
 Accept: application/json
 
 ###
+
+
+POST http://127.0.0.1:9090/register
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "content",
+  "email": "test@mail.ru"
+
+}
+
+###
+

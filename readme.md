@@ -41,54 +41,35 @@
 
 ## GraphQL 
 Usage
-By default, the playground is reachable at /graphql-playground
-
-
+By default, the playground is reachable at 
+http://localhost:9090/graphql-playground
 
 http://localhost:9090/graphql
 
-
-       {
-         genres(count: 3, page: 1){
-          paginatorInfo{
-           total,
-           lastPage
-         }
-           
-         	data{
-           	id,
-             name,
-         	} 
-         }
-       }
-       
-       
-##### REPONSE 
-       
-       {
-         "data": {
-           "genres": {
-             "paginatorInfo": {
-               "total": 871,
-               "lastPage": 291
-             },
-             "data": [
-               {
-                 "id": "64",
-                 "name": "Kieran Hamill III"
-               },
-               {
-                 "id": "65",
-                 "name": "Garett Powlowski"
-               },
-               {
-                 "id": "66",
-                 "name": "Ms. Yvonne Kuhic"
-               }
-             ]
-           }
-         }
-       }
+    {
+      tracks(count: 51  ){
+        paginatorInfo{
+          count,
+          total
+        }
+        data{
+          id, track_name, song_text, 
+          genre {
+            name, 
+            created_at, 
+            image
+          }, 
+          user {
+            username, 
+            email
+          }, 
+          album{
+            title, 
+            author
+          }
+        }
+      }
+    }
         
         
         

@@ -15,6 +15,6 @@ Route::group([
     $router->resource('/group', GroupController::class);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
-    $router->get('/api/genres', 'App\Admin\Controllers\GenreController@getGenres');
+    $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
 
 });
