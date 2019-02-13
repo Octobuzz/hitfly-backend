@@ -80,6 +80,27 @@ class UserSeeder extends Seeder
             ],
             [
                 'parent_id' => 0,
+                'order'     => 1,
+                'title'     => 'Жанры',
+                'icon'      => 'fa-bar-chart',
+                'uri'       => '/genre',
+            ],
+            [
+                'parent_id' => 0,
+                'order'     => 1,
+                'title'     => 'Жанры',
+                'icon'      => 'fa-bar-chart',
+                'uri'       => '/genre',
+            ],
+            [
+                'parent_id' => 0,
+                'order'     => 1,
+                'title'     => 'Группы',
+                'icon'      => 'fa-bar-chart',
+                'uri'       => '/group',
+            ],
+            [
+                'parent_id' => 0,
                 'order'     => 2,
                 'title'     => 'Admin',
                 'icon'      => 'fa-tasks',
