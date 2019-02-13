@@ -22,6 +22,7 @@ type Query {
 
 }
 
+
 type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: []) {
     createUser(
         name: String @rules(apply: ["required"])
@@ -41,7 +42,7 @@ type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: [])
     createMusicGroup(
         name: String @rules(apply: ["required"])
         avatarGroup: String
-        career_start_year: DateTime! @rules(apply: ["required"])
+        career_start_year: String! @rules(apply: ["required"])
         description: String
     ): MusicGroup
         @create(model: "App\\Models\\MusicGroup")
@@ -49,11 +50,23 @@ type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: [])
 
     deleteMusicGroup(id: ID!): MusicGroup @delete(globalId: true )
 
+    createTrack(
+        album: String!
+        track_name: String!
+        genre: String!
+        singer: String!
+        track_date: String!
+        song_text: String!
+    ): Track
+        @create(model: "App\\Models\\Track")
+
+    deleteTrack(id: ID!): Track @delete(globalId: true )
+
 
 }
 
 type User {
-    id: ID!
+    id: ID! @globalId
     username: String!
     email: String!
     created_at: DateTime!
@@ -61,7 +74,7 @@ type User {
 }
 
 type Genre @model(class: "App\\Models\\Genre") {
-    id: ID!
+    id: ID! @globalId
     name: String!
     image: String
     created_at: DateTime!
@@ -69,19 +82,21 @@ type Genre @model(class: "App\\Models\\Genre") {
 }
 
 type Track @model(class: "App\\Models\\Track"){
-    id: ID!
+    id: ID! @globalId
     track_name: String!
     album: Album @belongsTo(attribute: "album")
     genre: Genre @belongsTo(attribute: "genre")
     user: User @belongsTo(attribute: "user")
     singer: String
-    track_date: String
-    song_text: String
+    track_date: String!
+    song_text: String!
     filename: String
 }
 
+
+
 type MusicGroup @model(class: "App\\Models\\MusicGroup") {
-    id: ID!
+    id: ID! @globalId
     name: String!
     avatar_group: String
     career_start_year: DateTime!

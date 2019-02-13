@@ -42,3 +42,13 @@ Content-Type: application/json
 
 ###
 
+
+POST http://127.0.0.1:9090/graphql
+Content-Type: application/json
+
+{
+  "operationName":null,
+  "variables":{},
+  "query":"{tracks(count: 1, page: 3) {paginatorInfo {count total firstItem } data { id track_name song_text genre { name created_at image created_at } user { username email } album { title author } } } } "}
+
+###
