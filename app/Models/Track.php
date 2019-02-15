@@ -6,7 +6,6 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
 
 class Track extends Model
 {
@@ -35,20 +34,17 @@ class Track extends Model
         parent::boot();
 
         /** @var Track $track % */
-        static::creating(function($track)
-        {
+        static::creating(function ($track) {
             $track->track_hash = md5(microtime());
             $track->filename = md5(microtime());
             $track->state = md5(microtime()); // todo
-            $track->user_id =  1;//todo  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHANGE FOR PROD
+            $track->user_id = 1; //todo  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHANGE FOR PROD
         });
 
-        static::updating(function($track)
-        {
+        static::updating(function ($track) {
             // do stuff
         });
     }
-
 
     public function genre(): BelongsTo
     {
@@ -64,5 +60,4 @@ class Track extends Model
     {
         return $this->belongsTo(Album::class, 'album_id');
     }
-
 }

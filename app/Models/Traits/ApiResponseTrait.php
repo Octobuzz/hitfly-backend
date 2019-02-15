@@ -2,15 +2,14 @@
 
 namespace App\Models\Traits;
 
-use Illuminate\Http\Request;
-
 trait ApiResponseTrait
 {
     /**
-     * Send a failed response with a msg
+     * Send a failed response with a msg.
      *
-     * @param  string $message
-     * @param  int|null $status
+     * @param string   $message
+     * @param int|null $status
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function sendFailedResponse($message, $status = null, $result = false)
@@ -23,10 +22,11 @@ trait ApiResponseTrait
     }
 
     /**
-     * Send a successful response
+     * Send a successful response.
      *
      * @param $data
      * @param int|null $status
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function sendSuccessResponse($data, $status = null, $result = true)
@@ -37,5 +37,4 @@ trait ApiResponseTrait
             'result' => $result,
         ]);
     }
-
 }

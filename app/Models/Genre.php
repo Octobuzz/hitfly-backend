@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Жанры музыки
- * 
+ * Жанры музыки.
+ *
  * Class Genre
  *
- * @property int $id
+ * @property int                             $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property string $name
- * @property string|null $image
+ * @property string|null                     $deleted_at
+ * @property string                          $name
+ * @property string|null                     $image
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre newQuery()

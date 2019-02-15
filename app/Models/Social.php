@@ -6,17 +6,18 @@ use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Social
+ * App\Models\Social.
  *
- * @property int $id
- * @property string|null $avatar
- * @property int $social_id
- * @property string $social_driver
+ * @property int                             $id
+ * @property string|null                     $avatar
+ * @property int                             $social_id
+ * @property string                          $social_driver
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property int|null $user_id
- * @property-read \App\User|null $user
+ * @property string|null                     $deleted_at
+ * @property int|null                        $user_id
+ * @property \App\User|null                  $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Social newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Social newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Social query()
@@ -43,5 +44,4 @@ class Social extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
-
 }

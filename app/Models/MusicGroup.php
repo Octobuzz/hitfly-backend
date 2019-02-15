@@ -9,23 +9,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Музыкальная группа
- * 
+ * Музыкальная группа.
+ *
  * Class Group
  *
- * @property int $id
- * @property int $creator_group_id
- * @property string|null $avatar_group
- * @property string $name
- * @property string $career_start_year
- * @property int|null $type_music_group_id
- * @property int|null $genre_id
- * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Album[] $albums
- * @property-read \App\Models\Genre|null $genre
+ * @property int                                                          $id
+ * @property int                                                          $creator_group_id
+ * @property string|null                                                  $avatar_group
+ * @property string                                                       $name
+ * @property string                                                       $career_start_year
+ * @property int|null                                                     $type_music_group_id
+ * @property int|null                                                     $genre_id
+ * @property string|null                                                  $description
+ * @property \Illuminate\Support\Carbon|null                              $created_at
+ * @property \Illuminate\Support\Carbon|null                              $updated_at
+ * @property string|null                                                  $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[] $albums
+ * @property \App\Models\Genre|null                                       $genre
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MusicGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MusicGroup newQuery()
@@ -58,7 +59,7 @@ class MusicGroup extends Model
         'avatar_group',
         'career_start_year',
         'creator_group_id',
-        'description'
+        'description',
     ];
 
     protected $hidden = [

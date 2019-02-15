@@ -30,21 +30,40 @@ Accept: application/json
 ###
 
 
-POST http://127.0.0.1:9090/register
+POST http://127.0.0.1:9090/api/v1/register
 Content-Type: application/json
 
 {
-  "username": "test",
+  "name": "test",
   "password": "content",
+  "password_confirmation": "content",
   "email": "test@mail.ru"
 
 }
 
 ###
 
+POST http://127.0.0.1:9090/api/v1/login
+Content-Type: application/json
+
+{
+  "email": "test@mail.ru",
+  "password": "content",
+}
+
+###
+
+
+GET http://127.0.0.1:9095/api/v1/user
+Content-Type: application/json
+X-TOKEN-AUTH: 1
+###
+
+
 
 POST http://127.0.0.1:9090/graphql
 Content-Type: application/json
+token_test: 123
 
 {
   "operationName":null,

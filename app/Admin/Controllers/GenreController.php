@@ -19,6 +19,7 @@ class GenreController extends Controller
      * Index interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function index(Content $content)
@@ -32,8 +33,9 @@ class GenreController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -47,8 +49,9 @@ class GenreController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -63,6 +66,7 @@ class GenreController extends Controller
      * Create interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function create(Content $content)
@@ -80,7 +84,7 @@ class GenreController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Genre);
+        $grid = new Grid(new Genre());
 
         $grid->id('Id');
         $grid->name('Name');
@@ -92,6 +96,7 @@ class GenreController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
+     *
      * @return Show
      */
     protected function detail($id)
@@ -111,7 +116,7 @@ class GenreController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Genre);
+        $form = new Form(new Genre());
 
         $form->text('name', 'Name');
         $form->image('image', 'Image');

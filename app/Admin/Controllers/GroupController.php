@@ -20,6 +20,7 @@ class GroupController extends Controller
      * Index interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function index(Content $content)
@@ -33,8 +34,9 @@ class GroupController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -48,8 +50,9 @@ class GroupController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -64,6 +67,7 @@ class GroupController extends Controller
      * Create interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function create(Content $content)
@@ -84,12 +88,12 @@ class GroupController extends Controller
         $grid = new Grid(new MusicGroup());
 
         $grid->id('Id');
-        $grid->creator_group_id('Создатель группы')->display(function ($genreId){
+        $grid->creator_group_id('Создатель группы')->display(function ($genreId) {
             return User::find($genreId)->username;
-        });;
+        });
         $grid->name('Name');
         $grid->career_start_year('Год начала');
-        $grid->genre_id('Жанр')->display(function ($genreId){
+        $grid->genre_id('Жанр')->display(function ($genreId) {
             return Genre::find($genreId)->name;
         });
 
@@ -100,6 +104,7 @@ class GroupController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
+     *
      * @return Show
      */
     protected function detail($id)
@@ -118,7 +123,6 @@ class GroupController extends Controller
         $show->updated_at('Updated at');
         $show->deleted_at('Deleted at');
 
-
         return $show;
     }
 
@@ -129,9 +133,9 @@ class GroupController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new MusicGroup);
+        $form = new Form(new MusicGroup());
 
-        $form->select('creator_group_id', 'Создатель группы')->options(function ($id){
+        $form->select('creator_group_id', 'Создатель группы')->options(function ($id) {
             $user = User::find($id);
 
             if ($user) {
@@ -141,7 +145,7 @@ class GroupController extends Controller
         $form->text('avatar_group', 'Аватар');
         $form->text('name', 'Название группы');
         $form->datetime('career_start_year', 'Год начала')->default(date('Y'));
-        $form->select('genre_id', 'Жанр')->options(function ($id){
+        $form->select('genre_id', 'Жанр')->options(function ($id) {
             $genre = Genre::find($id);
 
             if ($genre) {

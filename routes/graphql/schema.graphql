@@ -5,11 +5,15 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 type Query {
 
-    users: [User!]! @paginate(type: "paginator" model: "App\\User")
-    user(id: ID @eq): User @find(model: "App\\User")
-
     genres: [Genre!]!  @paginate(type: "paginator" model: "App\\Models\\Genre")
     genre(id: ID @eq): Genre @find(model: "App\\Models\\Genre")
+}
+
+
+extend type Query  @group(middleware: ["auth:json"]) {
+    me: User @auth
+    users: [User!]! @paginate(type: "paginator" model: "App\\User")
+    user(id: ID @eq): User @find(model: "App\\User")
 
     musicGroups: [MusicGroup!]! @paginate(type: "paginator" model: "App\\Models\\MusicGroup")
     musicGroup(id: ID @eq): Genre @find(model: "App\\Models\\MusicGroup")
@@ -23,14 +27,19 @@ type Query {
 }
 
 
+
 type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: []) {
     createUser(
-        name: String @rules(apply: ["required"])
+        username: String @rules(apply: ["required"])
         email: String @rules(apply: ["required", "email", "unique:users,email"])
-    ): User @create(model: "App\\User")
+        password: String @rules(apply: ["required"])
+    ): User  @field(resolver: "CreateUser@register")
+}
+
+extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: []) {
     updateUser(
         id: ID @rules(apply: ["required"])
-        name: String
+        username: String
         email: String @rules(apply: ["email"])
     ): User @update(model: "App\\User")
     deleteUser(
@@ -70,7 +79,8 @@ type User {
     username: String!
     email: String!
     created_at: DateTime!
-    updated_at: DateTime!
+    updated_at: DateTime
+    access_token: String
 }
 
 type Genre @model(class: "App\\Models\\Genre") {
