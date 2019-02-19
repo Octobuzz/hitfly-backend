@@ -2,7 +2,6 @@
 
 namespace App\Models\Traits;
 
-
 use App\Models\Favourite;
 use App\Models\Like;
 

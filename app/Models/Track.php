@@ -38,10 +38,7 @@ class Track extends Model
 
         /** @var Track $track % */
         static::creating(function ($track) {
-            $track->track_hash = md5(microtime());
-            $track->filename = md5(microtime());
-            $track->state = md5(microtime()); // todo
-            $track->user_id = 1; //todo  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHANGE FOR PROD
+            //todo create hash file, and uploads
         });
 
         static::updating(function ($track) {
@@ -71,7 +68,6 @@ class Track extends Model
 
     public function userTracks(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'user_track','track_id', 'user_id')->withPivot('listen_counts')->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_track', 'track_id', 'user_id')->withPivot('listen_counts')->withTimestamps();
     }
-
 }
