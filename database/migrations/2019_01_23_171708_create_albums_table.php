@@ -25,6 +25,7 @@ class CreateAlbumsTable extends Migration
             $table->timestamps();
 
             $table->unsignedInteger('genre_id');
+            //todo remove foreign, genre_id is softdeleted
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade')->onUpdate('cascade');
         });
     }

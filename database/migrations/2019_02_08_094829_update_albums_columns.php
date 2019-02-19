@@ -15,6 +15,7 @@ class UpdateAlbumsColumns extends Migration
     {
         Schema::table('albums', function (Blueprint $table){
             $table->unsignedInteger('music_group_id')->nullable();
+            //todo remove foreign, music_group is softdeleted
             $table->foreign('music_group_id')->references('id')->on('music_group')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('likes')->nullable()->change();
             $table->integer('dislikes')->nullable()->change();
@@ -23,6 +24,7 @@ class UpdateAlbumsColumns extends Migration
 
         Schema::table('music_group', function (Blueprint $table){
             $table->unsignedInteger('genre_id')->nullable()->change();
+            //todo remove foreign, genre_id is softdeleted
             $table->foreign('genre_id')->references('id')->on('genres');
         });
 
