@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Track extends Model
@@ -59,5 +60,10 @@ class Track extends Model
     public function album(): BelongsTo
     {
         return $this->belongsTo(Album::class, 'album_id');
+    }
+
+    public function charts(): HasMany
+    {
+        return $this->hasMany(Track::class);
     }
 }
