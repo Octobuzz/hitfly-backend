@@ -14,7 +14,7 @@ class UpdateUserToken extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table){
-            $table->string('access_token')->nullable()->unique();
+            $table->string('access_token', 171)->nullable()->unique();
         });
 
 
