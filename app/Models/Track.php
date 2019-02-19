@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -66,4 +67,10 @@ class Track extends Model
     {
         return $this->hasMany(Track::class);
     }
+
+    public function userTracks(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_track','track_id', 'user_id')->withPivot('listen_counts')->withTimestamps();
+    }
+
 }
