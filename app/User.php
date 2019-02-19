@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -81,5 +82,10 @@ class User extends Administrator implements JWTSubject
     public function generateAccessToken()
     {
         $this->access_token = md5(microtime());
+    }
+
+    public function tracks()
+    {
+        return $this->belongsToMany(Track::class, 'user_track', 'user_id', 'track_id')->withPivot('listen_counts')->withTimestamps();
     }
 }
