@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Itemable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Track extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Itemable;
 
     protected $table = 'tracks';
 

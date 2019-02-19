@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Itemable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Collection extends Model
 {
+    use Itemable;
+
     protected $fillable = [
         'image',
         'title',
