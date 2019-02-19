@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Itemable;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,7 +59,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Album extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Itemable;
 
     protected $table = 'albums';
 

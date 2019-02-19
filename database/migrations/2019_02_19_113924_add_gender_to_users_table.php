@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUserToken extends Migration
+class AddGenderToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class UpdateUserToken extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table){
-            $table->string('access_token', 171)->nullable()->unique();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('gender');
+            $table->date('birthday')->nullable();
         });
-
-
     }
 
     /**
@@ -27,12 +26,9 @@ class UpdateUserToken extends Migration
      */
     public function down()
     {
-
-
-        Schema::table('users', function (Blueprint $table){
-            $table->removeColumn('access_token');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('birthday');
+            $table->dropColumn('gender');
         });
-
-
     }
 }
