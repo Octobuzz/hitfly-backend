@@ -24,6 +24,14 @@ extend type Query  @group(middleware: ["auth:json"]) {
     tracks: [Track!]! @paginate(type: "paginator" model: "App\\Models\\Track")
     track(id: ID @eq): Track @find(model: "App\\Models\\Track")
 
+    commentsTrack: [CommentTrack!]! @paginate(type: "paginator" model: "App\\Models\\Comment")
+    commentTrack(id: ID @eq): CommentTrack @find(model: "App\\Models\\Comment")
+
+    commentsAlbum: [CommentAlbum!]! @paginate(type: "paginator" model: "App\\Models\\Comment")
+    commentAlbum(id: ID @eq): CommentAlbum @find(model: "App\\Models\\Comment")
+
+
+
 }
 
 
@@ -70,6 +78,14 @@ extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middlewa
         @create(model: "App\\Models\\Track")
 
     deleteTrack(id: ID!): Track @delete(globalId: true )
+
+    #отзывы
+#    createTrackComment(
+#        track: String
+#        user: String!
+#        comment: String!
+#    ): CommentTrack
+#    @create(model: "App\\Models\\Comment")
 
 
 }
@@ -124,4 +140,20 @@ type Album  @model(class: "App\\Models\\Album") {
     year: DateTime!
     cover: String!
     music_group: MusicGroup @belongsTo
+}
+
+type CommentTrack  @model(class: "App\\Models\\Comment") {
+    id: ID!
+    track: Track @belongsTo(attribute: "track")
+    #album: Album @belongsTo(attribute: "album")
+    comment: String!
+    created_at: DateTime
+    estimation: String
+}
+type CommentAlbum  @model(class: "App\\Models\\Comment") {
+    id: ID!
+    album: Album @belongsTo(attribute: "album")
+    comment: String!
+    created_at: DateTime
+    estimation: String
 }

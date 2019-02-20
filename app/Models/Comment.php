@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Track;
-use App\Models\User;
-use App\Models\Album;
+use App\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Отзывы критиков
@@ -21,7 +20,6 @@ class Comment extends Model
         'album_id',
         'user_id',
         'comment',
-        'comment_date',
         'estimation',
 
     ];
@@ -31,9 +29,37 @@ class Comment extends Model
         'updated_at',
     ];
 
+    /*public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($comment) {
+            //$comment->test =!($comment->track_id&&$comment->album_id)&&($comment->track_id||$comment->album_id);
+            //echo json_encode($comment);die();
+
+            //return !($comment->track_id&&$comment->album_id)&&($comment->track_id||$comment->album_id);
+            return false;
+        });
+
+
+
+        static::updating(function ($track) {
+            // do stuff
+        });
+    }*/
+
+    public function commentable()
+    {
+        return $this->morphTo();
+    }
+
+
+
+
+
     public function track(): BelongsTo
     {
-        return $this->belongsTo(Track::class, 'track_id');
+        return $this->belongsTo(Track::class, 'id');
     }
 
     public function user(): BelongsTo
@@ -43,6 +69,6 @@ class Comment extends Model
 
     public function album(): BelongsTo
     {
-        return $this->belongsTo(Album::class, 'album_id');
+        return $this->belongsTo(Album::class, 'id');
     }
 }
