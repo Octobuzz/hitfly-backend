@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -18,6 +19,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property \Illuminate\Support\Carbon|null                                                                           $created_at
  * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
  * @property string                                                                                                    $avatar
+ * @property string                                                                                                    $access_token
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Permission[]                         $permissions
  * @property \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Role[]                               $roles
@@ -75,5 +77,15 @@ class User extends Administrator implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function generateAccessToken()
+    {
+        $this->access_token = md5(microtime());
+    }
+
+    public function tracks()
+    {
+        return $this->belongsToMany(Track::class, 'user_track', 'user_id', 'track_id')->withPivot('listen_counts')->withTimestamps();
     }
 }

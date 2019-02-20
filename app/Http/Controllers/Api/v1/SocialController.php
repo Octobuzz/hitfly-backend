@@ -113,7 +113,7 @@ class SocialController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
     {
