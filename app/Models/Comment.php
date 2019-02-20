@@ -14,10 +14,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Comment extends Model
 {
     protected $table = 'comments';
+    const FILLABLE = [
+        'commentable_id',
+        'commentable_type',
+        'user_id',
+        'comment',
+
+    ];
 
     protected $fillable = [
-        'track_id',
-        'album_id',
+        'commentable_id',
+        'commentable_type',
         'user_id',
         'comment',
         'estimation',
@@ -29,24 +36,6 @@ class Comment extends Model
         'updated_at',
     ];
 
-    /*public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($comment) {
-            //$comment->test =!($comment->track_id&&$comment->album_id)&&($comment->track_id||$comment->album_id);
-            //echo json_encode($comment);die();
-
-            //return !($comment->track_id&&$comment->album_id)&&($comment->track_id||$comment->album_id);
-            return false;
-        });
-
-
-
-        static::updating(function ($track) {
-            // do stuff
-        });
-    }*/
 
     public function commentable()
     {
@@ -59,7 +48,7 @@ class Comment extends Model
 
     public function track(): BelongsTo
     {
-        return $this->belongsTo(Track::class, 'id');
+        return $this->belongsTo(Track::class, 'commentable_id');
     }
 
     public function user(): BelongsTo
@@ -69,6 +58,6 @@ class Comment extends Model
 
     public function album(): BelongsTo
     {
-        return $this->belongsTo(Album::class, 'id');
+        return $this->belongsTo(Album::class, 'commentable_id');
     }
 }
