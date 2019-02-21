@@ -70,4 +70,9 @@ class Track extends Model
     {
         return $this->belongsToMany(User::class, 'user_track', 'track_id', 'user_id')->withPivot('listen_counts')->withTimestamps();
     }
+
+    public function collections(): BelongsToMany
+    {
+        return $this->belongsToMany(Collection::class, 'collection_track')->withTimestamps();
+    }
 }

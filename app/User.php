@@ -57,7 +57,11 @@ class User extends Administrator implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password',
+        'username',
+        'email',
+        'password',
+        'gender',
+        'birthday',
     ];
 
     /**

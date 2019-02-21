@@ -21,4 +21,9 @@ class Collection extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function tracks()
+    {
+        return $this->belongsToMany(Track::class,'collection_track')->withTimestamps();
+    }
 }
