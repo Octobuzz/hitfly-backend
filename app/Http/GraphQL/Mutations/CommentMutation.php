@@ -19,16 +19,20 @@ class CommentMutation
      */
     public function resolve($rootValue, array $args)
     {
-
-        if(!empty($args['album'])){
-            $args['commentable_type'] = 'App\Models\Album';
-            $args['commentable_id'] = $args['album'];
-        }elseif(!empty($args['track'])){
-            $args['commentable_type'] = 'App\Models\Track';
-            $args['commentable_id'] = $args['track'];
-        }else{
-            throw new \Exception('Не удалось определить тип комментария');
+        switch ($args['type']){
+            case "album":
+                $args['commentable_type'] = 'App\Models\Album';
+                $args['commentable_id'] = $args['id'];
+                break;
+            case "track":
+                $args['commentable_type'] = 'App\Models\Track';
+                $args['commentable_id'] = $args['id'];
+                break;
+            default:
+                throw new \Exception('Не удалось определить тип комментария');
+                break;
         }
+        
         $args['user_id'] = Auth::user()->id;
 
         $comment = new Comment();
