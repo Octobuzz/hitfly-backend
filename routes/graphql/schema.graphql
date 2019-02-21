@@ -88,36 +88,30 @@ extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middlewa
     deleteTrack(id: ID!): Track @delete(globalId: true )
 
     #отзывы
-#    createTrackComment(
-#        track: String
-#        user: String!
-#        comment: String!
-#    ): CommentTrack
-#    @create(model: "App\\Models\\Comment")
     CommentAlbum(
-        type: String!
-        id: String!
+        type: commentType!
+        id: Int!
         comment: String!
     ): CommentAlbum
         @field(resolver: "CommentMutation@resolve")
 
     CommentTrack(
-        type: String!
-        id: String!
+        type: commentType!
+        id: Int!
         comment: String!
-    ): CommentAlbum
+    ): CommentTrack
     @field(resolver: "CommentMutation@resolve")
 
     RateCommentAlbum(
-        rate: String!
+        rate: Int!
         commentId: String!
     ): CommentAlbum
     @field(resolver: "CommentMutation@rateComment")
 
     RateCommentTrack(
-        rate: String!
+        rate: Int!
         commentId: String!
-    ): CommentAlbum
+    ): CommentTrack
     @field(resolver: "CommentMutation@rateComment")
 
 
@@ -194,6 +188,11 @@ type CommentAlbum  @model(class: "App\\Models\\Comment") {
 
 type AuthPayload {
     access_token: String!
+}
+
+enum commentType {
+    album @enum(value: "album")
+    track @enum(value: "track")
 }
 
 

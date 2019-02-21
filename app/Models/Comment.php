@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Comment extends Model
 {
+
+    const TYPE_ALBUM = 'album';
+    const TYPE_TRACK = 'track';
     protected $table = 'comments';
     const FILLABLE = [
         'commentable_id',
