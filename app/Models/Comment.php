@@ -16,6 +16,12 @@ class Comment extends Model
 
     const TYPE_ALBUM = 'album';
     const TYPE_TRACK = 'track';
+
+    const CLASS_NAME = [
+        Track::class => "track",
+        Album::class => "album",
+    ];
+
     protected $table = 'comments';
     const FILLABLE = [
         'commentable_id',

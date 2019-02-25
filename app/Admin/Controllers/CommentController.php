@@ -2,17 +2,16 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Comment;
 use App\Http\Controllers\Controller;
-use App\Models\Genre;
-use App\Models\MusicGroup;
-use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use App\User;
 
-class GroupController extends Controller
+class CommentController extends Controller
 {
     use HasResourceActions;
 
@@ -20,7 +19,6 @@ class GroupController extends Controller
      * Index interface.
      *
      * @param Content $content
-     *
      * @return Content
      */
     public function index(Content $content)
@@ -34,9 +32,8 @@ class GroupController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
-     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -50,9 +47,8 @@ class GroupController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
-     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -67,7 +63,6 @@ class GroupController extends Controller
      * Create interface.
      *
      * @param Content $content
-     *
      * @return Content
      */
     public function create(Content $content)
@@ -85,17 +80,20 @@ class GroupController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new MusicGroup());
+        $grid = new Grid(new Comment);
 
         $grid->id('Id');
-        $grid->creator_group_id('Создатель группы')->display(function ($genreId) {
-            return User::find($genreId)->username;
+        //$grid->setRelation();
+        $grid->user()->display(function ($user){
+            return $user['username'];
         });
-        $grid->name('Name');
-        $grid->career_start_year('Год начала');
-        $grid->genre_id('Жанр')->display(function ($genreId) {
-            return Genre::find($genreId)->name;
+        $grid->commentable_type()->display(function ($comment){
+            return __('messages.'.Comment::CLASS_NAME[$comment]);
         });
+        $grid->comment('Comment');
+        $grid->estimation('Estimation');
+        $grid->created_at('Created at');
+        $grid->updated_at('Updated at');
 
         return $grid;
     }
@@ -104,24 +102,28 @@ class GroupController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
-     *
      * @return Show
      */
     protected function detail($id)
     {
-        $show = new Show(MusicGroup::findOrFail($id));
+        $show = new Show(Comment::findOrFail($id));
 
         $show->id('Id');
-        $show->creator_group_id('Creator group id');
-        $show->avatar_group('Avatar group');
-        $show->name('Name');
-        $show->career_start_year('Career start year');
-        $show->type_music_group_id('Type music group id');
-        $show->genre_id('Genre id');
-        $show->description('Description');
+        $show->user()->as(function ($user){
+            return $user->username;
+        });
+        $show->commentable_type('Тип комментария')->as(function ($comment){
+            return __('messages.'.Comment::CLASS_NAME[$comment]);
+        });
+        $show->commentable()->title("Комментарий к")->as(function ($comment){
+            return $comment->title;
+        });
+
+
+        $show->comment('Comment');
+        $show->estimation('Estimation');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
-        $show->deleted_at('Deleted at');
 
         return $show;
     }
@@ -133,26 +135,23 @@ class GroupController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new MusicGroup());
 
-        $form->select('creator_group_id', 'Создатель группы')->options(function ($id) {
+        $form = new Form(new Comment());
+
+        $form->select('id', 'Комментарий к')->options(function($id){
+            $comment = Comment::find($id);
+
+            return [$id=>(string)$comment->commentable['title']." (".__('messages.'.Comment::CLASS_NAME[$comment['commentable_type']]).")"];
+        })->rules('required');
+
+        $form->select('user_id', 'Пользователь')->options(function ($id) {
             $user = User::find($id);
-
             if ($user) {
                 return [$user->id => $user->username];
             }
         })->ajax('/admin/api/users');
-        $form->text('avatar_group', 'Аватар');
-        $form->text('name', 'Название группы');
-        $form->datetime('career_start_year', 'Год начала')->default(date('Y'));
-        $form->select('genre_id', 'Жанр')->options(function ($id) {
-            $genre = Genre::find($id);
-
-            if ($genre) {
-                return [$genre->id => $genre->name];
-            }
-        })->ajax('/admin/api/genres');
-        $form->textarea('description', 'Описание');
+        $form->textarea('comment', 'Comment');
+        $form->select('estimation', 'Оценка')->options([0=>"Нет",1=>1,2=>2,3=>3,4=>4,5=>5]);
 
         return $form;
     }

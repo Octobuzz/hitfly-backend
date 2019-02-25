@@ -77,3 +77,9 @@ fabric.properties
 
 /public/uploads/
 .idea/*
+# исключение lang файлы
+!/resources/lang/
+/resources/lang/*
+!/resources/lang/ru/
+/resources/lang/ru/*
+!/resources/lang/ru/messages.php
