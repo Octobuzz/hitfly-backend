@@ -3,9 +3,14 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Collection;
-use App\Models\Track;
-use Illuminate\Http\Request;
+use Encore\Admin\Controllers\HasResourceActions;
 use App\Http\Controllers\Controller;
+use App\User;
+use Encore\Admin\Form;
+use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Show;
+
 
 class CollectionController extends Controller
 {
