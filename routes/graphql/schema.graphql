@@ -92,6 +92,7 @@ extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middlewa
         type: commentType!
         id: Int!
         comment: String!
+        commentId: Int!
     ): CommentAlbum
     @field(resolver: "CommentMutation@resolve")
 
@@ -99,18 +100,19 @@ extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middlewa
         type: commentType!
         id: Int!
         comment: String!
+        commentId: Int!
     ): CommentTrack
     @field(resolver: "CommentMutation@resolve")
 
     RateCommentAlbum(
         rate: Int!
-        commentId: String!
+        commentId: Int!
     ): CommentAlbum
     @field(resolver: "CommentMutation@rateComment")
 
     RateCommentTrack(
         rate: Int!
-        commentId: String!
+        commentId: Int!
     ): CommentTrack
     @field(resolver: "CommentMutation@rateComment")
 

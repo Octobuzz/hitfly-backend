@@ -21,12 +21,7 @@ class CommentMutation
      */
     public function resolve($rootValue, array $args)
     {
-        $user = Auth::user();
 
-//        $user = \App\User::query()->where(['id' => 3])->first();
-
-        var_dump($user->can('update', Comment::class));die();
-        if ($user->can('update', Comment::class)) {
             switch ($args['type']) {
                 case Comment::TYPE_ALBUM:
                     $args['commentable_type'] = Album::class;
@@ -42,16 +37,16 @@ class CommentMutation
             }
 
             $args['user_id'] = Auth::user()->id;
-
-            $comment = new Comment();
-            foreach (Comment::FILLABLE as $fill) {
-                $comment->$fill = $args[$fill];
+            $fields = [];
+            foreach (Comment::FILLABLE as $k=>$fill) {
+                $fields[$fill] = $args[$fill];
             }
+            $comment = Comment::updateOrCreate(['id'=>$args['commentId']],$fields);
+
             $comment->save();
 
             return $comment;
-        }
-        return false;
+
     }
 
 
