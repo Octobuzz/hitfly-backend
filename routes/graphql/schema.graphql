@@ -93,7 +93,7 @@ extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middlewa
         id: Int!
         comment: String!
     ): CommentAlbum
-        @field(resolver: "CommentMutation@resolve")
+    @field(resolver: "CommentMutation@resolve")
 
     CommentTrack(
         type: commentType!
