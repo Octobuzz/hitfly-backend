@@ -217,14 +217,14 @@
     grid-template-columns: min-content auto auto;
     grid-template-rows: 1fr;
     grid-template-areas: "left nav right";
-    padding: 24px 32px;
+    padding: 24px 16px;
     min-height: 90px;
 
     &__logo{
       height: 26px;
     }
     &__nav{
-      margin-left: 70px;
+      margin-left: 10px;
       align-items: center;
     }
     &__profile{
@@ -237,7 +237,7 @@
     margin-top: 0;
   }
   .head-right-item{
-    margin-right: 25px;
+    margin-right: 5px;
 
     &_upload{
       display: inline-block;
@@ -319,5 +319,20 @@
     min-width: calc(100% / 3);
     padding: 40px 0 0;
     position: fixed;
+  }
+}
+@media (min-width: $header_xl) {
+  .head{
+    padding: 24px 32px;
+
+    &__nav{
+      margin-left: 70px;
+    }
+  }
+  .head-nav-item{
+    margin-right: 8px;
+  }
+  .head-right-item{
+    margin-right: 25px;
   }
 }
