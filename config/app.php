@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         //Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         SocialiteProviders\Manager\ServiceProvider::class,
+        App\Providers\CommentServiceProvider::class,
     ],
 
     /*
@@ -230,6 +231,7 @@ return [
         //Socialite added
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
+        'GraphQL' => Nuwave\Lighthouse\Support\Facades\GraphQLFacade::class,
 
     ],
 

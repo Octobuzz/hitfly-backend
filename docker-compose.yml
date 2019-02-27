@@ -13,6 +13,8 @@ services:
     depends_on:
       - php
       - maria
+    env_file:
+      - docker_server.env
   maria:
     container_name: maria_db
     restart: always

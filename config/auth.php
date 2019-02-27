@@ -45,6 +45,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
+        'json' => [
+            'driver' => 'json',
+            'provider' => 'json',
+        ],
     ],
 
     /*
@@ -70,10 +74,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'json' => [
+            'driver' => 'eloquent',
+            'model' => App\User::class,
+        ],
     ],
 
     /*

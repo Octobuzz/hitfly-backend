@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\User;
-
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use App\Models\Social;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -20,7 +19,6 @@ class SocialAccountService
         if ($account) {
             return $account->user;
         } else {
-
             $user = User::whereEmail($providerUser->getEmail())->first();
 
             if (!$user) {
@@ -29,7 +27,7 @@ class SocialAccountService
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
                     'name' => $providerUser->getName(),
-                    'password' => md5(rand(1,10000)),
+                    'password' => md5(rand(1, 10000)),
                 ]);
             }
 
@@ -49,6 +47,7 @@ class SocialAccountService
     /**
      * @param Social $socialUser
      * @param string $provider
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function loginOrRegisterBySocials(ProviderUser $providerUser, $provider)
@@ -66,24 +65,22 @@ class SocialAccountService
         try {
             $user = $authSocial->user();
             $token = JWTAuth::fromUser($user);
-
         } catch (JWTException $e) {
             return $this->sendFailedResponse('Could not create token', 302);
         }
 
         return $user ? $this->returnAccessData($token, $user) : $this->redirectToRegisterForm($authSocial);
-
     }
 
     public function redirectToRegisterForm($socialUser)
     {
-        return view('auth.registerBySocials', [ 'socialUser' => $socialUser]);
+        return view('auth.registerBySocials', ['socialUser' => $socialUser]);
     }
 
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -92,10 +89,9 @@ class SocialAccountService
         return [
             'digicoapp_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL()*10,
+            'expires_in' => auth('api')->factory()->getTTL() * 10,
             'name' => $user->name,
             'avatar' => $user->avatar,
         ];
     }
-
 }

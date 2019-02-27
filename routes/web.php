@@ -17,5 +17,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 //форма входа
-Route::get('/registerBySocial/{id}', 'RegisterController@registerBySocial')->name('registerBySocial');
+Route::get('/registerBySocial/{id}', 'Auth\RegisterController@registerBySocial')->name('registerBySocial');
 

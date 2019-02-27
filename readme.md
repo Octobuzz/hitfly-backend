@@ -28,3 +28,48 @@
     
     storage/logs/nginx/
     
+
+##Админ панель
+
+Загрузка тестового администратора 
+        
+    php artisan db:seed --class=UserSeeder
+
+    Пользователь: admin
+    Пароль: admin
+
+
+## GraphQL 
+Usage
+By default, the playground is reachable at 
+http://localhost:9090/graphql-playground
+
+http://localhost:9090/graphql
+
+    {
+      tracks(count: 51  ){
+        paginatorInfo{
+          count,
+          total
+        }
+        data{
+          id, track_name, song_text, 
+          genre {
+            name, 
+            created_at, 
+            image
+          }, 
+          user {
+            username, 
+            email
+          }, 
+          album{
+            title, 
+            author
+          }
+        }
+      }
+    }
+        
+        
+        

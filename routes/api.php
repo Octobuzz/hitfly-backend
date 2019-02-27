@@ -13,11 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:json'], function () {
     //api-авторизация
     Route::group(['namespace' => 'Api\v1'], function () {
         Route::get('/login/{provider}', 'SocialController@redirectToProvider');
         Route::get('/login/{provider}/callback', 'SocialController@handleProviderCallback');
+
+        Route::post('register', 'AuthController@register');
+
+        Route::post('login', 'AuthController@authenticate');
+        Route::get('user', 'AuthController@getAuthenticatedUser');
     });
+
 });
 

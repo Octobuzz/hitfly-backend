@@ -1,0 +1,200 @@
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+
+
+type Query {
+
+    genres: [Genre!]!  @paginate(type: "paginator" model: "App\\Models\\Genre")
+    genre(id: ID @eq): Genre @find(model: "App\\Models\\Genre")
+}
+
+
+extend type Query  @group(middleware: ["auth:json"]) {
+    me: User @auth
+    users: [User!]! @paginate(type: "paginator" model: "App\\User")
+    user(id: ID @eq): User @find(model: "App\\User")
+
+    musicGroups: [MusicGroup!]! @paginate(type: "paginator" model: "App\\Models\\MusicGroup")
+    musicGroup(id: ID @eq): Genre @find(model: "App\\Models\\MusicGroup")
+
+    albums: [Album!]! @paginate(type: "paginator" model: "App\\Models\\Album")
+    album(id: ID @eq): Album @find(model: "App\\Models\\Album")
+
+    tracks: [Track!]! @paginate(type: "paginator" model: "App\\Models\\Track")
+    track(id: ID @eq): Track @find(model: "App\\Models\\Track")
+
+    commentsTrack: [CommentTrack!]! @paginate(type: "paginator" model: "App\\Models\\Comment")
+    commentTrack(id: ID @eq): CommentTrack @find(model: "App\\Models\\Comment")
+
+    commentsAlbum: [CommentAlbum!]! @paginate(type: "paginator" model: "App\\Models\\Comment")
+    commentAlbum(id: ID @eq): CommentAlbum @find(model: "App\\Models\\Comment")
+
+
+
+}
+
+
+
+type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: []) {
+    createUser(
+        username: String! @rules(apply: ["required"])
+        email: String! @rules(apply: ["required", "email", "unique:users,email"])
+        password: String! @rules(apply: ["required"])
+    ): AuthPayload!  @field(resolver: "CreateUser@register")
+
+
+    login(
+        email: String!
+        password: String!
+    ): AuthPayload!
+}
+
+extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middleware: ["auth:json"]) {
+#    updateUser(
+#        id: ID @rules(apply: ["required"])
+#        username: String
+#        email: String @rules(apply: ["email"])
+#    ):
+#        User @update(model: "App\\User")
+
+    deleteUser(
+        id: ID @rules(apply: ["required"])
+    ): User @delete(model: "App\\User")
+
+
+    # Музыкальные группы
+    createMusicGroup(
+        name: String @rules(apply: ["required"])
+        avatarGroup: String
+        career_start_year: String! @rules(apply: ["required"])
+        description: String
+    ): MusicGroup
+        @create(model: "App\\Models\\MusicGroup")
+        @inject(context: "user.id", name: "creator_group_id")
+
+    deleteMusicGroup(id: ID!): MusicGroup @delete(globalId: true )
+
+    createTrack(
+        album: String!
+        track_name: String!
+        genre: String!
+        singer: String!
+        track_date: String!
+        song_text: String!
+    ): Track
+        @create(model: "App\\Models\\Track")
+
+    deleteTrack(id: ID!): Track @delete(globalId: true )
+
+    #отзывы
+    CommentAlbum(
+        type: commentType!
+        id: Int!
+        comment: String!
+        commentId: Int!
+    ): CommentAlbum
+    @field(resolver: "CommentMutation@resolve")
+
+    CommentTrack(
+        type: commentType!
+        id: Int!
+        comment: String!
+        commentId: Int!
+    ): CommentTrack
+    @field(resolver: "CommentMutation@resolve")
+
+    RateCommentAlbum(
+        rate: Int!
+        commentId: Int!
+    ): CommentAlbum
+    @field(resolver: "CommentMutation@rateComment")
+
+    RateCommentTrack(
+        rate: Int!
+        commentId: Int!
+    ): CommentTrack
+    @field(resolver: "CommentMutation@rateComment")
+
+
+
+}
+
+type User {
+    id: ID! @globalId
+    username: String!
+    email: String!
+    created_at: DateTime!
+    updated_at: DateTime
+    access_token: String
+}
+
+type Genre @model(class: "App\\Models\\Genre") {
+    id: ID! @globalId
+    name: String!
+    image: String
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type Track @model(class: "App\\Models\\Track"){
+    id: ID! @globalId
+    track_name: String!
+    album: Album @belongsTo(attribute: "album")
+    genre: Genre @belongsTo(attribute: "genre")
+    user: User @belongsTo(attribute: "user")
+    singer: String
+    track_date: String!
+    song_text: String!
+    filename: String
+}
+
+
+
+type MusicGroup @model(class: "App\\Models\\MusicGroup") {
+    id: ID! @globalId
+    name: String!
+    avatar_group: String
+    career_start_year: DateTime!
+    genre: Genre @belongsTo
+    creator_group: User! @belongsTo(relation: "user")
+    description: String
+    albums: [Album!]!  @hasMany(type: "connection")
+
+}
+
+type Album  @model(class: "App\\Models\\Album") {
+    id: ID!
+    title: String
+    author: String!
+    year: DateTime!
+    cover: String!
+    music_group: MusicGroup @belongsTo
+}
+
+type CommentTrack  @model(class: "App\\Models\\Comment") {
+    id: ID!
+    track: Track @belongsTo(attribute: "track")
+    #album: Album @belongsTo(attribute: "album")
+    comment: String!
+    created_at: DateTime
+    estimation: String
+}
+type CommentAlbum  @model(class: "App\\Models\\Comment") {
+    id: ID!
+    album: Album @belongsTo(attribute: "album")
+    comment: String!
+    created_at: DateTime
+    estimation: String
+}
+
+type AuthPayload {
+    access_token: String!
+}
+
+enum commentType {
+    album @enum(value: "album")
+    track @enum(value: "track")
+}
+
+
