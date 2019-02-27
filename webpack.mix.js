@@ -19,5 +19,5 @@ mix.sass('resources/sass/app.scss', 'public/css').options({
         }
     }
 });
-
 mix.copyDirectory('resources/images', 'public/images');
+mix.browserSync('localhost:9090');
