@@ -110,6 +110,9 @@
   }
 
 }
+.footer-r-item{
+  margin: 0 4px;
+}
 .footer-info{
   display: flex;
   width: calc(100% - 120px);
@@ -152,7 +155,6 @@
   position: relative;
 
   &__play{
-    font-size: 1.5em;
     margin: 0 10px;
   }
 }
@@ -258,9 +260,12 @@
     padding: 0;
 
     &__right{
-      display: block;
+      display: flex;
       width: calc(100% / 3);
       box-sizing: border-box;
+      padding: 20px 32px;
+      align-items: center;
+      justify-content: flex-end;
     }
     &__center{
       display: flex;

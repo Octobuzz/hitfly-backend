@@ -1,6 +1,7 @@
 import $ from "jquery";
 import './nice-select';
 import './different-scroll';
+import 'popper.js'
 
 $(function () {
 
@@ -61,8 +62,9 @@ $(function () {
     $('.drop-menu-list__item').each(function (i, item) {
        let row = $(item);
        let span = row.find('span');
+       let time = 500 + Number(`${i}00`);
 
-       span.css('transition-delay', `${i}00ms`);
+       span.css('animation-delay', `${time}ms`);
     });
 
     $('#form-register').on('submit', function () {
