@@ -108,7 +108,11 @@
   &__right{
     display: none;
   }
-
+  &__left{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 .footer-r-item{
   margin: 0 4px;
@@ -203,6 +207,9 @@
 }
 .aside{
   box-sizing: border-box;
+}
+.footer-l-icon{
+  display: none;
 }
 
 @media (min-width: $desktop) {

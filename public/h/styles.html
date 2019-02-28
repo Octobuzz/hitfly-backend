@@ -113,25 +113,30 @@
 </main>
 
 <footer class="footer">
-    <div class="footer__left footer-info">
-        <img class="footer-info__img" src="/images/test_ava.jpg"/>
-        <div class="footer-info__text">
-            <a class="footer-info__song">Мальчики</a>
-            <a class="footer-info__author">АлоэВера – Алимоно – 2018</a>
+    <div class="footer__left">
+        <div class="footer-info">
+            <img class="footer-info__img" src="/images/test_ava.jpg"/>
+            <div class="footer-info__text">
+                <a class="footer-info__song">Мальчики</a>
+                <a class="footer-info__author">АлоэВера – Алимоно – 2018</a>
+            </div>
         </div>
+        <button class="button-icon footer-l-icon" aria-label="Плейлист">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 15.19c-.6 0-1 .4-1 1.02 0 .6.4 1.01 1 1.01h10c.6 0 1-.4 1-1.01s-.4-1.02-1-1.02H7zm0-4.06c-.6 0-1 .4-1 1.01s.4 1.02 1 1.02h10c.6 0 1-.4 1-1.02 0-.6-.4-1.01-1-1.01H7zm0-4.07c-.6 0-1 .41-1 1.02 0 .6.4 1.02 1 1.02h6c.6 0 1-.41 1-1.02 0-.61-.4-1.02-1-1.02H7zM5 3h14c.6 0 1 .4 1 1.02v16.25c0 .6-.4 1.02-1 1.02H5c-.6 0-1-.41-1-1.02V4.02C4 3.4 4.4 3 5 3z" fill-rule="nonzero"/></svg>
+        </button>
     </div>
     <div class="footer__center">
         <div class="footer-play">
-            <button class="button-icon">
+            <button class="button-icon is-tooltip" data-tooltip-text="Предыдущий трек">
                 <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M18.19 4.65l-8.7 6.96a.5.5 0 0 0 0 .78l8.7 6.96a.5.5 0 0 0 .81-.39V5.04a.5.5 0 0 0-.81-.39z"/><rect x="5" y="4" width="2" height="16" rx=".5"/></g></svg>
             </button>
-            <button class="button-icon footer-play__play big">
+            <button class="button-icon footer-play__play big is-tooltip" data-tooltip-text="Воспроизвести">
                 <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.82 2.1l12.97 9.51c.2.2.3.48.1.67l-.1.1L5.82 21.9c-.2.19-.51.1-.72-.1-.1-.1-.1-.19-.1-.28V2.48c0-.29.2-.48.51-.48.1 0 .2.1.3.1z" fill-rule="nonzero"/></svg>
             </button>
-            <!--<button class="button-icon footer-play__play big"> --> <!--пауза -->
+            <!--<button class="button-icon footer-play__play big is-tooltip" data-tooltip-text="Пауза"> --> <!--пауза -->
                 <!--<svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero"><path d="M13.833 2h3.334c.5 0 .833.364.833.91v18.18c0 .546-.333.91-.833.91h-3.334c-.5 0-.833-.364-.833-.91V2.91c0-.546.417-.91.833-.91zM6.833 2h3.334c.5 0 .833.364.833.91v18.18c0 .546-.333.91-.833.91H6.833c-.5 0-.833-.364-.833-.91V2.91c0-.546.417-.91.833-.91z"/></g></svg>-->
             <!--</button>-->
-            <button class="button-icon">
+            <button class="button-icon is-tooltip" data-tooltip-text="Следующий трек">
                 <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M5.81 4.65l8.7 6.96a.5.5 0 0 1 0 .78l-8.7 6.96a.5.5 0 0 1-.81-.39V5.04a.5.5 0 0 1 .81-.39z"/><rect x="17" y="4" width="2" height="16" rx=".5"/></g></svg>
             </button>
         </div>
@@ -148,22 +153,22 @@
         </div>
     </div>
     <div class="footer__right">
-        <button class="button-icon footer-r-item">
+        <button class="button-icon footer-r-item is-tooltip" data-tooltip-text="Добавить">
             <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><rect x="11" y="4" width="2" height="16" rx="1"/><rect transform="rotate(90 12 12)" x="11" y="4" width="2" height="16" rx="1"/></g></svg>
         </button>
-        <button class="button-icon footer-r-item">
+        <button class="button-icon footer-r-item is-tooltip" data-tooltip-text="Нравится">
             <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.7 6.38c-.8-.89-2-1.38-3.2-1.38-.9 0-1.8.3-2.5.89-.4.3-.7.59-1 1.08-.3-.4-.6-.79-1-1.08-.7-.6-1.6-.89-2.5-.89-1.2 0-2.4.5-3.2 1.38C4.5 7.27 4 8.45 4 9.73c0 1.38.5 2.57 1.6 3.85 1 1.18 2.4 2.36 4 3.65.6.49 1.2.98 1.8 1.57.2.1.4.2.6.2.2 0 .4-.1.6-.2.6-.59 1.3-1.08 1.8-1.57 1.6-1.38 3-2.57 4-3.65A5.67 5.67 0 0 0 20 9.73c0-1.28-.4-2.56-1.3-3.35z" fill-rule="nonzero"/></svg>
         </button>
-        <button class="button-icon footer-r-item">
+        <button class="button-icon footer-r-item is-tooltip" data-tooltip-text="Не рекомендовать">
             <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero"><path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm0 2a9 9 0 1 1 0-18 9 9 0 0 1 0 18z"/><path d="M6.28 7.7l1.44-1.4 10.54 11.04-1.45 1.39z"/></g></svg>
         </button>
-        <button class="button-icon footer-r-item">
+        <button class="button-icon footer-r-item is-tooltip" data-tooltip-text="Повторять">
             <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero"><path d="M18 6c-.6 0-1 .4-1 1s.4 1 1 1c2.2 0 4 1.8 4 4s-1.8 4-4 4H9.4c-.3 0-.5.2-.5.5 0 .2.1.3.2.4l3.6 2.8c.1.1.2.1.3 0V18h5c3.3 0 6-2.7 6-6s-2.7-6-6-6zM6 16c-2.2 0-4-1.8-4-4s1.8-4 4-4h8.6c.3 0 .5-.2.5-.5 0-.2-.1-.3-.2-.4l-3.6-2.8c-.1-.1-.2-.1-.3 0V6H6c-3.3 0-6 2.7-6 6s2.7 6 6 6c.6 0 1-.4 1-1s-.4-1-1-1z"/></g></svg>
         </button>
-        <button class="button-icon footer-r-item">
+        <button class="button-icon footer-r-item is-tooltip" data-tooltip-text="В случайном порядке">
             <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero"><path d="M23.8 7.4l-3.6-2.8c-.1-.1-.2-.1-.3 0V6.3h-5.1c-.6 0-1 .4-1 1s.4 1 1 1h8.7c.3 0 .5-.2.5-.5 0-.2-.1-.3-.2-.4zM8.5 15.8H1.05c-.6 0-1 .4-1 1s.4 1 1 1H8.5c.6 0 1-.4 1-1s-.4-1-1-1zM23.4 15.82l-3.5-.02h-3.4a3.8 3.8 0 0 1-3.8-3.8c0-3.2-2.6-5.8-5.8-5.8H1.05c-.6 0-1 .4-1 1s.4 1 1 1H7c2.1 0 3.8 1.7 3.8 3.8 0 3.2 2.6 5.8 5.8 5.8H20V19.5c.1.1.2.1.3 0l3.5-2.78c.1-.1.2-.2.2-.4 0-.34-.4-.5-.6-.5z"/></g></svg>
         </button>
-        <button class="button-icon footer-r-item">
+        <button class="button-icon footer-r-item is-popper">
             <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M4 8.7409h3.645a.5.5 0 0 0 .3306-.1249l3.2728-2.884a.5.5 0 0 1 .8305.375v12.7984a.5.5 0 0 1-.8273.3779l-3.2768-2.8386a.5.5 0 0 0-.3274-.122H4c-.5523 0-1-.4478-1-1V9.7409c0-.5523.4477-1 1-1z"/><path d="M17.1015 7.5601c-.3346-.2569-.408-.7508-.164-1.103.2441-.3523.7133-.4296 1.048-.1727C19.866 7.7282 21 10.014 21 12.4963c0 2.487-1.1385 4.777-3.025 6.2201-.335.2563-.8041.1782-1.0476-.1745-.2436-.3527-.1693-.8464.1657-1.1028 1.503-1.1498 2.4069-2.9678 2.4069-4.9428 0-1.9714-.9003-3.786-2.3985-4.9362z" fill-rule="nonzero"/><path d="M14.4035 9.8829c-.3485-.2357-.4494-.7242-.2255-1.091.224-.3668.688-.473 1.0364-.2373 1.3361.9039 2.154 2.3539 2.154 3.943 0 1.5922-.821 3.0449-2.1613 3.9485-.3488.2351-.8127.1281-1.036-.239-.2234-.3672-.1218-.8555.227-1.0907.9258-.624 1.4703-1.5876 1.4703-2.6187 0-1.0291-.5424-1.9907-1.465-2.6148z" fill-rule="nonzero"/></g></svg>
         </button>
     </div>

@@ -1,13 +1,23 @@
 import $ from "jquery";
 import './nice-select';
 import './different-scroll';
-import 'popper.js'
 
 $(function () {
 
     $('.custom-select').niceSelect();
 
     $('[data-scroll-speed]').moveIt();
+
+    $('.is-tooltip').each(function () {
+       let item = $(this);
+       let title = item.data('tooltip-text');
+
+        new Tooltip(item, {
+            placement: 'top',
+            title: title,
+            delay: 400
+        });
+    });
 
     $(".input-text input").each(function() {
         if ($(this).val() != "") {
