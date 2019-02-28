@@ -5,31 +5,6 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-## Запрос списков жанров
-GET http://127.0.0.1:9090/api/v1/genre
-Accept: application/json
-
-###
-
-## Запрос одного жанра
-GET http://127.0.0.1:9090/api/v1/genre/64
-Accept: application/json
-
-###
-
-## Запрос списков групп
-GET http://127.0.0.1:9090/api/v1/music_group
-Accept: application/json
-
-###
-
-## Запрос одной группы
-GET http://127.0.0.1:9090/api/v1/music_group/82
-Accept: application/json
-
-###
-
-
 POST http://127.0.0.1:9090/api/v1/register
 Content-Type: application/json
 
@@ -43,31 +18,24 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:9090/api/v1/login
+
+### Send a form with the text and file fields
+POST http://localhost:9090/graphql
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="operations"
+
+{ "query": "mutation ($track: Upload!) { trackUploadMutation(track: $track) { id } }", "variables": { "track": null } }
+--WebAppBoundary
+Content-Disposition: form-data; name="map"
+
+{ "0": ["variables.track"] }
+--WebAppBoundary
+Content-Disposition: form-data; name="0"; filename="imgupload.png"
 Content-Type: application/json
 
-{
-  "email": "test@mail.ru",
-  "password": "content",
-}
-
-###
-
-
-GET http://127.0.0.1:9095/api/v1/user
-Content-Type: application/json
-X-TOKEN-AUTH: 1
-###
-
-
-
-POST http://127.0.0.1:9090/graphql
-Content-Type: application/json
-token_test: 123
-
-{
-  "operationName":null,
-  "variables":{},
-  "query":"{tracks(count: 1, page: 3) {paginatorInfo {count total firstItem } data { id track_name song_text genre { name created_at image created_at } user { username email } album { title author } } } } "}
+< ./tests/Data/imgupload.png
+--WebAppBoundary--
 
 ###
