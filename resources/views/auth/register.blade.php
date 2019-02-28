@@ -1,77 +1,87 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <div class="main__info">
+        <div class="reg-page">
+            <h1 class="reg-page__title">{{ __('auth.readyToConnect') }} <img src="/images/logo.svg" alt="digico"> ?</h1>
+            <div class="reg-page__socials socials">
+                <a href="/" class="socials__item socials__item_fb">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 11 23"><defs><path id="a" d="M430.315 182.08h-3.188v11.123h-4.83V182.08H420v-3.909h2.297v-2.53c0-1.808.902-4.641 4.873-4.641l3.578.014v3.795h-2.596c-.426 0-1.024.202-1.024 1.065v2.3h3.61z"/></defs><use fill="#3b5998" xlink:href="#a" transform="translate(-420 -171)"/></svg>
+                    <span>Facebook</span>
+                </a>
+                <a href="/" class="socials__item socials__item_vk">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 22 13"><defs><path id="70t7a" d="M574.764 188.282h1.315s.397-.043.6-.258c.186-.197.18-.567.18-.567s-.025-1.734.794-1.99c.807-.251 1.844 1.676 2.942 2.417.831.561 1.463.438 1.463.438l2.938-.04s1.537-.093.808-1.28c-.06-.098-.425-.879-2.185-2.484-1.842-1.68-1.595-1.409.624-4.315 1.352-1.77 1.892-2.851 1.723-3.314-.16-.441-1.155-.324-1.155-.324l-3.308.02s-.245-.033-.427.074c-.178.105-.292.349-.292.349s-.524 1.37-1.222 2.534c-1.473 2.459-2.062 2.588-2.303 2.436-.56-.356-.42-1.43-.42-2.192 0-2.382.368-3.375-.716-3.632-.36-.086-.624-.142-1.544-.151-1.18-.012-2.179.003-2.745.276-.376.18-.666.584-.49.608.22.028.714.13.977.482.339.453.327 1.471.327 1.471s.195 2.804-.455 3.153c-.446.239-1.057-.25-2.37-2.48-.674-1.142-1.182-2.404-1.182-2.404s-.098-.236-.272-.362c-.212-.153-.509-.202-.509-.202l-3.143.02s-.472.013-.645.215c-.154.179-.012.55-.012.55s2.46 5.658 5.247 8.51c2.555 2.614 5.457 2.442 5.457 2.442z"/></defs><g><g transform="translate(-564 -176)"><use fill="#4d76a1" xlink:href="#70t7a"/></g></g></svg>
+                    <span>Вконтакте</span>
+                </a>
+                <a href="/" class="socials__item socials__item_inst">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><defs><path id="fwzna" d="M741.957 186.017a3.94 3.94 0 0 1-3.94 3.94h-8.07a3.94 3.94 0 0 1-3.939-3.94v-8.07a3.94 3.94 0 0 1 3.94-3.939h8.07a3.94 3.94 0 0 1 3.939 3.94v8.07zM738.017 172h-8.07a5.954 5.954 0 0 0-5.947 5.948v8.07a5.954 5.954 0 0 0 5.948 5.947h8.07a5.954 5.954 0 0 0 5.947-5.948v-8.07a5.954 5.954 0 0 0-5.948-5.947z"/><path id="fwznc" d="M733.982 185.138a3.155 3.155 0 1 1 0-6.31 3.155 3.155 0 0 1 0 6.31zm0-8.32a5.17 5.17 0 0 0-5.163 5.164 5.17 5.17 0 0 0 5.163 5.164 5.17 5.17 0 0 0 5.164-5.164 5.17 5.17 0 0 0-5.163-5.163z"/><path id="fwzne" d="M737.919 176.858a1.237 1.237 0 1 1 2.474 0 1.237 1.237 0 0 1-2.474 0z"/><linearGradient id="fwznb" x1="733.98" x2="733.98" y1="191.91" y2="172.16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e09b3d"/><stop offset=".3" stop-color="#c74c4d"/><stop offset=".6" stop-color="#c21975"/><stop offset="1" stop-color="#7024c4"/></linearGradient><linearGradient id="fwznd" x1="733.98" x2="733.98" y1="191.91" y2="172.16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e09b3d"/><stop offset=".3" stop-color="#c74c4d"/><stop offset=".6" stop-color="#c21975"/><stop offset="1" stop-color="#7024c4"/></linearGradient><linearGradient id="fwznf" x1="739.16" x2="739.16" y1="191.91" y2="172.16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e09b3d"/><stop offset=".3" stop-color="#c74c4d"/><stop offset=".6" stop-color="#c21975"/><stop offset="1" stop-color="#7024c4"/></linearGradient></defs><g><g transform="translate(-724 -172)"><g><g><use fill="url(#fwznb)" xlink:href="#fwzna"/></g><g><use fill="url(#fwznd)" xlink:href="#fwznc"/></g><g><use fill="url(#fwznf)" xlink:href="#fwzne"/></g></g></g></g></svg>
+                    <span>Instagram</span>
+                </a>
+                <a href="/" class="socials__item socials__item_ok">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 14 22"><defs><path id="h87ia" d="M882.921 173.82a3.29 3.29 0 0 1 3.288 3.291 3.29 3.29 0 1 1-3.288-3.29zm0 9.402a6.111 6.111 0 1 0-6.111-6.11 6.119 6.119 0 0 0 6.111 6.11z"/><path id="h87ib" d="M888.805 185.931a2.222 2.222 0 0 0 1.047-1.87 1.61 1.61 0 0 0-.94-1.473 1.809 1.809 0 0 0-1.846.168 7.239 7.239 0 0 1-8.279 0 1.818 1.818 0 0 0-1.847-.168 1.612 1.612 0 0 0-.94 1.473 2.225 2.225 0 0 0 1.046 1.87c.837.536 1.748.955 2.706 1.246.163.049.33.094.503.135l-2.79 2.631a1.736 1.736 0 0 0-.04 2.518 1.896 1.896 0 0 0 2.657-.005l2.844-2.839 2.85 2.844c.71.706 1.879.724 2.611.04a1.736 1.736 0 0 0-.003-2.561l-2.787-2.629c.173-.042.342-.088.506-.136.957-.29 1.867-.708 2.702-1.244z"/></defs><g><g transform="translate(-876 -171)"><g><use fill="#ff9800" xlink:href="#h87ia"/></g><g><use fill="#ff9800" xlink:href="#h87ib"/></g></g></g></svg>
+                    <span>Одноклассники</span>
+                </a>
             </div>
+            <div class="reg-page__alternative text-with-line">
+                <span>{{ __('auth.orRegisterWithEmail') }}</span>
+            </div>
+            <form method="POST" id="form-auth" action="{{ route('register') }}" class="reg-page__form">
+                @csrf
+                <span class="input-text email reg-page__line-input">
+                <input id="email" name="email" type="email" required>
+                <label for="email">{{ __('auth.email') }}*</label>
+            </span>
+                <span class="input-text password reg-page__line-input">
+                <input id="pass" name="password" type="password" required>
+                <label for="pass">{{ __('auth.password') }}*</label>
+            </span>
+                <span class="input-text password reg-page__line-input">
+                <input id="pass_two" type="password" name="password_confirmation" required>
+                <label for="pass_two">{{ __('auth.confirmPassword') }}*</label>
+            </span>
+                <span class="reg-page__pass-error">{{ __('auth.passwordMismatch') }}</span>
+                <div class="bd-block">
+                    <span class="bd-block__title">{{ __('auth.birthday') }}</span>
+
+                    <select class="custom-select wide bd-block__month" data-placeholder="{{ __('messages.month') }}" name="month">
+                        <option value=""></option>
+                        <option value="0">Январь</option>
+                        <option value="1">Фeвраль</option>
+                        <option value="2">Март</option>
+                    </select>
+
+                    <select class="custom-select bd-block__date" data-placeholder="{{ __('messages.day') }}" name="day">
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+
+                    <select class="custom-select bd-block__year" data-placeholder="{{ __('messages.year') }}"name="year">
+                        <option value=""></option>
+                        <option value="2000">2000</option>
+                        <option value="2001">2001</option>
+                        <option value="2002">2002</option>
+                    </select>
+                </div>
+                <div class="reg-page__genders">
+                <span class="input-radio genders-item">
+                    <input name="gender" id="man" value="M" type="radio">
+                    <label for="man">{{ __('auth.male') }}</label>
+                </span>
+                    <span class="input-radio genders-item">
+                    <input name="gender" id="woman" value="F" type="radio">
+                    <label for="woman">{{ __('auth.female') }}</label>
+                </span>
+                </div>
+                <button type="submit" class="button active reg-page__submit">{{ __('auth.register') }}</button>
+            </form>
+            <p class="reg-page__intro">
+            <span>
+                {{ __('auth.pushButtonAccept') }} <a href="/">{{ __('auth.useConditions') }}</a>
+            </span>
+            </p>
+            <p class="reg-page__enter">{{ __('auth.haveAccount') }}? <a href="/">{{ __('messages.signIn') }}</a> </p>
         </div>
     </div>
-</div>
 @endsection

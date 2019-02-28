@@ -83,3 +83,4 @@ fabric.properties
 !/resources/lang/ru/
 /resources/lang/ru/*
 !/resources/lang/ru/messages.php
+!/resources/lang/ru/auth.php
