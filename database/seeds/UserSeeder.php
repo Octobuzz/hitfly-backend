@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'password' => bcrypt('admin'),
             'email'     => 'example@example.com',
+            'gender'     => 'M',
         ]);
 
         // create a role.

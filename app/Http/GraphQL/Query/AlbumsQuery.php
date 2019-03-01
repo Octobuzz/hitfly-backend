@@ -2,7 +2,7 @@
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\Track;
+use App\Models\Album;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
@@ -10,7 +10,7 @@ use Rebing\GraphQL\Support\SelectFields;
 /**
  * Class AlbumQuery.
  */
-class TracksQuery extends Query
+class AlbumsQuery extends Query
 {
     protected $attributes = [
         'name' => 'Music Group Query',
@@ -18,20 +18,20 @@ class TracksQuery extends Query
 
     public function type()
     {
-        return \GraphQL::paginate('Track');
+        return \GraphQL::paginate('Album');
     }
 
     public function args()
     {
         return [
-            'limit' => ['name' => 'limit', 'type' => Type::int()],
-            'page' => ['name' => 'page', 'type' => Type::int()],
+            'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
+            'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
         ];
     }
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        return Track::with($fields->getRelations())->select($fields->getSelect())
+        return Album::with($fields->getRelations())->select($fields->getSelect())
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

@@ -33,7 +33,6 @@ Content-Disposition: form-data; name="map"
 { "0": ["variables.track"] }
 --WebAppBoundary
 Content-Disposition: form-data; name="0"; filename="imgupload.png"
-Content-Type: application/json
 
 < ./tests/Data/imgupload.png
 --WebAppBoundary--

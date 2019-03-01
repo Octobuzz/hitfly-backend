@@ -78,8 +78,13 @@ class MusicGroup extends Model
         return $this->hasMany(Album::class);
     }
 
-    public function user(): BelongsTo
+    public function creatorGroup()
     {
         return $this->belongsTo(User::class, 'creator_group_id');
+    }
+
+    public function setUser(User $user)
+    {
+        $this->creator_group_id = $user->id;
     }
 }

@@ -17,7 +17,7 @@ class Comment extends Model
 
     const CLASS_NAME = [
         Track::class => 'track',
-        Album::class => 'album',
+        Album::class => self::TYPE_ALBUM,
     ];
 
     protected $table = 'comments';

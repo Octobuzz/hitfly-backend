@@ -18,11 +18,14 @@ class TrackType extends GraphQLType
     {
         return [
             'id' => [
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::int(),
             ],
             'trackName' => [
                 'type' => Type::string(),
                 'alias' => 'track_name',
+                'resolve' => function ($model) {
+                    return $model->track_name;
+                },
             ],
             'album' => [
                 'type' => GraphQL::type('Album'),
@@ -36,12 +39,18 @@ class TrackType extends GraphQLType
             'singer' => [
                 'type' => Type::string(),
             ],
-            'track_date' => [
+            'trackDate' => [
                 'type' => Type::string(),
+                'resolve' => function ($model) {
+                    return $model->track_date;
+                },
             ],
             'songText' => [
                 'type' => Type::nonNull(Type::string()),
                 'alias' => 'song_text',
+                'resolve' => function ($model) {
+                    return $model->song_text;
+                },
             ],
             'filename' => [
                 'type' => Type::nonNull(Type::string()),

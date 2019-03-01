@@ -20,7 +20,7 @@ class CommentInput extends GraphQLType
             'commentableId' => [
                 'name' => 'commentableId',
                 'description' => 'name',
-                'type' => Type::nonNull(Type::string()),
+                'type' => Type::nonNull(Type::int()),
                 'rules' => ['max:250'],
             ],
             'commentableType' => [

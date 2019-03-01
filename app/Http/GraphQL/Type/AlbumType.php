@@ -19,7 +19,6 @@ class AlbumType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'title' => [
                 'type' => Type::string(),
@@ -34,7 +33,7 @@ class AlbumType extends GraphQLType
                 'type' => Type::string(),
             ],
             'year' => [
-                'type' => Type::string(),
+                'type' => Type::int(),
             ],
             'cover' => [
                 'type' => Type::string(),

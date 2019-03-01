@@ -27,7 +27,16 @@ class CreateMusicGroupMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $musicGroup = MusicGroup::create($args);
+        $user = \Auth::guard('json')->user();
+
+        $musicGroup = new MusicGroup();
+        $musicGroup->setUser($user);
+        //todo create redis for genre if found
+        $musicGroup->name = $args['musicGroup']['name'];
+        $musicGroup->career_start_year = $args['musicGroup']['careerStartYear'];
+        $musicGroup->genre_id = $args['musicGroup']['genre'];
+        $musicGroup->description = $args['musicGroup']['description'];
+
         $musicGroup->save();
 
         return $musicGroup;

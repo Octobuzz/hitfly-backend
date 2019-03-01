@@ -95,21 +95,35 @@ return [
         'default' => [
             'query' => [
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
-                'musicGroups' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
-                'albums' => \App\Http\GraphQL\Query\AlbumQuery::class,
-                'commentsTrack' => \App\Http\GraphQL\Query\CommentTrackQuery::class,
-                'commentsAlbum' => \App\Http\GraphQL\Query\CommentAlbumQuery::class,
+            ],
+            'mutation' => [
+            ],
+            'middleware' => [],
+            'method' => ['get', 'post'],
+        ],
+        'user' => [
+            'query' => [
+                'users' => \App\Http\GraphQL\Query\UsersQuery::class,
+                'musicGroups' => \App\Http\GraphQL\Query\MusicGroupsQuery::class,
+                'musicGroup' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
+                'albums' => \App\Http\GraphQL\Query\AlbumsQuery::class,
+                'album' => \App\Http\GraphQL\Query\AlbumQuery::class,
+                'commentsTrack' => \App\Http\GraphQL\Query\CommentsTrackQuery::class,
+                'commentsAlbum' => \App\Http\GraphQL\Query\CommentsAlbumQuery::class,
                 'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
+                'track' => \App\Http\GraphQL\Query\TrackQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
+                'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
+                'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
             ],
-            'middleware' => [],
+            'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
-        ],
+        ]
     ],
 
     // The types available in the application. You can then access it from the
@@ -134,6 +148,13 @@ return [
         'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput'          => \App\Http\GraphQL\InputObject\TrackInput::class,
         'UserInput'          => \App\Http\GraphQL\InputObject\UserInput::class,
+        'CommentInput'          => \App\Http\GraphQL\InputObject\CommentInput::class,
+        'RateCommentInput'          => \App\Http\GraphQL\InputObject\RateCommentInput::class,
+
+
+        'CommentType'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
+
+        'CommentResult'          => \App\Http\GraphQL\Unions\CommentUnion::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.

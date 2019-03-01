@@ -19,21 +19,27 @@ class MusicGroupInput extends GraphQLType
         return [
             'name' => [
                 'name' => 'name',
-                'description' => 'name',
-                'type' => Type::string(),
-                'rules' => ['max:250'],
+                'description' => 'name max: 250 символов',
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['max:250', 'required'],
             ],
             'careerStartYear' => [
                 'name' => 'careerStartYear',
                 'description' => 'careerStartYear',
-                'type' => Type::string(),
-                'rules' => ['min:0', 'max:5'],
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['date', 'required'],
             ],
             'description' => [
                 'name' => 'description',
                 'description' => 'description',
-                'type' => Type::string(),
-                'rules' => ['min:0', 'max:5'],
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['min:10', 'max:1000', 'required'],
+            ],
+            'genre' => [
+                'name' => 'genre',
+                'description' => 'genre',
+                'type' => Type::nonNull(Type::id()),
+                'rules' => ['numeric', 'required'],
             ],
         ];
     }

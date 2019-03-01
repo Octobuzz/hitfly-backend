@@ -2,11 +2,14 @@
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\MusicGroup;
+use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
-class MusicGroupQuery extends Query
+/**
+ * Class AlbumQuery.
+ */
+class TrackQuery extends Query
 {
     protected $attributes = [
         'name' => 'Music Group Query',
@@ -14,7 +17,7 @@ class MusicGroupQuery extends Query
 
     public function type()
     {
-        return \GraphQL::type('MusicGroup');
+        return \GraphQL::type('Track');
     }
 
     public function args()
@@ -27,7 +30,7 @@ class MusicGroupQuery extends Query
     public function resolve($root, $args)
     {
         if (isset($args['id'])) {
-            return MusicGroup::query()->where('id', $args['id'])->first();
+            return Track::query()->where('id', $args['id'])->first();
         }
 
         return null;

@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Http\GraphQL\Privacy\UserPrivacy;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -25,6 +26,7 @@ class UserType extends GraphQLType
             'email' => [
                 'type' => Type::string(),
                 'description' => 'The email of user',
+                'privacy' => UserPrivacy::class,
             ],
             // Uses the 'getIsMeAttribute' function on our custom User model
             'isMe' => [

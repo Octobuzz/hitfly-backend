@@ -33,9 +33,12 @@ class MusicGroupType extends GraphQLType
                 'alias' => 'avatar_group', // Use 'alias', if the database column is different from the type name
             ],
             'careerStartYear' => [
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::nonNull(Type::string()),
                 'description' => 'The id of the ',
                 'alias' => 'career_start_year', // Use 'alias', if the database column is different from the type name
+                'resolve' => function ($root) { // As a workaround
+                    return $root->career_start_year;
+                },
             ],
             'genre' => [
                 'type' => GraphQL::type('Genre'),

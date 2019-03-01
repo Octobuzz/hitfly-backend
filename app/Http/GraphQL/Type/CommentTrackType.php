@@ -25,11 +25,16 @@ class CommentTrackType extends GraphQLType
             'track' => [
                 'type' => \GraphQL::type('Track'),
             ],
-            'created_at' => [
+            'createdAt' => [
                 'type' => Type::string(),
+                'alias' => 'created_at',
+                'resolve' => function ($model) {
+                    return $model->created_at;
+                },
             ],
             'estimation' => [
                 'type' => Type::int(),
+                'description' => 'Оценка',
             ],
         ];
     }

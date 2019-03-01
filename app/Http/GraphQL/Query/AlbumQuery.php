@@ -17,22 +17,22 @@ class AlbumQuery extends Query
 
     public function type()
     {
-        return Type::listOf(\GraphQL::type('Album'));
+        return \GraphQL::type('Album');
     }
 
     public function args()
     {
         return [
-            'id' => ['name' => 'id', 'type' => Type::int()],
+            'id' => ['name' => 'id', 'type' => Type::nonNull(Type::int())],
         ];
     }
 
     public function resolve($root, $args)
     {
         if (isset($args['id'])) {
-            return Album::where('id', $args['id'])->get();
+            return Album::where('id', $args['id'])->first();
         }
 
-        return Album::all();
+        return null;
     }
 }
