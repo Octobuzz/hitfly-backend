@@ -8,13 +8,13 @@
         <form class="forgot-pass__form" method="POST" action="{{ route('password.update') }}">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
-        <span class="input-text email forgot-pass__input">
-            <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}" {{ $errors->has('email') ? ' class=error' : '' }} required autofocus>
+        <span class="input-text email forgot-pass__input {{ $errors->has('email') ? 'error' : '' }}">
+            <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}"  required autofocus>
             <label for="email">{{__('passwords.email')}}</label>
         </span>
 
         <span class="input-text password forgot-pass__input">
-            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' class=error' : '' }}" name="password" required>
+            <input id="password" type="password" class="form-control{{ $errors->has('password') ? 'error' : '' }}" name="password" required>
             <label for="password">{{__('passwords.password')}}</label>
         </span>
         <span class="input-text password forgot-pass__input">

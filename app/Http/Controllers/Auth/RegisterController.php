@@ -55,9 +55,10 @@ class RegisterController extends Controller
             //'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'month' => ['required_with:year,day'],
-            'day' => ['required_with:month,year'],
-            'year' => ['required_with:month,day'],
+//            'month' => ['required_with:year,day'],
+//            'day' => ['required_with:month,year'],
+//            'year' => ['required_with:month,day'],
+            'birthday' => ['date','before:today'],
             'gender' => [Rule::in(['M', 'F'])],
         ]);
     }
@@ -70,7 +71,7 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
+    { dd($data);
         $create = [
             'username' => $data['email'],
             'email' => $data['email'],
@@ -100,7 +101,7 @@ class RegisterController extends Controller
             ?: redirect($this->redirectPath());
     }
 
-    
+
 
 
 }

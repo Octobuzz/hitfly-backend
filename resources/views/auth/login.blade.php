@@ -15,8 +15,8 @@
     @endif
     <form action="{{ route('login') }}" method="POST" class="reg-page__form">
         @csrf
-        <span class="input-text email reg-page__line-input">
-            <input id="email" name="email" type="email" {{ $errors->has('email') ? ' class=error' : '' }} required>
+        <span class="input-text email reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
+            <input id="email" name="email" type="email" required>
             <label for="email">{{__('auth.email')}}</label>
             @if ($errors->has('email'))
                 <span class="invalid-feedback" role="alert">
@@ -24,8 +24,8 @@
                                     </span>
             @endif
         </span>
-        <span class="input-text password reg-page__line-input">
-            <input id="pass" name="password" type="password" {{ $errors->has('password') ? ' class=error' : '' }} required>
+        <span class="input-text password reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
+            <input id="pass" name="password" type="password" required>
             <label for="pass">{{__('auth.password')}}</label>
         </span>
         <div class="auth-page__save">
