@@ -18,7 +18,6 @@ class CommentTrackType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'comment' => [
                 'type' => Type::string(),
@@ -30,7 +29,7 @@ class CommentTrackType extends GraphQLType
                 'type' => Type::string(),
             ],
             'estimation' => [
-                'type' => Type::string(),
+                'type' => Type::int(),
             ],
         ];
     }

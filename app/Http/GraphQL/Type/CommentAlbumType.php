@@ -34,7 +34,7 @@ class CommentAlbumType extends GraphQLType
                 'type' => Type::string(),
             ],
             'estimation' => [
-                'type' => Type::string(),
+                'type' => Type::int(),
             ],
         ];
     }

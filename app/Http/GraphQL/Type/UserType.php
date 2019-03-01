@@ -10,7 +10,7 @@ class UserType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'User',
-        'description' => 'A user',
+        'description' => 'Пользователь системы',
         'model' => User::class,
     ];
 

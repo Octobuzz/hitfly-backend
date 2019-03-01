@@ -19,7 +19,6 @@ class GenreType extends GraphQLType
             'id' => [
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the ',
-                'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'name' => [
                 'type' => Type::string(),
