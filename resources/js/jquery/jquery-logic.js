@@ -1,6 +1,7 @@
 import $ from "jquery";
 import './nice-select';
 import './different-scroll';
+import './autofill';
 
 $(function () {
 
@@ -8,17 +9,33 @@ $(function () {
 
     $('[data-scroll-speed]').moveIt();
 
+    $('.is-tooltip').each(function () {
+       let item = $(this);
+       let title = item.data('tooltip-text');
+
+        new Tooltip(item, {
+            placement: 'top',
+            title: title,
+            delay: 400
+        });
+    });
+
     $(".input-text input").each(function() {
-        if ($(this).val() != "") {
-            $(this).parent().addClass("input-full");
+        if ($(this).val() === "") {
+            $(this).parent().removeClass("input-full");
         }
     });
 
-    $(".input-text input").focus(function(){
+    $(".input-text input").on('change',function(){
+        if ($(this).val() === "") {
+            $(this).parent().removeClass("input-full");
+        }
+    });
+
+    $(".input-text input").on('focus',function(){
         $(this).parent().addClass("input-full");
     });
 
-    //Remove animation(s) when input is no longer focused
     $(".input-text input").focusout(function(){
         if($(this).val() === ""){
             $(this).parent().removeClass("input-full");
@@ -61,8 +78,9 @@ $(function () {
     $('.drop-menu-list__item').each(function (i, item) {
        let row = $(item);
        let span = row.find('span');
+       let time = 500 + Number(`${i}00`);
 
-       span.css('transition-delay', `${i}00ms`);
+       span.css('animation-delay', `${time}ms`);
     });
 
     $('#form-register').on('submit', function () {
@@ -95,4 +113,8 @@ $(function () {
         }
 
     });
+});
+
+$(document).ready(function () {
+    $('.input-text input').checkAndTriggerAutoFillEvent();
 });
