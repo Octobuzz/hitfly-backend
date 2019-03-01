@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -48,9 +52,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            //'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+//            'month' => ['required_with:year,day'],
+//            'day' => ['required_with:month,year'],
+//            'year' => ['required_with:month,day'],
+            'birthday' => ['date','before:today'],
+            'gender' => [Rule::in(['M', 'F'])],
         ]);
     }
 
@@ -62,11 +71,37 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-        return User::create([
-            'username' => $data['name'],
+    { dd($data);
+        $create = [
+            'username' => $data['email'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ]);
+            'birthday' => $data['year'] ? Carbon::create($data['year'], $data['month'], $data['day'], 0, 0, 0)->format("Y-m-d"): null,
+        ];
+        if(!empty($data['gender']))
+            $create['gender'] = $data['gender'];
+        return User::create($create);
     }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
+
+
+
 }

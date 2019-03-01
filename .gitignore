@@ -15,7 +15,6 @@ yarn-error.log
 .env.example
 /public/mix-manifest.json
 /public/vendor/
-/resources/lang/
 /public/css/
 /public/js/
 /composer.phar
@@ -78,9 +77,3 @@ fabric.properties
 
 /public/uploads/
 .idea/*
-# исключение lang файлы
-!/resources/lang/
-/resources/lang/*
-!/resources/lang/ru/
-/resources/lang/ru/*
-!/resources/lang/ru/messages.php

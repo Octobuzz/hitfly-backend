@@ -1,77 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <div class="main__info">
+        <div class="reg-page">
+            <h1 class="reg-page__title">{{ __('auth.readyToConnect') }} <img src="/images/logo.svg" alt="digico"> ?</h1>
+            @include('auth.loginBySocial')
+            <div class="reg-page__alternative text-with-line">
+                <span>{{ __('auth.orRegisterWithEmail') }}</span>
             </div>
+            <form method="POST" id="form-auth" action="{{ route('register') }}" class="reg-page__form">
+                @csrf
+                <span class="input-text email reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
+                <input id="email" name="email" type="email" required value="{{ old('email') }}">
+                <label for="email">{{ __('auth.email') }}*</label>
+            </span>
+                <span class="input-text password reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
+                <input id="pass" name="password" type="password" required>
+                <label for="pass">{{ __('auth.password') }}*</label>
+            </span>
+                <span class="input-text password reg-page__line-input">
+                <input id="pass_two" type="password" name="password_confirmation" required>
+                <label for="pass_two">{{ __('auth.confirmPassword') }}*</label>
+            </span>
+
+                <span class="reg-page__pass-error">{{ __('auth.passwordMismatch') }}</span>
+                <div class="bd-block">
+                    <span class="bd-block__title">{{ __('auth.birthday') }}</span>
+                    <span class="input-text date reg-page__line-input {{ $errors->has('birthday') ? 'error' : '' }}">
+                        <input id="birthday" type="text" name="birthday"  value="{{ $birthday ?? old('birthday') }}">
+                        <label for="birthday">{{ __('auth.birthday') }}</label>
+                    </span>
+
+
+                </div>
+                <div class="reg-page__genders">
+                <span class="input-radio genders-item">
+                    <input name="gender" id="man" value="M" type="radio" {{old('gender')=='M'? 'checked':''}}>
+                    <label for="man">{{ __('auth.male') }}</label>
+                </span>
+                    <span class="input-radio genders-item">
+                    <input name="gender" id="woman" value="F" type="radio" {{old('gender')=='F'? 'checked':''}}>
+                    <label for="woman">{{ __('auth.female') }}</label>
+                </span>
+                </div>
+                <button type="submit" class="button active reg-page__submit">{{ __('auth.register') }}</button>
+            </form>
+            <p class="reg-page__intro">
+            <span>
+                {{ __('auth.pushButtonAccept') }} <a href="/">{{ __('auth.useConditions') }}</a>
+            </span>
+            </p>
+            <p class="reg-page__enter">{{ __('auth.haveAccount') }}? <a href="{{ route('login') }}">{{ __('messages.signIn') }}</a> </p>
         </div>
     </div>
-</div>
 @endsection

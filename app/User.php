@@ -6,6 +6,8 @@ use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use  Illuminate\Auth\Passwords\CanResetPassword;
 
 /**
  * App\User.
@@ -38,9 +40,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Administrator implements JWTSubject
+class User extends Administrator implements JWTSubject,CanResetPasswordContract
 {
     use Notifiable;
+    use CanResetPassword;
 
     public static function boot()
     {
