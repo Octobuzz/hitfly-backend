@@ -16,7 +16,6 @@ $(function () {
         new Tooltip(item, {
             placement: 'top',
             title: title,
-            delay: 400
         });
     });
 
