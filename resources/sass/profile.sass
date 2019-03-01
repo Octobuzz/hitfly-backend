@@ -1,0 +1,483 @@
+// profile aside
+button
+  background: none
+  border: none
+  box-shadow: none
+  padding: 0
+  cursor: pointer
+  transition: $trns
+p
+  margin: 0
+h3
+  font-size: 24px
+  line-height: 32px
+  margin: 0
+  font-family: $font_bold
+h4
+  font-size: 20px
+  font-family: $font_bold
+  margin: 0
+.editButton
+  width: 16px
+  height: 17px
+  & svg
+    width: 100%
+    height: 100%
+    opacity: .25
+    transition: $trns
+  &:hover svg
+    opacity: .5
+.profileAsideButton
+  border-radius: $border-radius
+  background-color: $color_5
+  color: $color_4
+  padding: 8px
+  font-size: 10px
+  &:hover
+.profileAsideBlock
+  padding: 32px 24px
+  border-bottom: 1px solid #e4e4e4
+  position: relative
+.profileGeneral
+  display: flex
+  & .editButton
+    position: absolute
+    top: 40px
+    right: 24px
+.profileGeneral__img
+  width: 72px
+  height: 72px
+  border-radius: 50%
+  object-fit: cover
+  object-position: center
+  margin-right: 24px
+.profileGeneral__info p
+  color: $color_4
+.profileGeneral__subheader
+  margin-bottom: 10px
+  font-size: 12px
+.placeMark
+  font-size: 16px
+  line-height: 24px
+  &::before
+    content: ''
+    width: 9px
+    height: 12px
+    background-size: contain
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNC40OTUgMEMyLjAxIDAgMCAyLjAyMiAwIDQuNTIyIDAgNS44MjIuNjQ2IDcgMS4yODMgOC4wODhhMTguOTU0IDE4Ljk1NCAwIDAgMCAyLjc4OCAzLjczLjU5NS41OTUgMCAwIDAgLjg1OCAwIDE3LjQyNSAxNy40MjUgMCAwIDAgMi40OTUtMy4xNUM4LjE4MiA3LjQzNyA5IDYuMDE0IDkgNC41MjEgOC45OSAyLjAzMiA2Ljk4IDAgNC40OTUgMHptMCA3LjE0M0EyLjczNyAyLjczNyAwIDAgMSAxLjc2OCA0LjRhMi43MzcgMi43MzcgMCAwIDEgMi43MjctMi43NDRBMi43MyAyLjczIDAgMCAxIDcuMjIyIDQuNGEyLjczIDIuNzMgMCAwIDEtMi43MjcgMi43NDN6IiBmaWxsPSIjRTRFNEU0IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=)
+    display: inline-block
+    margin-right: 8px
+  &.placeMark-small
+    font-size: 12px
+    &::before
+      width: 6px
+      height: 8px
+.profileAsideBlock__heading
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+  margin-bottom: 24px
+.profileGroup__wrapper
+  display: flex
+.profileAsideBlock__img
+  width: 40px
+  height: 40px
+.profileGroup__body
+  display: flex
+  justify-content: space-between
+  flex-grow: 1
+.profileGroup__wrapper
+  margin-bottom: 16px
+.profileAsideBlock__text
+  & p
+    font-size: 14px
+    font-family: $font_medium
+    margin-bottom: 6px
+  & span
+    font-size: 12px
+    color: $color_4
+.profileStats__subheading
+  width: 100%
+  & p
+    font-size: 12px
+    line-height: 22px
+    color: $color_4
+    & span
+      font-family: $font_bold
+.profileStatsItems
+  display: flex
+  align-items: center
+  & .profileStatsItem
+    width: calc(100% / 3)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+    border-right: 1px solid $borderColor
+    &:last-child
+      border: none
+  & .profileStatsItem__icon
+    height: 24px
+    width: auto
+    margin-bottom: 16px
+    & img
+      height: 100%
+      width: auto
+.profileStatsItem__text
+  text-align: center
+  font-size: 12px
+  line-height: 18px
+.userType::before
+  content: ''
+  width: 18px
+  height: 18px
+  margin-right: 8px
+  margin-bottom: 4px
+  vertical-align: middle
+  background-size: contain
+  background-repeat: no-repeat
+  display: inline-block
+.userType-small::before
+  width: 12px
+  height: 12px
+  margin-right: 2px
+.novice::before
+  background-image: url(../images/novice.png)
+.fan::before
+  background-image: url(../images/fan.png)
+// profile body
+.main__profile
+  width: 100%
+  padding: 0 30px
+.profileNav
+  width: 100%
+  border-bottom: 1px solid $borderColor
+  margin-bottom: 50px
+  & ul
+    margin: 0
+    margin-top: 20px
+    list-style: none
+    padding: 0
+    display: flex
+    & li
+      width: 208px
+      cursor: pointer
+      margin-bottom: -4px
+      border-bottom: 4px solid transparent
+      font-size: 20px
+      text-align: center
+      padding: 20px 0
+      transition: $trns
+      &.active
+        border-bottom: 4px solid #b36fcb
+        font-family: $font_black
+.profileContent
+  display: none
+.secondaryButton
+  padding: 14px 30px
+  font-size: 14px
+  border: 1px solid $borderColor
+  border-radius: $border-radius
+.profileContentSection
+  margin-bottom: 60px
+.profileContentSection__heading
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 24px
+.playlists
+  display: flex
+  & .playlist
+    border-radius: $border-radius
+    background-size: cover
+    width: 214px
+    height: 160px
+    padding: 15px
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: flex-end
+    margin-right: 24px
+    color: #fff
+    font-size: 12px
+    line-height: 14px
+    & .playlist__header
+      text-align: right
+      & p
+        margin-bottom: 4px
+        max-width: 150px
+        font-family: $font_bold
+.songList
+  & .songItem
+    display: flex
+    align-items: center
+    height: 56px
+    border-bottom: 1px solid $borderColor
+    transition: $trns
+    &:hover
+      background-color: $borderColor
+    & .songItem__info
+      display: flex
+      align-items: center
+      width: 45%
+      & .songItem__number
+        min-width: 16px
+        font-size: 12px
+      & .songItem__img
+        width: 32px
+        height: 32px
+        border-radius: $border-radius
+        object-fit: cover
+      & .songItem__trackName
+        font-size: 14px
+        font-family: $font_bold
+        flex-grow: 1
+        text-overflow: ellipsis
+        white-space: nowrap
+      & .like-icon
+        margin: 0 4px
+  .songItem__artist
+    width: 33%
+    font-size: 14px
+    color: $color_4
+  .songItem__tools
+    font-size: 14px
+    color: $color_4
+    display: flex
+    align-items: center
+    & > *
+      margin-right: 10px
+.profileContentFeedbacks
+  display: flex
+  justify-content: space-between
+  align-items: flex-start
+.feedbackFilters
+  display: flex
+  & > *
+    margin-right: 16px
+  & .button
+    display: flex
+    align-items: center
+    border-radius: 20px
+    padding: 8px 16px
+    color: $color_3
+    &.active
+      color: #fff
+    &::after
+      border-radius: 20px
+    & svg
+      fill: currentColor
+      stroke: currentColor
+      height: 1em
+      width: 1em
+      margin-right: 8px
+    &.active svg
+      fill: #fff
+.feedbackFilters__search .input-text
+  width: 330px
+  & svg
+    position: absolute
+    top: 15px
+    right: 15px
+    width: 16px
+    height: 16px
+  & input
+    padding: 20px 40px 16px 15px
+    &::placeholder
+      font-size: 14px
+.feedbackPlayer
+  display: flex
+  align-items: flex-end
+  & .feedbackPlayer__info
+    width: 158px
+    margin-right: 32px
+    & img
+      width: 100%
+      height: 158px
+      border-radius: $border-radius
+      margin-bottom: 8px
+  & .feedbackPlayer__spec
+    flex-grow: 1
+.feedbackPlayer__infoButtons
+  display: flex
+  align-items: center
+  font-size: 12px
+  justify-content: space-between
+.feedbackPlayer__buttonGroup
+  display: flex
+  align-items: center
+  & .like-icon
+    margin-right: 4px
+.feedbackPlayer__specTrack
+  font-size: 14px
+  font-family: $font_bold
+  margin-bottom: 16px
+.feedbackPlayer__specArtist
+  font-size: 14px
+  color: $color_4
+  margin-bottom: 30px
+.feedbackPostBody__post
+  font-size: 14px
+  line-height: 20px
+  color: $color_4
+  margin-bottom: 24px
+.feedbackTrack
+  margin-bottom: 80px
+.feedbackPosts
+  padding-left: 190px
+  margin-top: 60px
+  & .feedbackPost
+    width: 100%
+    display: flex
+    & .feedbackPostBody
+      width: 100%
+    & img
+      width: 56px
+      height: 56px
+      border-radius: 50%
+      margin-right: 26px
+    & .feedbackPostBody__header
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 16px
+      width: 100%
+      & p
+        font-size: 16px
+        font-family: $font_bold
+      & span
+        font-size: 12px
+        color: $color_4
+.feedbackTrack__showAll
+  text-align: right
+.profileGraph__period
+  display: flex
+  & > *
+    margin-left: 16px
+  & svg
+    position: absolute
+    top: 15px
+    right: 15px
+    width: 16px
+    height: 16px
+  & input
+    padding: 11px 40px 11px 15px
+.profileGraph__header
+  display: flex
+  align-items: flex-end
+  justify-content: space-between
+  margin-bottom: 26px
+  & .profileGraph__colors
+    display: flex
+    & p
+      position: relative
+      padding-left: 16px
+      margin-right: 32px
+      &::before
+        position: absolute
+        width: 8px
+        height: 8px
+        display: block
+        content: ''
+        border-radius: 50%
+        top: 4px
+        left: 0
+      &:first-child::before
+        background-color: #b36fcb
+      &:nth-child(2)::before
+        background-color: #8181e2
+      &:nth-child(3)::before
+        background-color: #7ed321
+.arrows
+  display: flex
+  & > *
+    width: 32px
+    height: 32px
+    border: 1px solid $borderColor
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAMCAYAAAC9QufkAAAAqElEQVQoU6WS6w3CMAyE7yaAEWAC7Akom9ANWKUblElggthswgZGllKJx48mIr+ixJ/PjyNWjqo6gIiIk7s/38PZAN8BHAG4mWkXLCI7kqm+ITmXUsYlwapyBoqIkMwKMsFUSrnkexNcEwwkb3mPiNHdZ6rq0tNa+x//EbH/D26VE5HfslvgOrDsd9s1sLoqSxDA1czOzauqDjsAeJiZdJmkwrme4dueL22GSG1g1ZacAAAAAElFTkSuQmCC)
+    background-repeat: no-repeat
+    background-position: center center
+    background-size: 15px 12px
+    border-top-right-radius: $border-radius
+    border-bottom-right-radius: $border-radius
+    &.disabled
+      opacity: .5
+  & .arrows__prev
+    transform: scale(-1, 1)
+    margin-right: -1px
+.profileMainStats
+  display: flex
+  justify-content: space-between
+  & .profileStat
+    width: 290px
+    display: flex
+    flex-direction: column
+    border-radius: $border-radius
+    border: 1px solid $borderColor
+    & .profileStat__body
+      padding: 24px 26px
+      flex-grow: 1
+    & .profileStat__header
+      padding: 24px
+      display: flex
+      justify-content: space-between
+      align-items: center
+      border-bottom: 1px solid $borderColor
+      position: relative
+      & .arrows
+        position: absolute
+        right: 24px
+        top: 16px
+      & p
+        font-size: 16px
+        font-family: $font_bold
+        position: relative
+        &.goesUp::after
+          position: absolute
+          right: -20px
+          top: 0
+          content: ''
+          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAPCAYAAADQ4S5JAAAA1UlEQVQoU+1Syw3CMAx9jrjDCClX/huUDdgAOgFiAKoUFmADOgIbwAZUrbhCRyh3FCNXFNFQNiA3v49sP4fQ8MxFjwU2vTxxaXKBdaoXRLQXnJmD7TCPPzU1Q5h1dwAvawKmXTS8rirsbQhTLwZh3jQiEcVR/xoIR+asO7ZFRwAy912BZxZlDQWeWtABQBtAoh48pTDzZLFRKVbsy6Jh5rEYNoMbSQDW0qkyiUGKjnqwbyZ5IcJPQ5nWWWvbKjsVXyk1GX6mVBFuh7+h6Su8biOH813+CUg3ZQK4riLBAAAAAElFTkSuQmCC)
+          display: block
+          width: 12px
+          height: 15px
+        &.goesDown::after
+          position: absolute
+          right: -20px
+          top: 0
+          content: ''
+          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAPCAYAAADQ4S5JAAAA1UlEQVQoU+1Syw3CMAx9jrjDCClX/huUDdgAOgFiAKoUFmADOgIbwAZUrbhCRyh3FCNXFNFQNiA3v49sP4fQ8MxFjwU2vTxxaXKBdaoXRLQXnJmD7TCPPzU1Q5h1dwAvawKmXTS8rirsbQhTLwZh3jQiEcVR/xoIR+asO7ZFRwAy912BZxZlDQWeWtABQBtAoh48pTDzZLFRKVbsy6Jh5rEYNoMbSQDW0qkyiUGKjnqwbyZ5IcJPQ5nWWWvbKjsVXyk1GX6mVBFuh7+h6Su8biOH813+CUg3ZQK4riLBAAAAAElFTkSuQmCC)
+          display: block
+          width: 12px
+          height: 15px
+          transform: scale(1, -1)
+.profileStat__bodyStatistics
+  display: flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  flex-direction: column
+  height: 100%
+  & p
+    font-size: 48px
+    line-height: 44px
+    color: #b36fcb
+    margin-bottom: 14px
+  & span
+    font-size: 16px
+    line-height: 24px
+    margin-bottom: 24px
+.profileStat__bodyPlayer
+  display: flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  flex-direction: column
+  & img
+    width: 96px
+    height: 96px
+    border-radius: $border-radius
+    margin-bottom: 24px
+  .feedbackPlayer__infoButtons
+    margin-bottom: 24px
