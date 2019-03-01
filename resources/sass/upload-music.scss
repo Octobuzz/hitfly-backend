@@ -1,0 +1,56 @@
+.up-page{
+  margin: 20px auto 0;
+  max-width: 910px;
+  padding: 0 15px 75px;
+
+  &__title{
+    font-family: $font_bold;
+    font-size: 20px;
+    margin: 0;
+  }
+  &__top{
+    padding: 15px;
+    border-radius: $border-radius;
+    text-align: center;
+    border: 1px dotted $borderColor;
+  }
+  &__button{
+    margin-top: 20px;
+  }
+  &__info{
+    font-size: 14px;
+    border-radius: $border-radius;
+    background-color: $color_5;
+    padding: 10px;
+  }
+  &__bottom{
+    margin-top: 30px;
+    border-top: 1px solid $borderColor;
+  }
+  &__agree{
+    font-size: 14px;
+    color: $color_4;
+  }
+}
+.up-b-info{
+  display: flex;
+  flex-direction: column;
+
+  &__link{
+    color: $text;
+    display: block;
+    margin-top: 10px;
+  }
+}
+
+.radio-pair{
+  display: flex;
+  flex-direction: column;
+  padding: 25px 0;
+}
+
+@media (min-width: $desktop) {
+  .radio-pair{
+    flex-direction: row;
+  }
+}

@@ -35,6 +35,11 @@
       padding-top: 48px;
     }
   }
+  &.asideless{
+    .main__aside{
+      display: none;
+    }
+  }
 }
 .head{
   display: grid;
@@ -46,7 +51,7 @@
   grid-template-areas:
           "left right"
           "nav nav";
-  padding: 1em;
+  padding: 16px;
   box-shadow: 0 1px 0 $borderColor;
   width: 100%;
   box-sizing: border-box;
@@ -96,7 +101,8 @@
 }
 .head-nav-item{
   margin-right: 1px;
-  margin-top: 20px;
+  margin-top: 15px;
+  display: inline-block;
 
   &:last-child{
     margin-right: 0;
@@ -239,7 +245,15 @@
     }
     &.minimal-head{
       .main{
-        padding-top: 74px;
+        padding-top: 90px;
+      }
+      .head{
+        min-height: 90px;
+      }
+    }
+    &.asideless{
+      .main__info{
+        padding-left: 0;
       }
     }
   }
@@ -279,9 +293,11 @@
     flex-direction: row;
 
     &__info{
-      border-left: 1px solid $borderColor;
       width: 100%;
       padding-left: calc(100% / 3);
+    }
+    &__aside{
+      border-right: 1px solid $borderColor;
     }
   }
   .footer{
@@ -300,7 +316,6 @@
       flex-direction: column;
       align-items: center;
       width: calc(100% / 3);
-      border-left: 1px solid $borderColor;
       border-right: 1px solid $borderColor;
       position: relative;
       padding: 0 2em;
@@ -310,6 +325,7 @@
       width: calc(100% / 3);
       padding: 20px 32px;
       box-sizing: border-box;
+      border-right: 1px solid $borderColor;
     }
   }
   .footer-play{
@@ -351,8 +367,13 @@
   .aside{
     width: calc(100% / 3);
     min-width: calc(100% / 3);
-    padding: 40px 0 0;
+    padding: 90px 0 0;
     position: fixed;
+    top: 0;
+    bottom: 0;
+  }
+  .footer-l-icon{
+    display: block;
   }
 }
 @media (min-width: $header_xl) {
