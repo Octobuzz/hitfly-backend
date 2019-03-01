@@ -117,6 +117,7 @@ return [
                 'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
+                'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
                 'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,

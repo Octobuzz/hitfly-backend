@@ -14,7 +14,7 @@ class DeleteMusicGroupMutation extends Mutation
 
     public function type()
     {
-        return \GraphQL::type('MusicGroup');
+        return Type::getNullableType(\GraphQL::type('MusicGroup'));
     }
 
     public function args()
@@ -24,17 +24,23 @@ class DeleteMusicGroupMutation extends Mutation
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the human.',
             ],
-            'musicGroup' => [
-                'type' => \GraphQL::type('MusicGroupInput'),
-            ],
         ];
     }
 
     public function resolve($root, $args)
     {
-        $musicGroup = MusicGroup::create($args);
-        $musicGroup->save();
+        $user = \Auth::guard('json')->user();
 
-        return $musicGroup;
+        $musicGroup = MusicGroup::query()->find($args['id'])->first();
+
+        if (null === $musicGroup) {
+            throw new \Exception('inncorect');
+        }
+
+        if ($user->can('deleted', $musicGroup)) {
+            $musicGroup->delete();
+        }
+
+        return null;
     }
 }
