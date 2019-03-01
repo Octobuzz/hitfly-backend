@@ -1,6 +1,7 @@
 import $ from "jquery";
 import './nice-select';
 import './different-scroll';
+import './autofill';
 
 $(function () {
 
@@ -20,16 +21,21 @@ $(function () {
     });
 
     $(".input-text input").each(function() {
-        if ($(this).val() != "") {
-            $(this).parent().addClass("input-full");
+        if ($(this).val() === "") {
+            $(this).parent().removeClass("input-full");
         }
     });
 
-    $(".input-text input").focus(function(){
+    $(".input-text input").on('change',function(){
+        if ($(this).val() === "") {
+            $(this).parent().removeClass("input-full");
+        }
+    });
+
+    $(".input-text input").on('focus',function(){
         $(this).parent().addClass("input-full");
     });
 
-    //Remove animation(s) when input is no longer focused
     $(".input-text input").focusout(function(){
         if($(this).val() === ""){
             $(this).parent().removeClass("input-full");
@@ -107,4 +113,8 @@ $(function () {
         }
 
     });
+});
+
+$(document).ready(function () {
+    $('.input-text input').checkAndTriggerAutoFillEvent();
 });

@@ -18,6 +18,23 @@
       }
     }
   }
+  &.minimal-head{
+    .footer{
+      display: none;
+    }
+    .head{
+      min-height: 48px;
+
+      &__nav,
+      &__right,
+      .menu-call{
+        display: none;
+      }
+    }
+    .main{
+      padding-top: 48px;
+    }
+  }
 }
 .head{
   display: grid;
@@ -119,7 +136,6 @@
 }
 .footer-info{
   display: flex;
-  width: calc(100% - 120px);
 
   &__song{
     font-size: 12px;
@@ -221,6 +237,11 @@
         }
       }
     }
+    &.minimal-head{
+      .main{
+        padding-top: 74px;
+      }
+    }
   }
   .head{
     grid-template-columns: min-content auto auto;
@@ -296,6 +317,7 @@
     transform: translateY(-50%);
   }
   .footer-info{
+    width: calc(100% - 120px);
 
     &__img{
       height: 48px;
