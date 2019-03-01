@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: georgio
- * Date: 28.02.19
- * Time: 17:14.
- */
 
 namespace App\Http\GraphQL\InputObject;
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\Album;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;

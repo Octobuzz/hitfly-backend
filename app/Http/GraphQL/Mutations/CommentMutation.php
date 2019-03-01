@@ -22,23 +22,19 @@ class CommentMutation
         switch ($args['type']) {
                 case Comment::TYPE_ALBUM:
                     $args['commentable_type'] = Album::class;
-                    $args['commentable_id'] = $args['id'];
                     break;
                 case Comment::TYPE_TRACK:
                     $args['commentable_type'] = Track::class;
-                    $args['commentable_id'] = $args['id'];
                     break;
                 default:
                     throw new \Exception('Не удалось определить тип комментария');
                     break;
             }
 
+        $args['commentable_id'] = $args['id'];
         $args['user_id'] = Auth::user()->id;
-        $fields = [];
-        foreach (Comment::FILLABLE as $k => $fill) {
-            $fields[$fill] = $args[$fill];
-        }
-        $comment = Comment::updateOrCreate(['id' => $args['commentId']], $fields);
+
+        $comment = Comment::updateOrCreate(['id' => $args['commentId']], $args);
 
         $comment->save();
 

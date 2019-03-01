@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: georgio
- * Date: 28.02.19
- * Time: 18:27.
- */
 
 namespace App\Http\GraphQL\Mutations;
 
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Rebing\GraphQL\Support\Mutation;
 
 class RegisterMutation extends Mutation
