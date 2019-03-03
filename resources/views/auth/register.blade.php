@@ -11,11 +11,21 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+
+                        @isset($socialUser)
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <img class="img-circle img-bordered-sm" width=50 src="{{ $socialUser->avatar }}"
+                                         alt="user image">
+                                </div>
+                            </div>
+                        @endisset
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $socialUser->name ?? old('name') }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +39,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $socialUser->email ?? old('email') }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
