@@ -80,8 +80,14 @@ class Album extends Model
     {
         return $this->belongsTo(MusicGroup::class, 'music_group_id');
     }
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function genre(): BelongsTo
+    {
+        return $this->belongsTo(Genre::class, 'genre_id');
     }
 }

@@ -8,27 +8,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Отзывы критиков
- * Class Comment
- * @package App\Models
+ * Class Comment.
  */
 class Comment extends Model
 {
-
     const TYPE_ALBUM = 'album';
     const TYPE_TRACK = 'track';
 
     const CLASS_NAME = [
-        Track::class => "track",
-        Album::class => "album",
+        Track::class => 'track',
+        Album::class => self::TYPE_ALBUM,
     ];
 
     protected $table = 'comments';
+
     const FILLABLE = [
         'commentable_id',
         'commentable_type',
         'user_id',
         'comment',
-
     ];
 
     protected $fillable = [
@@ -37,7 +35,6 @@ class Comment extends Model
         'user_id',
         'comment',
         'estimation',
-
     ];
 
     protected $hidden = [
@@ -45,15 +42,10 @@ class Comment extends Model
         'updated_at',
     ];
 
-
     public function commentable()
     {
         return $this->morphTo();
     }
-
-
-
-
 
     public function track(): BelongsTo
     {
