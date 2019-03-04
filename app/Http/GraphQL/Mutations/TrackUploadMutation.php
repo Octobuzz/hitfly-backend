@@ -3,6 +3,8 @@
 namespace App\Http\GraphQL\Mutations;
 
 use GraphQL;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Rebing\GraphQL\Support\UploadType;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -34,8 +36,13 @@ class TrackUploadMutation extends Mutation
     public function resolve($root, $args)
     {
         $file = $args['track'];
-        dd(get_class($file));
+        $user = \Auth::guard('json')->user();
 
-        // Do something with file here...
+        if($user === null){
+            return JsonResponse::create();
+        }
+
+        Storage::putFileAs('public/music/'.$user->id, $file, $file);
+
     }
 }
