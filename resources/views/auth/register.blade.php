@@ -10,6 +10,14 @@
             </div>
             <form method="POST" id="form-auth" action="{{ route('register') }}" class="reg-page__form">
                 @csrf
+                @isset($socialUser)
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <img class="img-circle img-bordered-sm" width=50 src="{{ $socialUser->avatar }}"
+                                 alt="user image">
+                        </div>
+                    </div>
+                @endisset
                 <span class="input-text email reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
                 <input id="email" name="email" type="email" required value="{{ old('email') }}">
                 <label for="email">{{ __('auth.email') }}*</label>

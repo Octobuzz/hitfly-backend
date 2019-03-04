@@ -7,38 +7,43 @@ use Laravel\Socialite\Contracts\User as ProviderUser;
 use App\Models\Social;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\Traits\ApiResponseTrait;
 
 class SocialAccountService
 {
-    public function createOrGetUser(ProviderUser $providerUser, $provider)
+    use ApiResponseTrait;
+    public function createOrGetUser(ProviderUser $providerUser, $provider, $authSocial = null)
     {
         $account = Social::whereSocialDriver($provider)
             ->whereSocialId($providerUser->getId())
             ->first();
 
-        if ($account) {
+        if ($account->user) {
             return $account->user;
         } else {
             $user = User::whereEmail($providerUser->getEmail())->first();
 
             if (!$user) {
-                return
 
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
-                    'name' => $providerUser->getName(),
+                    'username' => $providerUser->getName(),
                     'password' => md5(rand(1, 10000)),
                 ]);
             }
+            if($authSocial != null){
 
-            $account = new Social([
-                'social_id' => $providerUser->getId(),
-                'social_driver' => $provider,
-                'avatar' => $providerUser->getAvatar(),
-            ]);
+                $authSocial->user()->associate($user);
+                $authSocial->save();
+                    /*$account = new Social([
+                        'social_id' => $providerUser->getId(),
+                        'social_driver' => $provider,
+                        'avatar' => $providerUser->getAvatar(),
+                        'user_id' => $user->id,
+                    ]);*/
+            }
 
-            $account->user()->associate($user);
-            $account->save();
+
 
             return $user;
         }
@@ -58,18 +63,23 @@ class SocialAccountService
                 'social_driver' => $provider,
             ],
             [
-                'name' => $providerUser->getName(),
+                'user' => $providerUser->getName(),
                 'avatar' => $providerUser->getAvatar(),
             ]);
 
         try {
             $user = $authSocial->user();
-            $token = JWTAuth::fromUser($user);
-        } catch (JWTException $e) {
+
+            if($user!==null){
+                $user = $this->createOrGetUser($providerUser, $provider, $authSocial);
+
+            }
+
+        } catch (\Exception $e) {
             return $this->sendFailedResponse('Could not create token', 302);
         }
 
-        return $user ? $this->returnAccessData($token, $user) : $this->redirectToRegisterForm($authSocial);
+        return $user ? $user : $this->redirectToRegisterForm($authSocial);
     }
 
     public function redirectToRegisterForm($socialUser)
@@ -84,13 +94,11 @@ class SocialAccountService
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function returnAccessData($token, $user)
+    protected function returnAccessData( $user)
     {
         return [
-            'digicoapp_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 10,
-            'name' => $user->name,
+            'user' => $user->username,
             'avatar' => $user->avatar,
         ];
     }

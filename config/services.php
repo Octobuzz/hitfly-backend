@@ -55,7 +55,7 @@ return [
     'vkontakte' => [
         'client_id' => env('VKONTAKTE_CLIENT_ID'),
         'client_secret' => env('VKONTAKTE_SECRET'),
-        'redirect' =>  env('APP_URL') . '/digico/public/login/vkontakte/callback'
+        'redirect' =>  env('APP_URL') . '/api/v1/login/vkontakte/callback'
     ],
 
     'odnoklassniki' => [

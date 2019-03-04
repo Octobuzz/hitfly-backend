@@ -52,11 +52,10 @@ class SocialController extends Controller
             return $this->sendFailedResponse($e->getMessage());
         }
 
-        //return $this->loginOrRegisterBySocials($socialUser, $provider);
-
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
-        auth('api')->login($user);
-        dd(Auth::user());
+
+        Auth::login($user);
+
 
         return redirect()->to('/home');
     }
@@ -69,6 +68,7 @@ class SocialController extends Controller
      */
     public function loginOrRegisterBySocials($socialUser, $provider)
     {
+
         $authSocial = Social::updateOrCreate(
             [
                 'social_id' => $socialUser->id,
@@ -81,12 +81,12 @@ class SocialController extends Controller
 
         try {
             $user = $authSocial->user();
-            $token = JWTAuth::fromUser($user);
-        } catch (JWTException $e) {
+
+        } catch (Exception $e) {
             return $this->sendFailedResponse('Could not create token', 302);
         }
 
-        return $user ? $this->returnAccessData($token, $user) : $this->redirectToRegisterForm($authSocial);
+        return $user ? $this->returnAccessData( $user) : $this->redirectToRegisterForm($authSocial);
     }
 
     public function redirectToRegisterForm($socialUser)
@@ -101,10 +101,9 @@ class SocialController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function returnAccessData($token, $user)
+    protected function returnAccessData( $user)
     {
         return [
-            'digicoapp_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 10,
             'name' => $user->name,
