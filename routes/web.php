@@ -16,6 +16,8 @@ Route::redirect('/', 'login', 301);
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-//форма входа
-Route::get('/registerBySocial/{id}', 'Auth\RegisterController@registerBySocial')->name('registerBySocial');
 
+Route::group(['namespace' => 'Auth'], function () {
+    Route::get('/login/{provider}', 'LoginController@redirectToProvider');
+    Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
+});
