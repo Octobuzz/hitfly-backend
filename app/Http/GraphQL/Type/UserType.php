@@ -28,6 +28,19 @@ class UserType extends GraphQLType
                 'description' => 'The email of user',
                 'privacy' => UserPrivacy::class,
             ],
+            'username' => [
+                'type' => Type::string(),
+                'description' => 'The email of user',
+            ],
+            'accessToken' => [
+                'type' => Type::string(),
+                'description' => 'The access token',
+                'alias' => 'access_token',
+                'resolve' => function ($model) {
+                    return $model->access_token;
+                },
+                'privacy' => UserPrivacy::class,
+            ],
             // Uses the 'getIsMeAttribute' function on our custom User model
             'isMe' => [
                 'type' => Type::boolean(),

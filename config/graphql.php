@@ -97,6 +97,7 @@ return [
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
             ],
             'mutation' => [
+                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
             ],
             'middleware' => [],
             'method' => ['get', 'post'],
@@ -112,15 +113,19 @@ return [
                 'commentsAlbum' => \App\Http\GraphQL\Query\CommentsAlbumQuery::class,
                 'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
+                'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
+                'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
-                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
+                'createCollection' => \App\Http\GraphQL\Mutations\CreateCollectionMutation::class,
+                'updateCollection' => \App\Http\GraphQL\Mutations\UpdateCollectionMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -144,6 +149,7 @@ return [
         'Genre'          => \App\Http\GraphQL\Type\GenreType::class,
         'CommentAlbum'          => \App\Http\GraphQL\Type\CommentAlbumType::class,
         'CommentTrack'          => \App\Http\GraphQL\Type\CommentTrackType::class,
+        'Collection'          => \App\Http\GraphQL\Type\CollectionType::class,
 
 
         'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
@@ -151,6 +157,7 @@ return [
         'UserInput'          => \App\Http\GraphQL\InputObject\UserInput::class,
         'CommentInput'          => \App\Http\GraphQL\InputObject\CommentInput::class,
         'RateCommentInput'          => \App\Http\GraphQL\InputObject\RateCommentInput::class,
+        'CollectionInput'          => \App\Http\GraphQL\InputObject\CollectionInput::class,
 
 
         'CommentType'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
@@ -187,7 +194,7 @@ return [
     'security' => [
         'query_max_complexity' => null,
         'query_max_depth' => null,
-        'disable_introspection' => false
+        'disable_introspection' => false,
     ],
 
     /*

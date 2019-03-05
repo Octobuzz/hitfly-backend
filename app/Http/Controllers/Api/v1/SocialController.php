@@ -10,8 +10,6 @@ use App\Models\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Socialite;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SocialController extends Controller
 {
@@ -63,7 +61,6 @@ class SocialController extends Controller
 
         Auth::login($user);
 
-
         return redirect()->to('/home');
     }
 
@@ -75,7 +72,6 @@ class SocialController extends Controller
      */
     public function loginOrRegisterBySocials($socialUser, $provider)
     {
-
         $authSocial = Social::updateOrCreate(
             [
                 'social_id' => $socialUser->id,
@@ -88,12 +84,11 @@ class SocialController extends Controller
 
         try {
             $user = $authSocial->user();
-
         } catch (Exception $e) {
             return $this->sendFailedResponse('Could not create token', 302);
         }
 
-        return $user ? $this->returnAccessData( $user) : $this->redirectToRegisterForm($authSocial);
+        return $user ? $this->returnAccessData($user) : $this->redirectToRegisterForm($authSocial);
     }
 
     public function redirectToRegisterForm($socialUser)
@@ -108,7 +103,7 @@ class SocialController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function returnAccessData( $user)
+    protected function returnAccessData($user)
     {
         return [
             'token_type' => 'bearer',

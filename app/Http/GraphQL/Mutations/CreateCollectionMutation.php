@@ -5,10 +5,10 @@ namespace App\Http\GraphQL\Mutations;
 use GraphQL;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
-use Rebing\GraphQL\Support\UploadType;
 use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\UploadType;
 
-class TrackUploadMutation extends Mutation
+class CreateCollectionMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'UpdateTrack',
@@ -16,19 +16,19 @@ class TrackUploadMutation extends Mutation
 
     public function type()
     {
-        return GraphQL::type('Track');
+        return GraphQL::type('Collection');
     }
 
     public function args()
     {
         return [
-            'track' => [
-                'name' => 'track',
+            'image' => [
+                'name' => 'image',
                 'type' => UploadType::getInstance(),
                 'rules' => ['required', 'image', 'max:1500'],
             ],
-            'info_track' => [
-                'type' => \GraphQL::type('TrackInput'),
+            'collection' => [
+                'type' => GraphQL::type('CollectionInput'),
             ],
         ];
     }
@@ -42,6 +42,6 @@ class TrackUploadMutation extends Mutation
             return JsonResponse::create();
         }
 
-        Storage::putFileAs('public/music/'.$user->id, $file, $file);
+        Storage::putFileAs('public/collection/'.$user->id, $file, $file);
     }
 }

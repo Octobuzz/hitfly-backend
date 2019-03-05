@@ -11,11 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call('UserSeeder');
-        $this->call('GenreSeeder');
-        $this->call('MusicGroupSeeder');
-        $this->call('AlbumsSeeder');
-        $this->call('TracksSeeder');
-        $this->call('CommentsSeeder');
+        $this->call([
+            UserSeeder::class,
+            GenreSeeder::class,
+            MusicGroupSeeder::class,
+            AlbumsSeeder::class,
+            TracksSeeder::class,
+            CommentsSeeder::class,
+            CollectionSeeder::class,
+        ]);
     }
 }
