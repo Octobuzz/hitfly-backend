@@ -40,10 +40,12 @@ use  Illuminate\Auth\Passwords\CanResetPassword;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Administrator implements JWTSubject,CanResetPasswordContract
+class User extends Administrator implements JWTSubject, CanResetPasswordContract
 {
     use Notifiable;
     use CanResetPassword;
+
+    protected $table = 'users';
 
     public static function boot()
     {
@@ -60,7 +62,11 @@ class User extends Administrator implements JWTSubject,CanResetPasswordContract
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password',
+        'username',
+        'email',
+        'password',
+        'gender',
+        'birthday',
     ];
 
     /**

@@ -32,15 +32,17 @@ class ForgotPasswordController extends Controller
     /**
      * Get the response for a successful password reset link.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $response
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     protected function sendResetLinkResponse(Request $request, $response)
     {
-        if($response ==="passwords.sent")
-            return view('auth.passwords.emailSend',['email'=>$request->request->get('email')]);
-        else
+        if ('passwords.sent' === $response) {
+            return view('auth.passwords.emailSend', ['email' => $request->request->get('email')]);
+        } else {
             return back()->with('status', trans($response));
+        }
     }
 }

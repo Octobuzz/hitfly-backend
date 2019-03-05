@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Traits\ApiResponseTrait;
 use Socialite;
 
@@ -41,28 +40,30 @@ class LoginController extends Controller
     }
 
     /**
-     * Redirect to provider for authentication
+     * Redirect to provider for authentication.
      *
      * @param $driver
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function redirectToProvider($driver)
     {
-        if (! config()->has("services.{$driver}") ){
+        if (!config()->has("services.{$driver}")) {
             return $this->sendFailedResponse("Драйвер {$driver} не поддерживается", 204);
         }
 
         try {
             return Socialite::with($driver)->redirect();
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return $this->sendFailedResponse($e->getMessage());
         }
     }
 
     /**
-     * Login social user
+     * Login social user.
      *
      * @param string $provider
+     *
      * @return
      */
     public function handleProviderCallback($provider)
@@ -74,6 +75,5 @@ class LoginController extends Controller
         }
 
         return view('auth.register', ['socialUser' => $socialUser]);
-    }}
-
-
+    }
+}

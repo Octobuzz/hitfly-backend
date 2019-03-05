@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -20,7 +21,7 @@ class RegisterMutation extends Mutation
     public function args()
     {
         return [
-            'info_track' => [
+            'user' => [
                 'type' => \GraphQL::type('UserInput'),
             ],
         ];
@@ -28,12 +29,13 @@ class RegisterMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $user = new User();
-        $user->username = $args['username'];
-        $user->password = Hash::make($args['password']);
-        $user->email = $args['email'];
-
-        $user->save();
+        $user = User::query()->create([
+            'username' => $args['user']['username'],
+            'password' => Hash::make($args['user']['password']),
+            'email' => $args['user']['email'],
+            'gender' => $args['user']['gender'],
+        ]);
+        Auth::guard()->login($user);
 
         return $user;
     }

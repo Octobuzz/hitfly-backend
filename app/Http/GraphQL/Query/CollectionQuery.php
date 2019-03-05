@@ -1,23 +1,26 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: georgio
+ * Date: 05.03.19
+ * Time: 14:58.
+ */
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\Album;
+use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
-/**
- * Class AlbumQuery.
- */
-class AlbumQuery extends Query
+class CollectionQuery extends Query
 {
     protected $attributes = [
-        'name' => 'Music Group Query',
+        'name' => 'Collection Query',
     ];
 
     public function type()
     {
-        return \GraphQL::type('Album');
+        return \GraphQL::type('Collection');
     }
 
     public function args()
@@ -30,7 +33,7 @@ class AlbumQuery extends Query
     public function resolve($root, $args)
     {
         if (isset($args['id'])) {
-            return Album::query()->where('id', $args['id'])->first();
+            return Collection::query()->where('id', $args['id'])->first();
         }
 
         return null;

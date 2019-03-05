@@ -5,13 +5,12 @@ namespace App\Services;
 use App\User;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use App\Models\Social;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Traits\ApiResponseTrait;
 
 class SocialAccountService
 {
     use ApiResponseTrait;
+
     public function createOrGetUser(ProviderUser $providerUser, $provider, $authSocial = null)
     {
         $account = Social::whereSocialDriver($provider)
@@ -24,26 +23,22 @@ class SocialAccountService
             $user = User::whereEmail($providerUser->getEmail())->first();
 
             if (!$user) {
-
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
                     'username' => $providerUser->getName(),
                     'password' => md5(rand(1, 10000)),
                 ]);
             }
-            if($authSocial != null){
-
+            if (null != $authSocial) {
                 $authSocial->user()->associate($user);
                 $authSocial->save();
-                    /*$account = new Social([
-                        'social_id' => $providerUser->getId(),
-                        'social_driver' => $provider,
-                        'avatar' => $providerUser->getAvatar(),
-                        'user_id' => $user->id,
-                    ]);*/
+                /*$account = new Social([
+                    'social_id' => $providerUser->getId(),
+                    'social_driver' => $provider,
+                    'avatar' => $providerUser->getAvatar(),
+                    'user_id' => $user->id,
+                ]);*/
             }
-
-
 
             return $user;
         }
@@ -70,11 +65,9 @@ class SocialAccountService
         try {
             $user = $authSocial->user();
 
-            if($user!==null){
+            if (null !== $user) {
                 $user = $this->createOrGetUser($providerUser, $provider, $authSocial);
-
             }
-
         } catch (\Exception $e) {
             return $this->sendFailedResponse('Could not create token', 302);
         }
@@ -94,7 +87,7 @@ class SocialAccountService
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function returnAccessData( $user)
+    protected function returnAccessData($user)
     {
         return [
             'token_type' => 'bearer',

@@ -58,7 +58,7 @@ class RegisterController extends Controller
 //            'month' => ['required_with:year,day'],
 //            'day' => ['required_with:month,year'],
 //            'year' => ['required_with:month,day'],
-            'birthday' => ['date','before:today'],
+            'birthday' => ['date', 'before:today'],
             'gender' => [Rule::in(['M', 'F'])],
         ]);
     }
@@ -71,22 +71,26 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    { dd($data);
+    {
+        dd($data);
         $create = [
             'username' => $data['email'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'birthday' => $data['year'] ? Carbon::create($data['year'], $data['month'], $data['day'], 0, 0, 0)->format("Y-m-d"): null,
+            'birthday' => $data['year'] ? Carbon::create($data['year'], $data['month'], $data['day'], 0, 0, 0)->format('Y-m-d') : null,
         ];
-        if(!empty($data['gender']))
+        if (!empty($data['gender'])) {
             $create['gender'] = $data['gender'];
+        }
+
         return User::create($create);
     }
 
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -100,8 +104,4 @@ class RegisterController extends Controller
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
     }
-
-
-
-
 }

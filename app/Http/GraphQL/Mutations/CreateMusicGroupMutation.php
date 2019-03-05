@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Models\MusicGroup;
+use App\User;
 use Rebing\GraphQL\Support\Mutation;
 
 class CreateMusicGroupMutation extends Mutation
@@ -27,6 +28,7 @@ class CreateMusicGroupMutation extends Mutation
 
     public function resolve($root, $args)
     {
+        /** @var User $user */
         $user = \Auth::guard('json')->user();
 
         $musicGroup = new MusicGroup();

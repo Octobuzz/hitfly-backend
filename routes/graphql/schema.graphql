@@ -2,11 +2,14 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 
-
 type Query {
 
     genres: [Genre!]!  @paginate(type: "paginator" model: "App\\Models\\Genre")
     genre(id: ID @eq): Genre @find(model: "App\\Models\\Genre")
+
+    collections: [Collection!]! @paginate(type: "paginator" model: "App\\Models\\Collection")
+    collection(id: ID @eq): Collection @find(model: "App\\Models\\Collection")
+
 }
 
 
@@ -87,6 +90,21 @@ extend type Mutation @group(namespace: "App\\Http\\GraphQL\\Mutations"  middlewa
 
     deleteTrack(id: ID!): Track @delete(globalId: true )
 
+    # Музыкальные подборки
+    createCollection(
+        image: String
+        title: String!
+    ): Collection
+        @create(model: "App\\Models\\Collection")
+
+    updateCollection(
+        id: ID!
+        image: String
+        title: String!
+    ): Collection
+        @update(model: "App\\Models\\Collection")
+
+    deleteCollection(id: ID!): Collection @delete(globalId: true)
     #отзывы
     CommentAlbum(
         type: commentType!
@@ -192,6 +210,14 @@ type AuthPayload {
     access_token: String!
 }
 
+type Collection @model(class: "App\\Models\\Collection") {
+    id: ID!
+    image: String
+    title: String!
+    user: User! @belongsTo(relation: "user")
+    is_admin: ID
+    tracks: Track @belongsToMany(relation: "tracks")
+}
 enum commentType {
     album @enum(value: "album")
     track @enum(value: "track")
