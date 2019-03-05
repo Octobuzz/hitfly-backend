@@ -65,4 +65,10 @@ return [
         'redirect' =>  env('APP_URL') . '/api/v1/login/odnoklassniki/callback'
     ],
 
+    'instagram' => [
+        'client_id' => env('INSTAGRAM_KEY'),
+        'client_secret' => env('INSTAGRAM_SECRET'),
+        'redirect' => env('APP_URL') . '/api/v1/login/instagram/callback'
+    ],
+
 ];

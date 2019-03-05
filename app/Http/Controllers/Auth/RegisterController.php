@@ -71,7 +71,7 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    { dd($data);
+    {
         $create = [
             'username' => $data['email'],
             'email' => $data['email'],

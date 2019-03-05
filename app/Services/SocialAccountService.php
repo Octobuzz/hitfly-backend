@@ -31,6 +31,38 @@ class SocialAccountService
                     'password' => md5(rand(1, 10000)),
                 ];
 
+                switch ($provider){
+                    case "vkontakte":
+                        if(!empty($providerUser->user['bdate'])){
+                            $bdate = \DateTime::createFromFormat('j.n.Y',$providerUser->user['bdate']);
+                            if($bdate){
+                                $tmpUser['birthday'] = $bdate->format('Y-m-d');
+                            }
+
+                        }
+                        if(!empty($providerUser->user['sex'])){
+                            switch ($providerUser->user['sex']){
+                                case 1:
+                                    $tmpUser['gender'] = 'F';
+                                    break;
+                                case 2:
+                                    $tmpUser['gender'] = 'M';
+                                    break;
+                            }
+                        }
+
+                        break;
+                    case 'odnoklassniki':
+                        if(!empty($providerUser->user['birthday'])){
+                            $bdate = \DateTime::createFromFormat('Y-m-d',$providerUser->user['birthday']);
+                            if($bdate){
+                                $tmpUser['birthday'] = $bdate->format('Y-m-d');
+                            }
+
+                        }
+                        break;
+                }
+
                 if($provider==="vkontakte" && !empty($providerUser->user['bdate'])){
                     $bdate = \DateTime::createFromFormat('j.n.Y',$providerUser->user['bdate']);
                     if($bdate){
