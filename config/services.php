@@ -62,7 +62,13 @@ return [
         'client_id' => env('ODNOKLASSNIKI_ID'),
         'client_secret' => env('ODNOKLASSNIKI_SECRET'),
         'client_public' => env('ODNOKLASSNIKI_PUBLIC'),
-        'redirect' =>  env('APP_URL') . '/digico/public/login/odnoklassniki/callback'
+        'redirect' =>  env('APP_URL') . '/api/v1/login/odnoklassniki/callback'
+    ],
+
+    'instagram' => [
+        'client_id' => env('INSTAGRAM_KEY'),
+        'client_secret' => env('INSTAGRAM_SECRET'),
+        'redirect' => env('APP_URL') . '/api/v1/login/instagram/callback'
     ],
 
 ];

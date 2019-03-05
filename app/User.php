@@ -45,8 +45,6 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use Notifiable;
     use CanResetPassword;
 
-    protected $table = 'users';
-
     public static function boot()
     {
         parent::boot();

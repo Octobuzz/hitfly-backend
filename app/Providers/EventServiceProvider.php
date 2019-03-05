@@ -26,6 +26,8 @@ class EventServiceProvider extends ServiceProvider
             'SocialiteProviders\VKontakte\VKontakteExtendSocialite@handle',
             //'SocialiteProviders\Odnoklassniki\OdnoklassnikiExtendSocialite@handle',
             \JhaoDa\SocialiteProviders\Odnoklassniki\OdnoklassnikiExtendSocialite::class,
+            'SocialiteProviders\Instagram\InstagramExtendSocialite@handle',
+            'SocialiteProviders\Facebook\FacebookExtendSocialite@handle',
         ],
     ];
 

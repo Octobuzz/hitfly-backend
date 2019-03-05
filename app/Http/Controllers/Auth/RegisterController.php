@@ -72,7 +72,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        dd($data);
         $create = [
             'username' => $data['email'],
             'email' => $data['email'],
