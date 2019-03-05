@@ -60,7 +60,7 @@ class User extends Administrator implements JWTSubject,CanResetPasswordContract
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password',
+        'username', 'email', 'password', 'birthday', 'gender'
     ];
 
     /**

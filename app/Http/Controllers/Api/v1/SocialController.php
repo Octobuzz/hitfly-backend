@@ -47,7 +47,14 @@ class SocialController extends Controller
     public function handleProviderCallback($provider, SocialAccountService $service)
     {
         try {
-            $socialUser = Socialite::driver($provider)->stateless()->user();
+            switch ($provider){
+                case 'vkontakte':
+                    $socialUser = Socialite::driver($provider)->fields( ['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo','bdate','sex'])->stateless()->user();
+                    break;
+                default:
+                    $socialUser = Socialite::driver($provider)->stateless()->user();
+            }
+
         } catch (Exception $e) {
             return $this->sendFailedResponse($e->getMessage());
         }

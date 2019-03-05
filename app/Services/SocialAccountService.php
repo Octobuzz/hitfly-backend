@@ -8,6 +8,7 @@ use App\Models\Social;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Traits\ApiResponseTrait;
+use Carbon\Carbon;
 
 class SocialAccountService
 {
@@ -24,23 +25,37 @@ class SocialAccountService
             $user = User::whereEmail($providerUser->getEmail())->first();
 
             if (!$user) {
-
-                $user = User::create([
+                $tmpUser = [
                     'email' => $providerUser->getEmail(),
                     'username' => $providerUser->getName(),
                     'password' => md5(rand(1, 10000)),
-                ]);
+                ];
+
+                if($provider==="vkontakte" && !empty($providerUser->user['bdate'])){
+                    $bdate = \DateTime::createFromFormat('j.n.Y',$providerUser->user['bdate']);
+                    if($bdate){
+                        $tmpUser['birthday'] = $bdate->format('Y-m-d');
+                    }
+
+                }
+
+                if($provider==="vkontakte" && !empty($providerUser->user['sex'])){
+                    switch ($providerUser->user['sex']){
+                        case 1:
+                            $tmpUser['gender'] = 'F';
+                            break;
+                        case 2:
+                            $tmpUser['gender'] = 'M';
+                            break;
+                    }
+                }
+                $user = User::create($tmpUser);
             }
             if($authSocial != null){
 
                 $authSocial->user()->associate($user);
                 $authSocial->save();
-                    /*$account = new Social([
-                        'social_id' => $providerUser->getId(),
-                        'social_driver' => $provider,
-                        'avatar' => $providerUser->getAvatar(),
-                        'user_id' => $user->id,
-                    ]);*/
+
             }
 
 
