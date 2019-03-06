@@ -5,14 +5,12 @@ namespace App\Services;
 use App\User;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use App\Models\Social;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Traits\ApiResponseTrait;
-use Carbon\Carbon;
 
 class SocialAccountService
 {
     use ApiResponseTrait;
+
     public function createOrGetUser(ProviderUser $providerUser, $provider, $authSocial = null)
     {
         $account = Social::whereSocialDriver($provider)
@@ -31,17 +29,16 @@ class SocialAccountService
                     'password' => md5(rand(1, 10000)),
                 ];
 
-                switch ($provider){
-                    case "vkontakte":
-                        if(!empty($providerUser->user['bdate'])){
-                            $bdate = \DateTime::createFromFormat('j.n.Y',$providerUser->user['bdate']);
-                            if($bdate){
+                switch ($provider) {
+                    case 'vkontakte':
+                        if (!empty($providerUser->user['bdate'])) {
+                            $bdate = \DateTime::createFromFormat('j.n.Y', $providerUser->user['bdate']);
+                            if ($bdate) {
                                 $tmpUser['birthday'] = $bdate->format('Y-m-d');
                             }
-
                         }
-                        if(!empty($providerUser->user['sex'])){
-                            switch ($providerUser->user['sex']){
+                        if (!empty($providerUser->user['sex'])) {
+                            switch ($providerUser->user['sex']) {
                                 case 1:
                                     $tmpUser['gender'] = 'F';
                                     break;
@@ -53,26 +50,24 @@ class SocialAccountService
 
                         break;
                     case 'odnoklassniki':
-                        if(!empty($providerUser->user['birthday'])){
-                            $bdate = \DateTime::createFromFormat('Y-m-d',$providerUser->user['birthday']);
-                            if($bdate){
+                        if (!empty($providerUser->user['birthday'])) {
+                            $bdate = \DateTime::createFromFormat('Y-m-d', $providerUser->user['birthday']);
+                            if ($bdate) {
                                 $tmpUser['birthday'] = $bdate->format('Y-m-d');
                             }
-
                         }
                         break;
                 }
 
-                if($provider==="vkontakte" && !empty($providerUser->user['bdate'])){
-                    $bdate = \DateTime::createFromFormat('j.n.Y',$providerUser->user['bdate']);
-                    if($bdate){
+                if ('vkontakte' === $provider && !empty($providerUser->user['bdate'])) {
+                    $bdate = \DateTime::createFromFormat('j.n.Y', $providerUser->user['bdate']);
+                    if ($bdate) {
                         $tmpUser['birthday'] = $bdate->format('Y-m-d');
                     }
-
                 }
 
-                if($provider==="vkontakte" && !empty($providerUser->user['sex'])){
-                    switch ($providerUser->user['sex']){
+                if ('vkontakte' === $provider && !empty($providerUser->user['sex'])) {
+                    switch ($providerUser->user['sex']) {
                         case 1:
                             $tmpUser['gender'] = 'F';
                             break;
@@ -83,14 +78,10 @@ class SocialAccountService
                 }
                 $user = User::create($tmpUser);
             }
-            if($authSocial != null){
-
+            if (null != $authSocial) {
                 $authSocial->user()->associate($user);
                 $authSocial->save();
-
             }
-
-
 
             return $user;
         }
@@ -117,11 +108,9 @@ class SocialAccountService
         try {
             $user = $authSocial->user();
 
-            if($user!==null){
+            if (null !== $user) {
                 $user = $this->createOrGetUser($providerUser, $provider, $authSocial);
-
             }
-
         } catch (\Exception $e) {
             return $this->sendFailedResponse('Could not create token', 302);
         }
@@ -141,7 +130,7 @@ class SocialAccountService
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function returnAccessData( $user)
+    protected function returnAccessData($user)
     {
         return [
             'token_type' => 'bearer',

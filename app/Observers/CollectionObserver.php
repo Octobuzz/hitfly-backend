@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class CollectionObserver
@@ -15,6 +16,9 @@ class CollectionObserver
     public function creating(Collection $collection)
     {
         $user = Auth::user();
+        if (App::environment('local')) {
+            $user = \App\User::inRandomOrder()->first();
+        }
         $collection->user_id = $user->id;
         $collection->is_admin = in_array($user->id, $user->has('roles')->pluck('id')->toArray());
 

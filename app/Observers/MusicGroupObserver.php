@@ -4,9 +4,23 @@ namespace App\Observers;
 
 use App\Models\MusicGroup;
 use App\User;
+use Illuminate\Support\Facades\App;
 
 class MusicGroupObserver
 {
+    /**
+     * @param MusicGroup $musicGroup
+     */
+    public function creating(MusicGroup $musicGroup)
+    {
+        $user = \Auth::guard('json')->user();
+
+        if (App::environment('local')) {
+            $user = User::inRandomOrder()->first();
+        }
+        $musicGroup->setUser($user);
+    }
+
     /**
      * Handle the music group "created" event.
      *
@@ -14,9 +28,6 @@ class MusicGroupObserver
      */
     public function created(MusicGroup $musicGroup)
     {
-        /** @var User $user */
-        $user = \Auth::guard('json')->user();
-        $musicGroup->setUser($user);
     }
 
     /**
