@@ -27,6 +27,8 @@ class RateCommentMutation extends Mutation
 
     public function resolve($root, $args)
     {
+        var_dump($args);
+        die();
         $comment = Comment::find($args['commentId']);
 
         if (null === $comment) {

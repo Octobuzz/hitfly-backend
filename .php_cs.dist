@@ -1,4 +1,5 @@
 <?php
+//https://gist.githubusercontent.com/fsclaro/5b51438c75faac42cbd0b84a5acc8762/raw/126880f4b6fa090d1ee249498e232eb234d1739a/phpcs.xml
 $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->in('app');

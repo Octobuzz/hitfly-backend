@@ -17,9 +17,9 @@ class TrackInput extends GraphQLType
     public function fields()
     {
         return [
-            'name' => [
+            'trackName' => [
                 'name' => 'trackName',
-                'description' => 'name',
+                'description' => 'trackName',
                 'type' => Type::string(),
                 'rules' => ['max:250'],
             ],
@@ -27,31 +27,31 @@ class TrackInput extends GraphQLType
                 'name' => 'album',
                 'description' => 'album',
                 'type' => Type::int(),
-                'rules' => ['min:0', 'max:5'],
+                'rules' => ['integer'],
             ],
             'genre' => [
-                'name' => 'description',
-                'description' => 'description',
+                'name' => 'genre',
+                'description' => 'genre',
                 'type' => Type::int(),
-                'rules' => ['min:0', 'max:5'],
+                'rules' => ['integer'],
             ],
             'singer' => [
                 'name' => 'singer',
                 'description' => 'singer',
                 'type' => Type::string(),
-                'rules' => ['min:0', 'max:5'],
+                'rules' => ['min:0', 'max:250'],
             ],
-            'track_date' => [
+            'trackDate' => [
                 'name' => 'trackDate',
                 'description' => 'track_date',
-                'type' => Type::string(),
-                'rules' => ['min:0', 'max:5'],
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['date', 'required'],
             ],
-            'song_text' => [
+            'songText' => [
                 'name' => 'songText',
                 'description' => 'description',
                 'type' => Type::string(),
-                'rules' => ['min:0', 'max:5'],
+                'rules' => ['min:0', 'max:255'],
             ],
         ];
     }

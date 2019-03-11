@@ -6,12 +6,12 @@ use App\Models\Track;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
-class CollectionObserver
+class TrackObserver
 {
     /**
-     * Handle the collection "creating" event.
+     * @param Track $collection
      *
-     * @param \App\Models\Track $collection
+     * @return bool
      */
     public function creating(Track $collection)
     {
@@ -20,7 +20,6 @@ class CollectionObserver
             $user = \App\User::inRandomOrder()->first();
         }
         $collection->user_id = $user->id;
-        $collection->is_admin = in_array($user->id, $user->has('roles')->pluck('id')->toArray());
 
         return true;
     }

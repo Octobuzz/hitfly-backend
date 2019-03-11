@@ -24,6 +24,8 @@ class Track extends Model
         'song_text',
         'filename',
         'track_date',
+        'track_hash',
+        'state',
     ];
 
     protected $hidden = [
@@ -78,6 +80,6 @@ class Track extends Model
 
     public function collections(): BelongsToMany
     {
-        return $this->belongsToMany(Collection::class, 'collection_track')->withTimestamps();
+        return $this->belongsToMany(Track::class, 'collection_track')->withTimestamps();
     }
 }
