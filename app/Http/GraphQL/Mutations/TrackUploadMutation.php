@@ -55,10 +55,7 @@ class TrackUploadMutation extends Mutation
             'state' => 'upload',
             'filename' => $fullName,
         ]);
-        ;
-        echo(get_class($track));
-        print_r($track);
-        die();
+
         return response()->json($track);
     }
 }
