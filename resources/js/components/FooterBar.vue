@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer__left footer-info">
-      <img class="footer-info__img" src="/src/images/test_ava.jpg"/>
+      <img class="footer-info__img" src="/images/test_ava.jpg"/>
       <div class="footer-info__text">
         <a class="footer-info__song">Мальчики Мальчики Мальчики Мальчики Мальчики</a>
         <a class="footer-info__author">АлоэВера АлоэВера АлоэВера АлоэВера АлоэВера – Алимоно – 2018</a>

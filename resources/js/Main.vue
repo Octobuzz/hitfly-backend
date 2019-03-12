@@ -1,10 +1,8 @@
 <template>
   <div id="main">
     <header-bar></header-bar>
-    <main>
-      <router-view></router-view>
-      <footer-bar></footer-bar>
-    </main>
+    <router-view></router-view>
+    <footer-bar></footer-bar>
   </div>
 </template>
 <script>

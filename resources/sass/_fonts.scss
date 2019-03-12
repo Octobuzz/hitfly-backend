@@ -30,3 +30,14 @@
           url('../fonts/GothamPro-Medium.woff');
   font-display: swap;
 }
+
+@font-face{
+  font-family: GothamPro_black;
+  font-style: normal;
+  font-weight: 900;
+  src :
+          url('../fonts/GothamPro-Black.eot'),
+          url('../fonts/GothamPro-Black.ttf'),
+          url('../fonts/GothamPro-Black.woff');
+  font-display: swap;
+}

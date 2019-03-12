@@ -7,11 +7,11 @@ import About from './components/About.vue'
 export const routes = [
   {
     path: '/main',
-    component: MainPage,
+    component: Main,
   },
   {
-    path: '/profile',
-    component: ProfilePage,
+    path: '/',
+    component: Profile,
   },
   {
     path: '/playlists',
