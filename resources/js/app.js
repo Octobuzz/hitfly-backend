@@ -34,3 +34,33 @@ import './jquery/jquery-logic';
 // const app = new Vue({
 //     el: '#app'
 // });
+import Vue from 'vue'
+import Main from './Main.vue'
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import {routes} from './routes'
+
+Vue.use(VueRouter)
+Vue.use(Vuex)
+
+const store = new Vuex.Store(StoreData)
+const router = new VueRouter({
+  routes,
+  mode: 'history'
+})
+
+//router.beforeEach((to, from, next) =>{
+//  const cart = store.state.currentCart;
+//  if(to.path == '/empty' && cart != null){
+//    next('/');
+//  }else if(to.path != '/empty' && cart == null){
+//    next('/empty');
+//  }else{
+//    next();
+//  }
+//});
+
+new Vue({
+  render: h => h(Main),
+  router,
+}).$mount('#app')
