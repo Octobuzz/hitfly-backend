@@ -42,10 +42,18 @@
 ## GraphQL 
 Usage
 By default, the playground is reachable at 
-http://localhost:9090/graphql-playground
 
-http://localhost:9090/graphql
+http://<site_______name>/graphql
 
+for auth user add Header 
+
+    X-TOKEN-AUTH: <token>
+Url for auth user 
+
+    http://<site_______name>/graphql/user
+    
+Query
+ 
     {
       tracks(count: 51  ){
         paginatorInfo{
