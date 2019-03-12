@@ -11,14 +11,16 @@
 |
 */
 
-Route::redirect('/', 'login', 301);
+//Route::redirect('/', 'login', 301);
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('/logout', 'LoginController@logout');
     Route::get('/login/{provider}', 'LoginController@redirectToProvider');
     Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
 });
+
+Route::get('/{asdadsa}', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
