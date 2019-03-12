@@ -24,9 +24,23 @@ class UserSeeder extends Seeder
 
         // create a role.
         \Encore\Admin\Auth\Database\Role::truncate();
-        \Encore\Admin\Auth\Database\Role::create([
+        \Encore\Admin\Auth\Database\Role::insert([
+            [
             'name' => 'Administrator',
             'slug' => 'administrator',
+            ],
+            [
+                'name' => 'Слушатель',
+                'slug' => 'listener',
+            ],
+            [
+                'name' => 'Исполнитель',
+                'slug' => 'performer',
+            ],
+            [
+                'name' => 'Критик',
+                'slug' => 'critic',
+            ],
         ]);
 
         // add role to user.
@@ -148,6 +162,8 @@ class UserSeeder extends Seeder
         \Encore\Admin\Auth\Database\Menu::find(2)->roles()->save(\Encore\Admin\Auth\Database\Role::first());
         \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        factory(\App\User::class, 30)->create();
+        factory(\App\User::class, 30)->create()->each(function ($u) {
+            $u->roles()->save(\Encore\Admin\Auth\Database\Role::where("id",">",1)->inRandomOrder()->first());
+        });
     }
 }

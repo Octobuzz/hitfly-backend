@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Models\Comment;
+use GraphQL\Error\Error;
 use Rebing\GraphQL\Support\Mutation;
 
 class RateCommentMutation extends Mutation
@@ -29,14 +30,12 @@ class RateCommentMutation extends Mutation
     {
         $comment = Comment::find($args['RateComment']['commentId']);
 
-
         if (null === $comment) {
             return null;
         }
 
         $comment->estimation = $args['RateComment']['rate'];
         $comment->save();
-
         return $comment;
     }
 }
