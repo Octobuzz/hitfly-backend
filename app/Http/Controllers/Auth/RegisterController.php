@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Encore\Admin\Auth\Database\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -58,7 +59,7 @@ class RegisterController extends Controller
 //            'month' => ['required_with:year,day'],
 //            'day' => ['required_with:month,year'],
 //            'year' => ['required_with:month,day'],
-            'birthday' => ['date', 'before:today'],
+            'birthday' => ['nullable','date', 'before:today'],
             'gender' => [Rule::in(['M', 'F'])],
         ]);
     }
@@ -76,7 +77,7 @@ class RegisterController extends Controller
             'username' => $data['email'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'birthday' => $data['year'] ? Carbon::create($data['year'], $data['month'], $data['day'], 0, 0, 0)->format('Y-m-d') : null,
+            'birthday' => $data['birthday'] ? Carbon::createFromFormat('d.m.Y',$data['birthday'])->format('Y-m-d') : null,
         ];
         if (!empty($data['gender'])) {
             $create['gender'] = $data['gender'];
