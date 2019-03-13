@@ -13,14 +13,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        // create a user.
-        \App\User::truncate();
-        \App\User::create([
-            'username' => 'admin',
-            'password' => bcrypt('admin'),
-            'email'     => 'example@example.com',
-            'gender'     => 'M',
-        ]);
+
 
         // create a role.
         \Encore\Admin\Auth\Database\Role::truncate();
@@ -41,6 +34,15 @@ class UserSeeder extends Seeder
                 'name' => 'Критик',
                 'slug' => 'critic',
             ],
+        ]);
+
+        // create a user.
+        \App\User::truncate();
+        \App\User::create([
+            'username' => 'admin',
+            'password' => bcrypt('admin'),
+            'email'     => 'example@example.com',
+            'gender'     => 'M',
         ]);
 
         // add role to user.

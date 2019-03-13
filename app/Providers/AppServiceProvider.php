@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\MusicGroup;
+use App\Models\Track;
 use App\Observers\MusicGroupObserver;
 use App\Models\Collection;
 use App\Observers\CollectionObserver;

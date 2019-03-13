@@ -16,10 +16,11 @@ class UserObserver
     public function created(User $user)
     {
         $role  = Role::query()->where('slug','=', 'listener')->first();
-
         //добавление роли "слушатель"
-        $user->roles()->attach($role->id);
-        $user->save();
+        if($user->isRole('listener')) {
+            $user->roles()->attach($role->id);
+            $user->save();
+        }
     }
 
 
