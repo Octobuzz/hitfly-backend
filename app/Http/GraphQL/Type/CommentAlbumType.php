@@ -6,6 +6,7 @@ use App\Models\Comment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
+use App\Http\GraphQL\Privacy\RatePrivacy;
 
 class CommentAlbumType extends GraphQLType
 {
@@ -36,6 +37,7 @@ class CommentAlbumType extends GraphQLType
             ],
             'estimation' => [
                 'type' => Type::int(),
+                'privacy' => RatePrivacy::class,
             ],
         ];
     }

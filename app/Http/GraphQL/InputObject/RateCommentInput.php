@@ -2,8 +2,11 @@
 
 namespace App\Http\GraphQL\InputObject;
 
+use App\Rules\AuthorRateComment;
+use App\Rules\RateNotEstimatedComment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Illuminate\Validation\Rule;
 
 class RateCommentInput extends GraphQLType
 {
@@ -21,7 +24,7 @@ class RateCommentInput extends GraphQLType
                 'name' => 'commentId',
                 'description' => 'name',
                 'type' => Type::nonNull(Type::int()),
-                'rules' => ['max:250'],
+                'rules' => ['max:250', new AuthorRateComment(), new RateNotEstimatedComment()],
             ],
             'rate' => [
                 'name' => 'rate',

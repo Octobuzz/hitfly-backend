@@ -24,9 +24,23 @@ class UserSeeder extends Seeder
 
         // create a role.
         \Encore\Admin\Auth\Database\Role::truncate();
-        \Encore\Admin\Auth\Database\Role::create([
+        \Encore\Admin\Auth\Database\Role::insert([
+            [
             'name' => 'Administrator',
             'slug' => 'administrator',
+            ],
+            [
+                'name' => 'Слушатель',
+                'slug' => 'listener',
+            ],
+            [
+                'name' => 'Исполнитель',
+                'slug' => 'performer',
+            ],
+            [
+                'name' => 'Критик',
+                'slug' => 'critic',
+            ],
         ]);
 
         // add role to user.
@@ -65,9 +79,16 @@ class UserSeeder extends Seeder
                 'http_method' => '',
                 'http_path'   => "/auth/roles\r\n/auth/permissions\r\n/auth/menu\r\n/auth/logs",
             ],
+            [
+                'name'        => 'Комментарии критиков',
+                'slug'        => 'comment.сricic',
+                'http_method' => '',
+                'http_path'   => "",
+            ],
         ]);
 
         \Encore\Admin\Auth\Database\Role::first()->permissions()->save(\Encore\Admin\Auth\Database\Permission::first());
+        \Encore\Admin\Auth\Database\Role::find(4)->permissions()->save(\Encore\Admin\Auth\Database\Permission::find(6));
 
         // add default menus.
         \Encore\Admin\Auth\Database\Menu::truncate();
@@ -78,27 +99,6 @@ class UserSeeder extends Seeder
                 'title'     => 'Index',
                 'icon'      => 'fa-bar-chart',
                 'uri'       => '/',
-            ],
-            [
-                'parent_id' => 0,
-                'order'     => 1,
-                'title'     => 'Жанры',
-                'icon'      => 'fa-bar-chart',
-                'uri'       => '/genre',
-            ],
-            [
-                'parent_id' => 0,
-                'order'     => 1,
-                'title'     => 'Жанры',
-                'icon'      => 'fa-bar-chart',
-                'uri'       => '/genre',
-            ],
-            [
-                'parent_id' => 0,
-                'order'     => 1,
-                'title'     => 'Группы',
-                'icon'      => 'fa-bar-chart',
-                'uri'       => '/group',
             ],
             [
                 'parent_id' => 0,
@@ -142,12 +142,28 @@ class UserSeeder extends Seeder
                 'icon'      => 'fa-history',
                 'uri'       => 'auth/logs',
             ],
+            [
+                'parent_id' => 0,
+                'order'     => 8,
+                'title'     => 'Жанры',
+                'icon'      => 'fa-bar-chart',
+                'uri'       => '/genre',
+            ],
+            [
+                'parent_id' => 0,
+                'order'     => 9,
+                'title'     => 'Группы',
+                'icon'      => 'fa-bar-chart',
+                'uri'       => '/group',
+            ],
         ]);
 
         // add role to menu.
         \Encore\Admin\Auth\Database\Menu::find(2)->roles()->save(\Encore\Admin\Auth\Database\Role::first());
         \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        factory(\App\User::class, 30)->create();
+        factory(\App\User::class, 30)->create()->each(function ($u) {
+            $u->roles()->save(\Encore\Admin\Auth\Database\Role::where("id",">",1)->inRandomOrder()->first());
+        });
     }
 }
