@@ -11,7 +11,7 @@ class CollectionSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Track::class, 10)->create()->each(function($collection) {
+        factory(\App\Models\Collection::class, 10)->create()->each(function($collection) {
             $collection->tracks()->saveMany(\App\Models\Track::inRandomOrder()->take(5)->get());
         });
     }

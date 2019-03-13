@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Collection;
 use App\Models\Track;
 use Encore\Admin\Controllers\HasResourceActions;
 use App\Http\Controllers\Controller;
@@ -84,7 +85,7 @@ class CollectionController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Track());
+        $grid = new Grid(new Collection());
 
         $grid->id('Id');
         $grid->title('Title');
@@ -106,7 +107,7 @@ class CollectionController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Track::findOrFail($id));
+        $show = new Show(Collection::findOrFail($id));
 
         $show->id('Id');
         $show->title('Title');
@@ -125,7 +126,7 @@ class CollectionController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Track());
+        $form = new Form(new Collection());
 
         $form->text('title', 'Title');
         $form->image('image', 'Image');
