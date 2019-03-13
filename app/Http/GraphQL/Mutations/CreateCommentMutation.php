@@ -5,6 +5,7 @@ namespace App\Http\GraphQL\Mutations;
 use App\Models\Album;
 use App\Models\Comment;
 use App\Models\Track;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class CreateCommentMutation extends Mutation
@@ -21,7 +22,7 @@ class CreateCommentMutation extends Mutation
     public function args()
     {
         return [
-            'musicGroup' => [
+            'Comment' => [
                 'type' => \GraphQL::type('CommentInput'),
             ],
         ];
@@ -29,7 +30,7 @@ class CreateCommentMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        switch ($args['commentableType']) {
+        switch ($args['Comment']['commentableType']) {
             case Comment::TYPE_TRACK:
                 $class = Track::class;
                 break;
@@ -40,8 +41,10 @@ class CreateCommentMutation extends Mutation
                 throw new \Exception('Не удалось определить тип комментария');
         }
 
-        $comment = Comment::create($args);
+        $comment = Comment::create($args['Comment']);
         $comment['commentable_type'] = $class;
+        $comment['commentable_id'] = $args['Comment']['commentableId'];
+        $comment['user_id'] = Auth::user()->id;
         $comment->save();
 
         return $comment;
