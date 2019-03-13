@@ -39,7 +39,6 @@ class UserType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->access_token;
                 },
-                'privacy' => UserPrivacy::class,
             ],
             // Uses the 'getIsMeAttribute' function on our custom User model
             'isMe' => [
