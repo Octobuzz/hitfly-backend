@@ -45,6 +45,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use Notifiable;
     use CanResetPassword;
 
+    const GENDER_MEN = 'M';
+    const GENDER_WOMEN = 'F';
+
     public static function boot()
     {
         parent::boot();
