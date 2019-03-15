@@ -38,7 +38,7 @@ class UserInput extends GraphQLType
             'gender' => [
                 'name' => 'gender',
                 'description' => 'Пол пользователя',
-                'type' => Type::nonNull(\GraphQL::type('GenderType')),
+                'type' => \GraphQL::type('GenderType'),
                 'rules' => ['required'],
             ],
         ];

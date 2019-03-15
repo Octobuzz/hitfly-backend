@@ -43,7 +43,6 @@ class UserType extends GraphQLType
             'gender' => [
                 'type' => \GraphQL::type('GenderType'),
                 'description' => 'GenderType',
-                'alias' => 'gender'
             ],
             // Uses the 'getIsMeAttribute' function on our custom User model
             'isMe' => [
