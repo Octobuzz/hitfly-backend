@@ -40,6 +40,11 @@ class UserType extends GraphQLType
                     return $model->access_token;
                 },
             ],
+            'gender' => [
+                'type' => \GraphQL::type('GenderType'),
+                'description' => 'GenderType',
+                'alias' => 'gender'
+            ],
             // Uses the 'getIsMeAttribute' function on our custom User model
             'isMe' => [
                 'type' => Type::boolean(),

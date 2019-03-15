@@ -34,7 +34,7 @@ class CommentInput extends GraphQLType
                 'name' => 'comment',
                 'description' => 'name',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['max:250',new CriticComment()],
+                'rules' => ['max:250', new CriticComment()],
             ],
         ];
     }
