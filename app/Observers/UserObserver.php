@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
+use App\Mail\RegistrationCompleted;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
+use Illuminate\Support\Facades\Mail;
 
 class UserObserver
 {
@@ -20,6 +22,10 @@ class UserObserver
         if($user->isRole('listener')) {
             $user->roles()->attach($role->id);
             $user->save();
+        }
+        //отправка письма о завершении регистрации
+        if($user->email){
+            Mail::to($user->email)->send(new RegistrationCompleted());
         }
     }
 

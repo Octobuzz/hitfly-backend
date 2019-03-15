@@ -24,6 +24,12 @@ return [
         'passwordChangedSuccess' => 'Ваш пароль успешно сменен.',
 
     ],
+    'register' => [
+        'thankForRegister' => 'Спасибо за регистрацию!',
+        'hello' => 'Прветствуем вас в Digico!',
+
+
+    ],
 
 
 

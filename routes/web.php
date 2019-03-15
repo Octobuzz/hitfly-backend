@@ -12,7 +12,13 @@
 */
 
 Route::redirect('/', 'login', 301);
+Route::get('/mail-preview', function(){
+    $params = [
+        'value' => 'Значение',
+    ];
 
+    return new App\Mail\RegistrationCompleted($params);
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

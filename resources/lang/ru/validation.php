@@ -139,7 +139,7 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
 
 
         'string' =>  "Минимальное количество символов :min"
