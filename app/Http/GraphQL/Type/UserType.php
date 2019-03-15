@@ -21,7 +21,7 @@ class UserType extends GraphQLType
             'id' => [
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the user',
-                'alias' => 'user_id', // Use 'alias', if the database column is different from the type name
+                'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'email' => [
                 'type' => Type::string(),
