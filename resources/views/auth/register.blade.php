@@ -24,7 +24,9 @@
                         <input id="email" name="email" type="email" required value="{{ old('email') }}">
                         <label for="email">{{ __('auth.email') }}*</label>
                     </span>
-                    <span class="input-text-wrapper__error-msg"></span>
+                    @if ($errors->has('email'))
+                        <span class="input-text-wrapper__error-msg">{{ $errors->first('email') }}</span>
+                    @endif
                 </span>
 
                 <span class="input-text-wrapper reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
@@ -32,7 +34,9 @@
                         <input id="pass" name="password" type="password" required>
                         <label for="pass">{{ __('auth.password') }}*</label>
                     </span>
-                    <span class="input-text-wrapper__error-msg"></span>
+                    @if ($errors->has('password'))
+                        <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+                    @endif
                 </span>
 
                 <span class="input-text-wrapper reg-page__line-input">
@@ -40,7 +44,6 @@
                         <input id="pass_two" type="password" name="password_confirmation" required>
                         <label for="pass_two">{{ __('auth.confirmPassword') }}*</label>
                     </span>
-                    <span class="input-text-wrapper__error-msg">{{ __('auth.passwordMismatch') }}</span>
                 </span>
 
                 <div class="bd-block">
@@ -50,7 +53,9 @@
                             <input id="birthday" type="text" name="birthday"  value="{{ $birthday ?? old('birthday') }}">
                             <label for="birthday">{{ __('auth.birthday') }}</label>
                         </span>
-                        <span class="input-text-wrapper__error-msg"></span>
+                        @if ($errors->has('birthday'))
+                            <span class="input-text-wrapper__error-msg">{{ $errors->first('birthday') }}</span>
+                        @endif
                     </span>
                 </div>
                 <div class="reg-page__genders">

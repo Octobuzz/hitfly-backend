@@ -14,7 +14,9 @@
                     <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}"  required autofocus>
                     <label for="email">{{__('passwords.email')}}</label>
                 </span>
-                <span class="input-text-wrapper__error-msg"></span>
+                @if ($errors->has('email'))
+                    <span class="input-text-wrapper__error-msg">{{ $errors->first('email') }}</span>
+                @endif
             </span>
 
             <span class="input-text-wrapper forgot-pass__input">
@@ -22,7 +24,9 @@
                     <input id="password" type="password" class="form-control{{ $errors->has('password') ? 'error' : '' }}" name="password" required>
                     <label for="password">{{__('passwords.password')}}</label>
                 </span>
-                <span class="input-text-wrapper__error-msg"></span>
+                @if ($errors->has('password'))
+                    <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+                @endif
             </span>
 
             <span class="input-text-wrapper forgot-pass__input">

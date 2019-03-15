@@ -30,7 +30,9 @@
                 <input id="pass" name="password" type="password" required>
                 <label for="pass">{{__('auth.password')}}</label>
             </span>
-            <span class="input-text-wrapper__error-msg"></span>
+            @if ($errors->has('password'))
+                <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+            @endif
         </span>
 
         <div class="auth-page__save">
