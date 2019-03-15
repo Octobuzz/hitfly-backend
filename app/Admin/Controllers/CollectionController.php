@@ -3,7 +3,6 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Collection;
-use App\Models\Track;
 use Encore\Admin\Controllers\HasResourceActions;
 use App\Http\Controllers\Controller;
 use App\User;

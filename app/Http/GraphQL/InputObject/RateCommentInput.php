@@ -6,7 +6,6 @@ use App\Rules\AuthorRateComment;
 use App\Rules\RateNotEstimatedComment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
-use Illuminate\Validation\Rule;
 
 class RateCommentInput extends GraphQLType
 {
