@@ -158,6 +158,13 @@ class UserSeeder extends Seeder
                 'icon'      => 'fa-bar-chart',
                 'uri'       => '/group',
             ],
+            [
+                'parent_id' => 0,
+                'order'     => 10,
+                'title'     => 'Комментарии',
+                'icon'      => 'fa-bar-chart',
+                'uri'       => '/comment',
+            ],
         ]);
 
         // add role to menu.
