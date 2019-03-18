@@ -39,6 +39,7 @@ class UserType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->access_token;
                 },
+                'privacy' => UserPrivacy::class,
             ],
             'gender' => [
                 'type' => \GraphQL::type('GenderType'),
