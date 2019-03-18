@@ -8,10 +8,12 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Traits\ApiResponseTrait;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Socialite;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class SocialController extends Controller
 {
@@ -44,7 +46,7 @@ class SocialController extends Controller
      *
      * @return
      */
-    public function handleProviderCallback($provider, SocialAccountService $service)
+    public function handleProviderCallback($provider, SocialAccountService $service,Request $request)
     {
         try {
             switch ($provider){
@@ -56,7 +58,10 @@ class SocialController extends Controller
             }
 
         } catch (Exception $e) {
-            return $this->sendFailedResponse($e->getMessage());
+            if($request->header()['accept']==='application/json')
+                return $this->sendFailedResponse($e->getMessage());
+            else
+                return view('auth.error')->with('message',$e->getMessage());
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
