@@ -94,7 +94,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         });
 
         $form->editing(function (Form $form) {
-           $form->ignore(array('password', 'password_confirmation'));
+            $form->ignore(['password', 'password_confirmation']);
         });
 
         return $form;

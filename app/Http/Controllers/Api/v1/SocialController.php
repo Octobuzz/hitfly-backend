@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Socialite;
 
-
 class SocialController extends Controller
 {
     use ApiResponseTrait;
@@ -44,7 +43,7 @@ class SocialController extends Controller
      *
      * @return
      */
-    public function handleProviderCallback($provider, SocialAccountService $service,Request $request)
+    public function handleProviderCallback($provider, SocialAccountService $service, Request $request)
     {
         try {
             switch ($provider) {
@@ -55,10 +54,11 @@ class SocialController extends Controller
                     $socialUser = Socialite::driver($provider)->stateless()->user();
             }
         } catch (Exception $e) {
-            if($request->header()['accept']==='application/json')
+            if ('application/json' === $request->header()['accept']) {
                 return $this->sendFailedResponse($e->getMessage());
-            else
-                return view('auth.error')->with('message',$e->getMessage());
+            } else {
+                return view('auth.error')->with('message', $e->getMessage());
+            }
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);

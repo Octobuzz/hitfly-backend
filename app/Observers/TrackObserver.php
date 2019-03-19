@@ -16,9 +16,9 @@ class TrackObserver
     public function creating(Track $collection)
     {
         $user = Auth::user();
-        if (App::environment('local')) {
-            $user = \App\User::inRandomOrder()->first();
-        }
+//        if (App::environment('local')) {
+//            $user = \App\User::inRandomOrder()->first();
+//        }
         $collection->user_id = $user->id;
 
         return true;
