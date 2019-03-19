@@ -27,6 +27,9 @@ return [
     'register' => [
         'thankForRegister' => 'Спасибо за регистрацию!',
         'hello' => 'Прветствуем вас в Digico!',
+        'top' => 'Топ',
+        'topMusicians' => 'Рейтинг лучших музыкантов',
+        'topEmpty' => 'Топ пуст',
 
 
     ],

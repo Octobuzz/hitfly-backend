@@ -2,10 +2,13 @@
 
 namespace App\Mail;
 
+use App\BuisnessLogic\Playlist\TopPlayList;
+use App\BuisnessLogic\Recommendation\Recommendation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 
 class RegistrationCompleted extends Mailable
 {
@@ -18,7 +21,6 @@ class RegistrationCompleted extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -28,7 +30,11 @@ class RegistrationCompleted extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.register.completed')
+        $topPlayList = new TopPlayList();
+        $recommend = new Recommendation();
+        return $this->view('emails.register.completed',['topList'=> $topPlayList->getTopTrack(5),'playLists'=>$recommend->getNewUserPlayList(2)])
             ->subject(__('emails.register.thankForRegister'));
     }
+
+
 }

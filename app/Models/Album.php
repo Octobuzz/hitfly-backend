@@ -68,6 +68,7 @@ class Album extends Model
         'author',
         'year',
         'cover',
+        'album_img',
     ];
 
     protected $hidden = [
@@ -89,5 +90,10 @@ class Album extends Model
     public function genre(): BelongsTo
     {
         return $this->belongsTo(Genre::class, 'genre_id');
+    }
+
+    public function getAlbumImageURL(){
+        //todo получение реального урл изображения
+        return $this->album_img;
     }
 }
