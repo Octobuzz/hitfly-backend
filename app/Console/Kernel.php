@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\BuisnessLogic\Emails\NotificationController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +25,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        //Поздравления с днем рождения
+        $schedule->call(function () {
+            $notification = new NotificationController();
+            $notification->birthdayCongratulation();
+        })->dailyAt('10:00');
     }
 
     /**

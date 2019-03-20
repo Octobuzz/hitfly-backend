@@ -16,8 +16,8 @@ Route::get('/mail-preview', function(){
     $params = [
         'value' => 'Значение',
     ];
-
-    return new App\Mail\RegistrationCompleted($params);
+    $app = new \App\BuisnessLogic\Emails\NotificationController();
+    return $app->birthdayCongratulation();
 });
 Auth::routes();
 
