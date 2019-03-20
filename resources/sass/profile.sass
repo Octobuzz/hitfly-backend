@@ -209,6 +209,12 @@ h4
         max-width: 150px
         font-family: $font_bold
 .songList
+  & .button-icon
+    width: 32px
+    height: 32px
+    padding: 5px
+    &:hover
+      background-color: #fff
   & .songItem
     display: flex
     align-items: center
@@ -232,15 +238,23 @@ h4
       & .songItem__trackName
         font-size: 14px
         font-family: $font_bold
-        flex-grow: 1
         text-overflow: ellipsis
         white-space: nowrap
+        cursor: pointer
+        transition: $trns
+        &:hover
+          color: #b36fcb
       & .like-icon
         margin: 0 4px
   .songItem__artist
     width: 33%
-    font-size: 14px
-    color: $color_4
+    & p
+      font-size: 14px
+      color: $color_4
+      cursor: pointer
+      transition: $trns
+      &:hover
+        color: #b36fcb
   .songItem__tools
     font-size: 14px
     color: $color_4

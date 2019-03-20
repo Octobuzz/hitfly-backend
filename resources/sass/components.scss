@@ -78,6 +78,16 @@
   color: $text;
   position: relative;
   font-size: 22px;
+  &.wtext{
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  p{
+    font-size: 12px;
+    margin-left: 5px;
+  }
 
   svg{
     fill: currentColor;
@@ -513,7 +523,7 @@
     }
   }
   .drop-menu{
-    max-width: calc(100% / 3);
+    max-width: 31.8%;
     border-right: 1px solid $borderColor;
     justify-content: center;
     padding-left: 64px;
