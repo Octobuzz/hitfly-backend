@@ -17,7 +17,9 @@ class CollectionObserver
     {
         $user = Auth::user();
         if (App::environment('local')) {
-            $user = \App\User::inRandomOrder()->first();
+            if($user === null){
+                $user = \App\User::inRandomOrder()->first();
+            }
         }
         $collection->user_id = $user->id;
         $collection->is_admin = in_array($user->id, $user->has('roles')->pluck('id')->toArray());
