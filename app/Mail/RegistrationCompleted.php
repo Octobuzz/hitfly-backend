@@ -14,13 +14,15 @@ class RegistrationCompleted extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private  $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
+        $this->user = $user;
     }
 
     /**

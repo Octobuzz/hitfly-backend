@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\UserRegisterJob;
 use App\Mail\RegistrationCompleted;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
@@ -25,7 +26,8 @@ class UserObserver
         }
         //отправка письма о завершении регистрации
         if($user->email){
-            Mail::to($user->email)->send(new RegistrationCompleted());
+            dispatch(new UserRegisterJob($user))->onQueue('low');
+
         }
     }
 
