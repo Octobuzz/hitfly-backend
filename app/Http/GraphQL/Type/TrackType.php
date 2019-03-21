@@ -44,6 +44,7 @@ class TrackType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->track_date;
                 },
+                'alias' => 'track_date',
             ],
             'songText' => [
                 'type' => Type::nonNull(Type::string()),
