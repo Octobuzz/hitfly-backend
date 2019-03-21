@@ -5,7 +5,6 @@ namespace App\Http\GraphQL\Type;
 use App\Models\Comment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
-use App\Http\GraphQL\Privacy\RatePrivacy;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class CommentTrackType extends GraphQLType
@@ -37,7 +36,6 @@ class CommentTrackType extends GraphQLType
             'estimation' => [
                 'type' => Type::int(),
                 'description' => 'Оценка',
-                'privacy' => RatePrivacy::class,
             ],
         ];
     }
