@@ -57,7 +57,7 @@ class SocialController extends Controller
             if ('application/json' === $request->header()['accept']) {
                 return $this->sendFailedResponse($e->getMessage());
             } else {
-                return view('auth.error')->with('message', $e->getMessage());
+                return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
             }
         }
 

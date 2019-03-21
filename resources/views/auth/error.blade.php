@@ -8,7 +8,7 @@
                 <div class="card-header">{{__('auth.registerFailed')}}</div>
 
                 <div class="card-body">
-                    {{$message}}
+                    {{session('message-reg')}}
                 </div>
             </div>
         </div>
