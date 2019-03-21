@@ -3,10 +3,8 @@
 namespace App\BuisnessLogic\Emails;
 
 use App\BuisnessLogic\Recommendation\Recommendation;
-use Illuminate\Http\Request;
+use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Http\Controllers\Controller;
-use App\Mail\BirthdayCongratulation;
-use Mail;
 use  App\User;
 use Carbon\Carbon;
 
@@ -14,14 +12,16 @@ class NotificationController extends Controller
 {
     private $listOfUsers;
 
+    /**
+     * очередь писем с поздравлениями на день рождения
+     */
     public function birthdayCongratulation(){
+
         $this->listOfUsers = $this->getUsersBirthdayToday();
         $recommend = new Recommendation();
         foreach ($this->listOfUsers as $user){
-            Mail::to($user->email)->queue(new BirthdayCongratulation($user,$recommend->getBirthdayPlayLists($user)));
-            die();
+            dispatch(new BirthdayCongratulationsEmailJob($user,$recommend->getBirthdayPlayLists($user)))->onQueue('low');
         }
-
 
     }
 
