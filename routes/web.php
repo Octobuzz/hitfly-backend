@@ -12,12 +12,12 @@
 */
 
 Route::redirect('/', 'login', 301);
-Route::get('/mail-preview', function(){
+Route::get('/mail-preview', function(\App\BuisnessLogic\Emails\Notification $notification){
     $params = [
         'value' => 'Значение',
     ];
-    $app = new \App\BuisnessLogic\Emails\NotificationController();
-    return $app->birthdayCongratulation();
+
+    return $notification->fewComments();
 });
 Auth::routes();
 

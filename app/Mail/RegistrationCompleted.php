@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\BuisnessLogic\Playlist\TopPlayList;
+use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -32,7 +32,7 @@ class RegistrationCompleted extends Mailable
      */
     public function build()
     {
-        $topPlayList = new TopPlayList();
+        $topPlayList = new Tracks();
         $recommend = new Recommendation();
         return $this->view('emails.register.completed',['topList'=> $topPlayList->getTopTrack(5),'playLists'=>$recommend->getNewUserPlayList(2)])
             ->subject(__('emails.register.thankForRegister'));

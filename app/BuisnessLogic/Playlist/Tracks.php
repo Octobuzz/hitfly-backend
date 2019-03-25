@@ -7,10 +7,10 @@
  */
 
 namespace App\BuisnessLogic\Playlist;
-use App\Contracts\Playlist\TopList;
+use App\Contracts\Playlist\TracksContract;
 use App\Models\Track;
 
-class TopPlayList implements TopList
+class Tracks implements TracksContract
 {
 
     /**
@@ -33,4 +33,21 @@ class TopPlayList implements TopList
         }
         return $topList;
     }
+    public function getNewTracks(int $count){
+        //TODO проверить в итоге под какие условия попадают новые треки
+        $trackList = [];
+        $tracks = Track::query()->select('*')->orderByDesc('created_at')->take($count)->get();
+        foreach ($tracks as $track) {
+            $trackList[] = [
+                'track_name'=>  $track->track_name,
+                'singer'=>  $track->singer,
+                'album_img' => $track->album->getAlbumImageURL(),
+                'link' => 'url',//todo реальный урл(пока неизвестно куда должна идти ссылка)
+                'track_time' => '3:54'//todo получение времени трека
+            ];
+
+        }
+        return $trackList;
+    }
+
 }
