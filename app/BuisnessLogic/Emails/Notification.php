@@ -2,9 +2,11 @@
 
 namespace App\BuisnessLogic\Emails;
 
+use App\BuisnessLogic\Events\Event;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\FewCommentsJob;
+use App\Jobs\LongAgoNotVisitedJob;
 use  App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -14,11 +16,13 @@ use App\BuisnessLogic\Playlist\Tracks;
 class Notification
 {
     private $listOfUsers;
-    private $recommendation;
+    private $recommendation,$tracks,$events;
 
-    public function __construct(Recommendation $recommendation)
+    public function __construct(Recommendation $recommendation, Tracks $tracks, Event $events)
     {
         $this->recommendation = $recommendation;
+        $this->tracks = $tracks;
+        $this->events = $events;
     }
 
     /**
@@ -73,5 +77,36 @@ class Notification
 
 
         return $users;
+    }
+
+    /**
+     * давно не посещал сайт
+     */
+    public function longAgoNotVisited(){
+
+        $users = $this->getUsersLongAgoNotVisited();
+
+        foreach ($users['days7'] as $user){
+            dispatch(new LongAgoNotVisitedJob(7,$user,$this->events->getUpcomingEvents(3),$this->recommendation->getNewUserPlayList(2),$this->tracks->getTopTrack(5)))->onQueue('low');
+        }
+        foreach ($users['days30'] as $user){
+            dispatch(new LongAgoNotVisitedJob(30,$user,$this->events->getUpcomingEvents(3),$this->recommendation->getNewUserPlayList(2),$this->tracks->getTopTrack(5)))->onQueue('low');
+        }
+
+    }
+
+    /**
+     * давно непосещал сайт 7 и 30 дней
+     * @return array
+     */
+    private function getUsersLongAgoNotVisited(){
+        $return = [];
+
+        $return['days7'] = User::query()->whereBetween('last_login',[Carbon::now()->subDays(7)->startOfDay(),Carbon::now()->subDays(7)->endOfDay()])->get();
+        $return['days30'] = User::query()->whereBetween('last_login',[Carbon::now()->subDays(30)->startOfDay(),Carbon::now()->subDays(30)->endOfDay()])->get();
+
+
+
+        return $return;
     }
 }
