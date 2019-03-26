@@ -103,6 +103,7 @@ class RegisterController extends Controller
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
     }
+
     public function registerError(Request $request)
     {
         return view('auth.error');

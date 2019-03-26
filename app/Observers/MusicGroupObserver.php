@@ -16,7 +16,7 @@ class MusicGroupObserver
         $user = \Auth::guard('json')->user();
 
         if (App::environment('local')) {
-            if($user === null){
+            if (null === $user) {
                 $user = User::inRandomOrder()->first();
             }
         }

@@ -83,6 +83,11 @@ class MusicGroup extends Model
         return $this->belongsTo(User::class, 'creator_group_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'creator_group_id');
+    }
+
     public function setUser(User $user)
     {
         $this->creator_group_id = $user->id;

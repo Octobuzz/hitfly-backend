@@ -20,17 +20,17 @@ class UserType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the user',
+                'description' => 'Id пользователя',
                 'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'email' => [
                 'type' => Type::string(),
-                'description' => 'The email of user',
+                'description' => 'Email пользователя',
                 'privacy' => UserPrivacy::class,
             ],
             'username' => [
                 'type' => Type::string(),
-                'description' => 'The email of user',
+                'description' => 'Имя пользователя',
             ],
             'accessToken' => [
                 'type' => Type::string(),
@@ -43,7 +43,11 @@ class UserType extends GraphQLType
             ],
             'gender' => [
                 'type' => \GraphQL::type('GenderType'),
-                'description' => 'GenderType',
+                'description' => 'Пол пользователя',
+            ],
+            'musicGroups' => [
+                'type' => Type::listOf(\GraphQL::type('MusicGroup')),
+                'description' => 'Музыкальные группы пользователя',
             ],
         ];
     }
