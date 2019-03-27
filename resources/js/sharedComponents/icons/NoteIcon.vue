@@ -1,0 +1,4 @@
+<template>
+  <!--eslint-disable-next-line-->
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="12" viewBox="0 0 10 12"><defs><path id="bdj4a" d="M892 3062a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/><path id="bdj4b" d="M898 3061a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/><path id="bdj4c" d="M895 3062v-8h1v8z"/><path id="bdj4d" d="M895 3056v-4h7v4z"/><path id="bdj4e" d="M901 3061v-9h1v9z"/></defs><g><g transform="translate(-892 -3052)"><g><use fill="#a6a6a6" xlink:href="#bdj4a"/></g><g><use fill="#a6a6a6" xlink:href="#bdj4b"/></g><g><use fill="#a6a6a6" xlink:href="#bdj4c"/></g><g><use fill="#a6a6a6" xlink:href="#bdj4d"/></g><g><use fill="#a6a6a6" xlink:href="#bdj4e"/></g></g></g></svg>
+</template>
