@@ -40,6 +40,15 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $this->notification->birthdayCongratulation();
         })->dailyAt('10:00');
+        $schedule->call(function () {
+            $this->notification->fewComments();
+        })->dailyAt('10:00');
+        $schedule->call(function () {
+            $this->notification->longAgoNotVisited();
+        })->monthlyOn(1,'10:00');
+        $schedule->call(function () {
+            $this->notification->everyMonthDispatchNotVisited();
+        })->monthlyOn(1,'10:00');
     }
 
     /**
