@@ -8,6 +8,7 @@ use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
+use App\Jobs\RemindForEventJob;
 use  App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -127,6 +128,28 @@ class Notification
 
     private function getMonthDispatchNotVisited(){
        return User::query()->where('last_login','<',Carbon::now()->subDays(30)->startOfDay())->get();
+
+    }
+
+    /**
+     * напоминание о событии
+     */
+    public function remindForEvent(){
+        $users = $this->getApplicantsForEvent();
+
+        foreach ($users as $user){
+            $events  = $this->events->getUpcomingEventsForUser($user);
+            foreach ($events as $event) {
+                dispatch(new RemindForEventJob($event, $user, $this->events->getUpcomingEvents(3)))->onQueue('low');
+            }
+        }
+
+
+    }
+
+    private function getApplicantsForEvent(){
+        // TODO: выборка пользователей подавших заявку на мероприятие
+        return User::query()->where('id','=',1)->get();
 
     }
 }

@@ -12,6 +12,7 @@ namespace App\BuisnessLogic\Events;
 
 
 use App\Contracts\Event\EventsContract;
+use App\User;
 
 class Event implements EventsContract
 {
@@ -58,6 +59,27 @@ class Event implements EventsContract
                 'img'=>'/url',
                 'link'=>'/event/url',
                 'participant'=>'The Beatles',
+            ],
+        ];
+    }
+
+    /**
+     * ближайшие события для пользователя
+     * @param User $user
+     * @return array
+     */
+    public function getUpcomingEventsForUser(User $user)
+    {
+        // TODO: Implement getUpcomingEventsForUser() method.
+
+        return [
+            [
+                'name'=>'Название',
+                'date'=>'2019-01-03',
+            ],
+            [
+                'name'=>'Название2',
+                'date'=>'2019-01-05',
             ],
         ];
     }

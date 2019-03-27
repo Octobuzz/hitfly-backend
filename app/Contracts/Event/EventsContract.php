@@ -4,6 +4,8 @@ namespace App\Contracts\Event;
 
 
 
+use App\User;
+
 interface EventsContract
 {
     /**
@@ -13,6 +15,8 @@ interface EventsContract
     public function getUpcomingEvents(int $count);
 
     public function getThisMonthEvents();
+
+    public function getUpcomingEventsForUser(User $user);
 
     
 }
