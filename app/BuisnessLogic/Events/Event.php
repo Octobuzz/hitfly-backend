@@ -38,4 +38,27 @@ class Event implements EventsContract
             ],
         ];
     }
+
+    /**
+     * события текущего месяца
+     * @return array
+     */
+    public function getThisMonthEvents()
+    {
+        // TODO: Implement getThisMonthEvents() method.
+        return [
+            [
+                'name'=>'Название',
+                'img'=>'/url',
+                'link'=>'/event/url',
+                'participant'=>'The Beatles',
+            ],
+            [
+                'name'=>'Название',
+                'img'=>'/url',
+                'link'=>'/event/url',
+                'participant'=>'The Beatles',
+            ],
+        ];
+    }
 }

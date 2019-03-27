@@ -7,11 +7,13 @@ use App\BuisnessLogic\Recommendation\Recommendation;
 use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
+use App\Jobs\MonthDispatchNotVisitedJob;
 use  App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Logger;
 use App\BuisnessLogic\Playlist\Tracks;
+use Jenssegers\Date\Date;
 
 class Notification
 {
@@ -108,5 +110,23 @@ class Notification
 
 
         return $return;
+    }
+
+    /**
+     * давно не посещал сайт
+     */
+    public function everyMonthDispatchNotVisited(){
+        $users = $this->getMonthDispatchNotVisited();
+
+        foreach ($users as $user){
+            dispatch(new MonthDispatchNotVisitedJob($user,$this->events->getUpcomingEvents(3),$this->recommendation->getNewUserPlayList(2),$this->tracks->getTopTrack(5)))->onQueue('low');
+        }
+
+
+    }
+
+    private function getMonthDispatchNotVisited(){
+       return User::query()->where('last_login','<',Carbon::now()->subDays(30)->startOfDay())->get();
+
     }
 }

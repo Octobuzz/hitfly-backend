@@ -17,7 +17,7 @@ Route::get('/mail-preview', function(\App\BuisnessLogic\Emails\Notification $not
         'value' => 'Значение',
     ];
 
-    return $notification->longAgoNotVisited();
+    return $notification->everyMonthDispatchNotVisited();
 });
 Auth::routes();
 

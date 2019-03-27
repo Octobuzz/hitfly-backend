@@ -12,5 +12,7 @@ interface EventsContract
      */
     public function getUpcomingEvents(int $count);
 
+    public function getThisMonthEvents();
+
     
 }
