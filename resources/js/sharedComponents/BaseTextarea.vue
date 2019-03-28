@@ -1,23 +1,20 @@
 <template>
   <div>
-    <label class="base-input">
-      <span :class="['base-input__label', { 'base-input__label_top': focus || !empty }]">
+    <label class="base-textarea">
+      <span :class="['base-textarea__label', { 'base-textarea__label_top': focus || !empty }]">
         {{ label }}
       </span>
-      <span class="base-input__icon">
-        <slot name="icon"/>
-      </span>
-      <input
-        :class="['base-input__input', { 'base-input__input_error': showError }]"
+      <textarea
+        :class="['base-textarea__textarea', { 'base-textarea__textarea_error': showError }]"
         :value="value"
         @input="emitInput($event)"
         @focus="focus = true"
         @blur="focus = false"
-      >
+      />
     </label>
     <span
       v-if="showError"
-      class="base-input__error-message"
+      class="base-textarea__error-message"
     >
       {{ errorMessage }}
     </span>
@@ -30,10 +27,6 @@ export default {
     label: {
       type: String,
       required: true
-    },
-    icon: {
-      type: String,
-      default: null
     },
     showError: {
       type: Boolean,
@@ -73,11 +66,11 @@ export default {
 >
 @import '../../sass/variables';
 
-.base-input {
+.base-textarea {
   font-family: "Gotham Pro", serif;
   display: block;
   position: relative;
-  height: 50px;
+  height: 80px;
 
   &__label {
     font-size: 14px;
@@ -94,17 +87,19 @@ export default {
     }
   }
 
-  &__input {
+  &__textarea {
     box-sizing: border-box;
     font-size: 14px;
     text-align: left;
     display: block;
     width: 100%;
+    height: 100%;
     padding: 22px 32px 10px 16px;
     cursor: pointer;
     border: 1px solid $borderColor;
     border-radius: $border-radius;
     background: $color_2;
+    resize: none;
 
     &:focus {
       outline: none;
@@ -113,17 +108,6 @@ export default {
     &_error {
       border-color: #d0021b;
     }
-  }
-
-  &__icon {
-    display: block;
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    left: 100%;
-    top: 50%;
-    z-index: 900;
-    transform: translate(-180%, -50%);
   }
 
   &__error-message {

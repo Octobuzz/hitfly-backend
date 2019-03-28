@@ -1,0 +1,80 @@
+@import '../../../sass/variables.scss';
+
+.create-group {
+  display: flex;
+  padding-top: 70px;
+}
+
+.group-cover {
+  width: 235px;
+  height: 235px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background: red;
+}
+
+.group-description {
+  flex-grow: 1;
+  margin-left: 30px;
+  max-width: 610px;
+
+  &__name-input,
+  &__year-input,
+  &__genre-list {
+    max-width: 330px;
+  }
+
+  &__name-input {
+    margin-bottom: 36px;
+  }
+
+  &__year-input {
+    margin-bottom: 22px;
+  }
+
+  &__genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600px;
+    margin-bottom: 14px;
+
+    & > * {
+      margin: {
+        right: 8px;
+        bottom: 10px;
+      }
+    }
+  }
+
+  &__genre-tag {
+    margin: 4px;
+  }
+
+  &__genre-list-suggestion {
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  &__genre-list {
+    margin-bottom: 24px;
+  }
+
+  &__activity-textarea {
+    margin-bottom: 24px;
+  }
+
+  &__header_h2 {
+    margin: {
+      top: 0;
+      bottom: 22px;
+    }
+  }
+
+  &__header_h3 {
+    font-size: 20px;
+    margin: {
+      top: 0;
+      bottom: 18px;
+    }
+  }
+}

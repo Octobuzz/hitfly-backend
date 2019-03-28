@@ -4,7 +4,7 @@
     @click="onClick($event)"
   >
     <NoteIcon/>
-    {{ tag }}
+    {{ name }}
   </span>
 </template>
 
@@ -16,22 +16,20 @@ export default {
     NoteIcon
   },
   props: {
-    tag: {
+    name: {
       type: String,
       required: true
+    },
+    active: {
+      type: Boolean,
+      default: false
     }
   },
-  data() {
-    return {
-      active: false
-    };
-  },
   methods: {
-    onClick(e) {
-      this.active = !this.active;
+    onClick() {
       this.$emit('press', {
-        tag: this.tag,
-        active: this.active
+        name: this.name,
+        active: !this.active
       });
     }
   }
@@ -41,5 +39,40 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./BaseTag.scss"
-/>
+>
+@import '../../sass/variables';
+
+.base-tag {
+  font-family: "Gotham Pro", serif;
+  font-size: 12px;
+  color: $color_3;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 18px 12px 18px;
+  border: 1px solid $color_3;
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: .2s;
+
+  &::v-deep svg {
+    display: block;
+    padding-right: 8px;
+
+    & use {
+      fill: $color_3;
+    }
+  }
+
+  &_active {
+    color: white;
+    border: 1px solid transparent;
+    background: $linear-gradient;
+
+    &::v-deep svg use {
+      fill: white;
+    }
+  }
+}
+</style>
