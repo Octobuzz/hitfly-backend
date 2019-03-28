@@ -8,8 +8,6 @@ class DeleteColumnCommentTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -29,14 +27,11 @@ class DeleteColumnCommentTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         Schema::table('comments', function (Blueprint $table) {
             $table->dateTime('comment_date')->nullable(false);
-
         });
         Schema::table('comments', function (Blueprint $table) {
             $table->renameColumn('commentable_id', 'track_id');

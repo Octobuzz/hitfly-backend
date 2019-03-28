@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     // The prefix for routes
     'prefix' => 'graphql',
 
@@ -35,7 +34,7 @@ return [
     //     'mutation' => '\Rebing\GraphQL\GraphQLController@mutation'
     // ]
     //
-    'controllers' => \Rebing\GraphQL\GraphQLController::class . '@query',
+    'controllers' => \Rebing\GraphQL\GraphQLController::class.'@query',
 
     // Any middleware for the graphql route group
     'middleware' => [],
@@ -129,7 +128,7 @@ return [
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
-        ]
+        ],
     ],
 
     // The types available in the application. You can then access it from the
@@ -142,28 +141,26 @@ return [
     // ]
     //
     'types' => [
-        'User'           => \App\Http\GraphQL\Type\UserType::class,
-        'MusicGroup'     => \App\Http\GraphQL\Type\MusicGroupType::class,
-        'Album'          => \App\Http\GraphQL\Type\AlbumType::class,
-        'Track'          => \App\Http\GraphQL\Type\TrackType::class,
-        'Genre'          => \App\Http\GraphQL\Type\GenreType::class,
-        'CommentAlbum'          => \App\Http\GraphQL\Type\CommentAlbumType::class,
-        'CommentTrack'          => \App\Http\GraphQL\Type\CommentTrackType::class,
-        'Collection'          => \App\Http\GraphQL\Type\CollectionType::class,
+        'User' => \App\Http\GraphQL\Type\UserType::class,
+        'MusicGroup' => \App\Http\GraphQL\Type\MusicGroupType::class,
+        'Album' => \App\Http\GraphQL\Type\AlbumType::class,
+        'Track' => \App\Http\GraphQL\Type\TrackType::class,
+        'Genre' => \App\Http\GraphQL\Type\GenreType::class,
+        'CommentAlbum' => \App\Http\GraphQL\Type\CommentAlbumType::class,
+        'CommentTrack' => \App\Http\GraphQL\Type\CommentTrackType::class,
+        'Collection' => \App\Http\GraphQL\Type\CollectionType::class,
 
+        'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
+        'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
+        'UserInput' => \App\Http\GraphQL\InputObject\UserInput::class,
+        'CommentInput' => \App\Http\GraphQL\InputObject\CommentInput::class,
+        'RateCommentInput' => \App\Http\GraphQL\InputObject\RateCommentInput::class,
+        'CollectionInput' => \App\Http\GraphQL\InputObject\CollectionInput::class,
 
-        'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
-        'TrackInput'          => \App\Http\GraphQL\InputObject\TrackInput::class,
-        'UserInput'          => \App\Http\GraphQL\InputObject\UserInput::class,
-        'CommentInput'          => \App\Http\GraphQL\InputObject\CommentInput::class,
-        'RateCommentInput'          => \App\Http\GraphQL\InputObject\RateCommentInput::class,
-        'CollectionInput'          => \App\Http\GraphQL\InputObject\CollectionInput::class,
+        'CommentType' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
+        'GenderType' => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
 
-
-        'CommentType'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
-        'GenderType'          => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
-
-        'CommentResult'          => \App\Http\GraphQL\Unions\CommentUnion::class,
+        'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.
@@ -175,7 +172,7 @@ return [
     // ]
     'error_formatter' => ['\Rebing\GraphQL\GraphQL', 'formatError'],
 
-    /**
+    /*
      * Custom Error Handling
      *
      * Expected handler signature is: function (array $errors, callable $formatter): array
@@ -185,7 +182,7 @@ return [
     'errors_handler' => ['\Rebing\GraphQL\GraphQL', 'handleErrors'],
 
     // You can set the key, which will be used to retrieve the dynamic variables
-    'params_key'    => 'variables',
+    'params_key' => 'variables',
 
     /*
      * Options to limit the query complexity and depth. See the doc
