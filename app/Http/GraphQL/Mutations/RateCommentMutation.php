@@ -19,7 +19,7 @@ class RateCommentMutation extends Mutation
     public function args()
     {
         return [
-            'musicGroup' => [
+            'RateComment' => [
                 'type' => \GraphQL::type('RateCommentInput'),
             ],
         ];
@@ -27,15 +27,13 @@ class RateCommentMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        var_dump($args);
-        die();
-        $comment = Comment::find($args['commentId']);
+        $comment = Comment::find($args['RateComment']['commentId']);
 
         if (null === $comment) {
             return null;
         }
 
-        $comment->estimation = $args['rate'];
+        $comment->estimation = $args['RateComment']['rate'];
         $comment->save();
 
         return $comment;

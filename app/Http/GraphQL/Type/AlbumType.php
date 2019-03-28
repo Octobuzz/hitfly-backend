@@ -37,7 +37,6 @@ class AlbumType extends GraphQLType
             ],
             'cover' => [
                 'type' => Type::string(),
-                'alias' => 'song_text',
             ],
             'musicGroup' => [
                 'type' => GraphQL::type('MusicGroup'),

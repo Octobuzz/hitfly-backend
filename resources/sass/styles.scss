@@ -124,30 +124,6 @@
 }
 .bd-block{
   margin-top: 25px;
-  display: grid;
-  row-gap: 15px;
-  column-gap: 15px;
-  grid-auto-columns: 1fr;
-  grid-template-areas:
-          "bd-title bd-title"
-          "bd-month bd-month"
-          "bd-day bd-year";
-
-  &__title{
-    grid-area: bd-title;
-    font-weight: 700;
-    line-height: 24px;
-    font-family: $font_bold;
-  }
-  &__month{
-    grid-area: bd-month;
-  }
-  &__day{
-    grid-area: bd-day;
-  }
-  &__year{
-    grid-area: bd-year;
-  }
 }
 .forgot-pass{
   text-align: center;
@@ -168,13 +144,14 @@
   &__input{
     display: block;
     width: 100%;
+    margin-bottom: 15px;
   }
   &__form{
     max-width: 390px;
     margin: 0 auto;
   }
   &__submit{
-    margin-top: 32px;
+    margin-top: 17px;
     width: 100%;
   }
   &__return{

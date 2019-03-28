@@ -15,19 +15,26 @@
     @endif
     <form action="{{ route('login') }}" method="POST" class="reg-page__form">
         @csrf
-        <span class="input-text email reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
-            <input id="email" name="email" type="email" required>
-            <label for="email">{{__('auth.email')}}</label>
+        <span class="input-text-wrapper reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
+            <span class="input-text email">
+                <input id="email" name="email" type="email" required>
+                <label for="email">{{__('auth.email')}}</label>
+            </span>
             @if ($errors->has('email'))
-                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                <span class="input-text-wrapper__error-msg" role="alert">{{ $errors->first('email') }}</span>
             @endif
         </span>
-        <span class="input-text password reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
-            <input id="pass" name="password" type="password" required>
-            <label for="pass">{{__('auth.password')}}</label>
+
+        <span class="input-text-wrapper reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
+            <span class="input-text password ">
+                <input id="pass" name="password" type="password" required>
+                <label for="pass">{{__('auth.password')}}</label>
+            </span>
+            @if ($errors->has('password'))
+                <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+            @endif
         </span>
+
         <div class="auth-page__save">
             <span class="input-checkbox">
                 <input id="tt" type="checkbox" name="remember">

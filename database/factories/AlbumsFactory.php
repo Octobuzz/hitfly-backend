@@ -14,6 +14,9 @@ $factory->define(\App\Models\Album::class, function (Faker $faker) {
         'music_group_id' =>  function(){
             return \App\Models\MusicGroup::inRandomOrder()->first()->id;
         },
+        'user_id' =>  function(){
+            return \App\User::inRandomOrder()->first()->id;
+        },
 
     ];
 });

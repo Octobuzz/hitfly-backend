@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\Track;
+use App\Models\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,11 +13,13 @@ class CollectionObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function creating(Track $collection)
+    public function creating(Collection $collection)
     {
         $user = Auth::user();
         if (App::environment('local')) {
-            $user = \App\User::inRandomOrder()->first();
+            if (null === $user) {
+                $user = \App\User::inRandomOrder()->first();
+            }
         }
         $collection->user_id = $user->id;
         $collection->is_admin = in_array($user->id, $user->has('roles')->pluck('id')->toArray());
@@ -30,7 +32,7 @@ class CollectionObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function updated(Track $collection)
+    public function updated(Collection $collection)
     {
     }
 
@@ -39,7 +41,7 @@ class CollectionObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function deleted(Track $collection)
+    public function deleted(Collection $collection)
     {
     }
 
@@ -48,7 +50,7 @@ class CollectionObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function restored(Track $collection)
+    public function restored(Collection $collection)
     {
     }
 
@@ -57,7 +59,7 @@ class CollectionObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function forceDeleted(Track $collection)
+    public function forceDeleted(Collection $collection)
     {
     }
 }

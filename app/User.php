@@ -2,8 +2,12 @@
 
 namespace App;
 
+use App\Models\MusicGroup;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -44,6 +48,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 {
     use Notifiable;
     use CanResetPassword;
+
+    const GENDER_MEN = 'M';
+    const GENDER_WOMEN = 'F';
 
     public static function boot()
     {
@@ -91,8 +98,18 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         $this->access_token = md5(microtime());
     }
 
-    public function tracks()
+    public function tracks(): BelongsToMany
     {
         return $this->belongsToMany(Track::class, 'user_track', 'user_id', 'track_id')->withPivot('listen_counts')->withTimestamps();
+    }
+
+    public function musicGroups(): HasMany
+    {
+        return $this->hasMany(MusicGroup::class, 'creator_group_id');
+    }
+
+    public function watchingUsers()
+    {
+        return new Collection([]);
     }
 }

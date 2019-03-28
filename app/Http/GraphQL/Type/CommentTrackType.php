@@ -5,6 +5,7 @@ namespace App\Http\GraphQL\Type;
 use App\Models\Comment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class CommentTrackType extends GraphQLType
 {
@@ -23,7 +24,7 @@ class CommentTrackType extends GraphQLType
                 'type' => Type::string(),
             ],
             'track' => [
-                'type' => \GraphQL::type('Track'),
+                'type' => GraphQL::type('Track'),
             ],
             'createdAt' => [
                 'type' => Type::string(),

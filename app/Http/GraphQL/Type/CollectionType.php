@@ -8,7 +8,7 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Models\Track;
+use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -17,7 +17,7 @@ class CollectionType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Collection',
-        'model' => Track::class,
+        'model' => Collection::class,
     ];
 
     public function fields()
