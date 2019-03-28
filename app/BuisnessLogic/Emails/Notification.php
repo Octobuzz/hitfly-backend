@@ -9,6 +9,7 @@ use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
 use App\Jobs\RemindForEventJob;
+use App\Jobs\RequestForEventJob;
 use  App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -150,6 +151,15 @@ class Notification
     private function getApplicantsForEvent(){
         // TODO: выборка пользователей подавших заявку на мероприятие
         return User::query()->where('id','=',1)->get();
+
+    }
+
+    /**
+     * подача заявки на участие в мероприятии
+     *
+     */
+    public function requestForEvent(User $user, $event){
+        dispatch(new RequestForEventJob( $user, $this->events->getEventById(1), $this->events->getUpcomingEvents(3)))->onQueue('low');
 
     }
 }

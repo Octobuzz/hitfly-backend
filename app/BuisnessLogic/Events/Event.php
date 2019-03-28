@@ -83,4 +83,15 @@ class Event implements EventsContract
             ],
         ];
     }
+
+
+    public function getEventById(int $id)
+    {
+        // TODO: Implement getEventById() method.
+        return[
+            'name'=>'Битва музыкантов',
+            'link'=>'/url'
+
+        ];
+    }
 }

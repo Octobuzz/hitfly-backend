@@ -45,10 +45,13 @@ class Kernel extends ConsoleKernel
         })->dailyAt('10:00');
         $schedule->call(function () {
             $this->notification->longAgoNotVisited();
-        })->monthlyOn(1,'10:00');
+        })->dailyAt(1,'10:00');
         $schedule->call(function () {
             $this->notification->everyMonthDispatchNotVisited();
         })->monthlyOn(1,'10:00');
+        $schedule->call(function () {
+            $this->notification->remindForEvent();
+        })->dailyAt('10:00');
     }
 
     /**

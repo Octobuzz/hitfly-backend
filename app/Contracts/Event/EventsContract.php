@@ -18,5 +18,7 @@ interface EventsContract
 
     public function getUpcomingEventsForUser(User $user);
 
+    public function getEventById(int $id);
+
     
 }
