@@ -87,36 +87,8 @@
 
       <SocialMediaLinks
         :links="[{ contact: 'aaa', network: 'facebook' }]"
+        @change="onLinksChange"
       />
-
-      <!--<BaseInput-->
-        <!--v-model="inputVal"-->
-        <!--label="input-label"-->
-        <!--:show-error="true"-->
-        <!--error-message="error message"-->
-      <!--&gt;-->
-        <!--<template v-slot:icon>-->
-          <!--<CalendarIcon/>-->
-        <!--</template>-->
-      <!--</BaseInput>-->
-
-      <!--<BaseDropdown-->
-        <!--v-model="ddMultiple.value"-->
-        <!--:header="ddMultiple.header"-->
-        <!--:options="ddMultiple.options"-->
-        <!--:multiple="true"-->
-        <!--:close-on-select="false"-->
-        <!--:searchable="false"-->
-        <!--:max-height="500"-->
-      <!--/>-->
-
-      <!--<BaseDropdown-->
-        <!--v-model="ddSingle.value"-->
-        <!--:header="ddSingle.header"-->
-        <!--:options="ddSingle.options"-->
-        <!--:searchable="false"-->
-        <!--:max-height="500"-->
-      <!--/>-->
     </div>
   </div>
 </template>
@@ -195,6 +167,9 @@ export default {
         this.group.genres = this.group.genres
           .filter(genre => genre !== tag.name);
       }
+    },
+    onLinksChange(e) {
+      console.log('links:', e);
     },
 
     callMethod(e) {

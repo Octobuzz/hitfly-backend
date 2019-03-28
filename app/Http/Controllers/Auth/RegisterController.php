@@ -58,7 +58,7 @@ class RegisterController extends Controller
 //            'month' => ['required_with:year,day'],
 //            'day' => ['required_with:month,year'],
 //            'year' => ['required_with:month,day'],
-            'birthday' => ['date', 'before:today'],
+            'birthday' => ['nullable', 'date', 'before:today'],
             'gender' => [Rule::in(['M', 'F'])],
         ]);
     }
@@ -76,7 +76,7 @@ class RegisterController extends Controller
             'username' => $data['email'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'birthday' => $data['year'] ? Carbon::create($data['year'], $data['month'], $data['day'], 0, 0, 0)->format('Y-m-d') : null,
+            'birthday' => $data['birthday'] ? Carbon::createFromFormat('d.m.Y', $data['birthday'])->format('Y-m-d') : null,
         ];
         if (!empty($data['gender'])) {
             $create['gender'] = $data['gender'];
@@ -102,5 +102,10 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
+    }
+
+    public function registerError(Request $request)
+    {
+        return view('auth.error');
     }
 }

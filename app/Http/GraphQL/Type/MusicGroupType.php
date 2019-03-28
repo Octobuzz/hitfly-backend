@@ -11,7 +11,7 @@ class MusicGroupType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'MusicGroup',
-        'description' => 'MusicGroup',
+        'description' => 'Музыкальная группа',
         'model' => MusicGroup::class,
     ];
 
@@ -20,21 +20,21 @@ class MusicGroupType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the ',
+                'description' => 'ID Группы',
                 'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'name' => [
                 'type' => Type::nonNull(Type::string()),
-                'description' => 'The id of the ',
+                'description' => 'Имя группы',
             ],
             'avatarGroup' => [
                 'type' => Type::string(),
-                'description' => 'The id of the ',
+                'description' => 'Аватарка группы',
                 'alias' => 'avatar_group', // Use 'alias', if the database column is different from the type name
             ],
             'careerStartYear' => [
                 'type' => Type::nonNull(Type::string()),
-                'description' => 'The id of the ',
+                'description' => 'Год начала карьеры',
                 'alias' => 'career_start_year', // Use 'alias', if the database column is different from the type name
                 'resolve' => function ($root) { // As a workaround
                     return $root->career_start_year;
@@ -42,17 +42,17 @@ class MusicGroupType extends GraphQLType
             ],
             'genre' => [
                 'type' => GraphQL::type('Genre'),
-                'description' => 'The id of the ',
+                'description' => 'Жанр группы',
                 'alias' => 'genre', // Use 'alias', if the database column is different from the type name
             ],
             'creatorGroup' => [
                 'type' => GraphQL::type('User'),
-                'description' => 'The id of the ',
-                'alias' => 'creator_group', // Use 'alias', if the database column is different from the type name
+                'description' => 'Создатель группы',
+                'alias' => 'creator_group_id', // Use 'alias', if the database column is different from the type name
             ],
             'description' => [
                 'type' => Type::string(),
-                'description' => 'The id of the ',
+                'description' => 'Описание группы',
                 'alias' => 'description', // Use 'alias', if the database column is different from the type name
             ],
         ];

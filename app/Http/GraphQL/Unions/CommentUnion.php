@@ -36,7 +36,7 @@ class CommentUnion extends UnionType
      */
     public function resolveType($value)
     {
-        switch (get_class($value->commentable())) {
+        switch ($value->commentable_type) {
             case Track::class:
                 return \GraphQL::type('CommentTrack');
                 break;

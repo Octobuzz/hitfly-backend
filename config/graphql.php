@@ -161,6 +161,7 @@ return [
 
 
         'CommentType'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
+        'GenderType'          => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
 
         'CommentResult'          => \App\Http\GraphQL\Unions\CommentUnion::class,
     ],

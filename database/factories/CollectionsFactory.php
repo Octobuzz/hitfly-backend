@@ -4,7 +4,7 @@ use Faker\Generator as Faker;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
-$factory->define(\App\Models\Track::class, function (Faker $faker) {
+$factory->define(\App\Models\Collection::class, function (Faker $faker) {
 
     $image = $faker->image();
     $imageFile = new File($image);

@@ -131,6 +131,7 @@
   box-sizing: border-box;
   display: inline-block;
   text-align: left;
+    width: 100%;
 
   input {
     box-sizing: border-box;
@@ -146,8 +147,9 @@
       outline: none;
     }
 
-    &:-webkit-autofill {
-      animation-name: onAutoFillStart;
+    &:-webkit-autofill + label{
+        transform: translateY(-18px);
+        font-size: 10px;
     }
   }
   label{
@@ -187,9 +189,18 @@
       height: 16px;
     }
   }
-  &.error{
+  .error &{
     border: 1px solid $color_red;
   }
+}
+.input-text-wrapper{
+    display: inline-flex;
+    flex-direction: column;
+
+    &__error-msg{
+        color: $color_red;
+        font-size: 12px;
+    }
 }
 
 .text-with-line{

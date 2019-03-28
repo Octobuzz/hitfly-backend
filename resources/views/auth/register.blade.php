@@ -18,28 +18,45 @@
                         </div>
                     </div>
                 @endisset
-                <span class="input-text email reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
-                <input id="email" name="email" type="email" required value="{{ old('email') }}">
-                <label for="email">{{ __('auth.email') }}*</label>
-            </span>
-                <span class="input-text password reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
-                <input id="pass" name="password" type="password" required>
-                <label for="pass">{{ __('auth.password') }}*</label>
-            </span>
-                <span class="input-text password reg-page__line-input">
-                <input id="pass_two" type="password" name="password_confirmation" required>
-                <label for="pass_two">{{ __('auth.confirmPassword') }}*</label>
-            </span>
 
-                <span class="reg-page__pass-error">{{ __('auth.passwordMismatch') }}</span>
+                <span class="input-text-wrapper reg-page__line-input {{ $errors->has('email') ? 'error' : '' }}">
+                    <span class="input-text email">
+                        <input id="email" name="email" type="email" required value="{{ old('email') }}">
+                        <label for="email">{{ __('auth.email') }}*</label>
+                    </span>
+                    @if ($errors->has('email'))
+                        <span class="input-text-wrapper__error-msg">{{ $errors->first('email') }}</span>
+                    @endif
+                </span>
+
+                <span class="input-text-wrapper reg-page__line-input {{ $errors->has('password') ? 'error' : '' }}">
+                    <span class="input-text password">
+                        <input id="pass" name="password" type="password" required>
+                        <label for="pass">{{ __('auth.password') }}*</label>
+                    </span>
+                    @if ($errors->has('password'))
+                        <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+                    @endif
+                </span>
+
+                <span class="input-text-wrapper reg-page__line-input">
+                    <span class="input-text password ">
+                        <input id="pass_two" type="password" name="password_confirmation" required>
+                        <label for="pass_two">{{ __('auth.confirmPassword') }}*</label>
+                    </span>
+                </span>
+
                 <div class="bd-block">
                     <span class="bd-block__title">{{ __('auth.birthday') }}</span>
-                    <span class="input-text date reg-page__line-input {{ $errors->has('birthday') ? 'error' : '' }}">
-                        <input id="birthday" type="text" name="birthday"  value="{{ $birthday ?? old('birthday') }}">
-                        <label for="birthday">{{ __('auth.birthday') }}</label>
+                    <span class="input-text-wrapper reg-page__line-input {{ $errors->has('birthday') ? 'error' : '' }}">
+                        <span class="input-text js-datepicker date">
+                            <input id="birthday" type="text" name="birthday"  value="{{ $birthday ?? old('birthday') }}">
+                            <label for="birthday">{{ __('auth.birthday') }}</label>
+                        </span>
+                        @if ($errors->has('birthday'))
+                            <span class="input-text-wrapper__error-msg">{{ $errors->first('birthday') }}</span>
+                        @endif
                     </span>
-
-
                 </div>
                 <div class="reg-page__genders">
                 <span class="input-radio genders-item">

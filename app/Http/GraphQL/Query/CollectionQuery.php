@@ -8,7 +8,7 @@
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\Track;
+use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
@@ -33,7 +33,7 @@ class CollectionQuery extends Query
     public function resolve($root, $args)
     {
         if (isset($args['id'])) {
-            return Track::query()->where('id', $args['id'])->first();
+            return Collection::query()->where('id', $args['id'])->first();
         }
 
         return null;

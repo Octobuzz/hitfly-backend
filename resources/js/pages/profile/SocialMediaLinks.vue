@@ -3,7 +3,7 @@
     <div
       v-for="link in updatedLinks"
       :key="link.id"
-      class="social-links__link"
+      class="social-links__row"
     >
       <BaseDropdown
         v-model="link.network"
@@ -11,10 +11,12 @@
         :options="networkList"
         :searchable="false"
         :max-height="500"
+        @input="onChange"
       />
       <BaseInput
-        v-model="link.contact"
+        v-model="link.username"
         label="Имя пользователя"
+        @input="onChange"
       />
       <button @click="removeLink(link.id)">
         remove link
@@ -67,11 +69,13 @@ export default {
       ...link
     }));
 
-    this.updatedLinks.push({
-      id: uuid(),
-      network: '',
-      contact: ''
-    });
+    if (this.updatedLinks.length === 0) {
+      this.updatedLinks.push({
+        id: uuid(),
+        network: '',
+        username: ''
+      });
+    }
   },
 
   methods: {
@@ -79,12 +83,22 @@ export default {
       this.updatedLinks.push({
         id: uuid(),
         network: '',
-        contact: ''
+        username: ''
       });
     },
     removeLink(obsoleteId) {
       this.updatedLinks = this.updatedLinks
         .filter(({ id }) => id !== obsoleteId);
+
+      this.onChange();
+    },
+    onChange() {
+      const freshUpdatedLinks = this.updatedLinks.map(link => ({
+        network: link.network,
+        username: link.username
+      }));
+
+      this.$emit('change', freshUpdatedLinks);
     }
   }
 };
@@ -97,11 +111,15 @@ export default {
 @import '../../../sass/variables';
 
 .social-links {
-  width: 500px;
-  height: 500px;
+  &__row {
+    display: flex;
+    justify-content: space-between;
 
-  &__link {
-
+    & > :not(:last-child) {
+      width: 0;
+      flex-grow: 1;
+      margin-right: 22px;
+    }
   }
 }
 </style>

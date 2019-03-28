@@ -3,10 +3,37 @@ import './nice-select';
 import './different-scroll';
 import './autofill';
 
+import 'jquery-ui/themes/base/core.css';
+import 'jquery-ui/themes/base/theme.css';
+import 'jquery-ui/themes/base/datepicker.css';
+import 'jquery-ui/ui/core';
+import 'jquery-ui/ui/widgets/datepicker';
+
 $(function () {
 
     $('.custom-select').niceSelect();
-
+    $.datepicker.setDefaults({
+        closeText: "Закрыть",
+        prevText: "&#x3C;Пред",
+        nextText: "След&#x3E;",
+        currentText: "Сегодня",
+        monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь",
+            "Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
+        monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
+            "Июл","Авг","Сен","Окт","Ноя","Дек" ],
+        dayNames: [ "воскресенье","понедельник","вторник","среда","четверг","пятница","суббота" ],
+        dayNamesShort: [ "вск","пнд","втр","срд","чтв","птн","сбт" ],
+        dayNamesMin: [ "Вс","Пн","Вт","Ср","Чт","Пт","Сб" ],
+        weekHeader: "Нед",
+        dateFormat: "dd.mm.yy",
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: "",
+        maxDate: -1,
+        changeYear: true,
+        yearRange: "-100:+0",
+    });
     $('[data-scroll-speed]').moveIt();
 
     $('.is-tooltip').each(function () {
@@ -19,15 +46,21 @@ $(function () {
         });
     });
 
+    $('.input-text.js-datepicker  input').datepicker();
+
     $(".input-text input").each(function() {
         if ($(this).val() === "") {
             $(this).parent().removeClass("input-full");
+        } else{
+            $(this).parent().addClass("input-full");
         }
     });
 
     $(".input-text input").on('change',function(){
         if ($(this).val() === "") {
             $(this).parent().removeClass("input-full");
+        } else{
+            $(this).parent().addClass("input-full");
         }
     });
 
@@ -84,20 +117,8 @@ $(function () {
 
     $('#form-register').on('submit', function () {
         let form = $(this);
-        let day = form.find('.bd-block__date').val();
-        let month = form.find('.bd-block__month').val();
-        let year = form.find('.bd-block__year').val();
-        let bday = form.find('#bday-date');
         let password = form.find('#pass');
         let conf_password = form.find('#pass_two');
-        let date;
-
-        if(day && month && year){
-            date = new Date(Date.UTC(year, month, day)).toISOString();
-            bday.val(date);
-        } else{
-            bday.val('');
-        }
 
         if(password.val() === conf_password.val()){
             password.closest('.input-text').removeClass('error');
