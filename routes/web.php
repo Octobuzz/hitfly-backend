@@ -22,5 +22,5 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
 });
 
-Route::get('/{asdadsa}', 'HomeController@index')->name('home');
+Route::get('/{parameter}', 'HomeController@index')->name('home')->where('parameter', '.*');
 Route::get('/', 'HomeController@index')->name('home');
