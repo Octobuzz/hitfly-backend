@@ -11,15 +11,18 @@
         :options="networkList"
         :searchable="false"
         :max-height="500"
-        @input="onChange"
+        @input="onInput"
       />
       <BaseInput
         v-model="link.username"
         label="Имя пользователя"
-        @input="onChange"
+        @input="onInput"
       />
-      <button @click="removeLink(link.id)">
-        remove link
+      <button
+        class="social-links__button-close"
+        @click="removeLink(link.id)"
+      >
+        <CrossIcon/>
       </button>
     </div>
 
@@ -30,16 +33,17 @@
 </template>
 
 <script>
-import uuid from 'uuid/v4';
 import BaseInput from '../../sharedComponents/BaseInput.vue';
 import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
 import BaseButtonFormSecondary from '../../sharedComponents/BaseButtonFormSecondary.vue';
+import CrossIcon from '../../sharedComponents/icons/CrossIcon.vue';
 
 export default {
   components: {
     BaseInput,
     BaseDropdown,
-    BaseButtonFormSecondary
+    BaseButtonFormSecondary,
+    CrossIcon
   },
 
   props: {
@@ -62,43 +66,87 @@ export default {
     };
   },
 
-  created() {
-    // avoid parent mutation and generate unique keys
-    this.links.forEach(link => this.updatedLinks.push({
-      id: uuid(),
-      ...link
-    }));
+  computed: {
+    computedLinks() {
+      return this.updatedLinks.map(link => ({
+        network: link.network,
+        username: link.username
+      }));
+    }
+  },
 
-    if (this.updatedLinks.length === 0) {
-      this.updatedLinks.push({
-        id: uuid(),
-        network: '',
-        username: ''
-      });
+  watch: {
+    links: {
+      handler(linksList) {
+        this.onUpdate(linksList);
+      },
+      immediate: true
     }
   },
 
   methods: {
+    genId() {
+      return Math.random().toString(36);
+    },
+
     addLink() {
       this.updatedLinks.push({
-        id: uuid(),
+        id: this.genId(),
         network: '',
         username: ''
       });
     },
+
     removeLink(obsoleteId) {
       this.updatedLinks = this.updatedLinks
         .filter(({ id }) => id !== obsoleteId);
 
-      this.onChange();
+      this.onInput();
     },
-    onChange() {
-      const freshUpdatedLinks = this.updatedLinks.map(link => ({
-        network: link.network,
-        username: link.username
+
+    onInput() {
+      console.log(this.computedLinks);
+
+      this.$emit('update:links', this.computedLinks);
+    },
+
+    onUpdate(links) {
+      const { updatedLinks, genId } = this;
+      const newLinks = [];
+
+      const areNotLinksEqual = (link1, link2) => (
+        (link1.username !== link2.username)
+          || (link1.network !== link2.network)
+      );
+
+      // TODO: remove stale links
+
+      links.forEach((link) => {
+        const isNew = updatedLinks.every(
+          updatedLink => areNotLinksEqual(updatedLink, link)
+        );
+
+        if (isNew) {
+          newLinks.push(link);
+        }
+      });
+
+      if (newLinks.length === 0 && updatedLinks.length !== 0) {
+        return;
+      }
+
+      newLinks.forEach(newLink => updatedLinks.push({
+        ...newLink,
+        id: genId(),
       }));
 
-      this.$emit('change', freshUpdatedLinks);
+      if (updatedLinks.length === 0) {
+        updatedLinks.push({
+          id: genId(),
+          network: '',
+          username: ''
+        });
+      }
     }
   }
 };
@@ -114,12 +162,38 @@ export default {
   &__row {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    margin-bottom: 16px;
 
     & > :not(:last-child) {
-      width: 0;
       flex-grow: 1;
-      margin-right: 22px;
+      width: 0;
     }
+
+    & > :first-child {
+      margin-right: 18px;
+    }
+  }
+
+  & > :last-child {
+    display: block;
+    margin-left: auto;
+    max-width: 180px;
+  }
+
+  &__button-close {
+    box-sizing: border-box;
+    position: absolute;
+    width: auto;
+    height: 21px;
+    right: -29px;
+    top: 50%;
+    padding: 5px;
+    margin: {
+      top: auto;
+      bottom: auto;
+    };
+    transform: translateY(-50%)
   }
 }
 </style>

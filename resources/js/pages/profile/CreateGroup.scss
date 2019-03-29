@@ -6,7 +6,9 @@
 }
 
 .group-cover {
+  min-width: 235px;
   width: 235px;
+  min-height: 235px;
   height: 235px;
   border: 1px solid black;
   border-radius: 4px;
@@ -15,8 +17,11 @@
 
 .group-description {
   flex-grow: 1;
-  margin-left: 30px;
   max-width: 610px;
+  margin: {
+    left: 30px;
+    right: 40px
+  }
 
   &__name-input,
   &__year-input,
@@ -55,12 +60,26 @@
     margin-bottom: 18px;
   }
 
+  &__group-description-suggestion {
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  &__group-members-suggestion {
+    display: block;
+    margin-bottom: 32px;
+  }
+
   &__genre-list {
     margin-bottom: 24px;
   }
 
   &__activity-textarea {
     margin-bottom: 24px;
+  }
+
+  &__regular-text {
+    font-size: 14px;
   }
 
   &__header_h2 {
@@ -75,6 +94,13 @@
     margin: {
       top: 0;
       bottom: 18px;
+    }
+  }
+
+  .group-description__group-members-header {
+    margin: {
+      top: 40px;
+      bottom: 4px;
     }
   }
 }

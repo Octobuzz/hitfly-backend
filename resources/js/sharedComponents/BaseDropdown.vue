@@ -113,7 +113,7 @@ export default {
 
     &--active::v-deep .multiselect {
       &__content-wrapper {
-        position: absolute;
+        position: absolute !important;
         width: inherit;
         top: 115%;
         z-index: 900;
@@ -145,6 +145,10 @@ export default {
   }
 
   .multiselect {
+    &-leave-active {
+      display: none;
+    }
+
     &__tags {
       padding: 22px 16px 10px 16px;
     }
@@ -181,13 +185,12 @@ export default {
         width: 6px;
         height: 6px;
         left: 50%;
-        top: 45%;
+        top: 50%;
         border: {
           top: 3px solid #313131;
           right: 3px solid #313131;
         };
         transform: translate(-50%, -50%) rotate(135deg) skew(10deg, 10deg);
-        transform-origin: center;
       }
     }
   }

@@ -221,17 +221,19 @@ export default {
     }
   },
   apollo: {
-    user: {
+    users: {
       query: gql`
         query GetUser {
-          users(email: "dany011094@gmail.com") {
+          users(email: "test@test.mail") {
             username
-            isMe
           }
         }
       `,
       update(data) {
-        return data.users[0];
+        console.log('server response from "users" query', data);
+      },
+      error(error) {
+        console.log(error);
       }
     },
   }

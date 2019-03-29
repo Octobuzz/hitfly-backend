@@ -5,7 +5,7 @@
         {{ label }}
       </span>
       <span class="base-input__icon">
-        <slot name="icon"/>
+        <slot name="icon" />
       </span>
       <input
         :class="['base-input__input', { 'base-input__input_error': showError }]"

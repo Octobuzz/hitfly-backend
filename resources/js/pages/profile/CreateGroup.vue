@@ -52,7 +52,7 @@
         />
       </div>
 
-      <span class="group-description__genre-list-suggestion">
+      <span class="group-description__genre-list-suggestion group-description__regular-text">
         или выберите из списка
       </span>
 
@@ -85,32 +85,40 @@
         Ссылки на соц. сети
       </h3>
 
-      <SocialMediaLinks
-        :links="[{ contact: 'aaa', network: 'facebook' }]"
-        @change="onLinksChange"
-      />
+      <SocialMediaLinks :links.sync="group.socialLinks" />
+
+      <h2 class="group-description__header_h2 group-description__group-members-header">
+        Состав группы
+      </h2>
+
+      <span class="group-description__group-members-suggestion group-description__regular-text">
+        Пригласите других участников группы, указав их email ниже. Им на почту
+        придет приглашение со ссылкой на вступление. Вы станете организатором группы.
+      </span>
+
+      <InviteGroupMembers v-model="group.invitedMembers" />
     </div>
   </div>
 </template>
 
 <script>
 import SocialMediaLinks from './SocialMediaLinks.vue';
+import InviteGroupMembers from './InviteGroupMembers.vue';
 import BaseInput from '../../sharedComponents/BaseInput.vue';
 import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
 import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
 import BaseTag from '../../sharedComponents/BaseTag.vue';
-import BaseButtonFormSecondary from '../../sharedComponents/BaseButtonFormSecondary.vue';
 import PencilIcon from '../../sharedComponents/icons/PencilIcon.vue';
 import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
 
 export default {
   components: {
     SocialMediaLinks,
+    InviteGroupMembers,
     BaseInput,
     BaseTextarea,
     BaseDropdown,
     BaseTag,
-    BaseButtonFormSecondary,
     PencilIcon,
     CalendarIcon
   },
@@ -132,7 +140,12 @@ export default {
           errorMessage: '',
           showError: false
         },
-        genres: []
+        genres: [],
+        socialLinks: [
+          { username: 'mikki', network: 'facebook' },
+          { username: 'mikuo', network: 'facebook' }
+        ],
+        invitedMembers: []
       },
       availableGenres: [
         'Классика',
@@ -143,22 +156,14 @@ export default {
         'Классика1',
         'Рок1',
         'Альтернатива1',
-        'Классика2'
+        'Классика2',
+        'Альтернатива3',
+        'Джаз3',
+        'Поп3',
       ],
-
-      inputVal: 'default',
-      ddMultiple: {
-        header: 'dd-multiple',
-        value: [],
-        options: ['Select option-mMMMMMMMM MMMMMMM MMMMMMMMMM', 'options', 'selected', 'mulitple', 'label', 'searchable', 'clearOnSelect', 'hideSelected', 'maxHeight', 'allowEmpty', 'showLabels', 'onChange', 'touched']
-      },
-      ddSingle: {
-        header: 'dd-single',
-        value: '',
-        options: ['Select option-m', 'options', 'selected', 'mulitple', 'label', 'searchable', 'clearOnSelect', 'hideSelected', 'maxHeight', 'allowEmpty', 'showLabels', 'onChange', 'touched']
-      }
     };
   },
+
   methods: {
     onTagPress(tag) {
       if (tag.active) {
@@ -167,13 +172,6 @@ export default {
         this.group.genres = this.group.genres
           .filter(genre => genre !== tag.name);
       }
-    },
-    onLinksChange(e) {
-      console.log('links:', e);
-    },
-
-    callMethod(e) {
-      console.log(e);
     }
   }
 };
