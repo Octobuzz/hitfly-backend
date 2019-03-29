@@ -22,6 +22,7 @@ Route::redirect('/', 'login', 301);
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/register-error', 'Auth\RegisterController@registerError');
 
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('/logout', 'LoginController@logout');

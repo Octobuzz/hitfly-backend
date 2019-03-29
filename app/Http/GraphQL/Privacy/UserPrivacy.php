@@ -19,6 +19,10 @@ class UserPrivacy extends Privacy
             return false;
         }
 
+        if (empty($args['id'])) {
+            return false;
+        }
+
         return $args['id'] == Auth::id();
     }
 }

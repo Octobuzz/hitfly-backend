@@ -49,7 +49,7 @@ return [
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_SECRET'),
-        'redirect' => env('APP_URL') . '/digico/public/login/facebook/callback'
+        'redirect' => env('APP_URL') . '/api/v1/login/facebook/callback'
     ],
 
     'vkontakte' => [

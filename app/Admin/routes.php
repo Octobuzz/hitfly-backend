@@ -10,6 +10,7 @@ Route::group([
     'middleware' => config('admin.route.middleware'),
 ], function (Router $router) {
     $router->get('/', 'HomeController@index');
+    $router->resource('/auth/users', UserController::class);
     $router->resource('/genre', GenreController::class);
     $router->resource('/group', GroupController::class);
     $router->resource('/comment', CommentController::class);

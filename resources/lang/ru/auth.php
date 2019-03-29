@@ -25,5 +25,7 @@ return [
     'forgotPassword' => 'Забыли пароль',
     'rememberMe' => 'Запомнить меня',
     'failed' => 'Неверный логин или пароль',
+    'email' => 'Email',
+    'registerFailed' => 'Ошбка авторизации/регистрации',
 
 ];

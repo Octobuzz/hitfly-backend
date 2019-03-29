@@ -8,19 +8,35 @@
         <form class="forgot-pass__form" method="POST" action="{{ route('password.update') }}">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
-        <span class="input-text email forgot-pass__input {{ $errors->has('email') ? 'error' : '' }}">
-            <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}"  required autofocus>
-            <label for="email">{{__('passwords.email')}}</label>
-        </span>
 
-        <span class="input-text password forgot-pass__input">
-            <input id="password" type="password" class="form-control{{ $errors->has('password') ? 'error' : '' }}" name="password" required>
-            <label for="password">{{__('passwords.password')}}</label>
-        </span>
-        <span class="input-text password forgot-pass__input">
-            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-            <label for="password">{{__('passwords.passwordConfirm')}}</label>
-        </span>
+            <span class="input-text-wrapper forgot-pass__input {{ $errors->has('email') ? 'error' : '' }}">
+                <span class="input-text email">
+                    <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}"  required autofocus>
+                    <label for="email">{{__('passwords.email')}}</label>
+                </span>
+                @if ($errors->has('email'))
+                    <span class="input-text-wrapper__error-msg">{{ $errors->first('email') }}</span>
+                @endif
+            </span>
+
+            <span class="input-text-wrapper forgot-pass__input">
+                <span class="input-text password">
+                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? 'error' : '' }}" name="password" required>
+                    <label for="password">{{__('passwords.password')}}</label>
+                </span>
+                @if ($errors->has('password'))
+                    <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+                @endif
+            </span>
+
+            <span class="input-text-wrapper forgot-pass__input">
+                <span class="input-text password">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                    <label for="password">{{__('passwords.passwordConfirm')}}</label>
+                </span>
+                <span class="input-text-wrapper__error-msg"></span>
+            </span>
+
             <button type="submit" class="button big active forgot-pass__submit">{{__('passwords.next')}}</button>
         </form>
         <p class="forgot-pass__return">

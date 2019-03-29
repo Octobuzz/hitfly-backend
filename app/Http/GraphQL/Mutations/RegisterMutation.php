@@ -33,7 +33,7 @@ class RegisterMutation extends Mutation
             'username' => $args['user']['username'],
             'password' => Hash::make($args['user']['password']),
             'email' => $args['user']['email'],
-            'gender' => $args['user']['gender'],
+            'gender' => empty($args['user']['gender']) ? '' : $args['user']['gender'],
         ]);
         Auth::guard()->login($user);
 
