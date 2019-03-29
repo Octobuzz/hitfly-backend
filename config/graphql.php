@@ -126,6 +126,7 @@ return [
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
                 'createCollection' => \App\Http\GraphQL\Mutations\CreateCollectionMutation::class,
                 'updateCollection' => \App\Http\GraphQL\Mutations\UpdateCollectionMutation::class,
+                'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -150,6 +151,8 @@ return [
         'CommentAlbum'          => \App\Http\GraphQL\Type\CommentAlbumType::class,
         'CommentTrack'          => \App\Http\GraphQL\Type\CommentTrackType::class,
         'Collection'          => \App\Http\GraphQL\Type\CollectionType::class,
+        'FavouriteTrack'          => \App\Http\GraphQL\Type\FavouriteTrackType::class,
+        'FavouriteAlbum'          => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
 
 
         'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
@@ -158,12 +161,15 @@ return [
         'CommentInput'          => \App\Http\GraphQL\InputObject\CommentInput::class,
         'RateCommentInput'          => \App\Http\GraphQL\InputObject\RateCommentInput::class,
         'CollectionInput'          => \App\Http\GraphQL\InputObject\CollectionInput::class,
+        'FavouriteInput'          => \App\Http\GraphQL\InputObject\FavouriteInput::class,
 
 
-        'CommentType'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
+        'CommentTypeEnum'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
+        'FavouriteTypeEnum'          => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
         'GenderType'          => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
 
         'CommentResult'          => \App\Http\GraphQL\Unions\CommentUnion::class,
+        'FavouriteResult'          => \App\Http\GraphQL\Unions\FavouriteUnion::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.
