@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Album;
+use App\Models\Like;
 use App\Models\MusicGroup;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
@@ -111,5 +113,15 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function watchingUsers()
     {
         return new Collection([]);
+    }
+
+    public function likesTrack()
+    {
+        return $this->hasMany(Like::class)->where('likeable_type', '=', Track::class);
+    }
+
+    public function likesAlbum()
+    {
+        return $this->hasMany(Like::class)->where('likeable_type', '=', Album::class);
     }
 }

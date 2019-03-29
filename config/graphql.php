@@ -93,6 +93,7 @@ return [
     'schemas' => [
         'default' => [
             'query' => [
+                'user' => \App\Http\GraphQL\Query\UserQuery::class,
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
             ],
             'mutation' => [
@@ -103,18 +104,19 @@ return [
         ],
         'user' => [
             'query' => [
+                'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
+                'user' => \App\Http\GraphQL\Query\UserQuery::class,
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
-                'musicGroups' => \App\Http\GraphQL\Query\MusicGroupsQuery::class,
                 'musicGroup' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
-                'albums' => \App\Http\GraphQL\Query\AlbumsQuery::class,
+                'musicGroups' => \App\Http\GraphQL\Query\MusicGroupsQuery::class,
                 'album' => \App\Http\GraphQL\Query\AlbumQuery::class,
+                'albums' => \App\Http\GraphQL\Query\AlbumsQuery::class,
                 'commentsTrack' => \App\Http\GraphQL\Query\CommentsTrackQuery::class,
                 'commentsAlbum' => \App\Http\GraphQL\Query\CommentsAlbumQuery::class,
-                'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
-                'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
+                'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
-                'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
+                'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
