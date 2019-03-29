@@ -8,6 +8,7 @@ use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
+use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use  App\User;
@@ -160,6 +161,20 @@ class Notification
      */
     public function requestForEvent(User $user, $event){
         dispatch(new RequestForEventJob( $user, $this->events->getEventById(1), $this->events->getUpcomingEvents(3)))->onQueue('low');
+
+    }
+
+    /**
+     * попадение в топ 20
+     *
+     */
+    public function reachTop($topCount = 20){
+        $tracks = $this->tracks->getTopTrack($topCount);
+        foreach ($tracks as $track) {
+            //TODO реальный урл к топ20
+            $topUrl = "/url";
+            dispatch(new ReachTopJob($track, $topUrl, $this->events->getUpcomingEvents(3),$topCount))->onQueue('low');
+        }
 
     }
 }
