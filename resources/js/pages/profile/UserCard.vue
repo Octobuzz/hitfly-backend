@@ -2,8 +2,6 @@
   <div class="profileAside">
     <div class="profileGeneral profileAsideBlock">
       <!--TODO: add transition and/or loader for all fetching data-->
-      <span v-if="editUserMode">edit mode</span>
-
       <img
         class="profileGeneral__img"
         :src="user.avatar"
@@ -13,17 +11,23 @@
       <div class="profileGeneral__info">
         <!--TODO: check h1->h2->h3-->
         <h3>
-          {{ user.firstName }} {{ user.lastName }}
+          {{ user.username }}
         </h3>
         <p class="profileGeneral__subheader">
-          {{ user.followerCount }}
+          {{ user.followersCount }}
         </p>
         <p class="placeMark">
           {{ user.location }}
         </p>
       </div>
 
-      <EditButton @press="enterEditUserMode" />
+      <IconButton
+        v-if="!isEditingUser"
+        class-name="editButton"
+        @press="goToEditUser"
+      >
+        <PencilIcon/>
+      </IconButton>
     </div>
 
     <div class="profileGroups profileAsideBlock">
@@ -31,21 +35,23 @@
         <h4>
           Мои группы
         </h4>
-        <button class="profileAsideButton">
-          <!--TODO: create group-->
-          Создать группу
-        </button>
+        <router-link
+          v-if="!isCreatingGroup"
+          to="/profile/create-group"
+        >
+          <button class="profileAsideButton">
+            Создать группу
+          </button>
+        </router-link>
       </div>
 
       <div class="profileGroups__wrapper">
         <div
-          v-for="group in user.myGroups"
+          v-for="group in user.musicGroups"
           :key="group.id"
           class="profileGroup"
         >
           <div class="profileGroup__wrapper">
-            <span v-if="editGroupMode === group.id">edit mode</span>
-
             <img
               class="profileGeneral__img profileAsideBlock__img"
               :src="group.avatar"
@@ -58,11 +64,18 @@
                   {{ group.name }}
                 </p>
                 <span>
-                  {{ group.followerCount }} подписчиков
+                  {{ group.followersCount }} подписчиков
                 </span>
               </div>
             </div>
-            <EditButton @press="enterEditGroupMode(group.id)" />
+
+            <IconButton
+              v-if="!isUpdatingGroup(group.id)"
+              class-name="editButton"
+              @press="goToUpdateGroup(group.id)"
+            >
+              <PencilIcon/>
+            </IconButton>
           </div>
         </div>
       </div>
@@ -93,8 +106,6 @@
           <div class="profileAsideBlock__text">
             <p>
               {{ userOrGroup.name }}
-              {{ userOrGroup.firstName }}
-              {{ userOrGroup.lastName }}
             </p>
             <span class="placeMark placeMark-small">
               {{ userOrGroup.location }}
@@ -125,6 +136,7 @@
           </p>
         </div>
       </div>
+
       <!--TODO: integrate user card footer-->
       <div class="profileStatsItems">
         <div class="profileStatsItem">
@@ -146,7 +158,8 @@
 
 <script>
 import gql from 'graphql-tag';
-import EditButton from './EditButton.vue';
+import IconButton from '../../sharedComponents/IconButton.vue';
+import PencilIcon from '../../sharedComponents/icons/PencilIcon.vue';
 
 const IS_LOADING = 'Is loading...';
 
@@ -154,17 +167,17 @@ const IS_LOADING = 'Is loading...';
 
 export default {
   components: {
-    EditButton
+    IconButton,
+    PencilIcon
   },
   data() {
     return {
       user: {
         username: IS_LOADING,
-        firstName: 'Андрей',
-        lastName: 'Кондоров',
+        name: IS_LOADING,
         avatar: '/images/acc.jpg',
         followerCount: IS_LOADING,
-        location: 'Ульяновск',
+        location: IS_LOADING,
         level: 'новичок',
         myGroups: [
           {
@@ -202,37 +215,90 @@ export default {
           }
         ]
       },
-      editUserMode: false,
-      editGroupMode: null
+      isFetching: true
     };
   },
+  computed: {
+    isCreatingGroup() {
+      return this.$route.fullPath === '/profile/create-group';
+    },
+    isUpdatingGroup(groupId) {
+      // TODO: get id from store
+
+      return false;
+    },
+    isEditingUser() {
+      return this.$route.fullPath === '/profile/edit';
+    }
+  },
   methods: {
-    enterEditUserMode() {
+
+    goToEditUser() {
       this.editUserMode = true;
     },
-    leaveEditUserMode() {
-      this.editUserMode = false;
-    },
-    enterEditGroupMode(groupId) {
+    goToUpdateGroup(groupId) {
       this.editGroupMode = groupId;
     },
-    leaveEditGroupMode() {
+    goToCreateGroup() {
       this.editGroupMode = null;
     }
   },
   apollo: {
     users: {
+      // query: gql`
+      //   query GetUser {
+      //     users(email: "test@test.mail") {
+      //       username
+      //       followersCount
+      //       location
+      //       musicGroups {
+      //         id
+      //         name
+      //         avatarGroup
+      //         followerCount
+      //       },
+      //       watchList {
+      //         __typename
+      //         id
+      //         ... on User {
+      //           username
+      //           location
+      //         }
+      //         ... on MusicGroup {
+      //           name
+      //           primaryFunction
+      //         }
+      //       }
+      //     }
+      //   }
+      // `,
       query: gql`
         query GetUser {
           users(email: "test@test.mail") {
             username
+            followersCount
+            musicGroups {
+              id
+              name
+              avatarGroup
+            }
           }
         }
       `,
       update(data) {
-        console.log('server response from "users" query', data);
+        return data[0];
+      },
+      result({ data, loading }) {
+        if (loading === false) {
+          this.isFetching = false;
+
+          // TODO: store user id
+
+          return data;
+        }
       },
       error(error) {
+        // TODO: implement error
         console.log(error);
       }
     },
