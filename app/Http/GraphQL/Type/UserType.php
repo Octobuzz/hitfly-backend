@@ -81,12 +81,16 @@ class UserType extends GraphQLType
                 'type' => Type::int(),
                 'description' => 'Количество подписчиков',
             ],
-            'watchingList' => [
+            'watchingUser' => [
                 'type' => Type::listOf(\GraphQL::type('User')),
-                'description' => 'За кем следит пользователь',
-                'resolve' => function ($model) {
-                    return new Collection([]); //todo
+                'description' => 'Следит за пользователями',
+                'privacy' => function (array $args) {
+                    return !empty($args['id']);
                 },
+            ],
+            'watchingMusicGroup' => [
+                'type' => Type::listOf(\GraphQL::type('MusicGroup')),
+                'description' => 'Следит за группами',
                 'privacy' => function (array $args) {
                     return !empty($args['id']);
                 },

@@ -28,6 +28,6 @@ class UserQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields, GraphQL\Type\Definition\ResolveInfo $info)
     {
-        return User::where('id', $args['id'])->get();
+        return User::find($args['id']);
     }
 }

@@ -124,4 +124,14 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         return $this->hasMany(Like::class)->where('likeable_type', '=', Album::class);
     }
+
+    public function watchingUser()
+    {
+        return $this->morphedByMany(User::class, 'watcheable');
+    }
+
+    public function watchingMusicGroup()
+    {
+        return $this->morphedByMany(MusicGroup::class, 'watcheable');
+    }
 }
