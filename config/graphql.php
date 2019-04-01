@@ -153,6 +153,7 @@ return [
         'Collection'          => \App\Http\GraphQL\Type\CollectionType::class,
         'FavouriteTrack'          => \App\Http\GraphQL\Type\FavouriteTrackType::class,
         'FavouriteAlbum'          => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
+        'FavouriteGenre'          => \App\Http\GraphQL\Type\FavouriteGenreType::class,
 
 
         'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,

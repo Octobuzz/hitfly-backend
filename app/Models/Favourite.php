@@ -10,6 +10,7 @@ class Favourite extends Model
 {
     const TYPE_ALBUM = 'album';
     const TYPE_TRACK = 'track';
+    const TYPE_GENRE = 'genre';
     protected $fillable = [
         'favouriteable_type',
         'favouriteable_id',
