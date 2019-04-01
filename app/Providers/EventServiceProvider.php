@@ -7,6 +7,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -28,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
             \JhaoDa\SocialiteProviders\Odnoklassniki\OdnoklassnikiExtendSocialite::class,
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle',
             'SocialiteProviders\Facebook\FacebookExtendSocialite@handle',
+        ],
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\LastLoginLog',
         ],
     ];
 

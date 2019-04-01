@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use  Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 /**
  * App\User.
@@ -133,5 +134,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function watchingMusicGroup()
     {
         return $this->morphedByMany(MusicGroup::class, 'watcheable');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        // Your your own implementation.
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

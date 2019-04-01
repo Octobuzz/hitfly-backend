@@ -11,6 +11,7 @@ use App\Observers\UserObserver;
 use App\User;
 use App\Observers\TrackObserver;
 use Illuminate\Support\ServiceProvider;
+use Jenssegers\Date\Date;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         Collection::observe(CollectionObserver::class);
         User::observe(UserObserver::class);
         Track::observe(TrackObserver::class);
+        Date::setlocale(config('app.locale'));
     }
 
     /**
