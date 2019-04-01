@@ -116,6 +116,9 @@ return [
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
                 'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
+                'favouriteAlbum' => \App\Http\GraphQL\Query\FavouriteAlbumQuery::class,
+                'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
+                'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,

@@ -41,4 +41,9 @@ class Favourite extends Model
     {
         return $this->belongsTo(Album::class, 'favouriteable_id');
     }
+
+    public function genre(): BelongsTo
+    {
+        return $this->belongsTo(Genre::class, 'favouriteable_id');
+    }
 }

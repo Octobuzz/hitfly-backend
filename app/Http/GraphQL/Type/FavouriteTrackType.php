@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Models\Favourite;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -11,7 +12,7 @@ class FavouriteTrackType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'FavouriteTrack',
-        'model' => Track::class,
+        'model' => Favourite::class,
     ];
 
     public function fields()
