@@ -2,8 +2,11 @@
 
 namespace App\Observers;
 
+use App\Jobs\UserRegisterJob;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class UserObserver
 {
@@ -19,6 +22,10 @@ class UserObserver
         if ($user->isRole('listener')) {
             $user->roles()->attach($role->id);
             $user->save();
+        }
+        //отправка письма о завершении регистрации
+        if ($user->email && App::environment('local') && null !== Auth::user()) {
+            dispatch(new UserRegisterJob($user))->onQueue('low');
         }
     }
 

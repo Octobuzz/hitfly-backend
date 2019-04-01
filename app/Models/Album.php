@@ -9,7 +9,6 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
-use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -69,6 +68,7 @@ class Album extends Model
         'author',
         'year',
         'cover',
+        'album_img',
     ];
 
     protected $hidden = [
@@ -95,5 +95,11 @@ class Album extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getAlbumImageURL()
+    {
+        //todo получение реального урл изображения
+        return $this->album_img;
     }
 }

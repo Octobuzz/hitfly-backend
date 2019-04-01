@@ -29,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle',
             'SocialiteProviders\Facebook\FacebookExtendSocialite@handle',
         ],
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\LastLoginLog',
+        ],
     ];
 
     /**

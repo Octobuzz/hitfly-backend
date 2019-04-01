@@ -8,18 +8,16 @@ class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('track_id')->unsigned()->nullable(true);//todo morphable
-            $table->integer('album_id')->unsigned()->nullable(true);//todo morphable
+            $table->integer('track_id')->unsigned()->nullable(true); //todo morphable
+            $table->integer('album_id')->unsigned()->nullable(true); //todo morphable
             $table->integer('user_id')->unsigned()->nullable(true);
             $table->text('comment')->nullable(false);
-            $table->dateTime('comment_date')->nullable(false);//todo remove
+            $table->dateTime('comment_date')->nullable(false); //todo remove
             $table->tinyInteger('estimation')->unsigned()->nullable(true);
             $table->timestamps();
         });
@@ -32,8 +30,6 @@ class CreateCommentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

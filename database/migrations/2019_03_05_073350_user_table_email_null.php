@@ -8,21 +8,17 @@ class UserTableEmailNull extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('email')->nullable()->change();
-            $table->string('gender')->nullable()->default(NULL)->change();
+            $table->string('gender')->nullable()->default(null)->change();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

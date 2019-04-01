@@ -2,16 +2,21 @@
 
 namespace App;
 
+use App\Models\Album;
+use App\Models\City;
+use App\Models\Like;
 use App\Models\MusicGroup;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use  Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 /**
  * App\User.
@@ -111,5 +116,36 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function watchingUsers()
     {
         return new Collection([]);
+    }
+
+    public function likesTrack()
+    {
+        return $this->hasMany(Like::class)->where('likeable_type', '=', Track::class);
+    }
+
+    public function likesAlbum()
+    {
+        return $this->hasMany(Like::class)->where('likeable_type', '=', Album::class);
+    }
+
+    public function watchingUser()
+    {
+        return $this->morphedByMany(User::class, 'watcheable');
+    }
+
+    public function watchingMusicGroup()
+    {
+        return $this->morphedByMany(MusicGroup::class, 'watcheable');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        // Your your own implementation.
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
 }

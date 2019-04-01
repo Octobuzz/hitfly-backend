@@ -28,6 +28,10 @@
     
     storage/logs/nginx/
     
+Добавление данных в бд 
+
+    docker exec -it php_docker sudo -u www-data php artisan migrate:refresh
+    docker exec -it php_docker sudo -u www-data php artisan db:seed
 
 ##Админ панель
 

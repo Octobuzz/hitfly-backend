@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PasswordChanged;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
@@ -53,6 +55,10 @@ class ResetPasswordController extends Controller
         $user->save();
 
         event(new PasswordReset($user));
+        //отправка уведомления о смене пароля
+        if ($user->email) {
+            Mail::to($user->email)->send(new PasswordChanged($user->email));
+        }
 
         //не авторизуем пользователя после смены пароля
         //$this->guard()->login($user);

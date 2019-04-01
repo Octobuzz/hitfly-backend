@@ -55,6 +55,11 @@ class MusicGroupType extends GraphQLType
                 'description' => 'Описание группы',
                 'alias' => 'description', // Use 'alias', if the database column is different from the type name
             ],
+            'location' => [
+                'type' => \GraphQL::type('CityType'),
+                'description' => 'Локация пользователя',
+                'alias' => 'city_id',
+            ],
         ];
     }
 }

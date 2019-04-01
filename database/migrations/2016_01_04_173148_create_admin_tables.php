@@ -8,15 +8,13 @@ class CreateAdminTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         $connection = config('admin.database.connection') ?: config('database.default');
 
-        Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table){
-            $table->renameColumn('name','username');
+        Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table) {
+            $table->renameColumn('name', 'username');
             $table->string('avatar')->nullable();
         });
 
@@ -90,19 +88,17 @@ class CreateAdminTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         $connection = config('admin.database.connection') ?: config('database.default');
 
-        Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table){
+        Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table) {
             $table->renameColumn('username', 'name');
             $table->dropColumn('avatar');
         });
 
-        Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table){
+        Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table) {
             $table->string('name', 190)->change();
         });
 
