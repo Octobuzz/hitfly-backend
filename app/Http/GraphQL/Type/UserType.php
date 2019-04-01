@@ -5,7 +5,6 @@ namespace App\Http\GraphQL\Type;
 use App\Http\GraphQL\Privacy\UserPrivacy;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Database\Eloquent\Collection;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class UserType extends GraphQLType
@@ -37,7 +36,7 @@ class UserType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'The access token',
                 'alias' => 'access_token',
-                'resolve' => function ($model) {
+                'resolve' => function (User $model) {
                     return $model->access_token;
                 },
                 'privacy' => UserPrivacy::class,
@@ -61,16 +60,39 @@ class UserType extends GraphQLType
             'favoriteSongsCount' => [
                 'type' => Type::int(),
                 'description' => 'Количество любимых песен',
+                'resolve' => function (User $model) {
+                    return $model->likesTrack()->count();
+                },
+                'privacy' => function (array $args) {
+                    return !empty($args['id']);
+                },
+            ],
+            'favoriteAlbumCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество любимых альбомов',
+                'resolve' => function (User $model) {
+                    return $model->likesAlbum()->count();
+                },
+                'privacy' => function (array $args) {
+                    return !empty($args['id']);
+                },
             ],
             'followersCount' => [
                 'type' => Type::int(),
                 'description' => 'Количество подписчиков',
             ],
-            'watchingUsers' => [
+            'watchingUser' => [
                 'type' => Type::listOf(\GraphQL::type('User')),
-                'description' => 'За кем следит пользователь',
-                'resolve' => function ($model) {
-                    return new Collection([]); //todo
+                'description' => 'Следит за пользователями',
+                'privacy' => function (array $args) {
+                    return !empty($args['id']);
+                },
+            ],
+            'watchingMusicGroup' => [
+                'type' => Type::listOf(\GraphQL::type('MusicGroup')),
+                'description' => 'Следит за группами',
+                'privacy' => function (array $args) {
+                    return !empty($args['id']);
                 },
             ],
         ];

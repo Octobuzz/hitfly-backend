@@ -2,13 +2,13 @@
 
 use Illuminate\Database\Seeder;
 
-class MusicGroupSeeder extends Seeder
+class LikesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run()
     {
-        factory(\App\Models\MusicGroup::class, 30)->create();
+        factory(\App\Models\Like::class, 300)->create();
     }
 }

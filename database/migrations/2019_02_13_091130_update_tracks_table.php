@@ -8,8 +8,6 @@ class UpdateTracksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,7 +16,7 @@ class UpdateTracksTable extends Migration
             $table->integer('album_id')->unsigned()->nullable(true);
             $table->integer('genre_id')->unsigned()->nullable(true);
             $table->string('singer', 180)->nullable(false);
-            $table->dateTime('track_date')->nullable(false);//todo remove
+            $table->dateTime('track_date')->nullable(false); //todo remove
             $table->text('song_text')->nullable(false);
             $table->string('track_hash')->nullable(false);
             $table->string('filename')->nullable(false);
@@ -28,7 +26,7 @@ class UpdateTracksTable extends Migration
         });
 
         Schema::table('tracks', function (Blueprint $table) {
-            $table->foreign('genre_id', 'foreign_tracks_genres')->references('id')->on('genres');//todo remove foreign
+            $table->foreign('genre_id', 'foreign_tracks_genres')->references('id')->on('genres'); //todo remove foreign
             $table->foreign('album_id', 'foreign_tracks_albums')->references('id')->on('albums');
             $table->foreign('user_id', 'foreign_tracks_users')->references('id')->on('users');
             $table->index('track_hash', 'index_track_hash');
@@ -38,8 +36,6 @@ class UpdateTracksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -60,7 +56,5 @@ class UpdateTracksTable extends Migration
             $table->dropColumn('song_text');
             $table->dropColumn('user_id');
         });
-
-
     }
 }

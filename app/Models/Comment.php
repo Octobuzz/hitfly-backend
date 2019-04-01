@@ -16,7 +16,7 @@ class Comment extends Model
     const TYPE_TRACK = 'track';
 
     const CLASS_NAME = [
-        Track::class => 'track',
+        Track::class => self::TYPE_TRACK,
         Album::class => self::TYPE_ALBUM,
     ];
 

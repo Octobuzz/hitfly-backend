@@ -8,8 +8,6 @@ class UpdateForeignKyyMusicGroup extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -21,8 +19,6 @@ class UpdateForeignKyyMusicGroup extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

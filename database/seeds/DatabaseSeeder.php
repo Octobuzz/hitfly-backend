@@ -6,8 +6,6 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
     public function run()
     {
@@ -19,6 +17,8 @@ class DatabaseSeeder extends Seeder
             TracksSeeder::class,
             CommentsSeeder::class,
             CollectionSeeder::class,
+            LikesSeeder::class,
+            WatchingSeeder::class,
         ]);
     }
 }

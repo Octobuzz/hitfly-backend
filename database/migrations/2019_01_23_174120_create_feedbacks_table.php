@@ -8,8 +8,6 @@ class CreateFeedbacksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -17,7 +15,7 @@ class CreateFeedbacksTable extends Migration
             $table->increments('id');
             $table->morphs('feedbackable');
             $table->timestamps();
-            
+
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
@@ -25,8 +23,6 @@ class CreateFeedbacksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
