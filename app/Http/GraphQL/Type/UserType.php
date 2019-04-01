@@ -95,6 +95,11 @@ class UserType extends GraphQLType
                     return !empty($args['id']);
                 },
             ],
+            'location' => [
+                'type' => \GraphQL::type('CityType'),
+                'description' => 'Локация пользователя',
+                'alias' => 'city_id',
+            ],
         ];
     }
 }

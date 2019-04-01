@@ -13,23 +13,27 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class LongAgoNotVisitedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $tracks,$user,$recommendation,$events,$days;
+    public $tracks;
+    public $user;
+    public $recommendation;
+    public $events;
+    public $days;
 
     /**
      * FewCommentsJob constructor.
+     *
      * @param $user
      * @param $events
      * @param $recommendation
      * @param $tracks
      */
-    public function __construct($days,User $user,$events,$recommendation,$tracks)
+    public function __construct($days, User $user, $events, $recommendation, $tracks)
     {
         $this->days = $days;
         $this->user = $user;
         $this->tracks = $tracks;
         $this->events = $events;
         $this->recommendation = $recommendation;
-
     }
 
     /**
@@ -37,6 +41,6 @@ class LongAgoNotVisitedJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new LongAgoNotVisited($this->days,$this->user,$this->events,$this->recommendation,$this->tracks));
+        return \Mail::to($this->user->email)->send(new LongAgoNotVisited($this->days, $this->user, $this->events, $this->recommendation, $this->tracks));
     }
 }

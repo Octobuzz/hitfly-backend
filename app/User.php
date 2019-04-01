@@ -3,11 +3,13 @@
 namespace App;
 
 use App\Models\Album;
+use App\Models\City;
 use App\Models\Like;
 use App\Models\MusicGroup;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
@@ -140,5 +142,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         // Your your own implementation.
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
 }

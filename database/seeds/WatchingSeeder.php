@@ -7,6 +7,6 @@ class WatchingSeeder extends \Illuminate\Database\Seeder
      */
     public function run()
     {
-        factory(\App\Models\Watching::class, 100)->create();
+        factory(\App\Models\Watcheables::class, 100)->create();
     }
 }

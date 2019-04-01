@@ -13,9 +13,13 @@ use App\Mail\RequestForEventMail;
 class RequestForEventJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $user, $event, $eventsList;
+    public $user;
+    public $event;
+    public $eventsList;
+
     /**
      * RequestForEventMail constructor.
+     *
      * @param User $user
      * @param $event
      */
@@ -31,6 +35,6 @@ class RequestForEventJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new RequestForEventMail($this->event,$this->user, $this->eventsList));
+        return \Mail::to($this->user->email)->send(new RequestForEventMail($this->event, $this->user, $this->eventsList));
     }
 }

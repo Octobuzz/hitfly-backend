@@ -97,7 +97,8 @@ class Album extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function getAlbumImageURL(){
+    public function getAlbumImageURL()
+    {
         //todo получение реального урл изображения
         return $this->album_img;
     }

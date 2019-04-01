@@ -6,25 +6,26 @@ use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class RemindForEventMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $event, $user,$eventsList;
+    public $event;
+    public $user;
+    public $eventsList;
 
     /**
      * RemindForEventMail constructor.
+     *
      * @param $event
      * @param User $user
      * @param $eventsList
      */
-    public function __construct($event, User $user,$eventsList)
+    public function __construct($event, User $user, $eventsList)
     {
         $this->user = $user;
         $this->event = $event;
         $this->eventsList = $eventsList;
-
     }
 
     /**

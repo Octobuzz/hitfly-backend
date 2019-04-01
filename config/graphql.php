@@ -151,6 +151,7 @@ return [
         'CommentAlbum' => \App\Http\GraphQL\Type\CommentAlbumType::class,
         'CommentTrack' => \App\Http\GraphQL\Type\CommentTrackType::class,
         'Collection' => \App\Http\GraphQL\Type\CollectionType::class,
+        'CityType' => \App\Http\GraphQL\Type\CityType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,

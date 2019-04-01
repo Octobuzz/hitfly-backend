@@ -12,7 +12,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class FewCommentsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $tracks,$user;
+    public $tracks;
+    public $user;
 
     /**
      * Create a new job instance.
@@ -20,11 +21,10 @@ class FewCommentsJob implements ShouldQueue
      * @param $user
      * @param $tracks
      */
-    public function __construct($user,$tracks)
+    public function __construct($user, $tracks)
     {
         $this->user = $user;
         $this->tracks = $tracks;
-
     }
 
     /**
@@ -32,6 +32,6 @@ class FewCommentsJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new FewComments($this->user,$this->tracks));
+        return \Mail::to($this->user->email)->send(new FewComments($this->user, $this->tracks));
     }
 }

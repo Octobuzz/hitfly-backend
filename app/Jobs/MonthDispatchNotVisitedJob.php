@@ -13,22 +13,25 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class MonthDispatchNotVisitedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $tracks,$user,$recommendation,$events;
+    public $tracks;
+    public $user;
+    public $recommendation;
+    public $events;
 
     /**
      * MonthDispatchNotVisitedJob constructor.
+     *
      * @param User $user
      * @param $events
      * @param $recommendation
      * @param $tracks
      */
-    public function __construct(User $user,$events,$recommendation,$tracks)
+    public function __construct(User $user, $events, $recommendation, $tracks)
     {
         $this->user = $user;
         $this->tracks = $tracks;
         $this->events = $events;
         $this->recommendation = $recommendation;
-
     }
 
     /**
@@ -36,6 +39,6 @@ class MonthDispatchNotVisitedJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new MonthDispatchNotVisitedMail($this->user,$this->events,$this->recommendation,$this->tracks));
+        return \Mail::to($this->user->email)->send(new MonthDispatchNotVisitedMail($this->user, $this->events, $this->recommendation, $this->tracks));
     }
 }

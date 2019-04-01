@@ -14,10 +14,11 @@ class UserRegisterJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private  $user;
+    private $user;
 
     /**
      * UserRegisterJob constructor.
+     *
      * @param User $user
      */
     public function __construct(User $user)
@@ -27,8 +28,6 @@ class UserRegisterJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle()
     {

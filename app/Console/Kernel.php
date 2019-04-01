@@ -10,7 +10,6 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-
     private $notification;
 
     public function __construct(Application $app, Dispatcher $events, Notification $notification)
@@ -45,10 +44,10 @@ class Kernel extends ConsoleKernel
         })->dailyAt('10:00');
         $schedule->call(function () {
             $this->notification->longAgoNotVisited();
-        })->dailyAt(1,'10:00');
+        })->dailyAt(1, '10:00');
         $schedule->call(function () {
             $this->notification->everyMonthDispatchNotVisited();
-        })->monthlyOn(1,'10:00');
+        })->monthlyOn(1, '10:00');
         $schedule->call(function () {
             $this->notification->remindForEvent();
         })->dailyAt('10:00');

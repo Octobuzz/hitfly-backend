@@ -56,7 +56,7 @@ class ResetPasswordController extends Controller
 
         event(new PasswordReset($user));
         //отправка уведомления о смене пароля
-        if($user->email){
+        if ($user->email) {
             Mail::to($user->email)->send(new PasswordChanged($user->email));
         }
 

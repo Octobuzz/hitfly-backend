@@ -3,17 +3,15 @@
 namespace App\Mail;
 
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
 
 class FewComments extends Mailable
 {
     use Queueable, SerializesModels;
-    public $tracks, $user;
+    public $tracks;
+    public $user;
 
     /**
      * Create a new message instance.
@@ -21,7 +19,7 @@ class FewComments extends Mailable
      * @param User $user
      * @param $tracks
      */
-    public function __construct(User $user,$tracks)
+    public function __construct(User $user, $tracks)
     {
         $this->tracks = $tracks;
         $this->user = $user;
@@ -37,5 +35,4 @@ class FewComments extends Mailable
         return $this->view('emails.notification.fewComments')
             ->subject(__('emails.fewComments.subject'));
     }
-
 }

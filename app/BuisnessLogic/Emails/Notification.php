@@ -13,15 +13,14 @@ use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use  App\User;
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Log\Logger;
 use App\BuisnessLogic\Playlist\Tracks;
-use Jenssegers\Date\Date;
 
 class Notification
 {
     private $listOfUsers;
-    private $recommendation,$tracks,$events;
+    private $recommendation;
+    private $tracks;
+    private $events;
 
     public function __construct(Recommendation $recommendation, Tracks $tracks, Event $events)
     {
@@ -31,55 +30,54 @@ class Notification
     }
 
     /**
-     * очередь писем с поздравлениями на день рождения
+     * очередь писем с поздравлениями на день рождения.
      */
-    public function birthdayCongratulation(){
-
+    public function birthdayCongratulation()
+    {
         $this->listOfUsers = $this->getUsersBirthdayToday();
         $recommend = $this->recommendation;
-        foreach ($this->listOfUsers as $user){
-            dispatch(new BirthdayCongratulationsEmailJob($user,$recommend->getBirthdayPlayLists($user)))->onQueue('low');
+        foreach ($this->listOfUsers as $user) {
+            dispatch(new BirthdayCongratulationsEmailJob($user, $recommend->getBirthdayPlayLists($user)))->onQueue('low');
         }
-
     }
 
     /**
-     * Получает пользователей у которых сегодня день рождения
+     * Получает пользователей у которых сегодня день рождения.
+     *
      * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
      */
-    protected function getUsersBirthdayToday(){
+    protected function getUsersBirthdayToday()
+    {
         return User::query()->whereMonth('birthday', Carbon::today()->month)->whereDay('birthday', Carbon::today()->day)->whereNotNull('email')->get();
     }
 
-    public function fewComments(){
-
+    public function fewComments()
+    {
         $users = $this->getUsersWithFewComments();
 
         $tracks = new Tracks();
-        foreach ($users as $user){
-            dispatch(new FewCommentsJob($user,$tracks->getNewTracks(3)))->onQueue('low');
+        foreach ($users as $user) {
+            dispatch(new FewCommentsJob($user, $tracks->getNewTracks(3)))->onQueue('low');
         }
-
     }
 
     /**
-     * список пользователей, которые за неделю оставили мало отзывов
+     * список пользователей, которые за неделю оставили мало отзывов.
+     *
      * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    private function getUsersWithFewComments(){
-
-        $users = User::query()->whereIn('id', function ($query){
-            $query->select('user_id') ->from('admin_role_users')->where('role_id','=','4')->whereNotIn('user_id',function ($query2){
+    private function getUsersWithFewComments()
+    {
+        $users = User::query()->whereIn('id', function ($query) {
+            $query->select('user_id')->from('admin_role_users')->where('role_id', '=', '4')->whereNotIn('user_id', function ($query2) {
                 $query2->select('user_id')
                     ->from('comments')
-                    ->whereBetween('created_at',[Carbon::now()->startOfWeek(),Carbon::now()->endOfDay()])
+                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfDay()])
                     ->groupBy('user_id')
                     ->havingRaw('count(`user_id`) >= ?', [env('FEW_FEEDBACK_PERIOD')]);
-                });
-            }
-
+            });
+        }
             )->get();
-
 
         return $users;
     }
@@ -87,30 +85,29 @@ class Notification
     /**
      * давно не посещал сайт
      */
-    public function longAgoNotVisited(){
-
+    public function longAgoNotVisited()
+    {
         $users = $this->getUsersLongAgoNotVisited();
 
-        foreach ($users['days7'] as $user){
-            dispatch(new LongAgoNotVisitedJob(7,$user,$this->events->getUpcomingEvents(3),$this->recommendation->getNewUserPlayList(2),$this->tracks->getTopTrack(5)))->onQueue('low');
+        foreach ($users['days7'] as $user) {
+            dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
         }
-        foreach ($users['days30'] as $user){
-            dispatch(new LongAgoNotVisitedJob(30,$user,$this->events->getUpcomingEvents(3),$this->recommendation->getNewUserPlayList(2),$this->tracks->getTopTrack(5)))->onQueue('low');
+        foreach ($users['days30'] as $user) {
+            dispatch(new LongAgoNotVisitedJob(30, $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
         }
-
     }
 
     /**
-     * давно непосещал сайт 7 и 30 дней
+     * давно непосещал сайт 7 и 30 дней.
+     *
      * @return array
      */
-    private function getUsersLongAgoNotVisited(){
+    private function getUsersLongAgoNotVisited()
+    {
         $return = [];
 
-        $return['days7'] = User::query()->whereBetween('last_login',[Carbon::now()->subDays(7)->startOfDay(),Carbon::now()->subDays(7)->endOfDay()])->get();
-        $return['days30'] = User::query()->whereBetween('last_login',[Carbon::now()->subDays(30)->startOfDay(),Carbon::now()->subDays(30)->endOfDay()])->get();
-
-
+        $return['days7'] = User::query()->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->subDays(7)->endOfDay()])->get();
+        $return['days30'] = User::query()->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->subDays(30)->endOfDay()])->get();
 
         return $return;
     }
@@ -118,63 +115,59 @@ class Notification
     /**
      * давно не посещал сайт
      */
-    public function everyMonthDispatchNotVisited(){
+    public function everyMonthDispatchNotVisited()
+    {
         $users = $this->getMonthDispatchNotVisited();
 
-        foreach ($users as $user){
-            dispatch(new MonthDispatchNotVisitedJob($user,$this->events->getUpcomingEvents(3),$this->recommendation->getNewUserPlayList(2),$this->tracks->getTopTrack(5)))->onQueue('low');
+        foreach ($users as $user) {
+            dispatch(new MonthDispatchNotVisitedJob($user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
         }
-
-
     }
 
-    private function getMonthDispatchNotVisited(){
-       return User::query()->where('last_login','<',Carbon::now()->subDays(30)->startOfDay())->get();
-
+    private function getMonthDispatchNotVisited()
+    {
+        return User::query()->where('last_login', '<', Carbon::now()->subDays(30)->startOfDay())->get();
     }
 
     /**
-     * напоминание о событии
+     * напоминание о событии.
      */
-    public function remindForEvent(){
+    public function remindForEvent()
+    {
         $users = $this->getApplicantsForEvent();
 
-        foreach ($users as $user){
-            $events  = $this->events->getUpcomingEventsForUser($user);
+        foreach ($users as $user) {
+            $events = $this->events->getUpcomingEventsForUser($user);
             foreach ($events as $event) {
                 dispatch(new RemindForEventJob($event, $user, $this->events->getUpcomingEvents(3)))->onQueue('low');
             }
         }
-
-
     }
 
-    private function getApplicantsForEvent(){
+    private function getApplicantsForEvent()
+    {
         // TODO: выборка пользователей подавших заявку на мероприятие
-        return User::query()->where('id','=',1)->get();
-
+        return User::query()->where('id', '=', 1)->get();
     }
 
     /**
-     * подача заявки на участие в мероприятии
-     *
+     * подача заявки на участие в мероприятии.
      */
-    public function requestForEvent(User $user, $event){
-        dispatch(new RequestForEventJob( $user, $this->events->getEventById(1), $this->events->getUpcomingEvents(3)))->onQueue('low');
-
+    public function requestForEvent(User $user, $event)
+    {
+        dispatch(new RequestForEventJob($user, $this->events->getEventById(1), $this->events->getUpcomingEvents(3)))->onQueue('low');
     }
 
     /**
-     * попадение в топ 20
-     *
+     * попадение в топ 20.
      */
-    public function reachTop($topCount = 20){
+    public function reachTop($topCount = 20)
+    {
         $tracks = $this->tracks->getTopTrack($topCount);
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
-            $topUrl = "/url";
-            dispatch(new ReachTopJob($track, $topUrl, $this->events->getUpcomingEvents(3),$topCount))->onQueue('low');
+            $topUrl = '/url';
+            dispatch(new ReachTopJob($track, $topUrl, $this->events->getUpcomingEvents(3), $topCount))->onQueue('low');
         }
-
     }
 }

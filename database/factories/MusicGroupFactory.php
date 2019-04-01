@@ -13,5 +13,8 @@ $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
         'creator_group_id' => function () {
             return \App\User::inRandomOrder()->first()->id;
         },
+        'city_id' => function () {
+            return \App\Models\City::inRandomOrder()->first()->id;
+        },
     ];
 });

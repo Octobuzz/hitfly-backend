@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\App\Models\Watching::class, function (Faker $faker) {
+$factory->define(\App\Models\Watcheables::class, function (Faker $faker) {
     $watchListables = [
         App\Models\MusicGroup::class,
         App\User::class,

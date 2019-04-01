@@ -3,26 +3,20 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class LastLoginLog
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  Login  $event
-     * @return void
+     * @param Login $event
      */
     public function handle(Login $event)
     {

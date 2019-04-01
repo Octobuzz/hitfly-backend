@@ -2,14 +2,13 @@
 
 namespace App\Contracts\Event;
 
-
-
 use App\User;
 
 interface EventsContract
 {
     /**
      * @param int $count
+     *
      * @return array
      */
     public function getUpcomingEvents(int $count);
@@ -19,6 +18,4 @@ interface EventsContract
     public function getUpcomingEventsForUser(User $user);
 
     public function getEventById(int $id);
-
-    
 }

@@ -12,11 +12,13 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class ReachTopJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $track, $topUrl, $eventsList, $topCount;
+    public $track;
+    public $topUrl;
+    public $eventsList;
+    public $topCount;
+
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($track, $topUrl, $eventsList, $topCount)
     {

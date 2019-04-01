@@ -3,10 +3,10 @@
 namespace App\Observers;
 
 use App\Jobs\UserRegisterJob;
-use App\Mail\RegistrationCompleted;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class UserObserver
 {
@@ -24,9 +24,8 @@ class UserObserver
             $user->save();
         }
         //отправка письма о завершении регистрации
-        if($user->email){
+        if ($user->email && App::environment('local') && null !== Auth::user()) {
             dispatch(new UserRegisterJob($user))->onQueue('low');
-
         }
     }
 

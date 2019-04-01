@@ -6,15 +6,17 @@ use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class RequestForEventMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $event,  $user, $eventsList;
+    public $event;
+    public $user;
+    public $eventsList;
 
     /**
      * RequestForEventMail constructor.
+     *
      * @param $event
      * @param User $user
      */

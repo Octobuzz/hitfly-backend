@@ -10,9 +10,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Watching extends Model
+class Watcheables extends Model
 {
-    protected $table = 'watching';
+    protected $table = 'watcheables';
 
     protected $fillable = [
         'likeable',
