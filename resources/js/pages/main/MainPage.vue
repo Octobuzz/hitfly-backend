@@ -9,11 +9,20 @@
       profile obsolete
     </router-link>
     <!--temp-->
+    <div style="margin: 300px"/>
+
+    <TrackList/>
+
   </div>
 </template>
 
 <script>
+import TrackList from '../../sharedComponents/TrackList.vue';
+
 export default {
+  components: {
+    TrackList
+  },
   data() {
     return {};
   }

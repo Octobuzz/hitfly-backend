@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'button-icon',
+      'icon-button',
       $attrs.class
     ]"
     @click="$emit('press')"
@@ -27,7 +27,7 @@ export default {
 >
 @import '../../sass/variables';
 
-.button-icon {
+.icon-button {
   width: 40px;
   height: 40px;
 
