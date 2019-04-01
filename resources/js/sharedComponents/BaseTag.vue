@@ -1,6 +1,12 @@
 <template>
   <span
-    :class="['base-tag', { 'base-tag_active': active }]"
+    :class="[
+      'base-tag',
+      {
+        'base-tag_active': active,
+        ...$attrs.class
+      }
+    ]"
     @click="onClick($event)"
   >
     <NoteIcon/>

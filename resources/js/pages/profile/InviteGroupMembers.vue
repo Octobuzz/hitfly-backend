@@ -13,7 +13,7 @@
           {{ member }}
         </span>
         <IconButton
-          class-name="invited-members__button-close"
+          class="invited-members__button-close"
           @press="removeMember(member)"
         >
           <CrossIcon/>
@@ -24,27 +24,30 @@
     <div class="invited-members__input-row">
       <BaseInput
         v-model="userInput"
+        class="invited-members__user-input"
         label="E-mail участника"
       />
-      <BaseButtonFormSecondary
+      <FormButton
+        class="invited-members__save-button"
+        modifier="secondary"
         @press="addMember"
       >
         Пригласить
-      </BaseButtonFormSecondary>
+      </FormButton>
     </div>
   </div>
 </template>
 
 <script>
 import BaseInput from '../../sharedComponents/BaseInput.vue';
-import BaseButtonFormSecondary from '../../sharedComponents/BaseButtonFormSecondary.vue';
+import FormButton from '../../sharedComponents/FormButton.vue';
 import IconButton from '../../sharedComponents/IconButton.vue';
 import CrossIcon from '../../sharedComponents/icons/CrossIcon.vue';
 
 export default {
   components: {
     BaseInput,
-    BaseButtonFormSecondary,
+    FormButton,
     IconButton,
     CrossIcon
   },
@@ -127,6 +130,19 @@ export default {
     transform: translateY(7px);
   }
 
+  &__input-row {
+    display: flex;
+  }
+
+  &__user-input {
+    flex-grow: 1;
+  }
+
+  &__save-button {
+    max-width: 180px;
+    margin-left: 16px;
+  }
+
   &__button-close {
     opacity: 1;
     transform: scale(.75);
@@ -140,19 +156,6 @@ export default {
       &:hover {
         fill: black;
       }
-    }
-  }
-
-  &__input-row {
-    display: flex;
-
-    & > :first-child {
-      flex-grow: 1;
-    }
-
-    & > :last-child {
-      max-width: 180px;
-      margin-left: 16px;
     }
   }
 }

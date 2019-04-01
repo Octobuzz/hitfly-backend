@@ -1,6 +1,14 @@
 <template>
   <label class="base-dropdown">
-    <span :class="['base-dropdown__label', { 'base-dropdown__label_top': !closed || !empty }]">
+    <span
+      :class="[
+        'base-dropdown__label',
+        {
+          'base-dropdown__label_top': !closed || !empty,
+          ...$attrs.class
+        }
+      ]"
+    >
       {{ header }}
     </span>
     <v-select
@@ -119,6 +127,7 @@ export default {
         z-index: 900;
         background: white;
         box-shadow: 0 0 10px #f0f0f0;
+        overflow-y: auto;
       }
 
       &__select {
@@ -177,20 +186,10 @@ export default {
       top: 8px;
       right: 8px;
       transition: .3s;
-
-      &:before {
-        content: '';
-        display: block;
-        position: relative;
-        width: 6px;
-        height: 6px;
-        left: 50%;
-        top: 50%;
-        border: {
-          top: 3px solid #313131;
-          right: 3px solid #313131;
-        };
-        transform: translate(-50%, -50%) rotate(135deg) skew(10deg, 10deg);
+      background: {
+        image: url(../../images/dropdown.svg);
+        repeat: no-repeat;
+        position: center;
       }
     }
   }

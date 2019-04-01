@@ -7,6 +7,7 @@
     >
       <BaseDropdown
         v-model="link.network"
+        class="social-links__network-select"
         header="Выберите соц. сеть"
         :options="networkList"
         :searchable="false"
@@ -15,6 +16,7 @@
       />
       <BaseInput
         v-model="link.username"
+        class="social-links__username-input"
         label="Имя пользователя"
         @input="onInput"
       />
@@ -26,23 +28,27 @@
       </button>
     </div>
 
-    <BaseButtonFormSecondary @press="addLink()">
+    <FormButton
+      class="social-links__add-button"
+      modifier="secondary"
+      @press="addLink"
+    >
       Добавить ссылку
-    </BaseButtonFormSecondary>
+    </FormButton>
   </div>
 </template>
 
 <script>
 import BaseInput from '../../sharedComponents/BaseInput.vue';
 import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
-import BaseButtonFormSecondary from '../../sharedComponents/BaseButtonFormSecondary.vue';
+import FormButton from '../../sharedComponents/FormButton.vue';
 import CrossIcon from '../../sharedComponents/icons/CrossIcon.vue';
 
 export default {
   components: {
     BaseInput,
     BaseDropdown,
-    BaseButtonFormSecondary,
+    FormButton,
     CrossIcon
   },
 
@@ -105,8 +111,6 @@ export default {
     },
 
     onInput() {
-      console.log(this.computedLinks);
-
       this.$emit('update:links', this.computedLinks);
     },
 
@@ -164,18 +168,19 @@ export default {
     justify-content: space-between;
     position: relative;
     margin-bottom: 16px;
-
-    & > :not(:last-child) {
-      flex-grow: 1;
-      width: 0;
-    }
-
-    & > :first-child {
-      margin-right: 18px;
-    }
   }
 
-  & > :last-child {
+  &__network-select,
+  &__username-input {
+    flex-grow: 1;
+    width: 0;
+  }
+
+  &__network-select {
+    margin-right: 18px;
+  }
+
+  &__add-button {
     display: block;
     margin-left: auto;
     max-width: 180px;
@@ -193,7 +198,7 @@ export default {
       top: auto;
       bottom: auto;
     };
-    transform: translateY(-50%)
+    transform: translateY(-50%);
   }
 }
 </style>

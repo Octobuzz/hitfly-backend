@@ -1,7 +1,15 @@
 <template>
   <div>
     <label class="base-input">
-      <span :class="['base-input__label', { 'base-input__label_top': focus || !empty }]">
+      <span
+        :class="[
+          'base-input__label',
+          {
+            'base-input__label_top': focus || !empty,
+            ...$attrs.class
+          }
+        ]"
+      >
         {{ label }}
       </span>
       <span class="base-input__icon">
@@ -48,17 +56,27 @@ export default {
       default: ''
     }
   },
+
   data() {
     return {
       empty: true,
       focus: false
     };
   },
+
+  watch: {
+    // cause empty string is not an input this check is done manually
+
+    value(val) {
+      if (val === '') this.empty = true;
+    }
+  },
+
   mounted() {
     this.empty = this.value.length === 0;
   },
+
   methods: {
-    // eslint-disable-next-line func-names
     emitInput(e) {
       this.$emit('input', e.target.value);
       this.empty = e.target.value === '';

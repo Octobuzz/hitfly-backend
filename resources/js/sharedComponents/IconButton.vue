@@ -1,6 +1,9 @@
 <template>
   <button
-    :class="`button-icon ${className}`"
+    :class="[
+      'button-icon',
+      $attrs.class
+    ]"
     @click="$emit('press')"
   >
     <slot/>

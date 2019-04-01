@@ -23,7 +23,7 @@
 
       <IconButton
         v-if="!isEditingUser"
-        class-name="editButton"
+        class="editButton"
         @press="goToEditUser"
       >
         <PencilIcon/>
@@ -71,7 +71,7 @@
 
             <IconButton
               v-if="!isUpdatingGroup(group.id)"
-              class-name="editButton"
+              class="editButton"
               @press="goToUpdateGroup(group.id)"
             >
               <PencilIcon/>
