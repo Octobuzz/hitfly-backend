@@ -19,7 +19,7 @@ class FavouriteTrackType extends GraphQLType
     {
         return [
             'id' => [
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::int(),
                 'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
             'track' => [
