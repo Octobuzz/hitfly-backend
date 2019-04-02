@@ -61,13 +61,14 @@ class TrackType extends GraphQLType
                 'type' => Type::nonNull(Type::boolean()),
 
                 'resolve' => function ($model) {
-                   if($model->favourites->count())
+                   if($model->userFavourite->count())
                        return true;
                    else
                        return false;
                 },
 
             ],
+
         ];
     }
 }

@@ -88,7 +88,7 @@ class Track extends Model
 
     public function userFavourite()
     {
-        //return $this->morphMany(Favourite::class,'favouriteable');
         return $this->morphMany(Favourite::class, "favouriteable")->where('user_id',\Auth::user()->id);
     }
+
 }
