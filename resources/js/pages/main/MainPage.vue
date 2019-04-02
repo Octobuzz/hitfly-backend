@@ -9,15 +9,17 @@
       profile obsolete
     </router-link>
     <!--temp-->
-    <div style="margin: 300px"/>
+    <div style="margin: 300px" />
 
-    <TrackList/>
+    <div :style="{ marginLeft: '600px' }">
+      <TrackList/>
+    </div>
 
   </div>
 </template>
 
 <script>
-import TrackList from '../../sharedComponents/TrackList.vue';
+import TrackList from '../../sharedComponents/TrackList';
 
 export default {
   components: {

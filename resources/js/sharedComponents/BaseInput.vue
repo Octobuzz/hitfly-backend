@@ -21,6 +21,7 @@
         @input="emitInput($event)"
         @focus="focus = true"
         @blur="focus = false"
+        @keyup.enter="$emit('press:enter')"
       >
     </label>
     <span

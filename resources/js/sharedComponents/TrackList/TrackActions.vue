@@ -10,10 +10,6 @@ export default {
     track: {
       type: Object,
       default: () => {}
-    },
-    index: {
-      type: Number,
-      required: true
     }
   }
 };

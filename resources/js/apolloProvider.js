@@ -15,7 +15,7 @@ const uri = prod
 // TODO: set token properly
 
 const headers = {
-  'X-TOKEN-AUTH': 'c8d5fba144f2e229d6543269774c75f2'
+  'X-TOKEN-AUTH': '9d434fd37c64b68b2ff59ead1cf8ac5c'
 };
 
 const httpLink = new HttpLink({

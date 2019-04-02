@@ -22,6 +22,7 @@
 <body class="body">
 @yield('content')
 
+
 <!-- Scripts -->
 <script src="js/app.js" defer></script>
 

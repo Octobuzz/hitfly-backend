@@ -24,15 +24,12 @@ export default {
   },
   apollo: {
     trackList: {
-
-      // TODO: check if query fetches tracks for current user (not from global space)
       // TODO: implement pagination or loadable list
-
       // TODO: lift fetch logic up
 
       query: gql`
         query {
-          tracks(limit: 20, page: 1) {
+          tracks(limit: 100, page: 1, my: true) {
             data {
               id
               trackName
