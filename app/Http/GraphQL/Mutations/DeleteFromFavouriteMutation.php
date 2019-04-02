@@ -6,13 +6,13 @@ use App\Models\Album;
 use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\Track;
-use Illuminate\Support\Facades\Auth;
+use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
 
-class AddToFavouriteMutation extends Mutation
+class DeleteFromFavouriteMutation extends Mutation
 {
     protected $attributes = [
-        'name' => 'AddToFavourite',
+        'name' => 'DeleteFromFavourite',
     ];
 
     public function type()
@@ -45,13 +45,22 @@ class AddToFavouriteMutation extends Mutation
                 throw new \Exception('Не удалось определить тип избранного');
         }
 
-        $tmp = [];
-        $tmp['favouriteable_type'] = $class;
-        $tmp['favouriteable_id'] = $args['Favourite']['favouriteableId'];
-        $tmp['user_id'] = Auth::user()->id;
-        $favourite = Favourite::create($tmp);
-        $favourite->save();
+        $user = \Auth::guard('json')->user();
 
-        return $favourite;
+        $favourite = Favourite::query()
+            ->where('favouriteable_id',$args['Favourite']['favouriteableId'])
+            ->where('favouriteable_type',$class)
+            ->first();
+
+
+        if (null === $favourite) {
+            throw new \Exception('inncorect');
+        }
+
+        if ($user->can('deleted', $favourite)) {
+            $favourite->delete();
+        }
+
+        return null;
     }
 }

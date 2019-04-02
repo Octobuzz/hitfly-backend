@@ -130,6 +130,7 @@ return [
                 'createCollection' => \App\Http\GraphQL\Mutations\CreateCollectionMutation::class,
                 'updateCollection' => \App\Http\GraphQL\Mutations\UpdateCollectionMutation::class,
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
+                'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
