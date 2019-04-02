@@ -33,7 +33,7 @@ class CommentsAlbumQuery extends Query
         if (isset($args['albumId'])) {
             return Comment::with($fields->getRelations())->select($fields->getSelect())
                 ->where('commentable_type', Album::class)
-                ->where('commentable_id', $args['trackId'])
+                ->where('commentable_id', $args['albumId'])
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
