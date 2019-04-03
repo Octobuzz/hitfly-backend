@@ -101,4 +101,8 @@ class Album extends Model
         //todo получение реального урл изображения
         return $this->album_img;
     }
+    public function userFavourite()
+    {
+        return $this->morphMany(Favourite::class, "favouriteable")->where('user_id',\Auth::user()->id);
+    }
 }
