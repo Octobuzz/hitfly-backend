@@ -27,7 +27,7 @@ class CommentInput extends GraphQLType
             'commentableType' => [
                 'name' => 'commentableType',
                 'description' => 'name',
-                'type' => \GraphQL::type('CommentType'),
+                'type' => \GraphQL::type('CommentTypeEnum'),
                 'rules' => ['max:250'],
             ],
             'comment' => [

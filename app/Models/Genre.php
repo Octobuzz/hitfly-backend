@@ -50,4 +50,9 @@ class Genre extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function userFavourite()
+    {
+        return $this->morphMany(Favourite::class, "favouriteable")->where('user_id',\Auth::user()->id);
+    }
 }

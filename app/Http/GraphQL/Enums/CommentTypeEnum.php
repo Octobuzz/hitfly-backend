@@ -10,7 +10,7 @@ class CommentTypeEnum extends GraphQLType
     protected $enumObject = true;
 
     protected $attributes = [
-        'name' => 'CommentType',
+        'name' => 'CommentTypeEnum',
         'description' => 'The types of demographic elements',
         'values' => [
             Comment::TYPE_ALBUM => Comment::TYPE_ALBUM,

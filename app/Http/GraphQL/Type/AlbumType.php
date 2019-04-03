@@ -42,6 +42,17 @@ class AlbumType extends GraphQLType
                 'type' => GraphQL::type('MusicGroup'),
                 'alias' => 'filename',
             ],
+            'userFavourite' => [
+                'type' => Type::nonNull(Type::boolean()),
+                'description' => 'флаг избранного альбома',
+                'resolve' => function ($model) {
+                    if($model->userFavourite->count())
+                        return true;
+                    else
+                        return false;
+                },
+
+            ],
         ];
     }
 }

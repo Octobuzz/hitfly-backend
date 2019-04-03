@@ -42,7 +42,7 @@ class TracksQuery extends Query
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
-        return Track::with($fields->getRelations())->select($fields->getSelect())
+        return Track::with($fields->getRelations())
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

@@ -3,20 +3,20 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Models\Album;
-use App\Models\Comment;
+use App\Models\Favourite;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class CommentsAlbumQuery extends Query
+class FavouriteAlbumQuery extends Query
 {
     protected $attributes = [
-        'name' => 'Comment album Query',
+        'name' => 'Favourite album Query',
     ];
 
     public function type()
     {
-        return \GraphQL::paginate('CommentAlbum');
+        return \GraphQL::paginate('FavouriteAlbum');
     }
 
     public function args()
@@ -30,15 +30,18 @@ class CommentsAlbumQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+
         if (isset($args['albumId'])) {
-            return Comment::with($fields->getRelations())->select($fields->getSelect())
-                ->where('commentable_type', Album::class)
-                ->where('commentable_id', $args['albumId'])
+            return Favourite::with('favouriteable')
+                ->where('favouriteable_type', Album::class)
+                ->where('favouriteable_id', $args['albumId'])
+                ->where('user_id',\Auth::user()->id)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
-        return Comment::with($fields->getRelations())->select($fields->getSelect())
-            ->where('commentable_type', Album::class)
+        return Favourite::with('favouriteable')
+            ->where('favouriteable_type', Album::class)
+            ->where('user_id',\Auth::user()->id)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }
