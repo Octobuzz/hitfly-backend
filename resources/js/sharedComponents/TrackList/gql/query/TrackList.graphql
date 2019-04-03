@@ -1,0 +1,17 @@
+query TrackList {
+    tracks(limit: 100, page: 1, my: true) {
+        data {
+            id
+            trackName
+            singer
+            album {
+                title
+                author
+                cover
+            }
+            user {
+                id
+            }
+        }
+    }
+}

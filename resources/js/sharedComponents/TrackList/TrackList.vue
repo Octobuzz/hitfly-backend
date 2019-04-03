@@ -1,7 +1,7 @@
 <template>
   <div>
     <TrackListEntry
-      v-for="(track, index) in tracks"
+      v-for="(track, index) in trackList"
       :key="track.id"
       :index="index"
       :track="track"
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
+import gql from './gql';
 import TrackListEntry from './TrackListEntry.vue';
 
 export default {
@@ -19,39 +19,20 @@ export default {
   },
   data() {
     return {
-      tracks: []
+      trackList: []
     };
   },
   apollo: {
     trackList: {
       // TODO: implement pagination or loadable list
-      // TODO: lift fetch logic up
 
-      query: gql`
-        query {
-          tracks(limit: 100, page: 1, my: true) {
-            data {
-              id
-              trackName
-              singer
-              album {
-                title
-                author
-                cover
-              }
-              user {
-                id
-              }
-            }
-          }
-        }
-      `,
+      query: gql.query.TRACK_LIST,
       manual: true,
       result(res) {
         const { data: { tracks }, networkStatus } = res;
 
         if (networkStatus === 7) {
-          this.tracks = tracks.data;
+          this.trackList = tracks.data;
         }
       },
       error(err) {

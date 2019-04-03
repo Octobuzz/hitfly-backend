@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="create-group">
+    <div class="create-group-body">
       <div class="group-cover">
         <ChooseAvatar
           v-model="group.cover"
@@ -14,7 +14,7 @@
           label="Название группы"
           class="group-description__name-input"
         >
-          <template v-slot:icon>
+          <template #icon>
             <PencilIcon/>
           </template>
         </BaseInput>
@@ -29,7 +29,7 @@
           label="Год начала карьеры"
           class="group-description__year-input"
         >
-          <template v-slot:icon>
+          <template #icon>
             <CalendarIcon/>
           </template>
         </BaseInput>
@@ -38,12 +38,12 @@
           Выберите жанр
         </h3>
 
-        <div
-          v-if="$apollo.queries.availableGenres.loading"
+        <span
+          v-if="$apollo.queries.genres.loading"
           class="group-description__genre-tag-container"
         >
           Genres are loading...
-        </div>
+        </span>
         <div v-else class="group-description__genre-tag-container">
           <BaseTag
             v-for="(genre, index) in availableGenres"
@@ -51,8 +51,9 @@
             :name="genre"
             :active="group.genres.includes(genre)"
             class="group-description__genre-tag"
-            @press="onTagPress($event)"
+            @press="updateGroupGenres($event)"
           />
+          <MoreTags @press="incrementGenresOnPage" />
         </div>
 
         <span class="group-description__genre-list-suggestion group-description__regular-text">
@@ -75,7 +76,7 @@
         </h3>
 
         <BaseTextarea
-          v-model="group.activity.textarea"
+          v-model="group.activity.input"
           class="group-description__activity-textarea"
           label="Описание группы"
         />
@@ -104,7 +105,7 @@
       <FormButton
         class="create-group-footer__save-button"
         modifier="primary"
-        @press="onSavePress"
+        @press="createGroup"
       >
         Создать группу
       </FormButton>
@@ -113,10 +114,11 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
+import gql from './gql';
 import SocialMediaLinks from './SocialMediaLinks.vue';
 import InviteGroupMembers from './InviteGroupMembers.vue';
 import ChooseAvatar from './ChooseAvatar.vue';
+import MoreTags from './MoreTags.vue';
 import BaseInput from '../../sharedComponents/BaseInput.vue';
 import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
 import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
@@ -131,6 +133,7 @@ export default {
     SocialMediaLinks,
     InviteGroupMembers,
     ChooseAvatar,
+    MoreTags,
     BaseInput,
     BaseTextarea,
     BaseDropdown,
@@ -156,12 +159,28 @@ export default {
         socialLinks: [],
         invitedMembers: []
       },
-      availableGenres: []
+      genres: [],
+      genreIdMap: [],
+      genresOnPage: 10
     };
   },
 
+  computed: {
+    availableGenres() {
+      return this.genres.slice(0, this.genresOnPage);
+    },
+    creationQueryGenres() {
+      return this.group.genres
+        .map(genre => this.genreIdMap[genre]);
+    }
+  },
+
   methods: {
-    onTagPress(tag) {
+    incrementGenresOnPage() {
+      this.genresOnPage += 10;
+    },
+
+    updateGroupGenres(tag) {
       if (tag.active) {
         this.group.genres.push(tag.name);
       } else {
@@ -169,28 +188,52 @@ export default {
           .filter(genre => genre !== tag.name);
       }
     },
-    onSavePress() {
-      // TODO: mutate
+
+    createGroup() {
+      this.$apollo.mutate({
+        mutation: gql.mutation.CREATE_MUSIC_GROUP,
+        variables: {
+          avatarGroup: this.group.cover,
+          name: this.group.name.input,
+          careerStartYear: `${this.group.year.input}-1-1`,
+          description: this.group.activity.input,
+          genre: this.creationQueryGenres[0], // TODO: remove index after api is fixed
+          socialLinks: this.group.socialLinks,
+          invitedMembers: this.group.invitedMembers
+        },
+        update(store, { data: { createMusicGroup } }) {
+          const userData = store.readQuery({ query: gql.query.USER });
+
+          userData.user.musicGroups.push(createMusicGroup);
+          store.writeQuery({
+            query: gql.query.USER,
+            data: userData
+          });
+        }
+
+      }).then((result) => {
+        this.$router.push('/profile');
+      }).catch(({ graphQLErrors }) => {
+        console.log(graphQLErrors);
+        // TODO: validation errors
+      });
     }
   },
 
   apollo: {
-    availableGenres: {
-      query: gql`
-        query FetchGenres {
-          genre {
-            name
-          }
-        }
-      `,
+    genres: {
+      query: gql.query.GENRE,
       manual: true,
-      result(res) {
-        const { data: { genre }, networkStatus } = res;
-
-        // TODO: add 'еще' button and corresponding logic
-
+      result({ data: { genre }, networkStatus }) {
         if (networkStatus === 7) {
-          this.availableGenres = genre.map(g => g.name).slice(0, 10);
+          this.genres = genre.map(genre => genre.name);
+
+          // eslint-disable-next-line no-return-assign
+          this.genreIdMap = genre.reduce((acc, genreEntry) => {
+            acc[genreEntry.name] = genreEntry.id;
+
+            return acc;
+          }, {});
         }
       }
     }

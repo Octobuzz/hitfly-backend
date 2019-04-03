@@ -16,8 +16,11 @@
         <p class="profileGeneral__subheader">
           {{ user.followersCount }}
         </p>
-        <p class="placeMark">
-          {{ user.location }}
+        <p
+          v-if="user.location && user.location.title"
+          class="placeMark"
+        >
+          {{ user.location.title }}
         </p>
       </div>
 
@@ -35,14 +38,13 @@
         <h4>
           Мои группы
         </h4>
-        <router-link
+        <button
           v-if="!isCreatingGroup"
-          to="/profile/create-group"
+          class="profileAsideButton"
+          @click="goToCreateGroup"
         >
-          <button class="profileAsideButton">
-            Создать группу
-          </button>
-        </router-link>
+          Создать группу
+        </button>
       </div>
 
       <div class="profileGroups__wrapper">
@@ -54,7 +56,7 @@
           <div class="profileGroup__wrapper">
             <img
               class="profileGeneral__img profileAsideBlock__img"
-              :src="group.avatar"
+              :src="group.avatarGroup || '/images/note.svg'"
               alt="Group avatar"
             >
 
@@ -115,6 +117,8 @@
       </div>
     </div>
 
+    <!--TODO: extract user status into separate component-->
+
     <div class="profileStats profileAsideBlock">
       <div class="profileAsideBlock__heading">
         <!--TODO: add user level to class map-->
@@ -157,148 +161,75 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
+import gql from './gql';
 import IconButton from '../../sharedComponents/IconButton.vue';
 import PencilIcon from '../../sharedComponents/icons/PencilIcon.vue';
 
 const IS_LOADING = 'Is loading...';
-
-// TODO: gql loader
 
 export default {
   components: {
     IconButton,
     PencilIcon
   },
+
   data() {
     return {
       user: {
         username: IS_LOADING,
         name: IS_LOADING,
-        avatar: '/images/acc.jpg',
-        followerCount: IS_LOADING,
-        location: IS_LOADING,
+        avatar: IS_LOADING,
+        followersCount: IS_LOADING,
+        location: {
+          title: IS_LOADING
+        },
         level: 'новичок',
-        myGroups: [
-          {
-            id: 0,
-            name: 'Название группы',
-            avatar: '/images/acc.jpg',
-            followerCount: 32000
-          },
-          {
-            id: 1,
-            name: 'Название группы',
-            avatar: '/images/acc.jpg',
-            followerCount: 32000
-          }
-        ],
-        watchList: [
-          {
-            firstName: 'Antonio',
-            lastName: 'Rodrigues Jr',
-            avatar: '/images/acc.jpg',
-            location: 'Москва',
-          },
-          {
-            id: 0,
-            name: 'Honey monday',
-            avatar: '/images/acc.jpg',
-            followerCount: 32000,
-            location: 'Москва'
-          },
-          {
-            firstName: 'Кирилл',
-            lastName: 'Михайлов',
-            avatar: '/images/acc.jpg',
-            location: 'Калининград',
-          }
-        ]
+        musicGroups: [],
+        watchingList: []
       },
       isFetching: true
     };
   },
+
   computed: {
     isCreatingGroup() {
       return this.$route.fullPath === '/profile/create-group';
-    },
-    isUpdatingGroup(groupId) {
-      // TODO: get id from store
-
-      return false;
     },
     isEditingUser() {
       return this.$route.fullPath === '/profile/edit';
     }
   },
-  methods: {
 
+  methods: {
+    isUpdatingGroup(groupId) {
+      return this.$store.getters.editGroupId === groupId;
+    },
     goToEditUser() {
-      this.editUserMode = true;
+      this.$router.push('/profile/edit');
     },
     goToUpdateGroup(groupId) {
-      this.editGroupMode = groupId;
+      this.$store.commit('setEditGroupId', groupId);
+      this.$router.push('/profile/update-group');
     },
     goToCreateGroup() {
-      this.editGroupMode = null;
+      this.$router.push('/profile/create-group');
     }
   },
+
   apollo: {
-    users: {
-      // query: gql`
-      //   query GetUser {
-      //     users(email: "test@test.mail") {
-      //       username
-      //       followersCount
-      //       location
-      //       musicGroups {
-      //         id
-      //         name
-      //         avatarGroup
-      //         followerCount
-      //       },
-      //       watchList {
-      //         __typename
-      //         id
-      //         ... on User {
-      //           username
-      //           location
-      //         }
-      //         ... on MusicGroup {
-      //           name
-      //           primaryFunction
-      //         }
-      //       }
-      //     }
-      //   }
-      // `,
-      query: gql`
-        query GetUser {
-          users(email: "test@test.mail") {
-            username
-            followersCount
-            musicGroups {
-              id
-              name
-              avatarGroup
-            }
-          }
-        }
-      `,
+    user: {
+      query: gql.query.USER,
       update(data) {
         return data[0];
       },
-      result({ data, loading }) {
+      result({ data: { user }, loading }) {
         if (loading === false) {
           this.isFetching = false;
-
-          // TODO: store user id
-
-          return data;
+          this.user = user;
         }
       },
       error(error) {
-        // TODO: implement error
+        // TODO: implement error handling
         console.log(error);
       }
     },

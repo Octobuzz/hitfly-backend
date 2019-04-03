@@ -4,16 +4,14 @@
     placement="left"
     :auto-hide="true"
   >
-    <slot/>
-
-    <template slot="popover">
+    <template #popover>
       <a v-close-popover>
         Close
       </a>
 
       <ul>
         <li
-          v-for="playlist in playlists"
+          v-for="playlist in playlistList"
           :key="playlist.id"
           @click="setTrackPlaylist(playlist.id)"
         >
@@ -34,7 +32,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
+import gql from './gql';
 import BaseInput from '../BaseInput.vue';
 
 export default {
@@ -47,7 +45,8 @@ export default {
       type: Number,
       required: true
     },
-    // TODO: when the track playlist id will be implemented change 'default' to 'required'
+    // TODO: when the track playlist id will be implemented change 'default' to
+    // 'required' or grab the id from track
 
     trackPlaylistId: {
       type: Number,
@@ -57,7 +56,7 @@ export default {
 
   data() {
     return {
-      playlists: [],
+      playlistList: [],
       newPlaylist: ''
     };
   },
@@ -77,7 +76,7 @@ export default {
   },
 
   apollo: {
-    playlists: {
+    playlistList: {
       // TODO: implement pagination or loadable list
       // TODO: fetch user's personal list of collections (not from global space)
 
@@ -85,22 +84,13 @@ export default {
       // always passed the same object and popover always renders its content
       // in the same place
 
-      query: gql`
-        query FetchPlaylistNames {
-          collections(limit: 100, page: 1) {
-            data {
-              id
-              title
-            }
-          }
-        }
-      `,
+      query: gql.query.PLAYLIST_LIST,
       manual: true,
       result(res) {
         const { data: { collections }, networkStatus } = res;
 
         if (networkStatus === 7) {
-          this.playlists = collections.data;
+          this.playlistList = collections.data;
         }
       }
     }

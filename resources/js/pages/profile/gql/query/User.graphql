@@ -1,0 +1,12 @@
+query GetUser {
+    user(id: 4) {
+        id
+        username
+        followersCount
+        musicGroups {
+            id
+            name
+            avatarGroup
+        }
+    }
+}

@@ -1,0 +1,8 @@
+query PlaylistList {
+    collections(limit: 100, page: 1) {
+        data {
+            id
+            title
+        }
+    }
+}

@@ -12,12 +12,27 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js');
+
 mix.sass('resources/sass/app.scss', 'public/css').options({
-    autoprefixer: {
-        options: {
-            browsers: ['last 10 versions']
-        }
+  autoprefixer: {
+    options: {
+      browsers: ['last 10 versions']
     }
+  }
 });
+
 mix.copyDirectory('resources/images', 'public/images');
+
 mix.browserSync('localhost:9090');
+
+mix.webpackConfig({
+  module: {
+    rules: [
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+      }
+    ],
+  },
+});
