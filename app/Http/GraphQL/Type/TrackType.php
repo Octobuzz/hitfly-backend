@@ -57,6 +57,18 @@ class TrackType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'alias' => 'filename',
             ],
+            'userFavourite' => [
+                'type' => Type::nonNull(Type::boolean()),
+                'description' => 'флаг избранного трека',
+                'resolve' => function ($model) {
+                   if($model->userFavourite->count())
+                       return true;
+                   else
+                       return false;
+                },
+
+            ],
+
         ];
     }
 }

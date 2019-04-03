@@ -28,6 +28,17 @@ class GenreType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'The id of the ',
             ],
+            'userFavourite' => [
+                'type' => Type::nonNull(Type::boolean()),
+                'description' => 'флаг избранного жанра',
+                'resolve' => function ($model) {
+                    if($model->userFavourite->count())
+                        return true;
+                    else
+                        return false;
+                },
+
+            ],
         ];
     }
 }
