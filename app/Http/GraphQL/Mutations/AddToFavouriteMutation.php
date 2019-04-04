@@ -25,9 +25,12 @@ class AddToFavouriteMutation extends Mutation
         return [
             'Favourite' => [
                 'type' => \GraphQL::type('FavouriteInput'),
+                'rules' => 'favourites_unique_validate',
             ],
         ];
     }
+
+
 
     public function resolve($root, $args)
     {
