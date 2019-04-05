@@ -12,6 +12,7 @@ class FavouriteAlbumQuery extends Query
 {
     protected $attributes = [
         'name' => 'Favourite album Query',
+        'description' => 'Запрос пользователя системы',
     ];
 
     public function type()

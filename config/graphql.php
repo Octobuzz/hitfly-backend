@@ -95,6 +95,17 @@ return [
             'query' => [
                 'user' => \App\Http\GraphQL\Query\UserQuery::class,
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
+                'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
+                'musicGroup' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
+                'musicGroups' => \App\Http\GraphQL\Query\MusicGroupsQuery::class,
+                'albums' => \App\Http\GraphQL\Query\AlbumsQuery::class,
+                'album' => \App\Http\GraphQL\Query\AlbumQuery::class,
+                'commentsTrack' => \App\Http\GraphQL\Query\CommentsTrackQuery::class,
+                'commentsAlbum' => \App\Http\GraphQL\Query\CommentsAlbumQuery::class,
+                'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
+                'track' => \App\Http\GraphQL\Query\TrackQuery::class,
+                'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
             ],
             'mutation' => [
                 'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,

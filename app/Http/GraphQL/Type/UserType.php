@@ -3,7 +3,6 @@
 namespace App\Http\GraphQL\Type;
 
 use App\User;
-use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class UserType extends GraphQLType

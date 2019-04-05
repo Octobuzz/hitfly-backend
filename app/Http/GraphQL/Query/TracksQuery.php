@@ -14,6 +14,7 @@ class TracksQuery extends Query
 {
     protected $attributes = [
         'name' => 'Music Group Query',
+        'description' => 'Запрос треков',
     ];
 
     public function type()
