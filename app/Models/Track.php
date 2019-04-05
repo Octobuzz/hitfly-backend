@@ -87,4 +87,10 @@ class Track extends Model
     {
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
     }
+
+    public function userPlayLists()
+    {
+        return $this->belongsToMany(Collection::class, 'collection_track')
+            ->where('collections.user_id', '=', \Auth::user()->id);
+    }
 }

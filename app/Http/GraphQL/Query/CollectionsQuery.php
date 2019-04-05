@@ -17,6 +17,7 @@ class CollectionsQuery extends Query
 {
     protected $attributes = [
         'name' => 'Collections Query',
+        'description' => 'Коллекции(Playlist)',
     ];
 
     public function type()
