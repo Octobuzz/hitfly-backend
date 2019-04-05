@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Track;
+use App\Policies\TrackPolicy;
 use App\Services\Auth\JsonGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -14,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy', //todo
+        Track::class => TrackPolicy::class,
     ];
 
     /**

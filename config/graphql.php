@@ -134,7 +134,7 @@ return [
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
             ],
             'mutation' => [
-                'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
+                'trackUpload' => \App\Http\GraphQL\Mutations\Track\TrackUploadMutation::class,
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
@@ -148,6 +148,8 @@ return [
 
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
+
+                'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -202,7 +204,7 @@ return [
     //     'message' => '',
     //     'locations' => []
     // ]
-    'error_formatter' => ['\Rebing\GraphQL\GraphQL', 'formatError'],
+    'error_formatter' => ['App\Support\GraphQL\Error', 'formatError'],
 
     /*
      * Custom Error Handling
@@ -211,7 +213,7 @@ return [
      *
      * The default handler will pass exceptions to laravel Error Handling mechanism
      */
-    'errors_handler' => ['\Rebing\GraphQL\GraphQL', 'handleErrors'],
+    'errors_handler' => ['App\Support\GraphQL\Error', 'handleErrors'],
 
     // You can set the key, which will be used to retrieve the dynamic variables
     'params_key' => 'variables',
