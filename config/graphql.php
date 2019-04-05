@@ -120,6 +120,7 @@ return [
                 'favouriteAlbum' => \App\Http\GraphQL\Query\FavouriteAlbumQuery::class,
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
+                'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
@@ -153,6 +154,7 @@ return [
     //
     'types' => [
         'User' => \App\Http\GraphQL\Type\UserType::class,
+        'MyProfile' => \App\Http\GraphQL\Type\MyProfileType::class,
         'MusicGroup' => \App\Http\GraphQL\Type\MusicGroupType::class,
         'Album' => \App\Http\GraphQL\Type\AlbumType::class,
         'Track' => \App\Http\GraphQL\Type\TrackType::class,

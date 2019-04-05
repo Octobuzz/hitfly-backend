@@ -67,6 +67,5 @@ class UpdateCollectionMutation extends Mutation
             $collection->image = $fileName;
             $collection->save();
         }
-
     }
 }
