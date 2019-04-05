@@ -180,6 +180,10 @@ return [
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
+
+
+        'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
+
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.
