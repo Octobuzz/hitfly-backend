@@ -29,7 +29,6 @@ class FavouriteInput extends GraphQLType
                 'type' => \GraphQL::type('FavouriteTypeEnum'),
                 'rules' => ['max:250'],
             ],
-
         ];
     }
 }

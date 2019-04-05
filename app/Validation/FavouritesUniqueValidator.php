@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Dmitrii
  * Date: 04.04.2019
- * Time: 13:56
+ * Time: 13:56.
  */
 
 namespace App\Validation;
@@ -14,9 +14,10 @@ use App\Models\Genre;
 use App\Models\Track;
 use Illuminate\Support\Facades\Validator;
 
-class FavouritesUniqueValidator extends  Validator
+class FavouritesUniqueValidator extends Validator
 {
-    public function validate( string  $attr, $value, $params, \Illuminate\Validation\Validator $validator){
+    public function validate(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
+    {
         //dd($validator->getData());
         $data = $validator->getData();
 
@@ -34,12 +35,13 @@ class FavouritesUniqueValidator extends  Validator
                 throw new \Exception('Не удалось определить тип избранного');
         }
         $favourite = Favourite::query()
-            ->where('favouriteable_type','=',$class)
-            ->where('favouriteable_id','=',$data['Favourite']['favouriteableId'])
-            ->where('user_id',\Auth::user()->id)->first();
-        if($favourite===null)
+            ->where('favouriteable_type', '=', $class)
+            ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
+            ->where('user_id', \Auth::user()->id)->first();
+        if (null === $favourite) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 }

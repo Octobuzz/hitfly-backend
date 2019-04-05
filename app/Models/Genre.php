@@ -53,6 +53,6 @@ class Genre extends Model
 
     public function userFavourite()
     {
-        return $this->morphMany(Favourite::class, "favouriteable")->where('user_id',\Auth::user()->id);
+        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
     }
 }

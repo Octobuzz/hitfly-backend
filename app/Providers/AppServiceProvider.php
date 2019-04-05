@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Track::observe(TrackObserver::class);
         Date::setlocale(config('app.locale'));
-        Validator::extend('favourites_unique_validate','App\Validation\FavouritesUniqueValidator@validate');
+        Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesUniqueValidator@validate');
     }
 
     /**

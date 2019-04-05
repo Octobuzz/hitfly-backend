@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Track;
 use App\User;
@@ -36,14 +35,13 @@ class FavouriteGenreQuery extends Query
             return Favourite::with('favouriteable')
                 ->where('favouriteable_type', Track::class)
                 ->where('favouriteable_id', $args['genreId'])
-                ->where('user_id',\Auth::user()->id)
+                ->where('user_id', \Auth::user()->id)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
         return Favourite::with('favouriteable')
             ->where('favouriteable_type', Track::class)
-            ->where('user_id',\Auth::user()->id)
+            ->where('user_id', \Auth::user()->id)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
-
     }
 }

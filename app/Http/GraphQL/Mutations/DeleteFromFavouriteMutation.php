@@ -48,10 +48,9 @@ class DeleteFromFavouriteMutation extends Mutation
         $user = \Auth::guard('json')->user();
 
         $favourite = Favourite::query()
-            ->where('favouriteable_id',$args['Favourite']['favouriteableId'])
-            ->where('favouriteable_type',$class)
+            ->where('favouriteable_id', $args['Favourite']['favouriteableId'])
+            ->where('favouriteable_type', $class)
             ->first();
-
 
         if (null === $favourite) {
             throw new \Exception('inncorect');

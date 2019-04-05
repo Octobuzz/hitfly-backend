@@ -9,7 +9,6 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Models\Collection;
-use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
