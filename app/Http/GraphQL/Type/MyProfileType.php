@@ -17,7 +17,6 @@ class MyProfileType extends GraphQLType
 
     public function fields()
     {
-
         $interface = \GraphQL::type('UserInterface');
 
         return array_merge(
@@ -62,7 +61,6 @@ class MyProfileType extends GraphQLType
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
                 ],
-
             ]
         );
     }

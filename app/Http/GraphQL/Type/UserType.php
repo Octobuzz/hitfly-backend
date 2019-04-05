@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Http\GraphQL\Privacy\UserPrivacy;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
