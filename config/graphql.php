@@ -162,6 +162,7 @@ return [
         'FavouriteTrack'          => \App\Http\GraphQL\Type\FavouriteTrackType::class,
         'FavouriteAlbum'          => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
         'FavouriteGenre'          => \App\Http\GraphQL\Type\FavouriteGenreType::class,
+        'SocialLinks'          => \App\Http\GraphQL\Type\SocialLinksType::class,
 
 
         'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
@@ -171,11 +172,13 @@ return [
         'RateCommentInput'          => \App\Http\GraphQL\InputObject\RateCommentInput::class,
         'CollectionInput'          => \App\Http\GraphQL\InputObject\CollectionInput::class,
         'FavouriteInput'          => \App\Http\GraphQL\InputObject\FavouriteInput::class,
+        'SocialLinksInput'          => \App\Http\GraphQL\InputObject\SocialLinksInput::class,
 
 
         'CommentTypeEnum'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum'          => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
         'GenderType'          => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
+        'SocialLinksTypeEnum'          => \App\Http\GraphQL\Enums\SocialLinksTypeEnum::class,
 
         'CommentResult'          => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult'          => \App\Http\GraphQL\Unions\FavouriteUnion::class,

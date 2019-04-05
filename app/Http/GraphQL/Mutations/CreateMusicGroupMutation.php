@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Models\GroupLinks;
 use App\Models\MusicGroup;
 use App\User;
 use Rebing\GraphQL\Support\Mutation;
@@ -40,6 +41,14 @@ class CreateMusicGroupMutation extends Mutation
         $musicGroup->description = $args['musicGroup']['description'];
 
         $musicGroup->save();
+
+        foreach ($args['musicGroup']['socialLinks'] as $social){
+            $socialLinks = new GroupLinks();
+            $socialLinks->social_type = $social['socialType'];
+            $socialLinks->link = $social['link'];
+            $socialLinks->music_group_id = $musicGroup->id;
+            $socialLinks->save();
+        }
 
         return $musicGroup;
     }
