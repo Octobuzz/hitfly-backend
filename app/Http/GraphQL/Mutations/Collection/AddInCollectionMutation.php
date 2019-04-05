@@ -13,7 +13,7 @@ use App\Models\Track;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
 
-class AddToUserPlayListMutation extends Mutation
+class AddInCollectionMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'addToUserPlayList',

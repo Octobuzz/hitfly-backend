@@ -27,4 +27,9 @@ class Collection extends Model
     {
         return $this->belongsToMany(Track::class, 'collection_track')->withTimestamps();
     }
+
+    public function getImageAttribute($nameAttribute)
+    {
+        return  url('/').'/storage/collection/'.$this->user_id.DIRECTORY_SEPARATOR.$nameAttribute;
+    }
 }

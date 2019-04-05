@@ -128,11 +128,14 @@ return [
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
-                'createCollection' => \App\Http\GraphQL\Mutations\CreateCollectionMutation::class,
-                'updateCollection' => \App\Http\GraphQL\Mutations\UpdateCollectionMutation::class,
+
+                'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
+                'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
+
+                'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
+
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
-                'addToUserPlayList' => \App\Http\GraphQL\Mutations\Collection\AddToUserPlayListMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -167,7 +170,6 @@ return [
         'UserInput' => \App\Http\GraphQL\InputObject\UserInput::class,
         'CommentInput' => \App\Http\GraphQL\InputObject\CommentInput::class,
         'RateCommentInput' => \App\Http\GraphQL\InputObject\RateCommentInput::class,
-        'CollectionInput' => \App\Http\GraphQL\InputObject\CollectionInput::class,
         'FavouriteInput' => \App\Http\GraphQL\InputObject\FavouriteInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
