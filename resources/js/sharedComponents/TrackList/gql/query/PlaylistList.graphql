@@ -3,6 +3,9 @@ query PlaylistList {
         data {
             id
             title
+            tracks {
+                id
+            }
         }
     }
 }

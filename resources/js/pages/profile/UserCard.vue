@@ -4,7 +4,7 @@
       <!--TODO: add transition and/or loader for all fetching data-->
       <img
         class="profileGeneral__img"
-        :src="user.avatar"
+        :src="user.avatar || '/images/anonymous-avatar.png'"
         alt="User avatar"
       >
 
@@ -56,7 +56,7 @@
           <div class="profileGroup__wrapper">
             <img
               class="profileGeneral__img profileAsideBlock__img"
-              :src="group.avatarGroup || '/images/note.svg'"
+              :src="group.avatarGroup || '/images/anonymous-avatar.png'"
               alt="Group avatar"
             >
 

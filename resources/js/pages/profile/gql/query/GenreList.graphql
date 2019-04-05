@@ -1,4 +1,4 @@
-query Genre {
+query GenreList {
   genre {
     id
     name

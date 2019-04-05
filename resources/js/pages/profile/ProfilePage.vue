@@ -13,6 +13,10 @@
       update group
     </router-link>
     <br>
+    <router-link to="/profile/edit">
+      edit
+    </router-link>
+    <br>
     <router-link to="/profile/obsolete">
       obsolete
     </router-link>
@@ -27,7 +31,7 @@
 
       <div class="main__profile">
         <!--TODO: temp-->
-        <CreateGroup/>
+        <EditUser/>
         <router-view/>
       </div>
     </main>
@@ -37,12 +41,12 @@
 <script>
 import UserCard from './UserCard.vue';
 // TODO: temp
-import CreateGroup from './CreateGroup.vue';
+import EditUser from './EditUser.vue';
 
 export default {
   components: {
     UserCard,
-    CreateGroup // TODO: temp
+    EditUser // TODO: temp
   },
   data() {
     return {};

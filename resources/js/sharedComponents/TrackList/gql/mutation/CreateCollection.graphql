@@ -1,0 +1,18 @@
+mutation CreateCollection(
+    $title: Int!
+    $image: Upload
+) {
+    createCollection(
+        collection: {
+            title: $title
+        }
+        image: $image
+    ) {
+        id
+        image
+        title
+        tracks {
+            id
+        }
+    }
+}

@@ -4,19 +4,27 @@
     placement="left"
     :auto-hide="true"
   >
-    <template #popover>
-      <a v-close-popover>
-        Close
-      </a>
+    <slot/>
 
-      <ul>
+    <template #popover>
+      <span class="add-to-playlist__header">
+        Добавить в плейлист
+      </span>
+
+      <hr class="add-to-playlist__delimiter">
+
+      <ul class="add-to-playlist__list">
         <li
-          v-for="playlist in playlistList"
+          v-for="(playlist, index) in playlistList"
           :key="playlist.id"
+          class="add-to-playlist__list-item"
           @click="setTrackPlaylist(playlist.id)"
         >
-          <span v-if="trackPlaylistId === playlist.id">
-            SELECTED
+          <span
+            v-if="index === 0"
+            class="add-to-playlist__tick"
+          >
+            ✔
           </span>
           {{ playlist.title }}
         </li>
@@ -44,13 +52,6 @@ export default {
     trackId: {
       type: Number,
       required: true
-    },
-    // TODO: when the track playlist id will be implemented change 'default' to
-    // 'required' or grab the id from track
-
-    trackPlaylistId: {
-      type: Number,
-      default: 1
     }
   },
 
@@ -62,14 +63,42 @@ export default {
   },
 
   methods: {
-    // TODO: implement once the backend is ready
+    trackBelongsToTrackList(trackList) {
+      // TODO: remove 'return false;'
+
+      return false;
+
+      return trackList.some(track => track.id === this.trackId);
+    },
 
     setTrackPlaylist(id) {
-      // TODO: apollo mutation
+      // TODO: apollo mutation (wop api)
     },
+
     createNewPlaylist() {
       // TODO: playlist name validation
-      // TODO: apollo mutation
+      // TODO: change implementation after fixing 'my' prop
+      // TODO: change implementation after backend altering type of 'title' field to 'String'
+
+      // this.$apollo.mutate({
+      //   mutation: gql.mutation.CREATE_COLLECTION,
+      //   variables: {
+      //     title: Math.round(((1 + Math.random()) * 1e7))
+      //   },
+      //   update(store, { data: { CreateColleciton } }) {
+      //     const data = store.readQuery({
+      //       query: gql.query.PLAYLIST_LIST
+      //     });
+      //
+      //     console.log(data);
+      //
+      //     // userData.user.musicGroups.push(createMusicGroup);
+      //     // store.writeQuery({
+      //     //   query: gql.query.USER,
+      //     //   data: userData
+      //     // });
+      //   }
+      // });
 
       this.newPlaylist = '';
     }
@@ -78,7 +107,7 @@ export default {
   apollo: {
     playlistList: {
       // TODO: implement pagination or loadable list
-      // TODO: fetch user's personal list of collections (not from global space)
+      // TODO: change implementation after fixing 'my' prop
 
       // There will be no duplication of the data because the 'result' callback is
       // always passed the same object and popover always renders its content
@@ -99,8 +128,6 @@ export default {
 </script>
 
 <style
-  scoped
   lang="scss"
->
-
-</style>
+  src="./AddToPlaylist.scss"
+/>

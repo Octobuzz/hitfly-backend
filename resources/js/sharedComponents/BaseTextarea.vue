@@ -97,14 +97,14 @@ export default {
     font-size: 14px;
     color: $color_3;
     position: absolute;
-    top: 16px;
+    top: 20px;
     left: 17px;
     user-select: none;
     cursor: pointer;
     transition: transform 0.3s ease;
 
     &_top {
-      transform: translate(-13%, -10px) scale(.75);
+      transform: translate(-13%, -14px) scale(.75);
     }
   }
 

@@ -1,0 +1,81 @@
+@import '../../../sass/variables.scss';
+
+$avatarSide: 235px;
+$avatarRightMargin: 30px;
+$formMaxWidth: 986px;
+$formRightPadding: 40px;
+
+.edit-profile {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-top: 70px;
+
+  &-avatar {
+    min-width: $avatarSide;
+    width: $avatarSide;
+    min-height: $avatarSide;
+    height: $avatarSide;
+    margin: {
+      right: $avatarRightMargin;
+      bottom: 24px;
+    }
+  }
+
+  &-form {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    max-width: $formMaxWidth;
+    padding: {
+      right: $formRightPadding;
+      bottom: 28px;
+    }
+
+    &__name-input,
+    &__location-input,
+    &__email-input,
+    &__password-input {
+      max-width: 320px;
+    }
+
+    &__name-input {
+      margin-bottom: 16px;
+    }
+
+    &__location-input {
+      margin-bottom: 46px;
+    }
+
+    &__email-input {
+      flex-grow: 1;
+      margin-right: 16px;
+    }
+
+    &__password-input {
+      flex-grow: 1;
+      margin-right: 16px;
+    }
+
+    &__input-group {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    &__change-button {
+      min-width: 160px;
+      max-width: 160px;
+    }
+
+    &__social-networks-link {
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    &__h2 {
+      margin: {
+        top: 0;
+        bottom: 22px;
+      }
+    }
+  }
+}

@@ -19,6 +19,7 @@
         "cross-env": "^5.1",
         "eslint": "^5.15.3",
         "eslint-plugin-vue": "^5.2.2",
+        "graphql-tag": "^2.10.1",
         "laravel-mix": "^4.0.15",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",

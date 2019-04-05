@@ -1,5 +1,5 @@
 <template>
-  <div class="avatar">
+  <div :class="['avatar', { avatar_circle: circle }]">
     <transition>
       <div
         v-if="renderInFirstContainer && imageUrl"
@@ -55,6 +55,10 @@ export default {
     caption: {
       type: String,
       default: 'Загрузить аватар'
+    },
+    circle: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -140,8 +144,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 175px;
     height: 32px;
+    padding: {
+      left: 16px;
+      right: 16px;
+    };
     margin-top: 72%;
     border-radius: $border-radius;
     z-index: 10;
@@ -152,6 +159,16 @@ export default {
     svg {
       margin-right: 8px;
       transform: translateY(-1px);
+    }
+  }
+
+  &_circle {
+    background: none;
+    border-radius: 50%;
+    overflow: hidden;
+
+    &:before {
+      display: none;
     }
   }
 }

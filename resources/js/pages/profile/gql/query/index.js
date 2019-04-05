@@ -1,2 +1,2 @@
-export { default as GENRE } from './Genre.graphql';
+export { default as GENRE_LIST } from './GenreList.graphql';
 export { default as USER } from './User.graphql';

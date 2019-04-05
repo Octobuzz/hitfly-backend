@@ -97,12 +97,12 @@ export default {
     user-select: none;
     cursor: pointer;
     transition: transform 0.3s ease;
-    top: 17px;
+    top: 20px;
     left: 16px;
     z-index: -1;
 
     &_top {
-      transform: translate(-13%, -10px) scale(.75);
+      transform: translate(-13%, -14px) scale(.75);
     }
   }
 

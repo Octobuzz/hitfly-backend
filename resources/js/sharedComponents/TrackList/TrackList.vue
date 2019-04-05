@@ -5,7 +5,11 @@
       :key="track.id"
       :index="index"
       :track="track"
-    />
+    >
+      <button>
+        add to playlist
+      </button>
+    </TrackListEntry>
   </div>
 </template>
 

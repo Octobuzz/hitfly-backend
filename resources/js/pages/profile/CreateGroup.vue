@@ -38,38 +38,22 @@
           Выберите жанр
         </h3>
 
-        <span
-          v-if="$apollo.queries.genres.loading"
-          class="group-description__genre-tag-container"
-        >
-          Genres are loading...
-        </span>
-        <div v-else class="group-description__genre-tag-container">
-          <BaseTag
-            v-for="(genre, index) in availableGenres"
-            :key="index"
-            :name="genre"
-            :active="group.genres.includes(genre)"
-            class="group-description__genre-tag"
-            @press="updateGroupGenres($event)"
-          />
-          <MoreTags @press="incrementGenresOnPage" />
-        </div>
-
-        <span class="group-description__genre-list-suggestion group-description__regular-text">
-          или выберите из списка
-        </span>
-
-        <BaseDropdown
+        <ChooseGenres
           v-model="group.genres"
-          class="group-description__genre-list"
-          header="Поиск по жанрам"
-          :options="availableGenres"
-          :multiple="true"
-          :close-on-select="false"
-          :searchable="false"
-          :max-height="500"
-        />
+          class="group-description__genre-tag-container"
+          :dropdown-max-width="200"
+        >
+          <template #separator>
+            <span
+              :class="[
+                'group-description__genre-list-suggestion',
+                'group-description__regular-text'
+              ]"
+            >
+              или выберите из списка
+            </span>
+          </template>
+        </ChooseGenres>
 
         <h3 class="group-description__header_h3">
           Описание деятельности
@@ -118,11 +102,9 @@ import gql from './gql';
 import SocialMediaLinks from './SocialMediaLinks.vue';
 import InviteGroupMembers from './InviteGroupMembers.vue';
 import ChooseAvatar from './ChooseAvatar.vue';
-import MoreTags from './MoreTags.vue';
+import ChooseGenres from './ChooseGenres.vue';
 import BaseInput from '../../sharedComponents/BaseInput.vue';
 import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
-import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
-import BaseTag from '../../sharedComponents/BaseTag.vue';
 import FormButton from '../../sharedComponents/FormButton.vue';
 import PencilIcon from '../../sharedComponents/icons/PencilIcon.vue';
 import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
@@ -133,11 +115,9 @@ export default {
     SocialMediaLinks,
     InviteGroupMembers,
     ChooseAvatar,
-    MoreTags,
+    ChooseGenres,
     BaseInput,
     BaseTextarea,
-    BaseDropdown,
-    BaseTag,
     PencilIcon,
     CalendarIcon
   },
@@ -158,37 +138,18 @@ export default {
         genres: [],
         socialLinks: [],
         invitedMembers: []
-      },
-      genres: [],
-      genreIdMap: [],
-      genresOnPage: 10
+      }
     };
   },
 
   computed: {
-    availableGenres() {
-      return this.genres.slice(0, this.genresOnPage);
-    },
     creationQueryGenres() {
       return this.group.genres
-        .map(genre => this.genreIdMap[genre]);
+        .map(genre => genre.id);
     }
   },
 
   methods: {
-    incrementGenresOnPage() {
-      this.genresOnPage += 10;
-    },
-
-    updateGroupGenres(tag) {
-      if (tag.active) {
-        this.group.genres.push(tag.name);
-      } else {
-        this.group.genres = this.group.genres
-          .filter(genre => genre !== tag.name);
-      }
-    },
-
     createGroup() {
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_MUSIC_GROUP,
@@ -217,25 +178,6 @@ export default {
         console.log(graphQLErrors);
         // TODO: validation errors
       });
-    }
-  },
-
-  apollo: {
-    genres: {
-      query: gql.query.GENRE,
-      manual: true,
-      result({ data: { genre }, networkStatus }) {
-        if (networkStatus === 7) {
-          this.genres = genre.map(genre => genre.name);
-
-          // eslint-disable-next-line no-return-assign
-          this.genreIdMap = genre.reduce((acc, genreEntry) => {
-            acc[genreEntry.name] = genreEntry.id;
-
-            return acc;
-          }, {});
-        }
-      }
     }
   }
 };
