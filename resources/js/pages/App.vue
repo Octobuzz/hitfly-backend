@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <!--<Header /> TODO: temp-->
+    <Header />
     <router-view />
     <Footer />
   </div>

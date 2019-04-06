@@ -63,6 +63,7 @@
           v-model="group.activity.input"
           class="group-description__activity-textarea"
           label="Описание группы"
+          :rows="3"
         />
 
         <h3 class="group-description__header_h3">

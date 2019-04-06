@@ -16,6 +16,7 @@
         @press="handleTagUpdate"
       />
       <button
+        v-if="availableGenres.length < genresMaxCount"
         class="choose-genres__more-tags-button"
         @click="showMoreTags"
       >
@@ -34,7 +35,6 @@
       :close-on-select="false"
       :searchable="false"
       :max-height="500"
-      max-width="200"
       @input="handleListUpdate"
     />
   </div>
@@ -48,7 +48,7 @@ import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
 export default {
   components: {
     BaseTag,
-    BaseDropdown,
+    BaseDropdown
   },
 
   model: {
@@ -60,6 +60,18 @@ export default {
       type: Array,
       default: () => []
     },
+    genresStartCount: {
+      type: Number,
+      default: 10
+    },
+    genresMaxCount: {
+      type: Number,
+      default: 20
+    },
+    genresQueryCount: {
+      type: Number,
+      default: 10
+    },
     dropdownMaxWidth: {
       type: Number,
       default: Infinity
@@ -70,7 +82,8 @@ export default {
     return {
       genres: [],
       genreIdMap: {},
-      availableGenresCount: 10
+      availableGenresCount: this.genresStartCount,
+      showMoreClicked: false
     };
   },
 
@@ -82,7 +95,8 @@ export default {
 
   methods: {
     showMoreTags() {
-      this.availableGenresCount += 10;
+      this.availableGenresCount += this.genresQueryCount;
+      this.showMoreClicked = true;
     },
 
     handleTagUpdate(tag) {
@@ -156,7 +170,7 @@ export default {
     font-size: 12px;
     line-height: 16px;
     color: $color_3;
-    padding: 12px 18px 12px 18px;;
+    padding: 8px 18px 8px 18px;;
     position: relative;
     margin-bottom: 11px;
     margin-top: auto;
@@ -170,10 +184,9 @@ export default {
     &:hover {
       color: white;
       background: $linear-gradient;
-      padding: 13px 19px 13px 19px;
+      padding: 9px 19px 9px 19px;
       border: none;
     }
   }
 }
-
 </style>

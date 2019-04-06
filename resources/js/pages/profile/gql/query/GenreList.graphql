@@ -2,5 +2,6 @@ query GenreList {
   genre {
     id
     name
+    userFavourite
   }
 }

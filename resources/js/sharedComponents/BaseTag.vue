@@ -55,7 +55,7 @@ export default {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 18px 12px 18px;
+  padding: 8px 18px 8px 18px;
   border: 1px solid $color_3;
   border-radius: 20px;
   cursor: pointer;

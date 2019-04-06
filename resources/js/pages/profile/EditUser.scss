@@ -33,6 +33,7 @@ $formRightPadding: 40px;
 
     &__name-input,
     &__location-input,
+    &__career-start-year-input,
     &__email-input,
     &__password-input {
       max-width: 320px;
@@ -44,6 +45,14 @@ $formRightPadding: 40px;
 
     &__location-input {
       margin-bottom: 46px;
+    }
+
+    &__career-start-year-input {
+      margin-bottom: 40px;
+    }
+
+    &__activity-textarea {
+      margin-bottom: 42px;
     }
 
     &__email-input {
@@ -68,14 +77,90 @@ $formRightPadding: 40px;
 
     &__social-networks-link {
       display: block;
-      margin-bottom: 20px;
+      margin-bottom: 54px;
     }
 
-    &__h2 {
+    &__tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    &__chosen-tag {
+      margin: {
+        right: 8px;
+        bottom: 10px;
+      }
+    }
+
+    &__choose-genres {
+      margin-bottom: 40px;
+    }
+
+    &__genre-list-suggestion {
+      display: block;
+      margin: {
+        top: 18px;
+        bottom: 18px;
+      }
+    }
+
+    &__h2, &__h3 {
       margin: {
         top: 0;
-        bottom: 22px;
+        bottom: 14px;
       }
+    }
+
+    // TODO: make h-styles global
+
+    &__h3 {
+      font-family: "Gotham Pro", serif;
+      font-size: 20px;
     }
   }
 }
+
+.edit-profile-footer {
+  box-sizing: border-box;
+  max-width: $avatarSide
+    + $avatarRightMargin
+    + $formMaxWidth
+    + $formRightPadding;
+  margin-bottom: 30px;
+
+  &__delimiter {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid $borderColor;
+    margin-bottom: 22px;
+  }
+
+  &__save-button {
+    display: block;
+    max-width: 190px;
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .edit-profile {
+    flex-wrap: wrap;
+  }
+
+  .edit-profile-footer {
+    max-width: $formMaxWidth;
+  }
+}
+
+/*@media screen and (max-width: 1440px) {
+  $descriptionRightPadding: 10px;
+
+  .create-group-body .group-description {
+    padding-right: $descriptionRightPadding;
+  }
+
+  .create-group-footer {
+    padding-right: $descriptionRightPadding;
+  }
+}*/

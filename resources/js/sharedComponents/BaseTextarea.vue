@@ -15,6 +15,7 @@
       <textarea
         :class="['base-textarea__textarea', { 'base-textarea__textarea_error': showError }]"
         :value="value"
+        :rows="$attrs.rows"
         @input="emitInput($event)"
         @focus="focus = true"
         @blur="focus = false"
@@ -91,7 +92,6 @@ export default {
   font-family: "Gotham Pro", serif;
   display: block;
   position: relative;
-  height: 80px;
 
   &__label {
     font-size: 14px;
