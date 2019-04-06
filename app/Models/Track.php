@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Track extends Model
@@ -88,7 +85,12 @@ class Track extends Model
 
     public function userFavourite()
     {
-        return $this->morphMany(Favourite::class, "favouriteable")->where('user_id',\Auth::user()->id);
+        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
     }
 
+    public function userPlayLists()
+    {
+        return $this->belongsToMany(Collection::class, 'collection_track')
+            ->where('collections.user_id', '=', \Auth::user()->id);
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -35,7 +34,6 @@ class Favourite extends Model
     {
         return $this->belongsTo(Track::class, 'favouriteable_id');
     }
-
 
     public function album(): BelongsTo
     {

@@ -95,6 +95,17 @@ return [
             'query' => [
                 'user' => \App\Http\GraphQL\Query\UserQuery::class,
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
+                'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
+                'musicGroup' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
+                'musicGroups' => \App\Http\GraphQL\Query\MusicGroupsQuery::class,
+                'albums' => \App\Http\GraphQL\Query\AlbumsQuery::class,
+                'album' => \App\Http\GraphQL\Query\AlbumQuery::class,
+                'commentsTrack' => \App\Http\GraphQL\Query\CommentsTrackQuery::class,
+                'commentsAlbum' => \App\Http\GraphQL\Query\CommentsAlbumQuery::class,
+                'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
+                'track' => \App\Http\GraphQL\Query\TrackQuery::class,
+                'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
             ],
             'mutation' => [
                 'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -109,7 +120,6 @@ return [
                 'users' => \App\Http\GraphQL\Query\UsersQuery::class,
                 'musicGroup' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
                 'musicGroups' => \App\Http\GraphQL\Query\MusicGroupsQuery::class,
-                'musicGroup' => \App\Http\GraphQL\Query\MusicGroupQuery::class,
                 'albums' => \App\Http\GraphQL\Query\AlbumsQuery::class,
                 'album' => \App\Http\GraphQL\Query\AlbumQuery::class,
                 'commentsTrack' => \App\Http\GraphQL\Query\CommentsTrackQuery::class,
@@ -118,22 +128,28 @@ return [
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
-                'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
                 'favouriteAlbum' => \App\Http\GraphQL\Query\FavouriteAlbumQuery::class,
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
+                'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
             ],
             'mutation' => [
-                'trackUpload' => \App\Http\GraphQL\Mutations\TrackUploadMutation::class,
+                'trackUpload' => \App\Http\GraphQL\Mutations\Track\TrackUploadMutation::class,
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
-                'createCollection' => \App\Http\GraphQL\Mutations\CreateCollectionMutation::class,
-                'updateCollection' => \App\Http\GraphQL\Mutations\UpdateCollectionMutation::class,
+
+                'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
+                'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
+
+                'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
+
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
+
+                'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -151,6 +167,7 @@ return [
     //
     'types' => [
         'User' => \App\Http\GraphQL\Type\UserType::class,
+        'MyProfile' => \App\Http\GraphQL\Type\MyProfileType::class,
         'MusicGroup' => \App\Http\GraphQL\Type\MusicGroupType::class,
         'Album' => \App\Http\GraphQL\Type\AlbumType::class,
         'Track' => \App\Http\GraphQL\Type\TrackType::class,
@@ -159,26 +176,25 @@ return [
         'CommentTrack' => \App\Http\GraphQL\Type\CommentTrackType::class,
         'Collection' => \App\Http\GraphQL\Type\CollectionType::class,
         'CityType' => \App\Http\GraphQL\Type\CityType::class,
-        'FavouriteTrack'          => \App\Http\GraphQL\Type\FavouriteTrackType::class,
-        'FavouriteAlbum'          => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
-        'FavouriteGenre'          => \App\Http\GraphQL\Type\FavouriteGenreType::class,
+        'FavouriteTrack' => \App\Http\GraphQL\Type\FavouriteTrackType::class,
+        'FavouriteAlbum' => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
+        'FavouriteGenre' => \App\Http\GraphQL\Type\FavouriteGenreType::class,
 
+        'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
+        'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
+        'UserInput' => \App\Http\GraphQL\InputObject\UserInput::class,
+        'CommentInput' => \App\Http\GraphQL\InputObject\CommentInput::class,
+        'RateCommentInput' => \App\Http\GraphQL\InputObject\RateCommentInput::class,
+        'FavouriteInput' => \App\Http\GraphQL\InputObject\FavouriteInput::class,
 
-        'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
-        'TrackInput'          => \App\Http\GraphQL\InputObject\TrackInput::class,
-        'UserInput'          => \App\Http\GraphQL\InputObject\UserInput::class,
-        'CommentInput'          => \App\Http\GraphQL\InputObject\CommentInput::class,
-        'RateCommentInput'          => \App\Http\GraphQL\InputObject\RateCommentInput::class,
-        'CollectionInput'          => \App\Http\GraphQL\InputObject\CollectionInput::class,
-        'FavouriteInput'          => \App\Http\GraphQL\InputObject\FavouriteInput::class,
+        'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
+        'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
+        'GenderType' => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
 
+        'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
+        'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
 
-        'CommentTypeEnum'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
-        'FavouriteTypeEnum'          => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
-        'GenderType'          => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
-
-        'CommentResult'          => \App\Http\GraphQL\Unions\CommentUnion::class,
-        'FavouriteResult'          => \App\Http\GraphQL\Unions\FavouriteUnion::class,
+        'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.
@@ -188,7 +204,7 @@ return [
     //     'message' => '',
     //     'locations' => []
     // ]
-    'error_formatter' => ['\Rebing\GraphQL\GraphQL', 'formatError'],
+    'error_formatter' => ['App\Support\GraphQL\Error', 'formatError'],
 
     /*
      * Custom Error Handling
@@ -197,7 +213,7 @@ return [
      *
      * The default handler will pass exceptions to laravel Error Handling mechanism
      */
-    'errors_handler' => ['\Rebing\GraphQL\GraphQL', 'handleErrors'],
+    'errors_handler' => ['App\Support\GraphQL\Error', 'handleErrors'],
 
     // You can set the key, which will be used to retrieve the dynamic variables
     'params_key' => 'variables',

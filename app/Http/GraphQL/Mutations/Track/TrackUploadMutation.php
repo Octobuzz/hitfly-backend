@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\GraphQL\Mutations;
+namespace App\Http\GraphQL\Mutations\Track;
 
 use App\Models\Track;
 use GraphQL;

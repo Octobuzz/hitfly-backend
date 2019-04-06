@@ -14,6 +14,7 @@ class TracksQuery extends Query
 {
     protected $attributes = [
         'name' => 'Music Group Query',
+        'description' => 'Запрос треков',
     ];
 
     public function type()
@@ -37,7 +38,7 @@ class TracksQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
-            return Track::with($fields->getRelations())
+            return Track::with($fields->getRelations())->select($fields->getSelect())
                 ->where('user_id', '=', \Auth::user()->id)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }

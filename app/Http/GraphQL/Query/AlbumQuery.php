@@ -13,6 +13,7 @@ class AlbumQuery extends Query
 {
     protected $attributes = [
         'name' => 'Music Group Query',
+        'description' => 'Музыкальные альбомы',
     ];
 
     public function type()

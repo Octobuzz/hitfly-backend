@@ -11,6 +11,7 @@ class UsersQuery extends Query
 {
     protected $attributes = [
         'name' => 'Users query',
+        'description' => 'Получение списка пользователей',
     ];
 
     public function type()
