@@ -92,4 +92,9 @@ class MusicGroup extends Model
     {
         $this->creator_group_id = $user->id;
     }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }
