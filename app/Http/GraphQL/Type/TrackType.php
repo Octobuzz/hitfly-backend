@@ -77,6 +77,7 @@ class TrackType extends GraphQLType
                         return false;
                     }
                 },
+                'selectable' => false,
             ],
             'userPlayLists' => [
                 'type' => Type::listOf(GraphQL::type('Collection')),
