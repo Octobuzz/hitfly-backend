@@ -58,6 +58,11 @@ class UserInterface extends InterfaceType
                 'type' => Type::string(),
                 'description' => 'Аватар пользователя',
             ],
+            'favouriteGenres' => [
+                'type' => Type::listOf(\GraphQL::type('Genre')),
+                'description' => 'Любимые жанры пользователя',
+            ],
+
         ];
     }
 
