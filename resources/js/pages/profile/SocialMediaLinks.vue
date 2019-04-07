@@ -8,7 +8,7 @@
       <BaseDropdown
         v-model="link.network"
         class="social-links__network-select"
-        header="Выберите соц. сеть"
+        title="Соц. сеть"
         :options="networkList"
         :searchable="false"
         :max-height="500"
@@ -17,15 +17,24 @@
       <BaseInput
         v-model="link.username"
         class="social-links__username-input"
-        label="Имя пользователя"
+        label="Имя"
         @input="onInput"
       />
       <button
-        class="social-links__button-close"
+        class="social-links__close-button_desktop"
         @click="removeLink(link.id)"
       >
         <CrossIcon/>
       </button>
+
+      <div class="social-links__close-button-row">
+        <button
+          class="social-links__close-button_mobile"
+          @click="removeLink(link.id)"
+        >
+          Удалить ссылку
+        </button>
+      </div>
     </div>
 
     <FormButton
@@ -186,19 +195,62 @@ export default {
     max-width: 180px;
   }
 
-  &__button-close {
-    box-sizing: border-box;
-    position: absolute;
-    width: auto;
-    height: 21px;
-    right: -29px;
-    top: 50%;
-    padding: 5px;
-    margin: {
-      top: auto;
-      bottom: auto;
-    };
-    transform: translateY(-50%);
+  &__close-button {
+    &-row {
+      display: none;
+    }
+
+    &_desktop {
+      box-sizing: border-box;
+      position: absolute;
+      width: auto;
+      height: 21px;
+      right: -43px;
+      top: 50%;
+      padding: 5px;
+      margin: {
+        top: auto;
+        bottom: auto;
+      };
+      transform: translateY(-50%);
+    }
+
+    &_mobile {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .social-links {
+    &__row {
+      flex-wrap: wrap;
+    }
+
+    &__network-select {
+      margin-right: 9px;
+    }
+
+    &__close-button {
+      &-row {
+        display: block;
+        width: 100%;
+      }
+
+      &_desktop {
+        display: none;
+      }
+
+      &_mobile {
+        color: $color_pink;
+        display: initial;
+        padding: {
+          top: 12px;
+          bottom: 8px;
+          left: 16px;
+        }
+      }
+    }
   }
 }
 </style>

@@ -159,4 +159,23 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 767px) {
+  .invited-members {
+    &__input-row {
+      flex-wrap: wrap;
+    }
+
+    &__user-input {
+      width: 100%;
+    }
+
+    &__save-button {
+      margin: {
+        top: 16px;
+        left: auto;
+      }
+    }
+  }
+}
 </style>

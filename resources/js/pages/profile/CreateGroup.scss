@@ -1,25 +1,37 @@
 @import '../../../sass/variables.scss';
 
 $coverSide: 235px;
-$coverRightPadding: 30px;
-$descriptionMaxWidth: 986px;
-$descriptionRightPadding: 40px;
+$coverRightMargin: 30px;
+$descriptionMaxWidth: 991px;
+$descriptionRightPadding: 37px;
 
-.create-group-body {
+.create-group {
   display: flex;
   flex-wrap: nowrap;
-  padding-top: 70px;
 
-  .group-cover {
+  &-header {
+    margin: {
+      right: $descriptionRightPadding;
+      bottom: 42px;
+    }
+  }
+
+  &-container {
+    max-width: 991px;
+  }
+
+  &-cover {
     min-width: $coverSide;
     width: $coverSide;
     min-height: $coverSide;
     height: $coverSide;
-    padding-right: $coverRightPadding;
-    margin-bottom: 24px;
+    margin: {
+      right: $coverRightMargin;
+      bottom: 24px;
+    }
   }
 
-  .group-description {
+  &-description {
     box-sizing: border-box;
     flex-wrap: wrap;
     flex-grow: 1;
@@ -37,16 +49,16 @@ $descriptionRightPadding: 40px;
 
     &__name-input {
       display: block;
-      margin-bottom: 36px;
+      margin-bottom: 42px;
     }
 
     &__year-input {
       display: block;
-      margin-bottom: 22px;
+      margin-bottom: 36px;
     }
 
     &__genre-tag-container {
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
 
     &__genre-list-suggestion {
@@ -55,6 +67,10 @@ $descriptionRightPadding: 40px;
         top: 18px;
         bottom: 18px;
       }
+    }
+
+    &::v-deep &__dropdown {
+      max-width: 330px;
     }
 
     &__group-description-suggestion {
@@ -72,7 +88,7 @@ $descriptionRightPadding: 40px;
 
     &__activity-textarea {
       display: block;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
 
     &__regular-text {
@@ -86,6 +102,8 @@ $descriptionRightPadding: 40px;
       }
     }
 
+    // TODO: global header styles
+
     &__header_h3 {
       font-size: 20px;
       margin: {
@@ -94,56 +112,87 @@ $descriptionRightPadding: 40px;
       }
     }
 
-    .group-description__group-members-header {
+    & &__group-members-header {
       margin: {
         top: 40px;
         bottom: 4px;
       }
     }
   }
-}
 
-.create-group-footer {
-  box-sizing: border-box;
-  max-width: $coverSide
-    + $coverRightPadding
-    + $descriptionMaxWidth
-    + $descriptionRightPadding;
-  padding-right: $descriptionRightPadding;
-  margin-bottom: 30px;
-
-  &__delimiter {
+  &-footer {
     box-sizing: border-box;
-    width: 100%;
-    border: 1px solid $borderColor;
-    margin-bottom: 22px;
-  }
+    max-width: $coverSide
+      + $coverRightMargin
+      + $descriptionMaxWidth
+      + $descriptionRightPadding;
+    padding-right: $descriptionRightPadding;
+    margin-bottom: 62px;
 
-  &__save-button {
-    display: block;
-    max-width: 180px;
-    margin-left: auto;
+    &__delimiter {
+      box-sizing: border-box;
+      width: 100%;
+      border: {
+        width: 1px 0 0 0;
+        style: solid;
+        color: $borderColor;
+      }
+      margin-bottom: 22px;
+    }
+
+    &__save-button {
+      display: block;
+      max-width: 180px;
+      margin-left: auto;
+    }
   }
 }
 
 @media screen and (max-width: 1440px) {
-  .create-group-body {
+  .create-group {
     flex-wrap: wrap;
   }
 
   .create-group-footer {
     max-width: $descriptionMaxWidth;
+    padding-right: $descriptionRightPadding;
   }
 }
 
-@media screen and (max-width: 1440px) {
-  $descriptionRightPadding: 10px;
+@media screen and (max-width: 767px) {
+  .create-group {
+    &-header {
+      margin-right: 0;
+    }
 
-  .create-group-body .group-description {
-    padding-right: $descriptionRightPadding;
-  }
+    &-cover {
+      margin: {
+        left: auto;
+        right: auto;
+      }
+    }
 
-  .create-group-footer {
-    padding-right: $descriptionRightPadding;
+    &-description {
+      padding-right: 0;
+
+      &__name-input,
+      &__year-input,
+      &__genre-list,
+      &::v-deep &__dropdown {
+        max-width: 100%;
+      }
+    }
+
+    &-footer {
+      padding-right: 0;
+
+      &__delimiter {
+        display: none;
+      }
+
+      &__save-button {
+        max-width: 100%;
+      }
+    }
   }
 }

@@ -14,7 +14,6 @@
     <div :style="{ marginLeft: '600px' }">
       <TrackList/>
     </div>
-
   </div>
 </template>
 

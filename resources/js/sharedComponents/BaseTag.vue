@@ -62,6 +62,10 @@ export default {
   user-select: none;
   transition: .2s;
 
+  &:hover {
+    border-color: $color_pink;
+  }
+
   &::v-deep svg {
     display: block;
     padding-right: 8px;

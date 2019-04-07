@@ -1,15 +1,14 @@
 <template>
-  <label class="base-dropdown">
+  <label :class="['base-dropdown', $attrs.class]">
     <span
       :class="[
         'base-dropdown__label',
         {
           'base-dropdown__label_top': !closed || !empty,
-          ...$attrs.class
         }
       ]"
     >
-      {{ header }}
+      {{ title }}
     </span>
     <v-select
       placeholder=""
@@ -31,7 +30,7 @@ export default {
   },
 
   props: {
-    header: {
+    title: {
       type: String,
       default: ''
     },

@@ -1,12 +1,11 @@
 <template>
   <div>
-    <label class="base-textarea">
+    <label :class="['base-textarea', $attrs.class]">
       <span
         :class="[
           'base-textarea__label',
           {
-            'base-textarea__label_top': focus || !empty,
-            ...$attrs.class
+            'base-textarea__label_top': focus || !empty
           }
         ]"
       >

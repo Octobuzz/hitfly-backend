@@ -31,7 +31,7 @@
 
       <div class="main__profile">
         <!--TODO: temp-->
-        <EditUser/>
+        <CreateGroup/>
         <router-view/>
       </div>
     </main>
@@ -42,9 +42,11 @@
 import UserCard from './UserCard.vue';
 // TODO: temp
 import EditUser from './EditUser.vue';
+import CreateGroup from "./CreateGroup";
 
 export default {
   components: {
+    CreateGroup,
     UserCard,
     EditUser // TODO: temp
   },

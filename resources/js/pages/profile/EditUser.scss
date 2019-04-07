@@ -10,6 +10,10 @@ $formRightPadding: 40px;
   flex-wrap: nowrap;
   padding-top: 70px;
 
+  &-container {
+    max-width: 991px;
+  }
+
   &-avatar {
     min-width: $avatarSide;
     width: $avatarSide;
@@ -26,10 +30,7 @@ $formRightPadding: 40px;
     flex-wrap: wrap;
     flex-grow: 1;
     max-width: $formMaxWidth;
-    padding: {
-      right: $formRightPadding;
-      bottom: 28px;
-    }
+    padding-right: $formRightPadding;
 
     &__name-input,
     &__location-input,
@@ -71,8 +72,11 @@ $formRightPadding: 40px;
     }
 
     &__change-button {
-      min-width: 160px;
-      max-width: 160px;
+      width: 160px;
+    }
+
+    &__favourite-genres-button {
+      margin-bottom: 40px;
     }
 
     &__social-networks-link {
@@ -83,7 +87,6 @@ $formRightPadding: 40px;
     &__tags-container {
       display: flex;
       flex-wrap: wrap;
-      margin-bottom: 12px;
     }
 
     &__chosen-tag {
@@ -95,6 +98,10 @@ $formRightPadding: 40px;
 
     &__choose-genres {
       margin-bottom: 40px;
+
+      &::v-deep &__genre-dropdown {
+        max-width: 320px;
+      }
     }
 
     &__genre-list-suggestion {
@@ -119,27 +126,31 @@ $formRightPadding: 40px;
       font-size: 20px;
     }
   }
-}
 
-.edit-profile-footer {
-  box-sizing: border-box;
-  max-width: $avatarSide
-    + $avatarRightMargin
-    + $formMaxWidth
-    + $formRightPadding;
-  margin-bottom: 30px;
-
-  &__delimiter {
+  &-footer {
     box-sizing: border-box;
-    width: 100%;
-    border: 1px solid $borderColor;
-    margin-bottom: 22px;
-  }
+    max-width: $avatarSide
+      + $avatarRightMargin
+      + $formMaxWidth
+      + $formRightPadding;
+    margin-bottom: 62px;
 
-  &__save-button {
-    display: block;
-    max-width: 190px;
-    margin-left: auto;
+    &__delimiter {
+      box-sizing: border-box;
+      width: 100%;
+      border: {
+        width: 1px 0 0 0;
+        style: solid;
+        color: $borderColor;
+      }
+      margin-bottom: 22px;
+    }
+
+    &__save-button {
+      display: block;
+      max-width: 190px;
+      margin-left: auto;
+    }
   }
 }
 
@@ -153,14 +164,44 @@ $formRightPadding: 40px;
   }
 }
 
-/*@media screen and (max-width: 1440px) {
-  $descriptionRightPadding: 10px;
+@media screen and (max-width: 767px) {
+  .edit-profile {
+    &-avatar {
+      margin: {
+        left: auto;
+        right: auto;
+      }
+    }
 
-  .create-group-body .group-description {
-    padding-right: $descriptionRightPadding;
-  }
+    &-form {
+      padding-right: 0;
 
-  .create-group-footer {
-    padding-right: $descriptionRightPadding;
+      &__name-input,
+      &__location-input,
+      &__career-start-year-input,
+      &__email-input,
+      &__password-input,
+      &__choose-genres::v-deep .edit-profile-form__genre-dropdown {
+        max-width: 100%;
+      }
+
+      &__change-button {
+        min-width: 120px;
+      }
+    }
+
+    &-footer {
+      &__delimiter {
+        display: none;
+      }
+
+      &__save-button {
+        max-width: 100%;
+        margin: {
+          right: auto;
+          left: auto;
+        }
+      }
+    }
   }
-}*/
+}

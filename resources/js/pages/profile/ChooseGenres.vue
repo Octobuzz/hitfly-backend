@@ -1,10 +1,5 @@
 <template>
-  <div
-    :class="[
-      'choose-genres',
-      ...$attrs.class
-    ]"
-  >
+  <div :class="['choose-genres', $attrs.class]">
     <div class="choose-genres__tag-container">
       <BaseTag
         v-for="genre in availableGenres"
@@ -28,8 +23,8 @@
 
     <BaseDropdown
       :value="selectedGenres.map(genre => genre.name)"
-      class="choose-genres__list"
-      header="Поиск по жанрам"
+      :class="dropdownClass"
+      title="Поиск по жанрам"
       :options="availableGenres.map(genre => genre.name)"
       :multiple="true"
       :close-on-select="false"
@@ -72,9 +67,9 @@ export default {
       type: Number,
       default: 10
     },
-    dropdownMaxWidth: {
-      type: Number,
-      default: Infinity
+    dropdownClass: {
+      type: String,
+      default: ''
     }
   },
 

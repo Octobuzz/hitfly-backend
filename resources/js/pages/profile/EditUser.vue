@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div class="edit-profile-header">
-
-    </div>
+  <div class="edit-profile-container">
+    <ReturnHeader class="edit-profile-header" />
 
     <div class="edit-profile">
       <div class="edit-profile-avatar">
@@ -55,8 +53,8 @@
         <ChooseGenres
           v-model="playedGenres"
           class="edit-profile-form__choose-genres"
+          dropdown-class="edit-profile-form__genre-dropdown"
           :genres-start-count="10"
-          :dropdown-max-width="200"
         >
           <template #separator>
             <span class="edit-profile-form__genre-list-suggestion">
@@ -144,7 +142,10 @@
         </div>
         <FormButton
           v-if="!genreEditMode"
-          class="edit-profile-form__change-button"
+          :class="[
+            'edit-profile-form__change-button',
+            'edit-profile-form__favourite-genres-button'
+          ]"
           modifier="secondary"
           @press="enterGenreEditMode"
         >
@@ -154,8 +155,9 @@
         <ChooseGenres
           v-else
           v-model="favouriteGenres"
+          class="edit-profile-form__choose-genres"
+          dropdown-class="edit-profile-form__genre-dropdown"
           :genres-start-count="20"
-          :dropdown-max-width="200"
         >
           <template #separator>
             <span class="edit-profile-form__genre-list-suggestion">
@@ -194,9 +196,11 @@ import BalloonIcon from '../../sharedComponents/icons/BalloonIcon.vue';
 import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
 import EnvelopeIcon from '../../sharedComponents/icons/EnvelopeIcon.vue';
 import KeyIcon from '../../sharedComponents/icons/KeyIcon.vue';
+import ReturnHeader from "./ReturnHeader";
 
 export default {
   components: {
+    ReturnHeader,
     ChooseAvatar,
     ChooseGenres,
     BaseInput,
@@ -233,6 +237,7 @@ export default {
       },
       playedGenres: [],
       favouriteGenres: [
+        // TODO: emty array when the backend is ready
         {
           id: 1,
           name: 'Lolita Paucek',
