@@ -62,7 +62,6 @@ class UserInterface extends InterfaceType
                 'type' => Type::listOf(\GraphQL::type('Genre')),
                 'description' => 'Любимые жанры пользователя',
             ],
-
         ];
     }
 

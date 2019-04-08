@@ -4,7 +4,6 @@ namespace App;
 
 use App\Models\Album;
 use App\Models\City;
-use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\Like;
 use App\Models\MusicGroup;
