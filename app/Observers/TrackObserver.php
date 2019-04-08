@@ -5,15 +5,16 @@ namespace App\Observers;
 use App\Models\Track;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
 {
     /**
-     * @param Track $collection
+     * @param Track $track
      *
      * @return bool
      */
-    public function creating(Track $collection)
+    public function creating(Track $track)
     {
         $user = Auth::user();
         if (App::environment('local')) {
@@ -21,7 +22,7 @@ class TrackObserver
                 $user = \App\User::inRandomOrder()->first();
             }
         }
-        $collection->user_id = $user->id;
+        $track->user_id = $user->id;
 
         return true;
     }
@@ -38,10 +39,11 @@ class TrackObserver
     /**
      * Handle the collection "deleted" event.
      *
-     * @param \App\Models\Track $collection
+     * @param \App\Models\Track $track
      */
-    public function deleted(Track $collection)
+    public function deleted(Track $track)
     {
+        Storage::delete('public/music/'.$track->user_id.DIRECTORY_SEPARATOR.$track->filename);
     }
 
     /**
