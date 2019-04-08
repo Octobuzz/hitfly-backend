@@ -2,16 +2,17 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Models\GroupLinks;
+use App\Models\InviteToGroup;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
-class SocialLinksType extends GraphQLType
+class GroupMembersType extends GraphQLType
 {
     protected $attributes = [
-        'name' => 'SocialLinks',
-        'model' => GroupLinks::class,
+        'name' => 'GroupMembersType',
+        'description' => 'Приглашенные члены группы',
+        'model' => InviteToGroup::class,
     ];
 
     public function fields()
@@ -25,14 +26,19 @@ class SocialLinksType extends GraphQLType
                 'type' => \GraphQL::type('MusicGroup'),
                 'description' => 'Музыкальная группа',
             ],
-            'social_type' => [
-                'type' => Type::nonNull(\GraphQL::type('SocialLinksTypeEnum')),
-                'description' => 'социальная сеть',
+            'email' => [
+                'type' => Type::string(),
+                'description' => 'email',
 
             ],
-            'link' => [
-                'type' => Type::nonNull(Type::string()),
-                'description' => 'ссылка на профиль соцсети',
+            'accept' => [
+                'type' => Type::boolean(),
+                'description' => 'принял заявку',
+
+            ],
+            'user' => [
+                'type' => GraphQL::type('User'),
+                'description' => 'id пользователя(приглашаемого)',
 
             ],
             'createdAt' => [

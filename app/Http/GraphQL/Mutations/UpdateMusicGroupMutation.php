@@ -4,8 +4,10 @@ namespace App\Http\GraphQL\Mutations;
 
 use App\Helpers\DBHelpers;
 use App\Models\GroupLinks;
+use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Validator;
 use Rebing\GraphQL\Support\Mutation;
 use Symfony\Component\Finder\Exception\OperationNotPermitedException;
 
@@ -61,6 +63,34 @@ class UpdateMusicGroupMutation extends Mutation
             }else {
                 $socialLinks->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($social));
                 $socialLinks->save();
+            }
+        }
+
+        foreach ($args['musicGroup']['invitedMembers'] as $members){
+            //Validator::make($members,['email'=>"required_without:user_id","user_id"=>"required_without:email"])->validate();
+            $inviteQuery = InviteToGroup::query()->where('music_group_id',$args['id']);
+
+            if(!empty($members['email'])) {
+                $inviteQuery->where('email', '=', $members['email']);
+
+            }
+            if(!empty($members['user_id'])) {
+                $inviteQuery->where('user_id', '=', $members['user_id']);
+
+            }
+            $inviteMember = $inviteQuery->first();
+
+            if (null === $inviteMember) {
+                $inviteMember = new InviteToGroup();
+                if(!empty($members['email']))
+                    $inviteMember->email = $members['email'];
+                if(!empty($members['user_id']))
+                    $inviteMember->user_id = $members['user_id'];
+                $inviteMember->music_group_id = $args['id'];
+                $inviteMember->save();
+            }else {
+                $inviteMember->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($members));
+                $inviteMember->save();
             }
         }
 

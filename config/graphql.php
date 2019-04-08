@@ -163,6 +163,7 @@ return [
         'FavouriteAlbum'          => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
         'FavouriteGenre'          => \App\Http\GraphQL\Type\FavouriteGenreType::class,
         'SocialLinks'          => \App\Http\GraphQL\Type\SocialLinksType::class,
+        'GroupMembersType'          => \App\Http\GraphQL\Type\GroupMembersType::class,
 
 
         'MusicGroupInput'          => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
@@ -173,6 +174,7 @@ return [
         'CollectionInput'          => \App\Http\GraphQL\InputObject\CollectionInput::class,
         'FavouriteInput'          => \App\Http\GraphQL\InputObject\FavouriteInput::class,
         'SocialLinksInput'          => \App\Http\GraphQL\InputObject\SocialLinksInput::class,
+        'GroupMembersInput'          => \App\Http\GraphQL\InputObject\GroupMembersInput::class,
 
 
         'CommentTypeEnum'          => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
