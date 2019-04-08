@@ -8,8 +8,6 @@ class CreateGroupLinksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -17,7 +15,7 @@ class CreateGroupLinksTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('music_group_id');
             $table->foreign('music_group_id')->references('id')->on('music_group')->onDelete('cascade')->onUpdate('cascade');
-            $table->enum('social_type',['facebook','instagram','vkontakte','odnoklassniki'])->nullable(false);
+            $table->enum('social_type', ['facebook', 'instagram', 'vkontakte', 'odnoklassniki'])->nullable(false);
             $table->string('link')->nullable(false);
 
             $table->timestamps();
@@ -26,8 +24,6 @@ class CreateGroupLinksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

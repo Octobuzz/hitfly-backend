@@ -5,7 +5,6 @@ namespace App\Http\GraphQL\Type;
 use App\Models\GroupLinks;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
-use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class SocialLinksType extends GraphQLType
 {
@@ -28,12 +27,10 @@ class SocialLinksType extends GraphQLType
             'social_type' => [
                 'type' => Type::nonNull(\GraphQL::type('SocialLinksTypeEnum')),
                 'description' => 'социальная сеть',
-
             ],
             'link' => [
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'ссылка на профиль соцсети',
-
             ],
             'createdAt' => [
                 'type' => Type::string(),
@@ -43,7 +40,6 @@ class SocialLinksType extends GraphQLType
                 },
                 'description' => 'дата создания',
             ],
-
         ];
     }
 }

@@ -8,8 +8,6 @@ class CreateInviteToGroupsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -20,7 +18,7 @@ class CreateInviteToGroupsTable extends Migration
             $table->string('email')->nullable(true);
             $table->unsignedInteger('user_id')->nullable(true);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->boolean('accept')->default(false)->nullable(true);;
+            $table->boolean('accept')->default(false)->nullable(true);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,8 +26,6 @@ class CreateInviteToGroupsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -29,7 +29,6 @@ class SocialLinksInput extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 //'rules' => ['date', 'required'],
             ],
-
         ];
     }
 }

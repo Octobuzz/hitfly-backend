@@ -182,7 +182,6 @@ return [
         'SocialLinks' => \App\Http\GraphQL\Type\SocialLinksType::class,
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
 
-
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
         'UserInput' => \App\Http\GraphQL\InputObject\UserInput::class,
@@ -191,7 +190,6 @@ return [
         'FavouriteInput' => \App\Http\GraphQL\InputObject\FavouriteInput::class,
         'SocialLinksInput' => \App\Http\GraphQL\InputObject\SocialLinksInput::class,
         'GroupMembersInput' => \App\Http\GraphQL\InputObject\GroupMembersInput::class,
-
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,

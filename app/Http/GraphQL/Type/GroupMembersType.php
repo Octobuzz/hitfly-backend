@@ -29,17 +29,14 @@ class GroupMembersType extends GraphQLType
             'email' => [
                 'type' => Type::string(),
                 'description' => 'email',
-
             ],
             'accept' => [
                 'type' => Type::boolean(),
                 'description' => 'принял заявку',
-
             ],
             'user' => [
                 'type' => GraphQL::type('User'),
                 'description' => 'id пользователя(приглашаемого)',
-
             ],
             'createdAt' => [
                 'type' => Type::string(),
@@ -49,7 +46,6 @@ class GroupMembersType extends GraphQLType
                 },
                 'description' => 'дата создания',
             ],
-
         ];
     }
 }

@@ -21,15 +21,14 @@ class GroupMembersInput extends GraphQLType
                 'name' => 'email',
                 'description' => 'email',
                 'type' => Type::string(),
-                'rules' => ['sometimes','required_without:user_id','email'],
+                'rules' => ['sometimes', 'required_without:user_id', 'email'],
             ],
             'user_id' => [
                 'name' => 'user_id',
                 'description' => 'id пользователя(приглашаемого)',
                 'type' => Type::int(),
-                'rules' => ['sometimes','required_without:email'],
+                'rules' => ['sometimes', 'required_without:email'],
             ],
-
         ];
     }
 }
