@@ -16,6 +16,7 @@ class GenreQuery extends Query
 {
     protected $attributes = [
         'name' => 'Genre Query',
+        'description' => 'Список жанров системы',
     ];
 
     public function type()

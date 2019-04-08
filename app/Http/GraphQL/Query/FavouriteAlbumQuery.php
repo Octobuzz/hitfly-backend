@@ -12,6 +12,7 @@ class FavouriteAlbumQuery extends Query
 {
     protected $attributes = [
         'name' => 'Favourite album Query',
+        'description' => 'Запрос пользователя системы',
     ];
 
     public function type()
@@ -30,18 +31,17 @@ class FavouriteAlbumQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-
         if (isset($args['albumId'])) {
             return Favourite::with('favouriteable')
                 ->where('favouriteable_type', Album::class)
                 ->where('favouriteable_id', $args['albumId'])
-                ->where('user_id',\Auth::user()->id)
+                ->where('user_id', \Auth::user()->id)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
         return Favourite::with('favouriteable')
             ->where('favouriteable_type', Album::class)
-            ->where('user_id',\Auth::user()->id)
+            ->where('user_id', \Auth::user()->id)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

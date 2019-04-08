@@ -12,6 +12,7 @@ class AlbumType extends GraphQLType
     protected $attributes = [
         'name' => 'Album',
         'model' => Album::class,
+        'description' => 'Музыкальный альбом',
     ];
 
     public function fields()
@@ -19,39 +20,47 @@ class AlbumType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
+                'description' => 'Id',
             ],
             'title' => [
                 'type' => Type::string(),
+                'description' => 'Название',
             ],
             'genre' => [
                 'type' => GraphQL::type('Genre'),
+                'description' => 'Жанр альбома',
             ],
             'user' => [
                 'type' => GraphQL::type('User'),
+                'description' => 'Пользователь альбома',
             ],
             'author' => [
                 'type' => Type::string(),
+                'description' => 'Автор',
             ],
             'year' => [
                 'type' => Type::int(),
+                'description' => 'Год выпуска',
             ],
             'cover' => [
                 'type' => Type::string(),
+                'description' => 'Обложка альбома',
             ],
             'musicGroup' => [
                 'type' => GraphQL::type('MusicGroup'),
                 'alias' => 'filename',
+                'description' => 'Музыкальная группа',
             ],
             'userFavourite' => [
                 'type' => Type::nonNull(Type::boolean()),
                 'description' => 'флаг избранного альбома',
                 'resolve' => function ($model) {
-                    if($model->userFavourite->count())
+                    if ($model->userFavourite->count()) {
                         return true;
-                    else
+                    } else {
                         return false;
+                    }
                 },
-
             ],
         ];
     }

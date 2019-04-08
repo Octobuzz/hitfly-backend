@@ -30,8 +30,6 @@ class AddToFavouriteMutation extends Mutation
         ];
     }
 
-
-
     public function resolve($root, $args)
     {
         switch ($args['Favourite']['favouritableType']) {

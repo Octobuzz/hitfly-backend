@@ -38,7 +38,6 @@ class FavouriteGenreType extends GraphQLType
                 },
                 'description' => 'дата создания',
             ],
-
         ];
     }
 }

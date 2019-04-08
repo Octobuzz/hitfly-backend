@@ -3,7 +3,6 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Models\Favourite;
-use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -39,7 +38,6 @@ class FavouriteTrackType extends GraphQLType
                 },
                 'description' => 'дата создания',
             ],
-
         ];
     }
 }

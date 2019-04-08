@@ -57,7 +57,7 @@ class MusicGroupType extends GraphQLType
             ],
             'location' => [
                 'type' => \GraphQL::type('CityType'),
-                'description' => 'Локация пользователя',
+                'description' => 'Локация группы',
                 'alias' => 'city_id',
             ],
         ];

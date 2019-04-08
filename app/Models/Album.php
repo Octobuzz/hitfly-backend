@@ -9,9 +9,12 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
+use App\Support\FileProcessingTrait;
+use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -59,9 +62,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Album extends Model
 {
-    use SoftDeletes, Itemable;
+    use SoftDeletes, Itemable, FileProcessingTrait;
 
     protected $table = 'albums';
+
+    protected $nameFolder = 'albums';
 
     protected $fillable = [
         'title',
@@ -92,18 +97,30 @@ class Album extends Model
         return $this->belongsTo(Genre::class, 'genre_id');
     }
 
-    public function user(): BelongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(User::class, 'user_id');
     }
 
-    public function getAlbumImageURL()
-    {
-        //todo получение реального урл изображения
-        return $this->album_img;
-    }
     public function userFavourite()
     {
-        return $this->morphMany(Favourite::class, "favouriteable")->where('user_id',\Auth::user()->id);
+        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
+    }
+
+    public function getCoverAttribute($cover)
+    {
+        return $this->getUrlFile($cover);
+    }
+
+    public function setCoverAttribute(?string $cover)
+    {
+        if (empty($cover)) {
+            return null;
+        }
+
+        $nameFile = $this->fileProcessing($cover);
+        $this->attributes['cover'] = $nameFile;
+
+        return $nameFile;
     }
 }

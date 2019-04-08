@@ -2,9 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Models\Album;
 use App\Models\Favourite;
-use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -40,7 +38,6 @@ class FavouriteAlbumType extends GraphQLType
                 },
                 'description' => 'дата создания',
             ],
-
         ];
     }
 }

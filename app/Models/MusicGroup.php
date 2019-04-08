@@ -96,4 +96,9 @@ class MusicGroup extends Model
     {
         return $this->hasMany(GroupLinks::class);
     }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }

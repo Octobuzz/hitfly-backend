@@ -18,6 +18,7 @@ class CollectionType extends GraphQLType
     protected $attributes = [
         'name' => 'Collection',
         'model' => Collection::class,
+        'description' => 'Коллекции(Playlist)',
     ];
 
     public function fields()
@@ -25,21 +26,27 @@ class CollectionType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
+                'description' => 'Индетификатор',
             ],
             'image' => [
                 'type' => Type::string(),
+                'description' => 'Изображение (полный url к изображению)',
             ],
             'title' => [
                 'type' => Type::nonNull(Type::string()),
+                'description' => 'Название коллекции',
             ],
             'user' => [
                 'type' => GraphQL::type('User'),
+                'description' => 'Пользователь',
             ],
             'is_admin' => [
-                'type' => Type::int(),
+                'type' => Type::boolean(),
+                'description' => 'Создано админом',
             ],
             'tracks' => [
-                'type' => GraphQL::type('Track'),
+                'type' => Type::listOf(GraphQL::type('Track')),
+                'description' => 'Треки',
             ],
         ];
     }
