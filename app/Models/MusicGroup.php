@@ -102,4 +102,9 @@ class MusicGroup extends Model
     {
         return $this->belongsTo(City::class, 'city_id');
     }
+    public function followers()
+    {
+        return $this->morphMany(Watcheables::class, 'watcheable');
+    }
+
 }
