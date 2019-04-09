@@ -218,7 +218,7 @@ export default {
 
   apollo: {
     user: {
-      query: gql.query.USER,
+      query: gql.query.MY_PROFILE,
       update(data) {
         return data[0];
       },

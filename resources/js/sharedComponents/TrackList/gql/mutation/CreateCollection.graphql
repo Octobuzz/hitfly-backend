@@ -1,18 +1,13 @@
 mutation CreateCollection(
-    $title: Int!
-    $image: Upload
+    $title: String!
+    $trackIds: [Int]!
 ) {
     createCollection(
-        collection: {
-            title: $title
-        }
-        image: $image
+        title: $title
+        tracksId: $trackIds
     ) {
         id
-        image
         title
-        tracks {
-            id
-        }
+        image
     }
 }

@@ -1,5 +1,5 @@
-query GetUser {
-    user(id: 4) {
+query MyProfile {
+    myProfile {
         id
         username
         followersCount
@@ -8,5 +8,6 @@ query GetUser {
             name
             avatarGroup
         }
+
     }
 }

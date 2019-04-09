@@ -2,14 +2,13 @@
 
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
+import player from './player';
 
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
-const state = {
-  userId: ''
-};
+const state = {};
 
 const getters = {
   editGroupId(state) {
@@ -24,6 +23,9 @@ const mutations = {
 };
 
 export default new Store({
+  modules: {
+    player
+  },
   state,
   getters,
   mutations,

@@ -1,15 +1,11 @@
 <template>
-  <div>
+  <div class="track-list">
     <TrackListEntry
       v-for="(track, index) in trackList"
       :key="track.id"
       :index="index"
       :track="track"
-    >
-      <button>
-        add to playlist
-      </button>
-    </TrackListEntry>
+    />
   </div>
 </template>
 
@@ -21,16 +17,58 @@ export default {
   components: {
     TrackListEntry
   },
+
+  props: {
+    type: {
+      query: String,
+      required: true,
+      validator: value => (
+        ['all', 'my', 'favourite'].includes(value)
+      )
+    }
+  },
+
   data() {
     return {
       trackList: []
     };
   },
-  apollo: {
-    trackList: {
+
+  computed: {
+    apolloQuery() {
+      console.log('apollo query computed ');
+
+      switch (this.type) {
+        case 'favourite':
+          return gql.query.FAVOURITE_TRACK_LIST; // TODO: this should resolve to trackList
+        case 'my':
+        case 'all':
+        default:
+          return gql.query.TRACK_LIST;
+      }
+    },
+
+    apolloVariables() {
+      // eslint-disable-next-line default-case
+      switch (this.type) {
+        case 'my':
+          return {
+            my: true
+          };
+        case 'favourite':
+        case 'all':
+        default:
+          return {};
+      }
+    }
+  },
+
+  created() {
+    this.$apollo.addSmartQuery('trackList', {
       // TODO: implement pagination or loadable list
 
-      query: gql.query.TRACK_LIST,
+      query: this.apolloQuery,
+      variables: this.apolloVariables,
       manual: true,
       result(res) {
         const { data: { tracks }, networkStatus } = res;
@@ -41,8 +79,8 @@ export default {
       },
       error(err) {
         console.log(err);
-      }
-    }
+      },
+    });
   }
 };
 </script>

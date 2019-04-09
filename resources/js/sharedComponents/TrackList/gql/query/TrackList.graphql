@@ -1,18 +1,22 @@
-query TrackList {
-    tracks(limit: 100, page: 1, my: true) {
+query TrackList(
+    $my: Boolean
+) {
+    tracks(limit: 100, page: 1, my: $my) {
+        total
         data {
             id
             trackName
-            singer
+            userFavourite
             album {
                 title
                 author
                 cover
             }
-            user {
+            userPlayLists {
                 id
+                title
+                image
             }
-            userFavourite
         }
     }
 }

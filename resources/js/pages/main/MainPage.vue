@@ -12,7 +12,7 @@
     <div style="margin: 300px" />
 
     <div :style="{ marginLeft: '600px' }">
-      <TrackList/>
+      <TrackList type="my" />
     </div>
   </div>
 </template>

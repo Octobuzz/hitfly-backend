@@ -1,12 +1,11 @@
 <template>
   <div>
-    <label class="base-input">
+    <label :class="['base-input', $attrs.class]">
       <span
         :class="[
           'base-input__label',
           {
-            'base-input__label_top': focus || !empty,
-            ...$attrs.class
+            'base-input__label_top': focus || !empty
           }
         ]"
       >

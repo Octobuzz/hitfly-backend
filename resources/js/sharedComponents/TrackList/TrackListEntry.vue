@@ -4,34 +4,49 @@
       {{ index }}
     </span>
 
-    <button class="track-list-entry__album">
+    <button
+      class="track-list-entry__album"
+      @click="onAlbumPress"
+    >
       <img
-        src="/images/note.svg"
-        alt="album"
+        :src="track.album.cover"
+        alt="Album cover"
       >
     </button>
 
+    <!--TODO: shared like button-->
+
+    {{ track.album.author }}
+
     <!--TODO: implement track playlist id on the backend-->
 
-    <AddToPlaylist :track-id="track.id">
+    <TrackToPlaylistPopover :track="track">
       <button>
         {{ track.trackName }}
       </button>
-    </AddToPlaylist>
+    </TrackToPlaylistPopover>
+
+    <TrackActions :track="track">
+      <button>
+        track actions
+      </button>
+    </TrackActions>
   </div>
 </template>
 
 <script>
-import AddToPlaylist from './AddToPlaylist.vue';
+import TrackToPlaylistPopover from './TrackToPlaylistPopover.vue';
+import TrackActions from './TrackActions.vue';
 
 export default {
   components: {
-    AddToPlaylist
+    TrackToPlaylistPopover,
+    TrackActions
   },
   props: {
     track: {
       type: Object,
-      default: () => {}
+      required: true
     },
     index: {
       type: Number,
@@ -40,6 +55,11 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    onAlbumPress() {
+      console.log('album pressed');
+    }
   }
 };
 </script>

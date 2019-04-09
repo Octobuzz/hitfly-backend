@@ -1,5 +1,5 @@
 <template>
-  <a :class="['base-link', { ...$attrs }]">
+  <a :class="['base-link', $attrs.class]">
     <slot/>
   </a>
 </template>

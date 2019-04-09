@@ -1,0 +1,10 @@
+query{
+    favouriteTrack(limit: 10, page: 1){
+        data {
+            track {
+                id
+                trackName
+            }
+        }
+    }
+}
