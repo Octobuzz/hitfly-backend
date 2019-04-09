@@ -15,7 +15,9 @@ Route::group([
     $router->resource('/group', GroupController::class);
     $router->resource('/comment', CommentController::class);
     $router->resource('/collection', CollectionController::class);
+    $router->resource('/chart', ChartController::class);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
+    $router->get('/api/tracks', '\App\Admin\Controllers\TrackController@getTracks');
 });

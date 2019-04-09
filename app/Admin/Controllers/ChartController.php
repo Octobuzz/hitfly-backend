@@ -2,16 +2,16 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Comment;
+use App\Models\Charts;
 use App\Http\Controllers\Controller;
+use App\Models\Track;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use App\User;
 
-class CommentController extends Controller
+class ChartController extends Controller
 {
     use HasResourceActions;
 
@@ -19,7 +19,6 @@ class CommentController extends Controller
      * Index interface.
      *
      * @param Content $content
-     *
      * @return Content
      */
     public function index(Content $content)
@@ -33,9 +32,8 @@ class CommentController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
-     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -49,9 +47,8 @@ class CommentController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
-     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -66,7 +63,6 @@ class CommentController extends Controller
      * Create interface.
      *
      * @param Content $content
-     *
      * @return Content
      */
     public function create(Content $content)
@@ -84,18 +80,12 @@ class CommentController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Comment());
+        $grid = new Grid(new Charts);
 
         $grid->id('Id');
-        //$grid->setRelation();
-        $grid->user('Пользователь')->display(function ($user) {
-            return $user['username'];
-        });
-        $grid->commentable_type("Тип комментария")->display(function ($comment) {
-            return __('messages.'.Comment::CLASS_NAME[$comment]);
-        });
-        $grid->comment('Комментарий');
-        $grid->estimation('Оценка');
+        $grid->track_id('ID трека');
+        $grid->weekly_rate('Недельный рейтинг');
+        $grid->rating('Рейтинг');
         $grid->created_at('Дата создания');
         $grid->updated_at('Дата обновления');
 
@@ -106,26 +96,16 @@ class CommentController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
-     *
      * @return Show
      */
     protected function detail($id)
     {
-        $show = new Show(Comment::findOrFail($id));
+        $show = new Show(Charts::findOrFail($id));
 
         $show->id('Id');
-        $show->user('Пользователь')->as(function ($user) {
-            return $user->username;
-        });
-        $show->commentable_type('Тип комментария')->as(function ($comment) {
-            return __('messages.'.Comment::CLASS_NAME[$comment]);
-        });
-        $show->commentable()->title('Комментарий к')->as(function ($comment) {
-            return $comment->title;
-        });
-
-        $show->comment('Комментарий');
-        $show->estimation('Оценка');
+        $show->track_id('ID трека');
+        $show->weekly_rate('Недельный рейтинг');
+        $show->rating('Рейтинг');
         $show->created_at('Дата создания');
         $show->updated_at('Дата обновления');
 
@@ -139,22 +119,16 @@ class CommentController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Comment());
+        $form = new Form(new Charts);
+        $form->select('track_id', 'Название трека')->options(function ($id) {
+            $track = Track::find($id);
 
-        $form->select('id', 'Комментарий к')->options(function ($id) {
-            $comment = Comment::find($id);
-
-            return [$id => (string) $comment->commentable['title'].' ('.__('messages.'.Comment::CLASS_NAME[$comment['commentable_type']]).')'];
-        })->rules('required');
-
-        $form->select('user_id', 'Пользователь')->options(function ($id) {
-            $user = User::find($id);
-            if ($user) {
-                return [$user->id => $user->username];
+            if ($track) {
+                return [$track->id => $track->track_name];
             }
-        })->ajax('/admin/api/users');
-        $form->textarea('comment', 'Комментарий');
-        $form->select('estimation', 'Оценка')->options([0 => 'Нет', 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5]);
+        })->ajax('/admin/api/tracks')->rules('required');
+        $form->number('weekly_rate', 'Weekly rate');
+        $form->number('rating', 'Rating');
 
         return $form;
     }
