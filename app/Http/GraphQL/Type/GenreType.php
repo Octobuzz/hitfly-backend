@@ -11,6 +11,7 @@ class GenreType extends GraphQLType
     protected $attributes = [
         'name' => 'Genre',
         'model' => Genre::class,
+        'description' => 'Жанры',
     ];
 
     public function fields()
@@ -18,15 +19,15 @@ class GenreType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the ',
+                'description' => 'The id',
             ],
             'name' => [
                 'type' => Type::string(),
-                'description' => 'The id of the ',
+                'description' => 'Имя жанра',
             ],
             'image' => [
                 'type' => Type::string(),
-                'description' => 'The id of the ',
+                'description' => 'Логотип жанра',
             ],
             'userFavourite' => [
                 'type' => Type::nonNull(Type::boolean()),

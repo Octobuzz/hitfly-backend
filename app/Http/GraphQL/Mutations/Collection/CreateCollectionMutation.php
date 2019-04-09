@@ -7,7 +7,6 @@ use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
 
@@ -58,11 +57,7 @@ class CreateCollectionMutation extends Mutation
 
         if (false === empty($args['image'])) {
             /* @var UploadedFile $file */
-            $file = $args['image'];
-            $fileName = md5(microtime()).'.'.$file->getClientOriginalExtension();
-
-            Storage::putFileAs('public/collection/'.$user->id, $file, $fileName);
-
+            $fileName = $collection->fileProcessing((string) $args['image']);
             $collection->image = $fileName;
             $collection->save();
         }

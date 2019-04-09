@@ -42,6 +42,7 @@ class DeleteTrackMutation extends Mutation
 
         if (Gate::allows('delete', $track)) {
             $track->delete();
+
             return $track;
         } else {
             return new ValidationError('Не достаточно прав на удаление');

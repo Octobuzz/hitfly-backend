@@ -41,6 +41,18 @@ class MusicGroupInput extends GraphQLType
                 'type' => Type::nonNull(Type::id()),
                 'rules' => ['numeric', 'required'],
             ],
+            'socialLinks' => [
+                'name' => 'socialLinks',
+                'description' => 'ссылки на соцсети',
+                'type' => Type::listOf(\GraphQL::type('SocialLinksInput')),
+                //'rules' => ['numeric', 'required'],
+            ],
+            'invitedMembers' => [
+                'name' => 'invitedMembers',
+                'description' => 'Приглашенные в группу',
+                'type' => Type::listOf(\GraphQL::type('GroupMembersInput')),
+                //'rules' => ['numeric', 'required'],
+            ],
         ];
     }
 }

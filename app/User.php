@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Album;
 use App\Models\City;
+use App\Models\Genre;
 use App\Models\Like;
 use App\Models\MusicGroup;
 use App\Models\Track;
@@ -141,5 +142,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function location(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id');
+    }
+
+    public function favouriteGenres()
+    {
+        return $this->morphedByMany(Genre::class, 'favouriteable', 'favourites');
     }
 }

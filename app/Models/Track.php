@@ -48,7 +48,7 @@ class Track extends Model
         });
     }
 
-    public function genre(): BelongsTo
+    public function genres(): BelongsTo
     {
         return $this->belongsTo(Genre::class, 'genre_id');
     }
