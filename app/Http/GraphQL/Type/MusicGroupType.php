@@ -60,6 +60,13 @@ class MusicGroupType extends GraphQLType
                 'description' => 'Локация группы',
                 'alias' => 'city_id',
             ],
+            'followersCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество подписчиков',
+                'resolve' => function ($model) {
+                    return $model->followers->count();
+                },
+            ],
         ];
     }
 }
