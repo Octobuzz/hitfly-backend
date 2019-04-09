@@ -41,11 +41,11 @@ class CreateMusicGroupMutation extends Mutation
 
         $musicGroup->save();
 
-        if(!empty($args['musicGroup']['genre'])) {
+        if (!empty($args['musicGroup']['genre'])) {
             $musicGroup->genres()->sync($args['musicGroup']['genre']);
         }
 
-        if(!empty($args['musicGroup']['socialLinks'])) {
+        if (!empty($args['musicGroup']['socialLinks'])) {
             foreach ($args['musicGroup']['socialLinks'] as $social) {
                 /** @var GroupLinks $socialLinks */
                 $socialLinks = GroupLinks::query()->where('music_group_id', $args['id'])
@@ -62,7 +62,7 @@ class CreateMusicGroupMutation extends Mutation
                 }
             }
         }
-        if(!empty($args['musicGroup']['invitedMembers'])) {
+        if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {
                 //Validator::make($members,['email'=>"required_without:user_id","user_id"=>"required_without:email"])->validate();
                 $inviteQuery = InviteToGroup::query()->where('music_group_id', $args['id']);

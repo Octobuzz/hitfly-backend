@@ -8,8 +8,6 @@ class GenreManyToMany extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -30,8 +28,6 @@ class GenreManyToMany extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -41,6 +37,5 @@ class GenreManyToMany extends Migration
         });
 
         Schema::dropIfExists('music_group_genre');
-
     }
 }

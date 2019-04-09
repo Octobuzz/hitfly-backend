@@ -3,7 +3,6 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Helpers\DBHelpers;
-use App\Models\Genre;
 use App\Models\GroupLinks;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
@@ -50,10 +49,10 @@ class UpdateMusicGroupMutation extends Mutation
 
         $musicGroup->update(DBHelpers::arrayKeysToSnakeCase($args['musicGroup']));
 
-        if(!empty($args['musicGroup']['genre'])) {
+        if (!empty($args['musicGroup']['genre'])) {
             $musicGroup->genres()->sync($args['musicGroup']['genre']);
         }
-        if(!empty($args['musicGroup']['socialLinks'])) {
+        if (!empty($args['musicGroup']['socialLinks'])) {
             foreach ($args['musicGroup']['socialLinks'] as $social) {
                 /** @var GroupLinks $socialLinks */
                 $socialLinks = GroupLinks::query()->where('music_group_id', $args['id'])
@@ -70,7 +69,7 @@ class UpdateMusicGroupMutation extends Mutation
                 }
             }
         }
-        if(!empty($args['musicGroup']['invitedMembers'])) {
+        if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {
                 //Validator::make($members,['email'=>"required_without:user_id","user_id"=>"required_without:email"])->validate();
                 $inviteQuery = InviteToGroup::query()->where('music_group_id', $args['id']);

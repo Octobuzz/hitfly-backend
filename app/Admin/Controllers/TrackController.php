@@ -88,7 +88,7 @@ class TrackController extends Controller
     {
         $grid = new Grid(new Track());
 
-        $grid->filter(function ($filter){
+        $grid->filter(function ($filter) {
             $filter->like('track_name', 'Имя трека');
         });
 
