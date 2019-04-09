@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
+use App\Support\FileProcessingTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Жанры музыки.
@@ -60,5 +62,10 @@ class Genre extends Model
     public function group(): BelongsToMany
     {
         return $this->belongsToMany(MusicGroup::class, 'music_group_genre');
+    }
+
+    public function getImageAttribute($image)
+    {
+        return Storage::disk('admin')->url($image);
     }
 }

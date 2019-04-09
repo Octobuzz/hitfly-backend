@@ -63,7 +63,6 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => 'auth/logs',
             ],
             [
-
                 'id' => 8,
                 'parent_id' => 0,
                 'order' => 8,

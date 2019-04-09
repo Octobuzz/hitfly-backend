@@ -119,7 +119,7 @@ class GenreController extends Controller
         $form = new Form(new Genre());
 
         $form->text('name', 'Name');
-        $form->image('image', 'Image');
+        $form->image('image', 'Image')->move('genres')->uniqueName();
 
         return $form;
     }
