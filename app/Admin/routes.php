@@ -17,7 +17,7 @@ Route::group([
     $router->resource('/collection', CollectionController::class);
     $router->resource('/album', AlbumController::class);
     $router->resource('/music/group', MusicGroupController::class);
-    $router->resource('/tracks', TrackController::class);
+    $router->resource('/track', TrackController::class);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
