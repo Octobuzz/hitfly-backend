@@ -14,7 +14,6 @@ use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -97,9 +96,9 @@ class Album extends Model
         return $this->belongsTo(Genre::class, 'genre_id');
     }
 
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function userFavourite()
