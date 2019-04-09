@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -68,9 +69,9 @@ class MusicGroup extends Model
         'updated_at',
     ];
 
-    public function genre(): BelongsTo
+    public function genres(): BelongsToMany
     {
-        return $this->belongsTo(Genre::class, 'genre_id');
+        return $this->belongsToMany(Genre::class, 'music_group_genre')->withTimestamps();
     }
 
     public function albums(): HasMany

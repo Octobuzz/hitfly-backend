@@ -38,8 +38,8 @@ class MusicGroupInput extends GraphQLType
             'genre' => [
                 'name' => 'genre',
                 'description' => 'genre',
-                'type' => Type::nonNull(Type::id()),
-                'rules' => ['numeric', 'required'],
+                'type' => Type::listOf(Type::id()),
+                //'rules' => ['numeric', 'required'],
             ],
             'socialLinks' => [
                 'name' => 'socialLinks',
@@ -53,6 +53,12 @@ class MusicGroupInput extends GraphQLType
                 'type' => Type::listOf(\GraphQL::type('GroupMembersInput')),
                 //'rules' => ['numeric', 'required'],
             ],
+
+            /*'avatarGroup' => [
+                'name' => 'avatarGroup',
+                'description' => 'Аватар группы',
+                'type' => Type::,
+            ],*/
         ];
     }
 }
