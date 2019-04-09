@@ -16,10 +16,11 @@ Route::group([
     $router->resource('/comment', CommentController::class);
     $router->resource('/collection', CollectionController::class);
     $router->resource('/album', AlbumController::class);
-    $router->resource('/music/group', CollectionController::class);
-    $router->resource('/tracks', CollectionController::class);
+    $router->resource('/music/group', MusicGroupController::class);
+    $router->resource('/tracks', TrackController::class);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
     $router->get('/api/music/group', '\App\Admin\Controllers\MusicGroupController@getMusicGroup');
+    $router->get('/api/city', '\App\Admin\Controllers\CityController@getCity');
 });
