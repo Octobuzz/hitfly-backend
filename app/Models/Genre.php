@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
-use App\Support\FileProcessingTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

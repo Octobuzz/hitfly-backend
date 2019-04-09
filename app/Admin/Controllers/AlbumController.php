@@ -153,8 +153,8 @@ class AlbumController extends Controller
 
         $form->text('title', 'Название');
         $form->text('author', 'Автор');
-        $form->date('year', 'Год');
-        $form->image('cover', 'Обложка');
+//        $form->date('year', 'Год')->default();
+        $form->image('cover', 'Обложка')->uniqueName();
         $form->select('genre_id', 'Жанр')->options(function ($id) {
             $genre = Genre::find($id);
 
@@ -178,6 +178,10 @@ class AlbumController extends Controller
                 return [$user->id => $user->username];
             }
         })->ajax('/admin/api/users');
+
+        $form->saving(function (Form $form) {
+            $form->image('cover')->move('albums/'.$form->user_id)->uniqueName();
+        });
 
         return $form;
     }

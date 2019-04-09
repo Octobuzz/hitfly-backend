@@ -15,6 +15,7 @@ use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Музыкальный альбом
@@ -106,20 +107,8 @@ class Album extends Model
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
     }
 
-    public function getCoverAttribute($cover)
+    public function getCoverAttribute($image)
     {
-        return $this->getUrlFile($cover);
-    }
-
-    public function setCoverAttribute(?string $cover)
-    {
-        if (empty($cover)) {
-            return null;
-        }
-
-        $nameFile = $this->fileProcessing($cover);
-        $this->attributes['cover'] = $nameFile;
-
-        return $nameFile;
+        return Storage::disk('admin')->url($image);
     }
 }

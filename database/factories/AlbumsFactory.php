@@ -1,6 +1,8 @@
 <?php
 
 use Faker\Generator as Faker;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 $factory->define(\App\Models\Album::class, function (Faker $faker) {
     return [
@@ -20,5 +22,6 @@ $factory->define(\App\Models\Album::class, function (Faker $faker) {
 });
 
 $factory->afterMaking(\App\Models\Album::class, function (\App\Models\Album $album, Faker $faker) {
-    $album->cover = $faker->image();
+    $image = new File($faker->image());
+    $album->cover = Storage::disk('public')->putFile('albums/'.$album->user_id, $image);
 });
