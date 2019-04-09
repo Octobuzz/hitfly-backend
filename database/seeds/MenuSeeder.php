@@ -7,6 +7,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
         // add default menus.
         \Encore\Admin\Auth\Database\Menu::insert([
             [
+                'id' => 1,
                 'parent_id' => 0,
                 'order' => 1,
                 'title' => 'Главная',
@@ -14,6 +15,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/',
             ],
             [
+                'id' => 2,
                 'parent_id' => 0,
                 'order' => 2,
                 'title' => 'Админ',
@@ -21,6 +23,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '',
             ],
             [
+                'id' => 3,
                 'parent_id' => 2,
                 'order' => 3,
                 'title' => 'Пользователи',
@@ -28,6 +31,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => 'auth/users',
             ],
             [
+                'id' => 4,
                 'parent_id' => 2,
                 'order' => 4,
                 'title' => 'Роли',
@@ -35,6 +39,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => 'auth/roles',
             ],
             [
+                'id' => 5,
                 'parent_id' => 2,
                 'order' => 5,
                 'title' => 'Доступы',
@@ -42,6 +47,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => 'auth/permissions',
             ],
             [
+                'id' => 6,
                 'parent_id' => 2,
                 'order' => 6,
                 'title' => 'Меню',
@@ -49,6 +55,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => 'auth/menu',
             ],
             [
+                'id' => 7,
                 'parent_id' => 2,
                 'order' => 7,
                 'title' => 'Лог операций',
@@ -56,6 +63,8 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => 'auth/logs',
             ],
             [
+
+                'id' => 8,
                 'parent_id' => 0,
                 'order' => 8,
                 'title' => 'Жанры',
@@ -63,6 +72,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/genre',
             ],
             [
+                'id' => 9,
                 'parent_id' => 0,
                 'order' => 9,
                 'title' => 'Группы',
@@ -70,6 +80,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/group',
             ],
             [
+                'id' => 10,
                 'parent_id' => 0,
                 'order' => 10,
                 'title' => 'Комментарии',
@@ -77,6 +88,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/comment',
             ],
             [
+                'id' => 11,
                 'parent_id' => 0,
                 'order' => 11,
                 'title' => 'Альбомы',
@@ -84,15 +96,17 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/album',
             ],
             [
+                'id' => 12,
                 'parent_id' => 0,
-                'order' => 11,
+                'order' => 12,
                 'title' => 'Музыкальные группы',
                 'icon' => 'fa-bar-chart',
                 'uri' => '/music/group',
             ],
             [
+                'id' => 13,
                 'parent_id' => 0,
-                'order' => 12,
+                'order' => 13,
                 'title' => 'Треки',
                 'icon' => 'fa-bar-chart',
                 'uri' => '/track',
