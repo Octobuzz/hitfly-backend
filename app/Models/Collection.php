@@ -24,7 +24,7 @@ class Collection extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->get();
+        return $this->belongsTo(User::class);
     }
 
     public function tracks(): BelongsToMany
