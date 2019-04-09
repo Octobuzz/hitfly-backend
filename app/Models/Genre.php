@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Itemable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Жанры музыки.
@@ -54,5 +55,10 @@ class Genre extends Model
     public function userFavourite()
     {
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
+    }
+
+    public function group(): BelongsToMany
+    {
+        return $this->belongsToMany(MusicGroup::class, 'music_group_genre');
     }
 }
