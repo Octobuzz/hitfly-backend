@@ -95,9 +95,6 @@ class MusicGroupController extends Controller
         });
         $grid->name('Имя');
         $grid->career_start_year('Дата начала карьеры');
-        $grid->genre_id('Жанр')->display(function ($genreId) {
-            return Genre::find($genreId)->name;
-        });
         $grid->city_id('Город')->display(function ($city) {
             return City::find($city)->title;
         });
