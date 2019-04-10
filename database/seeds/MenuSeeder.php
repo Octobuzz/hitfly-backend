@@ -71,14 +71,6 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/genre',
             ],
             [
-                'id' => 9,
-                'parent_id' => 0,
-                'order' => 9,
-                'title' => 'Группы',
-                'icon' => 'fa-bar-chart',
-                'uri' => '/group',
-            ],
-            [
                 'id' => 10,
                 'parent_id' => 0,
                 'order' => 10,
