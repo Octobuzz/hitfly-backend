@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\Track;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
@@ -16,13 +15,8 @@ class TrackObserver
      */
     public function creating(Track $track)
     {
-        $user = Auth::user();
-        if (App::environment('local')) {
-            if (null === $user) {
-                $user = \App\User::inRandomOrder()->first();
-            }
-        }
-        $track->user_id = $user->id;
+        $pathTrack = Storage::disk('public')->path($track->filename);
+        $track->track_hash = md5_file($pathTrack);
 
         return true;
     }

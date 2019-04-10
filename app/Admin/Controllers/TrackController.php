@@ -95,6 +95,10 @@ class TrackController extends Controller
         $grid->id('#');
         $grid->track_name('Имя трека');
         $grid->album_id('Альбом')->display(function ($album) {
+            if (empty($album)) {
+                return '';
+            }
+
             return Album::find($album)->title;
         });
         $grid->genre_id('Жанр')->display(function ($genreId) {
@@ -120,19 +124,24 @@ class TrackController extends Controller
         $show = new Show(Track::findOrFail($id));
 
         $show->id('Id');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
-        $show->track_name('Track name');
-        $show->album_id('Album id');
-        $show->genre_id('Genre id');
-        $show->singer('Singer');
-        $show->track_date('Track date');
-        $show->song_text('Song text');
-        $show->track_hash('Track hash');
+        $show->created_at('Создано');
+        $show->updated_at('Обновленно');
+        $show->track_name('Название трека');
+        $show->album('Альбом', function ($album) {
+            $album->setResource('/admin/album');
+            $album->title('Имя');
+        });
+        $show->genre('Жанр', function ($genre) {
+            $genre->setResource('/admin/genre');
+            $genre->name('Имя');
+        });
+        $show->singer('Исполнитель');
+        $show->song_text('Текст трека');
         $show->filename('Filename');
-        $show->state('State');
-        $show->user_id('User id');
-        $show->deleted_at('Deleted at');
+        $show->user('Пользователь', function ($user) {
+            $user->setResource('/admin/auth/users');
+            $user->username('Имя');
+        });
 
         return $show;
     }
@@ -146,16 +155,39 @@ class TrackController extends Controller
     {
         $form = new Form(new Track());
 
-        $form->text('track_name', 'Track name');
-        $form->number('album_id', 'Album id');
-        $form->number('genre_id', 'Genre id');
-        $form->text('singer', 'Singer');
-        $form->datetime('track_date', 'Track date')->default(date('Y-m-d H:i:s'));
-        $form->textarea('song_text', 'Song text');
-        $form->text('track_hash', 'Track hash');
-        $form->text('filename', 'Filename');
-        $form->text('state', 'State');
-        $form->number('user_id', 'User id');
+        $form->text('track_name', 'Название трека');
+        $form->select('album_id', 'Альбом')->options(function ($id) {
+            $album = Album::find($id);
+            if ($album) {
+                return [$album->id => $album->title];
+            }
+        })->ajax('/admin/api/album');
+        $form->select('genre_id', 'Жанр')->options(function ($id) {
+            $genre = Genre::find($id);
+
+            if ($genre) {
+                return [$genre->id => $genre->name];
+            }
+        })->ajax('/admin/api/genres');
+
+        $form->text('singer', 'Испольнитель');
+        $form->datetime('track_date', 'Дата трека')->default(date('Y-m-d'));
+        $form->textarea('song_text', 'Текст трека');
+        $form->file('filename', 'Файл')
+            ->rules('required|mimetypes:audio/mpeg, audio/mp3')->uniqueName()
+        ;
+
+        $form->select('user_id', 'Пользователь')->options(function ($id) {
+            $user = User::find($id);
+
+            if ($user) {
+                return [$user->id => $user->username];
+            }
+        })->ajax('/admin/api/users');
+
+        $form->saving(function (Form $form) {
+            $form->file('filename')->move('tracks/'.$form->user_id)->uniqueName();
+        });
 
         return $form;
     }

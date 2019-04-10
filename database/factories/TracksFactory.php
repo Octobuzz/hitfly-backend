@@ -14,11 +14,14 @@ $factory->define(\App\Models\Track::class, function (Faker $faker) {
         'singer' => $faker->name,
         'track_date' => $faker->dateTimeAD,
         'song_text' => $faker->paragraph,
-        'track_hash' => $faker->md5,
-        'filename' => $faker->streetAddress, //todo Доделать сделать врменный файл
         'state' => 'fileload',
         'user_id' => function () {
             return \App\User::inRandomOrder()->first()->id;
         },
     ];
+});
+
+$factory->afterMaking(\App\Models\Track::class, function (\App\Models\Track $track, Faker $faker) {
+    $file = new \Illuminate\Http\File($faker->file(Storage::disk('local')->path('mp3')));
+    $track->filename = Storage::disk('public')->putFile('tracks/'.$track->user_id, $file);
 });
