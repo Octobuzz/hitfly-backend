@@ -9,17 +9,48 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            CitySeeder::class,
-            UserSeeder::class,
-            GenreSeeder::class,
-            MusicGroupSeeder::class,
-            AlbumsSeeder::class,
-            TracksSeeder::class,
-            CommentsSeeder::class,
-            CollectionSeeder::class,
-            LikesSeeder::class,
-            WatchingSeeder::class,
-        ]);
+        DB::table('watcheables')->delete();
+        DB::table('likes')->delete();
+        DB::table('collections')->delete();
+        DB::table('comments')->delete();
+        DB::table('tracks')->delete();
+        DB::table('albums')->delete();
+        DB::table('music_group')->delete();
+        DB::table('genres')->delete();
+        DB::table('users')->delete();
+        DB::table('cities')->delete();
+        DB::table('admin_role_menu')->delete();
+        DB::table('admin_menu')->delete();
+        DB::table('admin_operation_log')->delete();
+        DB::table('admin_permissions')->delete();
+        DB::table('admin_role_permissions')->delete();
+        DB::table('admin_role_users')->delete();
+        DB::table('admin_roles')->delete();
+
+        if (App::environment('local')) {
+            $this->call([
+                PermissionSeeder::class,
+                RoleSeeder::class,
+                MenuSeeder::class,
+                CitySeeder::class,
+                UserSeeder::class,
+                GenreSeeder::class,
+                MusicGroupSeeder::class,
+                AlbumsSeeder::class,
+                TracksSeeder::class,
+                CommentsSeeder::class,
+                CollectionSeeder::class,
+                LikesSeeder::class,
+                WatchingSeeder::class,
+            ]);
+        }
+        if (App::environment('prod')) {
+            $this->call([
+                PermissionSeeder::class,
+                RoleSeeder::class,
+                MenuSeeder::class,
+                UserSeeder::class,
+            ]);
+        }
     }
 }

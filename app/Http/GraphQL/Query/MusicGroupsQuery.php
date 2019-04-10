@@ -28,7 +28,7 @@ class MusicGroupsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        return MusicGroup::with($fields->getRelations())->select($fields->getSelect())
+        return MusicGroup::with($fields->getRelations())
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }
