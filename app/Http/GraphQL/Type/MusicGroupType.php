@@ -43,8 +43,8 @@ class MusicGroupType extends GraphQLType
                     return $root->career_start_year;
                 },
             ],
-            'genre' => [
-                'type' => GraphQL::type('Genre'),
+            'genres' => [
+                'type' => Type::listOf(GraphQL::type('Genre')),
                 'description' => 'Жанр группы',
                 'alias' => 'genre', // Use 'alias', if the database column is different from the type name
             ],
