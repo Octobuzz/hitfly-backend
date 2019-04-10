@@ -19,10 +19,8 @@ class UserObserver
     {
         $role = Role::query()->where('slug', '=', 'listener')->first();
         //добавление роли "слушатель"
-        if ($user->isRole('listener')) {
-            $user->roles()->attach($role->id);
-            $user->save();
-        }
+        $user->roles()->attach($role->id);
+        $user->save();
         //отправка письма о завершении регистрации
         if ($user->email && App::environment('local') && null !== Auth::user()) {
             dispatch(new UserRegisterJob($user))->onQueue('low');
