@@ -66,6 +66,9 @@ class TrackType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'alias' => 'filename',
                 'description' => 'Полный URL до трека',
+                'resolve' => function ($model) {
+                    return $model->getUrl();
+                },
             ],
             'userFavourite' => [
                 'type' => Type::nonNull(Type::boolean()),

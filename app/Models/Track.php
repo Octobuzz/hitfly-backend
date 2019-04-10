@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Track extends Model
 {
@@ -20,6 +21,7 @@ class Track extends Model
         'track_name',
         'album_id',
         'genre_id',
+        'user_id',
         'singer',
         'song_text',
         'filename',
@@ -33,20 +35,6 @@ class Track extends Model
         'created_at',
         'updated_at',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-
-        /** @var Track $track % */
-        static::creating(function ($track) {
-            //todo create hash file, and uploads
-        });
-
-        static::updating(function ($track) {
-            // do stuff
-        });
-    }
 
     public function genre(): BelongsTo
     {
@@ -92,5 +80,10 @@ class Track extends Model
     {
         return $this->belongsToMany(Collection::class, 'collection_track')
             ->where('collections.user_id', '=', \Auth::user()->id);
+    }
+
+    public function getUrl()
+    {
+        return Storage::disk('admin')->url($this->filename);
     }
 }

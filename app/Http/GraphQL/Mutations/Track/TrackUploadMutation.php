@@ -38,12 +38,12 @@ class TrackUploadMutation extends Mutation
     {
         /** @var UploadedFile $file */
         $file = $args['track'];
-
         $nameFile = md5(microtime());
         $fullName = $nameFile.'.'.$file->getClientOriginalExtension();
+
         $user = \Auth::user();
 
-        Storage::putFileAs('public/music'.DIRECTORY_SEPARATOR.$user->id, $file, $fullName);
+        $name = Storage::disk('public')->putFile("tracks/$user->id", $file);
 
         $track = Track::query()->create([
             'track_name' => empty($args['infoTrack']['trackName']) ? null : $args['infoTrack']['trackName'],
@@ -54,7 +54,8 @@ class TrackUploadMutation extends Mutation
             'track_date' => empty($args['infoTrack']['trackDate']) ? null : $args['infoTrack']['trackDate'],
             'track_hash' => hash_file('md5', $file),
             'state' => 'fileload',
-            'filename' => $fullName,
+            'user_id' => $user->id,
+            'filename' => $name, // "tracks/$user->id/".$file->getClientOriginalName(),
         ]);
 
         return $track;

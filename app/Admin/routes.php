@@ -12,7 +12,6 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resource('/auth/users', UserController::class);
     $router->resource('/genre', GenreController::class);
-    $router->resource('/group', GroupController::class);
     $router->resource('/comment', CommentController::class);
     $router->resource('/collection', CollectionController::class);
     $router->resource('/album', AlbumController::class);
@@ -23,4 +22,5 @@ Route::group([
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
     $router->get('/api/music/group', '\App\Admin\Controllers\MusicGroupController@getMusicGroup');
     $router->get('/api/city', '\App\Admin\Controllers\CityController@getCity');
+    $router->get('/api/album', '\App\Admin\Controllers\AlbumController@getAlbum');
 });

@@ -12,6 +12,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class AlbumController extends Controller
 {
@@ -135,7 +136,7 @@ class AlbumController extends Controller
         ->title('Музыкальная группа');
         $show->deleted_at('Дата удаленния');
         $show->user('Пользователь', function ($user) {
-            $user->setResource('/admin/users');
+            $user->setResource('/admin/auth/users');
             $user->username('Имя');
         });
 
@@ -153,7 +154,6 @@ class AlbumController extends Controller
 
         $form->text('title', 'Название');
         $form->text('author', 'Автор');
-//        $form->date('year', 'Год')->default();
         $form->image('cover', 'Обложка')->uniqueName();
         $form->select('genre_id', 'Жанр')->options(function ($id) {
             $genre = Genre::find($id);
@@ -184,5 +184,12 @@ class AlbumController extends Controller
         });
 
         return $form;
+    }
+
+    public function getAlbum(Request $request)
+    {
+        $q = $request->get('q');
+
+        return Album::where('title', 'like', "%$q%")->paginate(null, ['id', 'title as text']);
     }
 }

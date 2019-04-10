@@ -115,7 +115,7 @@ class MusicGroupController extends Controller
 
         $show->id('#');
         $show->user('Пользователь', function ($user) {
-            $user->setResource('/admin/users');
+            $user->setResource('/admin/auth/users');
             $user->username('Имя');
         });
         $show->name('Имя');

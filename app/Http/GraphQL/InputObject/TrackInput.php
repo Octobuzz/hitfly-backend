@@ -51,7 +51,7 @@ class TrackInput extends GraphQLType
                 'name' => 'songText',
                 'description' => 'description',
                 'type' => Type::string(),
-                'rules' => ['min:0', 'max:255'],
+                'rules' => ['min:0', 'max:6000'],
             ],
         ];
     }
