@@ -46,7 +46,6 @@ class MusicGroupType extends GraphQLType
             'genres' => [
                 'type' => Type::listOf(GraphQL::type('Genre')),
                 'description' => 'Жанр группы',
-                'alias' => 'genre', // Use 'alias', if the database column is different from the type name
             ],
             'creatorGroup' => [
                 'type' => GraphQL::type('User'),
