@@ -1,6 +1,8 @@
 <?php
 
 use Faker\Generator as Faker;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
     return [
@@ -14,4 +16,9 @@ $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
             return \App\Models\City::inRandomOrder()->first()->id;
         },
     ];
+});
+
+$factory->afterMaking(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
+    $image = new File($faker->image());
+    $musicGroup->avatar_group = Storage::disk('public')->putFile('music_groups/'.$musicGroup->user_id, $image);
 });
