@@ -26,6 +26,7 @@
         v-model="userInput"
         class="invited-members__user-input"
         label="E-mail участника"
+        @press:enter="addMember"
       />
       <FormButton
         class="invited-members__save-button"

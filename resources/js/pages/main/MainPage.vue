@@ -1,31 +1,14 @@
 <template>
   <div>
-    <!--TODO: temp-->
-    <router-link to="/profile/edit">
-      edit profile
+    <div
+      v-if="$route.fullPath === '/'"
+      style="margin-top: 100px;"
+    />
+    <router-link
+      to="/profile"
+      style="display: block; margin-left: 20px;"
+    >
+      profile
     </router-link>
-    <br>
-    <router-link to="/profile/obsolete">
-      profile obsolete
-    </router-link>
-    <!--temp-->
-    <div style="margin: 300px" />
-
-    <div :style="{ marginLeft: '600px' }">
-      <TrackList type="my" />
-    </div>
   </div>
 </template>
-
-<script>
-import TrackList from '../../sharedComponents/TrackList';
-
-export default {
-  components: {
-    TrackList
-  },
-  data() {
-    return {};
-  }
-};
-</script>

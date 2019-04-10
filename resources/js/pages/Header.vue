@@ -62,6 +62,8 @@
     },
   }
 </script>
-<styles lang="sass" scoped>
-
+<styles lang="scss" scoped>
+.head {
+  z-index: 1100;
+}
 </styles>

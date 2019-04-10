@@ -99,7 +99,7 @@ $formRightPadding: 40px;
     &__choose-genres {
       margin-bottom: 40px;
 
-      &::v-deep &__genre-dropdown {
+      &::v-deep .edit-profile-form__genre-dropdown {
         max-width: 320px;
       }
     }

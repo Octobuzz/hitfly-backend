@@ -24,9 +24,8 @@ const routes = [
         path: 'update-group',
         component: profile.UpdateGroup
       },
-      // TODO: temp
       {
-        path: 'obsolete',
+        path: '',
         component: profile.ProfilePage_obsolete
       }
     ]

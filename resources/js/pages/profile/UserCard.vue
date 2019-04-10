@@ -14,8 +14,11 @@
           {{ user.username }}
         </h3>
         <p class="profileGeneral__subheader">
-          {{ user.followersCount }}
+          {{ user.followersCount || '0' }} подписчиков
         </p>
+
+        {{ user.location && user.location.title }}
+
         <p
           v-if="user.location && user.location.title"
           class="placeMark"
@@ -66,7 +69,7 @@
                   {{ group.name }}
                 </p>
                 <span>
-                  {{ group.followersCount }} подписчиков
+                  {{ group.followersCount || '0' }} подписчиков
                 </span>
               </div>
             </div>
@@ -219,13 +222,14 @@ export default {
   apollo: {
     user: {
       query: gql.query.MY_PROFILE,
-      update(data) {
-        return data[0];
-      },
-      result({ data: { user }, loading }) {
+      manual: true,
+      result({ data: { myProfile }, loading }) {
         if (loading === false) {
           this.isFetching = false;
-          this.user = user;
+          this.user = myProfile;
+
+          // TODO: temp
+          this.user.level = 'новичок';
         }
       },
       error(error) {

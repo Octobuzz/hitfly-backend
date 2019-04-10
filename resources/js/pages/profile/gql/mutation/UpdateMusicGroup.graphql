@@ -1,10 +1,12 @@
-mutation CreateMusicGroup(
+mutation UpdateMusicGroup(
+    $id: Int!,
     $name: String!
     $careerStartYear: String!
     $description: String!
     $genre: [ID]
 ) {
-    createMusicGroup(
+    updateMusicGroup(
+        id: $id,
         musicGroup: {
             name: $name
             careerStartYear: $careerStartYear

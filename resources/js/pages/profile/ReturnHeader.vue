@@ -2,7 +2,7 @@
   <div :class="['return-header', $attrs.class]">
     <IconButton
       class="return-header__arrow-button"
-      @press="$emit('press')"
+      @press="onReturn"
     >
       <ArrowIcon/>
     </IconButton>
@@ -18,6 +18,12 @@ export default {
   components: {
     IconButton,
     ArrowIcon
+  },
+  methods: {
+    onReturn() {
+      this.$router.go(-1);
+      this.$emit('press');
+    }
   }
 };
 </script>

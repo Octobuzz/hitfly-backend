@@ -1,116 +1,5 @@
 <template>
   <main class="main">
-    <aside class="main__aside aside">
-      <div class="aside__content">
-        <div class="profileAside">
-          <div class="profileGeneral profileAsideBlock">
-            <img class="profileGeneral__img" src="/images/acc.jpg" alt="">
-            <div class="profileGeneral__info">
-              <h3>Андрей Кондоров</h3>
-              <p class="profileGeneral__subheader">32 000 поклонников</p>
-              <p class="placeMark">Ульяновск</p>
-            </div>
-            <button class="editButton">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 528.899 528.899">
-                <path d="M328.883 89.125l107.59 107.589-272.34 272.34L56.604 361.465l272.279-272.34zm189.23-25.948l-47.981-47.981c-18.543-18.543-48.653-18.543-67.259 0l-45.961 45.961 107.59 107.59 53.611-53.611c14.382-14.383 14.382-37.577 0-51.959zM.3 512.69c-1.958 8.812 5.998 16.708 14.811 14.565l119.891-29.069L27.473 390.597.3 512.69z"/>
-              </svg>
-            </button>
-          </div>
-          <div class="profileGroups profileAsideBlock">
-            <div class="profileAsideBlock__heading">
-              <h4>Мои группы</h4>
-              <button class="profileAsideButton">Создать группу</button>
-            </div>
-            <div class="profileGroups__wrapper">
-              <div class="profileGroup">
-                <div class="profileGroup__wrapper">
-                  <img class="profileGeneral__img profileAsideBlock__img" src="/images/acc.jpg" alt="">
-                  <div class="profileGroup__body">
-                    <div class="profileAsideBlock__text">
-                      <p>Название группы</p>
-                      <span>32 000 поклонников</span>
-                    </div>
-                  </div>
-                  <button class="editButton">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 528.899 528.899">
-                      <path d="M328.883 89.125l107.59 107.589-272.34 272.34L56.604 361.465l272.279-272.34zm189.23-25.948l-47.981-47.981c-18.543-18.543-48.653-18.543-67.259 0l-45.961 45.961 107.59 107.59 53.611-53.611c14.382-14.383 14.382-37.577 0-51.959zM.3 512.69c-1.958 8.812 5.998 16.708 14.811 14.565l119.891-29.069L27.473 390.597.3 512.69z"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="profileGroup">
-                <div class="profileGroup__wrapper">
-                  <img class="profileGeneral__img profileAsideBlock__img" src="/images/acc.jpg" alt="">
-                  <div class="profileGroup__body">
-                    <div class="profileAsideBlock__text">
-                      <p>Название группы</p>
-                      <span>32 000 поклонников</span>
-                    </div>
-                  </div>
-                  <button class="editButton">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 528.899 528.899">
-                      <path d="M328.883 89.125l107.59 107.589-272.34 272.34L56.604 361.465l272.279-272.34zm189.23-25.948l-47.981-47.981c-18.543-18.543-48.653-18.543-67.259 0l-45.961 45.961 107.59 107.59 53.611-53.611c14.382-14.383 14.382-37.577 0-51.959zM.3 512.69c-1.958 8.812 5.998 16.708 14.811 14.565l119.891-29.069L27.473 390.597.3 512.69z"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="profileFollow profileAsideBlock">
-            <div class="profileAsideBlock__heading">
-              <h4>Слежу</h4>
-              <button class="profileAsideButton">Все</button>
-            </div>
-            <div class="profileFollow__wrapper">
-              <div class="profileGroup__wrapper">
-                <img class="profileGeneral__img profileAsideBlock__img" src="/images/acc.jpg" alt="">
-                <div class="profileAsideBlock__text">
-                  <p>Cyril Mikhailov</p>
-                  <span class="placeMark placeMark-small">Калининград</span>
-                </div>
-              </div>
-              <div class="profileGroup__wrapper">
-                <img class="profileGeneral__img profileAsideBlock__img" src="/images/acc.jpg" alt="">
-                <div class="profileAsideBlock__text">
-                  <p>Hello Monday, группа</p>
-                  <span class="placeMark placeMark-small">Москва</span>
-                </div>
-              </div>
-              <div class="profileGroup__wrapper">
-                <img class="profileGeneral__img profileAsideBlock__img" src="/images/acc.jpg" alt="">
-                <div class="profileAsideBlock__text">
-                  <p>Antonio Rodrigues Jr</p>
-                  <span class="placeMark placeMark-small">Москва</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="profileStats profileAsideBlock">
-            <div class="profileAsideBlock__heading">
-              <h4 class="userType novice">Новичок</h4>
-              <button class="profileAsideButton">Подробнее</button>
-              <div class="profileStats__subheading">
-                <p>до <span class="userType userType-small fan"></span>Любителя осталось: <span>3006</span></p>
-              </div>
-            </div>
-            <div class="profileStatsItems">
-              <div class="profileStatsItem">
-                <img class="profileStatsItem__icon" src="/images/profileIcon1.png" />
-                <p class="profileStatsItem__text">1 345 <br>бонусов</p>
-              </div>
-              <div class="profileStatsItem">
-                <img class="profileStatsItem__icon" src="/images/profileIcon2.png" />
-                <p class="profileStatsItem__text">128 дней <br>в Digico</p>
-              </div>
-              <div class="profileStatsItem">
-                <img class="profileStatsItem__icon" src="/images/profileIcon3.png" />
-                <p class="profileStatsItem__text">10 896 <br>любимых песен</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </aside>
     <div class="main__profile">
       <div class="profileNav">
         <ul>
@@ -701,6 +590,8 @@
   }
 </script>
 <style scoped lang="sass">
+  .main
+    padding-top: 0
   .fade-enter-active, .fade-leave-active
     transition: opacity .5s
     .fade-enter, .fade-leave-to

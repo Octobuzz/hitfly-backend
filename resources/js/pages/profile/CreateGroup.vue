@@ -169,24 +169,23 @@ export default {
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_MUSIC_GROUP,
         variables: {
-          avatarGroup: this.group.cover,
+          // avatarGroup: this.group.cover,
           name: this.group.name.input,
           careerStartYear: `${this.group.year.input}-1-1`,
           description: this.group.activity.input,
-          genre: this.creationQueryGenres[0], // TODO: remove index after api is fixed
-          socialLinks: this.group.socialLinks,
-          invitedMembers: this.group.invitedMembers
+          genre: this.creationQueryGenres,
+          // socialLinks: this.group.socialLinks,
+          // invitedMembers: this.group.invitedMembers
         },
         update(store, { data: { createMusicGroup } }) {
-          const userData = store.readQuery({ query: gql.query.USER });
+          const userData = store.readQuery({ query: gql.query.MY_PROFILE });
 
-          userData.user.musicGroups.push(createMusicGroup);
+          userData.myProfile.musicGroups.push(createMusicGroup);
           store.writeQuery({
-            query: gql.query.USER,
+            query: gql.query.MY_PROFILE,
             data: userData
           });
         }
-
       }).then((result) => {
         this.$router.push('/profile');
       }).catch(({ graphQLErrors }) => {
