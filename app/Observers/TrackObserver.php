@@ -18,6 +18,10 @@ class TrackObserver
         $pathTrack = Storage::disk('public')->path($track->filename);
         $track->track_hash = md5_file($pathTrack);
 
+        if (empty($track->state)) {
+            $track->state = 'fileload';
+        }
+
         return true;
     }
 

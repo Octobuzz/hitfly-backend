@@ -175,6 +175,12 @@ class MusicGroupController extends Controller
         })->ajax('/admin/api/city');
         $form->textarea('description', 'Описание');
 
+        $form->image('avatar_group', 'Обложка')->uniqueName();
+
+        $form->saving(function (Form $form) {
+            $form->image('avatar_group')->move('music_groups/'.$form->user_id)->uniqueName();
+        });
+
         return $form;
     }
 

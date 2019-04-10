@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Музыкальная группа.
@@ -107,5 +108,10 @@ class MusicGroup extends Model
     public function followers()
     {
         return $this->morphMany(Watcheables::class, 'watcheable');
+    }
+
+    public function getAvatarGroupAttribute($image)
+    {
+        return Storage::disk('admin')->url($image);
     }
 }

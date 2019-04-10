@@ -31,6 +31,9 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'Аватарка группы',
                 'alias' => 'avatar_group', // Use 'alias', if the database column is different from the type name
+                'resolve' => function ($model) {
+                    return $model->avatar_group;
+                }, // Use 'alias', if the database column is different from the type name
             ],
             'careerStartYear' => [
                 'type' => Type::nonNull(Type::string()),
@@ -40,10 +43,9 @@ class MusicGroupType extends GraphQLType
                     return $root->career_start_year;
                 },
             ],
-            'genre' => [
-                'type' => GraphQL::type('Genre'),
+            'genres' => [
+                'type' => Type::listOf(GraphQL::type('Genre')),
                 'description' => 'Жанр группы',
-                'alias' => 'genre', // Use 'alias', if the database column is different from the type name
             ],
             'creatorGroup' => [
                 'type' => GraphQL::type('User'),
