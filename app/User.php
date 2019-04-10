@@ -57,15 +57,6 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const GENDER_MEN = 'M';
     const GENDER_WOMEN = 'F';
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::creating(function ($model) {
-            $model->access_token = md5(microtime());
-        });
-    }
-
     /**
      * The attributes that are mass assignable.
      *
