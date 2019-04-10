@@ -1,6 +1,12 @@
-query FavouriteTrackList {
-    favouriteTrack(limit: 100, page: 1){
-        data {
+mutation ($id: Int!) {
+    addToFavourites(
+        Favourite: {
+            favouriteableId: $id,
+            favouritableType: track
+        }
+    ) {
+        ... on FavouriteTrack {
+            id
             track {
                 id
                 trackName

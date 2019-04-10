@@ -38,6 +38,8 @@
 import gql from './gql';
 import BaseInput from '../BaseInput.vue';
 
+// TODO: update track not tracks
+
 function updateMyTrackCollections(store, collection) {
   const { tracks: trackList } = store.readQuery({
     query: gql.query.TRACK_LIST,
@@ -108,9 +110,6 @@ export default {
         },
 
         update: (store, { data: { addInCollection: collection } }) => {
-          // Update only 'my' tracks cause other tracks are not
-          // supposed to have userPlayLists field.
-
           updateMyTrackCollections.call(this, store, collection);
           this.newPlaylistTitle = '';
           this.emitTrackAdded(collection);

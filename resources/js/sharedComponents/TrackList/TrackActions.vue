@@ -58,6 +58,7 @@
         </span>
         <span
           class="track-actions-popover__menu-item"
+          @click="addTrackToFavourites"
         >
           Добавить в любимые треки
         </span>
@@ -149,6 +150,10 @@ export default {
 
   methods: {
     playNext() {
+
+    },
+
+    addTrackToFavourites() {
 
     },
 

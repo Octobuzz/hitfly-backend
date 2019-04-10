@@ -30,14 +30,13 @@ export default {
 
   data() {
     return {
-      trackList: []
+      trackList: [],
+      favTrackList: [] // todo: temp
     };
   },
 
   computed: {
     apolloQuery() {
-      console.log('apollo query computed ');
-
       switch (this.type) {
         case 'favourite':
           return gql.query.FAVOURITE_TRACK_LIST; // TODO: this should resolve to trackList
@@ -64,6 +63,14 @@ export default {
   },
 
   created() {
+    // TODO:  temp
+    this.$apollo.addSmartQuery('favTrackList', {
+      query: gql.query.FAVOURITE_TRACK_LIST,
+      update(data) {
+        console.log(data);
+      }
+    });
+
     this.$apollo.addSmartQuery('trackList', {
       // TODO: implement pagination or loadable list
 
