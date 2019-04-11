@@ -13,7 +13,8 @@ const uri = prod
   : 'http://localhost:9090/graphql/user';
 
 const httpLink = new HttpLink({
-  uri
+  uri,
+  credentials: 'include',
 });
 
 // TODO: second endpoint
