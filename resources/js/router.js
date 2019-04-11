@@ -5,7 +5,7 @@ import * as profile from './pages/profile';
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     component: main.MainPage
   },
   {

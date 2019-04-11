@@ -24,7 +24,12 @@
               <span class="button-icon__tips">4</span>
               <svg viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M14 9.7546053V6.0263158c0-2.57236843-1.6733333-4.76052633-4-5.57565791C9.40177778.19572368 8.73511111.06825658 8 .06825658c-.73511111 0-1.40177778.1274671-2 .38240131-2.32666667.81578948-4 3.00394737-4 5.57960531v3.7236842L.86230604 11.2512873C.30287472 11.9875652 0 12.886814 0 13.8115132c0 .7871874.6381415 1.4253289 1.42532895 1.4253289h3.24133772C4.66666667 17.0506579 6.162 18.5263158 8 18.5263158c1.838 0 3.3333333-1.4756579 3.3333333-3.2894737h3.2413378c.7871874 0 1.4253289-.6381415 1.4253289-1.4253289 0-.9246896-.3029285-1.8239192-.8624427-2.560122L14 9.7546053z" fill="#231F20" fill-rule="nonzero"/></g></svg>
           </button>
-          <img class="head__profile head-right-item" src="/images/test_ava.jpg" alt="logo">
+          <img
+            class="head__profile head-right-item"
+            src="/images/test_ava.jpg"
+            alt="logo"
+            @click="goToProfilePage"
+          >
       </div>
       <div class="drop-menu"> <!-- is-close / is-show -->
           <div class="drop-menu-list">
@@ -60,6 +65,11 @@
 
       }
     },
+    methods: {
+      goToProfilePage() {
+        this.$router.push('/profile');
+      }
+    }
   }
 </script>
 <styles lang="scss" scoped>
