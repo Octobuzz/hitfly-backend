@@ -16,16 +16,15 @@
            {{config('app.name', 'Laravel')}}
         @endif
     </title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="body templateless">
-@include('layouts.header')
+<body class="body">
 @yield('content')
-@include('layouts.footer')
+
+
+<!-- Scripts -->
+<script src="js/app.js" defer></script>
+
 </body>
 </html>

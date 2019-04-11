@@ -1,0 +1,33 @@
+query User {
+    user(id: 4) {
+        id
+        username
+        avatar
+        followersCount
+        location {
+            title
+        }
+        musicGroups {
+            id
+            name
+            avatarGroup
+            followersCount
+        },
+        watchingList {
+            __typename
+            id
+            ... on User {
+                username
+                location {
+                    title
+                }
+            }
+            ... on MusicGroup {
+                name
+                location {
+                    title
+                }
+            }
+        }
+    }
+}

@@ -125,7 +125,7 @@
   padding: 1em 8px;
   box-sizing: border-box;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 200;
   background-color: $color_2;
 
   &__right{
@@ -305,7 +305,7 @@
 
     &__right{
       display: flex;
-      width: calc(100% / 3);
+      width: 31.8%;
       box-sizing: border-box;
       padding: 20px 32px;
       align-items: center;
@@ -315,14 +315,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: calc(100% / 3);
+      flex-grow: 1;
       border-right: 1px solid $borderColor;
       position: relative;
       padding: 0 2em;
       box-sizing: border-box;
     }
     &__left{
-      width: calc(100% / 3);
+      width: 31.8%;
       padding: 20px 32px;
       box-sizing: border-box;
       border-right: 1px solid $borderColor;
@@ -333,7 +333,7 @@
     transform: translateY(-50%);
   }
   .footer-info{
-    width: calc(100% - 120px);
+    //width: calc(100% - 120px);
 
     &__img{
       height: 48px;
@@ -365,12 +365,8 @@
     }
   }
   .aside{
-    width: calc(100% / 3);
-    min-width: calc(100% / 3);
-    padding: 90px 0 0;
-    position: fixed;
-    top: 0;
-    bottom: 0;
+    width: 31.8%;
+    min-width: 31.8%;
   }
   .footer-l-icon{
     display: block;

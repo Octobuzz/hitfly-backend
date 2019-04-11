@@ -1,0 +1,21 @@
+query FavouriteTrackList {
+    favouriteTrack(limit: 100, page: 1){
+        data {
+            track {
+                id
+                trackName
+                userFavourite
+                album {
+                    title
+                    author
+                    cover
+                }
+                userPlayLists {
+                    id
+                    title
+                    image
+                }
+            }
+        }
+    }
+}

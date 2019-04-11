@@ -1,0 +1,31 @@
+mutation UpdateMusicGroup(
+    $id: Int!,
+    $name: String!
+    $careerStartYear: String!
+    $description: String!
+    $genre: [ID]
+) {
+    updateMusicGroup(
+        id: $id,
+        musicGroup: {
+            name: $name
+            careerStartYear: $careerStartYear
+            description: $description
+            genre: $genre
+        }
+    ) {
+        id
+        name
+        avatarGroup
+        careerStartYear
+        genres {
+            id
+            name
+        }
+        description
+        location {
+            title
+        }
+        followersCount
+    }
+}

@@ -1,0 +1,19 @@
+mutation CreateMusicGroup(
+    $name: String!
+    $careerStartYear: String!
+    $description: String!
+    $genre: [ID]
+) {
+    createMusicGroup(
+        musicGroup: {
+            name: $name
+            careerStartYear: $careerStartYear
+            description: $description
+            genre: $genre
+        }
+    ) {
+        id
+        name
+        avatarGroup
+    }
+}

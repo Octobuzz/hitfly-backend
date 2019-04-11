@@ -1,0 +1,207 @@
+@import '../../../sass/variables.scss';
+
+$avatarSide: 235px;
+$avatarRightMargin: 30px;
+$formMaxWidth: 986px;
+$formRightPadding: 40px;
+
+.edit-profile {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-top: 70px;
+
+  &-container {
+    max-width: 991px;
+  }
+
+  &-avatar {
+    min-width: $avatarSide;
+    width: $avatarSide;
+    min-height: $avatarSide;
+    height: $avatarSide;
+    margin: {
+      right: $avatarRightMargin;
+      bottom: 24px;
+    }
+  }
+
+  &-form {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    max-width: $formMaxWidth;
+    padding-right: $formRightPadding;
+
+    &__name-input,
+    &__location-input,
+    &__career-start-year-input,
+    &__email-input,
+    &__password-input {
+      max-width: 320px;
+    }
+
+    &__name-input {
+      margin-bottom: 16px;
+    }
+
+    &__location-input {
+      margin-bottom: 46px;
+    }
+
+    &__career-start-year-input {
+      margin-bottom: 40px;
+    }
+
+    &__activity-textarea {
+      margin-bottom: 42px;
+    }
+
+    &__email-input {
+      flex-grow: 1;
+      margin-right: 16px;
+    }
+
+    &__password-input {
+      flex-grow: 1;
+      margin-right: 16px;
+    }
+
+    &__input-group {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    &__change-button {
+      width: 160px;
+    }
+
+    &__favourite-genres-button {
+      margin-bottom: 40px;
+    }
+
+    &__social-networks-link {
+      display: block;
+      margin-bottom: 54px;
+    }
+
+    &__tags-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &__chosen-tag {
+      margin: {
+        right: 8px;
+        bottom: 10px;
+      }
+    }
+
+    &__choose-genres {
+      margin-bottom: 40px;
+
+      &::v-deep .edit-profile-form__genre-dropdown {
+        max-width: 320px;
+      }
+    }
+
+    &__genre-list-suggestion {
+      display: block;
+      margin: {
+        top: 18px;
+        bottom: 18px;
+      }
+    }
+
+    &__h2, &__h3 {
+      margin: {
+        top: 0;
+        bottom: 14px;
+      }
+    }
+
+    // TODO: make h-styles global
+
+    &__h3 {
+      font-family: "Gotham Pro", serif;
+      font-size: 20px;
+    }
+  }
+
+  &-footer {
+    box-sizing: border-box;
+    max-width: $avatarSide
+      + $avatarRightMargin
+      + $formMaxWidth
+      + $formRightPadding;
+    margin-bottom: 62px;
+
+    &__delimiter {
+      box-sizing: border-box;
+      width: 100%;
+      border: {
+        width: 1px 0 0 0;
+        style: solid;
+        color: $borderColor;
+      }
+      margin-bottom: 22px;
+    }
+
+    &__save-button {
+      display: block;
+      max-width: 190px;
+      margin-left: auto;
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .edit-profile {
+    flex-wrap: wrap;
+  }
+
+  .edit-profile-footer {
+    max-width: $formMaxWidth;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .edit-profile {
+    &-avatar {
+      margin: {
+        left: auto;
+        right: auto;
+      }
+    }
+
+    &-form {
+      padding-right: 0;
+
+      &__name-input,
+      &__location-input,
+      &__career-start-year-input,
+      &__email-input,
+      &__password-input,
+      &__choose-genres::v-deep .edit-profile-form__genre-dropdown {
+        max-width: 100%;
+      }
+
+      &__change-button {
+        min-width: 120px;
+      }
+    }
+
+    &-footer {
+      &__delimiter {
+        display: none;
+      }
+
+      &__save-button {
+        max-width: 100%;
+        margin: {
+          right: auto;
+          left: auto;
+        }
+      }
+    }
+  }
+}

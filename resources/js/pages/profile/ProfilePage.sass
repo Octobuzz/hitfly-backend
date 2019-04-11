@@ -1,0 +1,33 @@
+@import '../../../sass/_variables.scss'
+
+.main
+  padding-top: 90px
+
+button
+  background: none
+  border: none
+  box-shadow: none
+  padding: 0
+  cursor: pointer
+  transition: $trns
+p
+  margin: 0
+h3
+  font-size: 24px
+  line-height: 32px
+  margin: 0
+  font-family: $font_bold
+h4
+  font-size: 20px
+  font-family: $font_bold
+  margin: 0
+
+@media screen and (max-width: 1024px)
+  .main__profile
+    box-sizing: border-box
+
+@media screen and (max-width: 576px)
+  .main__profile
+    padding:
+      left: 16px
+      right: 16px
