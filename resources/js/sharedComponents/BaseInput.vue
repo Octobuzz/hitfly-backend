@@ -70,10 +70,8 @@ export default {
   },
 
   watch: {
-    // cause empty string is not an input this check is done manually
-
     value(val) {
-      if (val === '') this.empty = true;
+      this.empty = val === '';
     }
   },
 

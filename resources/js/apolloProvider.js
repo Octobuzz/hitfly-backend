@@ -9,13 +9,13 @@ Vue.use(VueApollo);
 const prod = process.env.NODE_ENV === 'production';
 
 const uri = prod
-  ? `${process.env.APP_URL}/graphql/user`
+  ? '/graphql/user'
   : 'http://localhost:9090/graphql/user';
 
 // TODO: set token properly
 
 const headers = {
-  'X-TOKEN-AUTH': 'eb333220ec2fd0f9c647e9f5b1314003'
+  'X-TOKEN-AUTH': '111'
 };
 
 const httpLink = new HttpLink({

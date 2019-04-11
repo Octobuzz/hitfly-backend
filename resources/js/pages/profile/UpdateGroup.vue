@@ -5,8 +5,9 @@
     <div class="create-group">
       <div class="create-group-cover">
         <ChooseAvatar
-          v-model="group.cover"
+          :image-url="group.cover.current"
           caption="Загрузить обложку"
+          @input="onCoverInput"
         />
       </div>
 
@@ -104,7 +105,7 @@
         modifier="primary"
         @press="updateGroup"
       >
-        Создать группу
+        Сохранить изменения
       </FormButton>
     </div>
   </div>
@@ -140,19 +141,20 @@ export default {
   data() {
     return {
       group: {
-        cover: '',
+        cover: {
+          current: '',
+          new: null
+        },
+        genres: [],
         name: {
           input: ''
         },
         year: {
-          input: `${new Date().getYear() + 1900}`
+          input: '',
         },
         activity: {
           input: ''
-        },
-        genres: [],
-        socialLinks: [],
-        invitedMembers: []
+        }
       }
     };
   },
@@ -161,53 +163,104 @@ export default {
     creationQueryGenres() {
       return this.group.genres
         .map(genre => genre.id);
+    },
+    editGroupId() {
+      return this.$store.getters['profile/editGroupId'];
     }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('profile/setEditGroupId', null);
+    next();
   },
 
   methods: {
+    onCoverInput(file) {
+      this.group.cover.new = file;
+    },
+
     updateGroup() {
-      // this.$apollo.mutate({
-      //   mutation: gql.mutation.UPDATE_MUSIC_GROUP,
-      //   variables: {
-      //     // avatarGroup: this.group.cover,
-      //     name: this.group.name.input,
-      //     careerStartYear: `${this.group.year.input}-1-1`,
-      //     description: this.group.activity.input,
-      //     genre: this.creationQueryGenres,
-      //     // socialLinks: this.group.socialLinks,
-      //     // invitedMembers: this.group.invitedMembers
-      //   },
-      //   update(store, { data: { createMusicGroup } }) {
-      //     const userData = store.readQuery({ query: gql.query.MY_PROFILE });
-      //
-      //     userData.myProfile.musicGroups.push(createMusicGroup);
-      //     store.writeQuery({
-      //       query: gql.query.MY_PROFILE,
-      //       data: userData
-      //     });
-      //   }
-      // }).then((result) => {
-      //   this.$router.push('/profile');
-      // }).catch(({ graphQLErrors }) => {
-      //   console.log(graphQLErrors);
-      //   // TODO: validation errors
-      // });
+      this.$apollo.mutate({
+        mutation: gql.mutation.UPDATE_MUSIC_GROUP,
+        variables: {
+          id: this.editGroupId,
+          // avatarGroup: this.group.cover.new,
+          name: this.group.name.input,
+          careerStartYear: `${this.group.year.input}-1-1`,
+          description: this.group.activity.input,
+          genre: this.creationQueryGenres,
+          // socialLinks: this.group.socialLinks,
+          // invitedMembers: this.group.invitedMembers
+        },
+        update(store, { data: { updateMusicGroup: musicGroup } }) {
+          const {
+            name,
+            careerStartYear,
+            description,
+            genres,
+            avatarGroup
+          } = musicGroup;
+
+          return {
+            genres,
+            cover: {
+              current: avatarGroup
+            },
+            name: {
+              input: name
+            },
+            year: {
+              input: new Date(careerStartYear).getFullYear().toString()
+            },
+            activity: {
+              input: description
+            }
+          };
+        }
+      }).then(() => {
+        this.$router.push('/profile');
+      }).catch((error) => {
+        console.log(error);
+        // TODO: validation errors
+      });
     }
   },
 
-  // apollo: {
-  //   group: {
-  //     query: gql.query.MUSIC_GROUP,
-  //     variables() {
-  //       return {
-  //         id: this.$store.getters.editGroupId
-  //       };
-  //     },
-  //     update(data) {
-  //       console.log(data);
-  //     }
-  //   }
-  // }
+  apollo: {
+    group: {
+      query: gql.query.MUSIC_GROUP,
+      variables() {
+        return {
+          id: this.editGroupId
+        };
+      },
+      update: ({ musicGroup }) => {
+        const {
+          name,
+          careerStartYear,
+          description,
+          genres,
+          avatarGroup
+        } = musicGroup;
+
+        return {
+          genres,
+          cover: {
+            current: avatarGroup
+          },
+          name: {
+            input: name
+          },
+          year: {
+            input: new Date(careerStartYear).getFullYear().toString()
+          },
+          activity: {
+            input: description
+          }
+        };
+      }
+    }
+  }
 };
 </script>
 

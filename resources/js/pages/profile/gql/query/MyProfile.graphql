@@ -2,6 +2,9 @@ query MyProfile {
     myProfile {
         id
         username
+        email
+        dateRegister
+        avatar
         followersCount
         musicGroups {
             id
@@ -9,7 +12,16 @@ query MyProfile {
             avatarGroup
         }
         location {
+            id
             title
+        }
+        watchingUser {
+            id,
+            username
+            location {
+                id
+                title
+            }
         }
     }
 }

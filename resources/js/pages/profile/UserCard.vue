@@ -17,8 +17,6 @@
           {{ user.followersCount || '0' }} подписчиков
         </p>
 
-        {{ user.location && user.location.title }}
-
         <p
           v-if="user.location && user.location.title"
           class="placeMark"
@@ -99,21 +97,21 @@
 
       <div class="profileFollow__wrapper">
         <div
-          v-for="userOrGroup in user.watchList"
+          v-for="userOrGroup in user.watchingUser"
           :key="userOrGroup.id"
           class="profileGroup__wrapper"
         >
           <img
             class="profileGeneral__img profileAsideBlock__img"
-            :src="userOrGroup.avatar"
+            :src="userOrGroup.avatar || '/images/generic-user-purple.png'"
             alt="User or Group avatar"
           >
           <div class="profileAsideBlock__text">
             <p>
-              {{ userOrGroup.name }}
+              {{ userOrGroup.username }}
             </p>
             <span class="placeMark placeMark-small">
-              {{ userOrGroup.location }}
+              {{ userOrGroup.location.title }}
             </span>
           </div>
         </div>
@@ -188,7 +186,7 @@ export default {
         },
         level: 'новичок',
         musicGroups: [],
-        watchingList: []
+        watchingUser: []
       },
       isFetching: true
     };
@@ -200,22 +198,28 @@ export default {
     },
     isEditingUser() {
       return this.$route.fullPath === '/profile/edit';
+    },
+    editGroupId() {
+      return this.$store.getters['profile/editGroupId'];
     }
   },
 
   methods: {
     isUpdatingGroup(groupId) {
-      return this.$store.getters.editGroupId === groupId;
+      return this.editGroupId === groupId;
     },
     goToEditUser() {
       this.$router.push('/profile/edit');
     },
     goToUpdateGroup(groupId) {
-      this.$store.commit('setEditGroupId', groupId);
+      this.setEditGroupId(groupId);
       this.$router.push('/profile/update-group');
     },
     goToCreateGroup() {
       this.$router.push('/profile/create-group');
+    },
+    setEditGroupId(id) {
+      this.$store.commit('profile/setEditGroupId', id);
     }
   },
 

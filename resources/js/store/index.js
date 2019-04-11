@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 import player from './player';
+import profile from './profile';
 
 Vue.use(Vuex);
 
@@ -24,7 +25,8 @@ const mutations = {
 
 export default new Store({
   modules: {
-    player
+    player,
+    profile
   },
   state,
   getters,

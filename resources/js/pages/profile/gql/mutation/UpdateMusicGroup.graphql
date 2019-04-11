@@ -17,5 +17,15 @@ mutation UpdateMusicGroup(
         id
         name
         avatarGroup
+        careerStartYear
+        genres {
+            id
+            name
+        }
+        description
+        location {
+            title
+        }
+        followersCount
     }
 }

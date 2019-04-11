@@ -61,7 +61,7 @@ export default {
     },
     genresMaxCount: {
       type: Number,
-      default: 20
+      default: 30
     },
     genresQueryCount: {
       type: Number,

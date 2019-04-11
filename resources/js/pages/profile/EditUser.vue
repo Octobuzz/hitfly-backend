@@ -5,9 +5,10 @@
     <div class="edit-profile">
       <div class="edit-profile-avatar">
         <ChooseAvatar
-          v-model="avatar"
+          :image-url="avatar.current || '/images/generic-user-purple.png'"
           caption="Загрузить фото"
           :circle="true"
+          @input="onAvatarInput"
         />
       </div>
 
@@ -196,7 +197,7 @@ import BalloonIcon from '../../sharedComponents/icons/BalloonIcon.vue';
 import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
 import EnvelopeIcon from '../../sharedComponents/icons/EnvelopeIcon.vue';
 import KeyIcon from '../../sharedComponents/icons/KeyIcon.vue';
-import ReturnHeader from "./ReturnHeader";
+import ReturnHeader from './ReturnHeader.vue';
 
 export default {
   components: {
@@ -216,7 +217,10 @@ export default {
   },
   data() {
     return {
-      avatar: '/images/generic-user-purple.png',
+      avatar: {
+        current: '',
+        new: null
+      },
       name: {
         input: ''
       },
@@ -236,28 +240,14 @@ export default {
         input: ''
       },
       playedGenres: [],
-      favouriteGenres: [
-        // TODO: emty array when the backend is ready
-        {
-          id: 1,
-          name: 'Lolita Paucek',
-          userFavourite: true
-        },
-        {
-          id: 2,
-          name: 'Carlo Wunsch I',
-          userFavourite: true
-        },
-        {
-          "id": 19,
-          "name": "Miss Elza Cruickshank V",
-          "userFavourite": false
-        }
-      ],
+      favouriteGenres: [],
       genreEditMode: false
     };
   },
   methods: {
+    onAvatarInput(file) {
+      this.avatar.new = file;
+    },
     changeEmail() {
       console.log('change email');
     },
@@ -277,10 +267,39 @@ export default {
       manual: true,
       result({ data: { genre }, networkStatus }) {
         if (networkStatus === 7) {
-          // TODO:  uncomment
-          // this.favouriteGenres = genre
-          //   .filter(genreEntry => genreEntry.userFavourite);
+          this.favouriteGenres = genre
+            .filter(genreEntry => genreEntry.userFavourite);
         }
+      },
+      error(err) {
+        console.log(err);
+      }
+    },
+
+    myProfile: {
+      query: gql.query.MY_PROFILE,
+      manual: true,
+      result({ data: { myProfile }, networkStatus }) {
+        if (networkStatus === 7) {
+          console.log(myProfile);
+
+          const {
+            username,
+            location,
+            dateRegister,
+            email,
+            avatar
+          } = myProfile;
+
+          this.name.input = username;
+          this.location.input = location.title;
+          this.careerStartYear.input = new Date(dateRegister).getFullYear();
+          this.email.input = email;
+          this.avatar.current = avatar;
+        }
+      },
+      error(err) {
+        console.log(err);
       }
     }
   }

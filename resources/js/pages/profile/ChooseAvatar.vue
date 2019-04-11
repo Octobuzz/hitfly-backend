@@ -5,7 +5,7 @@
         v-if="renderInFirstContainer && imageUrl"
         class="avatar__image"
         :alt="alt"
-        :style="{ backgroundImage: `url(${imageUrl})` }"
+        :style="{ backgroundImage: `url(${inputUrl || imageUrl})` }"
         :class="{ 'avatar__image_top': renderInFirstContainer }"
       />
     </transition>
@@ -14,7 +14,7 @@
         v-if="!renderInFirstContainer && imageUrl"
         class="avatar__image"
         :alt="alt"
-        :style="{ backgroundImage: `url(${imageUrl})` }"
+        :style="{ backgroundImage: `url(${inputUrl || imageUrl})` }"
         :class="{ 'avatar__image_top': !renderInFirstContainer }"
       />
     </transition>
@@ -40,9 +40,6 @@ export default {
   components: {
     CameraIcon
   },
-  model: {
-    prop: 'imageUrl'
-  },
   props: {
     imageUrl: {
       type: String,
@@ -65,6 +62,7 @@ export default {
   data() {
     return {
       fileReader: new FileReader(),
+      inputUrl: '',
       renderInFirstContainer: true
     };
   },
@@ -72,7 +70,7 @@ export default {
   created() {
     this.fileReader.onload = (e) => {
       this.renderInFirstContainer = !this.renderInFirstContainer;
-      this.$emit('input', e.target.result);
+      this.inputUrl = e.target.result;
     };
   },
 
@@ -84,6 +82,7 @@ export default {
         // TODO: file size validation
 
         this.fileReader.readAsDataURL(file);
+        this.$emit('input', file);
       }
     }
   }

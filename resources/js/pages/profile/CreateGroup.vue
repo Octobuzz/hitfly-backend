@@ -5,8 +5,9 @@
     <div class="create-group">
       <div class="create-group-cover">
         <ChooseAvatar
-          v-model="group.cover"
+          :image-url="group.cover.current"
           caption="Загрузить обложку"
+          @input="onCoverInput"
         />
       </div>
 
@@ -140,7 +141,10 @@ export default {
   data() {
     return {
       group: {
-        cover: '',
+        cover: {
+          current: '',
+          new: null
+        },
         name: {
           input: ''
         },
@@ -165,11 +169,15 @@ export default {
   },
 
   methods: {
+    onCoverInput(file) {
+      this.group.cover.new = file;
+    },
+
     createGroup() {
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_MUSIC_GROUP,
         variables: {
-          // avatarGroup: this.group.cover,
+          avatarGroup: this.group.cover.new,
           name: this.group.name.input,
           careerStartYear: `${this.group.year.input}-1-1`,
           description: this.group.activity.input,

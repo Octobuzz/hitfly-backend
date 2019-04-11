@@ -32,9 +32,25 @@ const routes = [
   }
 ];
 
-Vue.use(VueRouter);
-
-export default new VueRouter({
+const router = new VueRouter({
   routes,
   mode: 'history'
 });
+
+router.customData = {
+  navHistory: []
+};
+
+router.afterEach((to) => {
+  const { navHistory } = router.customData;
+
+  navHistory.unshift(to);
+
+  if (navHistory > 20) {
+    navHistory.pop();
+  }
+});
+
+Vue.use(VueRouter);
+
+export default router;

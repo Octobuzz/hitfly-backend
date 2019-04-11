@@ -19,10 +19,22 @@ export default {
     IconButton,
     ArrowIcon
   },
+
   methods: {
     onReturn() {
-      this.$router.go(-1);
       this.$emit('press');
+
+      const router = this.$router;
+      const { navHistory } = router.customData;
+      const toEditGroup = navHistory[1].fullPath === '/profile/update-group';
+      const fromEditProfile = navHistory[0].fullPath === '/profile/edit';
+
+      if (toEditGroup && fromEditProfile) {
+        router.push('/profile');
+
+        return;
+      }
+      router.go(-1);
     }
   }
 };

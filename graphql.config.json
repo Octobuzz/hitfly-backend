@@ -10,7 +10,7 @@
       "README_options" : "See the 'Options' section at https://github.com/then/then-request",
       "options" : {
         "headers": {
-          "X-TOKEN-AUTH" : "5e586534b95c72c88e05668060d76fb5",
+          "X-TOKEN-AUTH" : "e0c2d3ab45810a7a8a399ac38578477c",
           "user-agent" : "JS GraphQL"
         }
       }
@@ -24,7 +24,7 @@
       "url": "http://localhost:9090/graphql/user",
       "options" : {
         "headers": {
-          "X-TOKEN-AUTH" : "5e586534b95c72c88e05668060d76fb5",
+          "X-TOKEN-AUTH" : "e0c2d3ab45810a7a8a399ac38578477c",
           "user-agent" : "JS GraphQL"
         }
       }
