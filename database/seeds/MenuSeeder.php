@@ -102,6 +102,27 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'icon' => 'fa-bar-chart',
                 'uri' => '/track',
             ],
+            [
+                'parent_id' => 0,
+                'order' => 14,
+                'title' => 'Чарты',
+                'icon' => 'fa-bar-chart',
+                'uri' => '/chart',
+            ],
+            [
+                'parent_id' => 0,
+                'order' => 15,
+                'title' => 'Коллекции',
+                'icon' => 'fa-bar-chart',
+                'uri' => '/collection',
+            ],
+            [
+                'parent_id' => 0,
+                'order' => 16,
+                'title' => 'Избранное',
+                'icon' => 'fa-bar-chart',
+                'uri' => '/favourite',
+            ],
         ]);
     }
 }
