@@ -14,7 +14,7 @@ const uri = prod
 
 const httpLink = new HttpLink({
   uri,
-  credentials: 'include',
+  credentials: 'include'
 });
 
 // TODO: second endpoint
@@ -22,8 +22,9 @@ const httpLink = new HttpLink({
 const cache = new InMemoryCache();
 
 const apolloClient = new ApolloClient({
-  link: httpLink,
   cache,
+  link: httpLink,
+  credentials: 'include',
   connectToDevTools: !prod
 });
 

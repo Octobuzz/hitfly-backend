@@ -293,8 +293,8 @@
     flex-direction: row;
 
     &__info{
-      width: 100%;
-      padding-left: calc(100% / 3);
+      //width: 100%;
+      //padding-left: calc(100% / 3);
     }
     &__aside{
       border-right: 1px solid $borderColor;
