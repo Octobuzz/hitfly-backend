@@ -2,16 +2,16 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Collection;
-use Encore\Admin\Controllers\HasResourceActions;
+use App\Models\Charts;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\Track;
+use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class CollectionController extends Controller
+class ChartController extends Controller
 {
     use HasResourceActions;
 
@@ -19,7 +19,6 @@ class CollectionController extends Controller
      * Index interface.
      *
      * @param Content $content
-     *
      * @return Content
      */
     public function index(Content $content)
@@ -33,9 +32,8 @@ class CollectionController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
-     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -49,9 +47,8 @@ class CollectionController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
-     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -66,7 +63,6 @@ class CollectionController extends Controller
      * Create interface.
      *
      * @param Content $content
-     *
      * @return Content
      */
     public function create(Content $content)
@@ -84,15 +80,14 @@ class CollectionController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Collection());
+        $grid = new Grid(new Charts);
 
         $grid->id('Id');
-        $grid->title('Заголовок');
-        $grid->image('Изображение');
-
-        $grid->user_id('Создатель коллекции')->display(function ($userId) {
-            return User::find($userId)->username;
-        });
+        $grid->track_id('ID трека');
+        $grid->weekly_rate('Недельный рейтинг');
+        $grid->rating('Рейтинг');
+        $grid->created_at('Дата создания');
+        $grid->updated_at('Дата обновления');
 
         return $grid;
     }
@@ -101,19 +96,18 @@ class CollectionController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
-     *
      * @return Show
      */
     protected function detail($id)
     {
-        $show = new Show(Collection::findOrFail($id));
+        $show = new Show(Charts::findOrFail($id));
 
         $show->id('Id');
-        $show->title('Заголовок');
-        $show->image('Изображение');
-        $show->user_id('ID пользователя');
-        $show->is_admin('Is admin');
-        //как показать связанные треки?
+        $show->track_id('ID трека');
+        $show->weekly_rate('Недельный рейтинг');
+        $show->rating('Рейтинг');
+        $show->created_at('Дата создания');
+        $show->updated_at('Дата обновления');
 
         return $show;
     }
@@ -125,10 +119,16 @@ class CollectionController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Collection());
+        $form = new Form(new Charts);
+        $form->select('track_id', 'Название трека')->options(function ($id) {
+            $track = Track::find($id);
 
-        $form->text('title', 'Заголовок');
-        $form->image('image', 'Изображение');
+            if ($track) {
+                return [$track->id => $track->track_name];
+            }
+        })->ajax('/admin/api/tracks')->rules('required');
+        $form->number('weekly_rate', 'Weekly rate');
+        $form->number('rating', 'Rating');
 
         return $form;
     }

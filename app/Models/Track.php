@@ -86,4 +86,9 @@ class Track extends Model
     {
         return Storage::disk('admin')->url($this->filename);
     }
+
+    public function getName(): string
+    {
+        return $this->track_name;
+    }
 }

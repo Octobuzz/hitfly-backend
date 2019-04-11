@@ -12,6 +12,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class TrackController extends Controller
 {
@@ -196,5 +197,11 @@ class TrackController extends Controller
         });
 
         return $form;
+    }
+    public function getTracks(Request $request)
+    {
+        $q = $request->get('q');
+
+        return Track::where('track_name', 'like', "%$q%")->paginate(null, ['id', 'track_name as text']);
     }
 }
