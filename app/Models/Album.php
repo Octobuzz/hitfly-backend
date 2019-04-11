@@ -123,4 +123,8 @@ class Album extends Model
 
         return $nameFile;
     }
+    public function getName(): string
+    {
+        return $this->title;
+    }
 }

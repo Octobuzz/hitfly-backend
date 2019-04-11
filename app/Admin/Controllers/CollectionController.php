@@ -87,8 +87,8 @@ class CollectionController extends Controller
         $grid = new Grid(new Collection());
 
         $grid->id('Id');
-        $grid->title('Title');
-        $grid->image('Image');
+        $grid->title('Заголовок');
+        $grid->image('Изображение');
 
         $grid->user_id('Создатель коллекции')->display(function ($userId) {
             return User::find($userId)->username;
@@ -109,9 +109,9 @@ class CollectionController extends Controller
         $show = new Show(Collection::findOrFail($id));
 
         $show->id('Id');
-        $show->title('Title');
-        $show->image('Image');
-        $show->user_id('User id');
+        $show->title('Заголовок');
+        $show->image('Изображение');
+        $show->user_id('ID пользователя');
         $show->is_admin('Is admin');
         //как показать связанные треки?
 
@@ -127,8 +127,8 @@ class CollectionController extends Controller
     {
         $form = new Form(new Collection());
 
-        $form->text('title', 'Title');
-        $form->image('image', 'Image');
+        $form->text('title', 'Заголовок');
+        $form->image('image', 'Изображение');
 
         return $form;
     }

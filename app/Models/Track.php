@@ -93,4 +93,10 @@ class Track extends Model
         return $this->belongsToMany(Collection::class, 'collection_track')
             ->where('collections.user_id', '=', \Auth::user()->id);
     }
+
+    public function getName(): string
+    {
+        dd($this);
+        return $this->track_name;
+    }
 }

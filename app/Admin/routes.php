@@ -16,8 +16,10 @@ Route::group([
     $router->resource('/comment', CommentController::class);
     $router->resource('/collection', CollectionController::class);
     $router->resource('/chart', ChartController::class);
+    $router->resource('/favourite', FavouriteController::class);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
     $router->get('/api/tracks', '\App\Admin\Controllers\TrackController@getTracks');
+    $router->get('/api/favorite', '\App\Admin\Controllers\FavouriteController@getFavourite');
 });

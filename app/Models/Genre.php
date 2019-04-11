@@ -61,4 +61,9 @@ class Genre extends Model
     {
         return $this->belongsToMany(MusicGroup::class, 'music_group_genre');
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
