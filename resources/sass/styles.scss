@@ -47,6 +47,7 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
+    padding-top: 14px;
   }
   &__line-input{
     width: 100%;
@@ -289,6 +290,10 @@
     }
     &__register{
       font-size: 20px;
+      margin: {
+        top: 12px;
+        bottom: 24px;
+      };
     }
   }
   .socials{

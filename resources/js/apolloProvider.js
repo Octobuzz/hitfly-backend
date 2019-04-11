@@ -13,7 +13,7 @@ const uri = prod
   : 'http://localhost:9090/graphql/user';
 
 const httpLink = new HttpLink({
-  uri
+  uri,
 });
 
 // TODO: second endpoint
@@ -21,8 +21,9 @@ const httpLink = new HttpLink({
 const cache = new InMemoryCache();
 
 const apolloClient = new ApolloClient({
-  link: httpLink,
   cache,
+  link: httpLink,
+  credentials: 'include',
   connectToDevTools: !prod
 });
 
