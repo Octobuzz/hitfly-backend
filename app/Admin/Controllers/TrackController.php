@@ -99,10 +99,14 @@ class TrackController extends Controller
             if (empty($album)) {
                 return '';
             }
-            return Album::find($album)->title;
+            return $album->title;
         });
         $grid->genre_id('Жанр')->display(function ($genreId) {
-            return Genre::find($genreId)->name;
+            $genre = Genre::find($genreId);
+            if(empty($genre)){
+                return null;
+            }
+            return $genre->name;
         });
         $grid->singer('Название трека');
         $grid->user_id('Пользователь')->display(function ($userId) {
@@ -155,7 +159,7 @@ class TrackController extends Controller
     {
         $form = new Form(new Track());
 
-        $form->text('track_name', 'Название трека');
+        $form->text('track_name', 'Название трека')->rules(['required']);
         $form->select('album_id', 'Альбом')->options(function ($id) {
             $album = Album::find($id);
             if ($album) {
@@ -168,11 +172,11 @@ class TrackController extends Controller
             if ($genre) {
                 return [$genre->id => $genre->name];
             }
-        })->ajax('/admin/api/genres');
+        })->ajax('/admin/api/genres')->rules(['required']);
 
-        $form->text('singer', 'Испольнитель');
-        $form->datetime('track_date', 'Дата трека')->default(date('Y-m-d'));
-        $form->textarea('song_text', 'Текст трека');
+        $form->text('singer', 'Испольнитель')->rules(['required']);
+        $form->datetime('track_date', 'Дата трека')->default(date('Y-m-d'))->rules(['required']);
+        $form->textarea('song_text', 'Текст трека')->rules(['required']);
         $form->file('filename', 'Файл')
             ->rules('required|mimetypes:audio/mpeg, audio/mp3')->uniqueName()
         ;
@@ -183,7 +187,7 @@ class TrackController extends Controller
             if ($user) {
                 return [$user->id => $user->username];
             }
-        })->ajax('/admin/api/users');
+        })->ajax('/admin/api/users')->rules(['required']);
 
         $form->saving(function (Form $form) {
             $form->file('filename')->move('tracks/'.$form->user_id)->uniqueName();

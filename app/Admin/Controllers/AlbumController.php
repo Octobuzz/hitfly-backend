@@ -96,7 +96,8 @@ class AlbumController extends Controller
         $grid->likes('Лайки');
         $grid->dislikes('Дизлайки');
         $grid->genre_id('Жанр')->display(function ($genreId) {
-            if (empty($genreId)) {
+            $genre = Genre::find($genreId);
+            if (empty($genre)) {
                 return null;
             }
 
@@ -156,8 +157,8 @@ class AlbumController extends Controller
     {
         $form = new Form(new Album());
 
-        $form->text('title', 'Название');
-        $form->text('author', 'Автор');
+        $form->text('title', 'Название')->rules(['required']);
+        $form->text('author', 'Автор')->rules(['required']);
         $form->image('cover', 'Обложка')->uniqueName();
         $form->select('genre_id', 'Жанр')->options(function ($id) {
             $genre = Genre::find($id);
@@ -165,7 +166,7 @@ class AlbumController extends Controller
             if ($genre) {
                 return [$genre->id => $genre->name];
             }
-        })->ajax('/admin/api/genres');
+        })->ajax('/admin/api/genres')->rules(['required']);
 
         $form->select('music_group_id', 'Музыкальная группа')->options(function ($id) {
             $musicGroup = MusicGroup::find($id);
@@ -181,7 +182,7 @@ class AlbumController extends Controller
             if ($user) {
                 return [$user->id => $user->username];
             }
-        })->ajax('/admin/api/users');
+        })->ajax('/admin/api/users')->rules(['required']);
 
         $form->saving(function (Form $form) {
             $form->image('cover')->move('albums/'.$form->user_id)->uniqueName();
