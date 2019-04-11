@@ -103,6 +103,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/track',
             ],
             [
+                'id' => 14,
                 'parent_id' => 0,
                 'order' => 14,
                 'title' => 'Чарты',
@@ -110,6 +111,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/chart',
             ],
             [
+                'id' => 15,
                 'parent_id' => 0,
                 'order' => 15,
                 'title' => 'Коллекции',
@@ -117,6 +119,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'uri' => '/collection',
             ],
             [
+                'id' => 16,
                 'parent_id' => 0,
                 'order' => 16,
                 'title' => 'Избранное',
