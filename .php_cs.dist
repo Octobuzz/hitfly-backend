@@ -4,7 +4,8 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->in('app')
     ->in('database')
-    ->in('config');
+    ->in('config')
+    ->in('routes');
 
 
 return PhpCsFixer\Config::create()
