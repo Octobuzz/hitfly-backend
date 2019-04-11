@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::redirect('/', 'login', 301);
 /*Route::get('/mail-preview', function(\App\BuisnessLogic\Emails\Notification $notification){
     $params = [
@@ -30,5 +29,5 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
 });
 
-Route::get('/{parameter}', 'HomeController@index')->name('home')->where('parameter', '.*');
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/{parameter}', 'HomeController@index')->name('home')->where('parameter', '.*');

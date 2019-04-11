@@ -99,13 +99,15 @@ class TrackController extends Controller
             if (empty($album)) {
                 return '';
             }
+
             return $album->title;
         });
         $grid->genre_id('Жанр')->display(function ($genreId) {
             $genre = Genre::find($genreId);
-            if(empty($genre)){
+            if (empty($genre)) {
                 return null;
             }
+
             return $genre->name;
         });
         $grid->singer('Название трека');

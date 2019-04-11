@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +11,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1',], function () {
+Route::group(['prefix' => 'v1'], function () {
     //api-авторизация
     Route::group(['namespace' => 'Api\v1'], function () {
         Route::get('/login/{provider}', 'SocialController@redirectToProvider');
@@ -24,6 +22,4 @@ Route::group(['prefix' => 'v1',], function () {
         Route::post('login', 'AuthController@authenticate');
         Route::get('user', 'AuthController@getAuthenticatedUser');
     });
-
 });
-
