@@ -14,6 +14,7 @@ const uri = prod
 
 const httpLink = new HttpLink({
   uri,
+  credentials: 'include'
 });
 
 // TODO: second endpoint
