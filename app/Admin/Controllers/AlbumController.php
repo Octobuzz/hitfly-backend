@@ -96,6 +96,10 @@ class AlbumController extends Controller
         $grid->likes('Лайки');
         $grid->dislikes('Дизлайки');
         $grid->genre_id('Жанр')->display(function ($genreId) {
+            if (empty($genreId)) {
+                return null;
+            }
+
             return Genre::find($genreId)->name;
         });
         $grid->music_group_id('Музыкальная группа')->display(function ($genreId) {

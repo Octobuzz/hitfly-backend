@@ -95,10 +95,10 @@ class TrackController extends Controller
         $grid->id('#');
         $grid->track_name('Имя трека');
         $grid->album_id('Альбом')->display(function ($album) {
+            $album = Album::find($album);
             if (empty($album)) {
                 return '';
             }
-
             return Album::find($album)->title;
         });
         $grid->genre_id('Жанр')->display(function ($genreId) {
