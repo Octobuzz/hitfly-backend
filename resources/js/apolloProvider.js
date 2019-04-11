@@ -12,15 +12,9 @@ const uri = prod
   ? '/graphql/user'
   : 'http://localhost:9090/graphql/user';
 
-// TODO: set token properly
-
-const headers = {
-  'X-TOKEN-AUTH': '111'
-};
-
 const httpLink = new HttpLink({
   uri,
-  headers
+  credentials: 'include',
 });
 
 // TODO: second endpoint
