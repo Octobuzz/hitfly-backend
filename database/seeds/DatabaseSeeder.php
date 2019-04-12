@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
                 CollectionSeeder::class,
                 LikesSeeder::class,
                 WatchingSeeder::class,
+                FavouritesSeeder::class,
             ]);
         }
         if (App::environment('prod')) {

@@ -38,10 +38,8 @@ class UpdateMyProfileMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        //die(json_encode($args));
         $user = Auth::user();
         if (!empty($args['profile'])){
-                //die(json_encode(DBHelpers::arrayKeysToSnakeCase($args['profile'])));
                 if ($args['profile']['password']) {
                     $args['profile']['password'] = Hash::make($args['profile']['password']);
                 }
@@ -79,6 +77,6 @@ class UpdateMyProfileMutation extends Mutation
         }
 
 
-        return ;
+        return $user;
     }
 }

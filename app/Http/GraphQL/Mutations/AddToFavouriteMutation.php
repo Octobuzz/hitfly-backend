@@ -39,9 +39,6 @@ class AddToFavouriteMutation extends Mutation
             case Favourite::TYPE_ALBUM:
                 $class = Album::class;
                 break;
-            case Favourite::TYPE_GENRE:
-                $class = Genre::class;
-                break;
             default:
                 throw new \Exception('Не удалось определить тип избранного');
         }
