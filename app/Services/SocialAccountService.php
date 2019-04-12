@@ -13,6 +13,12 @@ class SocialAccountService
 
     public function createOrGetUser(ProviderUser $providerUser, $provider, $authSocial = null)
     {
+        $currentUser = \Auth::user();
+        if($currentUser !== null){
+            $authSocial->user()->associate($currentUser);
+            $authSocial->save();
+            return $currentUser;
+        }
         $account = Social::whereSocialDriver($provider)
             ->whereSocialId($providerUser->getId())
             ->first();

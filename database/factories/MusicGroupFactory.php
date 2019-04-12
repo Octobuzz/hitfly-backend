@@ -20,5 +20,5 @@ $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
 
 $factory->afterMaking(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
     $image = new File($faker->image());
-    $musicGroup->avatar_group = Storage::disk('public')->putFile('music_groups/'.$musicGroup->user_id, $image);
+    $musicGroup->avatar_group = Storage::disk('public')->putFile('music_groups/'.$musicGroup->creator_group_id, $image);
 });

@@ -25,7 +25,7 @@ Route::get('/register-error', 'Auth\RegisterController@registerError');
 
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('/logout', 'LoginController@logout');
-    Route::get('/login/{provider}', 'LoginController@redirectToProvider');
+    Route::get('/login/{provider}', 'LoginController@redirectToProvider')->name("social_auth");
     Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
 });
 

@@ -144,6 +144,8 @@ return [
                 'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
                 'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
 
+                'updateMyProfile' => \App\Http\GraphQL\Mutations\User\UpdateMyProfileMutation::class,
+
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
 
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
@@ -190,6 +192,8 @@ return [
         'FavouriteInput' => \App\Http\GraphQL\InputObject\FavouriteInput::class,
         'SocialLinksInput' => \App\Http\GraphQL\InputObject\SocialLinksInput::class,
         'GroupMembersInput' => \App\Http\GraphQL\InputObject\GroupMembersInput::class,
+        'MyProfileInput' => \App\Http\GraphQL\InputObject\MyProfileInput::class,
+        'ArtistProfileInput' => \App\Http\GraphQL\InputObject\ArtistProfileInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,

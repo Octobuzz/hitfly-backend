@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
 
         if (App::environment('local')) {
             factory(\App\User::class, 30)->create()->each(function ($u) {
-                $u->roles()->save(\Encore\Admin\Auth\Database\Role::where('id', '>', 1)->inRandomOrder()->first());
+
             });
         }
     }

@@ -9,6 +9,6 @@ class GenreSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Genre::class, 30)->create();
+        factory(\App\Models\Genre::class, 10)->create();
     }
 }
