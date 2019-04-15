@@ -14,13 +14,12 @@
       >
     </button>
 
-    <IconButton
+    <AddToFavouriteButton
       passive="standard-passive"
       hover="standard-hover"
-      :active="buttonActive"
-    >
-      <HeartIcon/>
-    </IconButton>
+      item-type="track"
+      :item-id="track.id"
+    />
 
     <button
       style="transition: all 0s;"
@@ -51,6 +50,7 @@
 <script>
 import IconButton from 'components/IconButton.vue';
 import HeartIcon from 'components/icons/HeartIcon.vue';
+import AddToFavouriteButton from 'components/AddToFavouriteButton.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from './TrackToPlaylistPopover.vue';
 import TrackActions from './TrackActions.vue';
@@ -97,7 +97,8 @@ export default {
     TrackToPlaylistPopover,
     TrackActions,
     IconButton,
-    HeartIcon
+    HeartIcon,
+    AddToFavouriteButton
   },
 
   props: {

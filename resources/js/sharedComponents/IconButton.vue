@@ -27,23 +27,25 @@ const possibleValues = [
 
 const validator = val => possibleValues.some(pv => pv === val);
 
-export default {
-  props: {
-    passive: {
-      type: String,
-      default: 'standard-passive',
-      validator
-    },
-    hover: {
-      type: String,
-      default: 'standard-hover',
-      validator
-    },
-    active: {
-      type: Boolean,
-      default: false
-    }
+export const props = {
+  passive: {
+    type: String,
+    default: 'standard-passive',
+    validator
+  },
+  hover: {
+    type: String,
+    default: 'standard-hover',
+    validator
+  },
+  active: {
+    type: Boolean,
+    default: false
   }
+};
+
+export default {
+  props
 };
 </script>
 

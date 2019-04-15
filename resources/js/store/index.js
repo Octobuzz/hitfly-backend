@@ -9,17 +9,41 @@ Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
-const state = {};
+const state = {
+  favInProcess: {
+    track: [],
+    album: [],
+    collection: []
+  },
+  editGroupId: null
+};
 
 const getters = {
-  editGroupId(state) {
-    return state.editGroupId;
+  editGroupId({ editGroupId }) {
+    return editGroupId;
+  },
+
+  favInProcess({ favInProcess }) {
+    return ({ type, id }) => (
+      favInProcess[type]
+        .some(idInProcess => idInProcess === id)
+    );
   }
 };
 
 const mutations = {
   setEditGroupId(state, id) {
     state.editGroupId = id;
+  },
+
+  addFavInProcess({ favInProcess }, { type, id }) {
+    favInProcess[type].push(id);
+  },
+
+  removeFavInProcess({ favInProcess }, { type, id }) {
+    favInProcess[type] = favInProcess[type].filter(
+      idInStore => idInStore !== id
+    );
   }
 };
 
