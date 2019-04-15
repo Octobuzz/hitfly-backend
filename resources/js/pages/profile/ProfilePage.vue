@@ -41,7 +41,7 @@ import UserCard from './UserCard.vue';
 
 export default {
   components: {
-    UserCard,
+    UserCard
   },
   data() {
     return {};

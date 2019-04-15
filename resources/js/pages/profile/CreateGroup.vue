@@ -5,7 +5,6 @@
     <div class="create-group">
       <div class="create-group-cover">
         <ChooseAvatar
-          :image-url="group.cover.current"
           caption="Загрузить обложку"
           @input="onCoverInput"
         />

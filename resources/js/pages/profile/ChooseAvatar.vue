@@ -2,19 +2,19 @@
   <div :class="['avatar', { avatar_circle: circle }]">
     <transition>
       <div
-        v-if="renderInFirstContainer && imageUrl"
+        v-if="renderInFirstContainer && url"
         class="avatar__image"
         :alt="alt"
-        :style="{ backgroundImage: `url(${inputUrl || imageUrl})` }"
+        :style="{ backgroundImage: `url(${url})` }"
         :class="{ 'avatar__image_top': renderInFirstContainer }"
       />
     </transition>
     <transition>
       <div
-        v-if="!renderInFirstContainer && imageUrl"
+        v-if="!renderInFirstContainer && url"
         class="avatar__image"
         :alt="alt"
-        :style="{ backgroundImage: `url(${inputUrl || imageUrl})` }"
+        :style="{ backgroundImage: `url(${url})` }"
         :class="{ 'avatar__image_top': !renderInFirstContainer }"
       />
     </transition>
@@ -65,6 +65,12 @@ export default {
       inputUrl: '',
       renderInFirstContainer: true
     };
+  },
+
+  computed: {
+    url() {
+      return this.inputUrl || this.imageUrl;
+    }
   },
 
   created() {

@@ -1,0 +1,27 @@
+mutation ($id: Int!) {
+    addToFavourites(
+        Favourite: {
+            favouriteableId: $id,
+            favouritableType: track
+        }
+    ) {
+        ... on FavouriteTrack {
+            id
+            track {
+                id
+                trackName
+                userFavourite
+                album {
+                    title
+                    author
+                    cover
+                }
+                userPlayLists {
+                    id
+                    title
+                    image
+                }
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@ import * as profile from './pages/profile';
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     component: main.MainPage
   },
   {
@@ -46,7 +46,7 @@ router.afterEach((to) => {
 
   navHistory.unshift(to);
 
-  if (navHistory > 20) {
+  if (navHistory > 100) {
     navHistory.pop();
   }
 });

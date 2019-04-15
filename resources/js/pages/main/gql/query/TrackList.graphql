@@ -1,0 +1,29 @@
+query TrackList(
+    $pageLimit: Int,
+    $pageNumber: Int,
+    $my: Boolean
+) {
+    tracks(
+        limit: $pageLimit,
+        page: $pageNumber,
+        my: $my
+    ) {
+        total
+        to
+        data {
+            id
+            trackName
+            userFavourite
+            album {
+                title
+                author
+                cover
+            }
+            userPlayLists {
+                id
+                title
+                image
+            }
+        }
+    }
+}

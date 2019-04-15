@@ -16,7 +16,7 @@ module.exports = {
   ],
   settings: {
     'import/resolver': {
-      webpack: require.resolve('laravel-mix/setup/webpack.config.js')
+      webpack: require.resolve('./webpack.config')
     }
   },
   rules: {

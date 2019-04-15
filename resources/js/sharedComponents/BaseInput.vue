@@ -143,7 +143,7 @@ export default {
     height: 16px;
     left: 100%;
     top: 50%;
-    z-index: 900;
+    z-index: 150;
     transform: translate(-180%, -50%);
   }
 

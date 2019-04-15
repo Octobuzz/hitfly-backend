@@ -1,0 +1,13 @@
+mutation CreateCollection(
+    $title: String!
+    $trackIds: [Int]!
+) {
+    createCollection(
+        title: $title
+        tracksId: $trackIds
+    ) {
+        id
+        title
+        image
+    }
+}

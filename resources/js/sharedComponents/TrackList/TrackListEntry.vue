@@ -14,7 +14,14 @@
       >
     </button>
 
-    <!--TODO: shared like button-->
+    <IconButton
+      passive="standard-passive"
+      hover="standard-hover"
+      :active="buttonActive"
+    >
+      <HeartIcon/>
+    </IconButton>
+
     <button
       style="transition: all 0s;"
       :class="['heart', { 'favourite': track.userFavourite }]"
@@ -42,6 +49,8 @@
 </template>
 
 <script>
+import IconButton from 'components/IconButton.vue';
+import HeartIcon from 'components/icons/HeartIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from './TrackToPlaylistPopover.vue';
 import TrackActions from './TrackActions.vue';
@@ -86,7 +95,9 @@ function updateFavTrackList(store, track, add) {
 export default {
   components: {
     TrackToPlaylistPopover,
-    TrackActions
+    TrackActions,
+    IconButton,
+    HeartIcon
   },
 
   props: {
@@ -101,7 +112,15 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      buttonActive: false
+    };
+  },
+
+  mounted() {
+    setInterval(() => {
+      this.buttonActive = !this.buttonActive;
+    }, 1500);
   },
 
   methods: {

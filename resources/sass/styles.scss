@@ -78,11 +78,11 @@
     span{
       display: none;
     }
-    svg{
-      width: 1em;
-      height: 1em;
-      font-size: 20px;
-    }
+    //svg{
+    //  width: 1em;
+    //  height: 1em;
+    //  font-size: 20px;
+    //}
     &_fb{
       border-color: #3b5998;
     }
@@ -109,6 +109,10 @@
   }
   &__register{
     font-family: $font_bold;
+    margin: {
+      top: 12px;
+      bottom: 24px;
+    };
   }
   &__register-link{
     min-width: 250px;
@@ -290,10 +294,6 @@
     }
     &__register{
       font-size: 20px;
-      margin: {
-        top: 12px;
-        bottom: 24px;
-      };
     }
   }
   .socials{

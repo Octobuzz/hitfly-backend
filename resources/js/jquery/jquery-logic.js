@@ -9,8 +9,6 @@ import 'jquery-ui/themes/base/datepicker.css';
 import 'jquery-ui/ui/core';
 import 'jquery-ui/ui/widgets/datepicker';
 
-console.log('jquery logic');
-
 $(function () {
 
     $('.custom-select').niceSelect();

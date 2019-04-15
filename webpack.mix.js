@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const webpackOverride = require('./webpack.config');
 
 /*
  |--------------------------------------------------------------------------
@@ -25,14 +26,4 @@ mix.copyDirectory('resources/images', 'public/images');
 
 mix.browserSync('localhost:9090');
 
-mix.webpackConfig({
-  module: {
-    rules: [
-      {
-        test: /\.(graphql|gql)$/,
-        exclude: /node_modules/,
-        loader: 'graphql-tag/loader',
-      }
-    ],
-  },
-});
+mix.webpackConfig(webpackOverride);
