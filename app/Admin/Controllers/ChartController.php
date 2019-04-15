@@ -19,6 +19,7 @@ class ChartController extends Controller
      * Index interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function index(Content $content)
@@ -32,8 +33,9 @@ class ChartController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -47,8 +49,9 @@ class ChartController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -63,6 +66,7 @@ class ChartController extends Controller
      * Create interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function create(Content $content)
@@ -80,7 +84,7 @@ class ChartController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Charts);
+        $grid = new Grid(new Charts());
 
         $grid->id('Id');
         $grid->track_id('ID трека');
@@ -96,6 +100,7 @@ class ChartController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
+     *
      * @return Show
      */
     protected function detail($id)
@@ -119,7 +124,7 @@ class ChartController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Charts);
+        $form = new Form(new Charts());
         $form->select('track_id', 'Название трека')->options(function ($id) {
             $track = Track::find($id);
 

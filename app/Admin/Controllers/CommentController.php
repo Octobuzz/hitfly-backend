@@ -91,7 +91,7 @@ class CommentController extends Controller
         $grid->user('Пользователь')->display(function ($user) {
             return $user['username'];
         });
-        $grid->commentable_type("Тип комментария")->display(function ($comment) {
+        $grid->commentable_type('Тип комментария')->display(function ($comment) {
             return __('messages.'.Comment::CLASS_NAME[$comment]);
         });
         $grid->comment('Комментарий');

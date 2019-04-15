@@ -40,6 +40,6 @@ class CommentsAlbumQuery extends Query
 
         return Comment::with($fields->getRelations())->select($fields->getSelect())
             ->where('commentable_type', Album::class)
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            ->paginate($args['limit'], ['ке и *'], 'page', $args['page']);
     }
 }

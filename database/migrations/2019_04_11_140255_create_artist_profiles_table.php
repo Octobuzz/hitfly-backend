@@ -8,28 +8,33 @@ class CreateArtistProfilesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('artist_profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->unique();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->date('career_start')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });
 
+        Schema::table('artist_profiles', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        });
+
         Schema::create('artist_profiles_genre', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('artist_profile_id');
-            $table->foreign('artist_profile_id')->references('id')->on('artist_profile')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('genre_id');
-            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
+
+        Schema::table('artist_profiles_genre', function (Blueprint $table) {
+            $table->foreign('artist_profile_id')->references('id')->on('artist_profiles')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade')->onUpdate('cascade');
+        });
+
         Schema::table('music_group', function (Blueprint $table) {
             $table->unsignedInteger('city_id')->change();
         });
@@ -40,8 +45,6 @@ class CreateArtistProfilesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -111,6 +111,7 @@ class Album extends Model
     {
         return Storage::disk('admin')->url($image);
     }
+
     public function getName(): string
     {
         return $this->title;

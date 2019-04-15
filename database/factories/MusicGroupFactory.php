@@ -22,7 +22,7 @@ $factory->afterMaking(\App\Models\MusicGroup::class, function (\App\Models\Music
     $image = new File($faker->image());
     $musicGroup->avatar_group = Storage::disk('public')->putFile('music_groups/'.$musicGroup->creator_group_id, $image);
 });
-$factory->afterCreating(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup,Faker $faker) {
+$factory->afterCreating(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
     $groupLink = new \App\Models\GroupLinks();
     $groupLink->music_group_id = $musicGroup->id;
     $types = $groupLink->getPossibleTypes();
@@ -36,6 +36,4 @@ $factory->afterCreating(\App\Models\MusicGroup::class, function (\App\Models\Mus
     $invite->user_id = \App\User::inRandomOrder()->first()->id;
     $invite->accept = 1;
     $invite->save();
-
-
 });

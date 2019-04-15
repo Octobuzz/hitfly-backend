@@ -72,6 +72,7 @@ class Genre extends Model
     {
         return Storage::disk('admin')->url($image);
     }
+
     public function artistGenres(): BelongsToMany
     {
         return $this->belongsToMany(ArtistProfile::class, 'music_group_genre')->withTimestamps();

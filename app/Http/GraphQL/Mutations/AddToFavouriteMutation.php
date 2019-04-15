@@ -4,7 +4,6 @@ namespace App\Http\GraphQL\Mutations;
 
 use App\Models\Album;
 use App\Models\Favourite;
-use App\Models\Genre;
 use App\Models\Track;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;

@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\InputObject;
 
-use App\Rules\CriticComment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -33,8 +32,6 @@ class ArtistProfileInput extends GraphQLType
                 'description' => 'Жанры в которых играет артист',
                 'type' => Type::listOf(Type::id()),
             ],
-
-
         ];
     }
 }

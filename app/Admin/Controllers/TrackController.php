@@ -198,6 +198,7 @@ class TrackController extends Controller
 
         return $form;
     }
+
     public function getTracks(Request $request)
     {
         $q = $request->get('q');

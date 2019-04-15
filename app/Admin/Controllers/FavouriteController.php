@@ -4,7 +4,6 @@ namespace App\Admin\Controllers;
 
 use App\Models\Favourite;
 use App\Http\Controllers\Controller;
-use App\Models\Genre;
 use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -21,6 +20,7 @@ class FavouriteController extends Controller
      * Index interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function index(Content $content)
@@ -34,8 +34,9 @@ class FavouriteController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function show($id, Content $content)
@@ -49,8 +50,9 @@ class FavouriteController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
+     *
      * @return Content
      */
     public function edit($id, Content $content)
@@ -65,6 +67,7 @@ class FavouriteController extends Controller
      * Create interface.
      *
      * @param Content $content
+     *
      * @return Content
      */
     public function create(Content $content)
@@ -82,10 +85,10 @@ class FavouriteController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Favourite);
+        $grid = new Grid(new Favourite());
 
         $grid->id('Id');
-        $grid->favouriteable_type("Тип избранного")->display(function ($favourite) {
+        $grid->favouriteable_type('Тип избранного')->display(function ($favourite) {
             return __('messages.'.Favourite::CLASS_NAME[$favourite]);
         });
         //$grid->favouriteable_id('Favouriteable id');
@@ -108,6 +111,7 @@ class FavouriteController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
+     *
      * @return Show
      */
     protected function detail($id)
@@ -138,7 +142,7 @@ class FavouriteController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Favourite);
+        $form = new Form(new Favourite());
         /*$form->select('id', 'Тип избранного')->options(function ($id) {
             $favourite = Favourite::find($id);
 
@@ -147,12 +151,14 @@ class FavouriteController extends Controller
 
         $form->select('favouriteable_type', 'Тип избранного')->options(function ($type) {
             $return = [];
-            if($type)
-                foreach (Favourite::CLASS_NAME as $k => $fType){
+            if ($type) {
+                foreach (Favourite::CLASS_NAME as $k => $fType) {
                     $return[$k] = __('messages.'.$fType);
                 }
-                return $return;
-        })->load('favouriteable_id','/admin/api/favorite')->rules('required');
+            }
+
+            return $return;
+        })->load('favouriteable_id', '/admin/api/favorite')->rules('required');
         $form->select('favouriteable_id');
 
         $form->select('user_id', 'Пользователь')->options(function ($id) {
@@ -164,17 +170,17 @@ class FavouriteController extends Controller
 
         return $form;
     }
+
     public function getFavourite(Request $request)
     {
         $q = $request->get('q');
 
         $return = [];
         $favourites = $q::query()->get();
-        foreach ($favourites as $fav)
-        {
-            $return[] = ['id'=> $fav->id,'text'=>$fav->getName()];
+        foreach ($favourites as $fav) {
+            $return[] = ['id' => $fav->id, 'text' => $fav->getName()];
         }
-        return $return;
 
+        return $return;
     }
 }

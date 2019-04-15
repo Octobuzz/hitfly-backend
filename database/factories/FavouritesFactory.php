@@ -7,7 +7,6 @@ $factory->define(\App\Models\Favourite::class, function (Faker $faker) {
         App\Models\Track::class,
         App\Models\Album::class,
         App\Models\Genre::class,
-
     ];
     $favouriteableType = $faker->randomElement($favouriteable);
     $favouriteableId = $favouriteableType::inRandomOrder()->first()->id;

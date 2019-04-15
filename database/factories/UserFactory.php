@@ -30,16 +30,14 @@ $factory->define(App\User::class, function (Faker $faker) {
     ];
 });
 
-$factory->afterCreating(App\User::class, function (App\User $user ,Faker $faker) {
+$factory->afterCreating(App\User::class, function (App\User $user, Faker $faker) {
     $user->roles()->save(\Encore\Admin\Auth\Database\Role::where('id', '>', 1)->inRandomOrder()->first());
-    if($user->inRoles(['star','performer'])){
+    if ($user->inRoles(['star', 'performer'])) {
         $artist = new App\Models\ArtistProfile();
         $artist->user_id = $user->id;
         $artist->description = $faker->text;
         $artist->career_start = $faker->date($format = 'Y-m-d', $max = 'now');
         $artist->save();
         $artist->genres()->saveMany(\App\Models\Genre::inRandomOrder()->take(3)->get());
-
     }
-
 });

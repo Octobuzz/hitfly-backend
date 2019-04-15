@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\InputObject;
 
-use App\Rules\CriticComment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -28,26 +27,25 @@ class MyProfileInput extends GraphQLType
                 'name' => 'cityId',
                 'description' => 'ID города',
                 'type' => Type::int(),
-                'rules' => ['exists:cities,id']
+                'rules' => ['exists:cities,id'],
             ],
             'email' => [
                 'name' => 'email',
                 'description' => 'Email пользователя(для входа)',
                 'type' => Type::string(),
-                'rules' => ['max:250','email'],
+                'rules' => ['max:250', 'email'],
             ],
             'password' => [
                 'name' => 'password',
                 'description' => 'Пароль',
                 'type' => Type::string(),
-                'rules' => ['min:6']
+                'rules' => ['min:6'],
             ],
             'genres' => [
                 'name' => 'genres',
                 'description' => 'любимые жанры пользователя',
                 'type' => Type::listOf(Type::id()),
             ],
-
         ];
     }
 }

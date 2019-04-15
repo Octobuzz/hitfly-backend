@@ -141,9 +141,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         return $this->morphedByMany(Genre::class, 'favouriteable', 'favourites')->withTimestamps();
     }
+
     public function artistProfile()
     {
         return $this->hasOne(ArtistProfile::class, 'user_id');
     }
-
 }

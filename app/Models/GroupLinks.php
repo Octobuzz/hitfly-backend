@@ -23,13 +23,15 @@ class GroupLinks extends Model
         'updated_at',
     ];
 
-    public static function getPossibleTypes(){
+    public static function getPossibleTypes()
+    {
         $type = \DB::select(\DB::raw('SHOW COLUMNS FROM group_links WHERE Field = "social_type"'))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
-        $values = array();
-        foreach(explode(',', $matches[1]) as $value){
+        $values = [];
+        foreach (explode(',', $matches[1]) as $value) {
             $values[] = trim($value, "'");
         }
+
         return $values;
     }
 }

@@ -27,11 +27,11 @@ class UpdateMyProfileMutation extends Mutation
         return [
             'profile' => [
                 'type' => Type::nonNull(\GraphQL::type('MyProfileInput')),
-                'description' => 'профиль обычного пользователя'
+                'description' => 'профиль обычного пользователя',
             ],
             'artistProfile' => [
                 'type' => \GraphQL::type('ArtistProfileInput'),
-                'description' => 'профиль артиста'
+                'description' => 'профиль артиста',
             ],
         ];
     }
@@ -39,10 +39,10 @@ class UpdateMyProfileMutation extends Mutation
     public function resolve($root, $args)
     {
         $user = Auth::user();
-        if (!empty($args['profile'])){
-                if ($args['profile']['password']) {
-                    $args['profile']['password'] = Hash::make($args['profile']['password']);
-                }
+        if (!empty($args['profile'])) {
+            if ($args['profile']['password']) {
+                $args['profile']['password'] = Hash::make($args['profile']['password']);
+            }
 
             $user->update(DBHelpers::arrayKeysToSnakeCase($args['profile']));
             $user->save();
@@ -57,9 +57,9 @@ class UpdateMyProfileMutation extends Mutation
             }
         }
 
-        if(!empty($args['artistProfile'])){
+        if (!empty($args['artistProfile'])) {
             $artist = $user->artistProfile;
-            if($artist === null){
+            if (null === $artist) {
                 $artist = new ArtistProfile();
             }
             $artist->update(DBHelpers::arrayKeysToSnakeCase($args['artistProfile']));
@@ -71,11 +71,9 @@ class UpdateMyProfileMutation extends Mutation
                     $tmpGenres[] = $genre->id;
                 }
                 $artist->genres()->sync($tmpGenres);
-
             }
             $artist->save();
         }
-
 
         return $user;
     }
