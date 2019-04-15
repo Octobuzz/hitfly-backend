@@ -7,6 +7,7 @@ use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Gate;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteFromFavouriteMutation extends Mutation
@@ -50,15 +51,15 @@ class DeleteFromFavouriteMutation extends Mutation
         $favourite = Favourite::query()
             ->where('favouriteable_id', $args['Favourite']['favouriteableId'])
             ->where('favouriteable_type', $class)
+            ->where('user_id', $user->id)
             ->first();
 
         if (null === $favourite) {
             throw new \Exception('inncorect');
-        }
-
-        if ($user->can('deleted', $favourite)) {
+        }else {
             $favourite->delete();
         }
+
 
         return null;
     }

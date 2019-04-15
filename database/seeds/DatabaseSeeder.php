@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
                 RoleSeeder::class,
                 MenuSeeder::class,
                 CitySeeder::class,
-                UserSeeder::class,
                 GenreSeeder::class,
+                UserSeeder::class,
                 MusicGroupSeeder::class,
                 AlbumsSeeder::class,
                 TracksSeeder::class,
@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
                 CollectionSeeder::class,
                 LikesSeeder::class,
                 WatchingSeeder::class,
+                FavouritesSeeder::class,
             ]);
         }
         if (App::environment('prod')) {

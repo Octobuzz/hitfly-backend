@@ -22,4 +22,16 @@ class GroupLinks extends Model
         'created_at',
         'updated_at',
     ];
+
+    public static function getPossibleTypes()
+    {
+        $type = \DB::select(\DB::raw('SHOW COLUMNS FROM group_links WHERE Field = "social_type"'))[0]->Type;
+        preg_match('/^enum\((.*)\)$/', $type, $matches);
+        $values = [];
+        foreach (explode(',', $matches[1]) as $value) {
+            $values[] = trim($value, "'");
+        }
+
+        return $values;
+    }
 }

@@ -9,6 +9,6 @@ class TracksSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Track::class, 300)->create();
+        factory(\App\Models\Track::class, 50)->create();
     }
 }

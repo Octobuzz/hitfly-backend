@@ -2,13 +2,13 @@
 
 use Illuminate\Database\Seeder;
 
-class GenreSeeder extends Seeder
+class FavouritesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run()
     {
-        factory(\App\Models\Genre::class, 10)->create();
+        factory(\App\Models\Favourite::class, 300)->create();
     }
 }

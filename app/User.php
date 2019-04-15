@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Album;
+use App\Models\ArtistProfile;
 use App\Models\City;
 use App\Models\Genre;
 use App\Models\Like;
@@ -68,6 +69,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         'password',
         'gender',
         'birthday',
+        'city_id',
     ];
 
     /**
@@ -137,6 +139,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function favouriteGenres()
     {
-        return $this->morphedByMany(Genre::class, 'favouriteable', 'favourites');
+        return $this->morphedByMany(Genre::class, 'favouriteable', 'favourites')->withTimestamps();
+    }
+
+    public function artistProfile()
+    {
+        return $this->hasOne(ArtistProfile::class, 'user_id');
     }
 }
