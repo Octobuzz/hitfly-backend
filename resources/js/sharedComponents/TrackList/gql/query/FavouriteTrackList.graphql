@@ -1,5 +1,5 @@
 query FavouriteTrackList {
-    favouriteTrack(limit: 100, page: 1){
+    favouriteTrack(limit: 10, page: 1){
         data {
             track {
                 id

@@ -18,7 +18,15 @@ const httpLink = new HttpLink({
 
 // TODO: second endpoint
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  cacheRedirects: {
+    Query: {
+      track: (_, args, { getCacheKey }) => (
+        getCacheKey({ __typename: 'Track', id: args.id })
+      )
+    }
+  }
+});
 
 const apolloClient = new ApolloClient({
   cache,

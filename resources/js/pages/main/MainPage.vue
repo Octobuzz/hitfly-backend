@@ -5,7 +5,7 @@
       style="margin-top: 100px;"
     />
 
-    <!--TODO: move to the root components-->
+    <!--TODO: move to the root component-->
     <IconGradientRadial/>
 
     <TrackList :track-list="trackList">
@@ -46,7 +46,10 @@ export default {
         pageLimit: 5,
         my: false
       },
-      showLoadTrigger: false
+      showLoadTrigger: false,
+
+
+      favTrackList: []
     };
   },
 
@@ -93,6 +96,13 @@ export default {
   },
 
   apollo: {
+    favTrackList() {
+      return {
+        query: gql.query.FAVOURITE_TRACK_LIST,
+        update: ({ favouriteTrack }) => favouriteTrack
+      };
+    },
+
     trackList() {
       return {
         query: gql.query.TRACK_LIST,

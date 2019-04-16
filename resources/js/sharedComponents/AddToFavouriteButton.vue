@@ -2,7 +2,7 @@
   <IconButton
     :passive="passive"
     :hover="hover"
-    :active="isItemFavourite"
+    :active="isFavourite"
     @press="onPress"
   >
     <HeartIcon/>
@@ -13,6 +13,16 @@
 import IconButton, { props as iconButtonProps } from 'components/IconButton.vue';
 import HeartIcon from 'components/icons/HeartIcon.vue';
 import gql from './gql';
+
+const typeToQueryMap = {
+  track: gql.query.TRACK,
+  album: gql.query.ALBUM,
+  collection: gql.query.COLLECTION,
+};
+
+const typeToFavListMap = {
+  track: gql.query.FAVOURITE_TRACK_LIST
+};
 
 // This component should check if there is favourite list (of the item type) on the client
 // and change its length. Also it should update the item itself.
@@ -29,7 +39,7 @@ export default {
       type: String,
       required: true,
       validator(type) {
-        return ['track', 'album', 'collection'].includes(type);
+        return Object.keys(typeToQueryMap).includes(type);
       }
     },
     itemId: {
@@ -40,21 +50,11 @@ export default {
 
   data() {
     return {
-      isItemFavourite: false
+      isFavourite: false
     };
   },
 
   computed: {
-    computedQuery() {
-      const possibilities = {
-        track: gql.query.TRACK,
-        album: gql.query.ALBUM,
-        collection: gql.query.COLLECTION,
-      };
-
-      return possibilities[this.itemType];
-    },
-
     isButtonDisabled: {
       get() {
         return this.$store.getters.favInProcess({
@@ -70,6 +70,12 @@ export default {
           id: this.itemId
         });
       }
+    },
+
+    itemTypeCapital() {
+      const { itemType: type } = this;
+
+      return type.charAt(0).toUpperCase() + type.slice(1);
     }
   },
 
@@ -80,12 +86,12 @@ export default {
       this.isButtonDisabled = true;
 
       const {
-        isItemFavourite,
+        isFavourite,
         addToFavourite,
         removeFromFavourite
       } = this;
 
-      if (isItemFavourite) {
+      if (isFavourite) {
         removeFromFavourite();
       } else {
         addToFavourite();
@@ -93,35 +99,42 @@ export default {
     },
 
     addToFavourite() {
+      const { itemId, itemType, itemTypeCapital } = this;
+
       this.$apollo.mutate({
         mutation: gql.mutation.ADD_TO_FAVOURITE,
-        variables: {
-          type: this.itemType,
-          id: this.itemId
-        },
-        update: (store, { data: { addToFavourites } }) => {
-          this.isButtonDisabled = false;
 
-          // todo: update fav list
+        variables: {
+          type: itemType,
+          id: itemId
         },
-        // optimisticResponse: {
-        //   __typename: 'Mutation',
-        //   addToFavourites: {
-        //     track: {
-        //       __typename: 'Track',
-        //       ...this.track,
-        //       userFavourite: true
-        //     },
-        //     id: -1,
-        //     __typename: 'FavouriteTrack',
-        //   }
-        // }
+
+        update: (store, { data: { addToFavourites } }) => {
+          this.updateFavList(store, 'add', addToFavourites[itemType]);
+
+          if (addToFavourites.id !== -1) {
+            this.isButtonDisabled = false;
+          }
+        },
+
+        optimisticResponse: {
+          __typename: 'Mutation',
+          addToFavourites: {
+            __typename: `Favourite${itemTypeCapital}`,
+            id: -1,
+            [itemType]: {
+              __typename: itemTypeCapital,
+              id: itemId,
+              userFavourite: true
+            }
+          }
+        }
       }).then(() => {
         console.log(
           'favourite updated:',
-          `type: ${this.itemType};`,
-          `id: ${this.itemId};`,
-          `isFav: ${this.isItemFavourite};`
+          `type: ${itemType};`,
+          `id: ${itemId};`,
+          `isFav: ${this.isFavourite};`
         );
       }).catch((error) => {
         console.log(error);
@@ -129,71 +142,117 @@ export default {
     },
 
     removeFromFavourite() {
+      const { itemId, itemType, itemTypeCapital } = this;
+
       this.$apollo.mutate({
         mutation: gql.mutation.REMOVE_FROM_FAVOURITE,
-        variables: {
-          type: this.itemType,
-          id: this.itemId
-        },
-        update: (store, { data: { deleteFromFavourite } }) => {
-          this.isButtonDisabled = false;
-          // todo: cause backend returns null we handle it manually, do null check!!!
 
-          // eslint-disable-next-line no-underscore-dangle
-          const __typename = this.itemType.charAt(0).toUpperCase()
-            + this.itemType.slice(1);
+        variables: {
+          type: itemType,
+          id: itemId
+        },
+
+        update: (store, { data: { deleteFromFavourite } }) => {
+          this.updateFavList(store, 'remove', { id: itemId });
 
           store.writeQuery({
-            query: gql.query[this.itemType.toUpperCase()],
+            query: gql.query[itemType.toUpperCase()],
             variables: {
-              id: this.itemId
+              id: itemId
             },
             data: {
               [this.itemType]: {
-                __typename,
-                id: this.itemId,
+                __typename: itemTypeCapital,
+                id: itemId,
                 userFavourite: false
               }
             }
           });
 
-          // todo: update fav track list
+          if (deleteFromFavourite === null) {
+            this.isButtonDisabled = false;
+          }
         },
-        // optimisticResponse: {
-        //   deleteFromFavourite: {
-        //     track: {
-        //       ...this.track,
-        //       userFavourite: false,
-        //       __typename: 'Track',
-        //     },
-        //     id: -1,
-        //     __typename: 'FavouriteTrack',
-        //   },
-        //   __typename: 'Mutation',
-        // }
+
+        optimisticResponse: {
+          __typename: 'Mutation',
+          deleteFromFavourite: {
+            __typename: `Favourite${itemTypeCapital}`,
+            id: -1,
+            [itemType]: {
+              __typename: itemTypeCapital,
+              id: itemId,
+              userFavourite: false
+            }
+          }
+        }
       }).then(() => {
         console.log(
           'favourite updated:',
-          `type: ${this.itemType};`,
-          `id: ${this.itemId};`,
-          `isFav: ${this.isItemFavourite};`
+          `type: ${itemType};`,
+          `id: ${itemId};`,
+          `isFav: ${this.isFavourite};`
         );
       }).catch((error) => {
         console.log(error);
       });
+    },
+
+    updateFavList(store, operation, item) {
+      try {
+        const { itemType, itemTypeCapital, itemId } = this;
+
+        const storeFavListData = store.readQuery({
+          query: typeToFavListMap[itemType]
+        });
+        const favList = storeFavListData[`favourite${itemTypeCapital}`];
+
+        if (operation === 'add') {
+          favList.data = [
+            {
+              __typename: `Favourite${itemTypeCapital}`,
+              [itemType]: item,
+            },
+            ...favList.data
+          ];
+        }
+
+        if (operation === 'remove') {
+          favList.data = favList.data
+            .filter(favItem => favItem[itemType].id !== itemId);
+        }
+
+        store.writeQuery({
+          query: typeToFavListMap[itemType],
+          data: {
+            [`favourite${itemTypeCapital}`]: favList
+          }
+        });
+      } catch (err) {
+        if (err.message.indexOf('Can\'t find field') !== -1) {
+          console.log('list was not fetched');
+        } else {
+          console.log(err);
+        }
+      }
     }
   },
 
   apollo: {
-    isItemFavourite() {
+    isFavourite() {
+      // This query assumes we already have track data
+      // regarding to favouritism somewhere in the cache.
+      // That way the query is not forced to refetch track data.
+      // This approach needs declared cache redirect for 'track'.
+
       return {
-        query: this.computedQuery,
+        query: typeToQueryMap[this.itemType],
         variables: {
           id: this.itemId
         },
-        update: (data) => {
-          return data[this.itemType].userFavourite;
-        },
+        update: data => (
+          data[this.itemType].userFavourite
+        ),
         error(error) {
           console.log(error);
         }

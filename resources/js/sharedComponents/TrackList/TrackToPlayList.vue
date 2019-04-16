@@ -145,18 +145,7 @@ export default {
           updateMyTrackCollections.call(this, store, collection);
           this.newPlaylistTitle = '';
           this.emitTrackAdded(collection);
-        },
-
-        // optimisticResponse: {
-        //   __typename: 'Mutation',
-        //   createCollection: {
-        //     __typename: 'Collection',
-        //     id: -1,
-        //     title: this.newPlaylistTitle,
-        //     // TODO: real image
-        //     image: '/images/imaginary-image.png'
-        //   }
-        // }
+        }
       }).catch(error => console.log(error));
     },
 

@@ -21,17 +21,8 @@
       :item-id="track.id"
     />
 
-    <button
-      style="transition: all 0s;"
-      :class="['heart', { 'favourite': track.userFavourite }]"
-      @click="onFavouriteClick"
-    >
-      like
-    </button>
-
+    {{ track.trackName }}
     {{ track.album.author }}
-
-    <!--TODO: implement track playlist id on the backend-->
 
     <TrackToPlaylistPopover :track="track">
       <button>
@@ -39,11 +30,11 @@
       </button>
     </TrackToPlaylistPopover>
 
-    <TrackActions :track="track">
+    <TrackActionsPopover :track="track">
       <button>
         track actions
       </button>
-    </TrackActions>
+    </TrackActionsPopover>
   </div>
 </template>
 
@@ -53,7 +44,7 @@ import HeartIcon from 'components/icons/HeartIcon.vue';
 import AddToFavouriteButton from 'components/AddToFavouriteButton.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from './TrackToPlaylistPopover.vue';
-import TrackActions from './TrackActions.vue';
+import TrackActionsPopover from './TrackActionsPopover.vue';
 
 function updateFavTrackList(store, track, add) {
   try {
@@ -95,7 +86,7 @@ function updateFavTrackList(store, track, add) {
 export default {
   components: {
     TrackToPlaylistPopover,
-    TrackActions,
+    TrackActionsPopover,
     IconButton,
     HeartIcon,
     AddToFavouriteButton
