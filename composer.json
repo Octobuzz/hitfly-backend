@@ -12,6 +12,7 @@
         "ext-json": "*",
         "encore/laravel-admin": "^1.6",
         "fideloper/proxy": "^4.0",
+        "intervention/image": "^2.4",
         "jenssegers/date": "^3.5",
         "jhaoda/socialite-odnoklassniki": "^3.0",
         "laravel/framework": "5.7.*",

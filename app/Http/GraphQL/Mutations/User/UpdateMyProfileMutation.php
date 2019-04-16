@@ -8,7 +8,10 @@ use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\UploadType;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateMyProfileMutation extends Mutation
 {
@@ -33,6 +36,10 @@ class UpdateMyProfileMutation extends Mutation
                 'type' => \GraphQL::type('ArtistProfileInput'),
                 'description' => 'профиль артиста',
             ],
+            'avatar' => [
+                'description' => 'аватар',
+                'type' => UploadType::getInstance(),
+            ],
         ];
     }
 
@@ -42,6 +49,23 @@ class UpdateMyProfileMutation extends Mutation
         if (!empty($args['profile'])) {
             if ($args['profile']['password']) {
                 $args['profile']['password'] = Hash::make($args['profile']['password']);
+            }
+            //аватар пользователя
+            if ($args['avatar'] !== null) {
+                //todo удаление старых аватарок
+
+                $image = $args['avatar'];
+                $nameFile = md5(microtime());
+                $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
+                $image_resize = Image::make($image->getRealPath());
+                $image_resize->resize(config('image.size.avatar.width'), config('image.size.avatar.height'),function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+                $image_resize->save($path.$imagePath);
+
+                $user->avatar = $imagePath;
+
             }
 
             $user->update(DBHelpers::arrayKeysToSnakeCase($args['profile']));
@@ -55,6 +79,7 @@ class UpdateMyProfileMutation extends Mutation
                 }
                 $user->favouriteGenres()->sync($tmpGenres);
             }
+
         }
 
         if (!empty($args['artistProfile'])) {
