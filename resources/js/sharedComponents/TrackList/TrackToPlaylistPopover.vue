@@ -93,13 +93,6 @@ export default {
 >
 // popover cannot use scoped styles
 
-.v-popover {
-  span.trigger {
-    width: 40px;
-    height: 40px;
-  }
-}
-
 .track-to-playlist-popover {
   $bg-color: #222;
 

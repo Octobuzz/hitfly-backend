@@ -27,8 +27,8 @@
 
 <script>
 import IconGradientRadial from 'components/IconGradientRadial.vue';
+import TrackList from 'components/TrackList';
 import gql from './gql';
-import TrackList from '../../sharedComponents/TrackList';
 
 export default {
   components: {

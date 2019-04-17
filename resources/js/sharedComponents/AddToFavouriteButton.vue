@@ -1,5 +1,6 @@
 <template>
   <IconButton
+    :class="$attrs.class"
     :passive="passive"
     :hover="hover"
     :active="isFavourite"

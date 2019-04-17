@@ -14,21 +14,29 @@
       >
     </button>
 
+    <!--TODO: add plugin code to render vue components depending on the screen width-->
+
     <AddToFavouriteButton
       ref="addToFavButton"
+      class="track-list-entry__icon-button"
       passive="secondary-passive"
       hover="secondary-hover"
       item-type="track"
       :item-id="trackId"
     />
 
-    {{ track.trackName }}
-    {{ track.album.author }}
+    <span class="track-list-entry__track-name">
+      {{ track.trackName }}
+    </span>
+    <span class="track-list-entry__track-author">
+      {{ track.album.author }}
+    </span>
 
     <TrackToPlaylistPopover :track-id="trackId">
       <IconButton
         passive="secondary-passive"
         hover="secondary-hover"
+        :tooltip="tooltip.add"
       >
         <PlusIcon/>
       </IconButton>
@@ -41,14 +49,18 @@
       <IconButton
         passive="secondary-passive"
         hover="secondary-hover"
+        :tooltip="tooltip.actions"
       >
         <DotsIcon/>
       </IconButton>
     </TrackActionsPopover>
 
     <IconButton
+      class="track-list-entry__icon-button"
       passive="secondary-passive"
       hover="secondary-hover"
+      :tooltip="tooltip.remove"
+      @press="onRemovePress"
     >
       <CrossIcon/>
     </IconButton>
@@ -90,7 +102,17 @@ export default {
   data() {
     return {
       track: null,
-      buttonActive: false
+      tooltip: {
+        remove: {
+          content: 'Удалить из списка воспроизведения'
+        },
+        add: {
+          content: 'Добавить в плейлист'
+        },
+        actions: {
+          content: 'Еще...'
+        },
+      }
     };
   },
 
@@ -100,6 +122,11 @@ export default {
     },
     onFavouritePress() {
       this.$refs.addToFavButton.onPress();
+    },
+    onRemovePress() {
+      console.log('remove pressed');
+
+      this.$emit('remove', this.trackId);
     }
   },
 
@@ -124,12 +151,22 @@ export default {
   scoped
   lang="scss"
 >
+@import '../../../sass/variables';
+
 .track-list-entry {
   display: flex;
   align-items: center;
   height: 56px;
+  box-shadow: 0 1px 0 $borderColor;
+
+  &:hover {
+    background: $color_5;
+  }
 
   &__index {
+    font-family: "Gotham Pro", serif;
+    font-size: 12px;
+    color: $color_4;
     display: flex;
     justify-content: center;
     width: 16px;
@@ -141,10 +178,8 @@ export default {
     height: 32px;
     position: relative;
     margin-right: 8px;
-    border-radius: 0;
+    border-radius: 3px;
     overflow: hidden;
-
-    background: #00c0ef; // temp
 
     &_paused:before {
       content: '';
@@ -157,14 +192,59 @@ export default {
       background: black;
       opacity: .5;
     }
+
+    & img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &__track-name,
+  &__track-author {
+    font-size: 14px;
+    color: #231f20;
+    flex-grow: 1;
+    transition: .2s;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color:#b36fcb;
+    }
+  }
+
+  &__track-name {
+    font-family: "GothamPro_bold", serif;
+  }
+
+  &__track-author {
+    font-family: "Gotham Pro", serif;
+  }
+
+  &__icon-button {
+    margin-right: 8px;
+  }
+
+  // have to specify styles for dynamic popover content here
+
+  &::v-deep {
+    .v-popover {
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin-right: 16px;
+    }
+
+    span.trigger {
+      width: 40px;
+      height: 40px;
+    }
   }
 }
 
-.heart {
-  background: orange;
-}
+@media screen and (max-width: 767px) {
+  .track-list-entry {
 
-.favourite {
-  background: cornflowerblue;
+  }
 }
 </style>
