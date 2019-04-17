@@ -8,7 +8,7 @@
     <!--TODO: move to the root component-->
     <IconGradientRadial/>
 
-    <TrackList :track-list="trackList">
+    <TrackList :track-id-list="trackIdList">
       <template v-if="isLoading" #preloader>
         is loading...
       </template>
@@ -46,11 +46,14 @@ export default {
         pageLimit: 5,
         my: false
       },
-      showLoadTrigger: false,
-
-
-      favTrackList: []
+      showLoadTrigger: false
     };
+  },
+
+  computed: {
+    trackIdList() {
+      return this.trackList.map(track => track.id);
+    }
   },
 
   methods: {
@@ -96,13 +99,6 @@ export default {
   },
 
   apollo: {
-    favTrackList() {
-      return {
-        query: gql.query.FAVOURITE_TRACK_LIST,
-        update: ({ favouriteTrack }) => favouriteTrack
-      };
-    },
-
     trackList() {
       return {
         query: gql.query.TRACK_LIST,

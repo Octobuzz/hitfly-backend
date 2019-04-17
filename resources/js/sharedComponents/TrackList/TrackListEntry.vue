@@ -15,86 +15,70 @@
     </button>
 
     <AddToFavouriteButton
-      passive="standard-passive"
-      hover="standard-hover"
+      ref="addToFavButton"
+      passive="secondary-passive"
+      hover="secondary-hover"
       item-type="track"
-      :item-id="track.id"
+      :item-id="trackId"
     />
 
     {{ track.trackName }}
     {{ track.album.author }}
 
-    <TrackToPlaylistPopover :track="track">
-      <button>
-        {{ track.trackName }}
-      </button>
+    <TrackToPlaylistPopover :track-id="trackId">
+      <IconButton
+        passive="secondary-passive"
+        hover="secondary-hover"
+      >
+        <PlusIcon/>
+      </IconButton>
     </TrackToPlaylistPopover>
 
-    <TrackActionsPopover :track="track">
-      <button>
-        track actions
-      </button>
+    <TrackActionsPopover
+      :track-id="trackId"
+      @press-favourite="onFavouritePress"
+    >
+      <IconButton
+        passive="secondary-passive"
+        hover="secondary-hover"
+      >
+        <DotsIcon/>
+      </IconButton>
     </TrackActionsPopover>
+
+    <IconButton
+      passive="secondary-passive"
+      hover="secondary-hover"
+    >
+      <CrossIcon/>
+    </IconButton>
   </div>
 </template>
 
 <script>
-import IconButton from 'components/IconButton.vue';
-import HeartIcon from 'components/icons/HeartIcon.vue';
 import AddToFavouriteButton from 'components/AddToFavouriteButton.vue';
+import IconButton from 'components/IconButton.vue';
+import DotsIcon from 'components/icons/DotsIcon.vue';
+import PlusIcon from 'components/icons/PlusIcon.vue';
+import CrossIcon from 'components/icons/CrossIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from './TrackToPlaylistPopover.vue';
 import TrackActionsPopover from './TrackActionsPopover.vue';
-
-function updateFavTrackList(store, track, add) {
-  try {
-    const { favouriteTrack: favTrackList } = store.readQuery({
-      query: gql.query.FAVOURITE_TRACK_LIST
-    });
-
-    if (add) {
-      favTrackList.data = [
-        {
-          track: {
-            ...track,
-            __typename: 'Track',
-          },
-          __typename: 'FavouriteTrack',
-        },
-        ...favTrackList.data
-      ];
-    } else {
-      favTrackList.data = favTrackList.data
-        .filter(favTrack => favTrack.track.id !== track.id);
-    }
-
-    store.writeQuery({
-      query: gql.query.FAVOURITE_TRACK_LIST,
-      data: {
-        favouriteTrack: favTrackList
-      }
-    });
-  } catch (err) {
-    if (err.message.indexOf('Can\'t find field') !== -1) {
-      console.log('favourite track list was not fetched');
-    } else {
-      console.log(err);
-    }
-  }
-}
 
 export default {
   components: {
     TrackToPlaylistPopover,
     TrackActionsPopover,
+    AddToFavouriteButton,
     IconButton,
-    HeartIcon,
-    AddToFavouriteButton
+    DotsIcon,
+    PlusIcon,
+    CrossIcon
   },
 
   props: {
-    track: {
-      type: Object,
+    trackId: {
+      type: Number,
       required: true
     },
     index: {
@@ -105,101 +89,32 @@ export default {
 
   data() {
     return {
+      track: null,
       buttonActive: false
     };
-  },
-
-  mounted() {
-    setInterval(() => {
-      this.buttonActive = !this.buttonActive;
-    }, 1500);
   },
 
   methods: {
     onAlbumPress() {
       console.log('album pressed');
     },
+    onFavouritePress() {
+      this.$refs.addToFavButton.onPress();
+    }
+  },
 
-    onFavouriteClick() {
-      if (this.track.userFavourite) {
-        this.removeFromFavourites();
-      } else {
-        this.addToFavourites();
-      }
-    },
-
-    addToFavourites() {
-      this.$apollo.mutate({
-        mutation: gql.mutation.ADD_TO_FAVOURITES,
+  apollo: {
+    track() {
+      return {
+        query: gql.query.TRACK,
         variables: {
-          id: this.track.id,
+          id: this.trackId,
         },
-        update: (store, { data: { addToFavourites: { track } } }) => {
-          // 'removing favourite is in process' variable
-
-          updateFavTrackList(store, track, true);
-        },
-        optimisticResponse: {
-          __typename: 'Mutation',
-          addToFavourites: {
-            track: {
-              __typename: 'Track',
-              ...this.track,
-              userFavourite: true
-            },
-            id: -1,
-            __typename: 'FavouriteTrack',
-          }
+        update: ({ track }) => track,
+        error(error) {
+          console.log(error);
         }
-      }).then(() => {
-        console.log('favourite updated, id:', this.track.id, 'isFav:', this.track.userFavourite);
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
-
-    removeFromFavourites() {
-      this.$apollo.mutate({
-        mutation: gql.mutation.REMOVE_FROM_FAVOURITES,
-        variables: {
-          id: this.track.id,
-        },
-        update: (store, { data: { deleteFromFavourite } }) => {
-          // 'adding favourite is in process' variable
-
-          // TODO: this is a fix until backend will be returning data on the delete query
-          store.writeQuery({
-            query: gql.query.TRACK,
-            variables: {
-              id: this.track.id
-            },
-            data: {
-              track: {
-                ...this.track,
-                userFavourite: false
-              }
-            }
-          });
-
-          updateFavTrackList(store, { ...this.track, userFavourite: false }, false);
-        },
-        optimisticResponse: {
-          deleteFromFavourite: {
-            track: {
-              ...this.track,
-              userFavourite: false,
-              __typename: 'Track',
-            },
-            id: -1,
-            __typename: 'FavouriteTrack',
-          },
-          __typename: 'Mutation',
-        }
-      }).then(() => {
-        console.log('favourite updated, id:', this.track.id, 'isFav:', this.track.userFavourite);
-      }).catch((error) => {
-        console.log(error);
-      });
+      };
     }
   }
 };

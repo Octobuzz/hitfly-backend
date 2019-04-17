@@ -20,10 +20,6 @@ const typeToQueryMap = {
   collection: gql.query.COLLECTION,
 };
 
-const typeToFavListMap = {
-  track: gql.query.FAVOURITE_TRACK_LIST
-};
-
 // This component should check if there is favourite list (of the item type) on the client
 // and change its length. Also it should update the item itself.
 
@@ -110,15 +106,12 @@ export default {
         },
 
         update: (store, { data: { addToFavourites } }) => {
-          this.updateFavList(store, 'add', addToFavourites[itemType]);
-
           if (addToFavourites.id !== -1) {
             this.isButtonDisabled = false;
           }
         },
 
         optimisticResponse: {
-          __typename: 'Mutation',
           addToFavourites: {
             __typename: `Favourite${itemTypeCapital}`,
             id: -1,
@@ -153,15 +146,13 @@ export default {
         },
 
         update: (store, { data: { deleteFromFavourite } }) => {
-          this.updateFavList(store, 'remove', { id: itemId });
-
           store.writeQuery({
             query: gql.query[itemType.toUpperCase()],
             variables: {
               id: itemId
             },
             data: {
-              [this.itemType]: {
+              [itemType]: {
                 __typename: itemTypeCapital,
                 id: itemId,
                 userFavourite: false
@@ -196,45 +187,6 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
-    },
-
-    updateFavList(store, operation, item) {
-      try {
-        const { itemType, itemTypeCapital, itemId } = this;
-
-        const storeFavListData = store.readQuery({
-          query: typeToFavListMap[itemType]
-        });
-        const favList = storeFavListData[`favourite${itemTypeCapital}`];
-
-        if (operation === 'add') {
-          favList.data = [
-            {
-              __typename: `Favourite${itemTypeCapital}`,
-              [itemType]: item,
-            },
-            ...favList.data
-          ];
-        }
-
-        if (operation === 'remove') {
-          favList.data = favList.data
-            .filter(favItem => favItem[itemType].id !== itemId);
-        }
-
-        store.writeQuery({
-          query: typeToFavListMap[itemType],
-          data: {
-            [`favourite${itemTypeCapital}`]: favList
-          }
-        });
-      } catch (err) {
-        if (err.message.indexOf('Can\'t find field') !== -1) {
-          console.log('list was not fetched');
-        } else {
-          console.log(err);
-        }
-      }
     }
   },
 

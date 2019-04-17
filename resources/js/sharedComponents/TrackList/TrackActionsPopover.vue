@@ -5,7 +5,7 @@
     popover-inner-class="track-actions-popover__inner"
     popover-arrow-class="track-actions-popover__arrow"
     placement="left-start"
-    :popper-options="{ modifiers: { offset: { offset: '-30%p' } } }"
+    :popper-options="popperOptions"
     :auto-hide="true"
     @auto-hide="leavePlaylistMenu(300)"
   >
@@ -58,9 +58,14 @@
         </span>
         <span
           class="track-actions-popover__menu-item"
-          @click="addTrackToFavourites"
+          @click="onFavouritePress"
         >
-          Добавить в любимые треки
+          <span v-if="!track.userFavourite">
+            Добавить в любимые треки
+          </span>
+          <span v-if="track.userFavourite">
+            Убрать из любимых треков
+          </span>
         </span>
         <span
           class="track-actions-popover__menu-item"
@@ -80,19 +85,17 @@
       >
         Сообщить о проблеме
       </span>
-
       <span
-        v-if="inPlaylistMenu"
+        v-else
         class="track-actions-popover__add-playlist-header"
       >
         Добавить в плейлист
       </span>
 
       <TrackToPlaylist
-        v-if="inPlaylistMenu"
-        :track="track"
-        :playlist-list="playlistList"
-        :is-fetching="isFetching"
+        v-show="inPlaylistMenu"
+        ref="playlistMenu"
+        :track-id="trackId"
         @track-added="onTrackAdded"
       />
 
@@ -118,16 +121,17 @@ export default {
   },
 
   props: {
-    track: {
-      type: Object,
+    trackId: {
+      type: Number,
       required: true
     }
   },
 
   data() {
     return {
+      popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+      track: null,
       inPlaylistMenu: false,
-      playlistList: [],
       isFetching: true
     };
   },
@@ -153,15 +157,18 @@ export default {
 
     },
 
-    addTrackToFavourites() {
-
+    onFavouritePress() {
+      this.$refs.closeButton.click();
+      setTimeout(() => {
+        this.$emit('press-favourite');
+      }, 50);
     },
 
     enterPlaylistMenu() {
-      this.fetchPlaylistList();
+      this.$refs.playlistMenu.fetchPlaylistList();
 
       // have problem capturing click:
-      // popover becomes hidden when inPlayListMenu updates (hides) menu div
+      // popover becomes hidden when inPlaylistMenu updates (hides) menu div
       // (consider the case when playlist list is empty)
 
       setTimeout(() => {
@@ -180,24 +187,21 @@ export default {
         this.$refs.closeButton.click();
         this.leavePlaylistMenu(300);
       }, 200);
-    },
+    }
+  },
 
-    fetchPlaylistList() {
-      this.$apollo.addSmartQuery('playlistList', {
-        query: gql.query.PLAYLIST_LIST,
-        manual: true,
-        result(res) {
-          const { data: { collections }, networkStatus } = res;
-
-          if (networkStatus === 7) {
-            this.playlistList = collections.data;
-            this.isFetching = false;
-          }
+  apollo: {
+    track() {
+      return {
+        query: gql.query.TRACK,
+        variables: {
+          id: this.trackId,
         },
-        error(err) {
-          console.log(err);
-        },
-      });
+        update: ({ track }) => track,
+        error(error) {
+          console.log(error);
+        }
+      };
     }
   }
 };

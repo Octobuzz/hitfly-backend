@@ -1,10 +1,10 @@
 <template>
   <div class="track-list">
     <TrackListEntry
-      v-for="(track, index) in trackList"
-      :key="track.id"
+      v-for="(trackId, index) in trackIdList"
+      :key="trackId"
       :index="index"
-      :track="track"
+      :track-id="trackId"
     />
     <slot name="preloader" />
     <slot name="loadButton" />
@@ -18,9 +18,8 @@ export default {
   components: {
     TrackListEntry
   },
-
   props: {
-    trackList: {
+    trackIdList: {
       type: Array,
       required: true
     }

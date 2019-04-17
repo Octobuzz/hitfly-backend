@@ -1,11 +1,12 @@
 <template>
   <v-popover
+    ref="popover"
     popover-base-class="track-to-playlist-popover"
     popover-wrapper-class="track-to-playlist-popover__wrapper"
     popover-inner-class="track-to-playlist-popover__inner"
     popover-arrow-class="track-to-playlist-popover__arrow"
     placement="left-start"
-    :popper-options="{ modifiers: { offset: { offset: '-30%p' } } }"
+    :popper-options="popperOptions"
     :auto-hide="true"
     @show="fetchPlaylistList"
   >
@@ -25,9 +26,8 @@
       <hr class="track-to-playlist-popover__delimiter">
 
       <TrackToPlaylist
-        :track="track"
-        :playlist-list="playlistList"
-        :is-fetching="isFetching"
+        ref="playlistMenu"
+        :track-id="trackId"
         @track-added="onTrackAdded"
       />
     </template>
@@ -44,14 +44,16 @@ export default {
   },
 
   props: {
-    track: {
-      type: Object,
+    trackId: {
+      type: Number,
       required: true
     }
   },
 
   data() {
     return {
+      popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+      track: null,
       isFetching: true,
       playlistList: [],
       newPlaylistTitle: ''
@@ -60,28 +62,28 @@ export default {
 
   methods: {
     fetchPlaylistList() {
-      this.$apollo.addSmartQuery('playlistList', {
-        query: gql.query.PLAYLIST_LIST,
-        manual: true,
-        result(res) {
-          const { data: { collections }, networkStatus } = res;
-
-          if (networkStatus === 7) {
-            this.playlistList = collections.data;
-            this.isFetching = false;
-          }
-        },
-        error(err) {
-          console.log(err);
-        },
-      });
+      this.$refs.playlistMenu.fetchPlaylistList();
     },
-
     onTrackAdded(addedTrack, toPlaylist) {
       setTimeout(() => {
         this.$refs.closeButton.click();
       }, 200);
-    },
+    }
+  },
+
+  apollo: {
+    track() {
+      return {
+        query: gql.query.TRACK,
+        variables: {
+          id: this.trackId,
+        },
+        update: ({ track }) => track,
+        error(error) {
+          console.log(error);
+        }
+      };
+    }
   }
 };
 </script>
@@ -90,6 +92,13 @@ export default {
   lang="scss"
 >
 // popover cannot use scoped styles
+
+.v-popover {
+  span.trigger {
+    width: 40px;
+    height: 40px;
+  }
+}
 
 .track-to-playlist-popover {
   $bg-color: #222;
