@@ -52,20 +52,7 @@ class UpdateMyProfileMutation extends Mutation
             }
             //аватар пользователя
             if ($args['avatar'] !== null) {
-                //todo удаление старых аватарок
-
-                $image = $args['avatar'];
-                $nameFile = md5(microtime());
-                $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
-                $image_resize = Image::make($image->getRealPath());
-                $image_resize->resize(config('image.size.avatar.width'), config('image.size.avatar.height'),function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $path = Storage::disk('public')->getAdapter()->getPathPrefix();
-                $image_resize->save($path.$imagePath);
-
-                $user->avatar = $imagePath;
-
+                $user->avatar = $this->setAvatar($user,$args['avatar']);
             }
 
             $user->update(DBHelpers::arrayKeysToSnakeCase($args['profile']));
@@ -101,5 +88,32 @@ class UpdateMyProfileMutation extends Mutation
         }
 
         return $user;
+    }
+
+    /**
+     * добавление аватарки пользователя
+     * @param $user
+     * @param $avatar
+     * @return string
+     */
+    private function setAvatar($user,$avatar){
+        //удаление старых аватарок
+        if($user->getOriginal('avatar')!== null){
+            Storage::disk('public')->delete($user->getOriginal('avatar'));
+        }
+        $image = $avatar;
+        $nameFile = md5(microtime());
+        $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $image_resize = Image::make($image->getRealPath());
+        $image_resize->resize(config('image.size.avatar.width'), config('image.size.avatar.height'),function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+        //создадим папку, если несуществует
+        if (!file_exists($path.'avatars/'.$user->id)) {
+            Storage::disk('public')->makeDirectory('avatars/'.$user->id);
+        }
+        $image_resize->save($path.$imagePath);
+        return $imagePath;
     }
 }
