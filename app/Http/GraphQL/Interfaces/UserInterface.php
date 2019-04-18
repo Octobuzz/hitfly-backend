@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Interfaces;
 
+use App\Http\GraphQL\Fields\AvatarSizesField;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
 
@@ -54,10 +55,7 @@ class UserInterface extends InterfaceType
                 'description' => 'Локация пользователя',
                 'alias' => 'city_id',
             ],
-            'avatar' => [
-                'type' => Type::string(),
-                'description' => 'Аватар пользователя',
-            ],
+            'avatar' => AvatarSizesField::class,
             'favouriteGenres' => [
                 'type' => Type::listOf(\GraphQL::type('Genre')),
                 'description' => 'Любимые жанры пользователя',

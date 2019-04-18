@@ -20,8 +20,28 @@ return [
     //размеры изображений
     'size' => [
         'avatar' =>[
-            'width'=>56,
-            'height'=>56,
+            'default' => [
+                'width'=>235,
+                'height'=>235,
+            ],
+            'size_56x56' => [
+                'width'=>56,
+                'height'=>56,
+            ],
+            'size_235x235' => [
+                'width'=>235,
+                'height'=>235,
+            ],
+        ],
+        'album' =>[
+            'size_50x50' => [
+                'width'=>56,
+                'height'=>56,
+            ],
+            'size_60x30' => [
+                'width'=>56,
+                'height'=>56,
+            ]
         ],
 
 
