@@ -73,7 +73,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $create = [
-            'username' => $data['email'],
+            'username' => substr($data['email'], 0, stripos($data['email'], '@')),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'birthday' => $data['birthday'] ? Carbon::createFromFormat('d.m.Y', $data['birthday'])->format('Y-m-d') : null,

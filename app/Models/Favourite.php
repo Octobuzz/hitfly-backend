@@ -51,5 +51,4 @@ class Favourite extends Model
     {
         return $this->belongsTo(Genre::class, 'favouriteable_id');
     }
-
 }

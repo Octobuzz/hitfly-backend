@@ -32,7 +32,7 @@ class AvatarSizeEnum extends GraphQLType
         'description' => 'Размеры аватарок',
         'values' => [
             'size_235x235',
-            'size_56x56'
+            'size_56x56',
         ],
     ];
 }
