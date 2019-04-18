@@ -27,6 +27,7 @@ class AlbumsQuery extends Query
         return [
             'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
             'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
+
         ];
     }
 
