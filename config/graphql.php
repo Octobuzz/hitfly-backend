@@ -237,7 +237,7 @@ return [
      */
     'security' => [
         'query_max_complexity' => null,
-        'query_max_depth' => null,
+        'query_max_depth' => 5,
         'disable_introspection' => false,
     ],
 
@@ -255,6 +255,6 @@ return [
         'controller' => \Rebing\GraphQL\GraphQLController::class.'@graphiql',
         'middleware' => [],
         'view' => 'graphql::graphiql',
-        'display' => env('ENABLE_GRAPHIQL', true),
+        'display' => env('ENABLE_GRAPHIQL', false),
     ],
 ];
