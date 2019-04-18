@@ -215,10 +215,14 @@ export default {
 
   &__track-name {
     font-family: "GothamPro_bold", serif;
+    flex-grow: 1;
+    width: 0;
   }
 
   &__track-author {
     font-family: "Gotham Pro", serif;
+    flex-grow: 1;
+    width: 0;
   }
 
   &__icon-button {

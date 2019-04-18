@@ -22,6 +22,9 @@
         </button>
       </template>
     </TrackList>
+
+    <TestAlbum/>
+
   </div>
 </template>
 
@@ -29,11 +32,14 @@
 import IconGradientRadial from 'components/IconGradientRadial.vue';
 import TrackList from 'components/TrackList';
 import gql from './gql';
+// TODO: remove
+import TestAlbum from './TestAlbum.vue';
 
 export default {
   components: {
     IconGradientRadial,
-    TrackList
+    TrackList,
+    TestAlbum
   },
 
   data() {

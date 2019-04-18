@@ -23,7 +23,9 @@ const possibleValues = [
   'standard-passive',
   'standard-hover',
   'secondary-passive',
-  'secondary-hover'
+  'secondary-hover',
+  'mobile-passive',
+  'mobile-hover'
 ];
 
 const validator = val => possibleValues.some(pv => pv === val);
@@ -90,13 +92,17 @@ export default {
 
 // tooltip cannot use scoped styles
 
+$desktop_diameter: 40px;
+$mobile_diameter: 24px;
+$mobile_scale: $mobile_diameter / $desktop_diameter;
+
 .icon-button {
   position: relative;
-  min-width: 40px;
-  max-width: 40px;
-  min-height: 40px;
-  max-height: 40px;
-  border-radius: 20px;
+  min-width: $desktop_diameter;
+  max-width: $desktop_diameter;
+  min-height: $desktop_diameter;
+  max-height: $desktop_diameter;
+  border-radius: $desktop_diameter / 2;
   overflow: hidden;
   transition: .2s;
 
@@ -126,6 +132,25 @@ export default {
   &_secondary-hover_hover:hover {
     background: white;
     fill: #313131;
+  }
+
+  &_mobile-passive,
+  &_mobile-passive_hover:hover,
+  &_mobile-hover,
+  &_mobile-hover_hover:hover {
+    $mobile_margin_correction: 2; // (0, Inf]
+
+    position: relative;
+    transform: scale(.6);
+    background: #313131;
+    fill: white;
+    margin: -$desktop_diameter * (1 - $mobile_scale) / 2
+      / $mobile_margin_correction;
+  }
+
+  &_mobile-hover,
+  &_mobile-hover_hover:hover {
+    transform: scale($mobile_scale * 7 / 6);
   }
 
   &_active svg {

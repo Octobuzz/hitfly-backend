@@ -1,0 +1,93 @@
+@import '../../../sass/variables';
+
+.album-preview {
+  width: 120px;
+
+  &__loader {
+
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &:hover > .album-preview {
+      &__drape {
+        opacity: .3;
+      }
+
+      &__button-section {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__drape,
+  &__cover {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+  }
+
+  &__drape {
+    z-index: 200;
+    opacity: 0;
+    transition: .2s;
+    transition-delay: .1s;
+    background: black;
+  }
+
+  &__cover {
+    z-index: 100;
+  }
+
+  &__button-section {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    opacity: 0;
+    z-index: 300;
+    transition: .2s;
+    transition-delay: .1s;
+  }
+
+  &__play-button::v-deep {
+    svg {
+      transform: translate(-33%, -50%);
+    }
+  }
+
+  &__footer {
+    padding-top: 6px;
+    user-select: none;
+  }
+
+  &__title,
+  &__author {
+    font-size: 14px;
+    color: #231f20;
+    display: block;
+    transition: .2s;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color:#b36fcb;
+    }
+  }
+
+  &__title {
+    font-family: "GothamPro_bold", serif;
+    margin-bottom: 4px;
+  }
+
+  &__author {
+    font-family: "Gotham Pro", serif;
+  }
+}
