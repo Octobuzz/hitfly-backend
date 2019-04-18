@@ -47,11 +47,11 @@ class UpdateMyProfileMutation extends Mutation
     {
         $user = Auth::user();
         if (!empty($args['profile'])) {
-            if ($args['profile']['password']) {
+            if (!empty($args['profile']['password']) && $args['profile']['password']) {
                 $args['profile']['password'] = Hash::make($args['profile']['password']);
             }
             //аватар пользователя
-            if ($args['avatar'] !== null) {
+            if (!empty($args['avatar']) && $args['avatar'] !== null) {
                 $user->avatar = $this->setAvatar($user,$args['avatar']);
             }
 
@@ -105,7 +105,7 @@ class UpdateMyProfileMutation extends Mutation
         $nameFile = md5(microtime());
         $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
         $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(config('image.size.avatar.width'), config('image.size.avatar.height'),function ($constraint) {
+        $image_resize->resize(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'),function ($constraint) {
             $constraint->aspectRatio();
         });
         $path = Storage::disk('public')->getAdapter()->getPathPrefix();

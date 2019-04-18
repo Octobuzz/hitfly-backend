@@ -7,6 +7,7 @@ use App\User;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserObserver
 {
@@ -34,6 +35,17 @@ class UserObserver
      */
     public function updated(User $user)
     {
+
+    }
+    public function saving(User $user)
+    {
+        //удаление ресайзов аватарки
+       if($user->isDirty('avatar')){
+           $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+           $avatarFileName  = pathinfo($user->getOriginal('avatar'), PATHINFO_FILENAME);
+           $imagePath = "avatars/$user->id/{$avatarFileName}_*";
+           array_map("unlink", glob($path.$imagePath));
+       }
     }
 
     /**
