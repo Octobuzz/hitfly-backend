@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Http\GraphQL\Fields\AlbumCoverField;
 use App\Models\Album;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -42,10 +43,7 @@ class AlbumType extends GraphQLType
                 'type' => Type::int(),
                 'description' => 'Год выпуска',
             ],
-            'cover' => [
-                'type' => Type::string(),
-                'description' => 'Обложка альбома',
-            ],
+            'cover' => AlbumCoverField::class,
             'musicGroup' => [
                 'type' => GraphQL::type('MusicGroup'),
                 'alias' => 'filename',

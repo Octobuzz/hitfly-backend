@@ -34,13 +34,13 @@ return [
             ],
         ],
         'album' =>[
-            'size_50x50' => [
-                'width'=>56,
-                'height'=>56,
+            'default' => [
+                'width'=>120,
+                'height'=>120,
             ],
-            'size_60x30' => [
-                'width'=>56,
-                'height'=>56,
+            'size_120x120' => [
+                'width'=>120,
+                'height'=>120,
             ]
         ],
 

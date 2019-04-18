@@ -201,6 +201,7 @@ return [
         'GenderType' => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
         'SocialLinksTypeEnum' => \App\Http\GraphQL\Enums\SocialLinksTypeEnum::class,
         'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
+        'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
