@@ -63,19 +63,9 @@ class AvatarSizesField extends Field
                     $returnPath = $this->resizeAvatar($size,$publicPath,$imageName,$root->avatar,$path,true);
                 else
                     $returnPath = $this->resizeAvatar($size,$publicPath,$imageName,$root->avatar,$path);
-                /*$image_resize = Image::make($root->avatar)
-                    ->resize(config('image.size.avatar.' . $size . '.width'), config('image.size.avatar.' . $size . '.height'), function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-
-                //создадим папку, если несуществует
-                if (!file_exists($path . 'avatars/' . $user->id)) {
-                    Storage::disk('public')->makeDirectory('avatars/' . $user->id);
-                }
-                $image_resize->save($path . $imageName);*/
            }
             $return[] = [
-                "name"=> $size,
+                "size"=> $size,
                 "url" => Storage::url($returnPath)
             ];
         }
@@ -89,6 +79,7 @@ class AvatarSizesField extends Field
      * @param $avatar
      * @param $path
      * @param bool $default
+     * @return string
      */
     protected function resizeAvatar($size, $publicPath,$imagePath,$avatar,$path, $default = false){
         $image_resize = Image::make($avatar)
@@ -99,7 +90,7 @@ class AvatarSizesField extends Field
         //создадим папку, если несуществует
         if($default) $path = "avatars/";//сохраним размеры авы по умолчанию в корневую папку
         if (!file_exists($publicPath . $path)) {
-            Storage::disk('public')->makeDirectory($publicPath . $path);
+            Storage::disk('public')->makeDirectory($path);
         }
         $image_resize->save($publicPath . $path . $imagePath);
         return $path . $imagePath;

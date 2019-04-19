@@ -7,32 +7,23 @@ use Rebing\GraphQL\Support\Type as GraphQLType;
 class AvatarSizeEnum extends GraphQLType
 {
     protected $enumObject = true;
-    /*public function __construct($attributes = [])
+    public function __construct($attributes = [])
     {
         parent::__construct($attributes);
+        $sizes = array_keys (config('image.size.avatar'));
+        $key = array_search ('default', $sizes);
+        if($key!==false)
+        {
+            unset($sizes[$key]);
+        }
+
         $this->attributes = [
             'name' => 'AvatarSizeEnum',
             'description' => 'Размеры аватарок',
-            'values' => [
-            'size_235x235' => [
-                config('image.size.avatar.default.width') ? config('image.size.avatar.default.width'):235,
-                config('image.size.avatar.default.height') ? config('image.size.avatar.default.height'):235
-            ],
-            'size_56x56' => [
-                config('image.size.avatar.56x56.width') ? config('image.size.avatar.56x56.width'):56,
-                config('image.size.avatar.56x56.height') ? config('image.size.avatar.56x56.height'):56,
-                ],
-            ]
+            'values' =>
+                $sizes
+
         ];
+    }
 
-    }*/
-
-    protected $attributes = [
-        'name' => 'AvatarSizeEnum',
-        'description' => 'Размеры аватарок',
-        'values' => [
-            'size_235x235',
-            'size_56x56'
-        ],
-    ];
 }

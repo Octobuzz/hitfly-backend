@@ -22,7 +22,7 @@ class ImageSizesType extends GraphQLType
     public function fields()
     {
         return [
-            'name' => [
+            'size' => [
                 'type' => Type::string(),
                 'description' => 'название размера',
             ],

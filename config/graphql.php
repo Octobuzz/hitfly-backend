@@ -202,6 +202,7 @@ return [
         'SocialLinksTypeEnum' => \App\Http\GraphQL\Enums\SocialLinksTypeEnum::class,
         'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
         'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
+        'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
@@ -237,7 +238,7 @@ return [
      */
     'security' => [
         'query_max_complexity' => null,
-        'query_max_depth' => 5,
+        'query_max_depth' => null,
         'disable_introspection' => false,
     ],
 

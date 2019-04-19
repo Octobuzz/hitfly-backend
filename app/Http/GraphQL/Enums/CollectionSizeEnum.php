@@ -4,13 +4,13 @@ namespace App\Http\GraphQL\Enums;
 
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class AlbumSizeEnum extends GraphQLType
+class CollectionSizeEnum extends GraphQLType
 {
     protected $enumObject = true;
     public function __construct($attributes = [])
     {
         parent::__construct($attributes);
-        $sizes = array_keys (config('image.size.album'));
+        $sizes = array_keys (config('image.size.collection'));
         $key = array_search ('default', $sizes);
         if($key!==false)
         {
@@ -18,8 +18,8 @@ class AlbumSizeEnum extends GraphQLType
         }
 
         $this->attributes = [
-            'name' => 'AlbumSizeEnum',
-            'description' => 'Размеры обложек альбомов',
+            'name' => 'CollectionSizeEnum',
+            'description' => 'Размеры обложек коллекций',
             'values' =>
                 $sizes
 

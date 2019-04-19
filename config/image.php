@@ -41,6 +41,29 @@ return [
             'size_120x120' => [
                 'width'=>120,
                 'height'=>120,
+            ],
+            'size_48x48' => [
+                'width'=>48,
+                'height'=>48,
+            ],
+            'size_32x32' => [
+                'width'=>32,
+                'height'=>32,
+            ],
+
+        ],
+        'collection' =>[
+            'default' => [
+                'width'=>214,
+                'height'=>160,
+            ],
+            'size_214x160' => [
+                'width'=>214,
+                'height'=>160,
+            ],
+            'size_150x150' => [
+                'width'=>150,
+                'height'=>150,
             ]
         ],
 

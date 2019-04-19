@@ -8,10 +8,11 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 class Collection extends Model
 {
-    use Itemable, FileProcessingTrait;
+    use Itemable;
 
     protected $nameFolder = 'collection';
 
@@ -34,6 +35,6 @@ class Collection extends Model
 
     public function getImageAttribute($nameAttribute): ?string
     {
-        return $this->getUrlFile($nameAttribute);
+        return Storage::disk('admin')->url($nameAttribute);
     }
 }
