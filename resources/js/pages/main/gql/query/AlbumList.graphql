@@ -1,0 +1,28 @@
+query AlbumList(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+) {
+    albums(
+        limit: $pageLimit,
+        page: $pageNumber
+    ) {
+        total
+        to
+        data {
+            id
+            title
+            genre {
+                id,
+                name
+            }
+            author
+            year
+            cover
+            musicGroup {
+                id
+                name
+            }
+            userFavourite
+        }
+    }
+}

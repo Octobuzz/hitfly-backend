@@ -102,7 +102,6 @@ export default {
           id: this.albumId
         },
         update: ({ album }) => {
-          console.log(album);
           this.isLoading = false;
 
           return album;

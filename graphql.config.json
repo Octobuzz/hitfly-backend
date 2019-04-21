@@ -3,14 +3,14 @@
   "schema": {
 
     "request": {
-      "url" : "http://localhost:9090/graphql/user",
+      "url" : "http://localhost:3000/graphql/user",
       "method" : "POST",
       "README_postIntrospectionQuery" : "Whether to POST an introspectionQuery to the url. If the url always returns the schema JSON, set to false and consider using GET",
       "postIntrospectionQuery" : true,
       "README_options" : "See the 'Options' section at https://github.com/then/then-request",
       "options" : {
         "headers": {
-          "X-TOKEN-AUTH" : "e0c2d3ab45810a7a8a399ac38578477c",
+          "X-TOKEN-AUTH" : "c40916f95d36cca4afab80af66c54449",
           "user-agent" : "JS GraphQL"
         }
       }
@@ -20,11 +20,11 @@
   "README_endpoints": "A list of GraphQL endpoints that can be queried from '.graphql' files in the IDE",
   "endpoints" : [
     {
-      "name": "Default (http://localhost:9090/graphql/user)",
-      "url": "http://localhost:9090/graphql/user",
+      "name": "Default (http://localhost:3000/graphql/user)",
+      "url": "http://localhost:3000/graphql/user",
       "options" : {
         "headers": {
-          "X-TOKEN-AUTH" : "e0c2d3ab45810a7a8a399ac38578477c",
+          "X-TOKEN-AUTH" : "c40916f95d36cca4afab80af66c54449",
           "user-agent" : "JS GraphQL"
         }
       }

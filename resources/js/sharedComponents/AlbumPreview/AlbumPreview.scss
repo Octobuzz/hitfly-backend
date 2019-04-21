@@ -19,7 +19,7 @@
 
     &:hover > .album-preview {
       &__drape {
-        opacity: .3;
+        opacity: .5;
       }
 
       &__button-section {
@@ -39,7 +39,6 @@
     z-index: 200;
     opacity: 0;
     transition: .2s;
-    transition-delay: .1s;
     background: black;
   }
 
@@ -54,7 +53,6 @@
     opacity: 0;
     z-index: 300;
     transition: .2s;
-    transition-delay: .1s;
   }
 
   &__play-button::v-deep {
