@@ -22,7 +22,7 @@
         v-for="albumId in albumIdList"
         :key="albumId"
       >
-        <AlbumPreview v-once :album-id="albumId" />
+        <AlbumPreview :album-id="albumId" />
       </swiper-slide>
       <swiper-slide
         v-if="hasMoreData"
@@ -121,10 +121,6 @@ export default {
     slidesRemainBeforeLoading() {
       return 2 * this.visibleItemsCount;
     }
-  },
-
-  mounted() {
-    this.swiper.slideTo(1);
   },
 
   methods: {

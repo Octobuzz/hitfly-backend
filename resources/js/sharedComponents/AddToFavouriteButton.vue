@@ -204,6 +204,7 @@ export default {
       // That way the query is not forced to refetch track data.
       // This approach needs declared cache redirect for 'track'.
 
+      // eslint-disable-next-line consistent-return
       return {
         query: typeToQueryMap[this.itemType],
         variables: {

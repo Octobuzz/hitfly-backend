@@ -68,8 +68,6 @@ import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import gql from './gql';
 
-// TODO: cache redirect
-
 export default {
   components: {
     AddToFavouriteButton,
