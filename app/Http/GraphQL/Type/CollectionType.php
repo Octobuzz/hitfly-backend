@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Http\GraphQL\Fields\CollectionImageField;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -28,10 +29,7 @@ class CollectionType extends GraphQLType
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'Индетификатор',
             ],
-            'image' => [
-                'type' => Type::string(),
-                'description' => 'Изображение (полный url к изображению)',
-            ],
+            'image' => CollectionImageField::class,
             'title' => [
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'Название коллекции',

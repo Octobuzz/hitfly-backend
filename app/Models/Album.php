@@ -62,7 +62,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Album extends Model
 {
-    use SoftDeletes, Itemable, FileProcessingTrait;
+    use SoftDeletes, Itemable;
 
     protected $table = 'albums';
 
