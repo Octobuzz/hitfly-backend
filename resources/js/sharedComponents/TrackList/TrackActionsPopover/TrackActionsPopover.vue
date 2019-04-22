@@ -113,7 +113,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import gql from './gql';
-import TrackToPlaylist from './TrackToPlayList.vue';
+import TrackToPlaylist from '../TrackToPlaylist';
 
 export default {
   components: {
@@ -209,5 +209,5 @@ export default {
 
 <style
   lang="scss"
-  src="./TrackActions.scss"
+  src="./TrackActionsPopover.scss"
 />

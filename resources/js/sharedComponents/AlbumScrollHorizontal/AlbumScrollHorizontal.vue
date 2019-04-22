@@ -162,34 +162,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.album-scroll-horizontal {
-  text-align: right;
-
-  &__button-prev {
-
-  }
-
-  &__button-next {
-
-  }
-
-  &__loader {
-    text-align: left;
-    box-sizing: border-box;
-    border: 10px solid black;
-  }
-
-  .swiper-slide {
-    width: 120px;
-  }
-
-  .swiper-slide-next {
-    width: 120px;
-  }
-
-  .swiper-slide-active {
-    width: 120px;
-  }
-}
-</style>
+<style
+  scoped
+  lang="scss"
+  src="./AlbumScrollHorizontal.scss"
+/>

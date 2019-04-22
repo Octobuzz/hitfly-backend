@@ -8,7 +8,12 @@ query Album($id: Int!) {
         }
         author
         year
-        cover
+        cover(
+            sizes: [size_32x32, size_48x48, size_120x120]
+        ) {
+            size
+            url
+        }
         musicGroup {
             id
             name

@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <flash-message/>
+    <flash-message transition-name="flash" />
     <Header />
     <router-view />
     <Footer />
@@ -71,7 +71,18 @@ export default {
   cursor: pointer;
 }
 
-.flash__close-button:active,.flash__close-button:focus {
+.flash__close-button:active,
+.flash__close-button:focus {
   outline: none;
+}
+
+.flash-enter,
+.flash-leave-to {
+  opacity: 0;
+  transform: rotateX(-30deg) scale(.88) translateY(-30px);
+}
+
+.flash-leave-active {
+  position: absolute;
 }
 </style>

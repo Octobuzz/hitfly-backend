@@ -21,8 +21,9 @@ const typeToQueryMap = {
   collection: gql.query.COLLECTION,
 };
 
-// This component should check if there is favourite list (of the item type) on the client
-// and change its length. Also it should update the item itself.
+// TODO: (1)
+// This component should check if there is favourite list (of the item type) on the client (1)
+// and change its length. Also it should update the item itself (2).
 
 export default {
   components: {
@@ -221,10 +222,3 @@ export default {
   }
 };
 </script>
-
-<style
-  scoped
-  lang="scss"
->
-
-</style>

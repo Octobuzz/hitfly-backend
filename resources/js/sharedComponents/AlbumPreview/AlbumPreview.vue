@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import AddToFavouriteButton from 'components/AddToFavouriteButton.vue';
+import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';

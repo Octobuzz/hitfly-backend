@@ -1,4 +1,4 @@
-query PlaylistList {
+query CollectionList {
     collections(limit: 100, page: 1, my: true){
         data {
             id

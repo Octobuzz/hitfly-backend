@@ -36,7 +36,7 @@
 
 <script>
 import gql from './gql';
-import BaseInput from '../BaseInput.vue';
+import BaseInput from '../../BaseInput.vue';
 
 export default {
   components: {
@@ -63,7 +63,7 @@ export default {
     fetchPlaylistList() {
       if (!this.$apollo.queries.playlistList) {
         this.$apollo.addSmartQuery('playlistList', {
-          query: gql.query.PLAYLIST_LIST,
+          query: gql.query.MY_COLLECTIONS,
           update: ({ collections: { data } }) => {
             this.isFetching = false;
 
@@ -112,12 +112,12 @@ export default {
 
         update: (store, { data: { createCollection: collection } }) => {
           const { collections: collectionList } = store.readQuery({
-            query: gql.query.PLAYLIST_LIST
+            query: gql.query.MY_COLLECTIONS
           });
 
           collectionList.data.push(collection);
           store.writeQuery({
-            query: gql.query.PLAYLIST_LIST,
+            query: gql.query.MY_COLLECTIONS,
             data: {
               collections: collectionList
             }
@@ -200,49 +200,5 @@ export default {
 <style
   scoped
   lang="scss"
->
-
-.track-to-playlist {
-  &__loader {
-    font-size: 14px;
-    color: white;
-    display: block;
-    padding: 12px 0;
-  }
-
-  &__list {
-    font-size: 14px;
-    margin: 6px 0 18px 28px;
-    padding-left: 0;
-    list-style: none;
-    color: #6e6e6e;
-  }
-
-  &__list-item {
-    position: relative;
-    padding: 12px 8px;
-    border-radius: 5px;
-    user-select: none;
-    cursor: pointer;
-
-    &:hover {
-      color: white;
-      background: #333;
-    }
-  }
-
-  &__tick {
-    position: absolute;
-    color: white;
-    left: -22px;
-  }
-
-  &__input::v-deep span {
-    left: 8px;
-  }
-
-  &__input::v-deep input {
-    padding-left: 8px;
-  }
-}
-</style>
+  src="./TrackToPlaylist.scss"
+/>

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TrackListEntry from './TrackListEntry.vue';
+import TrackListEntry from './TrackListEntry/TrackListEntry.vue';
 
 export default {
   components: {
@@ -26,10 +26,3 @@ export default {
   }
 };
 </script>
-
-<style
-  scoped
-  lang="scss"
->
-
-</style>

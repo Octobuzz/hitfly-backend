@@ -7,23 +7,43 @@
 
     <!--TODO: move to the root component-->
     <IconGradientRadial/>
-    <TrackListInterface/>
-    <AlbumScrollHorizontal/>
+    <!--<TrackListInterface/>-->
+    <!--<AlbumScrollHorizontal/>-->
 
   </div>
 </template>
 
 <script>
 import IconGradientRadial from 'components/IconGradientRadial.vue';
-import TrackListInterface from './TrackListInterface.vue';
-import AlbumScrollHorizontal from './AlbumListInterface.vue';
-import gql from './gql';
+// import TrackListInterface from './TrackListInterface.vue';
+// import AlbumScrollHorizontal from './AlbumListInterface.vue';
+
+import TRACK from 'gql/query/Track.graphql';
 
 export default {
   components: {
     IconGradientRadial,
-    TrackListInterface,
-    AlbumScrollHorizontal
+    // TrackListInterface,
+    // AlbumScrollHorizontal
+  },
+  data() {
+    return {
+      test: null
+    };
+  },
+  apollo: {
+    test: {
+      query: TRACK,
+      variables: {
+        id: 1201
+      },
+      update(data) {
+        console.log(data);
+      },
+      error(error) {
+        console.log(error);
+      }
+    }
   }
 };
 </script>
