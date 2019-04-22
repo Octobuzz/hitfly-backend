@@ -9,7 +9,6 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
-use App\Support\FileProcessingTrait;
 use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;

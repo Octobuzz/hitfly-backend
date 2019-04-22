@@ -3,17 +3,13 @@
  * Created by PhpStorm.
  * User: Dmitrii
  * Date: 17.04.2019
- * Time: 15:51
+ * Time: 15:51.
  */
 
 namespace App\Http\GraphQL\Fields;
 
-
 use App\Models\Album;
-use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
@@ -21,8 +17,8 @@ use Rebing\GraphQL\Support\Field;
 class CollectionImageField extends Field
 {
     protected $attributes = [
-        'description'   => 'Абложка коллекции',
-        'selectable'   => false,
+        'description' => 'Абложка коллекции',
+        'selectable' => false,
     ];
 
     protected $path;
@@ -37,9 +33,8 @@ class CollectionImageField extends Field
         return [
             'sizes' => [
                 'type' => Type::listOf(\GraphQL::type('CollectionSizeEnum')),
-                'description' => 'Размеры изображений'
+                'description' => 'Размеры изображений',
             ],
-
         ];
     }
 
@@ -52,22 +47,22 @@ class CollectionImageField extends Field
     {
         $return = [];
         foreach ($args['sizes'] as $size) {
-            $this->path = $this->getPath($size,$collect->user_id, $collect->image);
-            $returnPath = $this->path['imagePath'] . $this->path['imageName'];
+            $this->path = $this->getPath($size, $collect->user_id, $collect->image);
+            $returnPath = $this->path['imagePath'].$this->path['imageName'];
             if (!file_exists($this->path['public'].$this->path['imagePath'].$this->path['imageName'])) {
-                if($collect->getOriginal('image')=== null) {
+                if (null === $collect->getOriginal('image')) {
                     $returnPath = $this->resizeAlbum($size, false, true);
-                }
-                else {
+                } else {
                     $returnPath = $this->resizeAlbum($size, $collect->image);
                 }
             }
 
             $return[] = [
-                "size"=> $size,
-                "url" => Storage::url($returnPath)
+                'size' => $size,
+                'url' => Storage::url($returnPath),
             ];
         }
+
         return $return;
     }
 
@@ -75,48 +70,55 @@ class CollectionImageField extends Field
      * @param $size
      * @param $image
      * @param bool $default
+     *
      * @return string
      */
-    protected function resizeAlbum($size, $image, $default = false){
-        if($image===false){
+    protected function resizeAlbum($size, $image, $default = false)
+    {
+        if (false === $image) {
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
-            $image.= "default_image/collection.png";
-            $this->path['imageName'] = "default.png";
+            $image .= 'default_image/collection.png';
+            $this->path['imageName'] = 'default.png';
         }
         $image_resize = Image::make($image)
-            ->resize(config('image.size.collection.' . $size . '.width'), config('image.size.collection.' . $size . '.height'), function ($constraint) {
+            ->resize(config('image.size.collection.'.$size.'.width'), config('image.size.collection.'.$size.'.height'), function ($constraint) {
                 $constraint->aspectRatio();
             });
 
         //создадим папку, если несуществует
-        if($default) $this->path['imagePath'] = "collections/";//сохраним размеры умолчанию в корневую папку
-        if (!file_exists($this->path['public'] . $this->path['imagePath'])) {
+        if ($default) {
+            $this->path['imagePath'] = 'collections/';
+        } //сохраним размеры умолчанию в корневую папку
+        if (!file_exists($this->path['public'].$this->path['imagePath'])) {
             Storage::disk('public')->makeDirectory($this->path['imagePath']);
-
         }
-        $image_resize->save($this->path['public'] . $this->path['imagePath'] . $this->path['imageName']);
-        return $this->path['imagePath'] . $this->path['imageName'];
+        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName']);
+
+        return $this->path['imagePath'].$this->path['imageName'];
     }
 
     /**
-     * получим части пути картинки
+     * получим части пути картинки.
+     *
      * @param $size
      * @param $userId
      * @param $image
+     *
      * @return array
      */
-    protected function getPath($size,$userId, $image){
+    protected function getPath($size, $userId, $image)
+    {
         $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
         $imageUrl = parse_url($image, PHP_URL_PATH);
         $extension = pathinfo($imageUrl, PATHINFO_EXTENSION);
-        $avatarFileName  = pathinfo($imageUrl, PATHINFO_FILENAME);
+        $avatarFileName = pathinfo($imageUrl, PATHINFO_FILENAME);
         $path = "collections/$userId/";
         $imageName = "{$avatarFileName}_{$size}.{$extension}";
+
         return [
-            'public' =>$publicPath,
-            'imagePath' =>$path,
-            'imageName' =>$imageName,
+            'public' => $publicPath,
+            'imagePath' => $path,
+            'imageName' => $imageName,
         ];
     }
-
 }
