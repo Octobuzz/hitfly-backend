@@ -8,6 +8,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\City;
 use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -35,6 +36,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->username(trans('admin.username'));
         $grid->email(trans('admin.email'));
         $grid->roles(trans('admin.roles'))->pluck('name')->label();
+        $grid->favouriteGenres('123')->pluck('title')->label();
         $grid->created_at(trans('admin.created_at'));
         $grid->updated_at(trans('admin.updated_at'));
 
@@ -82,9 +84,19 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
         $form->multipleSelect('permissions', trans('admin.permissions'))->options($permissionModel::all()->pluck('name', 'id'));
 
+        $form->select('city_id', 'Город')->options(function ($id) {
+            $city = City::find($id);
+
+            if ($city) {
+                return [$city->id => $city->title];
+            }
+        })->ajax('/admin/api/city');
+
         $form->display('created_at', trans('admin.created_at'));
         $form->display('updated_at', trans('admin.updated_at'));
 
+        $form->divider();
+        $form->textarea('description', 'Описание деятельности');
         $form->saving(function (Form $form) {
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = bcrypt($form->password);

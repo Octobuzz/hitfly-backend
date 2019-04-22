@@ -19,6 +19,7 @@ Route::group([
     $router->resource('/track', TrackController::class);
     $router->resource('/chart', ChartController::class);
     $router->resource('/favourite', FavouriteController::class);
+    $router->resource('/city', CityController::class);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
