@@ -61,7 +61,7 @@ class AlbumCoverField extends Field
                 if (null === $album->getOriginal('cover')) {
                     $returnPath = $this->resizeAlbum($size, false, true);
                 } else {
-                    $returnPath = $this->resizeAlbum($size, $album->cover);
+                    $returnPath = $this->resizeAlbum($size, $album->getOriginal('cover'));
                 }
             }
 
@@ -88,11 +88,11 @@ class AlbumCoverField extends Field
             $image .= 'default_image/album.png';
             $this->path['imageName'] = 'default_'.$size.'.png';
         }
-        $image_resize = Image::make($image)
+
+        $image_resize = Image::make(Storage::disk('public')->path($image))
             ->resize(config('image.size.album.'.$size.'.width'), config('image.size.album.'.$size.'.height'), function ($constraint) {
                 $constraint->aspectRatio();
             });
-
         //создадим папку, если несуществует
         if ($default) {
             $this->path['imagePath'] = 'albums/';
