@@ -36,7 +36,7 @@ export default {
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 10
+        pageLimit: 15
       },
       showLoadTrigger: false
     };

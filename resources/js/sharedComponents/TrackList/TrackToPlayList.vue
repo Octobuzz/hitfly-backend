@@ -165,6 +165,14 @@ export default {
           track: updatedTrack
         }
       });
+
+      this.$message(
+        `Трек добавлен в "${collection.title}"`,
+        'info',
+        {
+          timeout: 2000
+        }
+      );
     },
 
     emitTrackAdded(collection) {

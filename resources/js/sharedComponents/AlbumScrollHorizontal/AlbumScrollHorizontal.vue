@@ -74,6 +74,8 @@ export default {
       swiperOptions: {
         slidesPerView: 'auto',
         spaceBetween: ALBUM_SPACE_WIDTH_DESKTOP,
+        preloadImages: false,
+        updateOnImagesReady: false,
         breakpoints: {
           767: {
             spaceBetween: ALBUM_SPACE_WIDTH_MOBILE
