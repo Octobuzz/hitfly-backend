@@ -43,7 +43,7 @@ class AvatarSizesField extends Field
      * @return array
      */
     protected function resolve($root, $args)
-    { 
+    {
         $return = [];
         $returnPath = '';
         foreach ($args['sizes'] as $size) {
