@@ -183,6 +183,7 @@ return [
         'FavouriteGenre' => \App\Http\GraphQL\Type\FavouriteGenreType::class,
         'SocialLinks' => \App\Http\GraphQL\Type\SocialLinksType::class,
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
+        'ImageSizesType' => \App\Http\GraphQL\Type\ImageSizesType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -199,6 +200,9 @@ return [
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
         'GenderType' => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
         'SocialLinksTypeEnum' => \App\Http\GraphQL\Enums\SocialLinksTypeEnum::class,
+        'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
+        'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
+        'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
@@ -252,6 +256,6 @@ return [
         'controller' => \Rebing\GraphQL\GraphQLController::class.'@graphiql',
         'middleware' => [],
         'view' => 'graphql::graphiql',
-        'display' => env('ENABLE_GRAPHIQL', true),
+        'display' => env('ENABLE_GRAPHIQL', false),
     ],
 ];

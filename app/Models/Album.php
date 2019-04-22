@@ -9,7 +9,6 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
-use App\Support\FileProcessingTrait;
 use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
@@ -62,7 +61,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Album extends Model
 {
-    use SoftDeletes, Itemable, FileProcessingTrait;
+    use SoftDeletes, Itemable;
 
     protected $table = 'albums';
 

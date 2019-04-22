@@ -51,11 +51,4 @@ class Favourite extends Model
     {
         return $this->belongsTo(Genre::class, 'favouriteable_id');
     }
-
-    public function getFavouriteableAttribute($aat)
-    {
-        dd($aat);
-
-        return  $aat->getName();
-    }
 }

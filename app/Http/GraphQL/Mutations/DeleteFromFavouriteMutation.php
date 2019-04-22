@@ -7,7 +7,6 @@ use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Gate;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteFromFavouriteMutation extends Mutation
@@ -56,10 +55,9 @@ class DeleteFromFavouriteMutation extends Mutation
 
         if (null === $favourite) {
             throw new \Exception('inncorect');
-        }else {
+        } else {
             $favourite->delete();
         }
-
 
         return null;
     }
