@@ -41,6 +41,11 @@ class UserInput extends GraphQLType
                 'type' => \GraphQL::type('GenderType'),
                 'rules' => ['nullable'],
             ],
+            'genres' => [
+                'name' => 'genres',
+                'description' => 'Любимые жанры пользователя',
+                'type' => Type::listOf(Type::id()),
+            ],
         ];
     }
 }

@@ -13,6 +13,7 @@ use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
+use Illuminate\Support\Facades\Cache;
 
 class CollectionImageField extends Field
 {
@@ -43,8 +44,14 @@ class CollectionImageField extends Field
      * @param $args
      * @return array
      */
-    protected function resolve($collect, $args)
+    protected function resolve($root, $args)
     {
+        $collect = Cache::get('collect_find_'.$root->id, null);
+
+        if (null === $collect) {
+            $collect = Album::query()->find($root)->first();
+            Cache::put('collect_find_'.$root->id, $collect, 600);
+        }
         $return = [];
         foreach ($args['sizes'] as $size) {
             $this->path = $this->getPath($size, $collect->user_id, $collect->image);
@@ -78,7 +85,7 @@ class CollectionImageField extends Field
         if (false === $image) {
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
             $image .= 'default_image/collection.png';
-            $this->path['imageName'] = 'default.png';
+            $this->path['imageName'] = 'default_'.$size.'.png';
         }
         $image_resize = Image::make($image)
             ->resize(config('image.size.collection.'.$size.'.width'), config('image.size.collection.'.$size.'.height'), function ($constraint) {

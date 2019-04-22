@@ -13,6 +13,7 @@ use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
+use Illuminate\Support\Facades\Cache;
 
 class AlbumCoverField extends Field
 {
@@ -43,8 +44,15 @@ class AlbumCoverField extends Field
      * @param $args
      * @return array
      */
-    protected function resolve($album, $args)
+    protected function resolve($root, $args)
     {
+        $album = Cache::get('album_find_'.$root->id, null);
+
+        if (null === $album) {
+            $album = Album::query()->find($root)->first();
+            Cache::put('album_find_'.$root->id, $album, 600);
+        }
+        $album = Album::query()->find($album)->first();
         $return = [];
         foreach ($args['sizes'] as $size) {
             $this->path = $this->getPath($size, $album->user_id, $album->cover);
@@ -78,7 +86,7 @@ class AlbumCoverField extends Field
         if (false === $image) {
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
             $image .= 'default_image/album.png';
-            $this->path['imageName'] = 'default.png';
+            $this->path['imageName'] = 'default_'.$size.'.png';
         }
         $image_resize = Image::make($image)
             ->resize(config('image.size.album.'.$size.'.width'), config('image.size.album.'.$size.'.height'), function ($constraint) {

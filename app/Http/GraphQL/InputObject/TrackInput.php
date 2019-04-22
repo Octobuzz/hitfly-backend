@@ -38,7 +38,7 @@ class TrackInput extends GraphQLType
             'singer' => [
                 'name' => 'singer',
                 'description' => 'singer',
-                'type' => Type::string(),
+                'type' => Type::nonNull(Type::string()),
                 'rules' => ['min:0', 'max:250'],
             ],
             'trackDate' => [
@@ -50,7 +50,7 @@ class TrackInput extends GraphQLType
             'songText' => [
                 'name' => 'songText',
                 'description' => 'description',
-                'type' => Type::string(),
+                'type' => Type::nonNull(Type::string()),
                 'rules' => ['min:0', 'max:6000'],
             ],
         ];

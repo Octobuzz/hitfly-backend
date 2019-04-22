@@ -30,7 +30,7 @@ class GenreType extends GraphQLType
                 'description' => 'Логотип жанра',
             ],
             'userFavourite' => [
-                'type' => Type::nonNull(Type::boolean()),
+                'type' => Type::boolean(),
                 'description' => 'флаг избранного жанра',
                 'resolve' => function ($model) {
                     if ($model->userFavourite->count()) {
@@ -38,6 +38,9 @@ class GenreType extends GraphQLType
                     } else {
                         return false;
                     }
+                },
+                'privacy' => function (array $args) {
+                    return \Auth::check();
                 },
             ],
         ];
