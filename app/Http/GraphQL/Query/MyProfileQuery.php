@@ -24,13 +24,14 @@ class MyProfileQuery extends Query
     {
         return \GraphQL::type('MyProfile');
     }
+
     public function args()
     {
         return [
             'sizes' => [
                 'name' => 'sizes',
                 'description' => 'Размеры картинок',
-                'type' => Type::listOf(Type::string())
+                'type' => Type::listOf(Type::string()),
             ],
         ];
     }

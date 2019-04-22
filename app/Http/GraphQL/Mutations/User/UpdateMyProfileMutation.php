@@ -51,8 +51,8 @@ class UpdateMyProfileMutation extends Mutation
                 $args['profile']['password'] = Hash::make($args['profile']['password']);
             }
             //аватар пользователя
-            if (!empty($args['avatar']) && $args['avatar'] !== null) {
-                $user->avatar = $this->setAvatar($user,$args['avatar']);
+            if (!empty($args['avatar']) && null !== $args['avatar']) {
+                $user->avatar = $this->setAvatar($user, $args['avatar']);
             }
 
             $user->update(DBHelpers::arrayKeysToSnakeCase($args['profile']));
@@ -66,7 +66,6 @@ class UpdateMyProfileMutation extends Mutation
                 }
                 $user->favouriteGenres()->sync($tmpGenres);
             }
-
         }
 
         if (!empty($args['artistProfile'])) {
@@ -91,21 +90,24 @@ class UpdateMyProfileMutation extends Mutation
     }
 
     /**
-     * добавление аватарки пользователя
+     * добавление аватарки пользователя.
+     *
      * @param $user
      * @param $avatar
+     *
      * @return string
      */
-    private function setAvatar($user,$avatar){
+    private function setAvatar($user, $avatar)
+    {
         //удаление старых аватарок
-        if($user->getOriginal('avatar')!== null){
+        if (null !== $user->getOriginal('avatar')) {
             Storage::disk('public')->delete($user->getOriginal('avatar'));
         }
         $image = $avatar;
         $nameFile = md5(microtime());
         $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
         $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'),function ($constraint) {
+        $image_resize->resize(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'), function ($constraint) {
             $constraint->aspectRatio();
         });
         $path = Storage::disk('public')->getAdapter()->getPathPrefix();
@@ -114,6 +116,7 @@ class UpdateMyProfileMutation extends Mutation
             Storage::disk('public')->makeDirectory('avatars/'.$user->id);
         }
         $image_resize->save($path.$imagePath);
+
         return $imagePath;
     }
 }

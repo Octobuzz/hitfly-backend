@@ -8,7 +8,6 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Models\City;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 

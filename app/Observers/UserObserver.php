@@ -35,17 +35,17 @@ class UserObserver
      */
     public function updated(User $user)
     {
-
     }
+
     public function saving(User $user)
     {
         //удаление ресайзов аватарки
-       if($user->isDirty('avatar')){
-           $path = Storage::disk('public')->getAdapter()->getPathPrefix();
-           $avatarFileName  = pathinfo($user->getOriginal('avatar'), PATHINFO_FILENAME);
-           $imagePath = "avatars/$user->id/{$avatarFileName}_*";
-           array_map("unlink", glob($path.$imagePath));
-       }
+        if ($user->isDirty('avatar')) {
+            $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+            $avatarFileName = pathinfo($user->getOriginal('avatar'), PATHINFO_FILENAME);
+            $imagePath = "avatars/$user->id/{$avatarFileName}_*";
+            array_map('unlink', glob($path.$imagePath));
+        }
     }
 
     /**
