@@ -43,16 +43,15 @@ class AvatarSizesField extends Field
      * @return array
      */
     protected function resolve($root, $args)
-    {
+    { 
         $return = [];
         $returnPath = '';
-        $user = Auth::user();
         foreach ($args['sizes'] as $size) {
             $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
             $avatarUrl = parse_url($root->avatar, PHP_URL_PATH);
             $extension = pathinfo($avatarUrl, PATHINFO_EXTENSION);
             $avatarFileName = pathinfo($avatarUrl, PATHINFO_FILENAME);
-            $path = "avatars/$user->id/";
+            $path = "avatars/$root->id/";
             $imageName = "{$avatarFileName}_{$size}.{$extension}";
             if (!file_exists($publicPath.$path.$imageName)) {
                 if (null === $root->getOriginal('avatar')) {
