@@ -126,6 +126,14 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'icon' => 'fa-bar-chart',
                 'uri' => '/favourite',
             ],
+            [
+                'id' => 17,
+                'parent_id' => 0,
+                'order' => 17,
+                'title' => 'Город',
+                'icon' => 'fa-bar-chart',
+                'uri' => '/city',
+            ],
         ]);
     }
 }
