@@ -46,7 +46,6 @@ class AlbumCoverField extends Field
      */
     protected function resolve($root, $args)
     {
-
         $album = Cache::get('album_find_'.$root->id, null);
 
         if (null === $album) {

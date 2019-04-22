@@ -36,14 +36,11 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->username(trans('admin.username'));
         $grid->email(trans('admin.email'));
         $grid->roles(trans('admin.roles'))->pluck('name')->label();
-        $grid->favouriteGenres('123')->pluck('title')->label();
         $grid->created_at(trans('admin.created_at'));
         $grid->updated_at(trans('admin.updated_at'));
 
         $grid->actions(function (Grid\Displayers\Actions $actions) {
-            if (1 == $actions->getKey()) {
-                $actions->disableDelete();
-            }
+            $actions->disableDelete();
         });
 
         $grid->tools(function (Grid\Tools $tools) {
@@ -107,6 +104,11 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         $form->editing(function (Form $form) {
             $form->ignore(['password', 'password_confirmation']);
+        });
+
+        $form->tools(function (Form\Tools $tools) {
+            // Disable `Delete` btn.
+            $tools->disableDelete();
         });
 
         return $form;
