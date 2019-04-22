@@ -55,7 +55,6 @@ export default {
       popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
       track: null,
       isFetching: true,
-      playlistList: [],
       newPlaylistTitle: ''
     };
   },
@@ -64,9 +63,23 @@ export default {
     fetchPlaylistList() {
       this.$refs.playlistMenu.fetchPlaylistList();
     },
+
     onTrackAdded(addedTrack, toPlaylist) {
+      console.log('track added');
+
+
       setTimeout(() => {
         this.$refs.closeButton.click();
+
+        setTimeout(() => {
+          this.$message(
+            `Трек добавлен в "${toPlaylist.title}"`,
+            'info',
+            {
+              timeout: 2000
+            }
+          );
+        }, 200);
       }, 200);
     }
   },

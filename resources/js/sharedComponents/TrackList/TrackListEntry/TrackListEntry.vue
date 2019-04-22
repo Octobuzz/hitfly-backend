@@ -9,7 +9,7 @@
       @click="onAlbumPress"
     >
       <img
-        :src="track.album.cover"
+        :src="albumCoverUrl"
         alt="Album cover"
       >
     </button>
@@ -114,6 +114,13 @@ export default {
         },
       }
     };
+  },
+
+  computed: {
+    albumCoverUrl() {
+      return this.track.album.cover
+        .filter(cover => cover.size === 'size_32x32')[0].url;
+    }
   },
 
   methods: {

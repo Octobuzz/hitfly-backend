@@ -18,9 +18,8 @@
     />
 
     <template #popover>
-      <!--TODO: use "track.album.cover" as src-->
       <img
-        :src="'/images/playlist3.png'"
+        :src="albumCoverUrl"
         alt="Album cover"
         class="track-actions-popover__album-cover"
       >
@@ -137,6 +136,11 @@ export default {
   },
 
   computed: {
+    albumCoverUrl() {
+      return this.track.album.cover
+        .filter(cover => cover.size === 'size_48x48')[0].url;
+    },
+
     player() {
       const getters = mapGetters('player', [
         'isPlaying',
@@ -186,6 +190,16 @@ export default {
       setTimeout(() => {
         this.$refs.closeButton.click();
         this.leavePlaylistMenu(300);
+
+        setTimeout(() => {
+          this.$message(
+            `Трек добавлен в "${toPlaylist.title}"`,
+            'info',
+            {
+              timeout: 2000
+            }
+          );
+        }, 200);
       }, 200);
     }
   },

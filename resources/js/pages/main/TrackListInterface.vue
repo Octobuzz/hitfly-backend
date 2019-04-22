@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import TrackList from 'components/TrackList';
+import TrackList from 'components/TrackList/TrackList';
 import gql from './gql';
 
 export default {

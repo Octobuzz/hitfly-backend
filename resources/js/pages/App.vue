@@ -36,6 +36,7 @@ export default {
   transform: translate(-50%);
   border-radius: 3px;
   z-index: 2000;
+  transition: opacity .4s, transform .4s;
   background: #313131;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
@@ -79,10 +80,7 @@ export default {
 .flash-enter,
 .flash-leave-to {
   opacity: 0;
-  transform: rotateX(-30deg) scale(.88) translateY(-30px);
+  transform: translateX(-20px);
 }
 
-.flash-leave-active {
-  position: absolute;
-}
 </style>

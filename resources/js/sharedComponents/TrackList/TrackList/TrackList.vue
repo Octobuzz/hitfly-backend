@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TrackListEntry from './TrackListEntry/TrackListEntry.vue';
+import TrackListEntry from '../TrackListEntry';
 
 export default {
   components: {

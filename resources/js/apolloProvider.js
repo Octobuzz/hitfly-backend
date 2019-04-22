@@ -21,9 +21,9 @@ const httpLink = new HttpLink({
 const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {
-      // track: (_, args, { getCacheKey }) => (
-      //   getCacheKey({ __typename: 'Track', id: args.id })
-      // ),
+      track: (_, args, { getCacheKey }) => (
+        getCacheKey({ __typename: 'Track', id: args.id })
+      ),
       album: (_, args, { getCacheKey }) => (
         getCacheKey({ __typename: 'Album', id: args.id })
       ),

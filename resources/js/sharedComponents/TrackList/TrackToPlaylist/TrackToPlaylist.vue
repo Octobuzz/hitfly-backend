@@ -35,8 +35,8 @@
 </template>
 
 <script>
+import BaseInput from 'components/BaseInput.vue';
 import gql from './gql';
-import BaseInput from '../../BaseInput.vue';
 
 export default {
   components: {
@@ -165,14 +165,6 @@ export default {
           track: updatedTrack
         }
       });
-
-      this.$message(
-        `Трек добавлен в "${collection.title}"`,
-        'info',
-        {
-          timeout: 2000
-        }
-      );
     },
 
     emitTrackAdded(collection) {
