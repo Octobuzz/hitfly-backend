@@ -1,23 +1,17 @@
 <template>
-  <AlbumScrollHorizontal
-    :album-id-list="albumIdList"
-    :is-loading="isLoading"
-    :has-more-data="hasMoreData"
-    @load-more="onLoadMore"
-  >
-    <template v-if="isLoading" #preloader>
-      is loading...
-    </template>
-    <template #loadButton>
-      <button
-        v-if="showLoadTrigger"
-        :disabled="!hasMoreData || isLoading"
-        @click="onLoadMore"
-      >
-        load more albums
-      </button>
-    </template>
-  </AlbumScrollHorizontal>
+  <div>
+    <AlbumScrollHorizontal
+      :album-id-list="albumIdList"
+      :has-more-data="hasMoreData"
+      @load-more="onLoadMore"
+    >
+      <template #title>
+        <h2 style="margin: 0;">
+          Альбомы
+        </h2>
+      </template>
+    </AlbumScrollHorizontal>
+  </div>
 </template>
 
 <script>
@@ -36,7 +30,7 @@ export default {
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 15
+        pageLimit: 30
       },
       showLoadTrigger: false
     };
@@ -110,8 +104,8 @@ export default {
           return data;
         },
 
-        error(err) {
-          console.log('FETCH ERROR:', err);
+        error(error) {
+          console.log(error);
         }
       };
     }

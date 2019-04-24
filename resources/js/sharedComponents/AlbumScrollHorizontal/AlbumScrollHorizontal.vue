@@ -1,66 +1,88 @@
 <template>
-  <div
-    ref="root"
-    class="album-scroll-horizontal"
-  >
-    <div>
+  <div class="album-scroll-horizontal">
+    <div class="album-scroll-horizontal__header">
+      <slot name="title" />
+
       <button
-        class="album-scroll-horizontal__button-prev"
+        :class="[
+          'album-scroll-horizontal__button-prev',
+          {
+            'album-scroll-horizontal__button-prev_disabled': cantGoBack
+          }
+        ]"
         @click="goBack"
       >
-        prev
+        <ArrowIcon/>
       </button>
+
       <button
-        class="album-scroll-horizontal__button-next"
+        :class="[
+          'album-scroll-horizontal__button-next',
+          {
+            'album-scroll-horizontal__button-next_disabled': cantGoForward
+          }
+        ]"
         @click="goForward"
       >
-        next
+        <ArrowIcon/>
       </button>
     </div>
-    <swiper ref="swiper" :options="swiperOptions">
-      <swiper-slide
-        v-for="albumId in albumIdList"
-        :key="albumId"
-      >
-        <AlbumPreview :album-id="albumId" />
-      </swiper-slide>
-      <swiper-slide
-        v-if="hasMoreData"
-        key="loader"
-        class="album-scroll-horizontal__loader"
-      >
-        loading...
-      </swiper-slide>
-    </swiper>
+
+    <recycle-scroller
+      ref="scroller"
+      class="album-scroll-horizontal__scroller"
+      direction="horizontal"
+      :items="albumIdList"
+      :buffer="3 * (albumWidth + spaceBetween)"
+      :item-size="albumWidth + spaceBetween"
+    >
+      <template #default="{ item: id }">
+        <AlbumPreview
+          class="album-scroll-horizontal__album-preview"
+          :album-id="id"
+        />
+      </template>
+
+      <template #after>
+        <span
+          v-if="hasMoreData && albumIdList.length > 0"
+          class="album-scroll-horizontal__loader"
+        >
+          <BaseLoader :active="hasMoreData" />
+        </span>
+      </template>
+    </recycle-scroller>
   </div>
 </template>
 
 <script>
-import {
-  swiper as Swiper,
-  swiperSlide as SwiperSlide
-} from 'vue-awesome-swiper';
-import 'swiper/dist/css/swiper.css';
+import debounce from 'lodash.debounce';
+import { RecycleScroller } from 'vue-virtual-scroller';
+import TweenLite from 'gsap/TweenLite';
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
+import BaseLoader from 'components/BaseLoader.vue';
 import AlbumPreview from 'components/AlbumPreview';
+import ArrowIcon from 'components/icons/ArrowIcon.vue';
 
-const ALBUM_WIDTH = 120;
-const ALBUM_SPACE_WIDTH_MOBILE = 16;
-const ALBUM_SPACE_WIDTH_DESKTOP = 24;
+const ALBUM_WIDTH_DESKTOP = 120;
+const ALBUM_WIDTH_MOBILE = 104;
+
+const ALBUM_SPACE_BETWEEN_DESKTOP = 24;
+const ALBUM_SPACE_BETWEEN_MOBILE = 16;
+
+const MOBILE_WIDTH = 767;
 
 export default {
   components: {
-    Swiper,
-    SwiperSlide,
-    AlbumPreview
+    RecycleScroller,
+    BaseLoader,
+    AlbumPreview,
+    ArrowIcon
   },
 
   props: {
     albumIdList: {
       type: Array,
-      required: true
-    },
-    isLoading: {
-      type: Boolean,
       required: true
     },
     hasMoreData: {
@@ -71,92 +93,138 @@ export default {
 
   data() {
     return {
-      swiperOptions: {
-        slidesPerView: 'auto',
-        spaceBetween: ALBUM_SPACE_WIDTH_DESKTOP,
-        preloadImages: false,
-        updateOnImagesReady: false,
-        breakpoints: {
-          767: {
-            spaceBetween: ALBUM_SPACE_WIDTH_MOBILE
-          }
-        },
-        on: {
-          slideChange: () => {
-            this.onSlideChange();
-          }
-        }
-      }
+      tweenedOffset: 0,
+      cantGoBack: true,
+      cantGoForward: false,
+      onScroll: debounce(this.handleScroll.bind(this), 100)
     };
   },
 
   computed: {
-    root() {
-      return this.$refs.root;
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
     },
 
-    swiper() {
-      return this.$refs.swiper.swiper;
+    scroller() {
+      return this.$refs.scroller.$el;
     },
 
-    visibleItemsCount() {
-      const { spaceBetween } = this.swiper.params;
-      const containerWidth = this.root.clientWidth;
-
-      let visibleAlbumsCount = -1;
-      let visibleAlbumsWidth = 0;
-
-      while (visibleAlbumsWidth - spaceBetween < containerWidth) {
-        visibleAlbumsCount += 1;
-        visibleAlbumsWidth += ALBUM_WIDTH + spaceBetween;
-      }
-
-      return visibleAlbumsCount;
+    spaceBetween() {
+      return this.desktop ? ALBUM_SPACE_BETWEEN_DESKTOP : ALBUM_SPACE_BETWEEN_MOBILE;
     },
 
-    navButtonSlideCount() {
-      return this.visibleItemsCount;
-    },
-
-    // relatively to swiper.activeIndex
-
-    slidesRemainBeforeLoading() {
-      return 2 * this.visibleItemsCount;
+    albumWidth() {
+      return this.desktop ? ALBUM_WIDTH_DESKTOP : ALBUM_WIDTH_MOBILE;
     }
   },
 
+  watch: {
+    tweenedOffset(num) {
+      this.$refs.scroller.$el.scrollLeft = num;
+    }
+  },
+
+  mounted() {
+    this.scroller.addEventListener('scroll', this.onScroll);
+  },
+
+  destroyed() {
+    this.scroller.removeEventListener('scroll', this.onScroll);
+  },
+
   methods: {
-    onSlideChange() {
-      const {
-        albumIdList,
-        swiper,
-        slidesRemainBeforeLoading,
-        hasMoreData,
-        isLoading
-      } = this;
+    handleScroll() {
+      const { scroller, hasMoreData } = this;
 
-      const slidesRemain = albumIdList.length - (swiper.activeIndex + 1);
+      this.cantGoBack = scroller.scrollLeft === 0;
+      this.cantGoForward = !hasMoreData
+        && (scroller.scrollLeft + scroller.clientWidth) >= this.scroller.scrollWidth;
 
-      if (slidesRemainBeforeLoading >= slidesRemain
-          && hasMoreData
-          && !isLoading) {
+      this.maybeLoadMore();
+    },
+
+    maybeLoadMore() {
+      const { scroller, albumWidth, spaceBetween } = this;
+      const albumSpacedWidth = albumWidth + spaceBetween;
+
+      if (scroller.scrollWidth - scroller.scrollLeft < 20 * albumSpacedWidth) {
         this.$emit('load-more');
       }
     },
 
-    goBack() {
-      const { swiper, navButtonSlideCount } = this;
+    addOffset() {
+      const {
+        scroller,
+        albumWidth,
+        spaceBetween,
+        $data
+      } = this;
 
-      swiper.slideTo(swiper.activeIndex - navButtonSlideCount);
+      const spacedAlbumWidth = albumWidth + spaceBetween;
+      const currentOffset = scroller.scrollLeft;
+      const albumTimesIncluded = (
+        currentOffset + scroller.clientWidth + spaceBetween
+      ) / spacedAlbumWidth;
+      const expectedOffset = spacedAlbumWidth * Math.floor(albumTimesIncluded);
+
+      TweenLite.fromTo(
+        $data,
+        0.5,
+        { tweenedOffset: currentOffset },
+        { tweenedOffset: expectedOffset }
+      );
+    },
+
+    reduceOffset() {
+      const {
+        scroller,
+        albumWidth,
+        spaceBetween,
+        $data
+      } = this;
+
+      const spacedAlbumWidth = albumWidth + spaceBetween;
+      const currentOffset = scroller.scrollLeft;
+
+      // BLE - before left edge
+
+      const albumTimesIncludedBLE = (
+        currentOffset + spaceBetween
+      ) / spacedAlbumWidth;
+
+      const wholeAlbumsOffsetBLE = spacedAlbumWidth * Math.floor(albumTimesIncludedBLE);
+
+      let edgeCase = true;
+
+      if (wholeAlbumsOffsetBLE >= currentOffset) {
+        edgeCase = false;
+      }
+
+      const maxWholeAlbumsVisible = (
+        scroller.clientWidth + spaceBetween
+      ) / spacedAlbumWidth;
+
+      let expectedOffset = wholeAlbumsOffsetBLE
+        - Math.floor(maxWholeAlbumsVisible) * spacedAlbumWidth;
+
+      if (edgeCase) {
+        expectedOffset += spacedAlbumWidth;
+      }
+
+      TweenLite.fromTo(
+        $data,
+        0.5,
+        { tweenedOffset: currentOffset },
+        { tweenedOffset: expectedOffset }
+      );
+    },
+
+    goBack() {
+      this.reduceOffset();
     },
 
     goForward() {
-      const {
-        swiper,
-        navButtonSlideCount,
-      } = this;
-
-      swiper.slideTo(swiper.activeIndex + navButtonSlideCount);
+      this.addOffset();
     }
   }
 };

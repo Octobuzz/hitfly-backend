@@ -1,7 +1,11 @@
 @import '../../../sass/variables';
 
+$cover-side-desktop: 120px;
+$cover-side-mobile: 104px;
+
 .album-preview {
-  width: 120px;
+  box-sizing: border-box;
+  width: $cover-side-desktop;
 
   &__loader {
 
@@ -12,10 +16,10 @@
     justify-content: center;
     align-items: flex-end;
     position: relative;
-    width: 120px;
-    height: 120px;
+    height: $cover-side-desktop;
     border-radius: 4px;
     overflow: hidden;
+    background: #aaa;
 
     &:hover > .album-preview {
       &__drape {
@@ -31,8 +35,8 @@
   &__drape,
   &__cover {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
   }
 
   &__drape {
@@ -87,5 +91,20 @@
 
   &__author {
     font-family: "Gotham Pro", serif;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .album-preview {
+    width: $cover-side-mobile;
+
+    &__content {
+      height: $cover-side-mobile;
+    }
+
+    &__title,
+    &__author {
+      font-size: 12px;
+    }
   }
 }

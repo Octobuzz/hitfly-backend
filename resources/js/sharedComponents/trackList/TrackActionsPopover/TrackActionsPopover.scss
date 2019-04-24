@@ -150,3 +150,13 @@
     transition: opacity .2s;
   }
 }
+
+@media screen and (max-width: 410px) {
+  .track-actions-popover {
+    width: 240px;
+
+    &__wrapper {
+      padding: 8px;
+    }
+  }
+}

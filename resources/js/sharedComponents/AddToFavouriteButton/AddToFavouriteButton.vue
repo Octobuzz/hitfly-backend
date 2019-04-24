@@ -79,6 +79,8 @@ export default {
 
   methods: {
     onPress() {
+      console.log('disabled: ', this.isButtonDisabled);
+
       if (this.isButtonDisabled) return;
 
       // TODO: remove after api creation
@@ -208,8 +210,10 @@ export default {
       // eslint-disable-next-line consistent-return
       return {
         query: typeToQueryMap[this.itemType],
-        variables: {
-          id: this.itemId
+        variables() {
+          return {
+            id: this.itemId
+          };
         },
         update: data => (
           data[this.itemType].userFavourite

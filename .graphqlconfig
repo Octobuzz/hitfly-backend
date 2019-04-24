@@ -1,0 +1,22 @@
+{
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default Introspection Endpoint": {
+        "url": "http://localhost:9090/graphql/user",
+        "introspect": true,
+        "headers": {
+          "X-TOKEN-AUTH": "123",
+          "user-agent": "JS GraphQL"
+        }
+      },
+      "Default (http://localhost:9090/graphql/user)": {
+        "url": "http://localhost:9090/graphql/user",
+        "headers": {
+          "X-TOKEN-AUTH": "123",
+          "user-agent": "JS GraphQL"
+        }
+      }
+    }
+  }
+}

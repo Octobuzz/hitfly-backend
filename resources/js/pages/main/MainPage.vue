@@ -4,25 +4,19 @@
       v-if="$route.fullPath === '/'"
       style="margin-top: 107px;"
     />
-
-    <!--TODO: move to the root component-->
-    <IconGradientRadial/>
     <TrackListInterface/>
-    <!--<AlbumScrollHorizontal/>-->
-
+    <AlbumListInterface/>
   </div>
 </template>
 
 <script>
-import IconGradientRadial from 'components/IconGradientRadial.vue';
 import TrackListInterface from './TrackListInterface.vue';
-// import AlbumScrollHorizontal from './AlbumListInterface.vue';
+import AlbumListInterface from './AlbumListInterface.vue';
 
 export default {
   components: {
-    IconGradientRadial,
     TrackListInterface,
-    // AlbumScrollHorizontal
+    AlbumListInterface
   }
 };
 </script>

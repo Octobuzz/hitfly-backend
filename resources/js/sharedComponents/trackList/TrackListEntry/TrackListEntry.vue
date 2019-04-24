@@ -14,9 +14,9 @@
       >
     </button>
 
-    <!--TODO: add plugin code to render vue components depending on the screen width-->
 
     <AddToFavouriteButton
+      v-show="desktop"
       ref="addToFavButton"
       class="track-list-entry__icon-button"
       passive="secondary-passive"
@@ -25,14 +25,37 @@
       :item-id="trackId"
     />
 
-    <span class="track-list-entry__track-name">
+
+    <span
+      v-if="desktop"
+      class="track-list-entry__track-name"
+    >
       {{ track.trackName }}
     </span>
-    <span class="track-list-entry__track-author">
+    <span
+      v-if="desktop"
+      class="track-list-entry__track-author"
+    >
       {{ track.album.author }}
     </span>
 
-    <TrackToPlaylistPopover :track-id="trackId">
+    <div
+      v-if="!desktop"
+      class="track-list-entry__track-data"
+    >
+      <span class="track-list-entry__track-name">
+        {{ track.trackName }}
+      </span>
+      <br>
+      <span class="track-list-entry__track-author">
+        {{ track.album.author }}
+      </span>
+    </div>
+
+    <TrackToPlaylistPopover
+      v-if="desktop"
+      :track-id="trackId"
+    >
       <IconButton
         passive="secondary-passive"
         hover="secondary-hover"
@@ -56,6 +79,7 @@
     </TrackActionsPopover>
 
     <IconButton
+      v-if="desktop"
       class="track-list-entry__icon-button"
       passive="secondary-passive"
       hover="secondary-hover"
@@ -76,6 +100,8 @@ import CrossIcon from 'components/icons/CrossIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from '../TrackToPlaylistPopover';
 import TrackActionsPopover from '../TrackActionsPopover';
+
+const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -117,6 +143,10 @@ export default {
   },
 
   computed: {
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
+    },
+
     albumCoverUrl() {
       return this.track.album.cover
         .filter(cover => cover.size === 'size_32x32')[0].url;

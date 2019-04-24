@@ -1,5 +1,10 @@
 <template>
-  <TrackList :track-id-list="trackIdList">
+  <AlbumScrollHorizontal
+    :album-id-list="albumIdList"
+    :is-loading="isLoading"
+    :has-more-data="hasMoreData"
+    @load-more="onLoadMore"
+  >
     <template v-if="isLoading" #preloader>
       is loading...
     </template>
@@ -9,60 +14,59 @@
         :disabled="!hasMoreData || isLoading"
         @click="onLoadMore"
       >
-        load more tracks
+        load more albums
       </button>
     </template>
-  </TrackList>
+  </AlbumScrollHorizontal>
 </template>
 
 <script>
-import TrackList from 'components/trackList/TrackList';
+import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import gql from './gql';
 
 export default {
   components: {
-    TrackList
+    AlbumScrollHorizontal
   },
 
   data() {
     return {
-      trackList: [],
+      albumList: [],
       isLoading: true,
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 5,
-        my: false
+        pageLimit: 15
       },
       showLoadTrigger: false
     };
   },
 
   computed: {
-    trackIdList() {
-      return this.trackList.map(track => track.id);
+    albumIdList() {
+      return this.albumList.map(album => album.id);
     }
   },
 
   methods: {
-    fetchMoreTracks(vars) {
-      return this.$apollo.queries.trackList.fetchMore({
+    fetchMoreAlbums(vars) {
+      return this.$apollo.queries.albumList.fetchMore({
         variables: vars,
 
-        updateQuery: (currentList, { fetchMoreResult: { tracks } }) => {
-          const { total, to, data: newTracks } = tracks;
+        updateQuery: (currentList, { fetchMoreResult: { albums } }) => {
+          const { total, to, data: newAlbums } = albums;
 
           if (to === total) {
             this.hasMoreData = false;
           }
 
           return {
-            tracks: {
+            albums: {
               // eslint-disable-next-line no-underscore-dangle
-              __typename: currentList.tracks.__typename,
+              __typename: currentList.albums.__typename,
               total,
               to,
-              data: [...currentList.tracks.data, ...newTracks]
+              data: [...currentList.albums.data, ...newAlbums]
             }
           };
         },
@@ -70,9 +74,13 @@ export default {
     },
 
     onLoadMore() {
+      if (!this.hasMoreData || this.isLoading) {
+        return;
+      }
+
       this.isLoading = true;
 
-      this.fetchMoreTracks({
+      this.fetchMoreAlbums({
         ...this.queryVars,
         pageNumber: this.queryVars.pageNumber + 1
       })
@@ -87,12 +95,12 @@ export default {
   },
 
   apollo: {
-    trackList() {
+    albumList() {
       return {
-        query: gql.query.TRACK_LIST,
+        query: gql.query.ALBUM_LIST,
         variables: this.queryVars,
 
-        update({ tracks: { total, to, data } }) {
+        update({ albums: { total, to, data } }) {
           this.isLoading = false;
           this.showLoadTrigger = true;
           if (to === total) {
@@ -102,11 +110,18 @@ export default {
           return data;
         },
 
-        error(err) {
-          console.log('FETCH ERROR:', err);
+        error(error) {
+          console.log(error);
         }
       };
     }
   }
 };
 </script>
+
+<style
+  scoped
+  lang="scss"
+>
+
+</style>

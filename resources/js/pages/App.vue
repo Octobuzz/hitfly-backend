@@ -1,6 +1,10 @@
 <template>
   <div id="main">
-    <flash-message transition-name="flash" />
+    <IconGradientRadial/>
+    <flash-message
+      class="flashpool"
+      transition-name="flash"
+    />
     <Header />
     <router-view />
     <Footer />
@@ -8,11 +12,13 @@
 </template>
 
 <script>
+import IconGradientRadial from 'components/IconGradientRadial.vue';
 import Header from './Header.vue';
 import Footer from './Footer.vue';
 
 export default {
   components: {
+    IconGradientRadial,
     Header,
     Footer
   },
@@ -23,19 +29,28 @@ export default {
 </script>
 
 <style lang="scss">
+.flashpool {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  max-height: 400px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+}
+
 .flash__message {
   box-sizing: border-box;
   font-family: "Gotham Pro", serif;
   font-size: 14px;
   color: white;
-  position: fixed;
-  top: 10%;
-  left: 50%;
+  position: relative;
   padding: 15px 60px 15px 15px;
   margin-bottom: 10px;
-  transform: translate(-50%);
   border-radius: 3px;
-  z-index: 2000;
   transition: opacity .4s, transform .4s;
   background: #313131;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);

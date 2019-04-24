@@ -17,6 +17,8 @@
 </template>
 
 <script>
+const MOBILE_WIDTH = 767;
+
 // Names of possible values corresponds to those in design layout.
 
 const possibleValues = [
@@ -60,8 +62,7 @@ export default {
       }
 
       return {
-        // TODO: plugin to determine screen resolution with breakpoints
-        enabled: window.innerWidth > 768,
+        enabled: this.windowWidth > MOBILE_WIDTH,
         template: `
           <div class="icon-button-tooltip" role="tooltip">
             <div class="icon-button-tooltip__arrow"></div>

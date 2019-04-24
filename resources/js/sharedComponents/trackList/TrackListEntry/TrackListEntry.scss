@@ -95,6 +95,17 @@
 
 @media screen and (max-width: 767px) {
   .track-list-entry {
+    &__index {
+      margin-right: 2px;
+    }
 
+    &__track-data {
+      flex-grow: 1;
+    }
+
+    &__track-name,
+    &__track-author {
+      font-size: 12px;
+    }
   }
 }
