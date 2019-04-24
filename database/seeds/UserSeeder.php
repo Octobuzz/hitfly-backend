@@ -24,6 +24,10 @@ class UserSeeder extends Seeder
             ->permissions()
             ->save(\Encore\Admin\Auth\Database\Permission::query()->where('slug', '=', 'comment.сricic')->first());
 
+        \Encore\Admin\Auth\Database\Role::query()->where('slug', '=', 'star')->first()
+            ->permissions()
+            ->save(\Encore\Admin\Auth\Database\Permission::query()->where('slug', '=', 'comment.star')->first());
+
         // add role to menu.
         \Encore\Admin\Auth\Database\Menu::query()->where('order', '=', 2)->first()
             ->roles()->save(\Encore\Admin\Auth\Database\Role::first());

@@ -139,6 +139,7 @@ return [
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
+                'updateComment' => \App\Http\GraphQL\Mutations\UpdateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
 
                 'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,

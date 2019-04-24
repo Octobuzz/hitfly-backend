@@ -5,14 +5,17 @@ namespace App\Http\GraphQL\Mutations;
 use App\Models\Album;
 use App\Models\Comment;
 use App\Models\Track;
+use Carbon\Carbon;
+use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 use Rebing\GraphQL\Support\Mutation;
 
-class CreateCommentMutation extends Mutation
+class UpdateCommentMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'CreateComment',
-        'description' => 'Комментарий(отзыв)',
+        'description' => 'Изменение комментария(отзыва)',
     ];
 
     public function type()
@@ -26,11 +29,24 @@ class CreateCommentMutation extends Mutation
             'Comment' => [
                 'type' => \GraphQL::type('CommentInput'),
             ],
+            'id' => [
+                'type' => Type::int(),
+                'description' => 'ID комментария'
+            ],
         ];
     }
 
     public function resolve($root, $args)
     {
+        $comment = Comment::query()->find($args['id']);
+       // die(json_encode($comment->created_at));
+        $commentCreated = Carbon::createFromTimeString($comment->created_at);
+        $now = Carbon::now();
+        $diff_in_hours = $commentCreated->diffInHours($now);
+
+        die(var_dump($diff_in_hours));
+
+        return $v;
         switch ($args['Comment']['commentableType']) {
             case Comment::TYPE_TRACK:
                 $class = Track::class;

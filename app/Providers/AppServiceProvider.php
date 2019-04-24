@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\MusicGroup;
 use App\Models\Track;
+use App\Observers\CommentObserver;
 use App\Observers\MusicGroupObserver;
 use App\Models\Collection;
 use App\Observers\CollectionObserver;
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Collection::observe(CollectionObserver::class);
         User::observe(UserObserver::class);
         Track::observe(TrackObserver::class);
+        Comment::observe(CommentObserver::class);
         Date::setlocale(config('app.locale'));
         Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesUniqueValidator@validate');
     }
