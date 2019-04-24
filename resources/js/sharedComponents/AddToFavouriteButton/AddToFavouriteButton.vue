@@ -79,8 +79,6 @@ export default {
 
   methods: {
     onPress() {
-      console.log('disabled: ', this.isButtonDisabled);
-
       if (this.isButtonDisabled) return;
 
       // TODO: remove after api creation

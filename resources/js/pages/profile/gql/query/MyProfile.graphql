@@ -4,12 +4,11 @@ query MyProfile {
         username
         email
         dateRegister
-        avatar
         followersCount
         musicGroups {
             id
             name
-            avatarGroup
+#            avatarGroup
         }
         location {
             id

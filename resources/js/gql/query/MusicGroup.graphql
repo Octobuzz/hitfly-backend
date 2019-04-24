@@ -1,0 +1,37 @@
+query MusicGroup($id: Int!) {
+    musicGroup(id: $id) {
+        id
+        name
+#        avatarGroup {
+#
+#        }
+        careerStartYear
+        genres {
+            id
+            name
+#            image
+        }
+        creatorGroup {
+            id
+            username
+            location {
+                id
+                area_region
+                title
+            }
+#            avatar(
+#                sizes: [size_56x56, size_235x235]
+#            ) {
+#                size
+#                url
+#            }
+        }
+        description
+        location {
+            id
+            area_region
+            title
+        }
+        followersCount
+    }
+}

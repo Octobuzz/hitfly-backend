@@ -47,22 +47,24 @@
           </template>
         </BaseInput>
 
-        <h3 class="edit-profile-form__h3">
-          Выберете жанры, в которых играете
-        </h3>
+        <!-- TODO: wait when the role api is implemented
+          <h3 class="edit-profile-form__h3">
+            Выберете жанры, в которых играете
+          </h3>
 
-        <ChooseGenres
-          v-model="playedGenres"
-          class="edit-profile-form__choose-genres"
-          dropdown-class="edit-profile-form__genre-dropdown"
-          :genres-start-count="10"
-        >
-          <template #separator>
-            <span class="edit-profile-form__genre-list-suggestion">
-              или выберите из списка
-            </span>
-          </template>
-        </ChooseGenres>
+          <ChooseGenres
+            v-model="playedGenres"
+            class="edit-profile-form__choose-genres"
+            dropdown-class="edit-profile-form__genre-dropdown"
+            :genres-start-count="10"
+          >
+            <template #separator>
+              <span class="edit-profile-form__genre-list-suggestion">
+                или выберите из списка
+              </span>
+            </template>
+          </ChooseGenres>
+        -->
 
         <h3 class="edit-profile-form__h3">
           Описание деятельности
@@ -184,20 +186,20 @@
 </template>
 
 <script>
+import BaseInput from 'components/BaseInput.vue';
+import BaseTextarea from 'components/BaseTextarea.vue';
+import BaseLink from 'components/BaseLink.vue';
+import BaseTag from 'components/BaseTag.vue';
+import FormButton from 'components/FormButton.vue';
+import UserIcon from 'components/icons/UserIcon.vue';
+import BalloonIcon from 'components/icons/BalloonIcon.vue';
+import CalendarIcon from 'components/icons/CalendarIcon.vue';
+import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
+import KeyIcon from 'components/icons/KeyIcon.vue';
 import gql from './gql';
-import ChooseAvatar from './ChooseAvatar.vue';
-import ChooseGenres from './ChooseGenres.vue';
-import BaseInput from '../../sharedComponents/BaseInput.vue';
-import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
-import BaseLink from '../../sharedComponents/BaseLink.vue';
-import BaseTag from '../../sharedComponents/BaseTag.vue';
-import FormButton from '../../sharedComponents/FormButton.vue';
-import UserIcon from '../../sharedComponents/icons/UserIcon.vue';
-import BalloonIcon from '../../sharedComponents/icons/BalloonIcon.vue';
-import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
-import EnvelopeIcon from '../../sharedComponents/icons/EnvelopeIcon.vue';
-import KeyIcon from '../../sharedComponents/icons/KeyIcon.vue';
-import ReturnHeader from './ReturnHeader.vue';
+import ReturnHeader from '../ReturnHeader.vue';
+import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseGenres from '../ChooseGenres.vue';
 
 export default {
   components: {
@@ -215,6 +217,7 @@ export default {
     EnvelopeIcon,
     KeyIcon
   },
+
   data() {
     return {
       avatar: {
@@ -244,6 +247,7 @@ export default {
       genreEditMode: false
     };
   },
+
   methods: {
     onAvatarInput(file) {
       this.avatar.new = file;
@@ -258,44 +262,58 @@ export default {
       this.genreEditMode = true;
     },
     saveProfile() {
-      console.log('profile saved');
+      // TODO: show loader
+      /*
+      this.$apollo.mutate({
+        mutation: gql.mutation.UPDATE_PROFILE,
+
+        variables: {
+          profile: {
+            username: ,
+            cityId: ,
+            email: ,
+            password: ,
+            genres: // id array
+          },
+          artistProfile: {
+            description: ,
+            careerStart: , // Date string
+            genres: // id array
+          },
+          image: // Upload type
+        },
+
+        update(store, { data: { myProfile } }) {
+          // TODO: hide loader; go to the /profile
+        },
+
+        error(err) {
+          console.log(err);
+        }
+      });
+    */
     }
   },
-  apollo: {
-    favouriteGenres: {
-      query: gql.query.GENRE_LIST,
-      manual: true,
-      result({ data: { genre }, networkStatus }) {
-        if (networkStatus === 7) {
-          this.favouriteGenres = genre
-            .filter(genreEntry => genreEntry.userFavourite);
-        }
-      },
-      error(err) {
-        console.log(err);
-      }
-    },
 
+  apollo: {
     myProfile: {
       query: gql.query.MY_PROFILE,
-      manual: true,
-      result({ data: { myProfile }, networkStatus }) {
-        if (networkStatus === 7) {
-          console.log(myProfile);
+      update({ myProfile }) {
+        const {
+          username,
+          location,
+          dateRegister,
+          // description,
+          email
+        } = myProfile;
 
-          const {
-            username,
-            location,
-            dateRegister,
-            email,
-            avatar
-          } = myProfile;
+        this.name.input = username;
+        this.careerStartYear.input = `${new Date(dateRegister).getFullYear()}`;
+        this.email.input = email;
+        // this.activity.input = description;
 
-          this.name.input = username;
+        if (location !== null) {
           this.location.input = location.title;
-          this.careerStartYear.input = new Date(dateRegister).getFullYear();
-          this.email.input = email;
-          this.avatar.current = avatar;
         }
       },
       error(err) {

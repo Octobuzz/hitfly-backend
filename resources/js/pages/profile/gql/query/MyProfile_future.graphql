@@ -14,7 +14,6 @@ query User {
             followersCount
         },
         watchingList {
-            __typename
             id
             ... on User {
                 username
