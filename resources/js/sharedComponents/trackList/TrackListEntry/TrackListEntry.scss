@@ -27,6 +27,7 @@
     margin-right: 8px;
     border-radius: 3px;
     overflow: hidden;
+    user-select: none;
 
     &_paused:before {
       content: '';
@@ -53,7 +54,6 @@
     flex-grow: 1;
     transition: .2s;
     cursor: pointer;
-    user-select: none;
 
     &:hover {
       color:#b36fcb;

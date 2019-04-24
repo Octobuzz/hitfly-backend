@@ -19,6 +19,7 @@ $cover-side-mobile: 104px;
     height: $cover-side-desktop;
     border-radius: 4px;
     overflow: hidden;
+    user-select: none;
     background: #aaa;
 
     &:hover > .album-preview {
@@ -37,6 +38,7 @@ $cover-side-mobile: 104px;
     position: absolute;
     width: 100%;
     height: 100%;
+    user-select: none;
   }
 
   &__drape {

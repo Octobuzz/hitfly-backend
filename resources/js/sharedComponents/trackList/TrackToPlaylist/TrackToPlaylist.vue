@@ -141,7 +141,7 @@ export default {
           id: this.track.id
         }
       });
-      let updatedUserPlayLists = [];
+      let updatedUserPlayLists = [...storeTrack.userPlayLists];
 
       if (!storeTrack.userPlayLists
         .some(playlist => playlist.id === collection.id)) {
