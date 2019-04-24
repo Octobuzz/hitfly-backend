@@ -10,7 +10,6 @@ namespace App\Http\GraphQL\Fields;
 
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
@@ -48,21 +47,25 @@ class AvatarSizesField extends Field
         $returnPath = '';
         foreach ($args['sizes'] as $size) {
             $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
-            $avatarUrl = parse_url($root->avatar, PHP_URL_PATH);
-            $extension = pathinfo($avatarUrl, PATHINFO_EXTENSION);
-            $avatarFileName = pathinfo($avatarUrl, PATHINFO_FILENAME);
+            if($root->getOriginal('avatar')===null){
+                $avatar = public_path().config('admin.default_avatar');
+            }else{
+                $avatar = Storage::disk('public')->getAdapter()->getPathPrefix().$root->getOriginal('avatar');
+            }
+            $extension = pathinfo($avatar, PATHINFO_EXTENSION);
+            $avatarFileName = pathinfo($avatar, PATHINFO_FILENAME);
             $path = "avatars/$root->id/";
             $imageName = "{$avatarFileName}_{$size}.{$extension}";
             if (!file_exists($publicPath.$path.$imageName)) {
                 if (null === $root->getOriginal('avatar')) {
-                    $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $root->avatar, $path, true);
+                    $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $avatar, $path, true);
                 } else {
-                    $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $root->avatar, $path);
+                    $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $avatar, $path);
                 }
             }
             $return[] = [
                 'size' => $size,
-                'url' => Storage::url($returnPath),
+                'url' => Storage::disk('public')->url($returnPath),
             ];
         }
 
@@ -93,7 +96,7 @@ class AvatarSizesField extends Field
         if (!file_exists($publicPath.$path)) {
             Storage::disk('public')->makeDirectory($path);
         }
-        $image_resize->save($publicPath.$path.$imagePath);
+        $image_resize->save(Storage::disk('public')->path($path.$imagePath));
 
         return $path.$imagePath;
     }

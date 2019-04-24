@@ -56,7 +56,7 @@ class AlbumCoverField extends Field
         $album = Album::query()->find($album)->first();
         $return = [];
         foreach ($args['sizes'] as $size) {
-            $this->path = $this->getPath($size, $album->user_id, $album->cover);
+            $this->path = $this->getPath($size, $album->user_id, $album);
             $returnPath = $this->path['imagePath'].$this->path['imageName'];
             if (!file_exists($this->path['public'].$this->path['imagePath'].$this->path['imageName'])) {
                 if (null === $album->getOriginal('cover')) {
@@ -68,7 +68,7 @@ class AlbumCoverField extends Field
 
             $return[] = [
                 'size' => $size,
-                'url' => Storage::url($returnPath),
+                'url' => Storage::disk('public')->url($returnPath),
             ];
         }
 
@@ -118,9 +118,9 @@ class AlbumCoverField extends Field
     protected function getPath($size, $userId, $image)
     {
         $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
-        $imageUrl = parse_url($image, PHP_URL_PATH);
-        $extension = pathinfo($imageUrl, PATHINFO_EXTENSION);
-        $avatarFileName = pathinfo($imageUrl, PATHINFO_FILENAME);
+        $imagePath = $publicPath.$image->getOriginal('cover');
+        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+        $avatarFileName = pathinfo($imagePath, PATHINFO_FILENAME);
         $path = "albums/$userId/";
         $imageName = "{$avatarFileName}_{$size}.{$extension}";
 

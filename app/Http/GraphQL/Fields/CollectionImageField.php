@@ -9,6 +9,7 @@
 namespace App\Http\GraphQL\Fields;
 
 use App\Models\Album;
+use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -49,12 +50,12 @@ class CollectionImageField extends Field
         $collect = Cache::get('collect_find_'.$root->id, null);
 
         if (null === $collect) {
-            $collect = Album::query()->find($root)->first();
+            $collect = Collection::query()->find($root)->first();
             Cache::put('collect_find_'.$root->id, $collect, 600);
         }
         $return = [];
         foreach ($args['sizes'] as $size) {
-            $this->path = $this->getPath($size, $collect->user_id, $collect->image);
+            $this->path = $this->getPath($size, $collect->user_id, $collect);
             $returnPath = $this->path['imagePath'].$this->path['imageName'];
             if (!file_exists($this->path['public'].$this->path['imagePath'].$this->path['imageName'])) {
                 if (null === $collect->getOriginal('image')) {
@@ -66,7 +67,7 @@ class CollectionImageField extends Field
 
             $return[] = [
                 'size' => $size,
-                'url' => Storage::url($returnPath),
+                'url' => Storage::disk('public')->url($returnPath),
             ];
         }
 
@@ -116,9 +117,9 @@ class CollectionImageField extends Field
     protected function getPath($size, $userId, $image)
     {
         $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
-        $imageUrl = parse_url($image, PHP_URL_PATH);
-        $extension = pathinfo($imageUrl, PATHINFO_EXTENSION);
-        $avatarFileName = pathinfo($imageUrl, PATHINFO_FILENAME);
+        $imagePath = $publicPath.$image->getOriginal('image');
+        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+        $avatarFileName = pathinfo($imagePath, PATHINFO_FILENAME);
         $path = "collections/$userId/";
         $imageName = "{$avatarFileName}_{$size}.{$extension}";
 

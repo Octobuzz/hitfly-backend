@@ -307,4 +307,7 @@ return [
     */
     'extensions' => [
     ],
+
+
+    'default_avatar' => '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg',
 ];
