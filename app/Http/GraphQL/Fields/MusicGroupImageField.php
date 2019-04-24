@@ -10,16 +10,17 @@ namespace App\Http\GraphQL\Fields;
 
 use App\Models\Album;
 use App\Models\Collection;
+use App\Models\MusicGroup;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
 use Illuminate\Support\Facades\Cache;
 
-class CollectionImageField extends Field
+class MusicGroupImageField extends Field
 {
     protected $attributes = [
-        'description' => 'Абложка коллекции',
+        'description' => 'Аватар группы',
         'selectable' => false,
     ];
 
@@ -34,7 +35,7 @@ class CollectionImageField extends Field
     {
         return [
             'sizes' => [
-                'type' => Type::listOf(\GraphQL::type('CollectionSizeEnum')),
+                'type' => Type::listOf(\GraphQL::type('MusicGroupSizeEnum')),
                 'description' => 'Размеры изображений',
             ],
         ];
@@ -47,21 +48,17 @@ class CollectionImageField extends Field
      */
     protected function resolve($root, $args)
     {
-        $collect = Cache::get('collect_find_'.$root->id, null);
-
-        if (null === $collect) {
-            $collect = Collection::query()->find($root)->first();
-            Cache::put('collect_find_'.$root->id, $collect, 600);
-        }
+        
         $return = [];
         foreach ($args['sizes'] as $size) {
-            $this->path = $this->getPath($size, $collect->user_id, $collect);
+            //die(json_encode($root));
+            $this->path = $this->getPath($size, $root->creator_group_id, $root);
             $returnPath = $this->path['imagePath'].$this->path['imageName'];
             if (!file_exists($this->path['public'].$this->path['imagePath'].$this->path['imageName'])) {
-                if (null === $collect->getOriginal('image')) {
+                if (null === $root->getOriginal('avatar_group')) {
                     $returnPath = $this->resizeAlbum($size, false, true);
                 } else {
-                    $returnPath = $this->resizeAlbum($size, $collect->image);
+                    $returnPath = $this->resizeAlbum($size, $root->avatar_group);
                 }
             }
 
@@ -85,17 +82,17 @@ class CollectionImageField extends Field
     {
         if (false === $image) {
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
-            $image .= 'default_image/collection.png';
+            $image .= 'default_image/music_group.png';
             $this->path['imageName'] = 'default_'.$size.'.png';
         }
         $image_resize = Image::make($image)
-            ->resize(config('image.size.collection.'.$size.'.width'), config('image.size.collection.'.$size.'.height'), function ($constraint) {
+            ->resize(config('image.size.music_group.'.$size.'.width'), config('image.size.music_group.'.$size.'.height'), function ($constraint) {
                 $constraint->aspectRatio();
             });
 
         //создадим папку, если несуществует
         if ($default) {
-            $this->path['imagePath'] = 'collections/';
+            $this->path['imagePath'] = 'music_groups/';
         } //сохраним размеры умолчанию в корневую папку
         if (!file_exists($this->path['public'].$this->path['imagePath'])) {
             Storage::disk('public')->makeDirectory($this->path['imagePath']);
@@ -117,10 +114,10 @@ class CollectionImageField extends Field
     protected function getPath($size, $userId, $image)
     {
         $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
-        $imagePath = $publicPath.$image->getOriginal('image');
+        $imagePath = $publicPath.$image->getOriginal('avatar_group');
         $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
         $avatarFileName = pathinfo($imagePath, PATHINFO_FILENAME);
-        $path = "collections/$userId/";
+        $path = "music_groups/$userId/";
         $imageName = "{$avatarFileName}_{$size}.{$extension}";
 
         return [
