@@ -139,6 +139,7 @@ return [
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
+                'updateComment' => \App\Http\GraphQL\Mutations\UpdateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
 
                 'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
@@ -203,6 +204,7 @@ return [
         'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
         'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
         'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
+        'MusicGroupSizeEnum' => \App\Http\GraphQL\Enums\MusicGroupSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

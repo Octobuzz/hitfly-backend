@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class CriticComment implements Rule
+class CriticOrStarComment implements Rule
 {
     /**
      * Create a new rule instance.
@@ -23,7 +23,7 @@ class CriticComment implements Rule
      */
     public function passes($attribute, $value)
     {
-        return \Auth::user()->can('comment.сricic');
+        return (\Auth::user()->can('comment.сricic')||\Auth::user()->can('comment.star'))?true:false;
     }
 
     /**

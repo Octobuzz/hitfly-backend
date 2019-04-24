@@ -28,11 +28,7 @@ class MyProfileQuery extends Query
     public function args()
     {
         return [
-            'sizes' => [
-                'name' => 'sizes',
-                'description' => 'Размеры картинок',
-                'type' => Type::listOf(Type::string()),
-            ],
+
         ];
     }
 

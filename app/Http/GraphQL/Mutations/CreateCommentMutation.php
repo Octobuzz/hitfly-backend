@@ -12,6 +12,7 @@ class CreateCommentMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'CreateComment',
+        'description' => 'Комментарий(отзыв)',
     ];
 
     public function type()
@@ -40,11 +41,11 @@ class CreateCommentMutation extends Mutation
             default:
                 throw new \Exception('Не удалось определить тип комментария');
         }
-
-        $comment = Comment::create($args['Comment']);
-        $comment['commentable_type'] = $class;
-        $comment['commentable_id'] = $args['Comment']['commentableId'];
-        $comment['user_id'] = Auth::user()->id;
+        $comment = new  Comment();
+        $comment->comment = $args['Comment']['comment'];
+        $comment->commentable_type = $class;
+        $comment->commentable_id = $args['Comment']['commentableId'];
+        $comment->user_id = Auth::user()->id;
         $comment->save();
 
         return $comment;
