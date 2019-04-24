@@ -68,5 +68,19 @@ return [
                 'height' => 150,
             ],
         ],
+        'music_group' => [
+            'default' => [
+                'width' => 235,
+                'height' => 235,
+            ],
+            'size_235x235' => [
+                'width' => 235,
+                'height' => 235,
+            ],
+            'size_40x40' => [
+                'width' => 40,
+                'height' => 40,
+            ],
+        ],
     ],
 ];

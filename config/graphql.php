@@ -204,6 +204,7 @@ return [
         'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
         'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
         'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
+        'MusicGroupSizeEnum' => \App\Http\GraphQL\Enums\MusicGroupSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
