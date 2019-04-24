@@ -31,22 +31,52 @@ class UpdateCommentMutation extends Mutation
             ],
             'id' => [
                 'type' => Type::int(),
-                'description' => 'ID комментария'
+                'description' => 'ID комментария',
+//                'rules'=>['exists:comments,id', function ($attribute, $value, $fail) {
+//                    $comment = Comment::query()->find($value);
+//
+//                    /*if($comment === null){
+//                       return $fail(__('validation.editCommentNotExist',['id'=>$value]));
+//                    }*/
+//                    // die(json_encode($comment->created_at));
+//                    $commentCreated = Carbon::createFromTimeString($comment->created_at);
+//                    $now = Carbon::now();
+//                    $diff_in_hours = $commentCreated->diffInHours($now);
+//                    if((int)config('comment_edit',5)<$diff_in_hours){
+//                        $fail(__('validation.editCommentTime',['hours'=>config('comment_edit')]));
+//                    }
+//
+//                }]
             ],
+        ];
+    }
+
+    public function rules(array $args = [])
+    {
+
+        return [
+           'id' => [function ($attribute, $value, $fail) {
+                    $comment = Comment::query()->find($value);
+
+                    if($comment === null){
+                       return $fail(__('validation.editCommentNotExist',['id'=>$value]));
+                    }
+                    // die(json_encode($comment->created_at));
+                    $commentCreated = Carbon::createFromTimeString($comment->created_at);
+                    $now = Carbon::now();
+                    $diff_in_hours = $commentCreated->diffInHours($now);
+                    if((int)config('comment_edit',5)<$diff_in_hours){
+                        $fail(__('validation.editCommentTime',['hours'=>config('comment_edit')]));
+                    }
+
+                }
+            ]
         ];
     }
 
     public function resolve($root, $args)
     {
-        $comment = Comment::query()->find($args['id']);
-       // die(json_encode($comment->created_at));
-        $commentCreated = Carbon::createFromTimeString($comment->created_at);
-        $now = Carbon::now();
-        $diff_in_hours = $commentCreated->diffInHours($now);
 
-        die(var_dump($diff_in_hours));
-
-        return $v;
         switch ($args['Comment']['commentableType']) {
             case Comment::TYPE_TRACK:
                 $class = Track::class;
@@ -57,7 +87,7 @@ class UpdateCommentMutation extends Mutation
             default:
                 throw new \Exception('Не удалось определить тип комментария');
         }
-        $comment = new  Comment();
+        $comment = Comment::query()->find($args["id"]);
         $comment->comment = $args['Comment']['comment'];
         $comment->commentable_type = $class;
         $comment->commentable_id = $args['Comment']['commentableId'];

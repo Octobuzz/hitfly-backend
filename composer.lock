@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "439ef6b73a8046f8310766b9c54fc53e",
+    "content-hash": "9c5f6d4b7784ee141ce8770a6326a705",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1110,6 +1110,60 @@
             ],
             "description": "Odnoklassniki OAuth2 Provider for Laravel Socialite",
             "time": "2017-05-17T12:09:23+00:00"
+        },
+        {
+            "name": "laravel-admin-ext/config",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-admin-extensions/config.git",
+                "reference": "c24d50742a0080b4f90745841387d5dd073e0878"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-admin-extensions/config/zipball/c24d50742a0080b4f90745841387d5dd073e0878",
+                "reference": "c24d50742a0080b4f90745841387d5dd073e0878",
+                "shasum": ""
+            },
+            "require": {
+                "encore/laravel-admin": "~1.6",
+                "laravel/framework": "~5.5",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "laravel/laravel": "~5.5",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Encore\\Admin\\Config\\ConfigServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Encore\\Admin\\Config\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "z-song",
+                    "email": "zosong@126.com"
+                }
+            ],
+            "description": "Config extension for laravel-admin",
+            "homepage": "https://github.com/laravel-admin-extensions/config",
+            "keywords": [
+                "laravel-admin",
+                "setting"
+            ],
+            "time": "2018-12-12T04:03:36+00:00"
         },
         {
             "name": "laravel/framework",

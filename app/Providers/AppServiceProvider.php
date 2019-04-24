@@ -15,6 +15,8 @@ use App\Observers\TrackObserver;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Jenssegers\Date\Date;
+use Encore\Admin\Config\Config;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
         Date::setlocale(config('app.locale'));
         Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesUniqueValidator@validate');
+
+        $table = config('admin.extensions.config.table', 'admin_config');
+        if (Schema::hasTable($table)) {
+            Config::load();
+        }
     }
 
     /**
