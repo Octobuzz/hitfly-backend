@@ -6,15 +6,21 @@ use App\Helpers\DBHelpers;
 use App\Models\GroupLinks;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
+use App\Rules\AuthorUpdateMusicGroup;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\UploadType;
 use Symfony\Component\Finder\Exception\OperationNotPermitedException;
 
 class UpdateMusicGroupMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'UpdateMusicGroup',
+        'description' => 'обновление музыкальной группы',
     ];
 
     public function type()
@@ -27,10 +33,15 @@ class UpdateMusicGroupMutation extends Mutation
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the human.',
+                'description' => 'ID группы',
+                'rules' => [new AuthorUpdateMusicGroup()]
             ],
             'musicGroup' => [
                 'type' => \GraphQL::type('MusicGroupInput'),
+            ],
+            'avatar' => [
+                'description' => 'аватар музыкальной группы',
+                'type' => UploadType::getInstance(),
             ],
         ];
     }
@@ -43,11 +54,13 @@ class UpdateMusicGroupMutation extends Mutation
             return null;
         }
 
-        //if ($user = \Auth::user()->can('update', MusicGroup::class)) {
-        //throw new OperationNotPermitedException('not persmision'); todo: неработает
-        //}
-
-        $musicGroup->update(DBHelpers::arrayKeysToSnakeCase($args['musicGroup']));
+        if (!empty($args['avatar']) && null !== $args['avatar']) {
+            $musicGroup->avatar_group = $this->setAvatar($musicGroup, $args['avatar']);
+            $musicGroup->save();
+        }
+        if (!empty($args['musicGroup']) && null !== $args['musicGroup']) {
+            $musicGroup->update(DBHelpers::arrayKeysToSnakeCase($args['musicGroup']));
+        }
 
         if (!empty($args['musicGroup']['genre'])) {
             $musicGroup->genres()->sync($args['musicGroup']['genre']);
@@ -100,5 +113,36 @@ class UpdateMusicGroupMutation extends Mutation
         }
 
         return $musicGroup;
+    }
+
+    /**
+     * добавление аватарки группы.
+     *
+     * @param $musicGroup
+     * @param $avatar
+     *
+     * @return string
+     */
+    private function setAvatar($musicGroup, $avatar)
+    {
+        //удаление старых аватарок
+        if (null !== $musicGroup->getOriginal('avatar_group')) {
+            Storage::disk('public')->delete($musicGroup->getOriginal('avatar_group'));
+        }
+        $image = $avatar;
+        $nameFile = md5(microtime());
+        $imagePath = "music_groups/$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $image_resize = Image::make($image->getRealPath());
+        $image_resize->resize(config('image.size.music_group.default.height'), config('image.size.music_group.default.height'), function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+        //создадим папку, если несуществует
+        if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
+            Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
+        }
+        $image_resize->save($path.$imagePath);
+
+        return $imagePath;
     }
 }

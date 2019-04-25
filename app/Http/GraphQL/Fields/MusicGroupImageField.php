@@ -51,7 +51,6 @@ class MusicGroupImageField extends Field
         
         $return = [];
         foreach ($args['sizes'] as $size) {
-            //die(json_encode($root));
             $this->path = $this->getPath($size, $root->creator_group_id, $root);
             $returnPath = $this->path['imagePath'].$this->path['imageName'];
             if (!file_exists($this->path['public'].$this->path['imagePath'].$this->path['imageName'])) {

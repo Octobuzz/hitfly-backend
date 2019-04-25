@@ -9,6 +9,7 @@
 namespace App\Http\GraphQL\Interfaces;
 
 use App\Http\GraphQL\Fields\AvatarSizesField;
+use App\User;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
 
@@ -60,6 +61,33 @@ class UserInterface extends InterfaceType
             'favouriteGenres' => [
                 'type' => Type::listOf(\GraphQL::type('Genre')),
                 'description' => 'Любимые жанры пользователя',
+            ],
+            'roles' => [
+                'type' => Type::listOf(\GraphQL::type('RoleType')),
+                'description' => 'мои роли',
+                'resolve' => function (User $model) {
+                    return $model->roles;
+                },
+            ],
+            'careerStart' => [
+                'name' => 'careerStart',
+                'description' => 'Начало карьеры',
+                'type' => Type::string(),
+                'resolve' => function (User $model) {
+                    return $model->artistProfile->career_start;
+                },
+            ],
+            'genresPlay' => [
+                'name' => 'genresPlay',
+                'description' => 'жанры в которых играет',
+                'type' => Type::listOf(\GraphQL::type('Genre')),
+                'resolve' => function (User $model) {
+                    if($model->artistProfile !== null) {
+                        return $model->artistProfile->genres;
+                    }
+                    return [];
+                },
+                'selectable' => false,
             ],
         ];
     }
