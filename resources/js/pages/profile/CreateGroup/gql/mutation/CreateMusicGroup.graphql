@@ -1,29 +1,39 @@
 mutation CreateMusicGroup(
-    $cover: Upload
+    $avatar: Upload
     $name: String!
     $careerStartYear: String!
     $description: String!
     $genre: [ID]
+#    $socialLinks: [SocialLinksInput]
+#    $invitedMembers: [GroupMembersInput]
 ) {
     createMusicGroup(
         musicGroup: {
-            cover: $cover
-            name: $name
-            careerStartYear: $careerStartYear
-            description: $description
-            genre: $genre
+            avatar: $avatar
+            musicGroup: {
+                name: $name
+                careerStartYear: $careerStartYear
+                description: $description
+                genre: $genre
+#                socialLinks: $socialLinks
+#                invitedMembers: $invitedMembers
+            }
         }
     ) {
         id
         name
-        #        avatarGroup {
-        #
-        #        }
+        avatarGroup(
+            sizes: [size_40x40, size_235x235]
+        ) {
+            size
+            url
+        }
         careerStartYear
         genres {
             id
             name
-            #            image
+#            image
+            userFavourite
         }
         creatorGroup {
             id

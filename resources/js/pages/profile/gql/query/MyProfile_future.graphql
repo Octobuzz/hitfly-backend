@@ -10,7 +10,12 @@ query User {
         musicGroups {
             id
             name
-            avatarGroup
+            avatarGroup(
+                sizes: [size_40x40, size_235x235]
+            ) {
+                size
+                url
+            }
             followersCount
         },
         watchingList {

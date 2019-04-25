@@ -16,7 +16,12 @@ mutation UpdateMusicGroup(
     ) {
         id
         name
-        avatarGroup
+        avatarGroup(
+            sizes: [size_40x40, size_235x235]
+        ) {
+            size
+            url
+        }
         careerStartYear
         genres {
             id

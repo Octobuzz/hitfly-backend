@@ -15,14 +15,18 @@ mutation UpdateMyProfile(
         musicGroups {
             id
             name
-    #        avatarGroup {
-    #
-    #        }
+            avatarGroup(
+                sizes: [size_40x40, size_235x235]
+            ) {
+                size
+                url
+            }
             careerStartYear
             genres {
                 id
                 name
     #            image
+                userFavoutite
             }
             description
             location {
@@ -71,9 +75,12 @@ mutation UpdateMyProfile(
         watchingMusicGroup {
             id
             name
-    #        avatarGroup {
-    #
-    #        }
+            avatarGroup(
+                sizes: [size_40x40, size_235x235]
+            ) {
+                size
+                url
+            }
             careerStartYear
             genres {
                 id

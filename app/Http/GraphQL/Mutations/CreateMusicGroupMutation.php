@@ -7,6 +7,8 @@ use App\Models\MusicGroup;
 use App\User;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class CreateMusicGroupMutation extends Mutation
 {
