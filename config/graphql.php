@@ -184,6 +184,7 @@ return [
         'FavouriteTrack' => \App\Http\GraphQL\Type\FavouriteTrackType::class,
         'FavouriteAlbum' => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
         'FavouriteGenre' => \App\Http\GraphQL\Type\FavouriteGenreType::class,
+        'FavouriteCollection' => \App\Http\GraphQL\Type\FavouriteCollectionType::class,
         'SocialLinks' => \App\Http\GraphQL\Type\SocialLinksType::class,
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
         'ImageSizesType' => \App\Http\GraphQL\Type\ImageSizesType::class,

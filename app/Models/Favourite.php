@@ -11,11 +11,13 @@ class Favourite extends Model
     const TYPE_ALBUM = 'album';
     const TYPE_TRACK = 'track';
     const TYPE_GENRE = 'genre';
+    const TYPE_COLLECTION = 'collection';
 
     const CLASS_NAME = [
         Album::class => self::TYPE_ALBUM,
         Track::class => self::TYPE_TRACK,
         Genre::class => self::TYPE_GENRE,
+        Collection::class => self::TYPE_COLLECTION,
     ];
     protected $fillable = [
         'favouriteable_type',
@@ -50,5 +52,9 @@ class Favourite extends Model
     public function genre(): BelongsTo
     {
         return $this->belongsTo(Genre::class, 'favouriteable_id');
+    }
+    public function collection(): BelongsTo
+    {
+        return $this->belongsTo(Collection::class, 'favouriteable_id');
     }
 }

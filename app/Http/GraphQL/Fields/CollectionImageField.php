@@ -34,7 +34,7 @@ class CollectionImageField extends Field
     {
         return [
             'sizes' => [
-                'type' => Type::listOf(\GraphQL::type('CollectionSizeEnum')),
+                'type' => Type::nonNull(Type::listOf(\GraphQL::type('CollectionSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
         ];
@@ -61,7 +61,7 @@ class CollectionImageField extends Field
                 if (null === $collect->getOriginal('image')) {
                     $returnPath = $this->resizeAlbum($size, false, true);
                 } else {
-                    $returnPath = $this->resizeAlbum($size, $collect->image);
+                    $returnPath = $this->resizeAlbum($size, $collect->getOriginal('image'));
                 }
             }
 
@@ -87,6 +87,8 @@ class CollectionImageField extends Field
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
             $image .= 'default_image/collection.png';
             $this->path['imageName'] = 'default_'.$size.'.png';
+        }else{//путь к картинке вместо урл
+            $image = $this->path['public'].$image;
         }
         $image_resize = Image::make($image)
             ->resize(config('image.size.collection.'.$size.'.width'), config('image.size.collection.'.$size.'.height'), function ($constraint) {

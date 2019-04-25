@@ -31,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Track::observe(TrackObserver::class);
         Comment::observe(CommentObserver::class);
         Date::setlocale(config('app.locale'));
-        Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesUniqueValidator@validate');
+        Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesValidator@validate');
+        Validator::extend('favourites_delete_validate', 'App\Validation\FavouritesValidator@validateDelete');
 
         $table = config('admin.extensions.config.table', 'admin_config');
         if (Schema::hasTable($table)) {

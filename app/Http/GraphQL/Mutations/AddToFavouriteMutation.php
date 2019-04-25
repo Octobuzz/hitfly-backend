@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Models\Album;
+use App\Models\Collection;
 use App\Models\Favourite;
 use App\Models\Track;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,9 @@ class AddToFavouriteMutation extends Mutation
                 break;
             case Favourite::TYPE_ALBUM:
                 $class = Album::class;
+                break;
+            case Favourite::TYPE_COLLECTION:
+                $class = Collection::class;
                 break;
             default:
                 throw new \Exception('Не удалось определить тип избранного');

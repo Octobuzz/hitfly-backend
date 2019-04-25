@@ -33,7 +33,7 @@ class AlbumCoverField extends Field
     {
         return [
             'sizes' => [
-                'type' => Type::listOf(\GraphQL::type('AlbumSizeEnum')),
+                'type' => Type::nonNull(Type::listOf(\GraphQL::type('AlbumSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
         ];
@@ -87,6 +87,8 @@ class AlbumCoverField extends Field
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
             $image .= 'default_image/album.png';
             $this->path['imageName'] = 'default_'.$size.'.png';
+        }else{//путь к картинке вместо урл
+            $image = $this->path['public'].$image;
         }
 
         $image_resize = Image::make(Storage::disk('public')->path($image))
