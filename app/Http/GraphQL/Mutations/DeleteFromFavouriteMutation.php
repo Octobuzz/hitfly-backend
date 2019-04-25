@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Models\Album;
+use App\Models\Collection;
 use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\Track;
@@ -25,6 +26,7 @@ class DeleteFromFavouriteMutation extends Mutation
         return [
             'Favourite' => [
                 'type' => \GraphQL::type('FavouriteInput'),
+                'rules' => 'favourites_delete_validate',
             ],
         ];
     }
@@ -38,8 +40,8 @@ class DeleteFromFavouriteMutation extends Mutation
             case Favourite::TYPE_ALBUM:
                 $class = Album::class;
                 break;
-            case Favourite::TYPE_GENRE:
-                $class = Genre::class;
+            case Favourite::TYPE_COLLECTION:
+                $class = Collection::class;
                 break;
             default:
                 throw new \Exception('Не удалось определить тип избранного');

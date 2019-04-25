@@ -30,7 +30,7 @@ class AvatarSizesField extends Field
     {
         return [
             'sizes' => [
-                'type' => Type::listOf(\GraphQL::type('AvatarSizeEnum')),
+                'type' => Type::nonNull(Type::listOf(\GraphQL::type('AvatarSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
         ];

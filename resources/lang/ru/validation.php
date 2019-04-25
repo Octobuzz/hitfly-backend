@@ -12,6 +12,7 @@ return [
     'date' => 'Неверный формат даты',
     'before' => 'Введите дату в прошлом',
     'favourites_unique_validate' => 'Ранее было добавлено в избранное',
+    'favourites_delete_validate' => 'Такой сущности нет в избранном',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',

@@ -32,7 +32,7 @@ class MusicGroupImageField extends Field
     {
         return [
             'sizes' => [
-                'type' => Type::listOf(\GraphQL::type('MusicGroupSizeEnum')),
+                'type' => Type::nonNull(Type::listOf(\GraphQL::type('MusicGroupSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
         ];
@@ -53,7 +53,7 @@ class MusicGroupImageField extends Field
                 if (null === $root->getOriginal('avatar_group')) {
                     $returnPath = $this->resizeAlbum($size, false, true);
                 } else {
-                    $returnPath = $this->resizeAlbum($size, $root->avatar_group);
+                    $returnPath = $this->resizeAlbum($size, $root->getOriginal('avatar_group'));
                 }
             }
 
@@ -79,6 +79,8 @@ class MusicGroupImageField extends Field
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
             $image .= 'default_image/music_group.png';
             $this->path['imageName'] = 'default_'.$size.'.png';
+        }else{//путь к картинке вместо урл
+            $image = $this->path['public'].$image;
         }
         $image_resize = Image::make($image)
             ->resize(config('image.size.music_group.'.$size.'.width'), config('image.size.music_group.'.$size.'.height'), function ($constraint) {
