@@ -44,7 +44,6 @@ class AvatarSizesField extends Field
     protected function resolve($root, $args)
     {
         $return = [];
-        $returnPath = '';
         foreach ($args['sizes'] as $size) {
             $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
             if($root->getOriginal('avatar')===null){
@@ -56,12 +55,14 @@ class AvatarSizesField extends Field
             $avatarFileName = pathinfo($avatar, PATHINFO_FILENAME);
             $path = "avatars/$root->id/";
             $imageName = "{$avatarFileName}_{$size}.{$extension}";
-            if (!file_exists($publicPath.$path.$imageName)) {
+            if (!Storage::disk('public')->exists($path.$imageName)) {
                 if (null === $root->getOriginal('avatar')) {
                     $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $avatar, $path, true);
                 } else {
                     $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $avatar, $path);
                 }
+            }else{
+                $returnPath = $path.$imageName;
             }
             $return[] = [
                 'size' => $size,
