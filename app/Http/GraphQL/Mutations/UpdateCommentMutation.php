@@ -8,7 +8,6 @@ use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Validator;
 use Rebing\GraphQL\Support\Mutation;
 
 class UpdateCommentMutation extends Mutation
@@ -53,30 +52,27 @@ class UpdateCommentMutation extends Mutation
 
     public function rules(array $args = [])
     {
-
         return [
            'id' => [function ($attribute, $value, $fail) {
-                    $comment = Comment::query()->find($value);
+               $comment = Comment::query()->find($value);
 
-                    if($comment === null){
-                       return $fail(__('validation.editCommentNotExist',['id'=>$value]));
-                    }
-                    // die(json_encode($comment->created_at));
-                    $commentCreated = Carbon::createFromTimeString($comment->created_at);
-                    $now = Carbon::now();
-                    $diff_in_hours = $commentCreated->diffInHours($now);
-                    if((int)config('comment_edit',5)<$diff_in_hours){
-                        $fail(__('validation.editCommentTime',['hours'=>config('comment_edit')]));
-                    }
-
-                }
-            ]
+               if (null === $comment) {
+                   return $fail(__('validation.editCommentNotExist', ['id' => $value]));
+               }
+               // die(json_encode($comment->created_at));
+               $commentCreated = Carbon::createFromTimeString($comment->created_at);
+               $now = Carbon::now();
+               $diff_in_hours = $commentCreated->diffInHours($now);
+               if ((int) config('comment_edit', 5) < $diff_in_hours) {
+                   $fail(__('validation.editCommentTime', ['hours' => config('comment_edit')]));
+               }
+           },
+            ],
         ];
     }
 
     public function resolve($root, $args)
     {
-
         switch ($args['Comment']['commentableType']) {
             case Comment::TYPE_TRACK:
                 $class = Track::class;
@@ -87,7 +83,7 @@ class UpdateCommentMutation extends Mutation
             default:
                 throw new \Exception('Не удалось определить тип комментария');
         }
-        $comment = Comment::query()->find($args["id"]);
+        $comment = Comment::query()->find($args['id']);
         $comment->comment = $args['Comment']['comment'];
         $comment->commentable_type = $class;
         $comment->commentable_id = $args['Comment']['commentableId'];

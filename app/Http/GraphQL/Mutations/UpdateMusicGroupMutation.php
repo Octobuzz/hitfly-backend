@@ -8,13 +8,11 @@ use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use App\Rules\AuthorUpdateMusicGroup;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
-use Symfony\Component\Finder\Exception\OperationNotPermitedException;
 
 class UpdateMusicGroupMutation extends Mutation
 {
@@ -34,7 +32,7 @@ class UpdateMusicGroupMutation extends Mutation
             'id' => [
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'ID группы',
-                'rules' => [new AuthorUpdateMusicGroup()]
+                'rules' => [new AuthorUpdateMusicGroup()],
             ],
             'musicGroup' => [
                 'type' => \GraphQL::type('MusicGroupInput'),

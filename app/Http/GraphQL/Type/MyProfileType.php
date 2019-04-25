@@ -61,7 +61,6 @@ class MyProfileType extends GraphQLType
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
                 ],
-
             ]
         );
     }

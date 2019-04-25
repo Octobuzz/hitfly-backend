@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Type;
 
-
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -24,7 +23,6 @@ class RoleType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'название роли(внутренний идентификатор)',
             ],
-
         ];
     }
 }

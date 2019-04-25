@@ -2,11 +2,9 @@
 
 namespace App\Rules;
 
-use App\Models\Comment;
 use App\Models\MusicGroup;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class AuthorUpdateMusicGroup implements Rule
 {
@@ -28,8 +26,8 @@ class AuthorUpdateMusicGroup implements Rule
     public function passes($attribute, $value)
     {
         $musicGroup = MusicGroup::query()->find($value);
-        return Auth::user()->id === $musicGroup->creator_group_id;
 
+        return Auth::user()->id === $musicGroup->creator_group_id;
     }
 
     /**

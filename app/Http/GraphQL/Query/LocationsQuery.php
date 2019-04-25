@@ -7,7 +7,6 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-
 class LocationsQuery extends Query
 {
     protected $attributes = [
@@ -41,13 +40,13 @@ class LocationsQuery extends Query
     {
         $query = City::query();
         if (!empty($args['q'])) {
-            $query->where('title', 'like', $args['q'] . '%');
+            $query->where('title', 'like', $args['q'].'%');
         }
         if (!empty($args['id'])) {
             $query->whereIn('id', $args['id']);
         }
         $paginate = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-        return $paginate;
 
+        return $paginate;
     }
 }

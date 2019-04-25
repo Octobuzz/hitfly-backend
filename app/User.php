@@ -7,7 +7,6 @@ use App\Models\ArtistProfile;
 use App\Models\City;
 use App\Models\Favourite;
 use App\Models\Genre;
-use App\Models\Like;
 use App\Models\MusicGroup;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
@@ -147,6 +146,4 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         return $this->hasOne(ArtistProfile::class, 'user_id');
     }
-
-
 }

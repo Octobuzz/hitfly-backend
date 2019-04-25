@@ -15,7 +15,6 @@ class ConfigSeeder extends Seeder
                 'value' => '5',
                 'description' => 'В течение скольких часов,  можно редатктировать свой отзыв на альбом/трек',
             ],
-
         ]);
     }
 }

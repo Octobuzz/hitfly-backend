@@ -82,9 +82,10 @@ class UserInterface extends InterfaceType
                 'description' => 'жанры в которых играет',
                 'type' => Type::listOf(\GraphQL::type('Genre')),
                 'resolve' => function (User $model) {
-                    if($model->artistProfile !== null) {
+                    if (null !== $model->artistProfile) {
                         return $model->artistProfile->genres;
                     }
+
                     return [];
                 },
                 'selectable' => false,
