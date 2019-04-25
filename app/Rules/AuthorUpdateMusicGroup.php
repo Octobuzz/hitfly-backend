@@ -2,9 +2,11 @@
 
 namespace App\Rules;
 
+use App\Models\MusicGroup;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
-class CriticOrStarComment implements Rule
+class AuthorUpdateMusicGroup implements Rule
 {
     /**
      * Create a new rule instance.
@@ -23,7 +25,9 @@ class CriticOrStarComment implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (\Auth::user()->can('comment.сricic') || \Auth::user()->can('comment.star')) ? true : false;
+        $musicGroup = MusicGroup::query()->find($value);
+
+        return Auth::user()->id === $musicGroup->creator_group_id;
     }
 
     /**
@@ -33,6 +37,6 @@ class CriticOrStarComment implements Rule
      */
     public function message()
     {
-        return trans('validation.criticComment');
+        return trans('validation.authorUpdateMusicGroup');
     }
 }

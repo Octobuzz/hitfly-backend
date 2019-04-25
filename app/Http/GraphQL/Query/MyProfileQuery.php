@@ -28,7 +28,6 @@ class MyProfileQuery extends Query
     public function args()
     {
         return [
-
         ];
     }
 

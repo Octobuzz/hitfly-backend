@@ -106,6 +106,7 @@ return [
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
+                'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
                 'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -132,6 +133,7 @@ return [
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
+                'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\Track\TrackUploadMutation::class,
@@ -185,6 +187,7 @@ return [
         'SocialLinks' => \App\Http\GraphQL\Type\SocialLinksType::class,
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
         'ImageSizesType' => \App\Http\GraphQL\Type\ImageSizesType::class,
+        'RoleType' => \App\Http\GraphQL\Type\RoleType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,

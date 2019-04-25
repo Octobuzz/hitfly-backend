@@ -14,13 +14,14 @@ class CommentCreatedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $commentable,$commentType,$commentator;
+    public $commentable;
+    public $commentType;
+    public $commentator;
+
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
-    public function __construct($commentable, $commentator,$commentType)
+    public function __construct($commentable, $commentator, $commentType)
     {
         $this->commentable = $commentable;
         $this->commentType = $commentType;

@@ -9,13 +9,10 @@
 namespace App\Http\GraphQL\Fields;
 
 use App\Models\Album;
-use App\Models\Collection;
-use App\Models\MusicGroup;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
-use Illuminate\Support\Facades\Cache;
 
 class MusicGroupImageField extends Field
 {
@@ -48,10 +45,8 @@ class MusicGroupImageField extends Field
      */
     protected function resolve($root, $args)
     {
-        
         $return = [];
         foreach ($args['sizes'] as $size) {
-            //die(json_encode($root));
             $this->path = $this->getPath($size, $root->creator_group_id, $root);
             $returnPath = $this->path['imagePath'].$this->path['imageName'];
             if (!file_exists($this->path['public'].$this->path['imagePath'].$this->path['imageName'])) {

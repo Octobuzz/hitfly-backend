@@ -6,6 +6,7 @@ use App\Models\GroupLinks;
 use App\Models\MusicGroup;
 use App\User;
 use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\UploadType;
 
 class CreateMusicGroupMutation extends Mutation
 {
@@ -24,6 +25,10 @@ class CreateMusicGroupMutation extends Mutation
             'musicGroup' => [
                 'type' => \GraphQL::type('MusicGroupInput'),
             ],
+            'avatar' => [
+                'description' => 'аватар музыкальной группы',
+                'type' => UploadType::getInstance(),
+            ],
         ];
     }
 
@@ -38,6 +43,9 @@ class CreateMusicGroupMutation extends Mutation
         $musicGroup->name = $args['musicGroup']['name'];
         $musicGroup->career_start_year = $args['musicGroup']['careerStartYear'];
         $musicGroup->description = $args['musicGroup']['description'];
+        if (!empty($args['avatar']) && null !== $args['avatar']) {
+            $musicGroup->avatar_group = $this->setAvatar($musicGroup, $args['avatar']);
+        }
 
         $musicGroup->save();
 
@@ -93,5 +101,36 @@ class CreateMusicGroupMutation extends Mutation
         }
 
         return $musicGroup;
+    }
+
+    /**
+     * добавление аватарки группы.
+     *
+     * @param $musicGroup
+     * @param $avatar
+     *
+     * @return string
+     */
+    private function setAvatar($musicGroup, $avatar)
+    {
+        //удаление старых аватарок
+        if (null !== $musicGroup->getOriginal('avatar_group')) {
+            Storage::disk('public')->delete($musicGroup->getOriginal('avatar_group'));
+        }
+        $image = $avatar;
+        $nameFile = md5(microtime());
+        $imagePath = "music_groups/$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $image_resize = Image::make($image->getRealPath());
+        $image_resize->resize(config('image.size.music_group.default.height'), config('image.size.music_group.default.height'), function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+        //создадим папку, если несуществует
+        if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
+            Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
+        }
+        $image_resize->save($path.$imagePath);
+
+        return $imagePath;
     }
 }

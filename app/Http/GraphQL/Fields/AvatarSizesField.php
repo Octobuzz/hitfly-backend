@@ -46,9 +46,9 @@ class AvatarSizesField extends Field
         $return = [];
         foreach ($args['sizes'] as $size) {
             $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
-            if($root->getOriginal('avatar')===null){
+            if (null === $root->getOriginal('avatar')) {
                 $avatar = public_path().config('admin.default_avatar');
-            }else{
+            } else {
                 $avatar = Storage::disk('public')->getAdapter()->getPathPrefix().$root->getOriginal('avatar');
             }
             $extension = pathinfo($avatar, PATHINFO_EXTENSION);
@@ -61,7 +61,7 @@ class AvatarSizesField extends Field
                 } else {
                     $returnPath = $this->resizeAvatar($size, $publicPath, $imageName, $avatar, $path);
                 }
-            }else{
+            } else {
                 $returnPath = $path.$imageName;
             }
             $return[] = [
