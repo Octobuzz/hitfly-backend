@@ -5,7 +5,7 @@
     <div class="edit-profile">
       <div class="edit-profile-avatar">
         <ChooseAvatar
-          :image-url="avatar.current || '/images/generic-user-purple.png'"
+          :image-url="avatar.current || genericProfileAvatarUrl"
           caption="Загрузить фото"
           :circle="true"
           @input="onAvatarInput"
@@ -47,7 +47,8 @@
           </template>
         </BaseInput>
 
-        <!-- TODO: wait when the role api is implemented
+
+        <div v-if="role !== 'listener'">
           <h3 class="edit-profile-form__h3">
             Выберете жанры, в которых играете
           </h3>
@@ -64,18 +65,18 @@
               </span>
             </template>
           </ChooseGenres>
-        -->
 
-        <h3 class="edit-profile-form__h3">
-          Описание деятельности
-        </h3>
+          <h3 class="edit-profile-form__h3">
+            Описание деятельности
+          </h3>
 
-        <BaseTextarea
-          v-model="activity.input"
-          class="edit-profile-form__activity-textarea"
-          label="Описание группы"
-          :rows="10"
-        />
+          <BaseTextarea
+            v-model="activity.input"
+            class="edit-profile-form__activity-textarea"
+            label=""
+            :rows="10"
+          />
+        </div>
 
         <h2 class="edit-profile-form__h2">
           Вход
@@ -196,10 +197,11 @@ import BalloonIcon from 'components/icons/BalloonIcon.vue';
 import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
 import KeyIcon from 'components/icons/KeyIcon.vue';
+import genericProfileAvatarUrl from 'images/generic-user-purple.png';
 import gql from './gql';
 import ReturnHeader from '../ReturnHeader.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
-import ChooseGenres from '../ChooseGenres.vue';
+import ChooseGenres from '../ChooseGenres';
 
 export default {
   components: {
@@ -244,8 +246,20 @@ export default {
       },
       playedGenres: [],
       favouriteGenres: [],
-      genreEditMode: false
+      newEmail: null,
+      newPassword: null,
+      genreEditMode: false,
+      genericProfileAvatarUrl,
+      role: 'listener'
     };
+  },
+
+  mounted() {
+    // trigger preloading
+
+    this.$apollo.query({
+      query: gql.query.GENRES
+    }).then(res => console.log(res));
   },
 
   methods: {
@@ -253,45 +267,70 @@ export default {
       this.avatar.new = file;
     },
     changeEmail() {
-      console.log('change email');
+      this.newEmail = this.email.input;
+      this.$message(
+        'Нажмите "Сохранить изменения" для обновления',
+        'info',
+        { timeout: 2000 }
+      );
     },
     changePassword() {
-      console.log('change password');
+      this.$message(
+        'Нажмите "Сохранить изменения" для обновления',
+        'info',
+        { timeout: 2000 }
+      );
+      this.newPassword = this.password.input;
     },
     enterGenreEditMode() {
       this.genreEditMode = true;
     },
     saveProfile() {
       // TODO: show loader
-      /*
+
+      const profile = {};
+
+      if (this.newEmail) {
+        profile.email = this.newEmail;
+      }
+      if (this.newPassword) {
+        profile.password = this.newPassword;
+      }
+      profile.username = this.name.input;
+      profile.genres = this.favouriteGenres
+        .map(genre => genre.id);
+
+      // TODO: city id
+
+      const artistProfile = {};
+
+      if (this.role !== 'listener') {
+        if (this.description.input !== '') {
+          artistProfile.description = this.description.input;
+        }
+      }
+
+      const mutationVars = { profile };
+
+      if (this.role !== 'listener') {
+        mutationVars.artistProfile = artistProfile;
+      }
+      if (this.avatar.new !== null) {
+        mutationVars.avatar = this.avatar.new;
+      }
+
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_PROFILE,
+        variables: mutationVars,
+        update(store, { data: { updateMyProfile } }) {
+          console.log(updateMyProfile);
 
-        variables: {
-          profile: {
-            username: ,
-            cityId: ,
-            email: ,
-            password: ,
-            genres: // id array
-          },
-          artistProfile: {
-            description: ,
-            careerStart: , // Date string
-            genres: // id array
-          },
-          image: // Upload type
-        },
-
-        update(store, { data: { myProfile } }) {
           // TODO: hide loader; go to the /profile
         },
-
         error(err) {
           console.log(err);
         }
       });
-    */
     }
   },
 
@@ -300,20 +339,34 @@ export default {
       query: gql.query.MY_PROFILE,
       update({ myProfile }) {
         const {
+          avatar,
           username,
           location,
-          dateRegister,
-          // description,
-          email
+          dateRegister, // TODO: switch to career start year
+          description,
+          email,
+          favouriteGenres,
+          role
         } = myProfile;
+
+        this.avatar.current = avatar
+          .filter(image => image.size === 'size_235x235')[0].url;
+
+        console.log(myProfile);
 
         this.name.input = username;
         this.careerStartYear.input = `${new Date(dateRegister).getFullYear()}`;
         this.email.input = email;
-        // this.activity.input = description;
+        this.favouriteGenres = favouriteGenres;
 
-        if (location !== null) {
+        if (location && location.title) {
           this.location.input = location.title;
+        }
+
+        if (role) { // TODO: temp wrapper
+          if (role !== 'listener') {
+            this.activity.input = description;
+          }
         }
       },
       error(err) {

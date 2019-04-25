@@ -1,86 +1,92 @@
-mutation updateMyProfile(
+mutation UpdateMyProfile(
     $profile: MyProfileInput!,
     $artistProfile: ArtistProfileInput,
     $avatar: Upload
 ) {
-    id
-    username
-    dateRegister
-    gender
-    musicGroups {
-        id
-        name
-#        avatarGroup {
-#
-#        }
-        careerStartYear
-        genres {
-            id
-            name
-#            image
-        }
-        description
-        location {
-            id
-            area_region
-            title
-        }
-        followersCount
-    }
-    followersCount
-    location {
-        id
-        area_region
-        title
-    }
-#    avatar(
-#        sizes: [size_56x56, size_235x235]
-#    ) {
-#        size
-#        url
-#    }
-    favouriteGenres {
-        id
-        name
-        #            image
-        userFavourite
-    }
-    email
-    favoriteSongsCount
-    favoriteAlbumCount
-    watchingUser {
+    updateMyProfile(
+        profile: $profile,
+        artistProfile: $artistProfile,
+        avatar: $avatar
+    ) {
         id
         username
-        location {
-            id
-            area_region
-            title
-        }
-#        avatar(
-#            sizes: [size_56x56, size_235x235]
-#        ) {
-#            size
-#            url
-#        }
-    }
-    watchingMusicGroup {
-        id
-        name
-#        avatarGroup {
-#
-#        }
-        careerStartYear
-        genres {
+        dateRegister
+        gender
+        musicGroups {
             id
             name
-#            image
+    #        avatarGroup {
+    #
+    #        }
+            careerStartYear
+            genres {
+                id
+                name
+    #            image
+            }
+            description
+            location {
+                id
+                area_region
+                title
+            }
+            followersCount
         }
-        description
+        followersCount
         location {
             id
             area_region
             title
         }
-        followersCount
+        avatar(
+            sizes: [size_56x56, size_235x235]
+        ) {
+            size
+            url
+        }
+        favouriteGenres {
+            id
+            name
+    #        image
+            userFavourite
+        }
+        email
+        favoriteSongsCount
+        favoriteAlbumCount
+        watchingUser {
+            id
+            username
+            location {
+                id
+                area_region
+                title
+            }
+            avatar(
+                sizes: [size_56x56, size_235x235]
+            ) {
+                size
+                url
+            }
+        }
+        watchingMusicGroup {
+            id
+            name
+    #        avatarGroup {
+    #
+    #        }
+            careerStartYear
+            genres {
+                id
+                name
+    #            image
+            }
+            description
+            location {
+                id
+                area_region
+                title
+            }
+            followersCount
+        }
     }
 }

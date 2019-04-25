@@ -19,12 +19,12 @@ query MusicGroup($id: Int!) {
                 area_region
                 title
             }
-#            avatar(
-#                sizes: [size_56x56, size_235x235]
-#            ) {
-#                size
-#                url
-#            }
+            avatar(
+                sizes: [size_56x56, size_235x235]
+            ) {
+                size
+                url
+            }
         }
         description
         location {

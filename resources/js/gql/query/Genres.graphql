@@ -1,0 +1,8 @@
+query GenreList {
+    genre {
+        id
+        name
+#        image
+        userFavourite
+    }
+}

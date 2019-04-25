@@ -75,9 +75,7 @@ export default {
           this.$message(
             `Трек добавлен в "${toPlaylist.title}"`,
             'info',
-            {
-              timeout: 2000
-            }
+            { timeout: 2000 }
           );
         }, 200);
       }, 200);

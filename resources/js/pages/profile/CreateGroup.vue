@@ -116,7 +116,7 @@ import ReturnHeader from './ReturnHeader.vue';
 import SocialMediaLinks from './SocialMediaLinks.vue';
 import InviteGroupMembers from './InviteGroupMembers.vue';
 import ChooseAvatar from './ChooseAvatar.vue';
-import ChooseGenres from './ChooseGenres.vue';
+import ChooseGenres from './ChooseGenres/ChooseGenres.vue';
 import BaseInput from '../../sharedComponents/BaseInput.vue';
 import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
 import FormButton from '../../sharedComponents/FormButton.vue';

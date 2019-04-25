@@ -1,0 +1,39 @@
+@import '../../../../sass/variables';
+
+.choose-genres {
+  &__tag-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__tag {
+    margin: {
+      right: 8px;
+      bottom: 10px;
+    }
+  }
+
+  &__more-tags-button {
+    font-family: "Gotham Pro", serif;
+    font-size: 12px;
+    line-height: 16px;
+    color: $color_3;
+    padding: 8px 18px 8px 18px;;
+    position: relative;
+    margin-bottom: 11px;
+    margin-top: auto;
+    transform: translateY(1px);
+    border-radius: 20px;
+    border: 1px solid $color_purple;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color .2s;
+
+    &:hover {
+      color: white;
+      background: $linear-gradient;
+      padding: 9px 19px 9px 19px;
+      border: none;
+    }
+  }
+}

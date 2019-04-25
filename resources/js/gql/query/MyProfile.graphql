@@ -30,12 +30,12 @@ query MyProfile {
             area_region
             title
         }
-#        avatar(
-#            sizes: [size_56x56, size_235x235]
-#        ) {
-#            size
-#            url
-#        }
+        avatar(
+            sizes: [size_56x56, size_235x235]
+        ) {
+            size
+            url
+        }
         favouriteGenres {
             id
             name
@@ -53,12 +53,12 @@ query MyProfile {
                 area_region
                 title
             }
-#            avatar(
-#                sizes: [size_56x56, size_235x235]
-#            ) {
-#                size
-#                url
-#            }
+            avatar(
+                sizes: [size_56x56, size_235x235]
+            ) {
+                size
+                url
+            }
         }
         watchingMusicGroup {
             id
