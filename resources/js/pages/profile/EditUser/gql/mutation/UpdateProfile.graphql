@@ -79,6 +79,7 @@ mutation UpdateMyProfile(
                 id
                 name
     #            image
+                userFavourite
             }
             description
             location {

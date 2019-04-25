@@ -5,6 +5,8 @@ query Album($id: Int!) {
         genre {
             id,
             name
+            image
+            userFavourite
         }
         author
         year

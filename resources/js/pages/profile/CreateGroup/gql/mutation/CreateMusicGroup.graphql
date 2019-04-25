@@ -1,16 +1,29 @@
-query MusicGroup($id: Int!) {
-    musicGroup(id: $id) {
+mutation CreateMusicGroup(
+    $cover: Upload
+    $name: String!
+    $careerStartYear: String!
+    $description: String!
+    $genre: [ID]
+) {
+    createMusicGroup(
+        musicGroup: {
+            cover: $cover
+            name: $name
+            careerStartYear: $careerStartYear
+            description: $description
+            genre: $genre
+        }
+    ) {
         id
         name
-#        avatarGroup {
-#
-#        }
+        #        avatarGroup {
+        #
+        #        }
         careerStartYear
         genres {
             id
             name
-#            image
-            userFavourite
+            #            image
         }
         creatorGroup {
             id

@@ -1,9 +1,9 @@
 <template>
   <vue-element-loading
-    :active="active"
-    spinner="bar-fade-scale"
-    color="#aaa"
+    v-bind="$attrs"
     background-color="rgba(255, 255, 255, 0)"
+    :color="$attrs.color || '#aaa'"
+    :spinner="$attrs.spinner || 'bar-fade-scale'"
   />
 </template>
 
@@ -13,12 +13,6 @@ import VueElementLoading from 'vue-element-loading';
 export default {
   components: {
     VueElementLoading
-  },
-  props: {
-    active: {
-      type: Boolean,
-      required: true
-    }
   }
 };
 </script>

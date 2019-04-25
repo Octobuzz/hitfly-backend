@@ -10,6 +10,12 @@ $formRightPadding: 40px;
   flex-wrap: nowrap;
   padding-top: 70px;
 
+  &__loader {
+    width: 200px;
+    height: 100px;
+    margin: auto;
+  }
+
   &-container {
     max-width: 991px;
   }

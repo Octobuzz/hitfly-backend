@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
+import { createUploadLink as HttpLink } from 'apollo-upload-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
@@ -10,7 +10,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const uri = prod
   ? '/graphql/user'
-  : 'http://localhost:3000/graphql/user';
+  : 'http://localhost:9090/graphql/user';
 
 const httpLink = new HttpLink({
   uri

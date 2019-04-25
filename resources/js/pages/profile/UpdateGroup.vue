@@ -267,5 +267,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./CreateGroup.scss"
+  src="CreateGroup/CreateGroup.scss"
 />

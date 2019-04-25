@@ -1,6 +1,6 @@
 <template>
-  <div class="edit-profile-container">
-    <ReturnHeader class="edit-profile-header" />
+  <div v-show="dataInitialized" class="edit-profile-container">
+    <ReturnHeader/>
 
     <div class="edit-profile">
       <div class="edit-profile-avatar">
@@ -187,6 +187,7 @@
 </template>
 
 <script>
+import BaseLoader from 'components/BaseLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import BaseLink from 'components/BaseLink.vue';
@@ -250,8 +251,15 @@ export default {
       newPassword: null,
       genreEditMode: false,
       genericProfileAvatarUrl,
-      role: 'listener'
+      role: 'listener',
+      dataInitialized: false
     };
+  },
+
+  computed: {
+    desktop() {
+      return this.windowWidth > 767;
+    }
   },
 
   mounted() {
@@ -259,7 +267,7 @@ export default {
 
     this.$apollo.query({
       query: gql.query.GENRES
-    }).then(res => console.log(res));
+    }).then(() => {});
   },
 
   methods: {
@@ -286,8 +294,6 @@ export default {
       this.genreEditMode = true;
     },
     saveProfile() {
-      // TODO: show loader
-
       const profile = {};
 
       if (this.newEmail) {
@@ -324,8 +330,6 @@ export default {
         variables: mutationVars,
         update(store, { data: { updateMyProfile } }) {
           console.log(updateMyProfile);
-
-          // TODO: hide loader; go to the /profile
         },
         error(err) {
           console.log(err);
@@ -352,8 +356,6 @@ export default {
         this.avatar.current = avatar
           .filter(image => image.size === 'size_235x235')[0].url;
 
-        console.log(myProfile);
-
         this.name.input = username;
         this.careerStartYear.input = `${new Date(dateRegister).getFullYear()}`;
         this.email.input = email;
@@ -368,6 +370,9 @@ export default {
             this.activity.input = description;
           }
         }
+      },
+      result() {
+        this.dataInitialized = true;
       },
       error(err) {
         console.log(err);

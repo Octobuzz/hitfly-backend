@@ -71,6 +71,7 @@ query MyProfile {
                 id
                 name
 #                image
+                userFavourite
             }
             description
             location {

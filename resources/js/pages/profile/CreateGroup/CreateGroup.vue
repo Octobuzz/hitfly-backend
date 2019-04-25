@@ -111,17 +111,17 @@
 </template>
 
 <script>
+import BaseInput from 'components/BaseInput.vue';
+import BaseTextarea from 'components/BaseTextarea.vue';
+import FormButton from 'components/FormButton.vue';
+import PencilIcon from 'components/icons/PencilIcon.vue';
+import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import gql from './gql';
-import ReturnHeader from './ReturnHeader.vue';
-import SocialMediaLinks from './SocialMediaLinks.vue';
-import InviteGroupMembers from './InviteGroupMembers.vue';
-import ChooseAvatar from './ChooseAvatar.vue';
-import ChooseGenres from './ChooseGenres/ChooseGenres.vue';
-import BaseInput from '../../sharedComponents/BaseInput.vue';
-import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
-import FormButton from '../../sharedComponents/FormButton.vue';
-import PencilIcon from '../../sharedComponents/icons/PencilIcon.vue';
-import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
+import ReturnHeader from '../ReturnHeader.vue';
+import SocialMediaLinks from '../SocialMediaLinks.vue';
+import InviteGroupMembers from '../InviteGroupMembers.vue';
+import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseGenres from '../ChooseGenres/ChooseGenres.vue';
 
 export default {
   components: {
