@@ -26,6 +26,9 @@
   object-position: center
   margin-right: 24px
 
+.profileGeneral__info
+  align-self: center
+
 .profileGeneral__info p
   color: $color_4
 
@@ -64,8 +67,20 @@
   flex-wrap: wrap
   margin-bottom: 24px
 
+  .profileFollow &
+    margin-bottom: 6px
+
 .profileGroup__wrapper
   display: flex
+
+.profileGeneral__editButton
+  margin-left: auto
+
+  svg
+    fill: #e4e4e4
+    transition: .2s
+  &:hover svg
+    fill: #313131
 
 .profileAsideBlock__img
   width: 40px
@@ -75,18 +90,35 @@
   display: flex
   justify-content: space-between
   flex-grow: 1
+  overflow: hidden
 
 .profileGroup__wrapper
   margin-bottom: 16px
 
 .profileAsideBlock__text
+  width: 100%
+
   & p
     font-size: 14px
     font-family: $font_medium
+    display: block
+    width: 100%
     margin-bottom: 6px
+    overflow: hidden
+    text-overflow: ellipsis
   & span
     font-size: 12px
     color: $color_4
+
+.profileFollow__wrapper
+  .profileAsideBlock__text
+    align-self: center
+
+.profileFollow__subsection-header
+  font-size: 14px
+  color: #b4b4b4
+  display: block
+  margin-bottom: 8px
 
 .profileStats__subheading
   width: 100%

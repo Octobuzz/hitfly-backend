@@ -2,16 +2,21 @@
 
 const state = {
   editGroupId: null,
-  editGroupIdHistory: []
+  editGroupIdHistory: [],
+  customRedirect: false
 };
 
 const getters = {
-  editGroupId(state) {
-    return state.editGroupId;
+  editGroupId({ editGroupId }) {
+    return editGroupId;
   },
 
-  editGroupIdHistory(state) {
-    return state.editGroupIdHistory;
+  editGroupIdHistory({ editGroupIdHistory }) {
+    return editGroupIdHistory;
+  },
+
+  customRedirect({ customRedirect }) {
+    return customRedirect;
   }
 };
 
@@ -26,6 +31,14 @@ const mutations = {
 
   popEditGroupId(state) {
     state.editGroupIdHistory.pop();
+  },
+
+  flushEditGroupIdHistory(state) {
+    state.editGroupIdHistory = [];
+  },
+
+  setCustomRedirect(state, val) {
+    state.customRedirect = val;
   }
 };
 

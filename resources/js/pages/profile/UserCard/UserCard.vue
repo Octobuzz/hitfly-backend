@@ -20,13 +20,13 @@
           v-if="myProfile.location"
           class="placeMark"
         >
-          {{ myProfile.location }}
+          {{ myProfile.location.title }}
         </p>
       </div>
 
       <IconButton
         v-if="!isEditingProfile"
-        class="editButton"
+        class="profileGeneral__editButton"
         @press="goToEditProfile"
       >
         <PencilIcon/>
@@ -49,7 +49,7 @@
 
       <div class="profileGroups__wrapper">
         <div
-          v-for="group in myProfile.musicGroups"
+          v-for="group in myProfile.musicGroups.slice(0, 3)"
           :key="group.id"
           class="profileGroup"
         >
@@ -77,6 +77,7 @@
 
             <IconButton
               v-if="!isUpdatingGroup(group.id)"
+              class="profileGeneral__editButton"
               @press="goToUpdateGroup(group.id)"
             >
               <PencilIcon/>
@@ -86,39 +87,90 @@
       </div>
     </div>
 
-<!--    <div class="profileFollow profileAsideBlock">-->
-<!--      <div class="profileAsideBlock__heading">-->
-<!--        <h4>-->
-<!--          Слежу-->
-<!--        </h4>-->
-<!--        &lt;!&ndash;TODO: clarify design and functionality for 'все'&ndash;&gt;-->
-<!--        <button class="profileAsideButton">-->
-<!--          Все-->
-<!--        </button>-->
-<!--      </div>-->
+    <div
+      v-if="
+        myProfile.watchingUser.length > 0
+          || myProfile.watchingMusicGroup.length > 0
+      "
+      class="profileFollow profileAsideBlock"
+    >
+      <div class="profileAsideBlock__heading">
+        <h4>
+          Слежу
+        </h4>
+        <button class="profileAsideButton">
+          Все
+        </button>
+      </div>
 
-<!--      <div class="profileFollow__wrapper">-->
-<!--        <div-->
-<!--          v-for="userOrGroup in user.watchingUser"-->
-<!--          :key="userOrGroup.id"-->
-<!--          class="profileGroup__wrapper"-->
-<!--        >-->
-<!--          <img-->
-<!--            class="profileGeneral__img profileAsideBlock__img"-->
-<!--            :src="userOrGroup.avatar || '/images/generic-user-purple.png'"-->
-<!--            alt="User or Group avatar"-->
-<!--          >-->
-<!--          <div class="profileAsideBlock__text">-->
-<!--            <p>-->
-<!--              {{ userOrGroup.username }}-->
-<!--            </p>-->
-<!--            <span class="placeMark placeMark-small">-->
-<!--              {{ userOrGroup.location.title }}-->
-<!--            </span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+      <div
+        v-if="myProfile.watchingUser.length > 0"
+        class="profileFollow__wrapper"
+      >
+        <span class="profileFollow__subsection-header">
+          Пользователи
+        </span>
+        <div
+          v-for="user in myProfile.watchingUser.slice(0, 3)"
+          :key="user.id"
+          class="profileGroup__wrapper"
+        >
+          <img
+            class="profileGeneral__img profileAsideBlock__img"
+            :src="
+              user.avatar.filter(
+                image => image.size === 'size_56x56'
+              )[0].url || anonymousAvatar"
+            alt="User avatar"
+          >
+          <div class="profileAsideBlock__text">
+            <p>
+              {{ user.username }}
+            </p>
+            <span
+              v-if="user.location"
+              class="placeMark placeMark-small"
+            >
+              {{ user.location.title }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="myProfile.watchingMusicGroup.length > 0""
+        class="profileFollow__wrapper"
+      >
+        <span class="profileFollow__subsection-header">
+          Группы
+        </span>
+        <div
+          v-for="group in myProfile.watchingMusicGroup.slice(0, 3)"
+          :key="group.id"
+          class="profileGroup__wrapper"
+        >
+          <img
+            class="profileGeneral__img profileAsideBlock__img"
+            :src="
+              group.avatarGroup.filter(
+                image => image.size === 'size_40x40'
+              )[0].url || anonymousAvatar"
+            alt="Group avatar"
+          >
+          <div class="profileAsideBlock__text">
+            <p>
+              {{ group.name }}
+            </p>
+            <span
+              v-if="group.location"
+              class="placeMark placeMark-small"
+            >
+              {{ group.location.title }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -173,13 +225,15 @@ export default {
     },
 
     goToUpdateGroup(groupId) {
+      this.$store.commit('profile/setCustomRedirect', true);
       this.setEditGroupId(groupId);
 
       if (this.$route.fullPath !== '/profile/update-group') {
         this.$router.push('/profile/update-group');
-      } else {
-        this.$router.customData.navHistory.unshift(this.$route);
+
+        return;
       }
+      this.$router.customData.navHistory.unshift(this.$route);
     },
 
     goToCreateGroup() {
@@ -195,14 +249,14 @@ export default {
     userProfile: {
       query: gql.query.MY_PROFILE,
       update({ myProfile }) {
-        console.log('user profile update');
-
         const {
           avatar,
           username,
           location,
           description,
           musicGroups,
+          watchingUser,
+          watchingMusicGroup,
           roles
         } = myProfile;
 
@@ -211,6 +265,8 @@ export default {
 
         this.myProfile.name = username;
         this.myProfile.musicGroups = musicGroups;
+        this.myProfile.watchingUser = watchingUser;
+        this.myProfile.watchingMusicGroup = watchingMusicGroup;
 
         if (location && location.title) {
           this.myProfile.location = location.title;

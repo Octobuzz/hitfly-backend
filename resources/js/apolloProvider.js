@@ -1,6 +1,6 @@
 import { ApolloClient } from 'apollo-client';
-// import { createUploadLink as HttpLink } from 'apollo-upload-client';
-import { HttpLink } from 'apollo-link-http';
+import { createUploadLink as HttpLink } from 'apollo-upload-client';
+// import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';

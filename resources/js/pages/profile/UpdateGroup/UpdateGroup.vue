@@ -6,7 +6,7 @@
       <div class="create-group-cover">
         <ChooseAvatar
           ref="avatar"
-          :image-url="group.cover"
+          :image-url="group.cover.current"
           caption="Загрузить обложку"
           @input="onCoverInput"
         />
@@ -142,7 +142,10 @@ export default {
   data() {
     return {
       group: {
-        cover: null,
+        cover: {
+          current: '',
+          new: null
+        },
         name: {
           input: ''
         },
@@ -182,7 +185,7 @@ export default {
 
   methods: {
     onCoverInput(file) {
-      this.group.cover = file;
+      this.group.cover.new = file;
     },
 
     updateGroup() {
@@ -190,7 +193,8 @@ export default {
         mutation: gql.mutation.UPDATE_MUSIC_GROUP,
 
         variables: {
-          avatar: this.group.cover,
+          id: this.editGroupId,
+          avatar: this.group.cover.new,
           name: this.group.name.input,
           careerStartYear: `${this.group.year.input}-1-1`,
           description: this.group.activity.input,
@@ -217,7 +221,7 @@ export default {
   },
 
   apollo: {
-    group: {
+    groupData: {
       query: gql.query.MUSIC_GROUP,
 
       variables() {
@@ -226,11 +230,7 @@ export default {
         };
       },
 
-      // by some reason cache-first does NOT get the cached state
-      // and performs query, so use 'cache-only'
-      fetchPolicy: 'cache-only',
-
-      update: ({ musicGroup }) => {
+      update({ musicGroup }) {
         if (musicGroup === undefined) {
           throw new Error('Initial cache-only update for UpdateGroup:group');
         }
@@ -243,20 +243,12 @@ export default {
           avatarGroup
         } = musicGroup;
 
-        return {
-          genres,
-          cover: avatarGroup
-            .filter(image => image.size === 'size_235x235')[0].url,
-          name: {
-            input: name
-          },
-          year: {
-            input: new Date(careerStartYear).getFullYear().toString()
-          },
-          activity: {
-            input: description
-          }
-        };
+        this.group.genres = genres;
+        this.group.cover.current = avatarGroup
+          .filter(image => image.size === 'size_235x235')[0].url;
+        this.group.name.input = name;
+        this.group.year.input = new Date(careerStartYear).getFullYear().toString();
+        this.group.activity.input = description;
       }
     }
   }

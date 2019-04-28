@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store';
 import * as main from './pages/main';
 import * as profile from './pages/profile';
 
@@ -41,14 +42,20 @@ router.customData = {
   navHistory: []
 };
 
-router.afterEach((to) => {
-  const { navHistory } = router.customData;
+router.beforeEach((to, from, next) => {
+  if (!store.getters['profile/customRedirect']
+      && to.fullPath === '/profile/update-group') {
+    router.customData.navHistory = [];
+    store.commit('profile/flushEditGroupIdHistory');
 
-  navHistory.unshift(to);
-
-  if (navHistory > 100) {
-    navHistory.pop();
+    return next('/profile');
   }
+  return next();
+});
+
+router.afterEach((to) => {
+  store.commit('profile/setCustomRedirect', false);
+  router.customData.navHistory.unshift(to);
 });
 
 Vue.use(VueRouter);

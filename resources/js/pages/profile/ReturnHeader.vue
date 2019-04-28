@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import IconButton from '../../sharedComponents/IconButton.vue';
-import ArrowIcon from '../../sharedComponents/icons/ArrowIcon.vue';
+import IconButton from 'components/IconButton.vue';
+import ArrowIcon from 'components/icons/ArrowIcon.vue';
 
 export default {
   components: {
@@ -23,6 +23,7 @@ export default {
   methods: {
     onReturn() {
       this.$emit('press');
+      this.$store.commit('profile/setCustomRedirect', true);
 
       const { $store, $router } = this;
       const { navHistory } = $router.customData;
@@ -33,27 +34,10 @@ export default {
         $store.commit('profile/popEditGroupId');
       }
 
-      if (fromEditGroup && toEditGroup) {
-        const editGroupIdHistory = $store.getters['profile/editGroupIdHistory'];
-        const nextEditGroupIdIdx = editGroupIdHistory.length - 2;
-
-        this.$router.customData.navHistory.shift();
-
-        const nextEditGroupId = editGroupIdHistory[
-          Math.max(nextEditGroupIdIdx, 0)
-        ];
-
-        $store.commit('profile/setEditGroupId', {
-          id: nextEditGroupId,
-          dontAffectHistory: true
-        });
-
-        return;
-      }
-
-      if (!fromEditGroup && toEditGroup) {
+      if (toEditGroup) {
         const editGroupIdHistory = $store.getters['profile/editGroupIdHistory'];
         const nextEditGroupIdIdx = editGroupIdHistory.length - 1;
+
         const nextEditGroupId = editGroupIdHistory[
           Math.max(nextEditGroupIdIdx, 0)
         ];
@@ -62,7 +46,16 @@ export default {
           id: nextEditGroupId,
           dontAffectHistory: true
         });
+
+        if (fromEditGroup) {
+          this.$router.customData.navHistory.shift();
+
+          return;
+        }
       }
+
+      // when we enter an endpoint one item will be added to the nav history
+      // so remove two preemptively
 
       navHistory.splice(0, 2);
       $router.go(-1);

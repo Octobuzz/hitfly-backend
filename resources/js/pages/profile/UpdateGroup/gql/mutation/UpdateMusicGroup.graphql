@@ -1,4 +1,5 @@
 mutation UpdateMusicGroup(
+    $id: Int!,
     $avatar: Upload
     $name: String!
     $careerStartYear: String!
@@ -7,7 +8,8 @@ mutation UpdateMusicGroup(
 #    $socialLinks: [SocialLinksInput]
 #    $invitedMembers: [GroupMembersInput]
 ) {
-    createMusicGroup(
+    updateMusicGroup(
+        id: $id,
         avatar: $avatar
         musicGroup: {
             name: $name
@@ -36,6 +38,9 @@ mutation UpdateMusicGroup(
         creatorGroup {
             id
             username
+            roles {
+                name
+            }
             location {
                 id
                 area_region
