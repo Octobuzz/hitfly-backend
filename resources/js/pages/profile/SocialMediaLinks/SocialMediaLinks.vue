@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import BaseInput from '../../sharedComponents/BaseInput.vue';
-import BaseDropdown from '../../sharedComponents/BaseDropdown.vue';
-import FormButton from '../../sharedComponents/FormButton.vue';
-import CrossIcon from '../../sharedComponents/icons/CrossIcon.vue';
+import BaseInput from 'components/BaseInput.vue';
+import BaseDropdown from 'components/BaseDropdown.vue';
+import FormButton from 'components/FormButton.vue';
+import CrossIcon from 'components/icons/CrossIcon.vue';
 
 export default {
   components: {
@@ -76,7 +76,8 @@ export default {
       networkList: [
         'instagram',
         'facebook',
-        'vk'
+        'vkontakte',
+        'odnoklassniki'
       ]
     };
   },
@@ -168,89 +169,5 @@ export default {
 <style
   scoped
   lang="scss"
->
-@import '../../../sass/variables';
-
-.social-links {
-  &__row {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    margin-bottom: 16px;
-  }
-
-  &__network-select,
-  &__username-input {
-    flex-grow: 1;
-    width: 0;
-  }
-
-  &__network-select {
-    margin-right: 18px;
-  }
-
-  &__add-button {
-    display: block;
-    margin-left: auto;
-    max-width: 180px;
-  }
-
-  &__close-button {
-    &-row {
-      display: none;
-    }
-
-    &_desktop {
-      box-sizing: border-box;
-      position: absolute;
-      width: auto;
-      height: 21px;
-      right: -43px;
-      top: 50%;
-      padding: 5px;
-      margin: {
-        top: auto;
-        bottom: auto;
-      };
-      transform: translateY(-50%);
-    }
-
-    &_mobile {
-      display: none;
-    }
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .social-links {
-    &__row {
-      flex-wrap: wrap;
-    }
-
-    &__network-select {
-      margin-right: 9px;
-    }
-
-    &__close-button {
-      &-row {
-        display: block;
-        width: 100%;
-      }
-
-      &_desktop {
-        display: none;
-      }
-
-      &_mobile {
-        color: $color_pink;
-        display: initial;
-        padding: {
-          top: 12px;
-          bottom: 8px;
-          left: 16px;
-        }
-      }
-    }
-  }
-}
-</style>
+  src="./SocialMediaLinks.scss"
+/>

@@ -63,7 +63,7 @@ export default {
   transition: .2s;
 
   &:hover {
-    border-color: $color_pink;
+    border-color: $color_purple;
   }
 
   &::v-deep svg {

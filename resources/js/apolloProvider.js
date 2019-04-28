@@ -1,5 +1,6 @@
 import { ApolloClient } from 'apollo-client';
-import { createUploadLink as HttpLink } from 'apollo-upload-client';
+// import { createUploadLink as HttpLink } from 'apollo-upload-client';
+import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
@@ -26,6 +27,9 @@ const cache = new InMemoryCache({
       ),
       album: (_, args, { getCacheKey }) => (
         getCacheKey({ __typename: 'Album', id: args.id })
+      ),
+      musicGroup: (_, args, { getCacheKey }) => (
+        getCacheKey({ __typename: 'MusicGroup', id: args.id })
       ),
     }
   }

@@ -10,7 +10,11 @@ mutation UpdateMyProfile(
     ) {
         id
         username
+        roles {
+            name
+        }
         dateRegister
+#        careerStart
         gender
         musicGroups {
             id
@@ -26,7 +30,7 @@ mutation UpdateMyProfile(
                 id
                 name
     #            image
-                userFavoutite
+                userFavourite
             }
             description
             location {
@@ -54,12 +58,21 @@ mutation UpdateMyProfile(
     #        image
             userFavourite
         }
+        genresPlay {
+            id
+            name
+            #        image
+            userFavourite
+        }
         email
         favoriteSongsCount
         favoriteAlbumCount
         watchingUser {
             id
             username
+            roles {
+                name
+            }
             location {
                 id
                 area_region

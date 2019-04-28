@@ -11,7 +11,7 @@ $descriptionRightPadding: 37px;
 
   &-header {
     margin: {
-      right: $descriptionRightPadding;
+      right: 0;
       bottom: 42px;
     }
   }
@@ -126,7 +126,7 @@ $descriptionRightPadding: 37px;
       + $coverRightMargin
       + $descriptionMaxWidth
       + $descriptionRightPadding;
-    padding-right: $descriptionRightPadding;
+    padding-right: 0;
     margin-bottom: 62px;
 
     &__delimiter {
@@ -142,7 +142,7 @@ $descriptionRightPadding: 37px;
 
     &__save-button {
       display: block;
-      max-width: 180px;
+      max-width: 180px + $descriptionRightPadding;
       margin-left: auto;
     }
   }
@@ -155,7 +155,7 @@ $descriptionRightPadding: 37px;
 
   .create-group-footer {
     max-width: $descriptionMaxWidth;
-    padding-right: $descriptionRightPadding;
+    padding-right: 0;
   }
 }
 

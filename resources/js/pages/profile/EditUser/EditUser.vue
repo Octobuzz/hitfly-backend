@@ -33,11 +33,12 @@
           </template>
         </BaseInput>
 
-        <h2 class="edit-profile-form__h2">
+        <h2 v-if="isArtist" class="edit-profile-form__h2">
           Описание
         </h2>
 
         <BaseInput
+          v-if="isArtist"
           v-model="careerStartYear.input"
           label="Год начала карьеры"
           class="edit-profile-form__career-start-year-input"
@@ -48,7 +49,7 @@
         </BaseInput>
 
 
-        <div v-if="role !== 'listener'">
+        <div v-if="isArtist">
           <h3 class="edit-profile-form__h3">
             Выберете жанры, в которых играете
           </h3>
@@ -187,7 +188,6 @@
 </template>
 
 <script>
-import BaseLoader from 'components/BaseLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import BaseLink from 'components/BaseLink.vue';
@@ -250,15 +250,21 @@ export default {
       newEmail: null,
       newPassword: null,
       genreEditMode: false,
-      genericProfileAvatarUrl,
-      role: 'listener',
-      dataInitialized: false
+      roles: [],
+      dataInitialized: false,
+      genericProfileAvatarUrl
     };
   },
 
   computed: {
     desktop() {
       return this.windowWidth > 767;
+    },
+
+    isArtist() {
+      return this.roles.some(
+        role => role === 'Артист'
+      );
     }
   },
 
@@ -267,13 +273,14 @@ export default {
 
     this.$apollo.query({
       query: gql.query.GENRES
-    }).then(() => {});
+    }).catch((error => console.log(error)));
   },
 
   methods: {
     onAvatarInput(file) {
       this.avatar.new = file;
     },
+
     changeEmail() {
       this.newEmail = this.email.input;
       this.$message(
@@ -282,6 +289,7 @@ export default {
         { timeout: 2000 }
       );
     },
+
     changePassword() {
       this.$message(
         'Нажмите "Сохранить изменения" для обновления',
@@ -290,9 +298,11 @@ export default {
       );
       this.newPassword = this.password.input;
     },
+
     enterGenreEditMode() {
       this.genreEditMode = true;
     },
+
     saveProfile() {
       const profile = {};
 
@@ -310,15 +320,20 @@ export default {
 
       const artistProfile = {};
 
-      if (this.role !== 'listener') {
-        if (this.description.input !== '') {
-          artistProfile.description = this.description.input;
+      if (this.isArtist) {
+        if (this.activity.input !== '') {
+          artistProfile.description = this.activity.input;
         }
+
+        artistProfile.genres = this.playedGenres
+          .map(genre => genre.id);
+
+        // TODO: careerStart
       }
 
       const mutationVars = { profile };
 
-      if (this.role !== 'listener') {
+      if (this.isArtist) {
         mutationVars.artistProfile = artistProfile;
       }
       if (this.avatar.new !== null) {
@@ -346,29 +361,38 @@ export default {
           avatar,
           username,
           location,
-          dateRegister, // TODO: switch to career start year
+          careerStart,
           description,
           email,
           favouriteGenres,
-          role
+          genresPlay,
+          roles
         } = myProfile;
 
         this.avatar.current = avatar
           .filter(image => image.size === 'size_235x235')[0].url;
 
         this.name.input = username;
-        this.careerStartYear.input = `${new Date(dateRegister).getFullYear()}`;
         this.email.input = email;
         this.favouriteGenres = favouriteGenres;
+        this.roles = roles;
 
         if (location && location.title) {
           this.location.input = location.title;
         }
 
-        if (role) { // TODO: temp wrapper
-          if (role !== 'listener') {
+        if (roles.some(role => role === 'Артист')) {
+          if (careerStart) {
+            this.careerStartYear.input = `${
+              new Date(careerStart).getFullYear()
+            }`;
+          }
+
+          if (description) {
             this.activity.input = description;
           }
+
+          this.playedGenres = genresPlay;
         }
       },
       result() {

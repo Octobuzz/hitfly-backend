@@ -2,7 +2,11 @@ query MyProfile {
     myProfile {
         id
         username
+        roles {
+            name
+        }
         dateRegister
+#        careerStart
         gender
         musicGroups {
             id
@@ -46,12 +50,21 @@ query MyProfile {
 #            image
             userFavourite
         }
+        genresPlay {
+            id
+            name
+#            image
+            userFavourite
+        }
         email
         favoriteSongsCount
         favoriteAlbumCount
         watchingUser {
             id
             username
+            roles {
+                name
+            }
             location {
                 id
                 area_region

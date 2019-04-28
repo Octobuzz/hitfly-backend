@@ -1,18 +1,31 @@
 /* eslint-disable no-param-reassign, no-shadow */
 
 const state = {
-  editGroupId: null
+  editGroupId: null,
+  editGroupIdHistory: []
 };
 
 const getters = {
   editGroupId(state) {
     return state.editGroupId;
+  },
+
+  editGroupIdHistory(state) {
+    return state.editGroupIdHistory;
   }
 };
 
 const mutations = {
-  setEditGroupId(state, id) {
+  setEditGroupId(state, { id, dontAffectHistory = false }) {
     state.editGroupId = id;
+
+    if (id !== null && !dontAffectHistory) {
+      state.editGroupIdHistory.push(id);
+    }
+  },
+
+  popEditGroupId(state) {
+    state.editGroupIdHistory.pop();
   }
 };
 

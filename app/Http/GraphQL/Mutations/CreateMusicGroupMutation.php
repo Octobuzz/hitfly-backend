@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 
 class CreateMusicGroupMutation extends Mutation
 {

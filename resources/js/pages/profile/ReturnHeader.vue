@@ -24,17 +24,48 @@ export default {
     onReturn() {
       this.$emit('press');
 
-      const router = this.$router;
-      const { navHistory } = router.customData;
+      const { $store, $router } = this;
+      const { navHistory } = $router.customData;
       const toEditGroup = navHistory[1].fullPath === '/profile/update-group';
-      const fromEditProfile = navHistory[0].fullPath === '/profile/edit';
+      const fromEditGroup = $store.getters['profile/editGroupId'] !== null;
 
-      if (toEditGroup && fromEditProfile) {
-        router.push('/profile');
+      if (fromEditGroup) {
+        $store.commit('profile/popEditGroupId');
+      }
+
+      if (fromEditGroup && toEditGroup) {
+        const editGroupIdHistory = $store.getters['profile/editGroupIdHistory'];
+        const nextEditGroupIdIdx = editGroupIdHistory.length - 2;
+
+        this.$router.customData.navHistory.shift();
+
+        const nextEditGroupId = editGroupIdHistory[
+          Math.max(nextEditGroupIdIdx, 0)
+        ];
+
+        $store.commit('profile/setEditGroupId', {
+          id: nextEditGroupId,
+          dontAffectHistory: true
+        });
 
         return;
       }
-      router.go(-1);
+
+      if (!fromEditGroup && toEditGroup) {
+        const editGroupIdHistory = $store.getters['profile/editGroupIdHistory'];
+        const nextEditGroupIdIdx = editGroupIdHistory.length - 1;
+        const nextEditGroupId = editGroupIdHistory[
+          Math.max(nextEditGroupIdIdx, 0)
+        ];
+
+        $store.commit('profile/setEditGroupId', {
+          id: nextEditGroupId,
+          dontAffectHistory: true
+        });
+      }
+
+      navHistory.splice(0, 2);
+      $router.go(-1);
     }
   }
 };

@@ -1,4 +1,4 @@
-mutation CreateMusicGroup(
+mutation UpdateMusicGroup(
     $avatar: Upload
     $name: String!
     $careerStartYear: String!

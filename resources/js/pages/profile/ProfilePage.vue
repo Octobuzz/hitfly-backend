@@ -1,27 +1,5 @@
 <template>
   <div>
-    <!--TODO: temp-->
-    <!--<router-link to="/">-->
-      <!--home-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/create-group">-->
-      <!--create group-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/update-group">-->
-      <!--update group-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/edit">-->
-      <!--edit-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/obsolete">-->
-      <!--obsolete-->
-    <!--</router-link>-->
-    <!--temp-->
-
     <main class="main">
       <aside class="main__aside aside">
         <div class="aside__content">
@@ -37,14 +15,11 @@
 </template>
 
 <script>
-import UserCard from './UserCard.vue';
+import UserCard from './UserCard';
 
 export default {
   components: {
     UserCard
-  },
-  data() {
-    return {};
   }
 };
 </script>

@@ -118,10 +118,10 @@ import PencilIcon from 'components/icons/PencilIcon.vue';
 import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import gql from './gql';
 import ReturnHeader from '../ReturnHeader.vue';
-import SocialMediaLinks from '../SocialMediaLinks.vue';
-import InviteGroupMembers from '../InviteGroupMembers.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
-import ChooseGenres from '../ChooseGenres/ChooseGenres.vue';
+import ChooseGenres from '../ChooseGenres';
+import SocialMediaLinks from '../SocialMediaLinks';
+import InviteGroupMembers from '../InviteGroupMembers';
 
 export default {
   components: {
@@ -140,10 +140,7 @@ export default {
   data() {
     return {
       group: {
-        cover: {
-          current: '',
-          new: null
-        },
+        cover: null,
         name: {
           input: ''
         },
@@ -169,35 +166,58 @@ export default {
 
   methods: {
     onCoverInput(file) {
-      this.group.cover.new = file;
+      this.group.cover = file;
     },
 
     createGroup() {
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_MUSIC_GROUP,
+
         variables: {
-          avatarGroup: this.group.cover.new,
+          avatar: this.group.cover,
           name: this.group.name.input,
           careerStartYear: `${this.group.year.input}-1-1`,
           description: this.group.activity.input,
           genre: this.creationQueryGenres,
-          // socialLinks: this.group.socialLinks,
-          // invitedMembers: this.group.invitedMembers
+          socialLinks: this.group.socialLinks
+            .map(sl => ({
+              socialType: sl.network,
+              link: sl.username
+            }))
+            .filter(sl => (
+              sl.socialType !== '' && sl.link !== ''
+            )),
+          invitedMembers: this.group.invitedMembers
+            .map(email => ({
+              email
+            }))
         },
-        update(store, { data: { createMusicGroup } }) {
-          const userData = store.readQuery({ query: gql.query.MY_PROFILE });
 
-          userData.myProfile.musicGroups.push(createMusicGroup);
-          store.writeQuery({
-            query: gql.query.MY_PROFILE,
-            data: userData
-          });
+        update(store, { data: { createMusicGroup: musicGroup } }) {
+          try {
+            const userData = store.readQuery({ query: gql.query.MY_PROFILE });
+
+            store.writeQuery({
+              query: gql.query.MY_PROFILE,
+              data: {
+                ...userData,
+                myProfile: {
+                  ...userData.myProfile,
+                  musicGroups: [
+                    ...userData.myProfile.musicGroups,
+                    musicGroup
+                  ]
+                }
+              }
+            });
+          } catch (error) {
+            // we have no MY_PROFILE data to read from cache
+          }
         }
-      }).then((result) => {
+      }).then(() => {
         this.$router.push('/profile');
-      }).catch(({ graphQLErrors }) => {
-        console.log(graphQLErrors);
-        // TODO: validation errors
+      }).catch((error) => {
+        console.log(error);
       });
     }
   }

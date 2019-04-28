@@ -90,6 +90,10 @@ export default {
         this.fileReader.readAsDataURL(file);
         this.$emit('input', file);
       }
+    },
+
+    clearUserInput() {
+      this.inputUrl = null;
     }
   }
 };

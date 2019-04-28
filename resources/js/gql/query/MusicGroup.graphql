@@ -18,6 +18,9 @@ query MusicGroup($id: Int!) {
         creatorGroup {
             id
             username
+            roles {
+                name
+            }
             location {
                 id
                 area_region

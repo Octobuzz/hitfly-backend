@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import gql from '../gql';
 import BaseTag from 'components/BaseTag.vue';
 import BaseDropdown from 'components/BaseDropdown.vue';
+import gql from './gql';
 
 export default {
   components: {
@@ -122,7 +122,7 @@ export default {
 
   apollo: {
     genres: {
-      query: gql.query.GENRE_LIST,
+      query: gql.query.GENRES,
       manual: true,
       result({ data: { genre }, networkStatus }) {
         if (networkStatus === 7) {

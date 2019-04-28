@@ -5,7 +5,8 @@
     <div class="create-group">
       <div class="create-group-cover">
         <ChooseAvatar
-          :image-url="group.cover.current"
+          ref="avatar"
+          :image-url="group.cover"
           caption="Загрузить обложку"
           @input="onCoverInput"
         />
@@ -112,17 +113,17 @@
 </template>
 
 <script>
+import BaseInput from 'components/BaseInput.vue';
+import BaseTextarea from 'components/BaseTextarea.vue';
+import FormButton from 'components/FormButton.vue';
+import PencilIcon from 'components/icons/PencilIcon.vue';
+import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import gql from './gql';
-import ReturnHeader from './ReturnHeader.vue';
-import SocialMediaLinks from './SocialMediaLinks.vue';
-import InviteGroupMembers from './InviteGroupMembers.vue';
-import ChooseAvatar from './ChooseAvatar.vue';
-import ChooseGenres from './ChooseGenres/ChooseGenres.vue';
-import BaseInput from '../../sharedComponents/BaseInput.vue';
-import BaseTextarea from '../../sharedComponents/BaseTextarea.vue';
-import FormButton from '../../sharedComponents/FormButton.vue';
-import PencilIcon from '../../sharedComponents/icons/PencilIcon.vue';
-import CalendarIcon from '../../sharedComponents/icons/CalendarIcon.vue';
+import ReturnHeader from '../ReturnHeader.vue';
+import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseGenres from '../ChooseGenres';
+import SocialMediaLinks from '../SocialMediaLinks';
+import InviteGroupMembers from '../InviteGroupMembers';
 
 export default {
   components: {
@@ -141,20 +142,19 @@ export default {
   data() {
     return {
       group: {
-        cover: {
-          current: '',
-          new: null
-        },
-        genres: [],
+        cover: null,
         name: {
           input: ''
         },
         year: {
-          input: '',
+          input: `${new Date().getYear() + 1900}`
         },
         activity: {
           input: ''
-        }
+        },
+        genres: [],
+        socialLinks: [],
+        invitedMembers: []
       }
     };
   },
@@ -169,59 +169,49 @@ export default {
     }
   },
 
+  watch: {
+    editGroupId() {
+      this.$refs.avatar.clearUserInput();
+    }
+  },
+
   beforeRouteLeave(to, from, next) {
-    this.$store.commit('profile/setEditGroupId', null);
+    this.$store.commit('profile/setEditGroupId', { id: null });
     next();
   },
 
   methods: {
     onCoverInput(file) {
-      this.group.cover.new = file;
+      this.group.cover = file;
     },
 
     updateGroup() {
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_MUSIC_GROUP,
+
         variables: {
-          id: this.editGroupId,
-          // avatarGroup: this.group.cover.new,
+          avatar: this.group.cover,
           name: this.group.name.input,
           careerStartYear: `${this.group.year.input}-1-1`,
           description: this.group.activity.input,
           genre: this.creationQueryGenres,
-          // socialLinks: this.group.socialLinks,
-          // invitedMembers: this.group.invitedMembers
-        },
-        update(store, { data: { updateMusicGroup: musicGroup } }) {
-          const {
-            name,
-            careerStartYear,
-            description,
-            genres,
-            avatarGroup
-          } = musicGroup;
-
-          return {
-            genres,
-            cover: {
-              current: avatarGroup
-            },
-            name: {
-              input: name
-            },
-            year: {
-              input: new Date(careerStartYear).getFullYear().toString()
-            },
-            activity: {
-              input: description
-            }
-          };
+          socialLinks: this.group.socialLinks
+            .map(sl => ({
+              socialType: sl.network,
+              link: sl.username
+            }))
+            .filter(sl => (
+              sl.socialType !== '' && sl.link !== ''
+            )),
+          invitedMembers: this.group.invitedMembers
+            .map(email => ({
+              email
+            }))
         }
       }).then(() => {
         this.$router.push('/profile');
       }).catch((error) => {
         console.log(error);
-        // TODO: validation errors
       });
     }
   },
@@ -229,12 +219,22 @@ export default {
   apollo: {
     group: {
       query: gql.query.MUSIC_GROUP,
+
       variables() {
         return {
           id: this.editGroupId
         };
       },
+
+      // by some reason cache-first does NOT get the cached state
+      // and performs query, so use 'cache-only'
+      fetchPolicy: 'cache-only',
+
       update: ({ musicGroup }) => {
+        if (musicGroup === undefined) {
+          throw new Error('Initial cache-only update for UpdateGroup:group');
+        }
+
         const {
           name,
           careerStartYear,
@@ -245,9 +245,8 @@ export default {
 
         return {
           genres,
-          cover: {
-            current: avatarGroup
-          },
+          cover: avatarGroup
+            .filter(image => image.size === 'size_235x235')[0].url,
           name: {
             input: name
           },
@@ -267,5 +266,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="CreateGroup/CreateGroup.scss"
+  src="./UpdateGroup.scss"
 />
