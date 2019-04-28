@@ -74,7 +74,11 @@ class UserInterface extends InterfaceType
                 'description' => 'Начало карьеры',
                 'type' => Type::string(),
                 'resolve' => function (User $model) {
-                    return $model->artistProfile->career_start;
+                    if($model->artistProfile !== null) {
+                        return $model->artistProfile->career_start;
+                    }else{
+                        return null;
+                    }
                 },
             ],
             'genresPlay' => [
