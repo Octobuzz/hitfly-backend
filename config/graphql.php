@@ -200,6 +200,7 @@ return [
         'GroupMembersInput' => \App\Http\GraphQL\InputObject\GroupMembersInput::class,
         'MyProfileInput' => \App\Http\GraphQL\InputObject\MyProfileInput::class,
         'ArtistProfileInput' => \App\Http\GraphQL\InputObject\ArtistProfileInput::class,
+        'MusicGroupUpdateInput' => \App\Http\GraphQL\InputObject\MusicGroupUpdateInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,

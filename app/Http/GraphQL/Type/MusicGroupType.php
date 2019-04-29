@@ -71,6 +71,13 @@ class MusicGroupType extends GraphQLType
                     return $model->followers->count();
                 },
             ],
+            'activeMembers' => [
+                'type' => Type::listOf(\GraphQL::type('User')),
+                'description' => 'Активные участники группы',
+                /*'resolve' => function ($model) {
+                    return die(json_encode($model->activeMembers()->get()));
+                },*/
+            ],
         ];
     }
 }
