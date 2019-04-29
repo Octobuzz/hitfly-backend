@@ -181,3 +181,28 @@
 
 .fan::before
   background-image: url(/images/fan.png)
+
+.profileAboutMe
+  .profileAboutMe__heading
+    margin-bottom: 16px
+
+  .profileAboutMe__text p
+    font-family: "Gotham Pro", serif
+    font-size: 14px
+    color: #606060
+
+.profileCreateGroup
+  font-family: "GothamPro_bold", serif
+  font-size: 20px
+  color: black
+
+.profileCreateGroup__icon
+  display: inline-block
+  transform: translate(-4px) rotate(180deg)
+  opacity: 0
+  transition: .3s
+
+  .profileCreateGroup:hover &,
+  .profileCreateGroup.hover &
+    opacity: 1
+    transform: translate(8px) rotate(180deg)

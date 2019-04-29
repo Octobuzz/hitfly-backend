@@ -14,7 +14,7 @@ mutation UpdateMyProfile(
             name
         }
         dateRegister
-#        careerStart
+        careerStart
         gender
         musicGroups {
             id

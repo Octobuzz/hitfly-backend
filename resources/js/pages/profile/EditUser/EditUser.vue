@@ -328,7 +328,9 @@ export default {
         artistProfile.genres = this.playedGenres
           .map(genre => genre.id);
 
-        // TODO: careerStart
+        if (this.careerStartYear.input !== '') {
+          artistProfile.careerStart = `${this.careerStartYear.input}-1-1`;
+        }
       }
 
       const mutationVars = { profile };
@@ -343,8 +345,8 @@ export default {
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_PROFILE,
         variables: mutationVars,
-        update(store, { data: { updateMyProfile } }) {
-          console.log(updateMyProfile);
+        update: (store, { data: { updateMyProfile } }) => {
+          this.$router.push('/profile');
         },
         error(err) {
           console.log(err);
