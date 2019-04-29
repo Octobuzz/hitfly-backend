@@ -34,7 +34,7 @@ class FavouriteController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      *
      * @return Content
@@ -50,7 +50,7 @@ class FavouriteController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      *
      * @return Content
@@ -86,18 +86,28 @@ class FavouriteController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Favourite());
+        $grid->actions(function ($actions) {
+            $actions->disableEdit();
+        });
 
         $grid->id('Id');
         $grid->favouriteable_type('Тип избранного')->display(function ($favourite) {
-            return __('messages.'.Favourite::CLASS_NAME[$favourite]);
+            return __('messages.' . Favourite::CLASS_NAME[$favourite]);
         });
-        //$grid->favouriteable_id('Favouriteable id');
-        //dd($grid->title('Название')->model()->favouriteable());
-        /*$grid->favouriteable()->display(
-            function ($ddd){
-                dd($ddd);
+        $grid->favouriteable()->display(
+            function ($favouriteable) {//админка возвращает массив, вместо объекта, получить имя через метод нельзя
+                if (!empty($favouriteable['title'])) {
+                    return $favouriteable['title'];
+                }
+                if (!empty($favouriteable['track_name'])) {
+                    return $favouriteable['track_name'];
+                }
+                if (!empty($favouriteable['name'])) {
+                    return $favouriteable['name'];
+                }
+                return 'имя ненайдено';
             }
-        );*/
+        );
         $grid->user('Пользователь')->display(function ($user) {
             return $user['username'];
         });
@@ -117,10 +127,13 @@ class FavouriteController extends Controller
     protected function detail($id)
     {
         $show = new Show(Favourite::findOrFail($id));
-
+        $show->panel()
+            ->tools(function ($tools) {
+                $tools->disableEdit();
+            });
         $show->id('Id');
         $show->favouriteable_type('Тип избранного')->as(function ($favourite) {
-            return __('messages.'.Favourite::CLASS_NAME[$favourite]);
+            return __('messages.' . Favourite::CLASS_NAME[$favourite]);
         });
         /*$show->favouriteable()->title('Тип избранного')->as(function ($favourite) {
             return $favourite->title;
@@ -153,13 +166,28 @@ class FavouriteController extends Controller
             $return = [];
             if ($type) {
                 foreach (Favourite::CLASS_NAME as $k => $fType) {
-                    $return[$k] = __('messages.'.$fType);
+                    $return[$k] = __('messages.' . $fType);
                 }
             }
 
             return $return;
-        })->load('favouriteable_id', '/admin/api/favorite')->rules('required');
-        $form->select('favouriteable_id');
+        })/*->load('favouriteable_id', '/admin/api/favorite')*/->rules('required')->disable();
+
+        $form->select('id','Избранное')->options(function ($id){
+            $favourite = Favourite::find($id);
+            return [$id => (string) $favourite->favouriteable->getName()];
+        })->rules('required');
+        /*$form->select('favouriteable_id','Избранное')->model(Favourite::class);/*->options(function ($type) {
+            dd($type);
+            $return = [];
+            if ($type) {
+                foreach (Favourite::CLASS_NAME as $k => $fType) {
+                    $return[$k] = __('messages.' . $fType);
+                }
+            }
+
+            return $return;
+        })->load('favouriteable_id', '/admin/api/favorite')->rules('required');*/
 
         $form->select('user_id', 'Пользователь')->options(function ($id) {
             $user = User::find($id);

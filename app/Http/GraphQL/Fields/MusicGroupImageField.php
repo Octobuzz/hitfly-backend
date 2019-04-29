@@ -83,9 +83,9 @@ class MusicGroupImageField extends Field
             $image = $this->path['public'].$image;
         }
         $image_resize = Image::make($image)
-            ->resize(config('image.size.music_group.'.$size.'.width'), config('image.size.music_group.'.$size.'.height'), function ($constraint) {
+            ->fit(config('image.size.music_group.'.$size.'.width'), config('image.size.music_group.'.$size.'.height')/*, function ($constraint) {
                 $constraint->aspectRatio();
-            });
+            }*/);
 
         //создадим папку, если несуществует
         if ($default) {

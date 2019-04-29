@@ -59,16 +59,17 @@ class CreateMusicGroupMutation extends Mutation
 
         if (!empty($args['musicGroup']['socialLinks'])) {
             foreach ($args['musicGroup']['socialLinks'] as $social) {
-                /** @var GroupLinks $socialLinks */
-                $socialLinks = GroupLinks::query()->where('music_group_id', $args['id'])
-                    ->where('social_type', $social['socialType'])->first();
-                if (null === $socialLinks) {
+
+                if (empty($args['id'])) {
                     $socialLinks = new GroupLinks();
                     $socialLinks->social_type = $social['socialType'];
                     $socialLinks->link = $social['link'];
-                    $socialLinks->music_group_id = $args['id'];
+                    $socialLinks->music_group_id = $musicGroup->id;
                     $socialLinks->save();
                 } else {
+                    /** @var GroupLinks $socialLinks */
+                    $socialLinks = GroupLinks::query()->where('music_group_id', $args['id'])
+                        ->where('social_type', $social['socialType'])->first();
                     $socialLinks->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($social));
                     $socialLinks->save();
                 }
@@ -76,18 +77,19 @@ class CreateMusicGroupMutation extends Mutation
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {
-                //Validator::make($members,['email'=>"required_without:user_id","user_id"=>"required_without:email"])->validate();
-                $inviteQuery = InviteToGroup::query()->where('music_group_id', $args['id']);
+                if($args['id']) {
+                    $inviteQuery = InviteToGroup::query()->where('music_group_id', $args['id']);
 
-                if (!empty($members['email'])) {
-                    $inviteQuery->where('email', '=', $members['email']);
-                }
-                if (!empty($members['user_id'])) {
-                    $inviteQuery->where('user_id', '=', $members['user_id']);
-                }
-                $inviteMember = $inviteQuery->first();
-
-                if (null === $inviteMember) {
+                    if (!empty($members['email'])) {
+                        $inviteQuery->where('email', '=', $members['email']);
+                    }
+                    if (!empty($members['user_id'])) {
+                        $inviteQuery->where('user_id', '=', $members['user_id']);
+                    }
+                    $inviteMember = $inviteQuery->first();
+                    $inviteMember->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($members));
+                    $inviteMember->save();
+                }else{
                     $inviteMember = new InviteToGroup();
                     if (!empty($members['email'])) {
                         $inviteMember->email = $members['email'];
@@ -97,10 +99,8 @@ class CreateMusicGroupMutation extends Mutation
                     }
                     $inviteMember->music_group_id = $args['id'];
                     $inviteMember->save();
-                } else {
-                    $inviteMember->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($members));
-                    $inviteMember->save();
                 }
+
             }
         }
 

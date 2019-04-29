@@ -24,10 +24,10 @@ class Favourite extends Model
         'favouriteable_id',
         'user_id',
     ];
-    protected $hidden = [
+    /*protected $hidden = [
         'created_at',
         'updated_at',
-    ];
+    ];*/
 
     public function favouriteable(): MorphTo
     {

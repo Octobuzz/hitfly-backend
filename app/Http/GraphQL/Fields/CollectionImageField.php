@@ -91,9 +91,9 @@ class CollectionImageField extends Field
             $image = $this->path['public'].$image;
         }
         $image_resize = Image::make($image)
-            ->resize(config('image.size.collection.'.$size.'.width'), config('image.size.collection.'.$size.'.height'), function ($constraint) {
+            ->fit(config('image.size.collection.'.$size.'.width'), config('image.size.collection.'.$size.'.height')/*, function ($constraint) {
                 $constraint->aspectRatio();
-            });
+            }*/);
 
         //создадим папку, если несуществует
         if ($default) {
