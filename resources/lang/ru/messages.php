@@ -9,6 +9,7 @@ return [
     'album' => 'Альбом',
     'track' => 'Трек',
     'genre' => 'Жанр',
+    'collection' => 'Коллекция',
     'month' => 'Месяц',
     'day' => 'День',
     'year' => 'Год',

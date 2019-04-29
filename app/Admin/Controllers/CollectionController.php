@@ -10,6 +10,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Storage;
 
 class CollectionController extends Controller
 {
@@ -128,7 +129,24 @@ class CollectionController extends Controller
         $form = new Form(new Collection());
 
         $form->text('title', 'Заголовок');
-        $form->image('image', 'Изображение');
+        $form->image('image', 'Изображение')->uniqueName();
+        $form->select('user_id', 'Пользователь')->options(function ($id) {
+            $user = User::find($id);
+            if ($user) {
+                return [$user->id => $user->username];
+            }
+        })->ajax('/admin/api/users');
+        $states = [
+            'on'  => ['value' => 1, 'text' => 'Админ', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => 'Пользователь', 'color' => 'danger'],
+        ];
+        $form->switch('is_admin', 'Коллекция администратора')->states($states);
+        $form->saving(function (Form $form) {
+            if($form->image !== null) {
+                Storage::disk('public')->delete($form->model()->getOriginal('image'));
+            }
+            $form->image('image')->move('collections/'.$form->user_id)->uniqueName();
+        });
 
         return $form;
     }
