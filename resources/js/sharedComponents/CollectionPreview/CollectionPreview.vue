@@ -1,37 +1,41 @@
 <template>
-  <div :class="['album-preview', $attrs.class]">
+  <div :class="['collection-preview', $attrs.class]">
     <div
       v-if="isLoading"
-      class="album-preview__loader"
+      class="collection-preview__loader"
     >
-      loading album...
+      loading collection...
     </div>
     <div
       v-if="!isLoading"
-      class="album-preview__content"
+      class="collection-preview__content"
     >
-      <div class="album-preview__drape"/>
+      <div class="collection-preview__drape"/>
+
+      <span class="collection-preview__title">
+        {{ collection.title }}
+      </span>
 
       <img
-        :key="albumId"
-        :src="albumCoverUrl"
-        alt="Album cover"
-        class="album-preview__cover"
+        :key="collectionId"
+        :src="collectionImageUrl"
+        alt="Collection image"
+        class="collection-preview__image"
       >
 
-      <div class="album-preview__button-section">
+      <div class="collection-preview__button-section">
         <AddToFavouriteButton
-          class="album-preview__icon-button"
+          class="collection-preview__icon-button"
           passive="mobile-passive"
           hover="mobile-hover"
-          item-type="album"
-          :item-id="album.id"
+          item-type="collection"
+          :item-id="collection.id"
         />
 
         <IconButton
           :class="[
-            'album-preview__play-button',
-            'album-preview__icon-button'
+            'collection-preview__play-button',
+            'collection-preview__icon-button'
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
@@ -40,24 +44,13 @@
         </IconButton>
 
         <IconButton
-          class="album-preview__icon-button"
+          class="collection-preview__icon-button"
           passive="mobile-passive"
           hover="mobile-hover"
         >
           <DotsIcon/>
         </IconButton>
       </div>
-    </div>
-    <div
-      v-if="!isLoading"
-      class="album-preview__footer"
-    >
-      <span class="album-preview__title">
-        {{ album.title }}
-      </span>
-      <span class="album-preview__author">
-        {{ album.author }}
-      </span>
     </div>
   </div>
 </template>
@@ -80,7 +73,7 @@ export default {
   },
 
   props: {
-    albumId: {
+    collectionId: {
       type: Number,
       required: true
     }
@@ -89,37 +82,37 @@ export default {
   data() {
     return {
       isLoading: true,
-      album: null
+      collection: null
     };
   },
 
   computed: {
-    albumCoverUrl() {
+    collectionImageUrl() {
       if (this.windowWidth <= MOBILE_WIDTH) {
-        return this.album.cover
-          .filter(cover => cover.size === 'size_104x104')[0].url;
+        return this.collection.image
+          .filter(image => image.size === 'size_150x150')[0].url;
       }
 
-      return this.album.cover
-        .filter(cover => cover.size === 'size_120x120')[0].url;
+      return this.collection.image
+        .filter(image => image.size === 'size_214x160')[0].url;
     }
   },
 
   apollo: {
-    album() {
+    collection() {
       return {
-        query: gql.query.ALBUM,
+        query: gql.query.COLLECTION,
         variables() {
           // use function to allow rendering another album when the prop changes
 
           return {
-            id: this.albumId
+            id: this.collectionId
           };
         },
-        update: ({ album }) => {
+        update: ({ collection }) => {
           this.isLoading = false;
 
-          return album;
+          return collection;
         },
         error: (error) => {
           console.log(error);
@@ -133,5 +126,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./AlbumPreview.scss"
+  src="./CollectionPreview.scss"
 />

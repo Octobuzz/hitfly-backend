@@ -1,0 +1,12 @@
+query Collection($id: Int!) {
+    collection(id: $id) {
+        id
+        title
+        image(
+            sizes: [size_150x150, size_214x160]
+        ) {
+            size
+            url
+        }
+    }
+}

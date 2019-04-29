@@ -28,6 +28,9 @@ const cache = new InMemoryCache({
       album: (_, args, { getCacheKey }) => (
         getCacheKey({ __typename: 'Album', id: args.id })
       ),
+      collection: (_, args, { getCacheKey }) => (
+        getCacheKey({ __typename: 'Collection', id: args.id })
+      ),
       musicGroup: (_, args, { getCacheKey }) => (
         getCacheKey({ __typename: 'MusicGroup', id: args.id })
       ),
