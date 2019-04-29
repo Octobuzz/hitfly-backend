@@ -90,11 +90,10 @@ class AlbumCoverField extends Field
         }else{//путь к картинке вместо урл
             $image = $this->path['public'].$image;
         }
-
-        $image_resize = Image::make(Storage::disk('public')->path($image))
-            ->resize(config('image.size.album.'.$size.'.width'), config('image.size.album.'.$size.'.height'), function ($constraint) {
+        $image_resize = Image::make($image)
+            ->fit(config('image.size.album.'.$size.'.width'), config('image.size.album.'.$size.'.height')/*, function ($constraint) {
                 $constraint->aspectRatio();
-            });
+            }*/);
         //создадим папку, если несуществует
         if ($default) {
             $this->path['imagePath'] = 'albums/';

@@ -86,9 +86,9 @@ class AvatarSizesField extends Field
     protected function resizeAvatar($size, $publicPath, $imagePath, $avatar, $path, $default = false)
     {
         $image_resize = Image::make($avatar)
-            ->resize(config('image.size.avatar.'.$size.'.width'), config('image.size.avatar.'.$size.'.height'), function ($constraint) {
+            ->fit(config('image.size.avatar.'.$size.'.width'), config('image.size.avatar.'.$size.'.height')/*, function ($constraint) {
                 $constraint->aspectRatio();
-            });
+            }*/);
 
         //создадим папку, если несуществует
         if ($default) {
