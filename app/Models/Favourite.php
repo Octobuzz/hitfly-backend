@@ -11,21 +11,23 @@ class Favourite extends Model
     const TYPE_ALBUM = 'album';
     const TYPE_TRACK = 'track';
     const TYPE_GENRE = 'genre';
+    const TYPE_COLLECTION = 'collection';
 
     const CLASS_NAME = [
         Album::class => self::TYPE_ALBUM,
         Track::class => self::TYPE_TRACK,
         Genre::class => self::TYPE_GENRE,
+        Collection::class => self::TYPE_COLLECTION,
     ];
     protected $fillable = [
         'favouriteable_type',
         'favouriteable_id',
         'user_id',
     ];
-    protected $hidden = [
+    /*protected $hidden = [
         'created_at',
         'updated_at',
-    ];
+    ];*/
 
     public function favouriteable(): MorphTo
     {
@@ -51,11 +53,8 @@ class Favourite extends Model
     {
         return $this->belongsTo(Genre::class, 'favouriteable_id');
     }
-
-    public function getFavouriteableAttribute($aat)
+    public function collection(): BelongsTo
     {
-        dd($aat);
-
-        return  $aat->getName();
+        return $this->belongsTo(Collection::class, 'favouriteable_id');
     }
 }

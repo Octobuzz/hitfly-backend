@@ -1,31 +1,9 @@
 <template>
   <div>
-    <!--TODO: temp-->
-    <!--<router-link to="/">-->
-      <!--home-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/create-group">-->
-      <!--create group-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/update-group">-->
-      <!--update group-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/edit">-->
-      <!--edit-->
-    <!--</router-link>-->
-    <!--<br>-->
-    <!--<router-link to="/profile/obsolete">-->
-      <!--obsolete-->
-    <!--</router-link>-->
-    <!--temp-->
-
     <main class="main">
       <aside class="main__aside aside">
         <div class="aside__content">
-          <UserCard/>
+          <UserCard v-if="desktop || fullPath === '/profile'"/>
         </div>
       </aside>
 
@@ -37,14 +15,22 @@
 </template>
 
 <script>
-import UserCard from './UserCard.vue';
+import UserCard from './UserCard';
+
+const MOBILE_WIDTH = 767;
 
 export default {
   components: {
     UserCard
   },
-  data() {
-    return {};
+  computed: {
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
+    },
+
+    fullPath() {
+      return this.$route.fullPath;
+    }
   }
 };
 </script>

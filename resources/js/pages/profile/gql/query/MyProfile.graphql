@@ -4,12 +4,16 @@ query MyProfile {
         username
         email
         dateRegister
-        avatar
         followersCount
         musicGroups {
             id
             name
-            avatarGroup
+            avatarGroup(
+                sizes: [size_40x40, size_235x235]
+            ) {
+                size
+                url
+            }
         }
         location {
             id

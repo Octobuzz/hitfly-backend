@@ -19,10 +19,6 @@ const state = {
 };
 
 const getters = {
-  editGroupId({ editGroupId }) {
-    return editGroupId;
-  },
-
   favInProcess({ favInProcess }) {
     return ({ type, id }) => (
       favInProcess[type]
@@ -32,10 +28,6 @@ const getters = {
 };
 
 const mutations = {
-  setEditGroupId(state, id) {
-    state.editGroupId = id;
-  },
-
   addFavInProcess({ favInProcess }, { type, id }) {
     favInProcess[type].push(id);
   },

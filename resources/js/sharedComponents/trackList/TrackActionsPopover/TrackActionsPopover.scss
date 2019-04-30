@@ -1,0 +1,163 @@
+// popover cannot use scoped styles
+
+.track-actions-popover {
+  $bg-color: #222;
+
+  &.open {
+    transition: transform .2s !important;
+  }
+
+  display: block !important;
+  width: 330px;
+  border-radius: 5px;
+  z-index: 10000;
+  background: $bg-color;
+  box-shadow: 0 0 30px 5px rgba(black, .1);
+
+  &__wrapper {
+    padding: 24px;
+  }
+
+  &__inner {
+    background: $bg-color;
+    color: black;
+    border-radius: 5px;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -5px;
+    top: calc(50% - 5px);
+    margin: 5px 0;
+    border: {
+      width: 5px 0 5px 5px;
+      style: solid;
+      top-color: transparent !important;
+      right-color: transparent !important;
+      bottom-color: transparent !important;
+      left-color: $bg-color;
+    }
+    z-index: 990;
+  }
+
+  &__header {
+    font-family: "GothamPro_bold", serif;
+    font-size: 14px;
+    color: white;
+    position: relative;
+    padding: {
+      top: 8px;
+      bottom: 6px;
+    }
+  }
+
+  &__album-cover {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin: {
+      right: 12px;
+      bottom: 12px;
+    }
+    border-radius: 4px;
+    user-select: none;
+  }
+
+  &__album-song {
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  &__album-author {
+    font-family: "Gotham Pro", serif;
+    display: block;
+  }
+
+  &__delimiter {
+    clear: both;
+    width: 100%;
+    height: 1px;
+    border: none;
+    background: #424242;
+  }
+
+  &__menu {
+    font-size: 14px;
+    color: #6e6e6e;
+  }
+
+  &__menu-item {
+    display: block;
+    padding: 12px 8px;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+      background: #333;
+    }
+  }
+
+  &__tell-problem {
+    font-size: 14px;
+    color: #6e6e6e;
+    display: block;
+    padding: 12px 6px;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+      background: #333;
+    }
+  }
+
+  &__add-playlist-header,
+  &__go-back-button {
+    font-size: 14px;
+    color: white;
+    display: block;
+    padding: 12px 0 0;
+    user-select: none;
+  }
+
+  &__go-back-button {
+    text-align: center;
+    cursor: pointer;
+  }
+
+  &__add-playlist-header {
+    font-family: "GothamPro_bold", serif;
+    text-align: left;
+  }
+
+  &[x-placement^="left"] {
+    margin-right: 5px;
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s, visibility .2s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .track-actions-popover {
+    width: 240px;
+
+    &__wrapper {
+      padding: 8px;
+    }
+  }
+}

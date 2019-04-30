@@ -106,6 +106,7 @@ return [
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
+                'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
                 'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -132,6 +133,7 @@ return [
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
+                'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
                 'trackUpload' => \App\Http\GraphQL\Mutations\Track\TrackUploadMutation::class,
@@ -139,6 +141,7 @@ return [
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
+                'updateComment' => \App\Http\GraphQL\Mutations\UpdateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
 
                 'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
@@ -181,8 +184,11 @@ return [
         'FavouriteTrack' => \App\Http\GraphQL\Type\FavouriteTrackType::class,
         'FavouriteAlbum' => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
         'FavouriteGenre' => \App\Http\GraphQL\Type\FavouriteGenreType::class,
+        'FavouriteCollection' => \App\Http\GraphQL\Type\FavouriteCollectionType::class,
         'SocialLinks' => \App\Http\GraphQL\Type\SocialLinksType::class,
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
+        'ImageSizesType' => \App\Http\GraphQL\Type\ImageSizesType::class,
+        'RoleType' => \App\Http\GraphQL\Type\RoleType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -199,6 +205,10 @@ return [
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
         'GenderType' => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
         'SocialLinksTypeEnum' => \App\Http\GraphQL\Enums\SocialLinksTypeEnum::class,
+        'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
+        'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
+        'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
+        'MusicGroupSizeEnum' => \App\Http\GraphQL\Enums\MusicGroupSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
@@ -252,6 +262,6 @@ return [
         'controller' => \Rebing\GraphQL\GraphQLController::class.'@graphiql',
         'middleware' => [],
         'view' => 'graphql::graphiql',
-        'display' => env('ENABLE_GRAPHIQL', true),
+        'display' => env('ENABLE_GRAPHIQL', false),
     ],
 ];

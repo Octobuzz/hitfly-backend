@@ -2,7 +2,7 @@
 
 namespace App\Http\GraphQL\InputObject;
 
-use App\Rules\CriticComment;
+use App\Rules\CriticOrStarComment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -12,7 +12,7 @@ class CommentInput extends GraphQLType
 
     protected $attributes = [
         'name' => 'CommentInput',
-        'description' => 'Add new music group',
+        'description' => 'Комментарий(отзыв)',
     ];
 
     public function fields()
@@ -20,21 +20,21 @@ class CommentInput extends GraphQLType
         return [
             'commentableId' => [
                 'name' => 'commentableId',
-                'description' => 'name',
+                'description' => 'id комментируемого объекта(трек,альбом)',
                 'type' => Type::nonNull(Type::int()),
-                'rules' => ['max:250'],
+                'rules' => ['required'],
             ],
             'commentableType' => [
                 'name' => 'commentableType',
-                'description' => 'name',
+                'description' => 'Комментируемый тип',
                 'type' => \GraphQL::type('CommentTypeEnum'),
-                'rules' => ['max:250'],
+                'rules' => ['required'],
             ],
             'comment' => [
                 'name' => 'comment',
-                'description' => 'name',
+                'description' => 'Комментарий',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['max:250', new CriticComment()],
+                'rules' => ['max:250', new CriticOrStarComment(), 'required'],
             ],
         ];
     }

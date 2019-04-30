@@ -1,5 +1,5 @@
 <template>
-  <div class="album-preview">
+  <div :class="['album-preview', $attrs.class]">
     <div
       v-if="isLoading"
       class="album-preview__loader"
@@ -13,7 +13,8 @@
       <div class="album-preview__drape"/>
 
       <img
-        :src="album.cover"
+        :key="albumId"
+        :src="albumCoverUrl"
         alt="Album cover"
         class="album-preview__cover"
       >
@@ -62,13 +63,13 @@
 </template>
 
 <script>
-import AddToFavouriteButton from 'components/AddToFavouriteButton.vue';
+import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import gql from './gql';
 
-// TODO: cache redirect
+const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -77,32 +78,45 @@ export default {
     DotsIcon,
     PlayIcon
   },
+
   props: {
     albumId: {
       type: Number,
       required: true
-    },
-    // TODO: this prop defines fetch policy
-    preloaded: {
-      type: Boolean,
-      default: false
     }
   },
+
   data() {
     return {
       isLoading: true,
       album: null
     };
   },
+
+  computed: {
+    albumCoverUrl() {
+      if (this.windowWidth <= MOBILE_WIDTH) {
+        return this.album.cover
+          .filter(cover => cover.size === 'size_104x104')[0].url;
+      }
+
+      return this.album.cover
+        .filter(cover => cover.size === 'size_120x120')[0].url;
+    }
+  },
+
   apollo: {
     album() {
       return {
         query: gql.query.ALBUM,
-        variables: {
-          id: this.albumId
+        variables() {
+          // use function to allow rendering another album when the prop changes
+
+          return {
+            id: this.albumId
+          };
         },
         update: ({ album }) => {
-          console.log(album);
           this.isLoading = false;
 
           return album;

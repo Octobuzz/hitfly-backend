@@ -1,0 +1,28 @@
+query Track($id: Int!) {
+    track(id: $id) {
+        id
+        trackName
+        album {
+            id
+            title
+            author
+            cover(
+                sizes: [size_32x32, size_48x48, size_120x120]
+            ) {
+                size
+                url
+            }
+        }
+        userPlayLists {
+            id
+            title
+#            image(
+#                sizes: [size_150x150, size_214x160]
+#            ) {
+#                size
+#                url
+#            }
+        }
+        userFavourite
+    }
+}

@@ -1,0 +1,208 @@
+@import '../../../../sass/variables'
+
+.profileAsideButton
+  border-radius: $border-radius
+  background-color: $color_5
+  color: $color_4
+  padding: 8px
+  font-size: 10px
+
+.profileAsideBlock
+  padding: 32px 24px
+  border-bottom: 1px solid #e4e4e4
+  position: relative
+
+.profileGeneral
+  display: flex
+
+  .editButton
+    margin-left: auto
+
+.profileGeneral__img
+  width: 72px
+  height: 72px
+  border-radius: 50%
+  object-fit: cover
+  object-position: center
+  margin-right: 24px
+
+.profileGeneral__info
+  align-self: center
+
+.profileGeneral__info p
+  color: $color_4
+
+.profileGeneral__info button
+  margin-right: 20px
+  margin-top: 20px
+
+.profileGeneral__subheader
+  margin-bottom: 10px
+  font-size: 12px
+
+.placeMark
+  font-size: 16px
+  line-height: 24px
+
+  &::before
+    content: ''
+    width: 9px
+    height: 12px
+    background-size: contain
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNC40OTUgMEMyLjAxIDAgMCAyLjAyMiAwIDQuNTIyIDAgNS44MjIuNjQ2IDcgMS4yODMgOC4wODhhMTguOTU0IDE4Ljk1NCAwIDAgMCAyLjc4OCAzLjczLjU5NS41OTUgMCAwIDAgLjg1OCAwIDE3LjQyNSAxNy40MjUgMCAwIDAgMi40OTUtMy4xNUM4LjE4MiA3LjQzNyA5IDYuMDE0IDkgNC41MjEgOC45OSAyLjAzMiA2Ljk4IDAgNC40OTUgMHptMCA3LjE0M0EyLjczNyAyLjczNyAwIDAgMSAxLjc2OCA0LjRhMi43MzcgMi43MzcgMCAwIDEgMi43MjctMi43NDRBMi43MyAyLjczIDAgMCAxIDcuMjIyIDQuNGEyLjczIDIuNzMgMCAwIDEtMi43MjcgMi43NDN6IiBmaWxsPSIjRTRFNEU0IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=)
+    display: inline-block
+    margin-right: 8px
+
+  &.placeMark-small
+    font-size: 12px
+
+    &::before
+      width: 6px
+      height: 8px
+
+.profileAsideBlock__heading
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+  margin-bottom: 24px
+
+  .profileFollow &
+    margin-bottom: 6px
+
+.profileGroup__wrapper
+  display: flex
+
+.profileGeneral__editButton
+  margin-left: auto
+
+  svg
+    fill: #e4e4e4
+    transition: .2s
+  &:hover svg
+    fill: #313131
+
+.profileAsideBlock__img
+  width: 40px
+  height: 40px
+
+.profileGroup__body
+  display: flex
+  justify-content: space-between
+  flex-grow: 1
+  overflow: hidden
+
+.profileGroup__wrapper
+  margin-bottom: 16px
+
+.profileAsideBlock__text
+  width: 100%
+
+  & p
+    font-size: 14px
+    font-family: $font_medium
+    display: block
+    width: 100%
+    margin-bottom: 6px
+    overflow: hidden
+    text-overflow: ellipsis
+  & span
+    font-size: 12px
+    color: $color_4
+
+.profileFollow__wrapper
+  .profileAsideBlock__text
+    align-self: center
+
+.profileFollow__subsection-header
+  font-size: 14px
+  color: #b4b4b4
+  display: block
+  margin-bottom: 8px
+
+.profileStats__subheading
+  width: 100%
+
+  & p
+    font-size: 12px
+    line-height: 22px
+    color: $color_4
+
+    & span
+      font-family: $font_bold
+
+.profileStatsItems
+  display: flex
+  align-items: center
+
+  & .profileStatsItem
+    width: calc(100% / 3)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+    border-right: 1px solid $borderColor
+
+    &:last-child
+      border: none
+
+  & .profileStatsItem__icon
+    height: 24px
+    width: auto
+    margin-bottom: 16px
+
+    & img
+      height: 100%
+      width: auto
+
+.profileStatsItem__text
+  text-align: center
+  font-size: 12px
+  line-height: 18px
+
+.userType::before
+  content: ''
+  width: 18px
+  height: 18px
+  margin-right: 8px
+  margin-bottom: 4px
+  vertical-align: middle
+  background-size: contain
+  background-repeat: no-repeat
+  display: inline-block
+
+.userType-small::before
+  width: 12px
+  height: 12px
+  margin-right: 2px
+
+.novice::before
+  background-image: url(/images/novice.png)
+
+.fan::before
+  background-image: url(/images/fan.png)
+
+.profileAboutMe
+  .profileAboutMe__heading
+    margin-bottom: 16px
+
+  .profileAboutMe__text p
+    font-family: "Gotham Pro", serif
+    font-size: 14px
+    color: #606060
+
+.profileCreateGroup
+  font-family: "GothamPro_bold", serif
+  font-size: 20px
+  color: black
+
+.profileCreateGroup__icon
+  display: inline-block
+  transform: translate(-4px) rotate(180deg)
+  opacity: 0
+  transition: .3s
+
+  .profileCreateGroup:hover &,
+  .profileCreateGroup.hover &
+    opacity: 1
+    transform: translate(8px) rotate(180deg)

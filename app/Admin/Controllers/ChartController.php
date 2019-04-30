@@ -132,8 +132,8 @@ class ChartController extends Controller
                 return [$track->id => $track->track_name];
             }
         })->ajax('/admin/api/tracks')->rules('required');
-        $form->number('weekly_rate', 'Weekly rate');
-        $form->number('rating', 'Rating');
+        $form->number('weekly_rate', 'Weekly rate')->default(1);
+        $form->number('rating', 'Rating')->default(1);
 
         return $form;
     }

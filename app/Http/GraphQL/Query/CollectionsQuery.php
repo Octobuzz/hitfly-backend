@@ -46,7 +46,7 @@ class CollectionsQuery extends Query
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
-        return Collection::with($fields->getRelations())->select($fields->getSelect())
+        return Collection::with($fields->getRelations())
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

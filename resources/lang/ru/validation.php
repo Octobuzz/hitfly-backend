@@ -12,6 +12,7 @@ return [
     'date' => 'Неверный формат даты',
     'before' => 'Введите дату в прошлом',
     'favourites_unique_validate' => 'Ранее было добавлено в избранное',
+    'favourites_delete_validate' => 'Такой сущности нет в избранном',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',
@@ -145,7 +146,11 @@ return [
     ],
     'authorRateComment' => 'Только владелец трека/альбома может оценивать комментарий',
     'rateNotEstimatedComment' => 'Комментарий уже был оценен',
-    'criticComment' => 'Комментарии могут оставлять только критики',
+    'criticComment' => 'Комментарии могут оставлять критики или звезды',
+    'starComment' => 'Комментарии могут оставлять звезды',
+    'editCommentTime' => 'Редактирование комментария запрещено, после :hours часов, после создания',
+    'editCommentNotExist' => 'Комментария с ID = :id несуществует',
+    'authorUpdateMusicGroup' => 'Вы не являетесь автором данной группы, редактирование запрещено',
 
 
 ];

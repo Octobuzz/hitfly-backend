@@ -8,6 +8,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\City;
 use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -39,9 +40,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->updated_at(trans('admin.updated_at'));
 
         $grid->actions(function (Grid\Displayers\Actions $actions) {
-            if (1 == $actions->getKey()) {
-                $actions->disableDelete();
-            }
+            $actions->disableDelete();
         });
 
         $grid->tools(function (Grid\Tools $tools) {
@@ -82,9 +81,19 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
         $form->multipleSelect('permissions', trans('admin.permissions'))->options($permissionModel::all()->pluck('name', 'id'));
 
+        $form->select('city_id', 'Город')->options(function ($id) {
+            $city = City::find($id);
+
+            if ($city) {
+                return [$city->id => $city->title];
+            }
+        })->ajax('/admin/api/city');
+
         $form->display('created_at', trans('admin.created_at'));
         $form->display('updated_at', trans('admin.updated_at'));
 
+        $form->divider();
+        $form->textarea('description', 'Описание деятельности');
         $form->saving(function (Form $form) {
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = bcrypt($form->password);
@@ -95,6 +104,11 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         $form->editing(function (Form $form) {
             $form->ignore(['password', 'password_confirmation']);
+        });
+
+        $form->tools(function (Form\Tools $tools) {
+            // Disable `Delete` btn.
+            $tools->disableDelete();
         });
 
         return $form;

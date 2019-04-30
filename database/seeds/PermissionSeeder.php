@@ -44,6 +44,12 @@ class PermissionSeeder extends Seeder
                 'http_method' => '',
                 'http_path' => '',
             ],
+            [
+                'name' => 'Комментарии звезд',
+                'slug' => 'comment.star',
+                'http_method' => '',
+                'http_path' => '',
+            ],
         ]);
     }
 }

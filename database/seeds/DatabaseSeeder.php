@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         DB::table('admin_role_permissions')->delete();
         DB::table('admin_role_users')->delete();
         DB::table('admin_roles')->delete();
+        DB::table('admin_config')->delete();
 
         if (App::environment('local')) {
             $this->call([
@@ -43,6 +44,7 @@ class DatabaseSeeder extends Seeder
                 LikesSeeder::class,
                 WatchingSeeder::class,
                 FavouritesSeeder::class,
+                ConfigSeeder::class,
             ]);
         }
         if (App::environment('prod')) {
@@ -51,6 +53,7 @@ class DatabaseSeeder extends Seeder
                 RoleSeeder::class,
                 MenuSeeder::class,
                 UserSeeder::class,
+                ConfigSeeder::class,
             ]);
         }
     }

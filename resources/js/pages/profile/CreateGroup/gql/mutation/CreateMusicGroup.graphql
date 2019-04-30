@@ -1,0 +1,59 @@
+mutation CreateMusicGroup(
+    $avatar: Upload
+    $name: String!
+    $careerStartYear: String!
+    $description: String!
+    $genre: [ID]
+#    $socialLinks: [SocialLinksInput]
+#    $invitedMembers: [GroupMembersInput]
+) {
+    createMusicGroup(
+        avatar: $avatar
+        musicGroup: {
+            name: $name
+            careerStartYear: $careerStartYear
+            description: $description
+            genre: $genre
+#            socialLinks: $socialLinks
+#            invitedMembers: $invitedMembers
+        }
+    ) {
+        id
+        name
+        avatarGroup(
+            sizes: [size_40x40, size_235x235]
+        ) {
+            size
+            url
+        }
+        careerStartYear
+        genres {
+            id
+            name
+#            image
+            userFavourite
+        }
+        creatorGroup {
+            id
+            username
+            location {
+                id
+                area_region
+                title
+            }
+            avatar(
+                sizes: [size_56x56, size_235x235]
+            ) {
+                size
+                url
+            }
+        }
+        description
+        location {
+            id
+            area_region
+            title
+        }
+        followersCount
+    }
+}

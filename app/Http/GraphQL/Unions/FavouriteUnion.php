@@ -9,6 +9,7 @@
 namespace App\Http\GraphQL\Unions;
 
 use App\Models\Album;
+use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\Track;
 use App\Models\Genre;
@@ -25,7 +26,7 @@ class FavouriteUnion extends UnionType
         return [
             \GraphQL::type('FavouriteAlbum'),
             \GraphQL::type('FavouriteTrack'),
-            \GraphQL::type('FavouriteGenre'),
+            \GraphQL::type('FavouriteCollection'),
         ];
     }
 
@@ -45,8 +46,8 @@ class FavouriteUnion extends UnionType
             case Album::class:
                 return \GraphQL::type('FavouriteAlbum');
                 break;
-            case Genre::class:
-                return \GraphQL::type('FavouriteGenre');
+            case Collection::class:
+                return \GraphQL::type('FavouriteCollection');
                 break;
             default:
                 throw new \Exception('exeption');

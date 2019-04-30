@@ -4,7 +4,6 @@ query MusicGroup(
     musicGroup(id: $id){
         id
         name
-        avatarGroup
         careerStartYear
         genres {
             id

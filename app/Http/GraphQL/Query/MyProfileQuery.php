@@ -11,6 +11,7 @@ namespace App\Http\GraphQL\Query;
 use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
+use GraphQL\Type\Definition\Type;
 
 class MyProfileQuery extends Query
 {
@@ -22,6 +23,12 @@ class MyProfileQuery extends Query
     public function type()
     {
         return \GraphQL::type('MyProfile');
+    }
+
+    public function args()
+    {
+        return [
+        ];
     }
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info)

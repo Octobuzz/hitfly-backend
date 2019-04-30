@@ -8,7 +8,10 @@ use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\UploadType;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateMyProfileMutation extends Mutation
 {
@@ -33,6 +36,10 @@ class UpdateMyProfileMutation extends Mutation
                 'type' => \GraphQL::type('ArtistProfileInput'),
                 'description' => 'профиль артиста',
             ],
+            'avatar' => [
+                'description' => 'аватар',
+                'type' => UploadType::getInstance(),
+            ],
         ];
     }
 
@@ -40,8 +47,12 @@ class UpdateMyProfileMutation extends Mutation
     {
         $user = Auth::user();
         if (!empty($args['profile'])) {
-            if ($args['profile']['password']) {
+            if (!empty($args['profile']['password']) && $args['profile']['password']) {
                 $args['profile']['password'] = Hash::make($args['profile']['password']);
+            }
+            //аватар пользователя
+            if (!empty($args['avatar']) && null !== $args['avatar']) {
+                $user->avatar = $this->setAvatar($user, $args['avatar']);
             }
 
             $user->update(DBHelpers::arrayKeysToSnakeCase($args['profile']));
@@ -76,5 +87,36 @@ class UpdateMyProfileMutation extends Mutation
         }
 
         return $user;
+    }
+
+    /**
+     * добавление аватарки пользователя.
+     *
+     * @param $user
+     * @param $avatar
+     *
+     * @return string
+     */
+    private function setAvatar($user, $avatar)
+    {
+        //удаление старых аватарок
+        if (null !== $user->getOriginal('avatar')) {
+            Storage::disk('public')->delete($user->getOriginal('avatar'));
+        }
+        $image = $avatar;
+        $nameFile = md5(microtime());
+        $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $image_resize = Image::make($image->getRealPath());
+        $image_resize->resize(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'), function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+        //создадим папку, если несуществует
+        if (!file_exists($path.'avatars/'.$user->id)) {
+            Storage::disk('public')->makeDirectory('avatars/'.$user->id);
+        }
+        $image_resize->save($path.$imagePath);
+
+        return $imagePath;
     }
 }

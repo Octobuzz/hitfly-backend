@@ -1,0 +1,113 @@
+mutation UpdateMyProfile(
+    $profile: MyProfileInput!,
+    $artistProfile: ArtistProfileInput,
+    $avatar: Upload
+) {
+    updateMyProfile(
+        profile: $profile,
+        artistProfile: $artistProfile,
+        avatar: $avatar
+    ) {
+        id
+        username
+        roles {
+            name
+        }
+        dateRegister
+        careerStart
+        gender
+        musicGroups {
+            id
+            name
+            avatarGroup(
+                sizes: [size_40x40, size_235x235]
+            ) {
+                size
+                url
+            }
+            careerStartYear
+            genres {
+                id
+                name
+    #            image
+                userFavourite
+            }
+            description
+            location {
+                id
+                area_region
+                title
+            }
+            followersCount
+        }
+        followersCount
+        location {
+            id
+            area_region
+            title
+        }
+        avatar(
+            sizes: [size_56x56, size_235x235]
+        ) {
+            size
+            url
+        }
+        favouriteGenres {
+            id
+            name
+    #        image
+            userFavourite
+        }
+        genresPlay {
+            id
+            name
+            #        image
+            userFavourite
+        }
+        email
+        favoriteSongsCount
+        favoriteAlbumCount
+        watchingUser {
+            id
+            username
+            roles {
+                name
+            }
+            location {
+                id
+                area_region
+                title
+            }
+            avatar(
+                sizes: [size_56x56, size_235x235]
+            ) {
+                size
+                url
+            }
+        }
+        watchingMusicGroup {
+            id
+            name
+            avatarGroup(
+                sizes: [size_40x40, size_235x235]
+            ) {
+                size
+                url
+            }
+            careerStartYear
+            genres {
+                id
+                name
+    #            image
+                userFavourite
+            }
+            description
+            location {
+                id
+                area_region
+                title
+            }
+            followersCount
+        }
+    }
+}

@@ -1,0 +1,20 @@
+mutation CreateCollection(
+    $title: String!
+    $trackIds: [Int]!
+#    $image: Upload
+) {
+    createCollection(
+        title: $title
+        tracksId: $trackIds
+#        image: $image
+    ) {
+        id
+        title
+#        image(
+#            sizes: [size_150x150, size_214x160]
+#        ) {
+#            size
+#            url
+#        }
+    }
+}
