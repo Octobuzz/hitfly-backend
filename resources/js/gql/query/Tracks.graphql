@@ -1,4 +1,4 @@
-query TrackList(
+query Tracks(
     $pageLimit: Int,
     $pageNumber: Int,
     $my: Boolean

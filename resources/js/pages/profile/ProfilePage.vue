@@ -3,7 +3,7 @@
     <main class="main">
       <aside class="main__aside aside">
         <div class="aside__content">
-          <UserCard v-if="desktop || fullPath === '/profile'"/>
+          <UserCard v-if="renderUserCard"/>
         </div>
       </aside>
 
@@ -28,8 +28,12 @@ export default {
       return this.windowWidth > MOBILE_WIDTH;
     },
 
-    fullPath() {
-      return this.$route.fullPath;
+    renderUserCard() {
+      const { desktop, $route: { fullPath } } = this;
+
+      return desktop || (
+        fullPath !== '/profile/edit' && fullPath !== '/profile/update-group'
+      );
     }
   }
 };

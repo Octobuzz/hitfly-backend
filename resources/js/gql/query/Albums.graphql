@@ -1,0 +1,33 @@
+query Albums(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+) {
+    albums(
+        limit: $pageLimit,
+        page: $pageNumber
+    ) {
+        total
+        to
+        data {
+            id
+            title
+            genre {
+                id,
+                name
+            }
+            author
+            year
+            cover(
+                sizes: [size_32x32, size_48x48, size_120x120]
+            ) {
+                size
+                url
+            }
+            musicGroup {
+                id
+                name
+            }
+            userFavourite
+        }
+    }
+}

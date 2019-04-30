@@ -14,7 +14,6 @@
       >
     </button>
 
-
     <AddToFavouriteButton
       v-show="desktop"
       ref="addToFavButton"
@@ -24,7 +23,6 @@
       item-type="track"
       :item-id="trackId"
     />
-
 
     <span
       v-if="desktop"
@@ -161,9 +159,7 @@ export default {
       this.$refs.addToFavButton.onPress();
     },
     onRemovePress() {
-      console.log('remove pressed');
-
-      this.$emit('remove', this.trackId);
+      this.$emit('remove-track', this.trackId);
     }
   },
 

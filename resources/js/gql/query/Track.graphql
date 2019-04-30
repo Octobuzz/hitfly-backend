@@ -16,12 +16,12 @@ query Track($id: Int!) {
         userPlayLists {
             id
             title
-#            image(
-#                sizes: [size_150x150, size_214x160]
-#            ) {
-#                size
-#                url
-#            }
+            image(
+                sizes: [size_150x150, size_214x160]
+            ) {
+                size
+                url
+            }
         }
         userFavourite
     }

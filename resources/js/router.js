@@ -26,6 +26,10 @@ const routes = [
         component: profile.UpdateGroup
       },
       {
+        path: 'my-music',
+        component: profile.MyMusic
+      },
+      {
         path: '',
         component: profile.ProfilePage_obsolete
       }

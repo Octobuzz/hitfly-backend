@@ -5,8 +5,9 @@
       :key="trackId"
       :index="index"
       :track-id="trackId"
+      @remove-track="onTrackRemove"
     />
-    <slot name="preloader" />
+    <slot name="loader" />
     <slot name="loadButton" />
   </div>
 </template>
@@ -22,6 +23,11 @@ export default {
     trackIdList: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    onTrackRemove(id) {
+      this.$emit('remove-track', id);
     }
   }
 };
