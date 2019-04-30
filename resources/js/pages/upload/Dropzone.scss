@@ -1,0 +1,52 @@
+@import '../../../sass/_variables.scss';
+
+.up-page__top{
+  padding: 15px;
+  border-radius: $border-radius;
+  text-align: center;
+  border: 1px dashed $borderColor;
+}
+.up-page{
+
+  &__top-wrapper{
+      max-width: 550px;
+      margin: 0 auto;
+  }
+  &__info{
+    font-size: 14px;
+    border-radius: $border-radius;
+    background-color: $color_5;
+    padding: 10px;
+    line-height: 22px;
+  }
+  &__button{
+    width: auto;
+  }
+  & .radio-pair{
+    display: flex;
+    flex-direction: column;
+    padding: 25px 0;
+  }
+}
+
+@media (min-width: $desktop) {
+  .radio-pair{
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 32px 0;
+  }
+  .up-page{
+    &__title{
+      font-size: 32px;
+    }
+    &__top{
+      padding: 40px 32px;
+    }
+    &__button{
+      margin-top: 32px;
+    }
+    &__info{
+      padding: 16px 50px;
+    }
+  }
+}

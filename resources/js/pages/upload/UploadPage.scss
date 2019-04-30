@@ -1,0 +1,74 @@
+@import '../../../sass/_variables.scss';
+
+.aside__content{
+  padding: 75px 32px;
+}
+.up-page{
+  margin: 20px auto 0;
+  max-width: 910px;
+  padding: 0;
+  padding-bottom: 75px;
+  padding: 0 32px;
+
+  &__title{
+    font-family: $font_bold;
+    font-size: 20px;
+    margin: 0;
+  }
+  &__bottom{
+    margin-top: 30px;
+    border-top: 1px solid $borderColor;
+  }
+  &__agree{
+    font-size: 14px;
+    color: $color_4;
+    line-height: 22px;
+  }
+}
+.up-b-info{
+  display: flex;
+  flex-direction: column;
+
+  &__link{
+    color: $text;
+    display: block;
+    margin-top: 10px;
+  }
+}
+.main.notDropped{
+  flex-direction: column;
+  max-width: 910px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 130px;
+
+  & .aside{
+    width: 100%;
+  }
+  & .aside__content{
+    padding: 0;
+  }
+  & .up-page__top{
+    padding: 48px 60px;
+  }
+  & .main__aside{
+    border: none;
+  }
+  & .up-page{
+    padding: 0;
+  }
+}
+
+@media (min-width: $desktop) {
+    .up-b-info {
+        flex-direction: row;
+        justify-content: space-between;
+
+        &__left{
+            display: flex;
+        }
+        &__link{
+            margin-right: 32px;
+        }
+    }
+}

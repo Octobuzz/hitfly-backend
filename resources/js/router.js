@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import * as main from './pages/main';
 import * as profile from './pages/profile';
+import UploadPage from './pages/upload/UploadPage.vue';
 
 const routes = [
   {
@@ -29,7 +30,11 @@ const routes = [
         component: profile.ProfilePage_obsolete
       }
     ]
-  }
+  },
+  {
+    path: '/upload',
+    component: UploadPage
+  },
 ];
 
 const router = new VueRouter({
