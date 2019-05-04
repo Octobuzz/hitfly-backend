@@ -1,25 +1,25 @@
 <template>
-  <div>
-    <div v-show="dataInitialized" class="profileAside">
-      <div class="profileGeneral profileAsideBlock">
+  <div class="user-card">
+    <SpinnerLoader v-if="!dataInitialized" />
+    <template v-else>
+      <div :class="[itemContainerClass, 'user-card__item']">
         <img
-          class="profileGeneral__img"
+          class="user-card__profile-avatar"
           :src="myProfile.avatar || anonymousAvatar"
           alt="User avatar"
         >
 
-        <div class="profileGeneral__info">
-          <!--TODO: check h1->h2->h3-->
-          <h3>
+        <div class="user-card__profile-info">
+          <p class="user-card__profile-name">
             {{ myProfile.name }}
-          </h3>
-          <p class="profileGeneral__subheader">
+          </p>
+          <p class="user-card__followers-count">
             {{ myProfile.followersCount || '0' }} подписчиков
           </p>
 
           <p
             v-if="myProfile.location"
-            class="placeMark"
+            class="user-card__location"
           >
             {{ myProfile.location.title }}
           </p>
@@ -27,7 +27,7 @@
 
         <IconButton
           v-if="!isEditingProfile"
-          class="profileGeneral__editButton"
+          class="user-card__edit-button"
           @press="goToEditProfile"
         >
           <PencilIcon/>
@@ -35,76 +35,79 @@
       </div>
 
       <div
-        v-if="myProfile.musicGroups.length === 0"
-        class="profileAsideBlock"
+        v-if="musicGroupCount === 0"
+        :class="itemContainerClass"
       >
         <router-link
           to="/profile/create-group"
           :class="[
-            'profileCreateGroup',
+            'user-card__create-group-link',
             {
               hover: $route.fullPath === '/profile/create-group'
             }
           ]"
         >
           Создать свою группу
-          <span class="profileCreateGroup__icon">
+          <span class="user-card__create-group-arrow">
             <ArrowIcon/>
           </span>
         </router-link>
       </div>
 
-      <div v-else class="profileGroups profileAsideBlock">
-        <div class="profileAsideBlock__heading">
-          <h4>
+      <div
+        v-else
+        :class="[
+          itemContainerClass,
+          'user-card__item',
+          'user-card__groups'
+        ]"
+      >
+        <div class="user-card__item-header">
+          <span>
             Мои группы
-          </h4>
+          </span>
           <button
             v-if="!isCreatingGroup"
-            class="profileAsideButton"
+            class="user-card__button"
             @click="goToCreateGroup"
           >
             Создать группу
           </button>
         </div>
 
-        <div class="profileGroups__wrapper">
-          <div
-            v-for="group in myProfile.musicGroups.slice(0, 3)"
-            :key="group.id"
-            class="profileGroup"
+        <div
+          v-for="group in myProfile.musicGroups.slice(0, 3)"
+          :key="group.id"
+          class="user-card__group"
+        >
+          <img
+            class="user-card__group-cover"
+            :src="
+              group.avatarGroup.filter(
+                avatar => avatar.size === 'size_40x40'
+              )[0].url || anonymousAvatar
+            "
+            alt="Group cover"
           >
-            <div class="profileGroup__wrapper">
-              <img
-                class="profileGeneral__img profileAsideBlock__img"
-                :src="
-                  group.avatarGroup.filter(
-                    avatar => avatar.size === 'size_40x40'
-                  )[0].url || anonymousAvatar
-                "
-                alt="Group avatar"
-              >
 
-              <div class="profileGroup__body">
-                <div class="profileAsideBlock__text">
-                  <p>
-                    {{ group.name }}
-                  </p>
-                  <span>
-                    {{ group.followersCount || '0' }} подписчиков
-                  </span>
-                </div>
-              </div>
-
-              <IconButton
-                v-if="!isUpdatingGroup(group.id)"
-                class="profileGeneral__editButton"
-                @press="goToUpdateGroup(group.id)"
-              >
-                <PencilIcon/>
-              </IconButton>
+          <div class="user-card__group-info">
+            <div>
+              <p class="user-card__group-name">
+                {{ group.name }}
+              </p>
+              <p class="user-card__group-followers">
+                {{ group.followersCount || '0' }} подписчиков
+              </p>
             </div>
           </div>
+
+          <IconButton
+            v-if="!isUpdatingGroup(group.id)"
+            class="user-card__edit-button"
+            @press="goToUpdateGroup(group.id)"
+          >
+            <PencilIcon/>
+          </IconButton>
         </div>
       </div>
 
@@ -113,78 +116,86 @@
           myProfile.watchingUser.length > 0
             || myProfile.watchingMusicGroup.length > 0
         "
-        class="profileFollow profileAsideBlock"
+        :class="[
+          itemContainerClass,
+          'user-card__item',
+          'user-card__followed'
+        ]"
       >
-        <div class="profileAsideBlock__heading">
-          <h4>
+        <div class="user-card__item-header">
+          <span>
             Слежу
-          </h4>
-          <button class="profileAsideButton">
+          </span>
+          <button class="user-card__button">
             Все
           </button>
         </div>
 
         <div
           v-if="myProfile.watchingUser.length > 0"
-          class="profileFollow__wrapper"
+          class="user-card__followed-users"
         >
-          <span class="profileFollow__subsection-header">
+          <span class="user-card__subsection-header">
             Пользователи
           </span>
+
           <div
             v-for="user in myProfile.watchingUser.slice(0, 3)"
             :key="user.id"
-            class="profileGroup__wrapper"
+            class="user-card__user user-card__user-info"
           >
             <img
-              class="profileGeneral__img profileAsideBlock__img"
+              class="user-card__user-avatar"
               :src="
                 user.avatar.filter(
                   image => image.size === 'size_56x56'
                 )[0].url || anonymousAvatar"
               alt="User avatar"
             >
-            <div class="profileAsideBlock__text">
-              <p>
+
+            <div>
+              <p class="user-card__username">
                 {{ user.username }}
               </p>
-              <span
+              <p
                 v-if="user.location"
-                class="placeMark placeMark-small"
+                class="user-card__location user-card__location_small"
               >
                 {{ user.location.title }}
-              </span>
+              </p>
             </div>
           </div>
         </div>
 
         <div
           v-if="myProfile.watchingMusicGroup.length > 0"
-          class="profileFollow__wrapper"
+          class="user-card__followed-groups"
         >
-          <span class="profileFollow__subsection-header">
+          <span class="user-card__subsection-header">
             Группы
           </span>
+
           <div
             v-for="group in myProfile.watchingMusicGroup.slice(0, 3)"
             :key="group.id"
-            class="profileGroup__wrapper"
+            class="user-card__group user-card__group-info"
           >
             <img
-              class="profileGeneral__img profileAsideBlock__img"
+              class="user-card__group-cover"
               :src="
                 group.avatarGroup.filter(
                   image => image.size === 'size_40x40'
                 )[0].url || anonymousAvatar"
-              alt="Group avatar"
+              alt="Group cover"
             >
-            <div class="profileAsideBlock__text">
-              <p>
+
+            <div>
+              <p class="user-card__group-name">
                 {{ group.name }}
               </p>
               <span
                 v-if="group.location"
-                class="placeMark placeMark-small"
+                class="user-card__location user-card__location_small"
               >
                 {{ group.location.title }}
               </span>
@@ -195,20 +206,22 @@
 
       <div
         v-if="myProfile.activity"
-        class="profileAboutMe profileAsideBlock"
+        :class="[
+          itemContainerClass,
+          'user-card__item',
+          'user-card__about'
+        ]"
       >
-        <div class="profileAsideBlock__heading profileAboutMe__heading">
-          <h4>
+        <div class="user-card__item-header">
+          <span>
             Обо мне
-          </h4>
+          </span>
         </div>
-        <div class="profileAsideBlock__text profileAboutMe__text">
-          <p>
-            {{ myProfile.activity }}
-          </p>
-        </div>
+        <p class="user-card__about-text">
+          {{ myProfile.activity }}
+        </p>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -228,12 +241,19 @@ export default {
     ArrowIcon
   },
 
+  props: {
+    itemContainerClass: {
+      type: String,
+      required: true
+    }
+  },
+
   data() {
     return {
       myProfile: {
         avatar: '',
         name: '',
-        location: '',
+        location: null,
         followersCount: '',
         activity: '',
         musicGroups: [],
@@ -254,6 +274,9 @@ export default {
     },
     editGroupId() {
       return this.$store.getters['profile/editGroupId'];
+    },
+    musicGroupCount() {
+      return this.myProfile.musicGroups.length;
     }
   },
 
@@ -333,6 +356,6 @@ export default {
 
 <style
   scoped
-  lang="sass"
-  src="./UserCard.sass"
+  lang="scss"
+  src="./UserCard.scss"
 />

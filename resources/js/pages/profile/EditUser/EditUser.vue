@@ -291,12 +291,12 @@ export default {
     },
 
     changePassword() {
+      this.newPassword = this.password.input;
       this.$message(
         'Нажмите "Сохранить изменения" для обновления',
         'info',
         { timeout: 2000 }
       );
-      this.newPassword = this.password.input;
     },
 
     enterGenreEditMode() {

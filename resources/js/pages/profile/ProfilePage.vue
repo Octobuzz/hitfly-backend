@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <main class="main">
-      <aside class="main__aside aside">
-        <div class="aside__content">
-          <UserCard v-if="renderUserCard"/>
-        </div>
-      </aside>
+  <TwoColumnLayout>
+    <template
+      v-if="renderUserCard"
+      #left-column="{ itemContainerClass }"
+    >
+      <UserCard :item-container-class="itemContainerClass" />
+    </template>
+    <template #right-column="{ paddingClass }">
 
-      <div class="main__profile">
-        <router-view/>
-      </div>
-    </main>
-  </div>
+    </template>
+  </TwoColumnLayout>
 </template>
 
 <script>
+import TwoColumnLayout from 'components/TwoColumnLayout.vue';
 import UserCard from './UserCard';
 
-const MOBILE_WIDTH = 767;
+const MOBILE_WIDTH = 1024;
 
 export default {
   components: {
+    TwoColumnLayout,
     UserCard
   },
   computed: {
@@ -32,7 +32,9 @@ export default {
       const { desktop, $route: { fullPath } } = this;
 
       return desktop || (
-        fullPath !== '/profile/edit' && fullPath !== '/profile/update-group'
+        fullPath !== '/profile/edit'
+          && fullPath !== '/profile/update-group'
+          && fullPath !== '/profile/create-group'
       );
     }
   }

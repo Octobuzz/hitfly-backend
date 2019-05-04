@@ -4,13 +4,11 @@ $album-height-mobile: 250px;
 $album-cover-desktop: 120px;
 $album-cover-mobile: 104px;
 
-$album-right-padding-desktop: 24px;
-$album-right-padding-mobile: 16px;
+$album-left-padding-desktop: 24px;
+$album-left-padding-mobile: 16px;
 
 .album-scroll-horizontal {
   height: $album-height-desktop;
-  width: 500px;
-  overflow-x: visible !important;
   overflow-y: hidden;
 
   &__header {
@@ -53,25 +51,13 @@ $album-right-padding-mobile: 16px;
     height: $album-cover-desktop;
   }
 
-  &::v-deep {
-    .vue-recycle-scroller,
-    .resize-observer,
-    object {
-
-    }
-  }
-
-  &::v-deep .vue-recycle-scroller,
-  &::v-deep .resize-observer,
-  &::v-deep object {
-    //overflow-x: visible !important;
-    //overflow-y: hidden;
-    overflow: visible !important;
-
+  // TODO: add album for mobile
+  &__album-preview {
+    box-sizing: content-box;
+    padding-left: $album-left-padding-desktop;
   }
 
   &::v-deep .vue-recycle-scroller__item-wrapper {
-    overflow: visible !important;
     height: $album-height-desktop;
   }
 }
