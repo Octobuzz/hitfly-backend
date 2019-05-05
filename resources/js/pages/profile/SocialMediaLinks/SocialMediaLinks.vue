@@ -21,7 +21,7 @@
         @input="onInput"
       />
       <button
-        class="social-links__close-button_desktop"
+        class="social-links__close-button-desktop"
         @click="removeLink(link.id)"
       >
         <CrossIcon/>
@@ -29,7 +29,7 @@
 
       <div class="social-links__close-button-row">
         <button
-          class="social-links__close-button_mobile"
+          class="social-links__close-button-mobile"
           @click="removeLink(link.id)"
         >
           Удалить ссылку

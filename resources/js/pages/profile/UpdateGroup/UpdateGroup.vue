@@ -90,6 +90,19 @@
           Состав группы
         </h2>
 
+        <p
+          v-if="group.activeMemberIds.length === 0"
+          class="update-group__active-group-members"
+        >
+          В вашей группе пока нет участников.
+        </p>
+
+        <ActiveGroupMembers
+          class="update-group__active-group-members"
+          :active-member-ids="group.activeMemberIds"
+          @remove-member="onRemoveMember"
+        />
+
         <span
           :class="[
             'create-group-description__group-members-suggestion',
@@ -134,6 +147,7 @@ import ReturnHeader from '../ReturnHeader.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
 import ChooseGenres from '../ChooseGenres';
 import SocialMediaLinks from '../SocialMediaLinks';
+import ActiveGroupMembers from '../ActiveGroupMembers';
 import InviteGroupMembers from '../InviteGroupMembers';
 
 export default {
@@ -141,6 +155,7 @@ export default {
     SpinnerLoader,
     ReturnHeader,
     SocialMediaLinks,
+    ActiveGroupMembers,
     InviteGroupMembers,
     ChooseAvatar,
     ChooseGenres,
@@ -176,7 +191,8 @@ export default {
         },
         genres: [],
         socialLinks: [],
-        invitedMembers: []
+        invitedMembers: [],
+        activeMemberIds: []
       },
       dataInitialized: false,
       isSaving: false
@@ -209,6 +225,21 @@ export default {
       this.group.cover.new = file;
     },
 
+    onRemoveMember(id) {
+      this.$message(
+        'Участник будет безвозвратно удален после сохранения изменений',
+        'info',
+        { timeout: 2000 }
+      );
+
+      this.refineActiveMemberIds(id);
+    },
+
+    refineActiveMemberIds(unwantedId) {
+      this.group.activeMemberIds = this.group.activeMemberIds
+        .filter(id => id !== unwantedId);
+    },
+
     updateGroup() {
       if (this.isSaving) return;
 
@@ -232,6 +263,7 @@ export default {
             .filter(sl => (
               sl.socialType !== '' && sl.link !== ''
             )),
+          activeMemberIds: this.group.activeMemberIds,
           invitedMembers: this.group.invitedMembers
             .map(email => ({
               email
@@ -277,7 +309,8 @@ export default {
           careerStartYear,
           description,
           genres,
-          avatarGroup
+          avatarGroup,
+          activeMembers
         } = musicGroup;
 
         this.group.genres = genres;
@@ -286,10 +319,15 @@ export default {
         this.group.name.input = name;
         this.group.year.input = new Date(careerStartYear).getFullYear().toString();
         this.group.activity.input = description;
+        this.group.activeMemberIds = activeMembers
+          .map(user => user.id);
+
+        this.dataInitialized = true;
       },
 
-      result() {
+      error(err) {
         this.dataInitialized = true;
+        console.log(err);
       }
     }
   }

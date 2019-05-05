@@ -4,8 +4,8 @@ mutation CreateMusicGroup(
     $careerStartYear: String!
     $description: String!
     $genre: [ID]
-#    $socialLinks: [SocialLinksInput]
-#    $invitedMembers: [GroupMembersInput]
+    $socialLinks: [SocialLinksInput]
+    $invitedMembers: [GroupMembersInput]
 ) {
     createMusicGroup(
         avatar: $avatar
@@ -14,8 +14,8 @@ mutation CreateMusicGroup(
             careerStartYear: $careerStartYear
             description: $description
             genre: $genre
-#            socialLinks: $socialLinks
-#            invitedMembers: $invitedMembers
+            socialLinks: $socialLinks
+            invitedMembers: $invitedMembers
         }
     ) {
         id

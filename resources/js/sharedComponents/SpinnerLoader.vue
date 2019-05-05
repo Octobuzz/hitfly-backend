@@ -50,7 +50,7 @@ export default {
   left: 29px;
   width: 5px;
   height: 18px;
-  border-radius: 20%;
+  border-radius: 2px;
   background: white;
 }
 .lds-spinner_dark div:after {
