@@ -1,5 +1,10 @@
 <template>
-  <div class="create-group-container">
+  <div
+    :class="[
+      'create-group-container',
+      containerPaddingClass
+    ]"
+  >
     <ReturnHeader class="create-group-header" />
 
     <div class="create-group">
@@ -99,6 +104,11 @@
     <div class="create-group-footer">
       <hr class="create-group-footer__delimiter">
 
+      <SpinnerLoader
+        v-if="isSaving"
+        class="create-group-footer__loader"
+      />
+
       <FormButton
         class="create-group-footer__save-button"
         modifier="primary"
@@ -111,6 +121,7 @@
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import FormButton from 'components/FormButton.vue';
@@ -125,6 +136,7 @@ import InviteGroupMembers from '../InviteGroupMembers';
 
 export default {
   components: {
+    SpinnerLoader,
     ReturnHeader,
     SocialMediaLinks,
     InviteGroupMembers,
@@ -135,6 +147,13 @@ export default {
     FormButton,
     PencilIcon,
     CalendarIcon
+  },
+
+  props: {
+    containerPaddingClass: {
+      type: String,
+      default: ''
+    }
   },
 
   data() {
@@ -153,7 +172,8 @@ export default {
         genres: [],
         socialLinks: [],
         invitedMembers: []
-      }
+      },
+      isSaving: false
     };
   },
 
@@ -170,6 +190,10 @@ export default {
     },
 
     createGroup() {
+      if (this.isSaving) return;
+
+      this.isSaving = true;
+
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_MUSIC_GROUP,
 
@@ -215,8 +239,20 @@ export default {
           }
         }
       }).then(() => {
+        this.isSaving = false;
         this.$router.push('/profile');
+        this.$message(
+          'Группа успешно создана',
+          'info',
+          { timeout: 2000 }
+        );
       }).catch((error) => {
+        this.isSaving = false;
+        this.$message(
+          'На сервере произошла ошибка. Группа не создана',
+          'info',
+          { timeout: 60000 }
+        );
         console.log(error);
       });
     }

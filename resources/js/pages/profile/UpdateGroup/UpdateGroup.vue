@@ -1,5 +1,10 @@
 <template>
-  <div class="create-group-container">
+  <div
+    :class="[
+      'create-group-container',
+      containerPaddingClass
+    ]"
+  >
     <ReturnHeader class="create-group-header" />
 
     <div class="create-group">
@@ -101,6 +106,11 @@
     <div class="create-group-footer">
       <hr class="create-group-footer__delimiter">
 
+      <SpinnerLoader
+        v-if="isSaving"
+        class="create-group-footer__loader"
+      />
+
       <FormButton
         class="create-group-footer__save-button"
         modifier="primary"
@@ -113,6 +123,7 @@
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import FormButton from 'components/FormButton.vue';
@@ -127,6 +138,7 @@ import InviteGroupMembers from '../InviteGroupMembers';
 
 export default {
   components: {
+    SpinnerLoader,
     ReturnHeader,
     SocialMediaLinks,
     InviteGroupMembers,
@@ -137,6 +149,13 @@ export default {
     FormButton,
     PencilIcon,
     CalendarIcon
+  },
+
+  props: {
+    containerPaddingClass: {
+      type: String,
+      default: ''
+    }
   },
 
   data() {
@@ -158,7 +177,9 @@ export default {
         genres: [],
         socialLinks: [],
         invitedMembers: []
-      }
+      },
+      dataInitialized: false,
+      isSaving: false
     };
   },
 
@@ -189,6 +210,10 @@ export default {
     },
 
     updateGroup() {
+      if (this.isSaving) return;
+
+      this.isSaving = true;
+
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_MUSIC_GROUP,
 
@@ -213,8 +238,20 @@ export default {
             }))
         }
       }).then(() => {
+        this.isSaving = false;
         this.$router.push('/profile');
+        this.$message(
+          'Данные группы успешно обновлены',
+          'info',
+          { timeout: 2000 }
+        );
       }).catch((error) => {
+        this.isSaving = false;
+        this.$message(
+          'На сервере произошла ошибка. Данные группы не обновлены',
+          'info',
+          { timeout: 60000 }
+        );
         console.log(error);
       });
     }
@@ -249,6 +286,10 @@ export default {
         this.group.name.input = name;
         this.group.year.input = new Date(careerStartYear).getFullYear().toString();
         this.group.activity.input = description;
+      },
+
+      result() {
+        this.dataInitialized = true;
       }
     }
   }

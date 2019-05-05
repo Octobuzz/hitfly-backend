@@ -335,6 +335,8 @@ export default {
     saveProfile() {
       if (this.isSaving) return;
 
+      this.isSaving = true;
+
       const { myProfile } = this;
       const profileUpdate = {};
 
@@ -378,27 +380,24 @@ export default {
         mutation: gql.mutation.UPDATE_PROFILE,
         variables: mutationVars,
         update: (store, { data: { updateMyProfile } }) => {
+          this.isSaving = false;
           this.$router.push('/profile');
           this.$message(
-            'Данные профиля обновлены',
+            'Данные профиля успешно обновлены',
             'info',
             { timeout: 2000 }
           );
         },
         error(err) {
+          this.isSaving = false;
           this.$message(
             'На сервере произошла ошибка. Данные профиля не обновлены',
             'info',
             { timeout: 60000 }
           );
           console.log(err);
-        },
-        result() {
-          this.isSaving = false;
         }
       });
-
-      this.isSaving = true;
     }
   },
 
