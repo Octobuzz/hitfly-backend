@@ -98,4 +98,10 @@ export default {
   }
 }
 
+@media screen and (max-width: 767px) {
+  .flashpool {
+    min-width: 260px;
+  }
+}
+
 </style>

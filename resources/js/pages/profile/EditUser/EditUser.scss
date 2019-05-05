@@ -141,6 +141,7 @@ $formRightPadding: 40px;
 
   &-footer {
     box-sizing: border-box;
+    position: relative;
     max-width: $avatarSide
       + $avatarRightMargin
       + $formMaxWidth
@@ -162,6 +163,13 @@ $formRightPadding: 40px;
       display: block;
       max-width: 190px;
       margin-left: auto;
+    }
+
+    &__loader {
+      position: absolute;
+      bottom: -6px;
+      right: 190px;
+      transform: scale(.5);
     }
   }
 }
@@ -223,6 +231,10 @@ $formRightPadding: 40px;
           right: auto;
           left: auto;
         }
+      }
+
+      &__loader {
+        right: 8px;
       }
     }
   }

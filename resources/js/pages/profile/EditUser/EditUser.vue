@@ -187,6 +187,11 @@
       <div class="edit-profile-footer">
         <hr class="edit-profile-footer__delimiter">
 
+        <SpinnerLoader
+          v-if="isSaving"
+          class="edit-profile-footer__loader"
+        />
+
         <FormButton
           class="edit-profile-footer__save-button"
           modifier="primary"
@@ -275,6 +280,7 @@ export default {
       },
       genreEditMode: false,
       dataInitialized: false,
+      isSaving: false,
       genericProfileAvatarUrl
     };
   },
@@ -327,6 +333,8 @@ export default {
     },
 
     saveProfile() {
+      if (this.isSaving) return;
+
       const { myProfile } = this;
       const profileUpdate = {};
 
@@ -371,11 +379,26 @@ export default {
         variables: mutationVars,
         update: (store, { data: { updateMyProfile } }) => {
           this.$router.push('/profile');
+          this.$message(
+            'Данные профиля обновлены',
+            'info',
+            { timeout: 2000 }
+          );
         },
         error(err) {
+          this.$message(
+            'На сервере произошла ошибка. Данные профиля не обновлены',
+            'info',
+            { timeout: 60000 }
+          );
           console.log(err);
+        },
+        result() {
+          this.isSaving = false;
         }
       });
+
+      this.isSaving = true;
     }
   },
 
