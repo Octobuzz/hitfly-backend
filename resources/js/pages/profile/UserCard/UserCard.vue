@@ -1,6 +1,9 @@
 <template>
   <div class="user-card">
-    <SpinnerLoader v-if="!dataInitialized" />
+    <SpinnerLoader
+      v-if="!dataInitialized"
+      class="user-card__loader"
+    />
     <template v-else>
       <div :class="[itemContainerClass, 'user-card__item']">
         <img
@@ -345,6 +348,7 @@ export default {
       },
       result() {
         this.dataInitialized = true;
+        this.$emit('data-initialized');
       },
       error(err) {
         console.log(err);

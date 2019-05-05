@@ -1,10 +1,10 @@
 <template>
   <TwoColumnLayout>
-    <template
-      v-if="renderUserCard"
-      #left-column="{ itemContainerClass }"
-    >
-      <UserCard :item-container-class="itemContainerClass" />
+    <template #left-column="{ itemContainerClass }">
+      <UserCard
+        v-if="renderUserCard"
+        :item-container-class="itemContainerClass"
+      />
     </template>
     <template #right-column="{ paddingClass }">
 

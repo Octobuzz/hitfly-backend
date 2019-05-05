@@ -2,6 +2,13 @@ $color_primary: #313131;
 $color_secondary: #606060;
 
 .user-card {
+  &__loader {
+    display: block;
+    padding-top: 50%;
+    margin: auto;
+    transform: translateY(-50%);
+  }
+
   &__item {
     display: flex;
   }
