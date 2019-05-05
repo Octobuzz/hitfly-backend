@@ -1,64 +1,179 @@
 <template>
-  <div v-show="dataInitialized" class="edit-profile-container">
-    <ReturnHeader/>
+  <div
+    :class="[
+      'edit-profile-container',
+      { 'edit-profile-container_loading': !dataInitialized },
+      containerPaddingClass
+    ]"
+  >
+    <SpinnerLoader
+      v-if="!dataInitialized"
+      class="edit-profile-container__loader"
+    />
+    <template v-else>
+      <ReturnHeader/>
 
-    <div class="edit-profile">
-      <div class="edit-profile-avatar">
-        <ChooseAvatar
-          :image-url="avatar.current || genericProfileAvatarUrl"
-          caption="Загрузить фото"
-          :circle="true"
-          @input="onAvatarInput"
-        />
-      </div>
+      <div class="edit-profile">
+        <div class="edit-profile-avatar">
+          <ChooseAvatar
+            :image-url="myProfile.avatar.current || genericProfileAvatarUrl"
+            caption="Загрузить фото"
+            :circle="true"
+            @input="onAvatarInput"
+          />
+        </div>
 
-      <div class="edit-profile-form">
-        <BaseInput
-          v-model="name.input"
-          label="Имя пользователя"
-          class="edit-profile-form__name-input"
-        >
-          <template #icon>
-            <UserIcon/>
-          </template>
-        </BaseInput>
+        <div class="edit-profile-form">
+          <BaseInput
+            v-model="myProfile.name.input"
+            label="Имя пользователя"
+            class="edit-profile-form__name-input"
+          >
+            <template #icon>
+              <UserIcon/>
+            </template>
+          </BaseInput>
 
-        <BaseInput
-          v-model="location.input"
-          label="Город"
-          class="edit-profile-form__location-input"
-        >
-          <template #icon>
-            <BalloonIcon/>
-          </template>
-        </BaseInput>
+          <BaseInput
+            v-model="myProfile.location.input"
+            label="Город"
+            class="edit-profile-form__location-input"
+          >
+            <template #icon>
+              <BalloonIcon/>
+            </template>
+          </BaseInput>
 
-        <h2 v-if="isArtist" class="edit-profile-form__h2">
-          Описание
-        </h2>
+          <h2 v-if="isArtist" class="edit-profile-form__h2">
+            Описание
+          </h2>
 
-        <BaseInput
-          v-if="isArtist"
-          v-model="careerStartYear.input"
-          label="Год начала карьеры"
-          class="edit-profile-form__career-start-year-input"
-        >
-          <template #icon>
-            <CalendarIcon/>
-          </template>
-        </BaseInput>
+          <BaseInput
+            v-if="isArtist"
+            v-model="myProfile.careerStartYear.input"
+            label="Год начала карьеры"
+            class="edit-profile-form__career-start-year-input"
+          >
+            <template #icon>
+              <CalendarIcon/>
+            </template>
+          </BaseInput>
 
 
-        <div v-if="isArtist">
-          <h3 class="edit-profile-form__h3">
-            Выберете жанры, в которых играете
-          </h3>
+          <div v-if="isArtist">
+            <h3 class="edit-profile-form__h3">
+              Выберете жанры, в которых играете
+            </h3>
+
+            <ChooseGenres
+              v-model="myProfile.playedGenres"
+              class="edit-profile-form__choose-genres"
+              dropdown-class="edit-profile-form__genre-dropdown"
+              :genres-start-count="10"
+            >
+              <template #separator>
+                <span class="edit-profile-form__genre-list-suggestion">
+                  или выберите из списка
+                </span>
+              </template>
+            </ChooseGenres>
+
+            <h3 class="edit-profile-form__h3">
+              Описание деятельности
+            </h3>
+
+            <BaseTextarea
+              v-model="myProfile.activity.input"
+              class="edit-profile-form__activity-textarea"
+              label=""
+              :rows="10"
+            />
+          </div>
+
+          <h2 class="edit-profile-form__h2">
+            Вход
+          </h2>
+
+          <div class="edit-profile-form__input-group">
+            <BaseInput
+              v-model="myProfile.email.input"
+              label="E-mail"
+              class="edit-profile-form__email-input"
+            >
+              <template #icon>
+                <EnvelopeIcon/>
+              </template>
+            </BaseInput>
+
+            <FormButton
+              class="edit-profile-form__change-button"
+              modifier="secondary"
+              @press="changeEmail"
+            >
+              Изменить
+            </FormButton>
+          </div>
+
+          <div class="edit-profile-form__input-group">
+            <BaseInput
+              v-model="myProfile.password.input"
+              label="Пароль"
+              class="edit-profile-form__password-input"
+              :password="true"
+            >
+              <template #icon>
+                <KeyIcon/>
+              </template>
+            </BaseInput>
+
+            <FormButton
+              class="edit-profile-form__change-button"
+              modifier="secondary"
+              @press="changePassword"
+            >
+              Изменить
+            </FormButton>
+          </div>
+
+          <BaseLink class="edit-profile-form__social-networks-link">
+            Использовать аккаунт соц.сетей?
+          </BaseLink>
+
+          <!--TODO: check headers hierarchy-->
+          <h2 class="edit-profile-form__h2">
+            Любимые жанры
+          </h2>
+
+          <div
+            v-if="!genreEditMode"
+            class="edit-profile-form__tags-container"
+          >
+            <BaseTag
+              v-for="genre in myProfile.favouriteGenres"
+              :key="genre.id"
+              class="edit-profile-form__chosen-tag"
+              :name="genre.name"
+              :active="true"
+            />
+          </div>
+          <FormButton
+            v-if="!genreEditMode"
+            :class="[
+              'edit-profile-form__change-button',
+              'edit-profile-form__favourite-genres-button'
+            ]"
+            modifier="secondary"
+            @press="enterGenreEditMode"
+          >
+            Изменить
+          </FormButton>
 
           <ChooseGenres
-            v-model="playedGenres"
+            v-else
+            v-model="myProfile.favouriteGenres"
             class="edit-profile-form__choose-genres"
             dropdown-class="edit-profile-form__genre-dropdown"
-            :genres-start-count="10"
+            :genres-start-count="20"
           >
             <template #separator>
               <span class="edit-profile-form__genre-list-suggestion">
@@ -66,128 +181,26 @@
               </span>
             </template>
           </ChooseGenres>
-
-          <h3 class="edit-profile-form__h3">
-            Описание деятельности
-          </h3>
-
-          <BaseTextarea
-            v-model="activity.input"
-            class="edit-profile-form__activity-textarea"
-            label=""
-            :rows="10"
-          />
         </div>
-
-        <h2 class="edit-profile-form__h2">
-          Вход
-        </h2>
-
-        <div class="edit-profile-form__input-group">
-          <BaseInput
-            v-model="email.input"
-            label="E-mail"
-            class="edit-profile-form__email-input"
-          >
-            <template #icon>
-              <EnvelopeIcon/>
-            </template>
-          </BaseInput>
-
-          <FormButton
-            class="edit-profile-form__change-button"
-            modifier="secondary"
-            @press="changeEmail"
-          >
-            Изменить
-          </FormButton>
-        </div>
-
-        <div class="edit-profile-form__input-group">
-          <BaseInput
-            v-model="password.input"
-            label="Пароль"
-            class="edit-profile-form__password-input"
-            :password="true"
-          >
-            <template #icon>
-              <KeyIcon/>
-            </template>
-          </BaseInput>
-
-          <FormButton
-            class="edit-profile-form__change-button"
-            modifier="secondary"
-            @press="changePassword"
-          >
-            Изменить
-          </FormButton>
-        </div>
-
-        <BaseLink class="edit-profile-form__social-networks-link">
-          Использовать аккаунт соц.сетей?
-        </BaseLink>
-
-        <!--TODO: check headers hierarchy-->
-        <h2 class="edit-profile-form__h2">
-          Любимые жанры
-        </h2>
-
-        <div
-          v-if="!genreEditMode"
-          class="edit-profile-form__tags-container"
-        >
-          <BaseTag
-            v-for="genre in favouriteGenres"
-            :key="genre.id"
-            class="edit-profile-form__chosen-tag"
-            :name="genre.name"
-            :active="true"
-          />
-        </div>
-        <FormButton
-          v-if="!genreEditMode"
-          :class="[
-            'edit-profile-form__change-button',
-            'edit-profile-form__favourite-genres-button'
-          ]"
-          modifier="secondary"
-          @press="enterGenreEditMode"
-        >
-          Изменить
-        </FormButton>
-
-        <ChooseGenres
-          v-else
-          v-model="favouriteGenres"
-          class="edit-profile-form__choose-genres"
-          dropdown-class="edit-profile-form__genre-dropdown"
-          :genres-start-count="20"
-        >
-          <template #separator>
-            <span class="edit-profile-form__genre-list-suggestion">
-              или выберите из списка
-            </span>
-          </template>
-        </ChooseGenres>
       </div>
-    </div>
 
-    <div class="edit-profile-footer">
-      <hr class="edit-profile-footer__delimiter">
+      <div class="edit-profile-footer">
+        <hr class="edit-profile-footer__delimiter">
 
-      <FormButton
-        class="edit-profile-footer__save-button"
-        modifier="primary"
-        @press="saveProfile"
-      >
-        Сохранить изменения
-      </FormButton>
-    </div>
+        <FormButton
+          class="edit-profile-footer__save-button"
+          modifier="primary"
+          @press="saveProfile"
+        >
+          Сохранить изменения
+        </FormButton>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import BaseLink from 'components/BaseLink.vue';
@@ -206,6 +219,7 @@ import ChooseGenres from '../ChooseGenres';
 
 export default {
   components: {
+    SpinnerLoader,
     ReturnHeader,
     ChooseAvatar,
     ChooseGenres,
@@ -221,36 +235,45 @@ export default {
     KeyIcon
   },
 
+  props: {
+    containerPaddingClass: {
+      type: String,
+      default: ''
+    }
+  },
+
   data() {
     return {
-      avatar: {
-        current: '',
-        new: null
+      myProfile: {
+        avatar: {
+          current: '',
+          new: null
+        },
+        name: {
+          input: ''
+        },
+        location: {
+          input: ''
+        },
+        careerStartYear: {
+          input: ''
+        },
+        activity: {
+          input: ''
+        },
+        email: {
+          input: ''
+        },
+        password: {
+          input: ''
+        },
+        playedGenres: [],
+        favouriteGenres: [],
+        newEmail: null,
+        newPassword: null,
+        roles: []
       },
-      name: {
-        input: ''
-      },
-      location: {
-        input: ''
-      },
-      careerStartYear: {
-        input: ''
-      },
-      activity: {
-        input: ''
-      },
-      email: {
-        input: ''
-      },
-      password: {
-        input: ''
-      },
-      playedGenres: [],
-      favouriteGenres: [],
-      newEmail: null,
-      newPassword: null,
       genreEditMode: false,
-      roles: [],
       dataInitialized: false,
       genericProfileAvatarUrl
     };
@@ -262,7 +285,7 @@ export default {
     },
 
     isArtist() {
-      return this.roles.some(
+      return this.myProfile.roles.some(
         role => role === 'Артист'
       );
     }
@@ -278,11 +301,11 @@ export default {
 
   methods: {
     onAvatarInput(file) {
-      this.avatar.new = file;
+      this.myProfile.avatar.new = file;
     },
 
     changeEmail() {
-      this.newEmail = this.email.input;
+      this.myProfile.newEmail = this.myProfile.email.input;
       this.$message(
         'Нажмите "Сохранить изменения" для обновления',
         'info',
@@ -291,7 +314,7 @@ export default {
     },
 
     changePassword() {
-      this.newPassword = this.password.input;
+      this.myProfile.newPassword = this.myProfile.password.input;
       this.$message(
         'Нажмите "Сохранить изменения" для обновления',
         'info',
@@ -304,16 +327,17 @@ export default {
     },
 
     saveProfile() {
-      const profile = {};
+      const { myProfile } = this;
+      const profileUpdate = {};
 
-      if (this.newEmail) {
-        profile.email = this.newEmail;
+      if (myProfile.newEmail) {
+        profileUpdate.email = myProfile.newEmail;
       }
-      if (this.newPassword) {
-        profile.password = this.newPassword;
+      if (myProfile.newPassword) {
+        profileUpdate.password = myProfile.newPassword;
       }
-      profile.username = this.name.input;
-      profile.genres = this.favouriteGenres
+      profileUpdate.username = myProfile.name.input;
+      profileUpdate.genres = myProfile.favouriteGenres
         .map(genre => genre.id);
 
       // TODO: city id
@@ -321,25 +345,25 @@ export default {
       const artistProfile = {};
 
       if (this.isArtist) {
-        if (this.activity.input !== '') {
-          artistProfile.description = this.activity.input;
+        if (myProfile.activity.input !== '') {
+          artistProfile.description = myProfile.activity.input;
         }
 
-        artistProfile.genres = this.playedGenres
+        artistProfile.genres = myProfile.playedGenres
           .map(genre => genre.id);
 
-        if (this.careerStartYear.input !== '') {
-          artistProfile.careerStart = `${this.careerStartYear.input}-1-1`;
+        if (myProfile.careerStartYear.input !== '') {
+          artistProfile.careerStart = `${myProfile.careerStartYear.input}-1-1`;
         }
       }
 
-      const mutationVars = { profile };
+      const mutationVars = { profile: profileUpdate };
 
       if (this.isArtist) {
         mutationVars.artistProfile = artistProfile;
       }
-      if (this.avatar.new !== null) {
-        mutationVars.avatar = this.avatar.new;
+      if (myProfile.avatar.new !== null) {
+        mutationVars.avatar = myProfile.avatar.new;
       }
 
       this.$apollo.mutate({
@@ -356,7 +380,7 @@ export default {
   },
 
   apollo: {
-    myProfile: {
+    userProfile: {
       query: gql.query.MY_PROFILE,
       update({ myProfile }) {
         const {
@@ -371,30 +395,30 @@ export default {
           roles
         } = myProfile;
 
-        this.avatar.current = avatar
+        this.myProfile.avatar.current = avatar
           .filter(image => image.size === 'size_235x235')[0].url;
 
-        this.name.input = username;
-        this.email.input = email;
-        this.favouriteGenres = favouriteGenres;
-        this.roles = roles;
+        this.myProfile.name.input = username;
+        this.myProfile.email.input = email;
+        this.myProfile.favouriteGenres = favouriteGenres;
+        this.myProfile.roles = roles;
 
         if (location && location.title) {
-          this.location.input = location.title;
+          this.myProfile.location.input = location.title;
         }
 
         if (roles.some(role => role === 'Артист')) {
           if (careerStart) {
-            this.careerStartYear.input = `${
+            this.myProfile.careerStartYear.input = `${
               new Date(careerStart).getFullYear()
             }`;
           }
 
           if (description) {
-            this.activity.input = description;
+            this.myProfile.activity.input = description;
           }
 
-          this.playedGenres = genresPlay;
+          this.myProfile.playedGenres = genresPlay;
         }
       },
       result() {

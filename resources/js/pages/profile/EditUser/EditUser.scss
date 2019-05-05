@@ -10,14 +10,20 @@ $formRightPadding: 40px;
   flex-wrap: nowrap;
   padding-top: 70px;
 
-  &__loader {
-    width: 200px;
-    height: 100px;
-    margin: auto;
-  }
-
   &-container {
+    position: relative;
     max-width: 991px;
+
+    &_loading {
+      height: 100vh; // TODO: minus header and footer
+    }
+
+    &__loader {
+      display: block;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   &-avatar {
@@ -171,6 +177,12 @@ $formRightPadding: 40px;
 
   .edit-profile-footer {
     max-width: $formMaxWidth;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .edit-profile-container_loading {
+    height: auto;
   }
 }
 

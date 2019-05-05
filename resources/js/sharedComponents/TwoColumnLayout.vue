@@ -20,7 +20,7 @@
 
 .two-column-layout {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: stretch;
   min-height: 100vh; // TODO: subtract header and footer height if necessary
 
@@ -53,6 +53,7 @@
 
 @media screen and (max-width: 1024px) {
   .two-column-layout {
+    flex-wrap: wrap;
     height: auto;
 
     &__left-column,

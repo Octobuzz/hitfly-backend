@@ -2,9 +2,15 @@ $color_primary: #313131;
 $color_secondary: #606060;
 
 .user-card {
+  position: relative;
+
+  &_loading {
+    height: 100vh; // TODO: minus header and footer
+  }
+
   &__loader {
     display: block;
-    padding-top: 50%;
+    top: 50%;
     margin: auto;
     transform: translateY(-50%);
   }
@@ -24,7 +30,6 @@ $color_secondary: #606060;
 
   &__profile-name {
     color: $color_primary;
-    // as h3
   }
 
   &__profile-info {
@@ -97,7 +102,8 @@ $color_secondary: #606060;
   }
 
   &__item-header {
-    font-size: 24px; // TODO: check size
+    font-family: 'GothamPro_bold', serif;
+    font-size: 24px;
     color: $color_primary;
     display: flex;
     align-items: center;
@@ -108,6 +114,7 @@ $color_secondary: #606060;
   }
 
   &__button {
+    font-family: 'Gotham Pro', serif;
     border-radius: 4px;
     background-color: #f0f0f0;
     color: $color_secondary;
@@ -173,5 +180,11 @@ $color_secondary: #606060;
       font-size: 14px;
       color: $color_secondary;
     }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .user-card_loading {
+    height: auto;
   }
 }

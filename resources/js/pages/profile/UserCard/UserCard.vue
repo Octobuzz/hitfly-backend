@@ -1,5 +1,10 @@
 <template>
-  <div class="user-card">
+  <div
+    :class="[
+      'user-card',
+      { 'user-card_loading': !dataInitialized }
+    ]"
+  >
     <SpinnerLoader
       v-if="!dataInitialized"
       class="user-card__loader"

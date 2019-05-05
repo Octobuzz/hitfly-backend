@@ -7,7 +7,7 @@
       />
     </template>
     <template #right-column="{ paddingClass }">
-
+      <router-view :container-padding-class="paddingClass" />
     </template>
   </TwoColumnLayout>
 </template>
