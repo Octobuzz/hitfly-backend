@@ -59,8 +59,8 @@ export default {
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 5,
-        my: false // TODO: set to true
+        pageLimit: 10,
+        my: true // TODO: set to true
       },
       dataInitialized: false
     };
@@ -120,7 +120,22 @@ export default {
     },
 
     onTrackRemove(id) {
-      console.log('remove button pressed for track ', id);
+      this.$apollo.mutate({
+        mutation: gql.mutation.REMOVE_TRACK,
+        variables: { id },
+        update(data) {
+          const currentTrackList = this.$apollo.readQuery({
+            query: gql.query.TRACKS,
+            variables: this.queryVars
+          });
+
+          console.log(currentTrackList);
+        }
+      }).then((res) => {
+        console.log('track removed');
+      }).catch((err) => {
+        console.log('error while removing track: ', err);
+      });
     }
   },
 
