@@ -28,14 +28,7 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'Имя группы',
             ],
-            'avatarGroup' => MusicGroupImageField::class/*[
-                'type' => Type::string(),
-                'description' => 'Аватарка группы',
-                'alias' => 'avatar_group', // Use 'alias', if the database column is different from the type name
-                'resolve' => function ($model) {
-                    return $model->avatar_group;
-                }, // Use 'alias', if the database column is different from the type name
-            ]*/,
+            'avatarGroup' => MusicGroupImageField::class,
             'careerStartYear' => [
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'Год начала карьеры',
@@ -74,9 +67,10 @@ class MusicGroupType extends GraphQLType
             'activeMembers' => [
                 'type' => Type::listOf(\GraphQL::type('User')),
                 'description' => 'Активные участники группы',
-                /*'resolve' => function ($model) {
-                    return die(json_encode($model->activeMembers()->get()));
-                },*/
+            ],
+            'socialLinks' => [
+                'type' => Type::listOf(\GraphQL::type('SocialLinks')),
+                'description' => 'Соцсети группы',
             ],
         ];
     }
