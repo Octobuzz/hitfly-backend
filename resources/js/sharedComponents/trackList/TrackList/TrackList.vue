@@ -1,5 +1,7 @@
 <template>
   <div class="track-list">
+    <slot name="header" />
+
     <TrackListEntry
       v-for="(trackId, index) in trackIdList"
       :key="trackId"

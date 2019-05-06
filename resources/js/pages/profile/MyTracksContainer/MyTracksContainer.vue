@@ -1,9 +1,28 @@
 <template>
   <TrackList
-    class="my-tracks-container"
+    :class="[
+      'my-tracks-container',
+      { [containerPaddingClass]: desktop }
+    ]"
     :track-id-list="trackIdList"
     @remove-track="onTrackRemove"
   >
+    <template #header>
+      <div
+        :class="[
+          'my-tracks-container__header',
+          { [containerPaddingClass]: !desktop }
+        ]"
+      >
+        <h2>
+          Песни
+        </h2>
+        <button class="my-tracks-container__header-button">
+          Все песни
+        </button>
+      </div>
+    </template>
+
     <template #loader>
       <SpinnerLoader
         v-if="isLoading"
@@ -18,10 +37,19 @@ import TrackList from 'components/trackList/TrackList';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import gql from './gql';
 
+const MOBILE_WIDTH = 767;
+
 export default {
   components: {
     TrackList,
     SpinnerLoader
+  },
+
+  props: {
+    containerPaddingClass: {
+      type: String,
+      default: ''
+    }
   },
 
   data() {
@@ -43,6 +71,10 @@ export default {
       return this.trackList
         .map(track => track.id)
         .slice(0, 5);
+    },
+
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
     }
   },
 

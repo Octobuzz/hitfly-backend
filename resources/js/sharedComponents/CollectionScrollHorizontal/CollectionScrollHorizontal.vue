@@ -1,13 +1,13 @@
 <template>
   <div
     :class="[
-      'album-scroll-horizontal',
+      'collection-scroll-horizontal',
       $attrs.class
     ]"
   >
     <div
       :class="[
-        'album-scroll-horizontal__header',
+        'collection-scroll-horizontal__header',
         headerClass
       ]"
     >
@@ -16,9 +16,9 @@
       <button
         v-if="!cantGoBack || !cantGoForward"
         :class="[
-          'album-scroll-horizontal__button-prev',
+          'collection-scroll-horizontal__button-prev',
           {
-            'album-scroll-horizontal__button-prev_disabled': cantGoBack
+            'collection-scroll-horizontal__button-prev_disabled': cantGoBack
           }
         ]"
         @click="goBack"
@@ -29,9 +29,9 @@
       <button
         v-if="!cantGoBack || !cantGoForward"
         :class="[
-          'album-scroll-horizontal__button-next',
+          'collection-scroll-horizontal__button-next',
           {
-            'album-scroll-horizontal__button-next_disabled': cantGoForward
+            'collection-scroll-horizontal__button-next_disabled': cantGoForward
           }
         ]"
         @click="goForward"
@@ -42,23 +42,23 @@
 
     <recycle-scroller
       ref="scroller"
-      class="album-scroll-horizontal__scroller"
+      class="collection-scroll-horizontal__scroller"
       direction="horizontal"
-      :items="albumIdList"
-      :buffer="3 * (albumWidth + spaceBetween)"
-      :item-size="albumWidth + spaceBetween"
+      :items="collectionIdList"
+      :buffer="3 * (collectionWidth + spaceBetween)"
+      :item-size="collectionWidth + spaceBetween"
     >
       <template #default="{ item: id }">
-        <AlbumPreview
-          class="album-scroll-horizontal__album-preview"
-          :album-id="id"
+        <CollectionPreview
+          class="collection-scroll-horizontal__collection-preview"
+          :collection-id="id"
         />
       </template>
 
       <template #after>
         <span
-          v-if="hasMoreData && albumIdList.length > 0"
-          class="album-scroll-horizontal__loader"
+          v-if="hasMoreData && collectionIdList.length > 0"
+          class="collection-scroll-horizontal__loader"
         >
           <BaseLoader :active="hasMoreData" />
         </span>
@@ -74,14 +74,14 @@ import { RecycleScroller } from 'vue-virtual-scroller';
 import TweenLite from 'gsap/TweenLite';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 import BaseLoader from 'components/BaseLoader.vue';
-import AlbumPreview from 'components/AlbumPreview';
+import CollectionPreview from 'components/CollectionPreview';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 
-const ALBUM_WIDTH_DESKTOP = 120;
-const ALBUM_WIDTH_MOBILE = 104;
+const COLLECTION_WIDTH_DESKTOP = 214;
+const COLLECTION_WIDTH_MOBILE = 150;
 
-const ALBUM_SPACE_BETWEEN_DESKTOP = 24;
-const ALBUM_SPACE_BETWEEN_MOBILE = 16;
+const COLLECTION_SPACE_BETWEEN_DESKTOP = 24;
+const COLLECTION_SPACE_BETWEEN_MOBILE = 16;
 
 const MOBILE_WIDTH = 767;
 
@@ -89,12 +89,12 @@ export default {
   components: {
     RecycleScroller,
     BaseLoader,
-    AlbumPreview,
+    CollectionPreview,
     ArrowIcon
   },
 
   props: {
-    albumIdList: {
+    collectionIdList: {
       type: Array,
       required: true
     },
@@ -127,11 +127,11 @@ export default {
     },
 
     spaceBetween() {
-      return this.desktop ? ALBUM_SPACE_BETWEEN_DESKTOP : ALBUM_SPACE_BETWEEN_MOBILE;
+      return this.desktop ? COLLECTION_SPACE_BETWEEN_DESKTOP : COLLECTION_SPACE_BETWEEN_MOBILE;
     },
 
-    albumWidth() {
-      return this.desktop ? ALBUM_WIDTH_DESKTOP : ALBUM_WIDTH_MOBILE;
+    collectionWidth() {
+      return this.desktop ? COLLECTION_WIDTH_DESKTOP : COLLECTION_WIDTH_MOBILE;
     }
   },
 
@@ -161,10 +161,10 @@ export default {
     },
 
     maybeLoadMore() {
-      const { scroller, albumWidth, spaceBetween } = this;
-      const albumSpacedWidth = albumWidth + spaceBetween;
+      const { scroller, collectionWidth, spaceBetween } = this;
+      const collectionSpacedWidth = collectionWidth + spaceBetween;
 
-      if (scroller.scrollWidth - scroller.scrollLeft < 20 * albumSpacedWidth) {
+      if (scroller.scrollWidth - scroller.scrollLeft < 12 * collectionSpacedWidth) {
         this.$emit('load-more');
       }
     },
@@ -172,17 +172,17 @@ export default {
     addOffset() {
       const {
         scroller,
-        albumWidth,
+        collectionWidth,
         spaceBetween,
         $data
       } = this;
 
-      const spacedAlbumWidth = albumWidth + spaceBetween;
+      const spacedCollectionWidth = collectionWidth + spaceBetween;
       const currentOffset = scroller.scrollLeft;
-      const albumTimesIncluded = (
+      const collectionTimesIncluded = (
         currentOffset + scroller.clientWidth
-      ) / spacedAlbumWidth;
-      const expectedOffset = spacedAlbumWidth * Math.floor(albumTimesIncluded);
+      ) / spacedCollectionWidth;
+      const expectedOffset = spacedCollectionWidth * Math.floor(collectionTimesIncluded);
 
       TweenLite.fromTo(
         $data,
@@ -195,38 +195,39 @@ export default {
     reduceOffset() {
       const {
         scroller,
-        albumWidth,
+        collectionWidth,
         spaceBetween,
         $data
       } = this;
 
-      const spacedAlbumWidth = albumWidth + spaceBetween;
+      const spacedCollectionWidth = collectionWidth + spaceBetween;
       const currentOffset = scroller.scrollLeft;
 
       // BLE - before left edge
 
-      const albumTimesIncludedBLE = (
+      const collectionTimesIncludedBLE = (
         currentOffset + spaceBetween
-      ) / spacedAlbumWidth;
+      ) / spacedCollectionWidth;
 
-      const wholeAlbumsOffsetBLE = spacedAlbumWidth * Math.floor(albumTimesIncludedBLE);
+      const wholeCollectionsOffsetBLE = spacedCollectionWidth
+        * Math.floor(collectionTimesIncludedBLE);
 
-      // edge case means album is splitted by the left edge
+      // edge case means collection is splitted by the left edge
       let edgeCase = true;
 
-      if (wholeAlbumsOffsetBLE + spaceBetween >= currentOffset) {
+      if (wholeCollectionsOffsetBLE + spaceBetween >= currentOffset) {
         edgeCase = false;
       }
 
-      const maxWholeAlbumsVisible = (
+      const maxWholeCollectionsVisible = (
         scroller.clientWidth + spaceBetween
-      ) / spacedAlbumWidth;
+      ) / spacedCollectionWidth;
 
-      let expectedOffset = wholeAlbumsOffsetBLE
-        - Math.floor(maxWholeAlbumsVisible) * spacedAlbumWidth;
+      let expectedOffset = wholeCollectionsOffsetBLE
+        - Math.floor(maxWholeCollectionsVisible) * spacedCollectionWidth;
 
       if (edgeCase) {
-        expectedOffset += spacedAlbumWidth;
+        expectedOffset += spacedCollectionWidth;
       }
 
       TweenLite.fromTo(
@@ -251,5 +252,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./AlbumScrollHorizontal.scss"
+  src="./CollectionScrollHorizontal.scss"
 />

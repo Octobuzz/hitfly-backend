@@ -1,26 +1,26 @@
 <template>
-  <AlbumScrollHorizontal
-    class="my-albums-container"
+  <CollectionScrollHorizontal
+    class="my-collections-container"
     :header-class="containerPaddingClass"
-    :album-id-list="albumIdList"
+    :collection-id-list="collectionIdList"
     :has-more-data="hasMoreData"
     @load-more="onLoadMore"
   >
     <template #title>
-      <h2 class="my-albums-container__title">
-        Альбомы
+      <h2 class="my-collections-container__title">
+        Плейлисты
       </h2>
     </template>
-  </AlbumScrollHorizontal>
+  </CollectionScrollHorizontal>
 </template>
 
 <script>
-import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
+import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
 import gql from './gql';
 
 export default {
   components: {
-    AlbumScrollHorizontal
+    CollectionScrollHorizontal
   },
 
   props: {
@@ -32,42 +32,43 @@ export default {
 
   data() {
     return {
-      albumList: [],
+      collectionList: [],
       isLoading: true,
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 30
+        pageLimit: 10,
+        my: false // TODO: make true
       },
       dataInitialized: false
     };
   },
 
   computed: {
-    albumIdList() {
-      return this.albumList.map(album => album.id);
+    collectionIdList() {
+      return this.collectionList.map(album => album.id);
     }
   },
 
   methods: {
-    fetchMoreAlbums(vars) {
-      return this.$apollo.queries.albumList.fetchMore({
+    fetchMoreCollections(vars) {
+      return this.$apollo.queries.collectionList.fetchMore({
         variables: vars,
 
-        updateQuery: (currentList, { fetchMoreResult: { albums } }) => {
-          const { total, to, data: newAlbums } = albums;
+        updateQuery: (currentList, { fetchMoreResult: { collections } }) => {
+          const { total, to, data: newCollections } = collections;
 
           if (to === total) {
             this.hasMoreData = false;
           }
 
           return {
-            albums: {
+            collections: {
               // eslint-disable-next-line no-underscore-dangle
-              __typename: currentList.albums.__typename,
+              __typename: currentList.collections.__typename,
               total,
               to,
-              data: [...currentList.albums.data, ...newAlbums]
+              data: [...currentList.collections.data, ...newCollections]
             }
           };
         },
@@ -81,7 +82,7 @@ export default {
 
       this.isLoading = true;
 
-      this.fetchMoreAlbums({
+      this.fetchMoreCollections({
         ...this.queryVars,
         pageNumber: this.queryVars.pageNumber + 1
       })
@@ -96,12 +97,12 @@ export default {
   },
 
   apollo: {
-    albumList() {
+    collectionList() {
       return {
-        query: gql.query.ALBUMS,
+        query: gql.query.COLLECTIONS,
         variables: this.queryVars,
 
-        update({ albums: { total, to, data } }) {
+        update({ collections: { total, to, data } }) {
           this.isLoading = false;
           this.dataInitialized = true;
           this.$emit('data-initialized');
@@ -125,5 +126,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./MyAlbumsContainer.scss"
+  src="./MyCollectionsContainer.scss"
 />

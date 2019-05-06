@@ -2,12 +2,12 @@ query Album($id: Int!) {
     album(id: $id) {
         id
         title
-        genre {
-            id,
-            name
-            image
-            userFavourite
-        }
+#        genre {
+#            id
+#            name
+#            image
+#            userFavourite
+#        }
         author
         year
         cover(

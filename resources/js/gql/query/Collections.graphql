@@ -1,0 +1,24 @@
+query Collections(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $my: Boolean
+) {
+    collections(
+        limit: $pageLimit,
+        page: $pageNumber,
+        my: $my
+    ){
+        total
+        to
+        data {
+            id
+            title
+            image(
+                sizes: [size_150x150, size_214x160]
+            ) {
+                size
+                url
+            }
+        }
+    }
+}

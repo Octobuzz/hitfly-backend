@@ -1,20 +1,24 @@
 query Albums(
     $pageLimit: Int!,
     $pageNumber: Int!
+#    $my: Boolean
 ) {
     albums(
         limit: $pageLimit,
         page: $pageNumber
+#        my: $my
     ) {
         total
         to
         data {
             id
             title
-            genre {
-                id,
-                name
-            }
+#            genre {
+#                id
+#                name
+#                image
+#                userFavourite
+#            }
             author
             year
             cover(
