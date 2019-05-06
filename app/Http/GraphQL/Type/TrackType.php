@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Http\GraphQL\Fields\AlbumCoverField;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
@@ -84,9 +85,10 @@ class TrackType extends GraphQLType
             ],
             'userPlayLists' => [
                 'type' => Type::listOf(GraphQL::type('Collection')),
-                'description' => 'PlayLists пользователя. Только для авторизированныз пользователей',
+                'description' => 'PlayLists пользователя. Только для авторизированных пользователей',
                 'privacy' => IsAuthPrivacy::class,
             ],
+            'cover' => AlbumCoverField::class,
         ];
     }
 }

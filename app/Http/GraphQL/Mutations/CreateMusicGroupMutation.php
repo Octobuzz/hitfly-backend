@@ -109,7 +109,7 @@ class CreateMusicGroupMutation extends Mutation
         if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
             Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
         }
-        $image_resize->save($path.$imagePath);
+        $image_resize->save($path.$imagePath,100);
 
         return $imagePath;
     }

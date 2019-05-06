@@ -46,6 +46,26 @@ class CollectionType extends GraphQLType
                 'type' => Type::listOf(GraphQL::type('Track')),
                 'description' => 'Треки',
             ],
+            'userFavourite' => [
+                'type' => Type::nonNull(Type::boolean()),
+                'description' => 'флаг избранного коллекции',
+                'resolve' => function ($model) {
+                    if ($model->userFavourite->count()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                'selectable' => false,
+            ],
+            'countTracks' => [
+                'type' => Type::int(),
+                'description' => 'количество треков в коллекции',
+                'resolve' => function ($model) {
+                   return $model->tracks->count();
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }
