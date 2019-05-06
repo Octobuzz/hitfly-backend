@@ -51,7 +51,6 @@ $album-left-padding-mobile: 16px;
     height: $album-cover-desktop;
   }
 
-  // TODO: add album for mobile
   &__album-preview {
     box-sizing: content-box;
     padding-left: $album-left-padding-desktop;
@@ -65,6 +64,10 @@ $album-left-padding-mobile: 16px;
 @media screen and (max-width: 767px) {
   .album-scroll-horizontal {
     height: $album-height-mobile;
+
+    &__album-preview {
+      padding-left: $album-left-padding-mobile;
+    }
 
     &::v-deep .vue-recycle-scroller__item-wrapper {
       height: $album-height-mobile;

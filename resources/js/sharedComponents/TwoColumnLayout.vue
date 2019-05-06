@@ -41,6 +41,7 @@
   &__right-column {
     box-sizing: border-box;
     flex-grow: 1;
+    width: 68.2%;
 
     &_padding {
       padding: {

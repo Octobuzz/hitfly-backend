@@ -1,5 +1,6 @@
 <template>
   <AlbumScrollHorizontal
+    class="my-albums-container"
     :album-id-list="albumIdList"
     :has-more-data="hasMoreData"
     @load-more="onLoadMore"

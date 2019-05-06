@@ -1,5 +1,10 @@
 <template>
-  <div class="album-scroll-horizontal">
+  <div
+    :class="[
+      'album-scroll-horizontal',
+      $attrs.class
+    ]"
+  >
     <div class="album-scroll-horizontal__header">
       <slot name="title" />
 
@@ -50,6 +55,7 @@
         >
           <BaseLoader :active="hasMoreData" />
         </span>
+        <span v-else style="display: block; width: 120px;" />
       </template>
     </recycle-scroller>
   </div>
@@ -163,7 +169,7 @@ export default {
       const spacedAlbumWidth = albumWidth + spaceBetween;
       const currentOffset = scroller.scrollLeft;
       const albumTimesIncluded = (
-        currentOffset + scroller.clientWidth + spaceBetween
+        currentOffset + scroller.clientWidth
       ) / spacedAlbumWidth;
       const expectedOffset = spacedAlbumWidth * Math.floor(albumTimesIncluded);
 
@@ -194,9 +200,10 @@ export default {
 
       const wholeAlbumsOffsetBLE = spacedAlbumWidth * Math.floor(albumTimesIncludedBLE);
 
+      // edge case means album is splitted by the left edge
       let edgeCase = true;
 
-      if (wholeAlbumsOffsetBLE >= currentOffset) {
+      if (wholeAlbumsOffsetBLE + spaceBetween >= currentOffset) {
         edgeCase = false;
       }
 
