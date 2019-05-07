@@ -22,12 +22,12 @@ mutation RemoveFromFavourite(
                 userFavourite
             }
         }
-#        ... on FavouriteCollection {
-#            id
-#            collection {
-#                id
-#                userFavourite
-#            }
-#        }
+        ... on FavouriteCollection {
+            id
+            collection {
+                id
+                userFavourite
+            }
+        }
     }
 }

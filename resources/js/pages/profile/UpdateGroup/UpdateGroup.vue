@@ -322,11 +322,13 @@ export default {
         this.group.activeMemberIds = activeMembers
           .map(user => user.id);
 
-        this.dataInitialized = true;
+        if (!this.dataInitialized) {
+          this.dataInitialized = true;
+          this.$emit('data-initialized');
+        }
       },
 
       error(err) {
-        this.dataInitialized = true;
         console.log(err);
       }
     }

@@ -350,10 +350,11 @@ export default {
             this.myProfile.activity = description;
           }
         }
-      },
-      result() {
-        this.dataInitialized = true;
-        this.$emit('data-initialized');
+
+        if (!this.dataInitialized) {
+          this.dataInitialized = true;
+          this.$emit('data-initialized');
+        }
       },
       error(err) {
         console.log(err);

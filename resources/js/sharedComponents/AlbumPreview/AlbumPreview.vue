@@ -95,12 +95,10 @@ export default {
 
   computed: {
     albumCoverUrl() {
-      // TODO: add 104x104 when api is ready
-
-      // if (this.windowWidth <= MOBILE_WIDTH) {
-      //   return this.album.cover
-      //     .filter(cover => cover.size === 'size_104x104')[0].url;
-      // }
+      if (this.windowWidth <= MOBILE_WIDTH) {
+        return this.album.cover
+          .filter(cover => cover.size === 'size_104x104')[0].url;
+      }
 
       return this.album.cover
         .filter(cover => cover.size === 'size_120x120')[0].url;

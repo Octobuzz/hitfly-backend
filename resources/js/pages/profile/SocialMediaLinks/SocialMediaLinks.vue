@@ -71,8 +71,6 @@ export default {
   data() {
     return {
       updatedLinks: [],
-
-      // TODO: make fetch
       networkList: [
         'instagram',
         'facebook',

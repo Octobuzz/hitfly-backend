@@ -9,6 +9,8 @@ query MyCollections {
                 size
                 url
             }
+            userFavourite
+            countTracks
         }
     }
 }

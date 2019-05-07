@@ -57,10 +57,6 @@ export default {
         updateQuery: (currentList, { fetchMoreResult: { albums } }) => {
           const { total, to, data: newAlbums } = albums;
 
-          if (to === total) {
-            this.hasMoreData = false;
-          }
-
           return {
             albums: {
               // eslint-disable-next-line no-underscore-dangle
@@ -103,10 +99,12 @@ export default {
 
         update({ albums: { total, to, data } }) {
           this.isLoading = false;
-          this.dataInitialized = true;
-          this.$emit('data-initialized');
+          if (!this.dataInitialized) {
+            this.dataInitialized = true;
+            this.$emit('data-initialized');
+          }
 
-          if (to === total) {
+          if (to >= total) {
             this.hasMoreData = false;
           }
 
