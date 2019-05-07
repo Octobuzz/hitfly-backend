@@ -146,7 +146,7 @@ export default {
     },
 
     albumCoverUrl() {
-      return this.track.album.cover
+      return this.track.cover
         .filter(cover => cover.size === 'size_32x32')[0].url;
     }
   },
