@@ -33,6 +33,22 @@ class UpdateTrackMutation extends Mutation
         ];
     }
 
+    public function rules(array $args = [])
+    {
+        return [
+            'id' => ['required', function ($attribute, $value, $fail) {
+                $user = \Auth::user();
+                $track = Track::query()->find($value);
+                if (true === empty($track)) {
+                    $fail('Трек  не найден');
+                }
+                if ($track->user_id !== $user->id) {
+                    $fail('Не достаточно прав на изменение информации треке');
+                }
+            }],
+        ];
+    }
+
     public function resolve($root, $args)
     {
         $track = Track::query()->find($args['id']);
