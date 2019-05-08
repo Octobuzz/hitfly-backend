@@ -114,8 +114,9 @@ class MusicGroup extends Model
     {
         return Storage::disk('admin')->url($image);
     }
+
     public function activeMembers()
     {
-        return $this->belongsToMany(User::class,'invite_to_groups')->where('accept','=',1);
+        return $this->belongsToMany(User::class, 'invite_to_groups')->where('accept', '=', 1);
     }
 }

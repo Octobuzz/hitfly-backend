@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Mutations;
 
-use App\Helpers\DBHelpers;
 use App\Models\GroupLinks;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
@@ -59,24 +58,24 @@ class CreateMusicGroupMutation extends Mutation
 
         if (!empty($args['musicGroup']['socialLinks'])) {
             foreach ($args['musicGroup']['socialLinks'] as $social) {
-                    $socialLinks = new GroupLinks();
-                    $socialLinks->social_type = $social['socialType'];
-                    $socialLinks->link = $social['link'];
-                    $socialLinks->music_group_id = $musicGroup->id;
-                    $socialLinks->save();
+                $socialLinks = new GroupLinks();
+                $socialLinks->social_type = $social['socialType'];
+                $socialLinks->link = $social['link'];
+                $socialLinks->music_group_id = $musicGroup->id;
+                $socialLinks->save();
             }
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {
-                    $inviteMember = new InviteToGroup();
-                    if (!empty($members['email'])) {
-                        $inviteMember->email = $members['email'];
-                    }
-                    if (!empty($members['user_id'])) {
-                        $inviteMember->user_id = $members['user_id'];
-                    }
-                    $inviteMember->music_group_id = $musicGroup->id;
-                    $inviteMember->save();
+                $inviteMember = new InviteToGroup();
+                if (!empty($members['email'])) {
+                    $inviteMember->email = $members['email'];
+                }
+                if (!empty($members['user_id'])) {
+                    $inviteMember->user_id = $members['user_id'];
+                }
+                $inviteMember->music_group_id = $musicGroup->id;
+                $inviteMember->save();
             }
         }
 
@@ -109,7 +108,7 @@ class CreateMusicGroupMutation extends Mutation
         if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
             Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
         }
-        $image_resize->save($path.$imagePath,100);
+        $image_resize->save($path.$imagePath, 100);
 
         return $imagePath;
     }

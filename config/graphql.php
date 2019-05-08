@@ -136,7 +136,9 @@ return [
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
-                'trackUpload' => \App\Http\GraphQL\Mutations\Track\TrackUploadMutation::class,
+                'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
+                'updateTrack' => \App\Http\GraphQL\Mutations\Track\UpdateTrackMutation::class,
+
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,

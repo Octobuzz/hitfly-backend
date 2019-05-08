@@ -42,6 +42,7 @@ class AlbumsQuery extends Query
                 ->where('user_id', '=', \Auth::user()->id)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
+
         return Album::with($fields->getRelations())
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }

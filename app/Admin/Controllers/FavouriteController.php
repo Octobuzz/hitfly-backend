@@ -34,7 +34,7 @@ class FavouriteController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
      *
      * @return Content
@@ -50,7 +50,7 @@ class FavouriteController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed $id
+     * @param mixed   $id
      * @param Content $content
      *
      * @return Content
@@ -92,7 +92,7 @@ class FavouriteController extends Controller
 
         $grid->id('Id');
         $grid->favouriteable_type('Тип избранного')->display(function ($favourite) {
-            return __('messages.' . Favourite::CLASS_NAME[$favourite]);
+            return __('messages.'.Favourite::CLASS_NAME[$favourite]);
         });
         $grid->favouriteable()->display(
             function ($favouriteable) {//админка возвращает массив, вместо объекта, получить имя через метод нельзя
@@ -105,6 +105,7 @@ class FavouriteController extends Controller
                 if (!empty($favouriteable['name'])) {
                     return $favouriteable['name'];
                 }
+
                 return 'имя ненайдено';
             }
         );
@@ -133,7 +134,7 @@ class FavouriteController extends Controller
             });
         $show->id('Id');
         $show->favouriteable_type('Тип избранного')->as(function ($favourite) {
-            return __('messages.' . Favourite::CLASS_NAME[$favourite]);
+            return __('messages.'.Favourite::CLASS_NAME[$favourite]);
         });
         /*$show->favouriteable()->title('Тип избранного')->as(function ($favourite) {
             return $favourite->title;
@@ -166,15 +167,16 @@ class FavouriteController extends Controller
             $return = [];
             if ($type) {
                 foreach (Favourite::CLASS_NAME as $k => $fType) {
-                    $return[$k] = __('messages.' . $fType);
+                    $return[$k] = __('messages.'.$fType);
                 }
             }
 
             return $return;
         })/*->load('favouriteable_id', '/admin/api/favorite')*/->rules('required')->disable();
 
-        $form->select('id','Избранное')->options(function ($id){
+        $form->select('id', 'Избранное')->options(function ($id) {
             $favourite = Favourite::find($id);
+
             return [$id => (string) $favourite->favouriteable->getName()];
         })->rules('required');
         /*$form->select('favouriteable_id','Избранное')->model(Favourite::class);/*->options(function ($type) {
