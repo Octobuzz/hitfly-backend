@@ -84,7 +84,7 @@
         </div>
 
         <div
-          v-for="group in myProfile.musicGroups.slice(0, 3)"
+          v-for="group in myProfile.musicGroups"
           :key="group.id"
           class="user-card__group"
         >

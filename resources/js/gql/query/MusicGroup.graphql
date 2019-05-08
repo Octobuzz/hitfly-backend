@@ -38,7 +38,11 @@ query MusicGroup($id: Int!) {
             id
             area_region
             title
-        },
+        }
+        socialLinks {
+            social_type
+            link
+        }
         activeMembers {
             id
             username

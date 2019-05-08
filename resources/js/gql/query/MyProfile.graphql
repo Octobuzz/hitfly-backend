@@ -48,6 +48,28 @@ query MyProfile {
                 area_region
                 title
             }
+            socialLinks {
+                social_type
+                link
+            }
+            activeMembers {
+                id
+                username
+                roles {
+                    name
+                }
+                location {
+                    id
+                    area_region
+                    title
+                }
+                avatar(
+                    sizes: [size_56x56, size_235x235]
+                ) {
+                    size
+                    url
+                }
+            }
             followersCount
         }
         followersCount
@@ -116,6 +138,10 @@ query MyProfile {
                 id
                 area_region
                 title
+            }
+            socialLinks {
+                social_type
+                link
             }
             activeMembers {
                 id

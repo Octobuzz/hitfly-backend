@@ -218,6 +218,10 @@ export default {
   watch: {
     editGroupId() {
       this.$refs.avatar.clearUserInput();
+    },
+
+    ['group.socialLinks'](val) {
+      console.log(val);
     }
   },
 
@@ -277,7 +281,7 @@ export default {
         }
       }).then(() => {
         this.isSaving = false;
-        this.$router.push('/profile');
+        this.$router.push('/profile/my-music');
         this.$message(
           'Данные группы успешно обновлены',
           'info',
@@ -306,16 +310,13 @@ export default {
       },
 
       update({ musicGroup }) {
-        if (musicGroup === undefined) {
-          throw new Error('Initial cache-only update for UpdateGroup:group');
-        }
-
         const {
           name,
           careerStartYear,
           description,
           genres,
           avatarGroup,
+          socialLinks,
           activeMembers
         } = musicGroup;
 
@@ -325,6 +326,10 @@ export default {
         this.group.name.input = name;
         this.group.year.input = new Date(careerStartYear).getFullYear().toString();
         this.group.activity.input = description;
+        this.group.socialLinks = socialLinks.map(sl => ({
+          network: sl.social_type,
+          username: sl.link
+        }));
         this.group.activeMemberIds = activeMembers
           .map(user => user.id);
 

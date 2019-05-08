@@ -61,6 +61,10 @@ mutation UpdateMusicGroup(
             area_region
             title
         }
+        socialLinks {
+            social_type
+            link
+        }
         followersCount
     }
 }

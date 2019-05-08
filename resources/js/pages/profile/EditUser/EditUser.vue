@@ -386,7 +386,7 @@ export default {
         variables: mutationVars,
         update: (store, { data: { updateMyProfile } }) => {
           this.isSaving = false;
-          this.$router.push('/profile');
+          this.$router.push('/profile/my-music');
           this.$message(
             'Данные профиля успешно обновлены',
             'info',

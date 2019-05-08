@@ -126,21 +126,21 @@ export default {
       const { updatedLinks, genId } = this;
       const newLinks = [];
 
-      const areNotLinksEqual = (link1, link2) => (
-        (link1.username !== link2.username)
-          || (link1.network !== link2.network)
+      const areLinksEqual = (link1, link2) => (
+        (link1.username === link2.username)
+          && (link1.network === link2.network)
       );
 
-      // TODO: remove stale links
+      // TODO:
+      //  remove stale links if you want to set links out of this component
+      //  when there already are some data
 
       links.forEach((link) => {
         const isNew = updatedLinks.every(
-          updatedLink => areNotLinksEqual(updatedLink, link)
+          updatedLink => !areLinksEqual(updatedLink, link)
         );
 
-        if (isNew) {
-          newLinks.push(link);
-        }
+        if (isNew) newLinks.push(link);
       });
 
       if (newLinks.length === 0 && updatedLinks.length !== 0) {

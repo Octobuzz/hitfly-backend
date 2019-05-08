@@ -246,7 +246,7 @@ export default {
         }
       }).then(() => {
         this.isSaving = false;
-        this.$router.push('/profile');
+        this.$router.push('/profile/my-music');
         this.$message(
           'Группа успешно создана',
           'info',
