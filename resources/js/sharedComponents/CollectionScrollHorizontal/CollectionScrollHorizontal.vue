@@ -112,8 +112,9 @@ export default {
     return {
       tweenedOffset: 0,
       cantGoBack: true,
-      cantGoForward: false,
-      onScroll: debounce(this.handleScroll.bind(this), 100)
+      cantGoForward: true,
+      onScroll: debounce(this.handleScroll.bind(this), 100),
+      onResize: this.initArrowWatcher.bind(this)
     };
   },
 
@@ -143,10 +144,13 @@ export default {
 
   mounted() {
     this.scroller.addEventListener('scroll', this.onScroll);
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
   },
 
   destroyed() {
     this.scroller.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
   },
 
   methods: {
@@ -244,6 +248,32 @@ export default {
 
     goForward() {
       this.addOffset();
+    },
+
+    initArrowWatcher() {
+      const arrowsWatcher = setInterval(() => {
+        if (this.scroller.clientWidth === 0) return;
+
+        const {
+          collectionIdList: { length: collectionCount },
+          collectionWidth,
+          spaceBetween,
+          scroller,
+          hasMoreData
+        } = this;
+        const spacedWidth = collectionWidth + spaceBetween;
+
+        if (collectionCount * spacedWidth > scroller.clientWidth) {
+          this.cantGoBack = scroller.scrollLeft === 0;
+          this.cantGoForward = !hasMoreData
+            && (scroller.scrollLeft + scroller.clientWidth) >= scroller.scrollWidth;
+        } else {
+          this.cantGoBack = true;
+          this.cantGoForward = true;
+        }
+
+        clearInterval(arrowsWatcher);
+      }, 50);
     }
   }
 };
