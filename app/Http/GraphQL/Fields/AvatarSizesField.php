@@ -97,7 +97,7 @@ class AvatarSizesField extends Field
         if (!file_exists($publicPath.$path)) {
             Storage::disk('public')->makeDirectory($path);
         }
-        $image_resize->save(Storage::disk('public')->path($path.$imagePath),100);
+        $image_resize->save(Storage::disk('public')->path($path.$imagePath), 100);
 
         return $path.$imagePath;
     }

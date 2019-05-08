@@ -7,7 +7,6 @@ use App\Models\ArtistProfile;
 use App\Models\City;
 use App\Models\Favourite;
 use App\Models\Genre;
-use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
