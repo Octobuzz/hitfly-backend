@@ -62,7 +62,7 @@ class CollectionType extends GraphQLType
                 'type' => Type::int(),
                 'description' => 'количество треков в коллекции',
                 'resolve' => function ($model) {
-                   return $model->tracks->count();
+                    return $model->tracks->count();
                 },
                 'selectable' => false,
             ],

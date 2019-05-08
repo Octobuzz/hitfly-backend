@@ -5,10 +5,7 @@ namespace App\Http\GraphQL\Mutations\Track;
 use App\Models\Track;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\UploadType;
 use Rebing\GraphQL\Support\Mutation;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateTrackMutation extends Mutation
 {
@@ -38,7 +35,6 @@ class UpdateTrackMutation extends Mutation
 
     public function resolve($root, $args)
     {
-
         $track = Track::query()->find($args['id']);
 
         $track->update([

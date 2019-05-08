@@ -137,12 +137,12 @@ class CollectionController extends Controller
             }
         })->ajax('/admin/api/users');
         $states = [
-            'on'  => ['value' => 1, 'text' => 'Админ', 'color' => 'success'],
+            'on' => ['value' => 1, 'text' => 'Админ', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => 'Пользователь', 'color' => 'danger'],
         ];
         $form->switch('is_admin', 'Коллекция администратора')->states($states);
         $form->saving(function (Form $form) {
-            if($form->image !== null) {
+            if (null !== $form->image) {
                 Storage::disk('public')->delete($form->model()->getOriginal('image'));
             }
             $form->image('image')->move('collections/'.$form->user_id)->uniqueName();
