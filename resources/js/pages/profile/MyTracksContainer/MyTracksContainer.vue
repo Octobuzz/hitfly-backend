@@ -1,40 +1,58 @@
 <template>
-  <TrackList
-    :class="[
-      'my-tracks-container',
-      { [containerPaddingClass]: desktop }
-    ]"
-    :track-id-list="trackIdList"
-    @remove-track="onTrackRemove"
-  >
-    <template #header>
-      <div
-        :class="[
-          'my-tracks-container__header',
-          { [containerPaddingClass]: !desktop }
-        ]"
+  <div>
+    <div
+      v-if="!mobileUser && dataInitialized && !trackListLength"
+      :class="['my-tracks-download', containerPaddingClass]"
+    >
+      <span class="h2 my-tracks-download__text">
+        Загрузите свою первую песню
+      </span>
+      <FormButton
+        class="my-tracks-download__button"
+        @press="onDownloadPress"
       >
-        <span class="h2">
-          Песни
-        </span>
-        <button class="my-tracks-container__header-button">
-          Все песни
-        </button>
-      </div>
-    </template>
+        Загрузить музыку
+      </FormButton>
+    </div>
+    <TrackList
+      v-if="dataInitialized && trackListLength"
+      :class="[
+        'my-tracks-container',
+        { [containerPaddingClass]: desktop }
+      ]"
+      :track-id-list="trackIdList"
+      @remove-track="onTrackRemove"
+    >
+      <template #header>
+        <div
+          :class="[
+            'my-tracks-container__header',
+            { [containerPaddingClass]: !desktop }
+          ]"
+        >
+          <span class="h2">
+            Песни
+          </span>
+          <button class="my-tracks-container__header-button">
+            Все песни
+          </button>
+        </div>
+      </template>
 
-    <template #loader>
-      <SpinnerLoader
-        v-if="hasMoreData && dataInitialized && trackListLength < shownLength"
-        class="my-tracks-container__loader"
-      />
-    </template>
-  </TrackList>
+      <template #loader>
+        <SpinnerLoader
+          v-if="hasMoreData && dataInitialized && trackListLength < shownLength"
+          class="my-tracks-container__loader"
+        />
+      </template>
+    </TrackList>
+  </div>
 </template>
 
 <script>
 import TrackList from 'components/trackList/TrackList';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
+import FormButton from 'components/FormButton.vue';
 import gql from './gql';
 
 const MOBILE_WIDTH = 767;
@@ -44,7 +62,8 @@ const MOBILE_WIDTH = 767;
 export default {
   components: {
     TrackList,
-    SpinnerLoader
+    SpinnerLoader,
+    FormButton
   },
 
   props: {
@@ -69,7 +88,8 @@ export default {
         pageLimit: 10, // aspire to have two times more than you have in viewport
         my: true
       },
-      dataInitialized: false
+      dataInitialized: false,
+      mobileUser: /Mobi|Android/i.test(navigator.userAgent)
     };
   },
 
@@ -81,7 +101,7 @@ export default {
     },
 
     trackListLength() {
-      return this.trackList.length;
+      return this.trackList.length > 0;
     },
 
     desktop() {
@@ -105,6 +125,10 @@ export default {
   },
 
   methods: {
+    onDownloadPress() {
+      console.log('"download track" pressed');
+    },
+
     fetchMoreTracks(vars) {
       return this.$apollo.queries.trackList.fetchMore({
         variables: vars,

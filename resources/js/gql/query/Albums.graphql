@@ -1,12 +1,12 @@
 query Albums(
     $pageLimit: Int!,
     $pageNumber: Int!
-#    $my: Boolean
+    $my: Boolean
 ) {
     albums(
         limit: $pageLimit,
         page: $pageNumber
-#        my: $my
+        my: $my
     ) {
         total
         to

@@ -92,11 +92,4 @@
     }
   }
 }
-
-@media screen and (max-width: 329px) {
-  .two-column-layout {
-    // TODO: update after styling header
-    margin-top: 144px;
-  }
-}
 </style>

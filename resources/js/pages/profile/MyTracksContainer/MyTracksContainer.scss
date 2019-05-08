@@ -24,6 +24,17 @@
   }
 }
 
+.my-tracks-download {
+  &__text {
+    margin-bottom: 32px;
+  }
+
+  &__button {
+    max-width: 210px;
+    margin-bottom: 48px;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .my-tracks-container {
     &__header {
@@ -33,6 +44,17 @@
     &__header-button {
       font-size: 10px;
       padding: 8px 18px;
+    }
+  }
+
+  .my-tracks-download {
+    &__text {
+      margin-bottom: 18px;
+    }
+
+    &__button {
+      max-width: 100%;
+      margin-bottom: 24px;
     }
   }
 }

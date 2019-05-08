@@ -1,17 +1,20 @@
 <template>
-  <CollectionScrollHorizontal
-    class="my-collections-container"
-    :header-class="containerPaddingClass"
-    :collection-id-list="collectionIdList"
-    :has-more-data="hasMoreData"
-    @load-more="onLoadMore"
-  >
-    <template #title>
-      <h2 class="my-collections-container__title">
-        Плейлисты
-      </h2>
-    </template>
-  </CollectionScrollHorizontal>
+  <div>
+    <CollectionScrollHorizontal
+      v-show="collectionListLength"
+      class="my-collections-container"
+      :header-class="containerPaddingClass"
+      :collection-id-list="collectionIdList"
+      :has-more-data="hasMoreData"
+      @load-more="onLoadMore"
+    >
+      <template #title>
+        <span class="h2 my-collections-container__title">
+          Плейлисты
+        </span>
+      </template>
+    </CollectionScrollHorizontal>
+  </div>
 </template>
 
 <script>
@@ -38,7 +41,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 10,
-        my: false // TODO: make true
+        my: true
       },
       dataInitialized: false
     };
@@ -47,6 +50,10 @@ export default {
   computed: {
     collectionIdList() {
       return this.collectionList.map(album => album.id);
+    },
+
+    collectionListLength() {
+      return this.collectionList.length > 0;
     }
   },
 
