@@ -8,16 +8,30 @@ $formRightPadding: 40px;
 .edit-profile {
   display: flex;
   flex-wrap: nowrap;
-  padding-top: 70px;
-
-  &__loader {
-    width: 200px;
-    height: 100px;
-    margin: auto;
-  }
 
   &-container {
+    position: relative;
     max-width: 991px;
+
+    &_loading {
+      // TODO: make header/footer width as variables
+      height: calc(100vh - 180px);
+    }
+
+    &__loader {
+      display: block;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &__return-header {
+      margin-bottom: 24px;
+    }
+
+    &__page-header {
+      margin-bottom: 24px;
+    }
   }
 
   &-avatar {
@@ -118,16 +132,15 @@ $formRightPadding: 40px;
       }
     }
 
-    &__h2, &__h3 {
+    &__section,
+    &__subsection {
       margin: {
         top: 0;
         bottom: 14px;
       }
     }
 
-    // TODO: make h-styles global
-
-    &__h3 {
+    &__subsection {
       font-family: "Gotham Pro", serif;
       font-size: 20px;
     }
@@ -135,6 +148,7 @@ $formRightPadding: 40px;
 
   &-footer {
     box-sizing: border-box;
+    position: relative;
     max-width: $avatarSide
       + $avatarRightMargin
       + $formMaxWidth
@@ -157,6 +171,13 @@ $formRightPadding: 40px;
       max-width: 190px;
       margin-left: auto;
     }
+
+    &__loader {
+      position: absolute;
+      bottom: -6px;
+      right: 190px;
+      transform: scale(.5);
+    }
   }
 }
 
@@ -174,8 +195,20 @@ $formRightPadding: 40px;
   }
 }
 
+@media screen and (max-width: 1024px) {
+  .edit-profile-container_loading {
+    height: auto;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .edit-profile {
+    &-container {
+      &__return-header {
+        margin-bottom: 14px;
+      }
+    }
+
     &-avatar {
       margin: {
         left: auto;
@@ -211,6 +244,10 @@ $formRightPadding: 40px;
           right: auto;
           left: auto;
         }
+      }
+
+      &__loader {
+        right: 8px;
       }
     }
   }

@@ -14,7 +14,6 @@
       >
     </button>
 
-
     <AddToFavouriteButton
       v-show="desktop"
       ref="addToFavButton"
@@ -24,7 +23,6 @@
       item-type="track"
       :item-id="trackId"
     />
-
 
     <span
       v-if="desktop"
@@ -148,7 +146,7 @@ export default {
     },
 
     albumCoverUrl() {
-      return this.track.album.cover
+      return this.track.cover
         .filter(cover => cover.size === 'size_32x32')[0].url;
     }
   },
@@ -161,9 +159,7 @@ export default {
       this.$refs.addToFavButton.onPress();
     },
     onRemovePress() {
-      console.log('remove pressed');
-
-      this.$emit('remove', this.trackId);
+      this.$emit('remove-track', this.trackId);
     }
   },
 

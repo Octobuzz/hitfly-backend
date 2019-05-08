@@ -59,18 +59,13 @@
   </header>
 </template>
 <script>
-  export default{
-    data(){
-      return{
-
-      }
-    },
-    methods: {
-      goToProfilePage() {
-        this.$router.push('/profile');
-      }
+export default {
+  methods: {
+    goToProfilePage() {
+      this.$router.push('/profile/my-music');
     }
   }
+}
 </script>
 <styles lang="scss" scoped>
 .head {

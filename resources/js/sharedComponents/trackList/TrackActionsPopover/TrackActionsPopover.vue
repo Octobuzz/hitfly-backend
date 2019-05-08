@@ -137,7 +137,7 @@ export default {
 
   computed: {
     albumCoverUrl() {
-      return this.track.album.cover
+      return this.track.cover
         .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 

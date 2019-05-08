@@ -9,6 +9,9 @@
 @import 'upload-music';
 @import 'profile';
 
+// TODO: migrate
+@import '../sass_refactor/main';
+
 body{
   font-family: $font_main;
   background-color: $color_2;

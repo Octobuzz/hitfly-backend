@@ -81,9 +81,6 @@ export default {
     onPress() {
       if (this.isButtonDisabled) return;
 
-      // TODO: remove after api creation
-      if (this.itemType === 'collection') return;
-
       this.isButtonDisabled = true;
 
       const {
@@ -197,13 +194,10 @@ export default {
 
   apollo: {
     isFavourite() {
-      // TODO: remove after api creation
-      if (this.itemType === 'collection') return;
-
-      // This query assumes we already have track data
+      // This query assumes we already have item data
       // regarding to favouritism somewhere in the cache.
-      // That way the query is not forced to refetch track data.
-      // This approach needs declared cache redirect for 'track'.
+      // That way the query is not forced to refetch item data.
+      // This approach needs declared cache redirect for the item.
 
       // eslint-disable-next-line consistent-return
       return {
