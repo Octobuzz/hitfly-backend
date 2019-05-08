@@ -5,7 +5,11 @@
       containerPaddingClass
     ]"
   >
-    <ReturnHeader class="create-group-header" />
+    <ReturnHeader class="create-group-container__return-header" />
+
+    <PageHeader class="create-group-container__page-header">
+      РЕДАКТИРОВАТЬ ГРУППУ
+    </PageHeader>
 
     <div class="create-group">
       <div class="create-group-cover">
@@ -28,10 +32,9 @@
           </template>
         </BaseInput>
 
-        <!--TODO: check headers hierarchy-->
-        <h2 class="create-group-description__header_h2">
+        <span class="h2 create-group-description__header_section">
           Описание
-        </h2>
+        </span>
 
         <BaseInput
           v-model="group.year.input"
@@ -43,9 +46,9 @@
           </template>
         </BaseInput>
 
-        <h3 class="create-group-description__header_h3">
+        <span class="h3 create-group-description__header_subsection">
           Выберите жанр
-        </h3>
+        </span>
 
         <ChooseGenres
           v-model="group.genres"
@@ -64,9 +67,9 @@
           </template>
         </ChooseGenres>
 
-        <h3 class="create-group-description__header_h3">
+        <span class=" h3 create-group-description__header_subsection">
           Описание деятельности
-        </h3>
+        </span>
 
         <BaseTextarea
           v-model="group.activity.input"
@@ -75,20 +78,21 @@
           :rows="3"
         />
 
-        <h3 class="create-group-description__header_h3">
+        <span class="create-group-description__header_subsection">
           Ссылки на соц. сети
-        </h3>
+        </span>
 
         <SocialMediaLinks :links.sync="group.socialLinks" />
 
-        <h2
+        <span
           :class="[
-            'create-group-description__header_h2',
+            'h2',
+            'create-group-description__header_section',
             'create-group-description__group-members-header'
           ]"
         >
           Состав группы
-        </h2>
+        </span>
 
         <p
           v-if="group.activeMemberIds.length === 0"
@@ -137,6 +141,7 @@
 
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
+import PageHeader from 'components/PageHeader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import FormButton from 'components/FormButton.vue';
@@ -153,6 +158,7 @@ import InviteGroupMembers from '../InviteGroupMembers';
 export default {
   components: {
     SpinnerLoader,
+    PageHeader,
     ReturnHeader,
     SocialMediaLinks,
     ActiveGroupMembers,

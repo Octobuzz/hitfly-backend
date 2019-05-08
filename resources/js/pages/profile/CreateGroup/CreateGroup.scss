@@ -13,15 +13,19 @@ $descriptionRightPadding: 37px;
     height: 100vh; // TODO: minus header and footer
   }
 
-  &-header {
-    margin: {
-      right: 0;
-      bottom: 42px;
-    }
-  }
-
   &-container {
     max-width: 991px;
+
+    &__return-header {
+      margin: {
+        right: 0;
+        bottom: 24px;
+      }
+    }
+
+    &__page-header {
+      margin-bottom: 24px;
+    }
   }
 
   &-cover {
@@ -99,16 +103,16 @@ $descriptionRightPadding: 37px;
       font-size: 14px;
     }
 
-    &__header_h2 {
+    &__header_section {
+      display: block;
       margin: {
         top: 0;
         bottom: 22px;
       }
     }
 
-    // TODO: global header styles
-
-    &__header_h3 {
+    &__header_subsection {
+      display: block;
       font-size: 20px;
       margin: {
         top: 0;
@@ -179,8 +183,12 @@ $descriptionRightPadding: 37px;
 
 @media screen and (max-width: 767px) {
   .create-group {
-    &-header {
+    &-container {
       margin-right: 0;
+
+      &__return-header {
+        margin-bottom: 14px;
+      }
     }
 
     &-cover {

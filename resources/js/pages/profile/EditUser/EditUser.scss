@@ -8,7 +8,6 @@ $formRightPadding: 40px;
 .edit-profile {
   display: flex;
   flex-wrap: nowrap;
-  padding-top: 70px;
 
   &-container {
     position: relative;
@@ -23,6 +22,14 @@ $formRightPadding: 40px;
       margin: auto;
       top: 50%;
       transform: translateY(-50%);
+    }
+
+    &__return-header {
+      margin-bottom: 24px;
+    }
+
+    &__page-header {
+      margin-bottom: 24px;
     }
   }
 
@@ -124,16 +131,15 @@ $formRightPadding: 40px;
       }
     }
 
-    &__h2, &__h3 {
+    &__section,
+    &__subsection {
       margin: {
         top: 0;
         bottom: 14px;
       }
     }
 
-    // TODO: make h-styles global
-
-    &__h3 {
+    &__subsection {
       font-family: "Gotham Pro", serif;
       font-size: 20px;
     }
@@ -196,6 +202,12 @@ $formRightPadding: 40px;
 
 @media screen and (max-width: 767px) {
   .edit-profile {
+    &-container {
+      &__return-header {
+        margin-bottom: 14px;
+      }
+    }
+
     &-avatar {
       margin: {
         left: auto;

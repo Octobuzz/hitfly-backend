@@ -34,6 +34,14 @@
           </li>
         </ul>
       </div>
+
+      <PageHeader
+        v-if="renderNavBar"
+        :class="['profile__page-header', paddingClass]"
+      >
+        ПРОФИЛЬ
+      </PageHeader>
+
       <router-view :container-padding-class="paddingClass" />
     </template>
   </TwoColumnLayout>
@@ -41,6 +49,7 @@
 
 <script>
 import TwoColumnLayout from 'components/TwoColumnLayout.vue';
+import PageHeader from 'components/PageHeader.vue';
 import UserCard from './UserCard';
 
 const MOBILE_WIDTH = 1024;
@@ -48,6 +57,7 @@ const MOBILE_WIDTH = 1024;
 export default {
   components: {
     TwoColumnLayout,
+    PageHeader,
     UserCard
   },
   computed: {

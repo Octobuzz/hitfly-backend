@@ -11,7 +11,11 @@
       class="edit-profile-container__loader"
     />
     <template v-else>
-      <ReturnHeader/>
+      <ReturnHeader class="edit-profile-container__return-header" />
+
+      <PageHeader class="edit-profile-container__page-header">
+        РЕДАКТИРОВАТЬ ПРОФИЛЬ
+      </PageHeader>
 
       <div class="edit-profile">
         <div class="edit-profile-avatar">
@@ -44,9 +48,9 @@
             </template>
           </BaseInput>
 
-          <h2 v-if="isArtist" class="edit-profile-form__h2">
+          <span v-if="isArtist" class="h2 edit-profile-form__section">
             Описание
-          </h2>
+          </span>
 
           <BaseInput
             v-if="isArtist"
@@ -61,9 +65,9 @@
 
 
           <div v-if="isArtist">
-            <h3 class="edit-profile-form__h3">
+            <span class="edit-profile-form__subsection">
               Выберете жанры, в которых играете
-            </h3>
+            </span>
 
             <ChooseGenres
               v-model="myProfile.playedGenres"
@@ -78,9 +82,9 @@
               </template>
             </ChooseGenres>
 
-            <h3 class="edit-profile-form__h3">
+            <span class="edit-profile-form__subsection">
               Описание деятельности
-            </h3>
+            </span>
 
             <BaseTextarea
               v-model="myProfile.activity.input"
@@ -90,9 +94,9 @@
             />
           </div>
 
-          <h2 class="edit-profile-form__h2">
+          <span class="h2 edit-profile-form__section">
             Вход
-          </h2>
+          </span>
 
           <div class="edit-profile-form__input-group">
             <BaseInput
@@ -139,10 +143,9 @@
             Использовать аккаунт соц.сетей?
           </BaseLink>
 
-          <!--TODO: check headers hierarchy-->
-          <h2 class="edit-profile-form__h2">
+          <span class="h2 edit-profile-form__section">
             Любимые жанры
-          </h2>
+          </span>
 
           <div
             v-if="!genreEditMode"
@@ -206,6 +209,7 @@
 
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
+import PageHeader from 'components/PageHeader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import BaseLink from 'components/BaseLink.vue';
@@ -225,6 +229,7 @@ import ChooseGenres from '../ChooseGenres';
 export default {
   components: {
     SpinnerLoader,
+    PageHeader,
     ReturnHeader,
     ChooseAvatar,
     ChooseGenres,
@@ -388,7 +393,7 @@ export default {
             { timeout: 2000 }
           );
         },
-        error(err) {
+        error: (err) => {
           this.isSaving = false;
           this.$message(
             'На сервере произошла ошибка. Данные профиля не обновлены',
@@ -442,9 +447,11 @@ export default {
 
           this.myProfile.playedGenres = genresPlay;
         }
-      },
-      result() {
-        this.dataInitialized = true;
+
+        if (!this.dataInitialized) {
+          this.dataInitialized = true;
+          this.$emit('data-initialized');
+        }
       },
       error(err) {
         console.log(err);

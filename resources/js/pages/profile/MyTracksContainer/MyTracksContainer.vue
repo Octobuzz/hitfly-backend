@@ -14,9 +14,9 @@
           { [containerPaddingClass]: !desktop }
         ]"
       >
-        <h2>
+        <span class="h2">
           Песни
-        </h2>
+        </span>
         <button class="my-tracks-container__header-button">
           Все песни
         </button>
