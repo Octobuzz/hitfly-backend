@@ -152,7 +152,7 @@ class SocialController extends Controller
             ],
         ];
 
-        return $providers;
+        return response()->json($providers)->header('Content-Type',"application/json");
     }
     public function registerSuccess(Request $request)
     {
