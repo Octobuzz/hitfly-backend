@@ -11,7 +11,6 @@ namespace App\Validation;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
-use App\Models\Genre;
 use App\Models\Track;
 use Illuminate\Support\Facades\Validator;
 

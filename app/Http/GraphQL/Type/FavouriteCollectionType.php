@@ -12,7 +12,7 @@ class FavouriteCollectionType extends GraphQLType
     protected $attributes = [
         'name' => 'FavouriteCollection',
         'model' => Favourite::class,
-        'description' => 'избранные коллекции'
+        'description' => 'избранные коллекции',
     ];
 
     public function fields()

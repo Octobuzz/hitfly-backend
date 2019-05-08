@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,6 +23,4 @@ class InviteToGroup extends Model
         'updated_at',
         'deleted_at',
     ];
-
-
 }

@@ -218,10 +218,6 @@ export default {
   watch: {
     editGroupId() {
       this.$refs.avatar.clearUserInput();
-    },
-
-    ['group.socialLinks'](val) {
-      console.log(val);
     }
   },
 

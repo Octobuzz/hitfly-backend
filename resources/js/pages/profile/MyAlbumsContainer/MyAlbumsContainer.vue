@@ -1,17 +1,20 @@
 <template>
-  <AlbumScrollHorizontal
-    class="my-albums-container"
-    :header-class="containerPaddingClass"
-    :album-id-list="albumIdList"
-    :has-more-data="hasMoreData"
-    @load-more="onLoadMore"
-  >
-    <template #title>
-      <h2 class="my-albums-container__title">
-        Альбомы
-      </h2>
-    </template>
-  </AlbumScrollHorizontal>
+  <div>
+    <AlbumScrollHorizontal
+      v-show="albumListLength"
+      class="my-albums-container"
+      :header-class="containerPaddingClass"
+      :album-id-list="albumIdList"
+      :has-more-data="hasMoreData"
+      @load-more="onLoadMore"
+    >
+      <template #title>
+        <span class="h2 my-albums-container__title">
+          Альбомы
+        </span>
+      </template>
+    </AlbumScrollHorizontal>
+  </div>
 </template>
 
 <script>
@@ -37,7 +40,8 @@ export default {
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 30
+        pageLimit: 30,
+        my: true
       },
       dataInitialized: false
     };
@@ -46,6 +50,10 @@ export default {
   computed: {
     albumIdList() {
       return this.albumList.map(album => album.id);
+    },
+
+    albumListLength() {
+      return this.albumList.length > 0;
     }
   },
 

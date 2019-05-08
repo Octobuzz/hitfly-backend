@@ -87,7 +87,7 @@ class AlbumCoverField extends Field
             $image = Storage::disk('local')->getAdapter()->getPathPrefix();
             $image .= 'default_image/album.png';
             $this->path['imageName'] = 'default_'.$size.'.png';
-        }else{//путь к картинке вместо урл
+        } else {//путь к картинке вместо урл
             $image = $this->path['public'].$image;
         }
         $image_resize = Image::make($image)
@@ -101,7 +101,7 @@ class AlbumCoverField extends Field
         if (!file_exists($this->path['public'].$this->path['imagePath'])) {
             Storage::disk('public')->makeDirectory($this->path['imagePath']);
         }
-        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName'],100);
+        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName'], 100);
 
         return $this->path['imagePath'].$this->path['imageName'];
     }

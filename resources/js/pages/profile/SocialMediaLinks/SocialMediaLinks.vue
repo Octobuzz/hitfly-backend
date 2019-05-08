@@ -131,8 +131,7 @@ export default {
           && (link1.network === link2.network)
       );
 
-      // TODO:
-      //  remove stale links if you want to set links out of this component
+      // TODO: remove stale links if you want to set links out of this component
       //  when there already are some data
 
       links.forEach((link) => {

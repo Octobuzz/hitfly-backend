@@ -11,7 +11,7 @@ class TrackInput extends GraphQLType
 
     protected $attributes = [
         'name' => 'TrackInput',
-        'description' => 'Add new music group',
+        'description' => 'Информация о треке',
     ];
 
     public function fields()
@@ -32,7 +32,7 @@ class TrackInput extends GraphQLType
             'genre' => [
                 'name' => 'genre',
                 'description' => 'genre',
-                'type' => Type::int(),
+                'type' => Type::nonNull(Type::int()),
                 'rules' => ['integer'],
             ],
             'singer' => [
