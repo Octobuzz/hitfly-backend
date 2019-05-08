@@ -10,7 +10,8 @@ $descriptionRightPadding: 37px;
   flex-wrap: nowrap;
 
   &_loading {
-    height: 100vh; // TODO: minus header and footer
+    // TODO: make header/footer width as variables
+    height: calc(100vh - 180px);
   }
 
   &-container {

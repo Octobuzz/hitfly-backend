@@ -5,9 +5,9 @@
       class="flashpool"
       transition-name="flash"
     />
-<!--    <Header />-->
+    <Header />
     <router-view />
-<!--    <Footer />-->
+    <Footer />
   </div>
 </template>
 

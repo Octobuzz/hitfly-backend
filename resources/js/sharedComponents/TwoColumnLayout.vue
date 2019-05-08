@@ -22,7 +22,11 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
-  min-height: 100vh; // TODO: subtract header and footer height if necessary
+  // consider header and footer
+  margin: {
+    top: 90px;
+    bottom: 90px;
+  }
 
   &__left-column {
     box-sizing: border-box;
@@ -56,6 +60,8 @@
   .two-column-layout {
     flex-wrap: wrap;
     height: auto;
+    // TODO: update after styling header
+    margin-top: 107px;
 
     &__left-column,
     &__right-column {
@@ -84,6 +90,13 @@
         right: 16px;
       }
     }
+  }
+}
+
+@media screen and (max-width: 329px) {
+  .two-column-layout {
+    // TODO: update after styling header
+    margin-top: 144px;
   }
 }
 </style>

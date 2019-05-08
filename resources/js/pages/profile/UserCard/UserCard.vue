@@ -26,7 +26,7 @@
           </p>
 
           <p
-            v-if="myProfile.location"
+            v-if="myProfile.location && myProfile.location.title"
             class="user-card__location"
           >
             {{ myProfile.location.title }}
@@ -342,7 +342,7 @@ export default {
         this.myProfile.watchingMusicGroup = watchingMusicGroup;
 
         if (location && location.title) {
-          this.myProfile.location = location.title;
+          this.myProfile.location = location;
         }
 
         if (roles.some(role => role === 'Артист')) {

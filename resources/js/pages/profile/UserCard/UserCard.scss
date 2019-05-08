@@ -5,7 +5,8 @@ $color_secondary: #606060;
   position: relative;
 
   &_loading {
-    height: 100vh; // TODO: minus header and footer
+    // TODO: make header/footer width as variables
+    height: calc(100vh - 180px);
   }
 
   &__loader {
@@ -42,7 +43,7 @@ $color_secondary: #606060;
   &__followers-count {
     font-size: 12px;
     color: $color_secondary;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   &__location {
