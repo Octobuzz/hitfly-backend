@@ -31,7 +31,8 @@ const routes = [
       },
       {
         path: '',
-        component: profile.ProfilePage_obsolete
+        redirect: '/profile/my-music'
+        // component: profile.ProfilePage_obsolete
       }
     ]
   }
