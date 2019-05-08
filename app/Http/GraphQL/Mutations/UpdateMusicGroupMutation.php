@@ -35,7 +35,7 @@ class UpdateMusicGroupMutation extends Mutation
                 'rules' => [new AuthorUpdateMusicGroup()],
             ],
             'musicGroup' => [
-                'type' => \GraphQL::type('MusicGroupInput'),
+                'type' => \GraphQL::type('MusicGroupUpdateInput'),
             ],
             'avatar' => [
                 'description' => 'аватар музыкальной группы',
@@ -82,13 +82,11 @@ class UpdateMusicGroupMutation extends Mutation
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {
-                //Validator::make($members,['email'=>"required_without:user_id","user_id"=>"required_without:email"])->validate();
                 $inviteQuery = InviteToGroup::query()->where('music_group_id', $args['id']);
 
                 if (!empty($members['email'])) {
                     $inviteQuery->where('email', '=', $members['email']);
-                }
-                if (!empty($members['user_id'])) {
+                }elseif (!empty($members['user_id'])) {
                     $inviteQuery->where('user_id', '=', $members['user_id']);
                 }
                 $inviteMember = $inviteQuery->first();
@@ -97,17 +95,24 @@ class UpdateMusicGroupMutation extends Mutation
                     $inviteMember = new InviteToGroup();
                     if (!empty($members['email'])) {
                         $inviteMember->email = $members['email'];
-                    }
-                    if (!empty($members['user_id'])) {
+                    }elseif (!empty($members['user_id'])) {
                         $inviteMember->user_id = $members['user_id'];
                     }
                     $inviteMember->music_group_id = $args['id'];
                     $inviteMember->save();
-                } else {
-                    $inviteMember->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($members));
-                    $inviteMember->save();
                 }
             }
+        }
+        if (!empty($args['musicGroup']['activeMembers'])) {//удаление пользователей из группы невошедших в массив
+            $inviteQuery = InviteToGroup::query()->where('music_group_id', $musicGroup->id)
+                ->where('accept','=', 1)
+                ->where('user_id','!=',null)->get();
+            foreach ($inviteQuery as $member){
+                if(!in_array($member->user_id,$args['musicGroup']['activeMembers'])){
+                    $member->delete();
+                }
+            }
+
         }
 
         return $musicGroup;
@@ -139,7 +144,7 @@ class UpdateMusicGroupMutation extends Mutation
         if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
             Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
         }
-        $image_resize->save($path.$imagePath);
+        $image_resize->save($path.$imagePath,100);
 
         return $imagePath;
     }

@@ -101,7 +101,7 @@ class AlbumCoverField extends Field
         if (!file_exists($this->path['public'].$this->path['imagePath'])) {
             Storage::disk('public')->makeDirectory($this->path['imagePath']);
         }
-        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName']);
+        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName'],100);
 
         return $this->path['imagePath'].$this->path['imageName'];
     }

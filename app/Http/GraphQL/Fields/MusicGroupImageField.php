@@ -53,7 +53,7 @@ class MusicGroupImageField extends Field
                 if (null === $root->getOriginal('avatar_group')) {
                     $returnPath = $this->resizeAlbum($size, false, true);
                 } else {
-                    $returnPath = $this->resizeAlbum($size, $root->getOriginal('avatar_group'));
+                    $returnPath = $this->resizeAlbum($size, $root->getOriginal('avatar_group'),100);
                 }
             }
 
@@ -94,7 +94,7 @@ class MusicGroupImageField extends Field
         if (!file_exists($this->path['public'].$this->path['imagePath'])) {
             Storage::disk('public')->makeDirectory($this->path['imagePath']);
         }
-        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName']);
+        $image_resize->save($this->path['public'].$this->path['imagePath'].$this->path['imageName'],100);
 
         return $this->path['imagePath'].$this->path['imageName'];
     }

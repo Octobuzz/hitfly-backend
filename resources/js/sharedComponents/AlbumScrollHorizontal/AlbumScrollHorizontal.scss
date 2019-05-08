@@ -4,11 +4,10 @@ $album-height-mobile: 250px;
 $album-cover-desktop: 120px;
 $album-cover-mobile: 104px;
 
-$album-right-padding-desktop: 24px;
-$album-right-padding-mobile: 16px;
+$album-left-padding-desktop: 24px;
+$album-left-padding-mobile: 16px;
 
 .album-scroll-horizontal {
-  width: 100%;
   height: $album-height-desktop;
   overflow-y: hidden;
 
@@ -52,9 +51,12 @@ $album-right-padding-mobile: 16px;
     height: $album-cover-desktop;
   }
 
+  &__album-preview {
+    box-sizing: content-box;
+    padding-left: $album-left-padding-desktop;
+  }
+
   &::v-deep .vue-recycle-scroller__item-wrapper {
-    overflow-x: visible;
-    overflow-y: hidden;
     height: $album-height-desktop;
   }
 }
@@ -62,6 +64,10 @@ $album-right-padding-mobile: 16px;
 @media screen and (max-width: 767px) {
   .album-scroll-horizontal {
     height: $album-height-mobile;
+
+    &__album-preview {
+      padding-left: $album-left-padding-mobile;
+    }
 
     &::v-deep .vue-recycle-scroller__item-wrapper {
       height: $album-height-mobile;

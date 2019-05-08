@@ -100,7 +100,6 @@ export default {
 
     createNewPlaylist() {
       // TODO: playlist name validation
-      // TODO: image for a newly created playlist should be the same as for the added track ($image)
 
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_COLLECTION,

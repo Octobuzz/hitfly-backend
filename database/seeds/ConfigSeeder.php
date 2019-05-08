@@ -9,7 +9,7 @@ class ConfigSeeder extends Seeder
      */
     public function run()
     {
-        \Encore\Admin\Config\Config::insert([
+        \Encore\Admin\Config\ConfigModel::insert([
             [
                 'name' => 'comment_edit',
                 'value' => '5',

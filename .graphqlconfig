@@ -6,14 +6,14 @@
         "url": "http://localhost:9090/graphql/user",
         "introspect": true,
         "headers": {
-          "X-TOKEN-AUTH": "1281d7a55c258a071ee931539497017awww",
+          "X-TOKEN-AUTH": "8b87efb770629ef0784b63952d02c3ddwww",
           "user-agent": "JS GraphQL"
         }
       },
       "Default (http://localhost:9090/graphql/user)": {
         "url": "http://localhost:9090/graphql/user",
         "headers": {
-          "X-TOKEN-AUTH": "1281d7a55c258a071ee931539497017awww",
+          "X-TOKEN-AUTH": "8b87efb770629ef0784b63952d02c3ddwww",
           "user-agent": "JS GraphQL"
         }
       }

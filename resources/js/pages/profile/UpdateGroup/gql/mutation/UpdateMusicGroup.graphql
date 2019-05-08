@@ -5,8 +5,9 @@ mutation UpdateMusicGroup(
     $careerStartYear: String!
     $description: String!
     $genre: [ID]
-#    $socialLinks: [SocialLinksInput]
-#    $invitedMembers: [GroupMembersInput]
+    $socialLinks: [SocialLinksInput]
+    $activeMemberIds: [Int]
+    $invitedMembers: [GroupMembersInput]
 ) {
     updateMusicGroup(
         id: $id,
@@ -16,8 +17,9 @@ mutation UpdateMusicGroup(
             careerStartYear: $careerStartYear
             description: $description
             genre: $genre
-#            socialLinks: $socialLinks
-#            invitedMembers: $invitedMembers
+            socialLinks: $socialLinks
+            activeMembers: $activeMemberIds,
+            invitedMembers: $invitedMembers
         }
     ) {
         id
@@ -58,6 +60,10 @@ mutation UpdateMusicGroup(
             id
             area_region
             title
+        }
+        socialLinks {
+            social_type
+            link
         }
         followersCount
     }

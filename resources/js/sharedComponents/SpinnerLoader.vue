@@ -1,5 +1,15 @@
 <template>
-  <div :class="['lds-ring', $attrs.class]">
+  <div
+    :class="[
+      'lds-spinner',
+      { 'lds-spinner_dark': theme === 'light' },
+      $attrs.class
+    ]"
+  >
+    <div/>
+    <div/>
+    <div/>
+    <div/>
     <div/>
     <div/>
     <div/>
@@ -7,43 +17,59 @@
   </div>
 </template>
 
+<script>
+export default {
+  props: {
+    theme: {
+      type: String,
+      default: 'light'
+    }
+  }
+}
+</script>
+
 <style
   scoped
   lang="scss"
 >
-.lds-ring {
+.lds-spinner {
   display: inline-block;
   position: relative;
   width: 64px;
   height: 64px;
 }
-.lds-ring div {
-  box-sizing: border-box;
+.lds-spinner div {
+  transform-origin: 32px 32px;
+  animation: lds-spinner .8s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
   display: block;
   position: absolute;
-  width: 51px;
-  height: 51px;
-  margin: 6px;
-  border: 6px solid #fcf;
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fcf transparent transparent transparent;
+  top: 3px;
+  left: 29px;
+  width: 5px;
+  height: 18px;
+  border-radius: 2px;
+  background: white;
 }
-.lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
+.lds-spinner_dark div:after {
+  background: #999;
 }
-.lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
+
+@for $i from 1 through 8 {
+  .lds-spinner div:nth-child(#{$i}) {
+    transform: rotate($i * 360deg / 8);
+    animation-delay: -0.1s * $i;
+  }
 }
-.lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
+
+@keyframes lds-spinner {
   0% {
-    transform: rotate(0deg);
+    opacity: 1;
   }
   100% {
-    transform: rotate(360deg);
+    opacity: 0;
   }
 }
 </style>

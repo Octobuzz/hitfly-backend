@@ -36,4 +36,8 @@ class Collection extends Model
     {
         return Storage::disk('admin')->url($nameAttribute);
     }
+    public function userFavourite()
+    {
+        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
+    }
 }

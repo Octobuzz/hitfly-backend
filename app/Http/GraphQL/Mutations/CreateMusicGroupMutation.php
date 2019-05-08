@@ -59,37 +59,15 @@ class CreateMusicGroupMutation extends Mutation
 
         if (!empty($args['musicGroup']['socialLinks'])) {
             foreach ($args['musicGroup']['socialLinks'] as $social) {
-
-                if (empty($args['id'])) {
                     $socialLinks = new GroupLinks();
                     $socialLinks->social_type = $social['socialType'];
                     $socialLinks->link = $social['link'];
                     $socialLinks->music_group_id = $musicGroup->id;
                     $socialLinks->save();
-                } else {
-                    /** @var GroupLinks $socialLinks */
-                    $socialLinks = GroupLinks::query()->where('music_group_id', $args['id'])
-                        ->where('social_type', $social['socialType'])->first();
-                    $socialLinks->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($social));
-                    $socialLinks->save();
-                }
             }
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {
-                if($args['id']) {
-                    $inviteQuery = InviteToGroup::query()->where('music_group_id', $args['id']);
-
-                    if (!empty($members['email'])) {
-                        $inviteQuery->where('email', '=', $members['email']);
-                    }
-                    if (!empty($members['user_id'])) {
-                        $inviteQuery->where('user_id', '=', $members['user_id']);
-                    }
-                    $inviteMember = $inviteQuery->first();
-                    $inviteMember->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($members));
-                    $inviteMember->save();
-                }else{
                     $inviteMember = new InviteToGroup();
                     if (!empty($members['email'])) {
                         $inviteMember->email = $members['email'];
@@ -97,10 +75,8 @@ class CreateMusicGroupMutation extends Mutation
                     if (!empty($members['user_id'])) {
                         $inviteMember->user_id = $members['user_id'];
                     }
-                    $inviteMember->music_group_id = $args['id'];
+                    $inviteMember->music_group_id = $musicGroup->id;
                     $inviteMember->save();
-                }
-
             }
         }
 
@@ -125,15 +101,15 @@ class CreateMusicGroupMutation extends Mutation
         $nameFile = md5(microtime());
         $imagePath = "music_groups/$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
         $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(config('image.size.music_group.default.height'), config('image.size.music_group.default.height'), function ($constraint) {
+        $image_resize->fit(config('image.size.music_group.default.height'), config('image.size.music_group.default.height')/*, function ($constraint) {
             $constraint->aspectRatio();
-        });
+        }*/);
         $path = Storage::disk('public')->getAdapter()->getPathPrefix();
         //создадим папку, если несуществует
         if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
             Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
         }
-        $image_resize->save($path.$imagePath);
+        $image_resize->save($path.$imagePath,100);
 
         return $imagePath;
     }

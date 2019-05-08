@@ -40,7 +40,7 @@ class LocationsQuery extends Query
     {
         $query = City::query();
         if (!empty($args['q'])) {
-            $query->where('title', 'like', $args['q'].'%');
+            $query->where('title', 'like', '%'.$args['q'].'%');
         }
         if (!empty($args['id'])) {
             $query->whereIn('id', $args['id']);

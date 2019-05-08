@@ -8,5 +8,7 @@ query Collection($id: Int!) {
             size
             url
         }
+        userFavourite
+        countTracks
     }
 }
