@@ -1,11 +1,9 @@
 <template>
   <div class="track-to-playlist">
-    <span
+    <SpinnerLoader
       v-if="isFetching"
       class="track-to-playlist__loader"
-    >
-      Загрузка...
-    </span>
+    />
 
     <ul class="track-to-playlist__list">
       <li
@@ -35,11 +33,13 @@
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import gql from './gql';
 
 export default {
   components: {
+    SpinnerLoader,
     BaseInput
   },
 
