@@ -4,7 +4,8 @@
   $bg-color: #222;
 
   display: block !important;
-  min-width: 250px;
+  min-width: 300px;
+  max-width: 300px;
   border-radius: 5px;
   z-index: 10000;
   background: $bg-color;

@@ -27,7 +27,10 @@
         <span class="track-actions-popover__album-song">
           {{ track.trackName }}
         </span>
-        <span class="track-actions-popover__album-author">
+        <span
+          v-if="track.album"
+          class="track-actions-popover__album-author"
+        >
           {{ track.album.author }}
         </span>
       </div>

@@ -1,3 +1,6 @@
+#import "../fragments/album.graphql"
+#import "../fragments/collection.graphql"
+
 query Track($id: Int!) {
     track(id: $id) {
         id
@@ -9,27 +12,10 @@ query Track($id: Int!) {
             url
         }
         album {
-            id
-            title
-            author
-            cover(
-                sizes: [size_32x32, size_48x48, size_104x104, size_120x120]
-            ) {
-                size
-                url
-            }
+            ...album
         }
         userPlayLists {
-            id
-            title
-            image(
-                sizes: [size_150x150, size_214x160]
-            ) {
-                size
-                url
-            }
-            userFavourite
-            countTracks
+            ...collection
         }
         userFavourite
     }

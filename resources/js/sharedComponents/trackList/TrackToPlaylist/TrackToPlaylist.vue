@@ -114,11 +114,16 @@ export default {
             query: gql.query.MY_COLLECTIONS
           });
 
-          collectionList.data.push(collection);
           store.writeQuery({
             query: gql.query.MY_COLLECTIONS,
             data: {
-              collections: collectionList
+              collections: {
+                ...collectionList,
+                data: [
+                  ...collectionList.data,
+                  collection
+                ]
+              }
             }
           });
 

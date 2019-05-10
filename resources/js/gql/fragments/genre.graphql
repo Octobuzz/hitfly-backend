@@ -1,0 +1,6 @@
+fragment genre on Genre {
+    id
+    name
+#    image
+    userFavourite
+}

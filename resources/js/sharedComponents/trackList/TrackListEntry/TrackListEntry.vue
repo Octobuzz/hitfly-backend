@@ -31,7 +31,7 @@
       {{ track.trackName }}
     </span>
     <span
-      v-if="desktop"
+      v-if="track.album && desktop"
       class="track-list-entry__track-author"
     >
       {{ track.album.author }}
@@ -45,7 +45,10 @@
         {{ track.trackName }}
       </span>
       <br>
-      <span class="track-list-entry__track-author">
+      <span
+        v-if="track.album"
+        class="track-list-entry__track-author"
+      >
         {{ track.album.author }}
       </span>
     </div>

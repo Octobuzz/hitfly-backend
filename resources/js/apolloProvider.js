@@ -19,6 +19,7 @@ const httpLink = new HttpLink({
 // TODO: second endpoint
 
 const cache = new InMemoryCache({
+  freezeResults: true,
   cacheRedirects: {
     Query: {
       track: (_, args, { getCacheKey }) => (

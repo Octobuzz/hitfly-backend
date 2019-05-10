@@ -1,20 +1,7 @@
+#import "../fragments/user.graphql"
+
 query User($id: Int!) {
     user(id: $id){
-        id
-        username
-        roles {
-            name
-        }
-        location {
-            id
-            area_region
-            title
-        }
-        avatar(
-            sizes: [size_56x56, size_235x235]
-        ) {
-            size
-            url
-        }
+        ...user
     }
 }
