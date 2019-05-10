@@ -5,7 +5,7 @@
     popover-wrapper-class="track-to-playlist-popover__wrapper"
     popover-inner-class="track-to-playlist-popover__inner"
     popover-arrow-class="track-to-playlist-popover__arrow"
-    placement="left-start"
+    :placement="popoverPlacement"
     :popper-options="popperOptions"
     :auto-hide="true"
     @show="fetchPlaylistList"
@@ -38,6 +38,8 @@
 import gql from './gql';
 import TrackToPlaylist from '../TrackToPlaylist';
 
+const MOBILE_WIDTH = 767;
+
 export default {
   components: {
     TrackToPlaylist
@@ -52,11 +54,39 @@ export default {
 
   data() {
     return {
-      popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+      popover: {
+        desktop: {
+          placement: 'left-start',
+          popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+        },
+        mobile: {
+          placement: 'bottom-end',
+          popperOptions: {
+            modifiers: {
+              flip: { enabled: false },
+              preventOverflow: { enabled: false }
+            }
+          }
+        }
+      },
       track: null,
       isFetching: true,
       newPlaylistTitle: ''
     };
+  },
+
+  computed: {
+    popoverPlacement() {
+      return this.windowWidth > MOBILE_WIDTH
+        ? this.popover.desktop.placement
+        : this.popover.mobile.placement;
+    },
+
+    popperOptions() {
+      return this.windowWidth > MOBILE_WIDTH
+        ? this.popover.desktop.popperOptions
+        : this.popover.mobile.popperOptions;
+    },
   },
 
   methods: {

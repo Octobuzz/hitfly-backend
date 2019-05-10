@@ -204,7 +204,7 @@ export default {
           const { tracks } = store.readQuery({
             query: gql.query.TRACKS,
 
-            // cause updateQuery does not update variables in cache entry (it's probably a bug)
+            // cause updateQuery does not update variables in cache entry
             // we always refer to the first page
 
             variables: {
