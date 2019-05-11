@@ -1,3 +1,5 @@
+@import '~sass/variables';
+
 .track-to-playlist {
   &__loader {
     display: block;
@@ -31,11 +33,45 @@
     left: -22px;
   }
 
-  &__input::v-deep span {
+  &__input::v-deep .base-input__label {
     left: 8px;
   }
 
-  &__input::v-deep input {
+  &__input::v-deep .base-input__input {
     padding-left: 8px;
+  }
+
+  &__save-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: {
+      top-right-radius: 4px;
+      bottom-right-radius: 4px;
+    }
+    background: $gradient_radial;
+    user-select: none;
+    cursor: pointer;
+
+    &:before {
+      content: 'L';
+      font-family: 'GothamPro_bold', serif;
+      font-size: 22px;
+      color: white;
+      transform: rotate(-135deg) scale(1, -1);
+    }
+
+    &_is-saving:before {
+      content: '';
+    }
+  }
+
+  &__save-button-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.5);
   }
 }
