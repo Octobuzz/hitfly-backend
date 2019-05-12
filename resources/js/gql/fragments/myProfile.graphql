@@ -10,10 +10,12 @@ fragment myProfile on MyProfile {
     email
     gender
     dateRegister
-    careerStartYear
+    careerStart
     followersCount
-    favouriteSongsCount
-    favouriteAlbumsCount
+#    favouriteSongsCount
+    favoriteSongsCount
+#    favouriteAlbumsCount
+    favoriteAlbumCount
     avatar(
         sizes: [size_56x56, size_235x235]
     ) {
