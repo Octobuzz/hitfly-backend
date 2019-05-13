@@ -23,18 +23,19 @@ class SocialController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function redirectToProvider($driver)
+    public function redirectToProvider($driver,Request $request)
     {
         if (!(config()->has("services.{$driver}"))) {
             return $this->sendFailedResponse("Драйвер {$driver} не поддерживается", 204);
         }
 
         try {
-            return Socialite::with($driver)->redirect();
+            return Socialite::with($driver)->with(['redirect_uri' => config('app.url')."/api/v1/login/{$driver}/callback"])->redirect();
         } catch (Exception $e) {
             return $this->sendFailedResponse($e->getMessage());
         }
     }
+
 
     /**
      * Login social user.
@@ -48,7 +49,10 @@ class SocialController extends Controller
         try {
             switch ($provider) {
                 case 'vkontakte':
-                    $socialUser = Socialite::driver($provider)->fields(['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo', 'bdate', 'sex'])->stateless()->user();
+                    //dd(Socialite::with($provider)->with(['redirect_uri' => config('app.url')."/api/v1/login/{$provider}/callback"]));
+                    $socialUser = Socialite::with($provider)
+                        ->redirectUrl(config('app.url')."/api/v1/login/{$provider}/callback")
+                        ->fields(['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo', 'bdate', 'sex'])->stateless()->user();
                     break;
                 default:
                     $socialUser = Socialite::driver($provider)->stateless()->user();
@@ -65,7 +69,7 @@ class SocialController extends Controller
 
         Auth::login($user);
 
-        return redirect()->to('/home');
+        return redirect()->to('/register-success?token='.$user->access_token);
     }
 
     /**
@@ -125,5 +129,33 @@ class SocialController extends Controller
         auth('api')->logout();
 
         return $this->sendSuccessResponse('Successfully logged out', 200);
+    }
+
+    public function getProvidersList()
+    {
+        $providers = [
+            'facebook' => [
+                'url' => '/api/v1/login/facebook',
+                'icon' => '/images/icons/fb.png',
+            ],
+            'vkontakte' => [
+                'url' => '/api/v1/login/vkontakte',
+                'icon' => '/images/icons/vk.png',
+            ],
+            'instagram' => [
+                'url' => '/api/v1/login/instagram',
+                'icon' => '/images/icons/inst.png',
+            ],
+            'odnoklassniki' =>  [
+                'url' => '/api/v1/login/odnoklassniki',
+                'icon' => '/images/icons/ok.png',
+            ],
+        ];
+
+        return response()->json($providers)->header('Content-Type',"application/json");
+    }
+    public function registerSuccess(Request $request)
+    {
+        return view('auth.success');
     }
 }
