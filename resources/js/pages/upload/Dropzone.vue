@@ -1,0 +1,68 @@
+<template>
+  <div class="up-page__top"
+    :class="{dragging: dragState}"
+    @drop="onDrop"
+    >
+    <div class="up-page__top-wrapper">
+      <h1 class="up-page__title">Переместите сюда свою песню или альбом</h1>
+      <UploadButton
+        class="up-page__button"
+        modifier="primary"
+        inputValue="или загрузите файл с устройства"
+        @changed="fileInput"
+      >
+        или загрузите файл с устройства
+      </UploadButton>
+      <div class="radio-pair">
+        <span class="input-radio">
+          <input name="access" id="free" value="1" type="radio" checked @change="changeAccess(true)">
+          <label for="free">открытый доступ</label>
+        </span>
+        <span class="input-radio">
+          <input name="access" id="limited" value="2" type="radio" @change="changeAccess(false)">
+          <label for="limited">доступ по ссылке</label>
+        </span>
+      </div>
+    </div>
+    <p class="up-page__info">
+      Для наилучшего качества звука мы принимаем следующие форматы: FLAC, WAV, AIFF, ALAC.
+      <a href="/">Узнать больше об аудиоформатах.</a>
+    </p>
+  </div>
+</template>
+<script>
+  import UploadButton from './UploadButton.vue';
+
+  export default {
+    props: ['dragState'],
+    data: () => ({
+
+    }),
+    methods: {
+      onDrop(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if(e.dataTransfer.files[0].type.match('audio.*')){
+          const track = e.dataTransfer.files;
+          this.$emit('droppedTrack', track);
+        } else {
+          console.log('выберите корректный  формат файла');
+        }
+      },
+      fileInput(track){
+        this.$emit('trackInput', track);
+      },
+      changeAccess(state){
+        this.$emit('accessChanged', state);
+      },
+    },
+    components: {
+      UploadButton
+    }
+  }
+</script>
+<style
+  scoped
+  lang="scss"
+  src="./Dropzone.scss"
+/>

@@ -350,3 +350,6 @@
     }
   }
 }
+body.blurred header, body.blurred footer {
+  filter: blur(10px);
+}
