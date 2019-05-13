@@ -8,6 +8,7 @@
       :index="index"
       :track-id="trackId"
       @remove-track="onTrackRemove"
+      @favourite-pressed="onFavouritePressed"
     />
     <slot name="loader" />
     <slot name="loadButton" />
@@ -30,6 +31,9 @@ export default {
   methods: {
     onTrackRemove(id) {
       this.$emit('remove-track', id);
+    },
+    onFavouritePressed(id) {
+      this.$emit('favourite-pressed', id);
     }
   }
 };

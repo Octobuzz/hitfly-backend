@@ -1,0 +1,37 @@
+#import "gql/fragments/collection.graphql"
+#import "gql/fragments/album.graphql"
+
+query FavouriteTracks(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+) {
+    favouriteTrack(
+        page: $pageNumber,
+        limit: $pageLimit
+    ) {
+        total
+        to
+        data {
+            id
+            track {
+                id
+                trackName
+                cover(
+                    sizes: [size_32x32, size_48x48, size_104x104, size_120x120]
+                ) {
+                    size
+                    url
+                }
+                album {
+#                TODO: when this request is fixed so you can ask userFavourite in it, migrate userFavourite
+#                to the fragment and remove unnecessary userFavourite fields in all album queries
+                    ...album
+                }
+                userPlayLists {
+                    ...collection
+                }
+                userFavourite
+            }
+        }
+    }
+}
