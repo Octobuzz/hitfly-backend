@@ -108,25 +108,18 @@ class UserController extends \Encore\Admin\Controllers\UserController
         });
 
         $form->saving(function (Form $form) {
+            $form->model()->load('artist');
+            $form->getRelations();
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = bcrypt($form->password);
             } else {
                 $form->password = $form->model()->password;
             }
-
             /** @var User $savingUser */
             $savingUser = $form->model();
+            $savingUser->roles()->sync(array_filter($form->roles));
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-                $artistProfile = $savingUser->artist;
-                if (null === $artistProfile) {
-                    $artistProfile = new ArtistProfile();
-                }
-                $artistProfile->description = $form->artist['description'];
-                $artistProfile->career_start = $form->artist['career_start'];
-                $savingUser->artistProfile = $artistProfile;
-
-                $artistProfile->save();
-                $savingUser->save();
+                $savingUser->artist()->updateOrCreate($form->artist);
             }
         });
 
