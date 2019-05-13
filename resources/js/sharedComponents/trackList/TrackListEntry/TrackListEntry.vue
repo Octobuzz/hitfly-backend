@@ -22,6 +22,7 @@
       hover="secondary-hover"
       item-type="track"
       :item-id="trackId"
+      @favourite-pressed="onFavouritePress"
     />
 
     <span
@@ -31,7 +32,7 @@
       {{ track.trackName }}
     </span>
     <span
-      v-if="desktop"
+      v-if="track.album && desktop"
       class="track-list-entry__track-author"
     >
       {{ track.album.author }}
@@ -45,7 +46,10 @@
         {{ track.trackName }}
       </span>
       <br>
-      <span class="track-list-entry__track-author">
+      <span
+        v-if="track.album"
+        class="track-list-entry__track-author"
+      >
         {{ track.album.author }}
       </span>
     </div>
@@ -65,7 +69,7 @@
 
     <TrackActionsPopover
       :track-id="trackId"
-      @press-favourite="onFavouritePress"
+      @favourite-pressed="onFavouritePress"
     >
       <IconButton
         passive="secondary-passive"
@@ -157,6 +161,7 @@ export default {
     },
     onFavouritePress() {
       this.$refs.addToFavButton.onPress();
+      this.$emit('favourite-pressed', this.trackId);
     },
     onRemovePress() {
       this.$emit('remove-track', this.trackId);

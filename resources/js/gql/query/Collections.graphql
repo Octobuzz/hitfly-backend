@@ -1,3 +1,5 @@
+#import "../fragments/collection.graphql"
+
 query Collections(
     $pageLimit: Int!,
     $pageNumber: Int!,
@@ -11,16 +13,7 @@ query Collections(
         total
         to
         data {
-            id
-            title
-            image(
-                sizes: [size_150x150, size_214x160]
-            ) {
-                size
-                url
-            }
-            userFavourite
-            countTracks
+            ...collection
         }
     }
 }

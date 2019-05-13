@@ -1,3 +1,5 @@
+#import "../fragments/collection.graphql"
+
 mutation CreateCollection(
     $title: String!
     $trackIds: [Int]!
@@ -8,13 +10,6 @@ mutation CreateCollection(
         tracksId: $trackIds
 #        image: $image
     ) {
-        id
-        title
-#        image(
-#            sizes: [size_150x150, size_214x160]
-#        ) {
-#            size
-#            url
-#        }
+        ...collection
     }
 }

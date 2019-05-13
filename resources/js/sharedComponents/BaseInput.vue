@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="base-input__wrapper">
     <label :class="['base-input', $attrs.class]">
       <span
         :class="[
@@ -24,6 +24,9 @@
         @keyup.enter="$emit('press:enter')"
       >
     </label>
+    <span class="base-input__icon-button">
+      <slot name="icon-button" />
+    </span>
     <span
       v-if="showError"
       class="base-input__error-message"
@@ -95,10 +98,15 @@ export default {
 @import '../../sass/variables';
 
 .base-input {
+  box-sizing: border-box;
   font-family: "Gotham Pro", serif;
   display: block;
   position: relative;
   height: 50px;
+
+  &__wrapper {
+    position: relative;
+  }
 
   &__label {
     font-size: 14px;
@@ -137,14 +145,25 @@ export default {
   }
 
   &__icon {
-    display: block;
+    display: flex;
+    justify-content: center;
     position: absolute;
     width: 16px;
     height: 16px;
     left: 100%;
     top: 50%;
     z-index: 150;
-    transform: translate(-180%, -50%);
+    transform: translate(-200%, -50%);
+  }
+
+  &__icon-button {
+    display: block;
+    position: absolute;
+    width: 48px;
+    height: 50px;
+    top: 0;
+    right: 0;
+    z-index: 150;
   }
 
   &__error-message {

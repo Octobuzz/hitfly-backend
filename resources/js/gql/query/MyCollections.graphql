@@ -1,16 +1,9 @@
+#import "../fragments/collection.graphql"
+
 query MyCollections {
     collections(limit: 99999, page: 1, my: true){
         data {
-            id
-            title
-            image(
-                sizes: [size_150x150, size_214x160]
-            ) {
-                size
-                url
-            }
-            userFavourite
-            countTracks
+            ...collection
         }
     }
 }
