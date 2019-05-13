@@ -102,7 +102,8 @@ export default {
           query,
           limit: 10,
           page: 1
-        }
+        },
+        fetchPolicy: 'no-cache'
       })
         .then(({ data: { locations } }) => {
           this.isLoading = false;
