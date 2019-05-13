@@ -1,26 +1,26 @@
 <template>
   <div class="up-page__top"
-      @dragenter="onDragEnter"
-      @dragleave="onDragLeave"
-      @dragover.prevent
-      @drop="onDrop"
+    :class="{dragging: dragState}"
+    @drop="onDrop"
     >
     <div class="up-page__top-wrapper">
       <h1 class="up-page__title">Переместите сюда свою песню или альбом</h1>
-      <FormButton
+      <UploadButton
         class="up-page__button"
         modifier="primary"
+        inputValue="или загрузите файл с устройства"
+        @changed="fileInput"
       >
         или загрузите файл с устройства
-      </FormButton>
+      </UploadButton>
       <div class="radio-pair">
         <span class="input-radio">
-          <input name="gender" id="man" value="1" type="radio">
-          <label for="man">открытый доступ</label>
+          <input name="access" id="free" value="1" type="radio" checked @change="changeAccess(true)">
+          <label for="free">открытый доступ</label>
         </span>
         <span class="input-radio">
-          <input name="gender" id="woman" value="2" type="radio">
-          <label for="woman">доступ по ссылке</label>
+          <input name="access" id="limited" value="2" type="radio" @change="changeAccess(false)">
+          <label for="limited">доступ по ссылке</label>
         </span>
       </div>
     </div>
@@ -31,28 +31,33 @@
   </div>
 </template>
 <script>
-  import FormButton from './../../sharedComponents/FormButton.vue';
+  import UploadButton from './UploadButton.vue';
 
   export default {
+    props: ['dragState'],
     data: () => ({
 
     }),
     methods: {
-      onDragEnter(e){
-        e.preventDefault();
-      },
-      onDragLeave(e){
-        e.preventDefault();
-      },
       onDrop(e){
         e.preventDefault();
         e.stopPropagation();
-        const track = e.dataTransfer.files;
-        this.$emit('droppedTrack', track);
+        if(e.dataTransfer.files[0].type.match('audio.*')){
+          const track = e.dataTransfer.files;
+          this.$emit('droppedTrack', track);
+        } else {
+          console.log('выберите корректный  формат файла');
+        }
+      },
+      fileInput(track){
+        this.$emit('trackInput', track);
+      },
+      changeAccess(state){
+        this.$emit('accessChanged', state);
       },
     },
     components: {
-      FormButton
+      UploadButton
     }
   }
 </script>

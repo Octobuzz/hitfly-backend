@@ -1,12 +1,119 @@
 <template>
   <div class="trackInfo">
-    <div class="trackInfoBody">
+    <div class="add-track">
+      <PageHeader class="add-track__page-header">
+        Загрузка трека
+      </PageHeader>
+      <div class="add-track-cover">
+        <ChooseAvatar
+          caption="Загрузить обложку"
+          @input="onCoverInput"
+        />
+      </div>
 
+      <div class="add-track-description">
+        <BaseInput
+          v-model="trackInfo.name.input"
+          label="Название трека"
+          class="add-track-description__name-input"
+        >
+          <template #icon>
+            <PencilIcon/>
+          </template>
+        </BaseInput>
+
+        <BaseInput
+          v-model="trackInfo.year.input"
+          label="Год создания песни"
+          class="add-track-description__year-input"
+        >
+          <template #icon>
+            <CalendarIcon/>
+          </template>
+        </BaseInput>
+
+        <BaseInput
+          v-model="trackInfo.text.input"
+          label="Загрузить текст песни"
+          class="add-track-description__text-input"
+        >
+          <template #icon>
+            <NotepadIcon/>
+          </template>
+        </BaseInput>
+
+        <h3 class="add-track-description__header_h3">
+          Выберите жанр
+        </h3>
+
+        <ChooseGenres
+          v-model="trackInfo.genres"
+          class="add-track-description__genre-tag-container"
+          dropdown-class="add-track-description__dropdown"
+        >
+          <template #separator>
+            <span
+              :class="[
+                'add-track-description__genre-list-suggestion',
+                'add-track-description__regular-text'
+              ]"
+            >
+              или выберите из списка
+            </span>
+          </template>
+        </ChooseGenres>
+
+        <h3 class="add-track-description__header_h3">
+          Музыкальная группа
+        </h3>
+        <p class="add-track-description__subheader">Выберите автора песни: вы или группа</p>
+        <BaseDropdown
+          v-model="trackInfo.selectedArtist"
+          class="add-track-description__dropdown"
+          title="Автор трека"
+          :options="bands"
+          :multiple="false"
+          :close-on-select="true"
+          :searchable="false"
+          :max-height="500"
+          @input="handleBandSelect"
+        />
+        <span class="input-checkbox album-input-checkbox">
+            <input id="tt" type="checkbox" v-model="addToAlbum">
+            <label for="tt">Хочу добавить песню в альбом</label>
+        </span>
+        <div class="addAlbumWrapper" v-show="addToAlbum">
+          <div class="addAlbumWrapper__buttons">
+            <div class="buttonSwitcher" @click="createAlbum = true" :class="{active: createAlbum}">Создать альбом</div>
+            <div class="buttonSwitcher" @click="createAlbum = false" :class="{active: !createAlbum}">Мои альбомы</div>
+          </div>
+          <CreateAlbum
+           v-show="createAlbum"
+           class="addAlbumWrapper__content"
+          />
+          <div class="addAlbumWrapper__content" v-show="!createAlbum">
+            <div class="add-track-chooseAlbum">
+              <BaseDropdown
+                v-model="trackInfo.selectedAlbum"
+                class="add-track-description__dropdown"
+                title="Мои альбомы"
+                :options="albums.data.map(album => album.title)"
+                :multiple="false"
+                :close-on-select="true"
+                :searchable="false"
+                :max-height="500"
+                @input="handleAlbumSelect"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="trackInfoFooter">
       <FormButton
         class="trackInfoFooter__button"
         modifier="primary"
+        @press="addInfo"
       >
         Опубликовать
       </FormButton>
@@ -14,16 +121,91 @@
   </div>
 </template>
 <script>
-  import FormButton from './../../sharedComponents/FormButton.vue';
+  import FormButton from 'components/FormButton.vue';
+  import BaseDropdown from 'components/BaseDropdown.vue';
+  import ChooseGenres from './../profile/ChooseGenres/ChooseGenres.vue';
+  import BaseInput from 'components/BaseInput.vue';
+  import ChooseAvatar from '../profile/ChooseAvatar.vue';
+  import PencilIcon from 'components/icons/PencilIcon.vue';
+  import CalendarIcon from 'components/icons/CalendarIcon.vue';
+  import NotepadIcon from 'components/icons/NotepadIcon.vue';
+  import PageHeader from 'components/PageHeader.vue';
+  import CreateAlbum from './CreateAlbum.vue';
+  import gql from 'graphql-tag';
 
   export default{
     data: () => ({
-
+      trackInfo:{
+        year: {
+          input: ''
+        },
+        name: {
+          input: ''
+        },
+        text: {
+          input: ''
+        },
+        genres: [],
+        selectedArtist: null,
+        selectedAlbum: null,
+      },
+      createAlbum: false,
+      bands: ['Я', 'firstBand', 'secondBand'],
+      albums: {
+        data: [
+          {
+            title: String
+          }
+        ]
+      },
+      addToAlbum: false,
     }),
     methods: {
       addInfo(){
+        const info = {
+          'singer': this.trackInfo.selectedArtist,
+          'trackDate': this.trackInfo.year.input,
+          'songText': this.trackInfo.text.input,
+          'genre': this.trackInfo.genres,
+        };
         this.$emit('sendInfo', info);
+      },
+      onCoverInput(){
+        console.log('ok');
+      },
+      handleBandSelect(value){
+
+      },
+      handleAlbumSelect(value){
+        this.selectedAlbum = value;
       }
+    },
+    components: {
+      FormButton,
+      ChooseGenres,
+      BaseDropdown,
+      BaseInput,
+      ChooseAvatar,
+      PencilIcon,
+      CalendarIcon,
+      NotepadIcon,
+      PageHeader,
+      CreateAlbum
+    },
+    apollo: {
+      albums: gql`query {
+        albums(limit: 0, page: 0, my: true){
+          total
+          per_page
+          current_page
+          from
+          to
+          data{
+            title
+          }
+        }
+      }
+      `
     }
   }
 </script>

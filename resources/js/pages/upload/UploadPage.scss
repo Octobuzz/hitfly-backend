@@ -3,12 +3,14 @@
 .aside__content{
   padding: 75px 32px;
 }
+.main__info{
+  padding: 0 32px;
+}
 .up-page{
   margin: 20px auto 0;
   max-width: 910px;
   padding: 0;
   padding-bottom: 75px;
-  padding: 0 32px;
 
   &__title{
     font-family: $font_bold;
@@ -53,6 +55,9 @@
   }
   & .main__aside{
     border: none;
+  }
+  & .main__info{
+    padding: 0;
   }
   & .up-page{
     padding: 0;

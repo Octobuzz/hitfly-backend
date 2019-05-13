@@ -1,14 +1,23 @@
 <template>
-  <main class="main" :class="{notDropped: track === null}">
+  <main class="main"
+    :class="{notDropped: track === null}"
+    @dragenter="onDragEnter"
+    @dragleave="onDragLeave"
+    @dragover.prevent
+    >
     <aside class="main__aside aside">
       <div class="aside__content">
-        <Dropzone @droppedTrack="trackDropped"></Dropzone>
+        <Dropzone
+        @droppedTrack="trackDropped"
+        @trackInput="trackInputed"
+        @accessChanged="changeAccess"
+        :dragState="dragging"
+        ></Dropzone>
       </div>
     </aside>
     <div class="main__info">
-      <transition  v-show="track !== null" name="fade">
-        <TrackInfo @infoAdded="sendInfo"></TrackInfo>
-      </transition>
+      <ProgressBar v-if="loading" :loading="loading"></ProgressBar>
+      <TrackInfo v-show="track !== null" @sendInfo="addInfo"></TrackInfo>
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
@@ -32,23 +41,94 @@
 <script>
   import Dropzone from './Dropzone.vue';
   import TrackInfo from './TrackInfo.vue';
+  import ProgressBar from './ProgressBar.vue';
+  import gql from 'graphql-tag';
 
   export default{
     data: () => ({
-      dragging: false,
       track: null,
-      trackInformation: null,
+      access: true,
+      dragging: false,
+      dragCount: 0,
+      trackID: null,
+      loading: false,
     }),
     components: {
-      Dropzone, TrackInfo
+      Dropzone, TrackInfo, ProgressBar
     },
     methods: {
-      trackDropped(track){
-        this.track = track;
+      onDragEnter(e){
+        e.preventDefault();
+        this.dragCount++;
+        this.dragging = true;
+        document.body.classList.add('blurred');
       },
-      infoAdded(info){
-        this.trackInformation = info;
-      }
+      onDragLeave(e){
+        e.preventDefault();
+        this.dragCount--;
+        if(this.dragCount <= 0){
+          this.dragging = false;
+          document.body.classList.remove('blurred');
+        }
+      },
+      changeAccess(state){
+        this.access = state;
+      },
+      trackDropped(track){
+        this.dragCount--;
+        this.dragging = false;
+        this.track = track;
+        document.body.classList.remove('blurred');
+        this.uploadTrack(track[0]);
+      },
+      trackInputed(track){
+        this.track = track;
+        this.uploadTrack();
+      },
+      addInfo(info){
+        this.$apollo.mutate({
+          variables: {
+            id: this.trackID,
+            infoTrack: {
+              singer: info.singer,
+              genre: 7,
+              trackDate: info.trackDate,
+              songText: info.songText,
+            }
+          },
+          mutation: gql`mutation($id: Int!, $infoTrack: TrackInput) {
+            updateTrack (id: $id, infoTrack: $infoTrack) {
+              id
+              trackName
+              singer
+              trackDate
+            }
+          }`
+        }).then((response) => {
+          console.log(response.data)
+        }).catch((error) => {
+          console.dir(error)
+        })
+      },
+      uploadTrack(track){
+        this.loading = true;
+        this.$apollo.mutate({
+          variables: {
+            track: track
+          },
+          mutation: gql`mutation($track: Upload) {
+            uploadTrack (track: $track){
+              id
+            }
+          }`
+        }).then((response) => {
+          this.loading = false;
+          this.trackID = response.data.uploadTrack.id;
+          console.log(this.trackID);
+        }).catch((error) => {
+          this.loading = false;
+        });
+      },
     }
   }
 </script>

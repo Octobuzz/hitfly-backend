@@ -5,6 +5,27 @@
   border-radius: $border-radius;
   text-align: center;
   border: 1px dashed $borderColor;
+
+  &.dragging {
+    z-index: 9999;
+    width: 100%;
+    position: absolute;
+    background-color: #fff;
+    max-width: 910px;
+    box-sizing: border-box;
+
+    & .radio-pair {
+      display: none;
+    }
+
+    & .up-page__button {
+      display: none;
+    }
+
+    & .up-page__info {
+      display: none;
+    }
+  }
 }
 .up-page{
 
@@ -20,7 +41,9 @@
     line-height: 22px;
   }
   &__button{
-    width: auto;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
   }
   & .radio-pair{
     display: flex;

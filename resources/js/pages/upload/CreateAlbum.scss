@@ -1,0 +1,17 @@
+.createAlbumWrapper {
+  & .add-track-description__name-input {
+    max-width: 330px;
+  }
+
+  & .createAlbum__button {
+    width: 160px;
+  }
+
+  & > * {
+    margin-bottom: 16px;
+  }
+
+  & .choose-genres__tag-container {
+    display: none;
+  }
+}
