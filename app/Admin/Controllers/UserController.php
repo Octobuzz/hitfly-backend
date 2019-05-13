@@ -8,6 +8,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\ArtistProfile;
 use App\Models\City;
 use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -93,17 +94,40 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->display('updated_at', trans('admin.updated_at'));
 
         $form->divider();
-        $form->textarea('description', 'Описание деятельности');
+
+        $form->editing(function (Form $form) {
+            $form->ignore(['password', 'password_confirmation']);
+
+            $savingUser = $form->model();
+            $form->model()->load('artist');
+            if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
+                $form->getRelations();
+                $form->date('artist.career_start', 'Дата начала карьеры');
+                $form->textarea('artist.description', 'Описание деятельности');
+            }
+        });
+
         $form->saving(function (Form $form) {
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = bcrypt($form->password);
             } else {
                 $form->password = $form->model()->password;
             }
-        });
 
-        $form->editing(function (Form $form) {
-            $form->ignore(['password', 'password_confirmation']);
+            /** @var User $savingUser */
+            $savingUser = $form->model();
+            if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
+                $artistProfile = $savingUser->artist;
+                if (null === $artistProfile) {
+                    $artistProfile = new ArtistProfile();
+                }
+                $artistProfile->description = $form->artist['description'];
+                $artistProfile->career_start = $form->artist['career_start'];
+                $savingUser->artistProfile = $artistProfile;
+
+                $artistProfile->save();
+                $savingUser->save();
+            }
         });
 
         $form->tools(function (Form\Tools $tools) {
