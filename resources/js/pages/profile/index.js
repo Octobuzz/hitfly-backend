@@ -4,4 +4,5 @@ export { default as EditUser } from './EditUser';
 export { default as CreateGroup } from './CreateGroup';
 export { default as UpdateGroup } from './UpdateGroup';
 export { default as MyMusic } from './MyMusic';
+export { default as Favourite } from './Favourite';
 export { default as ProfilePage_obsolete } from './ProfilePage_obsolete.vue';

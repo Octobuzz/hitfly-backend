@@ -36,15 +36,11 @@
           Описание
         </span>
 
-        <BaseInput
-          v-model="group.year.input"
-          label="Год начала карьеры"
+        <ChooseYear
+          v-model="group.year"
           class="create-group-description__year-input"
-        >
-          <template #icon>
-            <CalendarIcon/>
-          </template>
-        </BaseInput>
+          title="Год начала карьеры"
+        />
 
         <span class="h3 create-group-description__header_subsection">
           Выберите жанр
@@ -146,10 +142,10 @@ import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import FormButton from 'components/FormButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
-import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import gql from './gql';
 import ReturnHeader from '../ReturnHeader.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseYear from '../ChooseYear';
 import ChooseGenres from '../ChooseGenres';
 import SocialMediaLinks from '../SocialMediaLinks';
 import ActiveGroupMembers from '../ActiveGroupMembers';
@@ -164,12 +160,12 @@ export default {
     ActiveGroupMembers,
     InviteGroupMembers,
     ChooseAvatar,
+    ChooseYear,
     ChooseGenres,
     BaseInput,
     BaseTextarea,
     FormButton,
-    PencilIcon,
-    CalendarIcon
+    PencilIcon
   },
 
   props: {
@@ -190,7 +186,7 @@ export default {
           input: ''
         },
         year: {
-          input: `${new Date().getYear() + 1900}`
+          input: new Date().getFullYear().toString()
         },
         activity: {
           input: ''
@@ -258,7 +254,7 @@ export default {
           id: this.editGroupId,
           avatar: this.group.cover.new,
           name: this.group.name.input,
-          careerStartYear: `${this.group.year.input}-1-1`,
+          careerStartYear: `${this.group.year}-1-1`,
           description: this.group.activity.input,
           genre: this.creationQueryGenres,
           socialLinks: this.group.socialLinks
@@ -320,7 +316,7 @@ export default {
         this.group.cover.current = avatarGroup
           .filter(image => image.size === 'size_235x235')[0].url;
         this.group.name.input = name;
-        this.group.year.input = new Date(careerStartYear).getFullYear().toString();
+        this.group.year = new Date(careerStartYear).getFullYear().toString();
         this.group.activity.input = description;
         this.group.socialLinks = socialLinks.map(sl => ({
           network: sl.social_type,

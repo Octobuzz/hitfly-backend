@@ -22,6 +22,7 @@
       hover="secondary-hover"
       item-type="track"
       :item-id="trackId"
+      @favourite-pressed="onFavouritePress"
     />
 
     <span
@@ -68,7 +69,7 @@
 
     <TrackActionsPopover
       :track-id="trackId"
-      @press-favourite="onFavouritePress"
+      @favourite-pressed="onFavouritePress"
     >
       <IconButton
         passive="secondary-passive"
@@ -160,6 +161,7 @@ export default {
     },
     onFavouritePress() {
       this.$refs.addToFavButton.onPress();
+      this.$emit('favourite-pressed', this.trackId);
     },
     onRemovePress() {
       this.$emit('remove-track', this.trackId);

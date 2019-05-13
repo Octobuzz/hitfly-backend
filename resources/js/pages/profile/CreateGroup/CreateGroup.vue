@@ -34,15 +34,11 @@
           Описание
         </span>
 
-        <BaseInput
-          v-model="group.year.input"
-          label="Год начала карьеры"
+        <ChooseYear
+          v-model="group.year"
           class="create-group-description__year-input"
-        >
-          <template #icon>
-            <CalendarIcon/>
-          </template>
-        </BaseInput>
+          title="Год начала карьеры"
+        />
 
         <span class="h3 create-group-description__header_subsection">
           Выберите жанр
@@ -131,10 +127,10 @@ import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import FormButton from 'components/FormButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
-import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import gql from './gql';
 import ReturnHeader from '../ReturnHeader.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseYear from '../ChooseYear';
 import ChooseGenres from '../ChooseGenres';
 import SocialMediaLinks from '../SocialMediaLinks';
 import InviteGroupMembers from '../InviteGroupMembers';
@@ -148,11 +144,11 @@ export default {
     InviteGroupMembers,
     ChooseAvatar,
     ChooseGenres,
+    ChooseYear,
     BaseInput,
     BaseTextarea,
     FormButton,
-    PencilIcon,
-    CalendarIcon
+    PencilIcon
   },
 
   props: {
@@ -169,9 +165,7 @@ export default {
         name: {
           input: ''
         },
-        year: {
-          input: `${new Date().getYear() + 1900}`
-        },
+        year: new Date().getFullYear().toString(),
         activity: {
           input: ''
         },
@@ -206,7 +200,7 @@ export default {
         variables: {
           avatar: this.group.cover,
           name: this.group.name.input,
-          careerStartYear: `${this.group.year.input}-1-1`,
+          careerStartYear: `${this.group.year}-1-1`,
           description: this.group.activity.input,
           genre: this.creationQueryGenres,
           socialLinks: this.group.socialLinks

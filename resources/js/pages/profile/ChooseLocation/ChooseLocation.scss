@@ -96,11 +96,11 @@
       padding: 6px;
 
       &--selected {
-        background: $color_pink;
+        color: $color_blue;
       }
 
       &--highlight {
-        background: $color_blue;
+        color: $color_pink;
       }
     }
 

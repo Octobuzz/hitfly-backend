@@ -47,17 +47,12 @@
             Описание
           </span>
 
-          <BaseInput
+          <ChooseYear
             v-if="isArtist"
-            v-model="myProfile.careerStartYear.input"
-            label="Год начала карьеры"
+            v-model="myProfile.careerStartYear"
             class="edit-profile-form__career-start-year-input"
-          >
-            <template #icon>
-              <CalendarIcon/>
-            </template>
-          </BaseInput>
-
+            title="Год начала карьеры"
+          />
 
           <div v-if="isArtist">
             <span class="edit-profile-form__subsection">
@@ -211,15 +206,15 @@ import BaseLink from 'components/BaseLink.vue';
 import BaseTag from 'components/BaseTag.vue';
 import FormButton from 'components/FormButton.vue';
 import UserIcon from 'components/icons/UserIcon.vue';
-import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
 import KeyIcon from 'components/icons/KeyIcon.vue';
 import genericProfileAvatarUrl from 'images/generic-user-purple.png';
 import gql from './gql';
-import ChooseGenres from '../ChooseGenres';
-import ChooseLocation from '../ChooseLocation';
 import ReturnHeader from '../ReturnHeader.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseYear from '../ChooseYear';
+import ChooseGenres from '../ChooseGenres';
+import ChooseLocation from '../ChooseLocation';
 
 export default {
   components: {
@@ -227,6 +222,7 @@ export default {
     PageHeader,
     ReturnHeader,
     ChooseAvatar,
+    ChooseYear,
     ChooseGenres,
     ChooseLocation,
     BaseInput,
@@ -235,7 +231,6 @@ export default {
     BaseTag,
     FormButton,
     UserIcon,
-    CalendarIcon,
     EnvelopeIcon,
     KeyIcon
   },
@@ -258,9 +253,7 @@ export default {
           input: ''
         },
         location: {},
-        careerStartYear: {
-          input: ''
-        },
+        careerStartYear: '',
         activity: {
           input: ''
         },
@@ -362,8 +355,8 @@ export default {
         artistProfile.genres = myProfile.playedGenres
           .map(genre => genre.id);
 
-        if (myProfile.careerStartYear.input !== '') {
-          artistProfile.careerStart = `${myProfile.careerStartYear.input}-1-1`;
+        if (myProfile.careerStartYear !== '') {
+          artistProfile.careerStart = `${myProfile.careerStartYear}-1-1`;
         }
       }
 
@@ -431,9 +424,8 @@ export default {
 
         if (roles.some(role => role === 'Артист')) {
           if (careerStart) {
-            this.myProfile.careerStartYear.input = `${
-              new Date(careerStart).getFullYear()
-            }`;
+            this.myProfile.careerStartYear = new Date(careerStart)
+              .getFullYear().toString();
           }
 
           if (description) {
