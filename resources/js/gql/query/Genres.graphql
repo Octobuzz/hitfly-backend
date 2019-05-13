@@ -1,8 +1,7 @@
+#import "../fragments/genre.graphql"
+
 query Genres {
     genre {
-        id
-        name
-#        image
-        userFavourite
+        ...genre
     }
 }

@@ -1,3 +1,5 @@
+#import "gql/fragments/musicGroup.graphql"
+
 mutation CreateMusicGroup(
     $avatar: Upload
     $name: String!
@@ -18,46 +20,6 @@ mutation CreateMusicGroup(
             invitedMembers: $invitedMembers
         }
     ) {
-        id
-        name
-        avatarGroup(
-            sizes: [size_40x40, size_235x235]
-        ) {
-            size
-            url
-        }
-        careerStartYear
-        genres {
-            id
-            name
-#            image
-            userFavourite
-        }
-        creatorGroup {
-            id
-            username
-            location {
-                id
-                area_region
-                title
-            }
-            avatar(
-                sizes: [size_56x56, size_235x235]
-            ) {
-                size
-                url
-            }
-        }
-        description
-        location {
-            id
-            area_region
-            title
-        }
-        socialLinks {
-            social_type
-            link
-        }
-        followersCount
+        ...musicGroup
     }
 }

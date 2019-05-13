@@ -6,6 +6,7 @@
         :item-container-class="itemContainerClass"
       />
     </template>
+
     <template #right-column="{ paddingClass }">
       <div
         v-if="renderNavBar"
@@ -22,6 +23,7 @@
               Моя музыка
             </router-link>
           </li>
+
           <li
             :class="[
               'profile__nav-endpoint',
@@ -32,7 +34,20 @@
               Мне нравится
             </router-link>
           </li>
+
+          <li
+            :class="[
+              'profile__nav-endpoint',
+              { 'profile__nav-endpoint_active': $route.fullPath === '/profile/reviews' }
+            ]"
+          >
+            <router-link to="/profile/reviews">
+              Отзывы
+            </router-link>
+          </li>
         </ul>
+
+        <div class="profile__nav-scroll-cloak" />
       </div>
 
       <PageHeader

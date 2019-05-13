@@ -94,6 +94,8 @@ export default {
       } else {
         addToFavourite();
       }
+
+      this.$emit('favourite-pressed');
     },
 
     addToFavourite() {

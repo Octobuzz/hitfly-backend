@@ -108,4 +108,5 @@ class RegisterController extends Controller
     {
         return view('auth.error');
     }
+
 }

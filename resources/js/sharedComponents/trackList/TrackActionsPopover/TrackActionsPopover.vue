@@ -4,7 +4,7 @@
     popover-wrapper-class="track-actions-popover__wrapper"
     popover-inner-class="track-actions-popover__inner"
     popover-arrow-class="track-actions-popover__arrow"
-    placement="left-start"
+    :placement="popoverPlacement"
     :popper-options="popperOptions"
     :auto-hide="true"
     @auto-hide="leavePlaylistMenu(300)"
@@ -27,7 +27,10 @@
         <span class="track-actions-popover__album-song">
           {{ track.trackName }}
         </span>
-        <span class="track-actions-popover__album-author">
+        <span
+          v-if="track.album"
+          class="track-actions-popover__album-author"
+        >
           {{ track.album.author }}
         </span>
       </div>
@@ -114,6 +117,8 @@ import { mapGetters } from 'vuex';
 import gql from './gql';
 import TrackToPlaylist from '../TrackToPlaylist';
 
+const MOBILE_WIDTH = 767;
+
 export default {
   components: {
     TrackToPlaylist
@@ -128,7 +133,21 @@ export default {
 
   data() {
     return {
-      popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+      popover: {
+        desktop: {
+          placement: 'left-start',
+          popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+        },
+        mobile: {
+          placement: 'bottom-end',
+          popperOptions: {
+            modifiers: {
+              flip: { enabled: false },
+              preventOverflow: { enabled: false }
+            }
+          }
+        }
+      },
       track: null,
       inPlaylistMenu: false,
       isFetching: true
@@ -136,6 +155,18 @@ export default {
   },
 
   computed: {
+    popoverPlacement() {
+      return this.windowWidth > MOBILE_WIDTH
+        ? this.popover.desktop.placement
+        : this.popover.mobile.placement;
+    },
+
+    popperOptions() {
+      return this.windowWidth > MOBILE_WIDTH
+        ? this.popover.desktop.popperOptions
+        : this.popover.mobile.popperOptions;
+    },
+
     albumCoverUrl() {
       return this.track.cover
         .filter(cover => cover.size === 'size_48x48')[0].url;
@@ -164,7 +195,7 @@ export default {
     onFavouritePress() {
       this.$refs.closeButton.click();
       setTimeout(() => {
-        this.$emit('press-favourite');
+        this.$emit('favourite-pressed');
       }, 50);
     },
 

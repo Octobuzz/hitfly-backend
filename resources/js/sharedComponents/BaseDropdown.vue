@@ -169,11 +169,11 @@ export default {
       padding: 0;
 
       &--selected {
-        background: $color_pink;
+        color: $color_blue;
       }
 
       &--highlight {
-        background: $color_blue;
+        color: $color_pink;
       }
     }
 

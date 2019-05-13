@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/register-error', 'Auth\RegisterController@registerError');
+Route::get('/register-success', 'Api\v1\SocialController@registerSuccess')->middleware('web');
 
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('/logout', 'LoginController@logout');

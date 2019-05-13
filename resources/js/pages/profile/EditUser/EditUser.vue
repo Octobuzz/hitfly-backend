@@ -38,31 +38,21 @@
             </template>
           </BaseInput>
 
-          <BaseInput
-            v-model="myProfile.location.input"
-            label="Город"
+          <ChooseLocation
+            v-model="myProfile.location"
             class="edit-profile-form__location-input"
-          >
-            <template #icon>
-              <BalloonIcon/>
-            </template>
-          </BaseInput>
+          />
 
           <span v-if="isArtist" class="h2 edit-profile-form__section">
             Описание
           </span>
 
-          <BaseInput
+          <ChooseYear
             v-if="isArtist"
-            v-model="myProfile.careerStartYear.input"
-            label="Год начала карьеры"
+            v-model="myProfile.careerStartYear"
             class="edit-profile-form__career-start-year-input"
-          >
-            <template #icon>
-              <CalendarIcon/>
-            </template>
-          </BaseInput>
-
+            title="Год начала карьеры"
+          />
 
           <div v-if="isArtist">
             <span class="edit-profile-form__subsection">
@@ -216,15 +206,15 @@ import BaseLink from 'components/BaseLink.vue';
 import BaseTag from 'components/BaseTag.vue';
 import FormButton from 'components/FormButton.vue';
 import UserIcon from 'components/icons/UserIcon.vue';
-import BalloonIcon from 'components/icons/BalloonIcon.vue';
-import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
 import KeyIcon from 'components/icons/KeyIcon.vue';
 import genericProfileAvatarUrl from 'images/generic-user-purple.png';
 import gql from './gql';
 import ReturnHeader from '../ReturnHeader.vue';
 import ChooseAvatar from '../ChooseAvatar.vue';
+import ChooseYear from '../ChooseYear';
 import ChooseGenres from '../ChooseGenres';
+import ChooseLocation from '../ChooseLocation';
 
 export default {
   components: {
@@ -232,15 +222,15 @@ export default {
     PageHeader,
     ReturnHeader,
     ChooseAvatar,
+    ChooseYear,
     ChooseGenres,
+    ChooseLocation,
     BaseInput,
     BaseTextarea,
     BaseLink,
     BaseTag,
     FormButton,
     UserIcon,
-    BalloonIcon,
-    CalendarIcon,
     EnvelopeIcon,
     KeyIcon
   },
@@ -262,12 +252,8 @@ export default {
         name: {
           input: ''
         },
-        location: {
-          input: ''
-        },
-        careerStartYear: {
-          input: ''
-        },
+        location: {},
+        careerStartYear: '',
         activity: {
           input: ''
         },
@@ -355,7 +341,9 @@ export default {
       profileUpdate.genres = myProfile.favouriteGenres
         .map(genre => genre.id);
 
-      // TODO: city id
+      if (this.myProfile.location.id) {
+        profileUpdate.cityId = this.myProfile.location.id;
+      }
 
       const artistProfile = {};
 
@@ -367,8 +355,8 @@ export default {
         artistProfile.genres = myProfile.playedGenres
           .map(genre => genre.id);
 
-        if (myProfile.careerStartYear.input !== '') {
-          artistProfile.careerStart = `${myProfile.careerStartYear.input}-1-1`;
+        if (myProfile.careerStartYear !== '') {
+          artistProfile.careerStart = `${myProfile.careerStartYear}-1-1`;
         }
       }
 
@@ -431,14 +419,13 @@ export default {
         this.myProfile.roles = roles;
 
         if (location && location.title) {
-          this.myProfile.location.input = location.title;
+          this.myProfile.location = location;
         }
 
         if (roles.some(role => role === 'Артист')) {
           if (careerStart) {
-            this.myProfile.careerStartYear.input = `${
-              new Date(careerStart).getFullYear()
-            }`;
+            this.myProfile.careerStartYear = new Date(careerStart)
+              .getFullYear().toString();
           }
 
           if (description) {

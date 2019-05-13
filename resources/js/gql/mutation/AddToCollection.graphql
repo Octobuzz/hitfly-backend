@@ -1,3 +1,5 @@
+#import "../fragments/collection.graphql"
+
 mutation AddToCollection(
     $collectionId: Int!
     $trackIds: [Int]!
@@ -6,13 +8,6 @@ mutation AddToCollection(
         tracksId: $trackIds,
         collectionId: $collectionId
     ) {
-        id
-        title
-#        image(
-#            sizes: [size_150x150, size_214x160]
-#        ) {
-#            size
-#            url
-#        }
+        ...collection
     }
 }

@@ -1,11 +1,9 @@
 <template>
   <div class="track-to-playlist">
-    <span
+    <SpinnerLoader
       v-if="isFetching"
       class="track-to-playlist__loader"
-    >
-      Загрузка...
-    </span>
+    />
 
     <ul class="track-to-playlist__list">
       <li
@@ -14,7 +12,6 @@
         class="track-to-playlist__list-item"
         @click="addTrackPlaylist(playlist.id)"
       >
-        <!--TODO: checkbox-->
         <span
           v-if="trackBelongsToPlaylist(playlist.id)"
           class="track-to-playlist__tick"
@@ -30,16 +27,36 @@
       class="track-to-playlist__input"
       label="Создать новый плейлист"
       @press:enter="createNewPlaylist"
-    />
+    >
+      <template #icon-button>
+        <button
+          :class="[
+            'track-to-playlist__save-button',
+            {
+              'track-to-playlist__save-button_is-saving': isSaving
+            },
+          ]"
+          @click.self="createNewPlaylist"
+        >
+          <SpinnerLoader
+            v-if="isSaving"
+            class="track-to-playlist__save-button-loader"
+            theme="dark"
+          />
+        </button>
+      </template>
+    </BaseInput>
   </div>
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import gql from './gql';
 
 export default {
   components: {
+    SpinnerLoader,
     BaseInput
   },
 
@@ -54,6 +71,7 @@ export default {
     return {
       track: null,
       isFetching: true,
+      isSaving: false,
       playlistList: [],
       newPlaylistTitle: ''
     };
@@ -82,6 +100,8 @@ export default {
     },
 
     addTrackPlaylist(playlistId) {
+      this.isSaving = true;
+
       this.$apollo.mutate({
         mutation: gql.mutation.ADD_TO_COLLECTION,
 
@@ -94,12 +114,21 @@ export default {
           this.updateMyTrackCollections(store, collection);
           this.newPlaylistTitle = '';
           this.emitTrackAdded(collection);
+          this.isSaving = false;
         }
       }).catch(error => console.log(error));
     },
 
     createNewPlaylist() {
+      if (this.isSaving
+          || this.isFetching
+          || this.newPlaylistTitle === '') {
+        return;
+      }
+
       // TODO: playlist name validation
+
+      this.isSaving = true;
 
       this.$apollo.mutate({
         mutation: gql.mutation.CREATE_COLLECTION,
@@ -114,16 +143,22 @@ export default {
             query: gql.query.MY_COLLECTIONS
           });
 
-          collectionList.data.push(collection);
           store.writeQuery({
             query: gql.query.MY_COLLECTIONS,
             data: {
-              collections: collectionList
+              collections: {
+                ...collectionList,
+                data: [
+                  ...collectionList.data,
+                  collection
+                ]
+              }
             }
           });
 
           this.updateMyTrackCollections(store, collection);
           this.newPlaylistTitle = '';
+          this.isSaving = false;
           this.emitTrackAdded(collection);
         }
       }).catch(error => console.log(error));

@@ -1,25 +1,8 @@
+#import "../fragments/album.graphql"
+
 query Album($id: Int!) {
     album(id: $id) {
-        id
-        title
-#        genre {
-#            id
-#            name
-#            image
-#            userFavourite
-#        }
-        author
-        year
-        cover(
-            sizes: [size_32x32, size_48x48, size_104x104, size_120x120]
-        ) {
-            size
-            url
-        }
-        musicGroup {
-            id
-            name
-        }
+        ...album
         userFavourite
     }
 }
