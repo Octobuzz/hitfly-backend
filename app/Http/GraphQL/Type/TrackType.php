@@ -35,9 +35,9 @@ class TrackType extends GraphQLType
                 'type' => GraphQL::type('Album'),
                 'description' => 'Альбом',
             ],
-            'genre' => [
-                'type' => GraphQL::type('Genre'),
-                'description' => 'Жанр',
+            'genres' => [
+                'type' => Type::listOf(GraphQL::type('Genre')),
+                'description' => 'Жанры',
             ],
             'user' => [
                 'type' => GraphQL::type('User'),
