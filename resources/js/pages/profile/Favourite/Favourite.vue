@@ -10,17 +10,24 @@
       :container-padding-class="containerPaddingClass"
       @data-initialized="tracksData = true"
     />
+    <FavouriteAlbumsContainer
+      v-show="dataInitialized"
+      :container-padding-class="containerPaddingClass"
+      @data-initialized="albumsData = true"
+    />
   </div>
 </template>
 
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import FavouriteTracksContainer from '../FavouriteTracksContainer';
+import FavouriteAlbumsContainer from '../FavouriteAlbumsContainer';
 
 export default {
   components: {
     SpinnerLoader,
-    FavouriteTracksContainer
+    FavouriteTracksContainer,
+    FavouriteAlbumsContainer
   },
 
   props: {
@@ -32,13 +39,15 @@ export default {
 
   data() {
     return {
-      tracksData: false
+      tracksData: false,
+      albumsData: false
     };
   },
 
   computed: {
     dataInitialized() {
-      return this.tracksData;
+      return this.tracksData
+        && this.albumsData;
     }
   },
 
