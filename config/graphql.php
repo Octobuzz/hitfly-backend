@@ -159,6 +159,7 @@ return [
                 'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
 
                 'createAlbum' => \App\Http\GraphQL\Mutations\CreateAlbumMutation::class,
+                'updateAlbum' => \App\Http\GraphQL\Mutations\UpdateAlbumMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
