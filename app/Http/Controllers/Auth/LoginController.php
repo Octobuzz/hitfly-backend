@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\SocialAccountService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use Exception;
 use App\Models\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\Auth;
 use Socialite;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -66,14 +69,25 @@ class LoginController extends Controller
      *
      * @return
      */
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback($provider, SocialAccountService $service, Request $request)
     {
         try {
-            $socialUser = Socialite::driver($provider)->stateless()->user();
+            switch ($provider) {
+                case 'vkontakte':
+                    $socialUser = Socialite::driver($provider)->fields(['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo', 'bdate', 'sex'])->stateless()->user();
+                    break;
+                default:
+                    $socialUser = Socialite::driver($provider)->stateless()->user();
+            }
         } catch (Exception $e) {
-            return $this->sendFailedResponse($e->getMessage());
+            return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
+
         }
 
-        return view('auth.register', ['socialUser' => $socialUser]);
+        $user = $service->loginOrRegisterBySocials($socialUser, $provider);
+
+        Auth::login($user);
+
+        return redirect()->to('/home');
     }
 }
