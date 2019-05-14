@@ -101,7 +101,7 @@ export default {
     },
 
     trackListLength() {
-      return this.trackList.length > 0;
+      return this.trackList.length;
     },
 
     desktop() {

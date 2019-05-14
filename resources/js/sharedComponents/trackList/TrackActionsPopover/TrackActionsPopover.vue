@@ -195,7 +195,7 @@ export default {
     onFavouritePress() {
       this.$refs.closeButton.click();
       setTimeout(() => {
-        this.$emit('favourite-pressed');
+        this.$emit('press-favourite');
       }, 50);
     },
 

@@ -21,10 +21,6 @@ const typeToQueryMap = {
   collection: gql.query.COLLECTION,
 };
 
-// TODO: (1)
-// This component should check if there is favourite list (of the item type) on the client (1)
-// and change its length. Also it should update the item itself (2).
-
 export default {
   components: {
     IconButton,
@@ -43,6 +39,10 @@ export default {
     itemId: {
       type: Number,
       required: true
+    },
+    fake: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -79,6 +79,12 @@ export default {
 
   methods: {
     onPress() {
+      if (this.fake) {
+        this.$emit('press-favourite', this.itemId);
+
+        return;
+      }
+
       if (this.isButtonDisabled) return;
 
       this.isButtonDisabled = true;
@@ -95,7 +101,7 @@ export default {
         addToFavourite();
       }
 
-      this.$emit('favourite-pressed');
+      this.$emit('press-favourite', this.itemId);
     },
 
     addToFavourite() {

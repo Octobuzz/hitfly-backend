@@ -7,8 +7,9 @@
       :key="trackId"
       :index="index"
       :track-id="trackId"
+      :fake-fav-button="fakeFavButton"
       @remove-track="onTrackRemove"
-      @favourite-pressed="onFavouritePressed"
+      @press-favourite="onFavouritePress"
     />
     <slot name="loader" />
     <slot name="loadButton" />
@@ -26,14 +27,18 @@ export default {
     trackIdList: {
       type: Array,
       required: true
+    },
+    fakeFavButton: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     onTrackRemove(id) {
       this.$emit('remove-track', id);
     },
-    onFavouritePressed(id) {
-      this.$emit('favourite-pressed', id);
+    onFavouritePress(id) {
+      this.$emit('press-favourite', id);
     }
   }
 };

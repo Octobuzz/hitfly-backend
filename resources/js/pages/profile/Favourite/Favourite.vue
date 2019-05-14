@@ -40,6 +40,11 @@ export default {
     dataInitialized() {
       return this.tracksData;
     }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.$apollo.provider.clients.defaultClient
+      .clearStore().then(() => next());
   }
 };
 </script>
