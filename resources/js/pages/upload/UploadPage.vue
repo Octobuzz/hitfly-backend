@@ -83,7 +83,7 @@
       },
       trackInputed(track){
         this.track = track;
-        this.uploadTrack(track[0]);
+        this.uploadTrack(track);
       },
       addInfo(info){
         this.$apollo.mutate({
