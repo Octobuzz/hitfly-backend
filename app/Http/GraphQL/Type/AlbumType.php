@@ -40,7 +40,7 @@ class AlbumType extends GraphQLType
                 'description' => 'Автор',
             ],
             'year' => [
-                'type' => Type::int(),
+                'type' => Type::string(),
                 'description' => 'Год выпуска',
             ],
             'cover' => AlbumCoverField::class,

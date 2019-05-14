@@ -13,6 +13,7 @@ use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,6 +34,7 @@ use Illuminate\Support\Facades\Storage;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $genre_id
  * @property \App\Models\MusicGroup          $musicGroup
+ * @property int                             $user_id
  *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newModelQuery()
@@ -62,6 +64,10 @@ use Illuminate\Support\Facades\Storage;
 class Album extends Model
 {
     use SoftDeletes, Itemable;
+    public const TYPE_ALBUM = 'album';
+    public const TYPE_EP = 'EP';
+    public const TYPE_SINGLE = 'single';
+    public const TYPE_COLLECTION = 'collection';
 
     protected $table = 'albums';
 
@@ -80,6 +86,9 @@ class Album extends Model
         'created_at',
         'updated_at',
     ];
+    protected $casts = [
+        'year' => 'date:Y',
+    ];
 
     public function musicGroup(): BelongsTo
     {
@@ -91,9 +100,9 @@ class Album extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function genre(): BelongsTo
+    public function genres(): MorphToMany
     {
-        return $this->belongsTo(Genre::class, 'genre_id');
+        return $this->morphToMany(Genre::class, 'genreable', 'genres_bindings')->withTimestamps();
     }
 
     public function user(): BelongsTo
@@ -114,5 +123,10 @@ class Album extends Model
     public function getName(): string
     {
         return $this->title;
+    }
+
+    public function setUser(User $user)
+    {
+        $this->user_id = $user->id;
     }
 }
