@@ -155,6 +155,8 @@ return [
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
 
                 'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
+
+                'createAlbum' => \App\Http\GraphQL\Mutations\CreateAlbumMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -201,6 +203,7 @@ return [
         'MyProfileInput' => \App\Http\GraphQL\InputObject\MyProfileInput::class,
         'ArtistProfileInput' => \App\Http\GraphQL\InputObject\ArtistProfileInput::class,
         'MusicGroupUpdateInput' => \App\Http\GraphQL\InputObject\MusicGroupUpdateInput::class,
+        'AlbumInput' => \App\Http\GraphQL\InputObject\AlbumInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
@@ -210,6 +213,7 @@ return [
         'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
         'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
         'MusicGroupSizeEnum' => \App\Http\GraphQL\Enums\MusicGroupSizeEnum::class,
+        'AlbumTypeEnum' => \App\Http\GraphQL\Enums\AlbumTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

@@ -12,7 +12,6 @@ use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\Track;
-use App\Models\Genre;
 use Rebing\GraphQL\Support\UnionType;
 
 class FavouriteUnion extends UnionType

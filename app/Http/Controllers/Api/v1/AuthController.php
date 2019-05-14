@@ -24,6 +24,7 @@ class AuthController extends Controller
 
         return response()->json($user);
     }
+
     public function authenticate(Request $request)
     {
         //$request = $request->json()->all();
@@ -35,6 +36,7 @@ class AuthController extends Controller
         // the IP address of the client making these requests into this application.
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
+
             return $this->sendLockoutResponse($request);
         }
 
@@ -49,10 +51,12 @@ class AuthController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }
+
     /**
      * Send the response after the user was authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     protected function sendLoginResponse(Request $request)
@@ -62,7 +66,5 @@ class AuthController extends Controller
         $this->clearLoginAttempts($request);
 
         return response()->json($this->guard()->user());
-
     }
-
 }

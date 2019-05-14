@@ -53,6 +53,7 @@ class Favourite extends Model
     {
         return $this->belongsTo(Genre::class, 'favouriteable_id');
     }
+
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class, 'favouriteable_id');

@@ -5,7 +5,6 @@ namespace App\Http\GraphQL\Mutations;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
-use App\Models\Genre;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;

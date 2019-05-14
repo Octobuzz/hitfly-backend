@@ -23,7 +23,7 @@ class SocialController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function redirectToProvider($driver,Request $request)
+    public function redirectToProvider($driver, Request $request)
     {
         if (!(config()->has("services.{$driver}"))) {
             return $this->sendFailedResponse("Драйвер {$driver} не поддерживается", 204);
@@ -35,7 +35,6 @@ class SocialController extends Controller
             return $this->sendFailedResponse($e->getMessage());
         }
     }
-
 
     /**
      * Login social user.
@@ -146,14 +145,15 @@ class SocialController extends Controller
                 'url' => '/api/v1/login/instagram',
                 'icon' => '/images/icons/inst.png',
             ],
-            'odnoklassniki' =>  [
+            'odnoklassniki' => [
                 'url' => '/api/v1/login/odnoklassniki',
                 'icon' => '/images/icons/ok.png',
             ],
         ];
 
-        return response()->json($providers)->header('Content-Type',"application/json");
+        return response()->json($providers)->header('Content-Type', 'application/json');
     }
+
     public function registerSuccess(Request $request)
     {
         return view('auth.success');
