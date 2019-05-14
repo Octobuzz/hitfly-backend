@@ -8,7 +8,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\ArtistProfile;
 use App\Models\City;
 use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
