@@ -16,8 +16,15 @@
       </span>
       <input
         :type="password ? 'password' : 'text'"
-        :class="['base-input__input', { 'base-input__input_error': showError }]"
+        :class="[
+          'base-input__input',
+          {
+            'base-input__input_error': showError,
+            'base-input_disabled': disabled
+          }
+        ]"
         :value="value"
+        :disabled="disabled"
         @input="emitInput($event)"
         @focus="focus = true"
         @blur="focus = false"
@@ -62,6 +69,10 @@ export default {
     password: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -103,6 +114,10 @@ export default {
   display: block;
   position: relative;
   height: 50px;
+
+  &_disabled {
+    background: #f0f0f0 !important;
+  }
 
   &__wrapper {
     position: relative;

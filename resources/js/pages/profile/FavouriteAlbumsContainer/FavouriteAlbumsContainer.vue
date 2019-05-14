@@ -120,8 +120,6 @@ export default {
             this.hasMoreData = false;
           }
 
-          console.log(data);
-
           return data.map(favAlbum => favAlbum.album);
         },
 
