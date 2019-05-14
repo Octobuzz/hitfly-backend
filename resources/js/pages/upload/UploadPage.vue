@@ -91,7 +91,7 @@
             id: this.trackID,
             infoTrack: {
               singer: info.singer,
-              genre: 7,
+              genre: 12,
               trackDate: info.trackDate,
               songText: info.songText,
               trackName: 'name of track',
