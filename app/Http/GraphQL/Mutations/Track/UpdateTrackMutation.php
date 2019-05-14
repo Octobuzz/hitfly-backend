@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
-use App\Models\Genre;
 use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
@@ -66,10 +65,7 @@ class UpdateTrackMutation extends Mutation
             'state' => 'fileload',
         ]);
 
-
         $track->save();
-
-
 
         return $track;
     }
