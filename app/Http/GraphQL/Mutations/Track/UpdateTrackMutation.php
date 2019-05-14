@@ -2,7 +2,9 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Models\Genre;
 use App\Models\Track;
+use Carbon\Carbon;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
@@ -51,18 +53,23 @@ class UpdateTrackMutation extends Mutation
 
     public function resolve($root, $args)
     {
+        /** @var Track $track */
         $track = Track::query()->find($args['id']);
+        $track->genres()->sync($args['infoTrack']['genres']);
 
         $track->update([
-            'track_name' => empty($args['infoTrack']['trackName']) ? null : $args['infoTrack']['trackName'],
+            'track_name' => $args['infoTrack']['trackName'],
             'album_id' => empty($args['infoTrack']['album']) ? null : $args['infoTrack']['album'],
-            'genre_id' => $args['infoTrack']['genre'],
             'singer' => $args['infoTrack']['singer'],
-            'song_text' => empty($args['infoTrack']['songText']) ? null : $args['infoTrack']['songText'],
-            'track_date' => empty($args['infoTrack']['trackDate']) ? null : $args['infoTrack']['trackDate'],
+            'song_text' => $args['infoTrack']['songText'],
+            'track_date' => Carbon::create($args['infoTrack']['trackDate'], 1, 1),
             'state' => 'fileload',
         ]);
+
+
         $track->save();
+
+
 
         return $track;
     }

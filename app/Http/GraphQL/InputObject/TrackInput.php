@@ -19,39 +19,39 @@ class TrackInput extends GraphQLType
         return [
             'trackName' => [
                 'name' => 'trackName',
-                'description' => 'trackName',
+                'description' => 'Название трека',
                 'type' => Type::string(),
-                'rules' => ['max:250'],
+                'rules' => ['required', 'max:250'],
             ],
             'album' => [
                 'name' => 'album',
-                'description' => 'album',
+                'description' => 'Альбом трека',
                 'type' => Type::int(),
-                'rules' => ['integer'],
+                'rules' => ['nullable', 'integer'],
             ],
-            'genre' => [
-                'name' => 'genre',
-                'description' => 'genre',
-                'type' => Type::nonNull(Type::int()),
-                'rules' => ['integer'],
+            'genres' => [
+                'name' => 'genres',
+                'description' => 'Жанры трека',
+                'type' => Type::listOf(Type::int()),
+                'rules' => ['required', 'array'],
             ],
             'singer' => [
                 'name' => 'singer',
-                'description' => 'singer',
+                'description' => 'Испольнитель',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['min:0', 'max:250'],
+                'rules' => ['required', 'min:0', 'max:250'],
             ],
             'trackDate' => [
                 'name' => 'trackDate',
-                'description' => 'track_date',
+                'description' => 'Дата трека (формат: Год трека)',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['date', 'required'],
+                'rules' => ['required', 'date_format:Y'],
             ],
             'songText' => [
                 'name' => 'songText',
-                'description' => 'description',
+                'description' => 'Песня трека',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['min:0', 'max:6000'],
+                'rules' => ['required', 'min:1', 'max:6000'],
             ],
         ];
     }

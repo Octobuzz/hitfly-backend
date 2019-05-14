@@ -47,7 +47,7 @@ class UploadTrackMutation extends Mutation
             'track_hash' => hash_file('md5', $file),
             'state' => 'fileload',
             'user_id' => $user->id,
-            'filename' => $name, // "tracks/$user->id/".$file->getClientOriginalName(),
+            'filename' => $name,
         ]);
 
         return $track;
