@@ -167,6 +167,7 @@
           'trackDate': this.trackInfo.year.input,
           'songText': this.trackInfo.text.input,
           'genre': this.trackInfo.genres,
+          'trackName': this.trackInfo.name.input,
         };
         this.$emit('sendInfo', info);
       },

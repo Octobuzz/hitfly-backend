@@ -83,7 +83,7 @@
       },
       trackInputed(track){
         this.track = track;
-        this.uploadTrack();
+        this.uploadTrack(track[0]);
       },
       addInfo(info){
         this.$apollo.mutate({
@@ -94,6 +94,7 @@
               genre: 7,
               trackDate: info.trackDate,
               songText: info.songText,
+              trackName: 'name of track',
             }
           },
           mutation: gql`mutation($id: Int!, $infoTrack: TrackInput) {
@@ -106,6 +107,7 @@
           }`
         }).then((response) => {
           console.log(response.data)
+          this.$router.push('/');
         }).catch((error) => {
           console.dir(error)
         })
