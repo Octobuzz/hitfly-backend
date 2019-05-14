@@ -30,10 +30,10 @@ const routes = [
         path: 'my-music',
         component: profile.MyMusic
       },
-      // {
-      //   path: 'favourite',
-      //   component: profile.Favourite
-      // },
+      {
+        path: 'favourite',
+        component: profile.Favourite
+      },
       {
         path: '',
         redirect: '/profile/my-music'

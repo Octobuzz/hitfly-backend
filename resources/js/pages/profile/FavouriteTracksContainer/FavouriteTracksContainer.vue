@@ -6,8 +6,9 @@
       { [containerPaddingClass]: desktop }
     ]"
     :track-id-list="trackIdList"
+    :fake-fav-button="true"
     @remove-track="onTrackRemove"
-    @favourite-pressed="onTrackRemove"
+    @press-favourite="onTrackRemove"
   >
     <template #header>
       <div
@@ -82,7 +83,7 @@ export default {
     },
 
     trackListLength() {
-      return this.trackList.length > 0;
+      return this.trackList.length;
     },
 
     desktop() {
@@ -115,12 +116,12 @@ export default {
 
           const newTracks = data.filter(newTrack => (
             !currentList.favouriteTrack.data.some(
-              currentTrack => currentTrack.id === newTrack.id
+              currentTrack => currentTrack.track.id === newTrack.track.id
             )
           ));
 
           return {
-            tracks: {
+            favouriteTrack: {
               // eslint-disable-next-line no-underscore-dangle
               __typename: currentList.favouriteTrack.__typename,
               total,
@@ -175,7 +176,6 @@ export default {
 
       this.$apollo.mutate({
         mutation: gql.mutation.REMOVE_FROM_FAVOURITE,
-
         variables: {
           id,
           type: 'track'
@@ -194,36 +194,7 @@ export default {
             }
           });
 
-          const { favouriteTrack } = store.readQuery({
-            query: gql.query.FAVOURITE_TRACKS,
-
-            // cause updateQuery does not update variables in cache entry
-            // we always refer to the first page
-
-            variables: {
-              ...this.queryVars,
-              pageNumber: 1
-            }
-          });
-
-          const updatedTracks = {
-            favouriteTrack: {
-              ...favouriteTrack,
-              data: [
-                ...favouriteTrack.data
-                  .filter(favTrack => favTrack.track.id !== id)
-              ]
-            }
-          };
-
-          store.writeQuery({
-            query: gql.query.FAVOURITE_TRACKS,
-            variables: {
-              ...this.queryVars,
-              pageNumber: 1
-            },
-            data: updatedTracks
-          });
+          this.removeTrackFromCache(id);
         },
 
         optimisticResponse: {
@@ -251,9 +222,42 @@ export default {
       }).catch((error) => {
         this.removesInProcess -= 1;
 
-        // track will be revived automatically
+        console.dir(error);
+      });
+    },
 
-        console.log(error);
+    removeTrackFromCache(id) {
+      const store = this.$apollo.provider.clients.defaultClient;
+
+      const { favouriteTrack } = store.readQuery({
+        query: gql.query.FAVOURITE_TRACKS,
+
+        // cause updateQuery does not update variables in cache entry
+        // we always refer to the first page
+
+        variables: {
+          ...this.queryVars,
+          pageNumber: 1
+        }
+      });
+
+      const updatedTracks = {
+        favouriteTrack: {
+          ...favouriteTrack,
+          data: [
+            ...favouriteTrack.data
+              .filter(favTrack => favTrack.track.id !== id)
+          ]
+        }
+      };
+
+      store.writeQuery({
+        query: gql.query.FAVOURITE_TRACKS,
+        variables: {
+          ...this.queryVars,
+          pageNumber: 1
+        },
+        data: updatedTracks
       });
     }
   },

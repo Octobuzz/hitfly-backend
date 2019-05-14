@@ -22,7 +22,8 @@
       hover="secondary-hover"
       item-type="track"
       :item-id="trackId"
-      @favourite-pressed="onFavouritePress"
+      :fake="fakeFavButton"
+      @press-favourite="onFavouritePress"
     />
 
     <span
@@ -69,7 +70,7 @@
 
     <TrackActionsPopover
       :track-id="trackId"
-      @favourite-pressed="onFavouritePress"
+      @press-favourite="pressFavourite"
     >
       <IconButton
         passive="secondary-passive"
@@ -124,6 +125,10 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    fakeFavButton: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -160,11 +165,13 @@ export default {
       console.log('album pressed');
     },
     onFavouritePress() {
-      this.$refs.addToFavButton.onPress();
-      this.$emit('favourite-pressed', this.trackId);
+      this.$emit('press-favourite', this.trackId);
     },
     onRemovePress() {
       this.$emit('remove-track', this.trackId);
+    },
+    pressFavourite() {
+      this.$refs.addToFavButton.onPress();
     }
   },
 

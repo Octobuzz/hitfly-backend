@@ -8,7 +8,7 @@
     <ReturnHeader class="create-group-container__return-header" />
 
     <PageHeader class="create-group-container__page-header">
-      РЕДАКТИРОВАТЬ ГРУППУ
+      РЕДАКТИРОВАТЬ ПРОФИЛЬ ГРУППЫ
     </PageHeader>
 
     <div class="create-group">
