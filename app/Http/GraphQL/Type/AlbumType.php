@@ -52,6 +52,7 @@ class AlbumType extends GraphQLType
             'userFavourite' => [
                 'type' => Type::nonNull(Type::boolean()),
                 'description' => 'флаг избранного альбома',
+                'selectable' => false,
                 'resolve' => function ($model) {
                     if ($model->userFavourite->count()) {
                         return true;
