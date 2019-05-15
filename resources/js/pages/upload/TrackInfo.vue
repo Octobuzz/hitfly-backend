@@ -1,9 +1,6 @@
 <template>
   <div class="trackInfo">
     <div class="add-track">
-      <PageHeader class="add-track__page-header">
-        Загрузка трека
-      </PageHeader>
       <div class="add-track-cover">
         <ChooseAvatar
           caption="Загрузить обложку"
@@ -112,6 +109,7 @@
     <div class="trackInfoFooter">
       <FormButton
         class="trackInfoFooter__button"
+        :class="{disabled: loading}"
         modifier="primary"
         @press="addInfo"
       >
@@ -129,23 +127,23 @@
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
   import NotepadIcon from 'components/icons/NotepadIcon.vue';
-  import PageHeader from 'components/PageHeader.vue';
   import CreateAlbum from './CreateAlbum.vue';
   import gql from 'graphql-tag';
 
   export default{
+    props: ['loading'],
     data: () => ({
       trackInfo:{
         year: {
           input: ''
         },
+        genres: [],
         name: {
           input: ''
         },
         text: {
           input: ''
         },
-        genres: [],
         selectedArtist: null,
         selectedAlbum: null,
       },
@@ -162,14 +160,16 @@
     }),
     methods: {
       addInfo(){
+        const genres = this.trackInfo.genres.map((genre) => {
+          return genre.id;
+        });
         const info = {
           'singer': this.trackInfo.selectedArtist,
           'trackDate': this.trackInfo.year.input,
           'songText': this.trackInfo.text.input,
-          'genre': this.trackInfo.genres,
+          'genre': genres,
           'trackName': this.trackInfo.name.input,
         };
-        this.$emit('sendInfo', info);
       },
       onCoverInput(){
         console.log('ok');
@@ -190,23 +190,22 @@
       PencilIcon,
       CalendarIcon,
       NotepadIcon,
-      PageHeader,
       CreateAlbum
     },
     apollo: {
-      albums: gql`query {
-        albums(limit: 0, page: 0, my: true){
-          total
-          per_page
-          current_page
-          from
-          to
-          data{
-            title
+      getAlbums: {
+        query: gql`query{
+          albums(limit: 0, page: 0, my: true){
+            data {
+              id
+              title
+            }
           }
+        }`,
+        update(data){
+          console.log(data);
         }
-      }
-      `
+      },
     }
   }
 </script>
