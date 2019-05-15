@@ -213,10 +213,8 @@ return [
         'GenderType' => \App\Http\GraphQL\Enums\GenderTypeEnum::class,
         'SocialLinksTypeEnum' => \App\Http\GraphQL\Enums\SocialLinksTypeEnum::class,
         'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
-        'AlbumSizeEnum' => \App\Http\GraphQL\Enums\AlbumSizeEnum::class,
-        'CollectionSizeEnum' => \App\Http\GraphQL\Enums\CollectionSizeEnum::class,
-        'MusicGroupSizeEnum' => \App\Http\GraphQL\Enums\MusicGroupSizeEnum::class,
         'AlbumTypeEnum' => \App\Http\GraphQL\Enums\AlbumTypeEnum::class,
+        'PictureSizeEnum' => \App\Http\GraphQL\Enums\PictureSizeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

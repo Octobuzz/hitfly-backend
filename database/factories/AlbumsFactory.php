@@ -30,5 +30,5 @@ $factory->define(\App\Models\Album::class, function (Faker $faker) {
 
 $factory->afterMaking(\App\Models\Album::class, function (\App\Models\Album $album, Faker $faker) {
     $image = new File($faker->image());
-    $album->cover = Storage::disk('public')->putFile('albums/'.$album->user_id, $image);
+    $album->cover = Storage::disk('public')->putFile($album->getPath(), $image);
 });

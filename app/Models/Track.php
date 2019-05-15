@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
+use App\Models\Traits\PictureField;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Track extends Model
 {
-    use SoftDeletes, Itemable;
+    use SoftDeletes, Itemable, PictureField;
 
     protected $table = 'tracks';
 
@@ -96,5 +97,16 @@ class Track extends Model
     public function genres(): MorphToMany
     {
         return $this->morphToMany(Genre::class, 'genreable', 'genres_bindings')->withTimestamps();
+    }
+
+    public function getImage(): ?string
+    {
+        $baseImage = $this->getOriginal('cover');
+
+        if (null === $baseImage) {
+            $baseImage = $this->album->image;
+        }
+
+        return $baseImage;
     }
 }

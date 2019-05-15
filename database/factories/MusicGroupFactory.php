@@ -20,7 +20,7 @@ $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
 
 $factory->afterMaking(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
     $image = new File($faker->image());
-    $musicGroup->avatar_group = Storage::disk('public')->putFile('music_groups/'.$musicGroup->creator_group_id, $image);
+    $musicGroup->avatar_group = Storage::disk('public')->putFile($musicGroup->getPath(), $image);
 });
 $factory->afterCreating(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
     $groupLink = new \App\Models\GroupLinks();

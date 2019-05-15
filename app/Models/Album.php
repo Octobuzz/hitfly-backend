@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
+use App\Models\Traits\PictureField;
 use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
@@ -63,7 +64,8 @@ use Illuminate\Support\Facades\Storage;
  */
 class Album extends Model
 {
-    use SoftDeletes, Itemable;
+    use SoftDeletes, Itemable, PictureField;
+
     public const TYPE_ALBUM = 'album';
     public const TYPE_EP = 'EP';
     public const TYPE_SINGLE = 'single';
@@ -72,6 +74,7 @@ class Album extends Model
     protected $table = 'albums';
 
     protected $nameFolder = 'albums';
+    protected $sizeTypePicture = 'album';
 
     protected $fillable = [
         'title',
@@ -128,5 +131,15 @@ class Album extends Model
     public function setUser(User $user)
     {
         $this->user_id = $user->id;
+    }
+
+    public function getPath(): string
+    {
+        return 'albums/'.$this->user_id.'/';
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->getOriginal('cover');
     }
 }
