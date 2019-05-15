@@ -103,7 +103,7 @@ class Track extends Model
     {
         $baseImage = $this->getOriginal('cover');
 
-        if (null === $baseImage) {
+        if (null === $baseImage && null !== $this->album) {
             $baseImage = $this->album->image;
         }
 
