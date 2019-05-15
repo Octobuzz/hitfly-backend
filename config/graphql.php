@@ -132,6 +132,8 @@ return [
                 'favouriteAlbum' => \App\Http\GraphQL\Query\FavouriteAlbumQuery::class,
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
+                'favouriteCollection' => \App\Http\GraphQL\Query\FavouriteCollectionQuery::class,
+                'favouriteSet' => \App\Http\GraphQL\Query\FavouriteSetQuery::class,
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],

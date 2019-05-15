@@ -3,7 +3,6 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Helpers\DBHelpers;
-use App\Models\GroupLinks;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use App\Rules\AuthorUpdateMusicGroup;
@@ -63,21 +62,7 @@ class UpdateMusicGroupMutation extends Mutation
             $musicGroup->genres()->sync($args['musicGroup']['genre']);
         }
         if (!empty($args['musicGroup']['socialLinks'])) {
-            foreach ($args['musicGroup']['socialLinks'] as $social) {
-                /** @var GroupLinks $socialLinks */
-                $socialLinks = GroupLinks::query()->where('music_group_id', $args['id'])
-                    ->where('social_type', $social['socialType'])->first();
-                if (null === $socialLinks) {
-                    $socialLinks = new GroupLinks();
-                    $socialLinks->social_type = $social['socialType'];
-                    $socialLinks->link = $social['link'];
-                    $socialLinks->music_group_id = $args['id'];
-                    $socialLinks->save();
-                } else {
-                    $socialLinks->setRawAttributes(DBHelpers::arrayKeysToSnakeCase($social));
-                    $socialLinks->save();
-                }
-            }
+            $musicGroup->socialLinks()->sync(DBHelpers::arrayKeysToSnakeCase($args['musicGroup']['socialLinks']));
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {

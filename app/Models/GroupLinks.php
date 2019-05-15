@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class GroupLinks extends Model
 {
@@ -33,5 +34,10 @@ class GroupLinks extends Model
         }
 
         return $values;
+    }
+
+    public function musicGroup(): BelongsToMany
+    {
+        return $this->belongsToMany(MusicGroup::class, 'group_links')->withTimestamps();
     }
 }
