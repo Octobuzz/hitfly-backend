@@ -71,6 +71,7 @@
   import gql from 'graphql-tag';
 
   export default {
+    props: ['bands'],
     data: () => ({
       albumFormats: ['EP', 'LP', 'Single'],
       newAlbum: {
@@ -81,7 +82,7 @@
         author: '',
         albumCover: null,
       },
-      bands: ['Я', 'firstBand', 'secondBand'],
+      bands: [],
     }),
     methods: {
       onCoverInput(file) {
