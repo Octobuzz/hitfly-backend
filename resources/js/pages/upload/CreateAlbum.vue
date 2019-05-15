@@ -82,7 +82,6 @@
         author: '',
         albumCover: null,
       },
-      bands: [],
     }),
     methods: {
       onCoverInput(file) {
