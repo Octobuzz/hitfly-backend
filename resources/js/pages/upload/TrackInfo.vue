@@ -170,6 +170,7 @@
           'genre': genres,
           'trackName': this.trackInfo.name.input,
         };
+        this.$emit('sendInfo', info);
       },
       onCoverInput(){
         console.log('ok');
