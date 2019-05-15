@@ -24,7 +24,7 @@
   align-items: stretch;
   // consider header and footer
   margin: {
-    top: 90px;
+    top: 95px;
     bottom: 90px;
   }
 

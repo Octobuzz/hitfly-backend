@@ -4,6 +4,7 @@ import store from './store';
 import * as main from './pages/main';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
+import AboutPage from './pages/AboutPage.vue';
 
 const routes = [
   {
@@ -45,6 +46,10 @@ const routes = [
     path: '/upload',
     component: UploadPage
   },
+  {
+    path: '/about',
+    component: AboutPage
+  }
 ];
 
 const router = new VueRouter({
