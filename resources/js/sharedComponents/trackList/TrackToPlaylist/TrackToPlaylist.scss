@@ -4,10 +4,11 @@
   &__loader {
     display: block;
     margin: 12px auto;
+    transform: scale(.5);
   }
 
   &__list {
-    font-size: 14px;
+    font-size: 12px;
     margin: 6px 0 18px 28px;
     padding-left: 0;
     list-style: none;
@@ -23,7 +24,6 @@
 
     &:hover {
       color: white;
-      background: #333;
     }
   }
 

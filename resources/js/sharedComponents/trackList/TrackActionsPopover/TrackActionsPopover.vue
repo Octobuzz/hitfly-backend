@@ -45,23 +45,35 @@
         <span
           class="track-actions-popover__menu-item"
         >
+          <span class="track-actions-popover__menu-item-icon">
+            <PlayNextIcon/>
+          </span>
           Слушать далее
         </span>
         <span
           class="track-actions-popover__menu-item"
         >
+          <span class="track-actions-popover__menu-item-icon">
+            <ListPlusIcon/>
+          </span>
           Добавить в список воспроизведения
         </span>
         <span
           class="track-actions-popover__menu-item"
           @click="enterPlaylistMenu"
         >
+          <span class="track-actions-popover__menu-item-icon">
+            <PlusIcon/>
+          </span>
           Добавить в плейлист
         </span>
         <span
           class="track-actions-popover__menu-item"
           @click="onFavouritePress"
         >
+          <span class="track-actions-popover__menu-item-icon">
+            <HeartIcon/>
+          </span>
           <span v-if="!track.userFavourite">
             Добавить в любимые треки
           </span>
@@ -72,12 +84,35 @@
         <span
           class="track-actions-popover__menu-item"
         >
+          <span class="track-actions-popover__menu-item-icon">
+            <UserPlusIcon/>
+          </span>
           Следить за автором
         </span>
         <span
           class="track-actions-popover__menu-item"
         >
+          <span class="track-actions-popover__menu-item-icon">
+            <BendedArrowIcon/>
+          </span>
+          Поделиться песней
+        </span>
+        <span
+          class="track-actions-popover__menu-item"
+        >
+          <span class="track-actions-popover__menu-item-icon">
+            <CrossIcon/>
+          </span>
           Удалить из списка воспроизведения
+        </span>
+        <span
+          class="track-actions-popover__menu-item"
+          @click="emitRemoveTrack"
+        >
+          <span class="track-actions-popover__menu-item-icon">
+            <CrossIcon/>
+          </span>
+          Удалить из текущего списка
         </span>
       </div>
 
@@ -114,6 +149,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
+import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
+import PlusIcon from 'components/icons/popover/PlusIcon.vue';
+import HeartIcon from 'components/icons/popover/HeartIcon.vue';
+import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
+import CrossIcon from 'components/icons/popover/CrossIcon.vue';
+import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
 import gql from './gql';
 import TrackToPlaylist from '../TrackToPlaylist';
 
@@ -121,7 +163,14 @@ const MOBILE_WIDTH = 767;
 
 export default {
   components: {
-    TrackToPlaylist
+    TrackToPlaylist,
+    PlayNextIcon,
+    ListPlusIcon,
+    PlusIcon,
+    HeartIcon,
+    UserPlusIcon,
+    CrossIcon,
+    BendedArrowIcon
   },
 
   props: {
@@ -230,6 +279,10 @@ export default {
           );
         }, 200);
       }, 200);
+    },
+
+    emitRemoveTrack() {
+      this.$emit('remove-track');
     }
   },
 

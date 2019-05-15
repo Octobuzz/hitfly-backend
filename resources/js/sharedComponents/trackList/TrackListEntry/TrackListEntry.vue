@@ -71,6 +71,7 @@
     <TrackActionsPopover
       :track-id="trackId"
       @press-favourite="pressFavourite"
+      @remove-track="onRemovePress"
     >
       <IconButton
         passive="secondary-passive"
@@ -137,7 +138,7 @@ export default {
       track: null,
       tooltip: {
         remove: {
-          content: 'Удалить из списка воспроизведения'
+          content: 'Удалить из текущего списка'
         },
         add: {
           content: 'Добавить в плейлист'
