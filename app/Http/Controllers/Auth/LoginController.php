@@ -81,7 +81,6 @@ class LoginController extends Controller
             }
         } catch (Exception $e) {
             return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
-
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);

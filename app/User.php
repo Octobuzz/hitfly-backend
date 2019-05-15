@@ -13,6 +13,7 @@ use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -143,6 +144,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     }
 
     public function artistProfile()
+    {
+        return $this->hasOne(ArtistProfile::class, 'user_id');
+    }
+
+    public function artist(): HasOne
     {
         return $this->hasOne(ArtistProfile::class, 'user_id');
     }

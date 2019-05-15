@@ -20,10 +20,6 @@ class SocialLinksType extends GraphQLType
                 'type' => Type::nonNull(Type::int()),
                 'alias' => 'id', // Use 'alias', if the database column is different from the type name
             ],
-            'music_group_id' => [
-                'type' => \GraphQL::type('MusicGroup'),
-                'description' => 'Музыкальная группа',
-            ],
             'social_type' => [
                 'type' => Type::nonNull(\GraphQL::type('SocialLinksTypeEnum')),
                 'description' => 'социальная сеть',
