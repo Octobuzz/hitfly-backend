@@ -5,7 +5,7 @@
     <TrackListEntry
       v-for="(trackId, index) in trackIdList"
       :key="trackId"
-      :index="index"
+      :index="index + 1"
       :track-id="trackId"
       :fake-fav-button="fakeFavButton"
       @remove-track="onTrackRemove"
