@@ -10,18 +10,35 @@
       </template>
     </BaseInput>
     <BaseDropdown
-      v-model="newAlbum.format"
-      label="Тип альбома"
+      v-model="newAlbum.author"
       class="add-track-description__dropdown"
-      :options="albumFormats"
+      title="Автор трека"
+      :options="bands"
       :multiple="false"
       :close-on-select="true"
       :searchable="false"
       :max-height="500"
+    />
+    <BaseDropdown
+      v-model="newAlbum.format"
+      class="add-track-description__dropdown"
+      title="Тип альбома"
+      :options="albumFormats"
+      :searchable="false"
+      :max-height="500"
       @input="handleFormatChoice"
     />
+    <BaseInput
+      v-model="newAlbum.year"
+      label="Год создания альбома"
+      class="add-track-description__year-input"
+    >
+      <template #icon>
+        <CalendarIcon/>
+      </template>
+    </BaseInput>
     <ChooseGenres
-      v-model="genres"
+      v-model="newAlbum.genre"
       class="add-track-description__genre-tag-container"
       dropdown-class="add-track-description__dropdown"
     >
@@ -35,6 +52,12 @@
         </span>
       </template>
     </ChooseGenres>
+    <div class="add-track-cover">
+      <ChooseAvatar
+        caption="Загрузить обложку"
+        @input="onCoverInput"
+      />
+    </div>
     <div class="createAlbum__button button" @click="createAlbum">Создать альбом</div>
   </div>
 </template>
@@ -44,20 +67,54 @@
   import BaseInput from 'components/BaseInput.vue';
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
+  import ChooseAvatar from '../profile/ChooseAvatar.vue';
+  import gql from 'graphql-tag';
 
   export default {
+    props: ['bands'],
     data: () => ({
       albumFormats: ['EP', 'LP', 'Single'],
       newAlbum: {
         name: '',
         format: '',
-        genre: '',
+        genre: [],
+        year: '',
+        author: '',
+        albumCover: null,
       },
-      genres: [],
     }),
     methods: {
+      onCoverInput(file) {
+        this.albumCover = file
+      },
       createAlbum() {
-        
+        const genres = this.newAlbum.genre.map((genre) => {
+          return genre.id;
+        });
+        this.$apollo.mutate({
+          variables: {
+            album: {
+              type: this.newAlbum.format,
+              title: this.newAlbum.name,
+              author: this.newAlbum.author,
+              year: this.newAlbum.year,
+              genres: genres,
+              author: this.newAlbum.author,
+            },
+            cover: this.albumCover
+          },
+          mutation: gql`mutation($album: AlbumInput, $cover: Upload) {
+            createAlbum (album: $album, cover: $cover) {
+              title
+              id
+            }
+          }`
+        }).then((response) => {
+          console.log(response.data);
+          this.$emit('changeTab');
+        }).catch((error) => {
+          console.dir(error)
+        })
       },
       handleFormatChoice() {
         console.log('changed');
@@ -68,7 +125,8 @@
       ChooseGenres,
       BaseInput,
       PencilIcon,
-      CalendarIcon
+      CalendarIcon,
+      ChooseAvatar
     }
   }
 </script>

@@ -1,9 +1,6 @@
 <template>
   <div class="trackInfo">
     <div class="add-track">
-      <PageHeader class="add-track__page-header">
-        Загрузка трека
-      </PageHeader>
       <div class="add-track-cover">
         <ChooseAvatar
           caption="Загрузить обложку"
@@ -71,7 +68,7 @@
           v-model="trackInfo.selectedArtist"
           class="add-track-description__dropdown"
           title="Автор трека"
-          :options="bands"
+          :options="bands.map(band => band.name)"
           :multiple="false"
           :close-on-select="true"
           :searchable="false"
@@ -90,6 +87,8 @@
           <CreateAlbum
            v-show="createAlbum"
            class="addAlbumWrapper__content"
+           :bands="bands"
+           @changeTab="changeTab"
           />
           <div class="addAlbumWrapper__content" v-show="!createAlbum">
             <div class="add-track-chooseAlbum">
@@ -97,7 +96,8 @@
                 v-model="trackInfo.selectedAlbum"
                 class="add-track-description__dropdown"
                 title="Мои альбомы"
-                :options="albums.data.map(album => album.title)"
+                :options="albums.albums.data.map(album => album.title)"
+                :value="albums.albums.data.map(album => album.id)"
                 :multiple="false"
                 :close-on-select="true"
                 :searchable="false"
@@ -112,6 +112,7 @@
     <div class="trackInfoFooter">
       <FormButton
         class="trackInfoFooter__button"
+        :class="{disabled: loading}"
         modifier="primary"
         @press="addInfo"
       >
@@ -129,45 +130,54 @@
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
   import NotepadIcon from 'components/icons/NotepadIcon.vue';
-  import PageHeader from 'components/PageHeader.vue';
   import CreateAlbum from './CreateAlbum.vue';
   import gql from 'graphql-tag';
 
   export default{
+    props: ['loading'],
     data: () => ({
       trackInfo:{
         year: {
           input: ''
         },
+        genres: [],
         name: {
           input: ''
         },
         text: {
           input: ''
         },
-        genres: [],
         selectedArtist: null,
         selectedAlbum: null,
       },
       createAlbum: false,
-      bands: ['Я', 'firstBand', 'secondBand'],
+      bands: [],
       albums: {
-        data: [
-          {
-            title: String
-          }
-        ]
+        albums: {
+          data: [
+            {
+              title: String
+            }
+          ]
+        }
       },
       addToAlbum: false,
     }),
     methods: {
+      changeTab() {
+        this.createAlbum = false
+      },
       addInfo(){
+        const genres = this.trackInfo.genres.map((genre) => {
+          return genre.id;
+        });
         const info = {
           'singer': this.trackInfo.selectedArtist,
           'trackDate': this.trackInfo.year.input,
           'songText': this.trackInfo.text.input,
-          'genre': this.trackInfo.genres,
+          'genre': genres,
           'trackName': this.trackInfo.name.input,
+          'album': this.selectedAlbum
         };
         this.$emit('sendInfo', info);
       },
@@ -179,6 +189,8 @@
       },
       handleAlbumSelect(value){
         this.selectedAlbum = value;
+        console.log(this.selectedAlbum);
+        console.log(value);
       }
     },
     components: {
@@ -190,23 +202,37 @@
       PencilIcon,
       CalendarIcon,
       NotepadIcon,
-      PageHeader,
       CreateAlbum
     },
     apollo: {
-      albums: gql`query {
-        albums(limit: 0, page: 0, my: true){
-          total
-          per_page
-          current_page
-          from
-          to
-          data{
-            title
+      getAlbums: {
+        query: gql`query{
+          albums(limit: 0, page: 0, my: true){
+            data {
+              id
+              title
+            }
           }
+        }`,
+        update(data){
+          console.log(data);
+          this.albums = data;
+        }
+      },
+      myGroups: {
+        query: gql`query{
+          myProfile{
+            musicGroups{
+              id
+              name
+            }
+          }
+        }`,
+        update(data){
+          console.log(data);
+          this.bands = data.myProfile.musicGroups;
         }
       }
-      `
     }
   }
 </script>

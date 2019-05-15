@@ -17,7 +17,10 @@
     </aside>
     <div class="main__info">
       <ProgressBar v-if="loading" :loading="loading"></ProgressBar>
-      <TrackInfo v-show="track !== null" @sendInfo="addInfo"></TrackInfo>
+      <PageHeader class="add-track__page-header" v-show="track !== null">
+        Загрузка трека
+      </PageHeader>
+      <TrackInfo v-show="track !== null" @sendInfo="addInfo" :loading="loading"></TrackInfo>
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
@@ -42,6 +45,7 @@
   import Dropzone from './Dropzone.vue';
   import TrackInfo from './TrackInfo.vue';
   import ProgressBar from './ProgressBar.vue';
+  import PageHeader from 'components/PageHeader.vue';
   import gql from 'graphql-tag';
 
   export default{
@@ -54,7 +58,10 @@
       loading: false,
     }),
     components: {
-      Dropzone, TrackInfo, ProgressBar
+      Dropzone,
+      TrackInfo,
+      PageHeader,
+      ProgressBar
     },
     methods: {
       onDragEnter(e){
@@ -91,7 +98,7 @@
             id: this.trackID,
             infoTrack: {
               singer: info.singer,
-              genre: 12,
+              genres: info.genre,
               trackDate: info.trackDate,
               songText: info.songText,
               trackName: 'name of track',
@@ -128,6 +135,7 @@
           this.trackID = response.data.uploadTrack.id;
           console.log(this.trackID);
         }).catch((error) => {
+          console.log(error);
           this.loading = false;
         });
       },
