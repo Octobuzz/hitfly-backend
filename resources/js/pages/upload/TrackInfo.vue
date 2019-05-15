@@ -97,6 +97,7 @@
                 class="add-track-description__dropdown"
                 title="Мои альбомы"
                 :options="albums.albums.data.map(album => album.title)"
+                :value="albums.albums.data.map(album => album.id)"
                 :multiple="false"
                 :close-on-select="true"
                 :searchable="false"
@@ -176,6 +177,7 @@
           'songText': this.trackInfo.text.input,
           'genre': genres,
           'trackName': this.trackInfo.name.input,
+          'album': this.selectedAlbum
         };
         this.$emit('sendInfo', info);
       },
@@ -187,6 +189,8 @@
       },
       handleAlbumSelect(value){
         this.selectedAlbum = value;
+        console.log(this.selectedAlbum);
+        console.log(value);
       }
     },
     components: {
