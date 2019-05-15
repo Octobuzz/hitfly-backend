@@ -10,6 +10,16 @@
       </template>
     </BaseInput>
     <BaseDropdown
+      v-model="newAlbum.author"
+      class="add-track-description__dropdown"
+      title="Автор трека"
+      :options="bands"
+      :multiple="false"
+      :close-on-select="true"
+      :searchable="false"
+      :max-height="500"
+    />
+    <BaseDropdown
       v-model="newAlbum.format"
       class="add-track-description__dropdown"
       title="Тип альбома"
@@ -67,14 +77,20 @@
         name: '',
         format: '',
         genre: [],
-        year: ''
+        year: '',
+        author: '',
+        albumCover: null,
       },
+      bands: ['Я', 'firstBand', 'secondBand'],
     }),
     methods: {
       onCoverInput(file) {
-        console.log(file)
+        this.albumCover = file
       },
       createAlbum() {
+        const genres = this.newAlbum.genre.map((genre) => {
+          return genre.id;
+        });
         this.$apollo.mutate({
           variables: {
             album: {
@@ -82,23 +98,22 @@
               title: this.newAlbum.name,
               author: this.newAlbum.author,
               year: this.newAlbum.year,
-              genres: this.newAlbum.genre
+              genres: genres,
+              author: this.newAlbum.author,
             },
             cover: this.albumCover
           },
           mutation: gql`mutation($album: AlbumInput, $cover: Upload) {
-            updateTrack (id: $id, infoTrack: $infoTrack) {
+            createAlbum (album: $album, cover: $cover) {
+              title
               id
-              trackName
-              singer
-              trackDate
             }
           }`
         }).then((response) => {
-          // console.log(response.data)
-          this.$router.push('/');
+          console.log(response.data);
+          this.$emit('changeTab');
         }).catch((error) => {
-          // console.dir(error)
+          console.dir(error)
         })
       },
       handleFormatChoice() {

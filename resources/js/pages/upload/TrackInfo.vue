@@ -68,7 +68,7 @@
           v-model="trackInfo.selectedArtist"
           class="add-track-description__dropdown"
           title="Автор трека"
-          :options="bands"
+          :options="bands.map(band => band.name)"
           :multiple="false"
           :close-on-select="true"
           :searchable="false"
@@ -87,6 +87,7 @@
           <CreateAlbum
            v-show="createAlbum"
            class="addAlbumWrapper__content"
+           @changeTab="changeTab"
           />
           <div class="addAlbumWrapper__content" v-show="!createAlbum">
             <div class="add-track-chooseAlbum">
@@ -94,7 +95,7 @@
                 v-model="trackInfo.selectedAlbum"
                 class="add-track-description__dropdown"
                 title="Мои альбомы"
-                :options="albums.data.map(album => album.title)"
+                :options="albums.albums.data.map(album => album.title)"
                 :multiple="false"
                 :close-on-select="true"
                 :searchable="false"
@@ -148,17 +149,22 @@
         selectedAlbum: null,
       },
       createAlbum: false,
-      bands: ['Я', 'firstBand', 'secondBand'],
+      bands: [],
       albums: {
-        data: [
-          {
-            title: String
-          }
-        ]
+        albums: {
+          data: [
+            {
+              title: String
+            }
+          ]
+        }
       },
       addToAlbum: false,
     }),
     methods: {
+      changeTab() {
+        this.createAlbum = false
+      },
       addInfo(){
         const genres = this.trackInfo.genres.map((genre) => {
           return genre.id;
@@ -205,8 +211,23 @@
         }`,
         update(data){
           console.log(data);
+          this.albums = data;
         }
       },
+      myGroups: {
+        query: gql`query{
+          myProfile{
+            musicGroups{
+              id
+              name
+            }
+          }
+        }`,
+        update(data){
+          console.log(data);
+          this.bands = data.myProfile.musicGroups;
+        }
+      }
     }
   }
 </script>
