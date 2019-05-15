@@ -87,6 +87,7 @@
           <CreateAlbum
            v-show="createAlbum"
            class="addAlbumWrapper__content"
+           :bands="bands"
            @changeTab="changeTab"
           />
           <div class="addAlbumWrapper__content" v-show="!createAlbum">
