@@ -13,7 +13,7 @@
       v-model="newAlbum.author"
       class="add-track-description__dropdown"
       title="Автор трека"
-      :options="bands"
+      :options="bands.map((band) => band.name)"
       :multiple="false"
       :close-on-select="true"
       :searchable="false"
@@ -110,6 +110,7 @@
             }
           }`
         }).then((response) => {
+
           console.log(response.data);
           this.$emit('changeTab');
         }).catch((error) => {
