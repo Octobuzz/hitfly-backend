@@ -4,6 +4,10 @@
   &__tag-container {
     display: flex;
     flex-wrap: wrap;
+
+    &_padded {
+      margin-bottom: 14px;
+    }
   }
 
   &__tag {
@@ -13,27 +17,130 @@
     }
   }
 
-  &__more-tags-button {
-    font-family: "Gotham Pro", serif;
-    font-size: 12px;
-    line-height: 16px;
-    color: $color_3;
-    padding: 8px 18px 8px 18px;;
-    position: relative;
-    margin-bottom: 11px;
-    margin-top: auto;
-    transform: translateY(1px);
-    border-radius: 20px;
-    border: 1px solid $color_purple;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color .2s;
+  &__max-info {
+    font-size: 10px;
+    display: block;
+    margin-top: 8px;
+  }
 
-    &:hover {
-      color: white;
-      background: $linear-gradient;
-      padding: 9px 19px 9px 19px;
-      border: none;
+  &__dd {
+    font-family: "Gotham Pro", serif;
+    display: block;
+    width: 100%;
+    position: relative;
+  }
+
+  &__dd-label {
+    font-size: 14px;
+    color: $color_3;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    top: 20px;
+    left: 16px;
+    z-index: -1;
+
+    &_top {
+      transform: translate(-13%, -14px) scale(.75);
+    }
+  }
+
+  .multiselect {
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: left;
+    display: block;
+    position: relative;
+    width: 100%;
+    min-height: 50px;
+    padding-right: 40px;
+    cursor: pointer;
+    border: 1px solid $borderColor;
+    border-radius: $border-radius;
+    background: transparent;
+
+    &--active::v-deep .multiselect {
+      &__content-wrapper {
+        position: absolute !important;
+        width: inherit;
+        top: 115%;
+        z-index: 900;
+        background: white;
+        box-shadow: 0 0 10px #f0f0f0;
+        overflow-y: auto;
+      }
+
+      &__select {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+.choose-genres__dd::v-deep {
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li > span {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 8px 16px;
+    }
+  }
+
+  .multiselect {
+    &-leave-active {
+      display: none;
+    }
+
+    &__tags {
+      padding: 22px 16px 10px 16px;
+    }
+
+    &__element {
+      width: 100%;
+    }
+
+    &__option {
+      box-sizing: border-box;
+      padding: 6px;
+
+      &--selected {
+        color: $color_blue;
+      }
+
+      &--highlight {
+        color: $color_pink;
+      }
+    }
+
+    &__input {
+      box-sizing: border-box;
+      height: 16px;
+      background: transparent;
+      border-width: 0;
+      box-shadow: none;
+      outline: none;
+    }
+
+    &__select {
+      box-sizing: border-box;
+      position: absolute;
+      width: 35px;
+      height: 35px;
+      top: 8px;
+      right: 8px;
+      transition: .3s;
+      background: {
+        image: url(~images/dropdown.svg);
+        repeat: no-repeat;
+        position: center;
+
+      }
     }
   }
 }

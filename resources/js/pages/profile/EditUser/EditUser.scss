@@ -95,25 +95,9 @@ $formRightPadding: 40px;
       width: 160px;
     }
 
-    &__favourite-genres-button {
-      margin-bottom: 40px;
-    }
-
     &__social-networks-link {
       display: block;
       margin-bottom: 54px;
-    }
-
-    &__tags-container {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    &__chosen-tag {
-      margin: {
-        right: 8px;
-        bottom: 10px;
-      }
     }
 
     &__choose-genres {

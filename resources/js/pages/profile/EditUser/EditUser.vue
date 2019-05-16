@@ -137,32 +137,7 @@
             Любимые жанры
           </span>
 
-          <div
-            v-if="!genreEditMode"
-            class="edit-profile-form__tags-container"
-          >
-            <BaseTag
-              v-for="genre in myProfile.favouriteGenres"
-              :key="genre.id"
-              class="edit-profile-form__chosen-tag"
-              :name="genre.name"
-              :active="true"
-            />
-          </div>
-          <FormButton
-            v-if="!genreEditMode"
-            :class="[
-              'edit-profile-form__change-button',
-              'edit-profile-form__favourite-genres-button'
-            ]"
-            modifier="secondary"
-            @press="enterGenreEditMode"
-          >
-            Изменить
-          </FormButton>
-
           <ChooseGenres
-            v-else
             v-model="myProfile.favouriteGenres"
             class="edit-profile-form__choose-genres"
             dropdown-class="edit-profile-form__genre-dropdown"
@@ -203,7 +178,6 @@ import PageHeader from 'components/PageHeader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
 import BaseLink from 'components/BaseLink.vue';
-import BaseTag from 'components/BaseTag.vue';
 import FormButton from 'components/FormButton.vue';
 import UserIcon from 'components/icons/UserIcon.vue';
 import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
@@ -228,7 +202,6 @@ export default {
     BaseInput,
     BaseTextarea,
     BaseLink,
-    BaseTag,
     FormButton,
     UserIcon,
     EnvelopeIcon,
