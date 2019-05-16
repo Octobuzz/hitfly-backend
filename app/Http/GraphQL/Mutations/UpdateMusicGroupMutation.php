@@ -62,7 +62,12 @@ class UpdateMusicGroupMutation extends Mutation
             $musicGroup->genres()->sync($args['musicGroup']['genre']);
         }
         if (!empty($args['musicGroup']['socialLinks'])) {
-            $musicGroup->socialLinks()->sync(DBHelpers::arrayKeysToSnakeCase($args['musicGroup']['socialLinks']));
+            $sync = DBHelpers::arrayKeysToSnakeCase($args['musicGroup']['socialLinks']);
+            foreach ($sync as $k => $v) {
+                $sync[$k]['music_group_id'] = $args['id'];
+            }
+
+            $musicGroup->socialLinks()->sync($sync, true);
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {

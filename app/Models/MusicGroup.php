@@ -96,9 +96,9 @@ class MusicGroup extends Model
         $this->creator_group_id = $user->id;
     }
 
-    public function socialLinks(): BelongsToMany
+    public function socialLinks(): HasMany
     {
-        return $this->belongsToMany(GroupLinks::class, 'group_links', 'music_group_id', 'id');
+        return $this->hasMany(GroupLinks::class, 'music_group_id', 'id');
     }
 
     public function location(): BelongsTo
