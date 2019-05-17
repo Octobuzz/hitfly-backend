@@ -253,7 +253,7 @@ export default {
           'info',
           { timeout: 60000 }
         );
-        console.log(error);
+        console.dir(error);
       });
     }
   }
