@@ -98,7 +98,7 @@ class CreateMusicGroupMutation extends Mutation
         }
         $image = $avatar;
         $nameFile = md5(microtime());
-        $imagePath = "musicroups/$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $imagePath = "musicgroups/$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
         $image_resize = Image::make($image->getRealPath());
         $image_resize->fit(config('image.size.music_group.default.height'), config('image.size.music_group.default.height')/*, function ($constraint) {
             $constraint->aspectRatio();
