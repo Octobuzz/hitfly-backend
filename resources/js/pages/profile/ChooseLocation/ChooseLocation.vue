@@ -29,7 +29,7 @@
       :close-on-select="true"
       @open="onOpen"
       @search-change="fetchData"
-      @input="emitInput"
+      @select="emitInput"
       @close="onClose"
     >
       <template #singleLabel="{ option: { title, area_region } }">
