@@ -86,7 +86,7 @@ class CommentController extends Controller
     {
         $grid = new Grid(new Comment());
         $grid->disableCreateButton();
-        $grid->id('Id');
+        $grid->id('#');
         //$grid->setRelation();
         $grid->user('Пользователь')->display(function ($user) {
             return $user['username'];
@@ -113,7 +113,7 @@ class CommentController extends Controller
     {
         $show = new Show(Comment::findOrFail($id));
 
-        $show->id('Id');
+        $show->id('#');
         $show->user('Пользователь')->as(function ($user) {
             return $user->username;
         });

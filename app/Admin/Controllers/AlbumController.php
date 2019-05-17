@@ -121,7 +121,7 @@ class AlbumController extends Controller
     {
         $show = new Show(Album::findOrFail($id));
 
-        $show->id('Id');
+        $show->id('#');
         $show->title('Название');
         $show->author('Автор');
         $show->year('Год');

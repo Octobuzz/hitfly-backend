@@ -86,7 +86,7 @@ class ChartController extends Controller
     {
         $grid = new Grid(new Charts());
 
-        $grid->id('Id');
+        $grid->id('#');
         $grid->track_id('ID трека');
         $grid->weekly_rate('Недельный рейтинг');
         $grid->rating('Рейтинг');
@@ -107,7 +107,7 @@ class ChartController extends Controller
     {
         $show = new Show(Charts::findOrFail($id));
 
-        $show->id('Id');
+        $show->id('#');
         $show->track_id('ID трека');
         $show->weekly_rate('Недельный рейтинг');
         $show->rating('Рейтинг');

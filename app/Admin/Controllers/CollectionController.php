@@ -87,7 +87,7 @@ class CollectionController extends Controller
     {
         $grid = new Grid(new Collection());
 
-        $grid->id('Id');
+        $grid->id('#');
         $grid->title('Заголовок');
         $grid->image('Изображение');
 
@@ -109,11 +109,11 @@ class CollectionController extends Controller
     {
         $show = new Show(Collection::findOrFail($id));
 
-        $show->id('Id');
+        $show->id('#');
         $show->title('Заголовок');
         $show->image('Изображение');
         $show->user_id('ID пользователя');
-        $show->is_admin('Is admin');
+        $show->is_admin('Подборка');
         //как показать связанные треки?
 
         return $show;
@@ -140,7 +140,7 @@ class CollectionController extends Controller
             'on' => ['value' => 1, 'text' => 'Админ', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => 'Пользователь', 'color' => 'danger'],
         ];
-        $form->switch('is_admin', 'Коллекция администратора')->states($states);
+        $form->switch('is_admin', 'Подборка')->states($states);
         $form->saving(function (Form $form) {
             if (null !== $form->image) {
                 Storage::disk('public')->delete($form->model()->getOriginal('image'));
