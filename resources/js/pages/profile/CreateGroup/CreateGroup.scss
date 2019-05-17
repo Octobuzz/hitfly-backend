@@ -70,14 +70,6 @@ $descriptionRightPadding: 37px;
       margin-bottom: 32px;
     }
 
-    &__genre-list-suggestion {
-      display: block;
-      margin: {
-        top: 18px;
-        bottom: 18px;
-      }
-    }
-
     &::v-deep &__dropdown {
       max-width: 330px;
     }
