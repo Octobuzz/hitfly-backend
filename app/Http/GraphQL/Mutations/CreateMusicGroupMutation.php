@@ -8,6 +8,7 @@ use App\Models\MusicGroup;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
 
@@ -39,6 +40,12 @@ class CreateMusicGroupMutation extends Mutation
     {
         /** @var User $user */
         $user = \Auth::guard('json')->user();
+
+        $countgroup = MusicGroup::query()->where('creator_group_id', '=', $user->id)->count();
+
+        if ($countgroup > 5) {
+            return new ValidationError(trans('validation.groupMaxCount'));
+        }
 
         $musicGroup = new MusicGroup();
         $musicGroup->setUser($user);
