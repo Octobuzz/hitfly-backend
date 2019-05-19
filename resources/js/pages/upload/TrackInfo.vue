@@ -47,18 +47,7 @@
           v-model="trackInfo.genres"
           class="add-track-description__genre-tag-container"
           dropdown-class="add-track-description__dropdown"
-        >
-          <template #separator>
-            <span
-              :class="[
-                'add-track-description__genre-list-suggestion',
-                'add-track-description__regular-text'
-              ]"
-            >
-              или выберите из списка
-            </span>
-          </template>
-        </ChooseGenres>
+        />
 
         <h3 class="add-track-description__header_h3">
           Музыкальная группа

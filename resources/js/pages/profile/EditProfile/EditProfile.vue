@@ -91,14 +91,10 @@
       <div class="edit-profile-footer">
         <hr class="edit-profile-footer__delimiter">
 
-        <SpinnerLoader
-          v-if="isSaving"
-          class="edit-profile-footer__loader"
-        />
-
         <FormButton
           class="edit-profile-footer__save-button"
           modifier="primary"
+          :is-loading="isSaving"
           @press="saveProfile"
         >
           Сохранить изменения
