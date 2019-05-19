@@ -130,7 +130,7 @@ class TrackController extends Controller
     {
         $show = new Show(Track::findOrFail($id));
 
-        $show->id('Id');
+        $show->id('#');
         $show->created_at('Создано');
         $show->updated_at('Обновленно');
         $show->track_name('Название трека');

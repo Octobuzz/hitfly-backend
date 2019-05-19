@@ -217,6 +217,7 @@ return [
         'AvatarSizeEnum' => \App\Http\GraphQL\Enums\AvatarSizeEnum::class,
         'AlbumTypeEnum' => \App\Http\GraphQL\Enums\AlbumTypeEnum::class,
         'PictureSizeEnum' => \App\Http\GraphQL\Enums\PictureSizeEnum::class,
+        'CommentPeriodEnum' => \App\Http\GraphQL\Enums\CommentPeriodEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

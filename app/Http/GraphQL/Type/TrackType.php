@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Http\GraphQL\Fields\CommentsTrackField;
 use App\Http\GraphQL\Fields\PictureField;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Models\Track;
@@ -89,6 +90,7 @@ class TrackType extends GraphQLType
                 'privacy' => IsAuthPrivacy::class,
             ],
             'cover' => PictureField::class,
+            'comments' => CommentsTrackField::class,
         ];
     }
 }

@@ -86,8 +86,8 @@ class GenreController extends Controller
     {
         $grid = new Grid(new Genre());
 
-        $grid->id('Id');
-        $grid->name('Name');
+        $grid->id('#');
+        $grid->name('Название');
 
         return $grid;
     }
@@ -103,8 +103,8 @@ class GenreController extends Controller
     {
         $show = new Show(Genre::findOrFail($id));
 
-        $show->id('Id');
-        $show->name('Name');
+        $show->id('#');
+        $show->name('Название');
 
         return $show;
     }
@@ -118,8 +118,8 @@ class GenreController extends Controller
     {
         $form = new Form(new Genre());
 
-        $form->text('name', 'Name');
-        $form->image('image', 'Image')->move('genres')->uniqueName();
+        $form->text('name', 'Название');
+        $form->image('image', 'Изображение')->move('genres')->uniqueName();
 
         return $form;
     }
