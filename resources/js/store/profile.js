@@ -21,10 +21,10 @@ const getters = {
 };
 
 const mutations = {
-  setEditGroupId(state, { id, dontAffectHistory = false }) {
+  setEditGroupId(state, { id, affectHistory = true }) {
     state.editGroupId = id;
 
-    if (id !== null && !dontAffectHistory) {
+    if (id !== null && affectHistory) {
       state.editGroupIdHistory.push(id);
     }
   },
