@@ -23,6 +23,13 @@ export default {
   methods: {
     onReturn() {
       this.$emit('press');
+
+      if (this.$router.customData.navHistory[1] === undefined) {
+        this.$router.push('/profile/my-music');
+
+        return;
+      }
+
       this.$store.commit('profile/setCustomRedirect', true);
 
       const { $store, $router } = this;
@@ -44,7 +51,7 @@ export default {
 
         $store.commit('profile/setEditGroupId', {
           id: nextEditGroupId,
-          dontAffectHistory: true
+          affectHistory: false
         });
 
         if (fromEditGroup) {

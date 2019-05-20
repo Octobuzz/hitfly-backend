@@ -41,17 +41,7 @@
       v-model="newAlbum.genre"
       class="add-track-description__genre-tag-container"
       dropdown-class="add-track-description__dropdown"
-    >
-      <template #separator>
-        <span
-          :class="[
-            'add-track-description__genre-list-suggestion',
-            'add-track-description__regular-text'
-          ]"
-        >
-        </span>
-      </template>
-    </ChooseGenres>
+    />
     <div class="add-track-cover">
       <ChooseAvatar
         caption="Загрузить обложку"

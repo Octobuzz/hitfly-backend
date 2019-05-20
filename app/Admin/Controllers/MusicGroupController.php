@@ -89,7 +89,7 @@ class MusicGroupController extends Controller
     {
         $grid = new Grid(new MusicGroup());
 
-        $grid->id('Id');
+        $grid->id('#');
         $grid->creator_group_id('Создатель группы')->display(function ($user) {
             return User::find($user)->username;
         });

@@ -24,9 +24,9 @@ class CommentTrackType extends GraphQLType
             'comment' => [
                 'type' => Type::string(),
             ],
-            'track' => [
-                'type' => GraphQL::type('Track'),
-            ],
+//            'track' => [
+//                'type' => GraphQL::type('Track'),
+//            ],
             'createdAt' => [
                 'type' => Type::string(),
                 'alias' => 'created_at',

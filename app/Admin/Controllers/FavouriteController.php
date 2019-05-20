@@ -26,8 +26,8 @@ class FavouriteController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('Избранное')
+            ->description('')
             ->body($this->grid());
     }
 
@@ -42,8 +42,8 @@ class FavouriteController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('Избранное')
+            ->description('')
             ->body($this->detail($id));
     }
 
@@ -90,7 +90,7 @@ class FavouriteController extends Controller
             $actions->disableEdit();
         });
 
-        $grid->id('Id');
+        $grid->id('#');
         $grid->favouriteable_type('Тип избранного')->display(function ($favourite) {
             return __('messages.'.Favourite::CLASS_NAME[$favourite]);
         });
@@ -132,7 +132,7 @@ class FavouriteController extends Controller
             ->tools(function ($tools) {
                 $tools->disableEdit();
             });
-        $show->id('Id');
+        $show->id('#');
         $show->favouriteable_type('Тип избранного')->as(function ($favourite) {
             return __('messages.'.Favourite::CLASS_NAME[$favourite]);
         });

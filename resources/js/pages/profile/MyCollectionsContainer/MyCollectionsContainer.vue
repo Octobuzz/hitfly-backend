@@ -49,7 +49,7 @@ export default {
 
   computed: {
     collectionIdList() {
-      return this.collectionList.map(album => album.id);
+      return this.collectionList.map(collection => collection.id);
     },
 
     collectionListLength() {

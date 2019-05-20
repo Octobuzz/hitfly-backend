@@ -1,14 +1,12 @@
 <template>
   <TrackList
-    v-if="dataInitialized && trackListLength"
+    v-if="dataInitialized"
     :class="[
       'my-tracks-container',
       { [containerPaddingClass]: desktop }
     ]"
+    :show-remove-button="false"
     :track-id-list="trackIdList"
-    :fake-fav-button="true"
-    @remove-track="onTrackRemove"
-    @press-favourite="onTrackRemove"
   >
     <template #header>
       <div
@@ -28,7 +26,7 @@
 
     <template #loader>
       <SpinnerLoader
-        v-if="hasMoreData && dataInitialized && trackListLength < shownLength"
+        v-if="!dataInitialized"
         class="my-tracks-container__loader"
       />
     </template>
@@ -60,16 +58,9 @@ export default {
   data() {
     return {
       trackList: [],
-      isLoading: false,
-      shouldLoadMore: false,
-      removesInProcess: 0,
-      pendingRemoves: [],
-      removedCount: 0,
-      hasMoreData: true,
-      shownLength: 5,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 10 // aspire to have two times more than you have in viewport
+        pageLimit: 10
       },
       dataInitialized: false
     };
@@ -82,183 +73,8 @@ export default {
         .slice(0, this.shownLength);
     },
 
-    trackListLength() {
-      return this.trackList.length;
-    },
-
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
-    }
-  },
-
-  watch: {
-    removesInProcess(count) {
-      if (count === 0 && this.shouldLoadMore) {
-        this.loadMore();
-      }
-    },
-
-    isLoading(inProcess) {
-      if (!inProcess && this.pendingRemoves.length > 0) {
-        this.pendingRemoves.forEach(id => this.removeTrack(id));
-        this.pendingRemoves = [];
-      }
-    }
-  },
-
-  methods: {
-    fetchMoreTracks(vars) {
-      return this.$apollo.queries.trackList.fetchMore({
-        variables: vars,
-
-        updateQuery: (currentList, { fetchMoreResult: { favouriteTrack } }) => {
-          const { total, to, data } = favouriteTrack;
-
-          const newTracks = data.filter(newTrack => (
-            !currentList.favouriteTrack.data.some(
-              currentTrack => currentTrack.track.id === newTrack.track.id
-            )
-          ));
-
-          return {
-            favouriteTrack: {
-              // eslint-disable-next-line no-underscore-dangle
-              __typename: currentList.favouriteTrack.__typename,
-              total,
-              to,
-              data: [...currentList.favouriteTrack.data, ...newTracks]
-            }
-          };
-        },
-      });
-    },
-
-    loadMore() {
-      if (!this.hasMoreData
-          || this.isLoading
-          || this.removesInProcess > 0) {
-        return;
-      }
-
-      this.isLoading = true;
-
-      const pageNumber = (this.queryVars.pageNumber + 1)
-        - Math.ceil(this.removedCount / this.queryVars.pageLimit);
-
-      this.fetchMoreTracks({
-        ...this.queryVars,
-        pageNumber
-      })
-        .then(() => {
-          this.queryVars.pageNumber += 1;
-          this.isLoading = false;
-          this.shouldLoadMore = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    onTrackRemove(id) {
-      if (this.trackList.length < 10) {
-        this.shouldLoadMore = true;
-      }
-
-      if (this.isLoading) {
-        this.pendingRemoves.push(id);
-      } else {
-        this.removeTrack(id);
-      }
-    },
-
-    removeTrack(id) {
-      this.removesInProcess += 1;
-
-      this.$apollo.mutate({
-        mutation: gql.mutation.REMOVE_FROM_FAVOURITE,
-        variables: {
-          id,
-          type: 'track'
-        },
-
-        update: (store, { data: { deleteFromFavourite } }) => {
-          store.writeQuery({
-            query: gql.query.TRACK,
-            variables: { id },
-            data: {
-              track: {
-                __typename: 'Track',
-                id,
-                userFavourite: false
-              }
-            }
-          });
-
-          this.removeTrackFromCache(id);
-        },
-
-        optimisticResponse: {
-          __typename: 'Mutation',
-          deleteFromFavourite: {
-            __typename: 'FavouriteTrack',
-            id: -1,
-            track: {
-              __typename: 'Track',
-              id,
-              userFavourite: false
-            }
-          }
-        }
-      }).then(() => {
-        this.removesInProcess -= 1;
-        this.removedCount += 1;
-
-        console.log(
-          'favourite updated:',
-          'type: track',
-          `id: ${id};`,
-          'isFav: false;'
-        );
-      }).catch((error) => {
-        this.removesInProcess -= 1;
-
-        console.dir(error);
-      });
-    },
-
-    removeTrackFromCache(id) {
-      const store = this.$apollo.provider.clients.defaultClient;
-
-      const { favouriteTrack } = store.readQuery({
-        query: gql.query.FAVOURITE_TRACKS,
-
-        // cause updateQuery does not update variables in cache entry
-        // we always refer to the first page
-
-        variables: {
-          ...this.queryVars,
-          pageNumber: 1
-        }
-      });
-
-      const updatedTracks = {
-        favouriteTrack: {
-          ...favouriteTrack,
-          data: [
-            ...favouriteTrack.data
-              .filter(favTrack => favTrack.track.id !== id)
-          ]
-        }
-      };
-
-      store.writeQuery({
-        query: gql.query.FAVOURITE_TRACKS,
-        variables: {
-          ...this.queryVars,
-          pageNumber: 1
-        },
-        data: updatedTracks
-      });
     }
   },
 
@@ -282,7 +98,7 @@ export default {
         },
 
         error(err) {
-          console.log(err);
+          console.dir(err);
         }
       };
     }
