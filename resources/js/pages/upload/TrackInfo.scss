@@ -45,7 +45,15 @@ $descriptionRightPadding: 37px;
     }
   }
 
+  &-filename {
+    position: absolute;
+    top: 60px;
+    font-size: 12px;
+    color: $color_4;
+  }
+
   &-description {
+    position: relative;
     box-sizing: border-box;
     flex-wrap: wrap;
     flex-grow: 1;

@@ -16,11 +16,11 @@
       </div>
     </aside>
     <div class="main__info">
-      <ProgressBar v-if="loading" :loading="loading"></ProgressBar>
+      <ProgressBar v-if="track" :loading="loading"></ProgressBar>
       <PageHeader class="add-track__page-header" v-show="track !== null">
-        Загрузка трека
+        Загрузка песни
       </PageHeader>
-      <TrackInfo v-show="track !== null" @sendInfo="addInfo" :loading="loading"></TrackInfo>
+      <TrackInfo v-show="track !== null" @sendInfo="addInfo" :loading="loading" :filename="filename"></TrackInfo>
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
@@ -56,6 +56,7 @@
       dragCount: 0,
       trackID: null,
       loading: false,
+      filename: '',
     }),
     components: {
       Dropzone,
@@ -101,7 +102,8 @@
               genres: info.genre,
               trackDate: info.trackDate,
               songText: info.songText,
-              trackName: 'name of track',
+              trackName: info.trackName,
+              album: info.album,
             }
           },
           mutation: gql`mutation($id: Int!, $infoTrack: TrackInput) {
@@ -128,10 +130,12 @@
           mutation: gql`mutation($track: Upload) {
             uploadTrack (track: $track){
               id
+              filename
             }
           }`
         }).then((response) => {
           this.loading = false;
+          this.filename = response.data.uploadTrack.filename;
           this.trackID = response.data.uploadTrack.id;
           console.log(this.trackID);
         }).catch((error) => {

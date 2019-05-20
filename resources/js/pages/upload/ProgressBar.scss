@@ -19,17 +19,24 @@
 }
 
 .progressBarWrapper{
-  width: 100%;
+  width: calc(100% + 64px);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 0 -32px;
+  position: relative;
+  left: -32px;
 
   & .progressBarBody{
     background-color: rgba(0,0,0,.1);
     position: relative;
     width: 100%;
     height: 8px;
+    transform: translateY(-8px);
+    transition: .2s all ease;
+
+    &.loading {
+      transform: translateY(0);
+    }
 
     & .progressBarBody__total{
       background-image: url('/images/slash.png');
@@ -63,6 +70,17 @@
     display: flex;
     align-items: center;
     margin-top: 16px;
+    margin-right: 32px;
+
+    &.done {
+      & p {
+        color: #9ada9a;
+      }
+
+      & img {
+        display: none;
+      }
+    }
 
     & p {
       font-size: 14px;
