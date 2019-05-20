@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Itemable;
+use App\Models\Traits\PictureField;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Collection extends Model
 {
-    use Itemable;
+    use Itemable, PictureField;
 
     protected $nameFolder = 'collection';
 
@@ -40,5 +41,15 @@ class Collection extends Model
     public function userFavourite()
     {
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
+    }
+
+    public function getPath(): string
+    {
+        return 'collection/'.$this->user_id.'/';
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->getOriginal('image');
     }
 }

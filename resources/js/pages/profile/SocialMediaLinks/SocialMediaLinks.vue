@@ -17,7 +17,7 @@
       <BaseInput
         v-model="link.username"
         class="social-links__username-input"
-        label="Имя"
+        label="Ссылка"
         @input="onInput"
       />
       <button

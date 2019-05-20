@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\PictureField;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,7 +53,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class MusicGroup extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, PictureField;
 
     protected $table = 'music_group';
 
@@ -95,9 +96,9 @@ class MusicGroup extends Model
         $this->creator_group_id = $user->id;
     }
 
-    public function socialLinks()
+    public function socialLinks(): HasMany
     {
-        return $this->hasMany(GroupLinks::class);
+        return $this->hasMany(GroupLinks::class, 'music_group_id', 'id');
     }
 
     public function location(): BelongsTo
@@ -118,5 +119,10 @@ class MusicGroup extends Model
     public function activeMembers()
     {
         return $this->belongsToMany(User::class, 'invite_to_groups')->where('accept', '=', 1);
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->getOriginal('avatar_group');
     }
 }

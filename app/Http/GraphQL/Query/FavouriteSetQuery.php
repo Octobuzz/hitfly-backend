@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\GraphQL\Query;
+
+use App\Models\Collection;
+use App\Models\Favourite;
+use App\User;
+use GraphQL\Type\Definition\Type;
+use Rebing\GraphQL\Support\Query;
+use Rebing\GraphQL\Support\SelectFields;
+
+class FavouriteSetQuery extends Query
+{
+    protected $attributes = [
+        'name' => 'Favourite Collection Query',
+        'description' => 'Запрос любимых подборок',
+    ];
+
+    public function type()
+    {
+        return \GraphQL::paginate('FavouriteCollection');
+    }
+
+    public function args()
+    {
+        return [
+            'setId' => ['name' => 'setId', 'type' => Type::int()],
+            'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
+            'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
+        ];
+    }
+
+    public function resolve($root, $args, SelectFields $fields)
+    {
+        if (isset($args['setId'])) {
+            return Favourite::with('favouriteable')
+                ->where('favourites.favouriteable_type', Collection::class)
+                ->where('favourites.favouriteable_id', $args['setId'])
+                ->where('favourites.user_id', \Auth::user()->id)
+                ->leftJoin('collections', function ($join) {
+                    $join->on('favourites.favouriteable_id', '=', 'collections.id');
+                })
+                ->where('collections.is_admin', '=', 1)
+                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        }
+
+        return Favourite::with('favouriteable')
+            ->where('favourites.favouriteable_type', Collection::class)
+            ->where('favourites.user_id', \Auth::user()->id)
+            ->leftJoin('collections', function ($join) {
+                $join->on('favourites.favouriteable_id', '=', 'collections.id');
+            })
+            ->where('collections.is_admin', '=', 1)
+            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+    }
+}

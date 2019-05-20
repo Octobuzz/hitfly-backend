@@ -164,6 +164,7 @@ return [
          * Package Service Providers...
          */
         Intervention\Image\ImageServiceProvider::class,
+        Alfa6661\EloquentHasManySync\ServiceProvider::class,
 
         /*
          * Application Service Providers...

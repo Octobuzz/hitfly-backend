@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Illuminate\Http\File;
 
 $factory->define(\App\Models\Track::class, function (Faker $faker) {
     return [
@@ -24,4 +25,7 @@ $factory->define(\App\Models\Track::class, function (Faker $faker) {
 $factory->afterMaking(\App\Models\Track::class, function (\App\Models\Track $track, Faker $faker) {
     $file = new \Illuminate\Http\File($faker->file(Storage::disk('local')->path('mp3'), Storage::disk('local')->path('tmp')));
     $track->filename = Storage::disk('public')->putFile('tracks/'.$track->user_id, $file);
+
+    $image = new File($faker->image());
+    $track->cover = Storage::disk('public')->putFile($track->getPath(), $image);
 });

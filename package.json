@@ -52,7 +52,7 @@
         "vue-apollo": "^3.0.0-beta.28",
         "vue-element-loading": "^1.1.1",
         "vue-flash-message": "^0.7.2",
-        "vue-multiselect": "^2.1.4",
+        "vue-multiselect": "^2.1.6",
         "vue-router": "^3.0.2",
         "vue-template-compiler": "^2.6.2",
         "vue-virtual-scroller": "^1.0.0-rc.2",

@@ -2,7 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Http\GraphQL\Fields\MusicGroupImageField;
+use App\Http\GraphQL\Fields\PictureField;
 use App\Models\MusicGroup;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -28,7 +28,7 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'Имя группы',
             ],
-            'avatarGroup' => MusicGroupImageField::class,
+            'avatarGroup' => PictureField::class,
             'careerStartYear' => [
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'Год начала карьеры',

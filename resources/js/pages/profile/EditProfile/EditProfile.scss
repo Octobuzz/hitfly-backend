@@ -15,7 +15,7 @@ $formRightPadding: 40px;
 
     &_loading {
       // TODO: make header/footer width as variables
-      height: calc(100vh - 180px);
+      height: calc(100vh - 185px);
     }
 
     &__loader {
@@ -54,9 +54,7 @@ $formRightPadding: 40px;
 
     &__name-input,
     &__location-input,
-    &__career-start-year-input,
-    &__email-input,
-    &__password-input {
+    &__career-start-year-input {
       max-width: 320px;
     }
 
@@ -76,44 +74,9 @@ $formRightPadding: 40px;
       margin-bottom: 42px;
     }
 
-    &__email-input {
-      flex-grow: 1;
-      margin-right: 16px;
-    }
-
-    &__password-input {
-      flex-grow: 1;
-      margin-right: 16px;
-    }
-
     &__input-group {
       display: flex;
       margin-bottom: 16px;
-    }
-
-    &__change-button {
-      width: 160px;
-    }
-
-    &__favourite-genres-button {
-      margin-bottom: 40px;
-    }
-
-    &__social-networks-link {
-      display: block;
-      margin-bottom: 54px;
-    }
-
-    &__tags-container {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    &__chosen-tag {
-      margin: {
-        right: 8px;
-        bottom: 10px;
-      }
     }
 
     &__choose-genres {
@@ -124,25 +87,12 @@ $formRightPadding: 40px;
       }
     }
 
-    &__genre-list-suggestion {
-      display: block;
-      margin: {
-        top: 18px;
-        bottom: 18px;
-      }
-    }
-
     &__section,
     &__subsection {
       margin: {
         top: 0;
         bottom: 14px;
       }
-    }
-
-    &__subsection {
-      font-family: "Gotham Pro", serif;
-      font-size: 20px;
     }
   }
 
@@ -222,14 +172,8 @@ $formRightPadding: 40px;
       &__name-input,
       &__location-input,
       &__career-start-year-input,
-      &__email-input,
-      &__password-input,
       &__choose-genres::v-deep .edit-profile-form__genre-dropdown {
         max-width: 100%;
-      }
-
-      &__change-button {
-        min-width: 120px;
       }
     }
 

@@ -43,19 +43,18 @@
             class="edit-profile-form__location-input"
           />
 
-          <span v-if="isArtist" class="h2 edit-profile-form__section">
-            Описание
-          </span>
+          <template v-if="isArtist">
+            <span class="h2 edit-profile-form__section">
+              Описание
+            </span>
 
-          <ChooseYear
-            v-if="isArtist"
-            v-model="myProfile.careerStartYear"
-            class="edit-profile-form__career-start-year-input"
-            title="Год начала карьеры"
-          />
+            <ChooseYear
+              v-model="myProfile.careerStartYear"
+              class="edit-profile-form__career-start-year-input"
+              title="Год начала карьеры"
+            />
 
-          <div v-if="isArtist">
-            <span class="edit-profile-form__subsection">
+            <span class="h3 edit-profile-form__subsection">
               Выберете жанры, в которых играете
             </span>
 
@@ -63,16 +62,9 @@
               v-model="myProfile.playedGenres"
               class="edit-profile-form__choose-genres"
               dropdown-class="edit-profile-form__genre-dropdown"
-              :genres-start-count="10"
-            >
-              <template #separator>
-                <span class="edit-profile-form__genre-list-suggestion">
-                  или выберите из списка
-                </span>
-              </template>
-            </ChooseGenres>
+            />
 
-            <span class="edit-profile-form__subsection">
+            <span class="h3 edit-profile-form__subsection">
               Описание деятельности
             </span>
 
@@ -82,98 +74,17 @@
               label=""
               :rows="10"
             />
-          </div>
-
-          <span class="h2 edit-profile-form__section">
-            Вход
-          </span>
-
-          <div class="edit-profile-form__input-group">
-            <BaseInput
-              v-model="myProfile.email.input"
-              label="E-mail"
-              class="edit-profile-form__email-input"
-            >
-              <template #icon>
-                <EnvelopeIcon/>
-              </template>
-            </BaseInput>
-
-            <FormButton
-              class="edit-profile-form__change-button"
-              modifier="secondary"
-              @press="changeEmail"
-            >
-              Изменить
-            </FormButton>
-          </div>
-
-          <div class="edit-profile-form__input-group">
-            <BaseInput
-              v-model="myProfile.password.input"
-              label="Пароль"
-              class="edit-profile-form__password-input"
-              :password="true"
-            >
-              <template #icon>
-                <KeyIcon/>
-              </template>
-            </BaseInput>
-
-            <FormButton
-              class="edit-profile-form__change-button"
-              modifier="secondary"
-              @press="changePassword"
-            >
-              Изменить
-            </FormButton>
-          </div>
-
-          <BaseLink class="edit-profile-form__social-networks-link">
-            Использовать аккаунт соц.сетей?
-          </BaseLink>
+          </template>
 
           <span class="h2 edit-profile-form__section">
             Любимые жанры
           </span>
 
-          <div
-            v-if="!genreEditMode"
-            class="edit-profile-form__tags-container"
-          >
-            <BaseTag
-              v-for="genre in myProfile.favouriteGenres"
-              :key="genre.id"
-              class="edit-profile-form__chosen-tag"
-              :name="genre.name"
-              :active="true"
-            />
-          </div>
-          <FormButton
-            v-if="!genreEditMode"
-            :class="[
-              'edit-profile-form__change-button',
-              'edit-profile-form__favourite-genres-button'
-            ]"
-            modifier="secondary"
-            @press="enterGenreEditMode"
-          >
-            Изменить
-          </FormButton>
-
           <ChooseGenres
-            v-else
             v-model="myProfile.favouriteGenres"
             class="edit-profile-form__choose-genres"
             dropdown-class="edit-profile-form__genre-dropdown"
-            :genres-start-count="20"
-          >
-            <template #separator>
-              <span class="edit-profile-form__genre-list-suggestion">
-                или выберите из списка
-              </span>
-            </template>
-          </ChooseGenres>
+          />
         </div>
       </div>
 
@@ -193,6 +104,8 @@
           Сохранить изменения
         </FormButton>
       </div>
+
+      <EditProfileAuth/>
     </template>
   </div>
 </template>
@@ -202,12 +115,8 @@ import SpinnerLoader from 'components/SpinnerLoader.vue';
 import PageHeader from 'components/PageHeader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
-import BaseLink from 'components/BaseLink.vue';
-import BaseTag from 'components/BaseTag.vue';
 import FormButton from 'components/FormButton.vue';
 import UserIcon from 'components/icons/UserIcon.vue';
-import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
-import KeyIcon from 'components/icons/KeyIcon.vue';
 import genericProfileAvatarUrl from 'images/generic-user-purple.png';
 import gql from './gql';
 import ReturnHeader from '../ReturnHeader.vue';
@@ -215,24 +124,22 @@ import ChooseAvatar from '../ChooseAvatar.vue';
 import ChooseYear from '../ChooseYear';
 import ChooseGenres from '../ChooseGenres';
 import ChooseLocation from '../ChooseLocation';
+import EditProfileAuth from '../EditProfileAuth';
 
 export default {
   components: {
     SpinnerLoader,
+    BaseInput,
+    BaseTextarea,
+    FormButton,
+    UserIcon,
     PageHeader,
     ReturnHeader,
     ChooseAvatar,
     ChooseYear,
     ChooseGenres,
     ChooseLocation,
-    BaseInput,
-    BaseTextarea,
-    BaseLink,
-    BaseTag,
-    FormButton,
-    UserIcon,
-    EnvelopeIcon,
-    KeyIcon
+    EditProfileAuth
   },
 
   props: {
@@ -283,7 +190,7 @@ export default {
 
     isArtist() {
       return this.myProfile.roles.some(
-        role => role === 'Артист'
+        role => role.name === 'Исполнитель'
       );
     }
   },
@@ -301,24 +208,6 @@ export default {
       this.myProfile.avatar.new = file;
     },
 
-    changeEmail() {
-      this.myProfile.newEmail = this.myProfile.email.input;
-      this.$message(
-        'Нажмите "Сохранить изменения" для обновления',
-        'info',
-        { timeout: 2000 }
-      );
-    },
-
-    changePassword() {
-      this.myProfile.newPassword = this.myProfile.password.input;
-      this.$message(
-        'Нажмите "Сохранить изменения" для обновления',
-        'info',
-        { timeout: 2000 }
-      );
-    },
-
     enterGenreEditMode() {
       this.genreEditMode = true;
     },
@@ -331,12 +220,6 @@ export default {
       const { myProfile } = this;
       const profileUpdate = {};
 
-      if (myProfile.newEmail) {
-        profileUpdate.email = myProfile.newEmail;
-      }
-      if (myProfile.newPassword) {
-        profileUpdate.password = myProfile.newPassword;
-      }
       profileUpdate.username = myProfile.name.input;
       profileUpdate.genres = myProfile.favouriteGenres
         .map(genre => genre.id);
@@ -372,24 +255,23 @@ export default {
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_PROFILE,
         variables: mutationVars,
-        update: (store, { data: { updateMyProfile } }) => {
+        update: (store, {data: {updateMyProfile}}) => {
           this.isSaving = false;
           this.$router.push('/profile/my-music');
           this.$message(
             'Данные профиля успешно обновлены',
             'info',
-            { timeout: 2000 }
+            {timeout: 2000}
           );
-        },
-        error: (err) => {
-          this.isSaving = false;
-          this.$message(
-            'На сервере произошла ошибка. Данные профиля не обновлены',
-            'info',
-            { timeout: 60000 }
-          );
-          console.log(err);
         }
+      }).catch((err) => {
+        this.isSaving = false;
+        this.$message(
+          'На сервере произошла ошибка. Данные профиля не обновлены',
+          'info',
+          { timeout: 60000 }
+        );
+        console.dir(err);
       });
     }
   },
@@ -422,7 +304,7 @@ export default {
           this.myProfile.location = location;
         }
 
-        if (roles.some(role => role === 'Артист')) {
+        if (roles.some(role => role.name === 'Исполнитель')) {
           if (careerStart) {
             this.myProfile.careerStartYear = new Date(careerStart)
               .getFullYear().toString();
@@ -451,5 +333,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./EditUser.scss"
+  src="./EditProfile.scss"
 />

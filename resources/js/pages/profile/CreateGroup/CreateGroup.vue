@@ -48,18 +48,7 @@
           v-model="group.genres"
           class="create-group-description__genre-tag-container"
           dropdown-class="create-group-description__dropdown"
-        >
-          <template #separator>
-            <span
-              :class="[
-                'create-group-description__genre-list-suggestion',
-                'create-group-description__regular-text'
-              ]"
-            >
-              или выберите из списка
-            </span>
-          </template>
-        </ChooseGenres>
+        />
 
         <span class="h3 create-group-description__header_subsection">
           Описание деятельности
@@ -253,7 +242,7 @@ export default {
           'info',
           { timeout: 60000 }
         );
-        console.log(error);
+        console.dir(error);
       });
     }
   }

@@ -126,7 +126,7 @@ export default {
 
   methods: {
     onDownloadPress() {
-      console.log('"download track" pressed');
+      this.$router.push('/upload');
     },
 
     fetchMoreTracks(vars) {

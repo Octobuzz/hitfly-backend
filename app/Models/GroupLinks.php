@@ -34,4 +34,9 @@ class GroupLinks extends Model
 
         return $values;
     }
+
+    public function musicGroup(): BelongsTo
+    {
+        return $this->belongsTo(MusicGroup::class, 'group_links')->withTimestamps();
+    }
 }

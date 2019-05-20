@@ -21,15 +21,15 @@
       placeholder=""
       :value="value"
       :options="availableLocations"
+      :disabled="false"
       :searchable="true"
       :internal-search="false"
       :loading="isLoading"
       :show-labels="false"
       :close-on-select="true"
-      :allow-empty="false"
       @open="onOpen"
       @search-change="fetchData"
-      @input="emitInput"
+      @select="emitInput"
       @close="onClose"
     >
       <template #singleLabel="{ option: { title, area_region } }">
@@ -86,7 +86,7 @@ export default {
 
   data() {
     return {
-      locations: [],
+      input: null,
       availableLocations: [],
       isLoading: false,
       closed: true,
@@ -100,7 +100,7 @@ export default {
         query: gql.query.LOCATIONS,
         variables: {
           query,
-          limit: 10,
+          limit: 25,
           page: 1
         },
         fetchPolicy: 'no-cache'
@@ -116,6 +116,7 @@ export default {
   },
 
   mounted() {
+    this.input = this.$el.querySelector('.multiselect__input');
     this.redefineEmpty();
   },
 
@@ -129,28 +130,16 @@ export default {
     },
 
     onOpen() {
-      this.copyLocationToInput();
       this.closed = false;
+      this.availableLocations = [];
     },
 
     onClose() {
       this.closed = true;
       this.availableLocations = [];
-    },
-
-    copyLocationToInput() {
-      if (!this.value.title) return;
-
-      const input = this.$el.querySelector('.multiselect__input');
-      const text = `${this.value.title}`;
-
-      this.$nextTick(() => {
-        input.value = text;
-
-        // use dispatch to prevent deleting on backspace
-
-        input.dispatchEvent(new Event('input'));
-      });
+      if (this.input.value === '') {
+        this.emitInput(null);
+      }
     },
 
     fetchData(query) {

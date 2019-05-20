@@ -13,7 +13,7 @@
           <a class="button head-nav-item g-border" href="/">Подборка</a>
           <a class="button head-nav-item" href="/">Stream</a>
           <a class="button head-nav-item" href="/">Блог</a>
-          <a class="button head-nav-item" href="/">О нас</a>
+          <a class="button head-nav-item" href="/about">О нас</a>
       </nav>
       <div class="head__right">
           <a href="/upload" class="button gradient head-right-item head-right-item_upload">Загрузить музыку</a>

@@ -21,7 +21,11 @@ class DBHelpers
     {
         $return = [];
         foreach ($arr as $k => $v) {
-            $return[self::camelCaseToSnakeCase($k)] = $v;
+            if (is_array($v)) {
+                $return[$k] = self::arrayKeysToSnakeCase($v);
+            } else {
+                $return[self::camelCaseToSnakeCase($k)] = $v;
+            }
         }
 
         return $return;
