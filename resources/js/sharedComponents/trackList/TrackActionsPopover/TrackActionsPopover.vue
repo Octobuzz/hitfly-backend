@@ -106,6 +106,7 @@
           Удалить из списка воспроизведения
         </span>
         <span
+          v-if="showRemoveOption"
           class="track-actions-popover__menu-item"
           @click="emitRemoveTrack"
         >
@@ -177,6 +178,10 @@ export default {
     trackId: {
       type: Number,
       required: true
+    },
+    showRemoveOption: {
+      type: Boolean,
+      default: true
     }
   },
 

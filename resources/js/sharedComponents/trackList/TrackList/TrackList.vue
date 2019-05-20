@@ -8,6 +8,7 @@
       :index="index + 1"
       :track-id="trackId"
       :fake-fav-button="fakeFavButton"
+      :show-remove-button="showRemoveButton"
       @remove-track="onTrackRemove"
       @press-favourite="onFavouritePress"
     />
@@ -31,6 +32,10 @@ export default {
     fakeFavButton: {
       type: Boolean,
       default: false
+    },
+    showRemoveButton: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
