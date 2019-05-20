@@ -12,8 +12,20 @@
     />
     <FavouriteAlbumsContainer
       v-show="dataInitialized"
+      class="favourite__albums"
       :container-padding-class="containerPaddingClass"
       @data-initialized="albumsData = true"
+    />
+    <FavouriteCollectionsContainer
+      v-show="dataInitialized"
+      class="favourite__collections"
+      :container-padding-class="containerPaddingClass"
+      @data-initialized="collectionsData = true"
+    />
+    <FavouriteSetsContainer
+      v-show="dataInitialized"
+      :container-padding-class="containerPaddingClass"
+      @data-initialized="setsData = true"
     />
   </div>
 </template>
@@ -22,12 +34,16 @@
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import FavouriteTracksContainer from '../FavouriteTracksContainer';
 import FavouriteAlbumsContainer from '../FavouriteAlbumsContainer';
+import FavouriteCollectionsContainer from '../FavouriteCollectionsContainer';
+import FavouriteSetsContainer from '../FavouriteSetsContainer';
 
 export default {
   components: {
     SpinnerLoader,
     FavouriteTracksContainer,
-    FavouriteAlbumsContainer
+    FavouriteAlbumsContainer,
+    FavouriteCollectionsContainer,
+    FavouriteSetsContainer
   },
 
   props: {
@@ -40,14 +56,18 @@ export default {
   data() {
     return {
       tracksData: false,
-      albumsData: false
+      albumsData: false,
+      collectionsData: false,
+      setsData: false
     };
   },
 
   computed: {
     dataInitialized() {
       return this.tracksData
-        && this.albumsData;
+        && this.albumsData
+        && this.collectionsData
+        && this.setsData;
     }
   },
 
@@ -61,5 +81,5 @@ export default {
 <styles
   scoped
   lang="scss"
-  src="../MyMusic/MyMusic.scss"
+  src="./Favourite.scss"
 />

@@ -70,6 +70,7 @@
 
     <TrackActionsPopover
       :track-id="trackId"
+      :show-remove-option="showRemoveButton"
       @press-favourite="pressFavourite"
       @remove-track="onRemovePress"
     >
@@ -83,7 +84,7 @@
     </TrackActionsPopover>
 
     <IconButton
-      v-if="desktop"
+      v-if="desktop && showRemoveButton"
       class="track-list-entry__icon-button"
       passive="secondary-passive"
       hover="secondary-hover"
@@ -130,6 +131,10 @@ export default {
     fakeFavButton: {
       type: Boolean,
       default: false
+    },
+    showRemoveButton: {
+      type: Boolean,
+      default: true
     }
   },
 

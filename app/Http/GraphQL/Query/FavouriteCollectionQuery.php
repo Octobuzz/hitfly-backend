@@ -34,15 +34,23 @@ class FavouriteCollectionQuery extends Query
     {
         if (isset($args['collectionId'])) {
             return Favourite::with('favouriteable')
-                ->where('favouriteable_type', Collection::class)
-                ->where('favouriteable_id', $args['collectionId'])
-                ->where('user_id', \Auth::user()->id)
+                ->where('favourites.favouriteable_type', Collection::class)
+                ->where('favourites.favouriteable_id', $args['collectionId'])
+                ->where('favourites.user_id', \Auth::user()->id)
+                ->leftJoin('collections', function ($join) {
+                    $join->on('favourites.favouriteable_id', '=', 'collections.id');
+                })
+                ->where('collections.is_admin', '=', 0)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
         return Favourite::with('favouriteable')
-            ->where('favouriteable_type', Collection::class)
-            ->where('user_id', \Auth::user()->id)
+            ->where('favourites.favouriteable_type', Collection::class)
+            ->where('favourites.user_id', \Auth::user()->id)
+            ->leftJoin('collections', function ($join) {
+                $join->on('favourites.favouriteable_id', '=', 'collections.id');
+            })
+            ->where('collections.is_admin', '=', 0)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

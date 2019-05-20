@@ -10,16 +10,30 @@
     ]"
     @click="$emit('press')"
   >
-    <slot/>
+    <SpinnerLoader
+      v-if="isLoading"
+      class="form-button__loader"
+      size="small"
+    />
+    <slot v-else />
   </button>
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
+
 export default {
+  components: {
+    SpinnerLoader
+  },
   props: {
     modifier: {
       type: String,
       default: 'primary'
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -43,6 +57,7 @@ export default {
   box-sizing: border-box;
   font-family: "Gotham Pro", serif;
   font-size: 14px;
+  position: relative;
   width: 100%;
   border-radius: $border-radius;
   cursor: pointer;
@@ -60,6 +75,14 @@ export default {
       padding: 16px 14px 16px 14px;
       border: 1px solid $color_pink;
       background: transparent;
+
+      .form-button__loader::v-deep div:after {
+        background: #999 !important;
+      }
+    }
+
+    .form-button__loader::v-deep div:after {
+      background: white !important;
     }
   }
 
@@ -73,7 +96,22 @@ export default {
       padding: 17px 15px 17px 15px;
       border: none;
       background: $linear-gradient;
+
+      .form-button__loader::v-deep div:after {
+        background: white !important;
+      }
     }
+
+    .form-button__loader::v-deep div:after {
+      background: #999 !important;
+    }
+  }
+
+  &__loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>

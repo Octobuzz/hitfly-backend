@@ -14,7 +14,7 @@ $section-width: $input-folded-width + $indent + $button-width;
 
   &__input-group {
     display: flex;
-    margin-bottom: 16px;
+    margin-bottom: 40px;
 
     &_enabled {
       flex-wrap: wrap;
@@ -32,6 +32,12 @@ $section-width: $input-folded-width + $indent + $button-width;
   &__email-input,
   &__password-input {
     width: $input-folded-width;
+  }
+
+  &__password-input-new,
+  &__password-input-confirmatory {
+    width: $section-width;
+    margin-bottom: 16px;
   }
 
   &__save-button,
@@ -57,7 +63,9 @@ $section-width: $input-folded-width + $indent + $button-width;
     }
 
     &__email-input,
-    &__password-input {
+    &__password-input,
+    &__password-input-new,
+    &__password-input-confirmatory {
       width: 100% !important;
       margin: {
         right: 0;

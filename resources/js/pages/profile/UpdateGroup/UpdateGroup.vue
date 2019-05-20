@@ -108,14 +108,10 @@
     <div class="create-group-footer">
       <hr class="create-group-footer__delimiter">
 
-      <SpinnerLoader
-        v-if="isSaving"
-        class="create-group-footer__loader"
-      />
-
       <FormButton
         class="create-group-footer__save-button"
         modifier="primary"
+        :is-loading="isSaving"
         @press="updateGroup"
       >
         Сохранить изменения

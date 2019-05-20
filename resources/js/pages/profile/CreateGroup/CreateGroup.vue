@@ -93,14 +93,10 @@
     <div class="create-group-footer">
       <hr class="create-group-footer__delimiter">
 
-      <SpinnerLoader
-        v-if="isSaving"
-        class="create-group-footer__loader"
-      />
-
       <FormButton
         class="create-group-footer__save-button"
         modifier="primary"
+        :is-loading="isSaving"
         @press="createGroup"
       >
         Создать группу
@@ -110,7 +106,6 @@
 </template>
 
 <script>
-import SpinnerLoader from 'components/SpinnerLoader.vue';
 import PageHeader from 'components/PageHeader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
@@ -126,7 +121,6 @@ import InviteGroupMembers from '../InviteGroupMembers';
 
 export default {
   components: {
-    SpinnerLoader,
     PageHeader,
     ReturnHeader,
     SocialMediaLinks,

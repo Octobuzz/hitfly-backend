@@ -1,7 +1,7 @@
 <template>
   <div class="edit-profile-auth">
     <span class="h2 edit-profile-auth__title">
-      Данные авторизации
+      E-mail
     </span>
 
     <div
@@ -27,6 +27,7 @@
         v-if="!email.disabled"
         class="edit-profile-auth__save-button"
         modifier="primary"
+        :is-loading="email.isSaving"
         @press="saveEmail"
       >
         Сохранить
@@ -40,6 +41,10 @@
         {{ emailButton }}
       </FormButton>
     </div>
+
+    <span class="h2 edit-profile-auth__title">
+      Пароль
+    </span>
 
     <div
       :class="[
@@ -61,10 +66,37 @@
         </template>
       </BaseInput>
 
+      <template v-if="!password.disabled">
+        <BaseInput
+          v-model="password.new.input"
+          class="edit-profile-auth__password-input-new"
+          :password="true"
+          label="Новый пароль"
+          :disabled="password.disabled"
+        >
+          <template #icon>
+            <KeyIcon/>
+          </template>
+        </BaseInput>
+
+        <BaseInput
+          v-model="password.confirmatory.input"
+          class="edit-profile-auth__password-input-confirmatory"
+          :password="true"
+          label="Подтвердите пароль"
+          :disabled="password.disabled"
+        >
+          <template #icon>
+            <KeyIcon/>
+          </template>
+        </BaseInput>
+      </template>
+
       <FormButton
         v-if="!password.disabled"
         class="edit-profile-auth__save-button"
         modifier="primary"
+        :is-loading="password.isSaving"
         @press="savePassword"
       >
         Сохранить
@@ -105,6 +137,7 @@ export default {
     return {
       email: {
         disabled: true,
+        isSaving: false,
         button: 'Изменить',
         input: '',
         showError: false,
@@ -113,6 +146,7 @@ export default {
 
       password: {
         disabled: true,
+        isSaving: false,
         button: 'Изменить',
 
         current: {
@@ -177,11 +211,60 @@ export default {
     },
 
     savePassword() {
+      if (this.password.isSaving) return;
 
+      this.password.isSaving = true;
+
+      this.$apollo.mutate({
+        mutation: gql.mutation.UPDATE_PASSWORD,
+        variables: {
+          password: this.password.new.input
+        }
+      })
+        .then(() => {
+          this.$message(
+            'Пароль успешно изменен',
+            'info',
+            { timeout: 2000 }
+          );
+        })
+        .catch((err) => {
+          console.dir(err);
+        })
+        .then(() => {
+          this.password.isSaving = false;
+          this.password.disabled = true;
+          this.password.current.input = '';
+          this.password.new.input = '';
+          this.password.confirmatory.input = '';
+        });
     },
 
     saveEmail() {
+      if (this.email.isSaving) return;
 
+      this.email.isSaving = true;
+
+      this.$apollo.mutate({
+        mutation: gql.mutation.UPDATE_EMAIL,
+        variables: {
+          password: this.email.input
+        }
+      })
+        .then(() => {
+          this.$message(
+            'E-mail успешно изменен',
+            'info',
+            { timeout: 2000 }
+          );
+        })
+        .catch((err) => {
+          console.dir(err);
+        })
+        .then(() => {
+          this.email.isSaving = false;
+          this.email.disabled = true;
+        });
     }
   },
 

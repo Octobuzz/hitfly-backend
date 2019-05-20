@@ -1,33 +1,29 @@
 <template>
   <div>
-    <AlbumScrollHorizontal
-      v-show="albumListLength"
-      :class="['favourite-albums-container', $attrs.class]"
+    <CollectionScrollHorizontal
+      v-show="collectionListLength"
+      class="my-collections-container"
       :header-class="containerPaddingClass"
-      :album-id-list="albumIdList"
+      :collection-id-list="collectionIdList"
       :has-more-data="hasMoreData"
       @load-more="onLoadMore"
     >
       <template #title>
-        <span class="h2 favourite-albums-container__title">
-          Любимые альбомы
+        <span class="h2 my-collections-container__title">
+          Любимые плейлисты
         </span>
       </template>
-    </AlbumScrollHorizontal>
+    </CollectionScrollHorizontal>
   </div>
 </template>
 
 <script>
-import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
+import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
 import gql from './gql';
-
-// TODO: consider merge of this component into MyAlbumsComponent
-// We could use js-module for different kind of parsing logic in the query update
-// depending on a prop.
 
 export default {
   components: {
-    AlbumScrollHorizontal
+    CollectionScrollHorizontal
   },
 
   props: {
@@ -39,42 +35,42 @@ export default {
 
   data() {
     return {
-      albumList: [],
+      collectionList: [],
       isLoading: true,
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 30
+        pageLimit: 10
       },
       dataInitialized: false
     };
   },
 
   computed: {
-    albumIdList() {
-      return this.albumList.map(album => album.id);
+    collectionIdList() {
+      return this.collectionList.map(collection => collection.id);
     },
 
-    albumListLength() {
-      return this.albumList.length > 0;
+    collectionListLength() {
+      return this.collectionList.length > 0;
     }
   },
 
   methods: {
-    fetchMoreAlbums(vars) {
-      return this.$apollo.queries.albumList.fetchMore({
+    fetchMoreCollections(vars) {
+      return this.$apollo.queries.collectionList.fetchMore({
         variables: vars,
 
-        updateQuery: (currentList, { fetchMoreResult: { favouriteAlbum } }) => {
-          const { total, to, data: newAlbums } = favouriteAlbum;
+        updateQuery: (currentList, { fetchMoreResult: { favouriteCollection } }) => {
+          const { total, to, data: newCollections } = favouriteCollection;
 
           return {
-            favouriteAlbum: {
+            favouriteCollection: {
               // eslint-disable-next-line no-underscore-dangle
-              __typename: currentList.favouriteAlbum.__typename,
+              __typename: currentList.favouriteCollection.__typename,
               total,
               to,
-              data: [...currentList.favouriteAlbum.data, ...newAlbums]
+              data: [...currentList.favouriteCollection.data, ...newCollections]
             }
           };
         },
@@ -88,7 +84,7 @@ export default {
 
       this.isLoading = true;
 
-      this.fetchMoreAlbums({
+      this.fetchMoreCollections({
         ...this.queryVars,
         pageNumber: this.queryVars.pageNumber + 1
       })
@@ -103,12 +99,12 @@ export default {
   },
 
   apollo: {
-    albumList() {
+    collectionList() {
       return {
-        query: gql.query.FAVOURITE_ALBUMS,
+        query: gql.query.FAVOURITE_COLLECTIONS,
         variables: this.queryVars,
 
-        update({ favouriteAlbum: { total, to, data } }) {
+        update({ favouriteCollection: { total, to, data } }) {
           this.isLoading = false;
           if (!this.dataInitialized) {
             this.dataInitialized = true;
@@ -119,7 +115,7 @@ export default {
             this.hasMoreData = false;
           }
 
-          return data.map(favAlbum => favAlbum.album);
+          return data.map(favCollection => favCollection.collection);
         },
 
         error(error) {
@@ -134,5 +130,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./FavouriteAlbumsContainer.scss"
+  src="../MyCollectionsContainer/MyCollectionsContainer.scss"
 />

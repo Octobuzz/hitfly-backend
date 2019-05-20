@@ -3,12 +3,8 @@
 $bg-color: #222;
 
 .track-actions-popover {
-  &.open {
-    transition: transform .2s !important;
-  }
-
   display: block !important;
-  width: 330px;
+  width: 340px;
   margin: {
     top: 100px;
     bottom: 100px;
@@ -94,8 +90,8 @@ $bg-color: #222;
 
   &__menu-item {
     font-size: 13px;
-    display: block;
-    padding: 12px 8px 12px 0;
+    display: flex;
+    padding: 12px 0 12px 0;
     border-radius: 5px;
     user-select: none;
     cursor: pointer;
@@ -107,11 +103,10 @@ $bg-color: #222;
 
   &__menu-item-icon {
     box-sizing: border-box;
-    display: inline-flex;
-    align-items: center;
-    vertical-align: bottom;
+    display: inline-block;
     height: 17px;
-    width: 22px;
+    min-width: 30px;
+    width: 30px;
     padding-left: 2px;
   }
 
@@ -168,6 +163,10 @@ $bg-color: #222;
     opacity: 1;
     transition: opacity .2s;
   }
+
+  &.open {
+    transition: transform .2s !important;
+  }
 }
 
 @media screen and (max-width: 410px) {
@@ -179,7 +178,7 @@ $bg-color: #222;
     }
 
     &__wrapper {
-      padding: 8px;
+      padding:16px;
     }
 
     &__arrow {
