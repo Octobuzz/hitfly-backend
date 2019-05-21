@@ -214,6 +214,7 @@
           }
         }`,
         update(data){
+          console.log(data);
           this.albums = data;
         }
       },

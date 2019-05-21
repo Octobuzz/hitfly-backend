@@ -23,7 +23,7 @@
       v-model="newAlbum.format"
       class="add-track-description__dropdown"
       title="Тип альбома"
-      :options="albumFormats"
+      :options="albumFormats.map((album) => album.name)"
       :searchable="false"
       :max-height="500"
       @input="handleFormatChoice"
@@ -63,7 +63,24 @@
   export default {
     props: ['bands'],
     data: () => ({
-      albumFormats: ['EP', 'LP', 'Single'],
+      albumFormats: [
+        {
+          name: 'LP',
+          value: 'album'
+        },
+        {
+          name: 'EP',
+          value: 'EP'
+        },
+        {
+          name: 'Коллекция',
+          value: 'collection'
+        },
+        {
+          name: 'Сингл',
+          value: 'single'
+        }
+      ],
       newAlbum: {
         name: '',
         format: '',
@@ -81,10 +98,15 @@
         const genres = this.newAlbum.genre.map((genre) => {
           return genre.id;
         });
+        const format = this.albumFormats.filter((format) => {
+          if(format.name === this.newAlbum.format){
+            return true;
+          }
+        });
         this.$apollo.mutate({
           variables: {
             album: {
-              type: this.newAlbum.format,
+              type: format[0].value,
               title: this.newAlbum.name,
               author: this.newAlbum.author,
               year: this.newAlbum.year,
