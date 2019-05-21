@@ -103,11 +103,10 @@
             return true;
           }
         });
-        console.log(format);
         this.$apollo.mutate({
           variables: {
             album: {
-              type: format.value,
+              type: format[0].value,
               title: this.newAlbum.name,
               author: this.newAlbum.author,
               year: this.newAlbum.year,
