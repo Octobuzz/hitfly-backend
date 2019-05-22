@@ -2,11 +2,14 @@
 
 namespace App\Observers;
 
+use App\Jobs\EmailChangeJob;
 use App\Jobs\UserRegisterJob;
+use App\Models\EmailChange;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class UserObserver
@@ -33,8 +36,26 @@ class UserObserver
      *
      * @param \App\User $user
      */
-    public function updated(User $user)
+    public function updating(User $user)
     {
+        $requestParams = Route::current()->parameters();
+        if ($user->email !== $user->getOriginal('email') && !isset($requestParams['token'])) {
+            $hash = md5($user->id.$user->email.microtime());
+            $emailChange = EmailChange::updateOrCreate(
+                ['new_email' => $user->email],
+                [
+                   'user_id' => $user->id,
+                   'new_email' => $user->email,
+                   'token' => $hash,
+                ]
+            );
+            $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
+            dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+
+            return false;
+        }
+
+        return true;
     }
 
     public function saving(User $user)

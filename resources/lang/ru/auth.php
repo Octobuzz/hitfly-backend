@@ -29,5 +29,7 @@ return [
     'registerFailed' => 'Ошбка авторизации/регистрации',
     'registerSuccess' => 'Авторизация успешна',
     'throttle' => 'Слишком много попыток входа',
+    'emailChanged' => 'Email изменен',
+    'emailChangeFailed' => 'Ошибка изменения Email',
 
 ];
