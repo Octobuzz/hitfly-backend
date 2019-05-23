@@ -152,6 +152,8 @@ return [
                 'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
 
                 'updateMyProfile' => \App\Http\GraphQL\Mutations\User\UpdateMyProfileMutation::class,
+                'updatePassword' => \App\Http\GraphQL\Mutations\User\UpdatePasswordMutation::class,
+                'updateEmail' => \App\Http\GraphQL\Mutations\User\UpdateEmailMutation::class,
 
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
 
@@ -209,6 +211,7 @@ return [
         'ArtistProfileInput' => \App\Http\GraphQL\InputObject\ArtistProfileInput::class,
         'MusicGroupUpdateInput' => \App\Http\GraphQL\InputObject\MusicGroupUpdateInput::class,
         'AlbumInput' => \App\Http\GraphQL\InputObject\AlbumInput::class,
+        'PasswordInput' => \App\Http\GraphQL\InputObject\PasswordInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
