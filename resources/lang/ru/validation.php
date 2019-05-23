@@ -156,6 +156,7 @@ return [
     'oldPasswordIncorrect' => 'Старый пароль неверный',
     'emptyPassword' => 'Пароль неможет быть пустым',
     'emailIsBad' => 'Запрещенный или невалидный email',
+    'invalidFileFormat' => 'Неверный формат файла',
 
 
 ];
