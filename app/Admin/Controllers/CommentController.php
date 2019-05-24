@@ -10,11 +10,12 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use App\User;
+use Illuminate\Support\Facades\Lang;
 
 class CommentController extends Controller
 {
     use HasResourceActions;
-
+    const ROUTE_NAME = 'ROUTE_COMMENT';
     /**
      * Index interface.
      *
@@ -27,7 +28,10 @@ class CommentController extends Controller
         return $content
             ->header('Index')
             ->description('description')
-            ->body($this->grid());
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -43,7 +47,11 @@ class CommentController extends Controller
         return $content
             ->header('Detail')
             ->description('description')
-            ->body($this->detail($id));
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -59,7 +67,11 @@ class CommentController extends Controller
         return $content
             ->header('Edit')
             ->description('description')
-            ->body($this->form()->edit($id));
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**

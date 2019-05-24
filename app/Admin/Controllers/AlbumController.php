@@ -13,11 +13,12 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class AlbumController extends Controller
 {
     use HasResourceActions;
-
+    const ROUTE_NAME = 'ROUTE_COMMENT';
     /**
      * Index interface.
      *
@@ -30,7 +31,10 @@ class AlbumController extends Controller
         return $content
             ->header('Альбомы')
             ->description('Список альбомов')
-            ->body($this->grid());
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -46,7 +50,11 @@ class AlbumController extends Controller
         return $content
             ->header('Детально')
             ->description('Обзор альбома')
-            ->body($this->detail($id));
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -62,7 +70,11 @@ class AlbumController extends Controller
         return $content
             ->header('Edit')
             ->description('description')
-            ->body($this->form()->edit($id));
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**

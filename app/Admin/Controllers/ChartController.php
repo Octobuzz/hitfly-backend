@@ -10,10 +10,12 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Lang;
 
 class ChartController extends Controller
 {
     use HasResourceActions;
+    const ROUTE_NAME = 'ROUTE_CHART';
 
     /**
      * Index interface.
@@ -27,7 +29,10 @@ class ChartController extends Controller
         return $content
             ->header('Index')
             ->description('description')
-            ->body($this->grid());
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -43,7 +48,11 @@ class ChartController extends Controller
         return $content
             ->header('Detail')
             ->description('description')
-            ->body($this->detail($id));
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -59,7 +68,11 @@ class ChartController extends Controller
         return $content
             ->header('Edit')
             ->description('description')
-            ->body($this->form()->edit($id));
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
