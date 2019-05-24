@@ -38,8 +38,11 @@ class UserObserver
      */
     public function updating(User $user)
     {
+        if (null === Route::current()) {
+            return true;
+        }
         $requestParams = Route::current()->parameters();
-        if ($user->email !== $user->getOriginal('email') && !isset($requestParams['token'])) {
+        if ($user->isDirty('email') && !isset($requestParams['token'])) {
             $hash = md5($user->id.$user->email.microtime());
             $emailChange = EmailChange::updateOrCreate(
                 ['new_email' => $user->email],
