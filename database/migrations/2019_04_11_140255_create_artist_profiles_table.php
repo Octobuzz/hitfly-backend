@@ -48,8 +48,8 @@ class CreateArtistProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('artist_profiles');
         Schema::dropIfExists('artist_profiles_genre');
+        Schema::dropIfExists('artist_profiles');
         Schema::table('users', function (Blueprint $table) {
             $table->string('city_id')->change();
         });

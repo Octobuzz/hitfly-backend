@@ -39,9 +39,9 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->created_at(trans('admin.created_at'));
         $grid->updated_at(trans('admin.updated_at'));
 
-        $grid->actions(function (Grid\Displayers\Actions $actions) {
-            $actions->disableDelete();
-        });
+//        $grid->actions(function (Grid\Displayers\Actions $actions) {
+//            $actions->disableDelete();
+//        });
 
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function (Grid\Tools\BatchActions $actions) {
