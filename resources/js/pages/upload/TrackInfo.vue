@@ -30,15 +30,15 @@
           </template>
         </BaseInput>
 
-        <BaseInput
-          v-model="trackInfo.text.input"
+        <FileInput
           label="Загрузить текст песни"
           class="add-track-description__text-input"
+          @change="handleTextfileInput"
         >
           <template #icon>
             <NotepadIcon/>
           </template>
-        </BaseInput>
+        </FileInput>
 
         <h3 class="add-track-description__header_h3">
           Выберите жанр
@@ -114,6 +114,7 @@
   import BaseDropdown from 'components/BaseDropdown.vue';
   import ChooseGenres from './../profile/ChooseGenres/ChooseGenres.vue';
   import BaseInput from 'components/BaseInput.vue';
+  import FileInput from 'components/FileInput.vue';
   import ChooseAvatar from '../profile/ChooseAvatar.vue';
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
@@ -132,9 +133,7 @@
         name: {
           input: ''
         },
-        text: {
-          input: ''
-        },
+        text: null,
         displayAlbum: null,
         selectedArtist: null,
         selectedAlbum: null,
@@ -159,6 +158,9 @@
       addToAlbum: false,
     }),
     methods: {
+      handleTextfileInput(file){
+        this.trackInfo.text = file;
+      },
       totalBands() {
         return this.bands.push(this.myData);
       },
@@ -172,12 +174,11 @@
         const info = {
           'singer': this.trackInfo.selectedArtist,
           'trackDate': this.trackInfo.year.input,
-          'songText': this.trackInfo.text.input,
+          'songText': this.trackInfo.text,
           'genre': genres,
           'trackName': this.trackInfo.name.input,
           'album': this.trackInfo.selectedAlbum.id
         };
-        console.log(info);
         this.$emit('sendInfo', info);
       },
       onCoverInput(){
@@ -197,6 +198,7 @@
       ChooseGenres,
       BaseDropdown,
       BaseInput,
+      FileInput,
       ChooseAvatar,
       PencilIcon,
       CalendarIcon,

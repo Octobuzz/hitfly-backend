@@ -79,11 +79,6 @@
                 </div>
                 <button type="submit" class="button active reg-page__submit">{{ __('auth.register') }}</button>
             </form>
-            <p class="reg-page__intro">
-            <span>
-                {{ __('auth.pushButtonAccept') }} <a href="/">{{ __('auth.useConditions') }}</a>
-            </span>
-            </p>
             <p class="reg-page__enter">{{ __('auth.haveAccount') }}? <a href="{{ route('login') }}">{{ __('messages.signIn') }}</a> </p>
         </div>
     </div>
