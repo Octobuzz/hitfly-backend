@@ -137,4 +137,53 @@ $(function () {
 
 $(document).ready(function () {
     $('.input-text input').checkAndTriggerAutoFillEvent();
+    $('.reg-page input[type="email"]').on('keyup', function(){
+    });
+    $('.reg-page button[type="submit"]').click(function(event){
+      event.preventDefault();
+
+      //проверка подтверждения пароля
+      const password = $('.reg-page__line-input input[name="password"]');
+      const passwordConfirm = $('.reg-page__line-input input[name="password_confirmation"]');
+      if(password.val() == ''){
+        password.parent().parent().addClass('error');
+      }else{
+        password.parent().parent().removeClass('error');
+        if(password.val() !== passwordConfirm.val()){
+          passwordConfirm.parent().parent().addClass('error');
+        }else{
+          passwordConfirm.parent().parent().removeClass('error');
+        };
+      }
+
+      //проверка почты
+      const pattern = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i;
+      const email = $('.reg-page__line-input input[name="email"]');
+      if(email.val().length >= 8){
+        if(email.val().search(pattern) == 0){
+          email.parent().parent().removeClass('error');
+        }else{
+          email.parent().parent().addClass('error');
+        }
+      }else{
+        email.parent().parent().addClass('error');
+      };
+
+      //проверка чекбокса
+      const checkbox = $('.reg-page__agreement input');
+      if(!checkbox.prop('checked')){
+        checkbox.parent().parent().addClass('error');
+      }else{
+        checkbox.parent().parent().removeClass('error');
+      }
+
+      //проверка наличия ошибок в форме
+      if($('.reg-page form .input-text-wrapper').hasClass('error')){
+        $('html, body').animate({
+            scrollTop: $('form').offset().top
+        }, 500);
+      }else{
+        $('.reg-page form').submit();
+      };
+    })
 });

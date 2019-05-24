@@ -131,7 +131,7 @@
   box-sizing: border-box;
   display: inline-block;
   text-align: left;
-    width: 100%;
+  width: 100%;
 
   input {
     box-sizing: border-box;
@@ -200,6 +200,17 @@
     &__error-msg{
         color: $color_red;
         font-size: 12px;
+        display: none;
+    }
+
+    &.error{
+      & .input-text-wrapper__error-msg{
+        display: block;
+      }
+
+      & .input-checkbox label::before{
+        border-color: $color_red;
+      }
     }
 }
 

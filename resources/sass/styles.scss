@@ -56,7 +56,7 @@
   &__socials{
     padding: 45px 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
   &__pass-error{
     font-size: 12px;
@@ -76,6 +76,7 @@
     justify-content: center;
     width: 50px;
     height: 50px;
+    margin: 0 10px;
 
     span{
       display: none;
@@ -269,6 +270,9 @@
 @media (min-width: $desktop) {
   .reg-page{
 
+    &__agreement{
+      margin-bottom: 40px;
+    }
     &__title{
       text-align: center;
       font-size: 32px;
