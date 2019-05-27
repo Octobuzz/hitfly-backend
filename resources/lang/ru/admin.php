@@ -6,7 +6,7 @@ return [
     'logout'                => 'Выйти',
     'setting'               => 'Настройка',
     'name'                  => 'Имя',
-    'email'                  => 'email (логин)',
+    'email'                  => 'Email (логин)',
     'username'              => 'Имя  пользователя',
     'password'              => 'Пароль',
     'password_confirmation' => 'Подтверждение пароля',
