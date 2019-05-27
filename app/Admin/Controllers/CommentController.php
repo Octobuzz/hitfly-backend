@@ -26,8 +26,8 @@ class CommentController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('Жанры')
+            ->description('Список')
             ->body($this->grid())
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
@@ -45,8 +45,8 @@ class CommentController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('Жанры')
+            ->description('просмотр')
             ->body($this->detail($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
@@ -65,8 +65,8 @@ class CommentController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('Жанры')
+            ->description('редактирование')
             ->body($this->form()->edit($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
@@ -84,8 +84,8 @@ class CommentController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('Жанры')
+            ->description('создание')
             ->body($this->form());
     }
 

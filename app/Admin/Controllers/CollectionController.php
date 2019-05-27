@@ -27,8 +27,8 @@ class CollectionController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('Коллекции')
+            ->description('список')
             ->body($this->grid())
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
@@ -46,8 +46,8 @@ class CollectionController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('Коллекции')
+            ->description('просмотр')
             ->body($this->detail($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
@@ -66,8 +66,8 @@ class CollectionController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('Коллекции')
+            ->description('редактирование')
             ->body($this->form()->edit($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
@@ -85,8 +85,8 @@ class CollectionController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('Коллекции')
+            ->description('создание')
             ->body($this->form());
     }
 
