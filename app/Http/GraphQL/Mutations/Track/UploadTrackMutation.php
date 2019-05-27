@@ -27,7 +27,7 @@ class UploadTrackMutation extends Mutation
             'track' => [
                 'name' => 'track',
                 'type' => UploadType::getInstance(),
-                'rules' => ['required'],
+                'rules' => ['required', 'mimetypes:audio/ogg,audio/mpeg,audio/aac,audio/mp4,audio/vnd.wave'],
             ],
         ];
     }
