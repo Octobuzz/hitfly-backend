@@ -30,7 +30,7 @@ Route::get('/register-success', 'Api\v1\SocialController@registerSuccess')->midd
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('/logout', 'LoginController@logout');
     Route::get('/login/{provider}', 'LoginController@redirectToProvider')->name('social_auth');
-    Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
+    Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback')->name('social_auth_callback');
 });
 
 Route::get('/', 'HomeController@index')->name('home');
