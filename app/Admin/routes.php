@@ -9,17 +9,17 @@ Route::group([
     'namespace' => config('admin.route.namespace'),
     'middleware' => config('admin.route.middleware'),
 ], function (Router $router) {
-    $router->get('/', 'HomeController@index');
-    $router->resource('/auth/users', UserController::class);
-    $router->resource('/genre', GenreController::class);
-    $router->resource('/comment', CommentController::class);
-    $router->resource('/collection', CollectionController::class);
-    $router->resource('/album', AlbumController::class);
-    $router->resource('/music/group', MusicGroupController::class);
-    $router->resource('/track', TrackController::class);
-    $router->resource('/chart', ChartController::class);
-    $router->resource('/favourite', FavouriteController::class);
-    $router->resource('/city', CityController::class);
+    $router->get('/', 'HomeController@index')->name(\App\Admin\Controllers\HomeController::ROUTE_NAME);
+    $router->resource('/auth/users', UserController::class)->names(\App\Admin\Controllers\UserController::ROUTE_NAME);
+    $router->resource('/genre', GenreController::class)->names(\App\Admin\Controllers\GenreController::ROUTE_NAME);
+    $router->resource('/comment', CommentController::class)->names(\App\Admin\Controllers\CommentController::ROUTE_NAME);
+    $router->resource('/collection', CollectionController::class)->names(\App\Admin\Controllers\CollectionController::ROUTE_NAME);
+    $router->resource('/album', AlbumController::class)->names(\App\Admin\Controllers\AlbumController::ROUTE_NAME);
+    $router->resource('/music/group', MusicGroupController::class)->names(\App\Admin\Controllers\MusicGroupController::ROUTE_NAME);
+    $router->resource('/track', TrackController::class)->names(\App\Admin\Controllers\TrackController::ROUTE_NAME);
+    $router->resource('/chart', ChartController::class)->names(\App\Admin\Controllers\ChartController::ROUTE_NAME);
+    $router->resource('/favourite', FavouriteController::class)->names(\App\Admin\Controllers\FavouriteController::ROUTE_NAME);
+    $router->resource('/city', CityController::class)->names(\App\Admin\Controllers\CityController::ROUTE_NAME);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');

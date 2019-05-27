@@ -10,6 +10,7 @@ use Encore\Admin\Layout\Row;
 
 class HomeController extends Controller
 {
+    const ROUTE_NAME = 'ROUTE_HOME';
     public function index(Content $content)
     {
         return $content

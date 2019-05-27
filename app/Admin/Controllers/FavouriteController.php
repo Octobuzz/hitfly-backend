@@ -11,10 +11,14 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Route;
 
 class FavouriteController extends Controller
 {
     use HasResourceActions;
+
+    const ROUTE_NAME = 'ROUTE_FAVOURITE';
 
     /**
      * Index interface.
@@ -28,7 +32,10 @@ class FavouriteController extends Controller
         return $content
             ->header('Избранное')
             ->description('')
-            ->body($this->grid());
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -44,7 +51,11 @@ class FavouriteController extends Controller
         return $content
             ->header('Избранное')
             ->description('')
-            ->body($this->detail($id));
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -90,11 +101,12 @@ class FavouriteController extends Controller
             $actions->disableEdit();
         });
 
+
         $grid->id('#');
         $grid->favouriteable_type('Тип избранного')->display(function ($favourite) {
             return __('messages.'.Favourite::CLASS_NAME[$favourite]);
         });
-        $grid->favouriteable()->display(
+        $grid->favouriteable('Избранное')->display(
             function ($favouriteable) {//админка возвращает массив, вместо объекта, получить имя через метод нельзя
                 if (!empty($favouriteable['title'])) {
                     return $favouriteable['title'];

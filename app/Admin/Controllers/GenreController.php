@@ -10,10 +10,11 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Lang;
 class GenreController extends Controller
 {
     use HasResourceActions;
+    const ROUTE_NAME = 'ROUTE_GENRE';
 
     /**
      * Index interface.
@@ -25,9 +26,12 @@ class GenreController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
-            ->body($this->grid());
+            ->header('Жанры')
+            ->description('список')
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -41,9 +45,13 @@ class GenreController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
-            ->body($this->detail($id));
+            ->header('Жанры')
+            ->description('просмотр')
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -57,9 +65,13 @@ class GenreController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
-            ->body($this->form()->edit($id));
+            ->header('Жанры')
+            ->description('редактирование')
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -72,8 +84,8 @@ class GenreController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('Жанры')
+            ->description('создание')
             ->body($this->form());
     }
 

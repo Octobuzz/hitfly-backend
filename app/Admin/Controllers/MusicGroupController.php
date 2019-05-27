@@ -13,11 +13,13 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class MusicGroupController extends Controller
 {
     use HasResourceActions;
 
+    const ROUTE_NAME = 'ROUTE_MUSIC_GROUP';
     /**
      * Index interface.
      *
@@ -30,7 +32,10 @@ class MusicGroupController extends Controller
         return $content
             ->header('Музыкальные группы')
             ->description('Список музыкальных групп')
-            ->body($this->grid());
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -46,7 +51,11 @@ class MusicGroupController extends Controller
         return $content
             ->header('Музыкальные группы')
             ->description('Музыкальная группа')
-            ->body($this->detail($id));
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -62,7 +71,11 @@ class MusicGroupController extends Controller
         return $content
             ->header('Реадктирование музыкальной группы')
             ->description('реадктирование музыкальной группы')
-            ->body($this->form()->edit($id));
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**

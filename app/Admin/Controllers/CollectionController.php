@@ -10,12 +10,13 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 
 class CollectionController extends Controller
 {
     use HasResourceActions;
-
+    const ROUTE_NAME = 'ROUTE_COLLECT';
     /**
      * Index interface.
      *
@@ -26,9 +27,12 @@ class CollectionController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
-            ->body($this->grid());
+            ->header('Коллекции')
+            ->description('список')
+            ->body($this->grid())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
     }
 
     /**
@@ -42,9 +46,13 @@ class CollectionController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
-            ->body($this->detail($id));
+            ->header('Коллекции')
+            ->description('просмотр')
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -58,9 +66,13 @@ class CollectionController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
-            ->body($this->form()->edit($id));
+            ->header('Коллекции')
+            ->description('редактирование')
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -73,8 +85,8 @@ class CollectionController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('Коллекции')
+            ->description('создание')
             ->body($this->form());
     }
 
@@ -92,7 +104,7 @@ class CollectionController extends Controller
         $grid->image('Изображение');
 
         $grid->user_id('Создатель коллекции')->display(function ($userId) {
-            return User::find($userId)->username;
+            return User::find($userId)['username'];
         });
 
         return $grid;
