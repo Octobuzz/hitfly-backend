@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check() && ('social_auth' !== $request->route()->getName() && 'social_auth_callback' !== $request->route()->getName())) {
-            return redirect('/home');
+            return redirect('/profile');
         }
 
         return $next($request);

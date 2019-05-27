@@ -87,6 +87,6 @@ class LoginController extends Controller
 
         Auth::login($user);
 
-        return redirect()->to('/home');
+        return redirect()->to('/profile');
     }
 }
