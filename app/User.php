@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\MusicGroup;
+use App\Models\Purse;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,7 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Permission[]                         $permissions
  * @property \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Role[]                               $roles
+ * @property \App\Models\Purse                                                                                         $purse
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
@@ -151,5 +153,15 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function artist(): HasOne
     {
         return $this->hasOne(ArtistProfile::class, 'user_id');
+    }
+
+    public function purse(): HasOne
+    {
+        return $this->hasOne(Purse::class);
+    }
+
+    public function purseBonus(): HasOne
+    {
+        return $this->hasOne(Purse::class)->where('name', '=', Purse::NAME_BONUS);
     }
 }

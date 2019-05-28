@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\Track\TrackCreatedEvent;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 class Track extends Model
 {
     use SoftDeletes, Itemable, PictureField;
+
+    const MIN_LISTENING = 50;
 
     protected $table = 'tracks';
 
@@ -36,6 +39,10 @@ class Track extends Model
         'deleted_at',
         'created_at',
         'updated_at',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => TrackCreatedEvent::class,
     ];
 
     public function genre(): BelongsTo
