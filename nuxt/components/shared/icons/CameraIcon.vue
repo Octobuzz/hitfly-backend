@@ -1,0 +1,4 @@
+<template>
+  <!--eslint-disable-next-line-->
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="14" viewBox="0 0 18 14"><defs><path id="ntd1a" d="M534 347.65a2 2 0 0 1 2-2h13.29a2 2 0 0 1 2 2V356a2 2 0 0 1-2 2H536a2 2 0 0 1-2-2z" /><path id="ntd1c" d="M545.53 345a1 1 0 0 1 1-1h.47a1 1 0 0 1 1 1v1.29a1 1 0 0 1-1 1h-.47a1 1 0 0 1-1-1z" /><path id="ntd1d" d="M540.59 351.82a2.06 2.06 0 1 1 4.12 0 2.06 2.06 0 0 1-4.12 0z" /><clipPath id="ntd1b"><use fill="#fff" xlink:href="#ntd1a" /></clipPath></defs><g><g transform="translate(-534 -344)"><g><use fill="#fff" fill-opacity="0" stroke="#fff" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#ntd1b&quot;)" xlink:href="#ntd1a" /></g><g><use fill="#fff" xlink:href="#ntd1c" /></g><g><use fill="#fff" fill-opacity="0" stroke="#fff" stroke-miterlimit="50" stroke-width="2" xlink:href="#ntd1d" /></g></g></g></svg>
+</template>

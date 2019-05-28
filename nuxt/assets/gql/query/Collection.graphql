@@ -1,0 +1,7 @@
+#import "../fragments/collection.graphql"
+
+query Collection($id: Int!) {
+    collection(id: $id) {
+        ...collection
+    }
+}

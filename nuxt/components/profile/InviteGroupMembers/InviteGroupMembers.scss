@@ -1,0 +1,85 @@
+@import '@/assets/scss/_variables.scss';
+
+.invited-members {
+  &__user-card {
+    font-size: 14px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    min-width: 130px;
+    height: 50px;
+    padding-left: 16px;
+    margin: {
+      right: 16px;
+      bottom: 16px;
+    };
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius;
+    background: white;
+  }
+
+  &__label {
+    display: block;
+    font-size: 14px;
+    color: $medium_gray;
+    position: absolute;
+    top: 16px;
+    left: 17px;
+    user-select: none;
+    cursor: pointer;
+    transition: all .3s;
+    transform: translate(-13%, -10px) scale(.75);
+  }
+
+  &__username {
+    transform: translateY(7px);
+  }
+
+  &__input-row {
+    display: flex;
+  }
+
+  &__user-input {
+    flex-grow: 1;
+  }
+
+  &__save-button {
+    max-width: 180px;
+    margin-left: 16px;
+  }
+
+  &__close-button::v-deep {
+    background: transparent;
+
+    svg {
+      fill: #ccc;
+      transition: all .2s;
+    }
+
+    &:hover {
+      svg {
+        fill: #313131;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .invited-members {
+    &__input-row {
+      flex-wrap: wrap;
+    }
+
+    &__user-input {
+      width: 100%;
+    }
+
+    &__save-button {
+      margin: {
+        top: 16px;
+        left: auto;
+      }
+    }
+  }
+}

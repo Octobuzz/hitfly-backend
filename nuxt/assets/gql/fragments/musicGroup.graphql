@@ -1,0 +1,33 @@
+#import "./genre.graphql"
+#import "./location.graphql"
+#import "./user.graphql"
+
+fragment musicGroup on MusicGroup {
+    id
+    name
+    careerStartYear
+    description
+    followersCount
+    socialLinks {
+        social_type
+        link
+    }
+    avatarGroup(
+        sizes: [size_40x40, size_235x235]
+    ) {
+        size
+        url
+    }
+    creatorGroup {
+        ...user
+    }
+    activeMembers {
+        ...user
+    }
+    genres {
+        ...genre
+    }
+    location {
+        ...location
+    }
+}

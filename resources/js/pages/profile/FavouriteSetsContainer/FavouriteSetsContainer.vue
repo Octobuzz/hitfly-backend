@@ -105,8 +105,6 @@ export default {
         variables: this.queryVars,
 
         update({ favouriteSet: { total, to, data } }) {
-          console.dir(data);
-
           this.isLoading = false;
           if (!this.dataInitialized) {
             this.dataInitialized = true;
