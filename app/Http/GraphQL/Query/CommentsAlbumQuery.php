@@ -12,7 +12,7 @@ class CommentsAlbumQuery extends Query
 {
     protected $attributes = [
         'name' => 'Comment album Query',
-        'description' => 'Коментарии к альбому',
+        'description' => 'Отзывы к альбому',
     ];
 
     public function type()

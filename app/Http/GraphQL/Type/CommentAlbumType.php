@@ -12,7 +12,7 @@ class CommentAlbumType extends GraphQLType
     protected $attributes = [
         'name' => 'CommentAlbum',
         'model' => Comment::class,
-        'description' => 'Комментарий(отзыв) к альбому',
+        'description' => 'Отзыв к альбому',
     ];
 
     public function fields()

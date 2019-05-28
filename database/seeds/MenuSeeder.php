@@ -74,7 +74,7 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'id' => 10,
                 'parent_id' => 0,
                 'order' => 10,
-                'title' => 'Комментарии',
+                'title' => 'Отзывы',
                 'icon' => 'fa-bar-chart',
                 'uri' => '/comment',
             ],

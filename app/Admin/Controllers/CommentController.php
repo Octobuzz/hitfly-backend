@@ -26,7 +26,7 @@ class CommentController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Жанры')
+            ->header('Отзывы')
             ->description('Список')
             ->body($this->grid())
             ->breadcrumb(
@@ -45,7 +45,7 @@ class CommentController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Жанры')
+            ->header('Отзывы')
             ->description('просмотр')
             ->body($this->detail($id))
             ->breadcrumb(
@@ -65,7 +65,7 @@ class CommentController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Жанры')
+            ->header('Отзывы')
             ->description('редактирование')
             ->body($this->form()->edit($id))
             ->breadcrumb(
@@ -84,7 +84,7 @@ class CommentController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Жанры')
+            ->header('Отзывы')
             ->description('создание')
             ->body($this->form());
     }
@@ -103,10 +103,10 @@ class CommentController extends Controller
         $grid->user('Пользователь')->display(function ($user) {
             return $user['username'];
         });
-        $grid->commentable_type('Тип комментария')->display(function ($comment) {
+        $grid->commentable_type('Тип отзыва')->display(function ($comment) {
             return __('messages.'.Comment::CLASS_NAME[$comment]);
         });
-        $grid->comment('Комментарий');
+        $grid->comment('Отзыв');
         $grid->estimation('Оценка');
         $grid->created_at('Дата создания');
         $grid->updated_at('Дата обновления');
@@ -129,14 +129,14 @@ class CommentController extends Controller
         $show->user('Пользователь')->as(function ($user) {
             return $user->username;
         });
-        $show->commentable_type('Тип комментария')->as(function ($comment) {
+        $show->commentable_type('Тип отзыва')->as(function ($comment) {
             return __('messages.'.Comment::CLASS_NAME[$comment]);
         });
-        $show->commentable()->title('Комментарий к')->as(function ($comment) {
+        $show->commentable()->title('Отзыв к')->as(function ($comment) {
             return $comment->title;
         });
 
-        $show->comment('Комментарий');
+        $show->comment('Отзыв');
         $show->estimation('Оценка');
         $show->created_at('Дата создания');
         $show->updated_at('Дата обновления');
@@ -153,7 +153,7 @@ class CommentController extends Controller
     {
         $form = new Form(new Comment());
 
-        $form->select('id', 'Комментарий к')->options(function ($id) {
+        $form->select('id', 'Отзыв к')->options(function ($id) {
             $comment = Comment::find($id);
 
             return [$id => (string) $comment->commentable['title'].' ('.__('messages.'.Comment::CLASS_NAME[$comment['commentable_type']]).')'];
@@ -165,7 +165,7 @@ class CommentController extends Controller
                 return [$user->id => $user->username];
             }
         })->ajax('/admin/api/users');
-        $form->textarea('comment', 'Комментарий');
+        $form->textarea('comment', 'Отзыв');
         $form->select('estimation', 'Оценка')->options([0 => 'Нет', 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5]);
 
         return $form;

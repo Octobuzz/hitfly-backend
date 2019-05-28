@@ -9,6 +9,7 @@ class RateCommentMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'RateComment',
+        'description' => 'Оценить отзыв',
     ];
 
     public function type()

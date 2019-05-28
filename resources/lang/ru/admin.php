@@ -106,7 +106,7 @@ return [
     'breadcrumb' => [
         \App\Admin\Controllers\FavouriteController::ROUTE_NAME => 'Избранное',
         \App\Admin\Controllers\GenreController::ROUTE_NAME => 'Жанры',
-        \App\Admin\Controllers\CommentController::ROUTE_NAME => 'Комментарии',
+        \App\Admin\Controllers\CommentController::ROUTE_NAME => 'Отзывы',
         \App\Admin\Controllers\AlbumController::ROUTE_NAME => 'Альбомы',
         \App\Admin\Controllers\MusicGroupController::ROUTE_NAME => 'Музыкальные группы',
         \App\Admin\Controllers\TrackController::ROUTE_NAME => 'Треки',

@@ -12,7 +12,7 @@ class CommentTrackType extends GraphQLType
     protected $attributes = [
         'name' => 'CommentTrack',
         'model' => Comment::class,
-        'description' => 'Комментарий(отзыв) к треку',
+        'description' => 'Отзыв к треку',
     ];
 
     public function fields()

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Lang;
 class AlbumController extends Controller
 {
     use HasResourceActions;
-    const ROUTE_NAME = 'ROUTE_COMMENT';
+    const ROUTE_NAME = 'ROUTE_ALBUM';
     /**
      * Index interface.
      *

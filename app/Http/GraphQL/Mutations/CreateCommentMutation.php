@@ -12,7 +12,7 @@ class CreateCommentMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'CreateComment',
-        'description' => 'Комментарий(отзыв)',
+        'description' => 'Создать отзыв',
     ];
 
     public function type()

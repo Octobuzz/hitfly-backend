@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Lang;
 class PermissionController extends \Encore\Admin\Controllers\PermissionController
 {
     use HasResourceActions;
-    const ROUTE_NAME = 'ROUTE_ROLE';
+    const ROUTE_NAME = 'ROUTE_PERMISSION';
 
     /**
      * Index interface.

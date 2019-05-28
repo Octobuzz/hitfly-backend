@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Lang;
 class CityController extends Controller
 {
     use HasResourceActions;
-    const ROUTE_NAME = 'ROUTE_TRACK';
+    const ROUTE_NAME = 'ROUTE_CITY';
     /**
      * Index interface.
      *
