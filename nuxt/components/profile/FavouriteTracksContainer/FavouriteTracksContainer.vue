@@ -48,13 +48,6 @@ export default {
     SpinnerLoader
   },
 
-  props: {
-    containerPaddingClass: {
-      type: String,
-      default: ''
-    }
-  },
-
   data() {
     return {
       trackList: [],
@@ -74,7 +67,13 @@ export default {
     },
 
     desktop() {
-      return this.windowWidth > MOBILE_WIDTH;
+      return process.client
+        ? this.windowWidth > MOBILE_WIDTH
+        : true;
+    },
+
+    containerPaddingClass() {
+      return this.$store.getters['app-columns/paddingClass'];
     }
   },
 
