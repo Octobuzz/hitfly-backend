@@ -11,6 +11,10 @@ Route::group([
 ], function (Router $router) {
     $router->get('/', 'HomeController@index')->name(\App\Admin\Controllers\HomeController::ROUTE_NAME);
     $router->resource('/auth/users', UserController::class)->names(\App\Admin\Controllers\UserController::ROUTE_NAME);
+    $router->resource('/auth/roles', RoleController::class)->names(\App\Admin\Controllers\RoleController::ROUTE_NAME);
+    $router->resource('/auth/permissions', PermissionController::class)->names(\App\Admin\Controllers\PermissionController::ROUTE_NAME);
+    $router->resource('/auth/menu', MenuController::class)->names(\App\Admin\Controllers\MenuController::ROUTE_NAME);
+    $router->resource('/auth/logs', LogController::class)->names(\App\Admin\Controllers\LogController::ROUTE_NAME);
     $router->resource('/genre', GenreController::class)->names(\App\Admin\Controllers\GenreController::ROUTE_NAME);
     $router->resource('/comment', CommentController::class)->names(\App\Admin\Controllers\CommentController::ROUTE_NAME);
     $router->resource('/collection', CollectionController::class)->names(\App\Admin\Controllers\CollectionController::ROUTE_NAME);

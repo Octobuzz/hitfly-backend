@@ -115,5 +115,9 @@ return [
         \App\Admin\Controllers\CityController::ROUTE_NAME => 'Города',
         \App\Admin\Controllers\HomeController::ROUTE_NAME => 'Главная',
         \App\Admin\Controllers\UserController::ROUTE_NAME => 'Пользователи',
+        \App\Admin\Controllers\RoleController::ROUTE_NAME => 'Роли',
+        \App\Admin\Controllers\PermissionController::ROUTE_NAME => 'Доступы',
+        \App\Admin\Controllers\MenuController::ROUTE_NAME => 'Меню',
+        \App\Admin\Controllers\LogController::ROUTE_NAME => 'Журнал событий',
     ]
 ];
