@@ -1,0 +1,7 @@
+#import "../fragments/track.graphql"
+
+query Track($id: Int!) {
+    track(id: $id) {
+        ...track
+    }
+}

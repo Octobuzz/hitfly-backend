@@ -1,0 +1,22 @@
+#import "~/assets/gql/fragments/album.graphql"
+
+query FavouriteAlbums(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+) {
+    favouriteAlbum(
+        limit: $pageLimit,
+        page: $pageNumber
+    ) {
+        total
+        to
+        data {
+            id
+            album {
+                ...album
+#                TODO: include userFavourite in the fragment when bug is fixed
+                userFavourite
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+@import './_fonts.scss';
+@import './_variables.scss';
+@import './normalize.scss';
+@import './headers.scss';
+
+html,
+body {
+  font-family: 'Gotham Pro', sans-serif;
+  color: $text_color_primary;
+  height: 100vh;
+}
+
+button {
+  border: none;
+  background: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}

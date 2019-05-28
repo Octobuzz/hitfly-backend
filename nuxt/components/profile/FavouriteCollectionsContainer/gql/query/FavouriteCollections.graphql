@@ -1,0 +1,20 @@
+#import "~/assets/gql/fragments/collection.graphql"
+
+query FavouriteCollections(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+) {
+    favouriteCollection(
+        limit: $pageLimit,
+        page: $pageNumber
+    ){
+        total
+        to
+        data {
+            id
+            collection {
+                ...collection
+            }
+        }
+    }
+}

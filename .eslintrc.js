@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   root: true,
   parserOptions: {
@@ -5,6 +7,7 @@ module.exports = {
     parser: 'babel-eslint'
   },
   env: {
+    browser: true,
     node: true
   },
   extends: [
@@ -16,7 +19,10 @@ module.exports = {
   ],
   settings: {
     'import/resolver': {
-      webpack: require.resolve('./webpack.config')
+      alias: [
+        ['~', path.resolve('nuxt')],
+        ['@', path.resolve('nuxt')]
+      ]
     }
   },
   rules: {
