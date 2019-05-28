@@ -67,12 +67,12 @@ export default {
   }
 }
 </script>
-<styles lang="scss" scoped>
+<style lang="scss" scoped>
 .head {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   height: 95px;
   overflow: hidden;
   z-index: 1100;
 }
-</styles>
+</style>

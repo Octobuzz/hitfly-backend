@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="./Favourite.scss"

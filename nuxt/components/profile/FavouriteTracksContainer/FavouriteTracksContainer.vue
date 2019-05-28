@@ -105,7 +105,7 @@ export default {
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="../MyTracksContainer/MyTracksContainer.scss"

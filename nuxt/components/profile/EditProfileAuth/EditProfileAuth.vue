@@ -284,7 +284,7 @@ export default {
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="./EditProfileAuth.scss"
