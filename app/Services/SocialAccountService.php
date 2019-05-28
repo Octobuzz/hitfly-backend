@@ -85,10 +85,10 @@ class SocialAccountService
                 }
                 $user = User::create($tmpUser);
             }
-//            if (null != $authSocial) {
-//                $authSocial->user()->associate($user);
-//                $authSocial->save();
-//            }
+            if (null != $authSocial) {
+                $authSocial->user()->associate($user);
+                $authSocial->save();
+            }
 
             return $user;
         }
