@@ -136,7 +136,9 @@
         text: null,
         displayAlbum: null,
         selectedArtist: null,
-        selectedAlbum: null,
+        selectedAlbum: {
+          id: Number
+        },
       },
       myData: {},
       createAlbum: false,

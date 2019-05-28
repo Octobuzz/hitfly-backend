@@ -108,14 +108,15 @@ class SocialAccountService
                 'social_driver' => $provider,
             ],
             [
-                'user' => $providerUser->getName(),
+               // 'user' => $providerUser->getName(),
                 'avatar' => $providerUser->getAvatar(),
             ]);
 
         try {
-            $user = $authSocial->user();
+            //$user = $authSocial->user();
 
-            if (null !== $user) {
+            if (null !== $authSocial) {
+
                 $user = $this->createOrGetUser($providerUser, $provider, $authSocial);
             }
         } catch (\Exception $e) {

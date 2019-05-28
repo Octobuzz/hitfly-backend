@@ -13,11 +13,53 @@ use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class UserController extends \Encore\Admin\Controllers\UserController
 {
     use HasResourceActions;
+    const ROUTE_NAME = 'ROUTE_USER';
+
+    /**
+     * Index interface.
+     *
+     * @return Content
+     */
+    public function index(Content $content)
+    {
+        return $content
+            ->header(trans('admin.administrator'))
+            ->description(trans('admin.list'))
+            ->body($this->grid()->render())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
+            );
+    }
+    public function show($id, Content $content)
+    {
+        return $content
+            ->header(trans('admin.administrator'))
+            ->description(trans('admin.detail'))
+            ->body($this->detail($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
+    }
+
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->header(trans('admin.administrator'))
+            ->description(trans('admin.edit'))
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
+    }
 
     public function users(Request $request)
     {
@@ -39,9 +81,9 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->created_at(trans('admin.created_at'));
         $grid->updated_at(trans('admin.updated_at'));
 
-        $grid->actions(function (Grid\Displayers\Actions $actions) {
-            $actions->disableDelete();
-        });
+//        $grid->actions(function (Grid\Displayers\Actions $actions) {
+//            $actions->disableDelete();
+//        });
 
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function (Grid\Tools\BatchActions $actions) {

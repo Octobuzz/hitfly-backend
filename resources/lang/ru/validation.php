@@ -83,7 +83,7 @@ return [
         'numeric' => 'The :attribute may not be greater than :max.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',
         'string' => 'The :attribute may not be greater than :max characters.',
-        'array' => 'The :attribute may not have more than :max items.',
+        'array' => ':attribute неможет иметь больше :max элементов.',
     ],
     'mimetypes' => 'The :attribute must be a file of type: :values.',
 
@@ -153,6 +153,10 @@ return [
     'authorUpdateMusicGroup' => 'Вы не являетесь автором данной группы, редактирование запрещено',
     'authorUpdateAlbum' => 'Вы не являетесь автором альбома, редактирование запрещено',
     'groupMaxCount' => 'Вы привысили максимальный лимит групп',
+    'oldPasswordIncorrect' => 'Старый пароль неверный',
+    'emptyPassword' => 'Пароль неможет быть пустым',
+    'emailIsBad' => 'Запрещенный или невалидный email',
+    'invalidFileFormat' => 'Неверный формат файла',
 
 
 ];

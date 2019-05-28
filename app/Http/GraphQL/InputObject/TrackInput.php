@@ -2,8 +2,10 @@
 
 namespace App\Http\GraphQL\InputObject;
 
+use App\Rules\UploadDocAndTxtFile;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\UploadType;
 
 class TrackInput extends GraphQLType
 {
@@ -20,7 +22,7 @@ class TrackInput extends GraphQLType
             'trackName' => [
                 'name' => 'trackName',
                 'description' => 'Название трека',
-                'type' => Type::string(),
+                'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'max:250'],
             ],
             'album' => [
@@ -32,8 +34,8 @@ class TrackInput extends GraphQLType
             'genres' => [
                 'name' => 'genres',
                 'description' => 'Жанры трека',
-                'type' => Type::listOf(Type::int()),
-                'rules' => ['required', 'array'],
+                'type' => Type::nonNull(Type::listOf(Type::int())),
+                'rules' => ['required', 'array',"min:1","max:5"],
             ],
             'singer' => [
                 'name' => 'singer',
@@ -50,8 +52,8 @@ class TrackInput extends GraphQLType
             'songText' => [
                 'name' => 'songText',
                 'description' => 'Песня трека',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'min:1', 'max:6000'],
+                'type' => Type::nonNull(UploadType::getInstance()),
+                'rules' => ['max:6000', new UploadDocAndTxtFile()],
             ],
         ];
     }

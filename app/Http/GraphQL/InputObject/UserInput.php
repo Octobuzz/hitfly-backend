@@ -23,18 +23,18 @@ class UserInput extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'string', 'max:255'],
             ],
-            'email' => [
-                'name' => 'email',
-                'description' => 'Пользовательский email',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'max:255', 'email', 'unique:users,email'],
-            ],
-            'password' => [
-                'name' => 'password',
-                'description' => 'Пароль для пользователя',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string', 'min:6'],
-            ],
+//            'email' => [
+//                'name' => 'email',
+//                'description' => 'Пользовательский email',
+//                'type' => Type::nonNull(Type::string()),
+//                'rules' => ['required', 'max:255', 'email', 'unique:users,email'],
+//            ],
+//            'password' => [
+//                'name' => 'password',
+//                'description' => 'Пароль для пользователя',
+//                'type' => Type::nonNull(Type::string()),
+//                'rules' => ['required', 'string', 'min:6'],
+//            ],
             'gender' => [
                 'name' => 'gender',
                 'description' => 'Пол пользователя',

@@ -12,7 +12,7 @@ class CommentInput extends GraphQLType
 
     protected $attributes = [
         'name' => 'CommentInput',
-        'description' => 'Комментарий(отзыв)',
+        'description' => 'Отзыв',
     ];
 
     public function fields()
@@ -20,19 +20,19 @@ class CommentInput extends GraphQLType
         return [
             'commentableId' => [
                 'name' => 'commentableId',
-                'description' => 'id комментируемого объекта(трек,альбом)',
+                'description' => 'id  объекта для отзыва(трек,альбом)',
                 'type' => Type::nonNull(Type::int()),
                 'rules' => ['required'],
             ],
             'commentableType' => [
                 'name' => 'commentableType',
-                'description' => 'Комментируемый тип',
+                'description' => 'Тип для отзыва',
                 'type' => \GraphQL::type('CommentTypeEnum'),
                 'rules' => ['required'],
             ],
             'comment' => [
                 'name' => 'comment',
-                'description' => 'Комментарий',
+                'description' => 'Отзыв',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['max:250', new CriticOrStarComment(), 'required'],
             ],

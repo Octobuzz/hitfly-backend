@@ -12,7 +12,7 @@ class CommentsTrackQuery extends Query
 {
     protected $attributes = [
         'name' => 'Comment track Query',
-        'description' => 'Коментарии к треку',
+        'description' => 'Отзывы к треку',
     ];
 
     public function type()

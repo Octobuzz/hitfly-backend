@@ -94,6 +94,7 @@
         this.uploadTrack(track);
       },
       addInfo(info){
+        console.log(info);
         this.$apollo.mutate({
           variables: {
             id: this.trackID,
