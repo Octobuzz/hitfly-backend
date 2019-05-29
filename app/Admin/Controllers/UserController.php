@@ -30,7 +30,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
     public function index(Content $content)
     {
         return $content
-            ->header(trans('admin.administrator'))
+            ->header(trans('admin.users'))
             ->description(trans('admin.list'))
             ->body($this->grid()->render())
             ->breadcrumb(
@@ -40,7 +40,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
     public function show($id, Content $content)
     {
         return $content
-            ->header(trans('admin.administrator'))
+            ->header(trans('admin.users'))
             ->description(trans('admin.detail'))
             ->body($this->detail($id))
             ->breadcrumb(
@@ -52,7 +52,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
     public function edit($id, Content $content)
     {
         return $content
-            ->header(trans('admin.administrator'))
+            ->header(trans('admin.users'))
             ->description(trans('admin.edit'))
             ->body($this->form()->edit($id))
             ->breadcrumb(

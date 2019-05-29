@@ -92,6 +92,7 @@ return [
     'new_folder'            => 'Новая папка',
     'time'                  => 'Время',
     'size'                  => 'Размер',
+    'users'                  => 'Пользователи',
     'listbox'               => [
         'text_total'         => 'Все: {0}',
         'text_empty'         => 'Пустой список',
