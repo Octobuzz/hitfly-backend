@@ -107,9 +107,9 @@ class UpdateMyProfileMutation extends Mutation
         $nameFile = md5(microtime());
         $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
         $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'), function ($constraint) {
+        $image_resize->fit(config('image.size.avatar.default.width'), config('image.size.avatar.default.height')/*, function ($constraint) {
             $constraint->aspectRatio();
-        });
+        }*/);
         $path = Storage::disk('public')->getAdapter()->getPathPrefix();
         //создадим папку, если несуществует
         if (!file_exists($path.'avatars/'.$user->id)) {
