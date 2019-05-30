@@ -109,7 +109,7 @@ return [
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
-                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
+//                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
             ],
             'middleware' => [],
             'method' => ['get', 'post'],
