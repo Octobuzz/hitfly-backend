@@ -84,6 +84,8 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         'password', 'remember_token',
     ];
 
+
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -141,6 +143,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     }
 
     public function favouriteGenres()
+    {
+        return $this->morphedByMany(Genre::class, 'favouriteable', 'favourites')->withTimestamps();
+    }
+    //метод без camelCase нужен для работы в админке
+    public function favouritegenre()
     {
         return $this->morphedByMany(Genre::class, 'favouriteable', 'favourites')->withTimestamps();
     }

@@ -8,12 +8,16 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\ArtistProfile;
 use App\Models\City;
+use App\Models\Genre;
 use App\User;
+use Carbon\Carbon;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
+use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 
@@ -68,6 +72,8 @@ class UserController extends \Encore\Admin\Controllers\UserController
         return User::where('username', 'like', "%$q%")->paginate(null, ['id', 'username as text']);
     }
 
+
+
     protected function grid()
     {
         $userModel = config('admin.database.users_model');
@@ -92,6 +98,52 @@ class UserController extends \Encore\Admin\Controllers\UserController
         });
 
         return $grid;
+    }
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     *
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $userModel = config('admin.database.users_model');
+
+        $show = new Show($userModel::findOrFail($id));
+
+        $show->id('#');
+        $show->username(trans('admin.username'));
+        $show->email('Email (логин)');
+        $show->avatar(trans('admin.avatar'))->image();
+        $show->roles(trans('admin.roles'))->as(function ($roles) {
+            return $roles->pluck('name');
+        })->label();
+        $show->permissions(trans('admin.permissions'))->as(function ($permission) {
+            return $permission->pluck('name');
+        })->label();
+        $show->favouritegenre(trans('admin.f_genres'))->as(function ($roles) {
+            return $roles->pluck('name');
+        })->label();
+        //if (true === $show->model()->isRole('star') || $show->model()->isRole('performer')) {
+            $show->artistprofile('Дата начала карьеры')->as(function ($carrer) {
+                return Carbon::parse($carrer->career_start)->format("Y");
+            });
+            $show->artist('Описание деятельности')->as(function ($description) {
+                return $description->description;
+            });
+        //}
+//        $show->model()->load('artistProfile');
+//        $savingUser = $show->model();
+//        if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
+//            $show->getRelations();
+//            $show->date('artist_profile.career_start', 'Дата начала карьеры')->format("YYYY");
+//            $show->textarea('artist_profile.description', 'Описание деятельности');
+//        }
+        $show->created_at(trans('admin.created_at'));
+        $show->updated_at(trans('admin.updated_at'));
+
+        return $show;
     }
 
     /**
@@ -122,6 +174,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
         $form->multipleSelect('permissions', trans('admin.permissions'))->options($permissionModel::all()->pluck('name', 'id'));
+        $form->multipleSelect('favouritegenre', trans('admin.f_genres'))->options( Genre::all()->pluck('name', 'id'));
 
         $form->select('city_id', 'Город')->options(function ($id) {
             $city = City::find($id);
@@ -134,22 +187,28 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->display('created_at', trans('admin.created_at'));
         $form->display('updated_at', trans('admin.updated_at'));
 
+
         $form->divider();
 
         $form->editing(function (Form $form) {
+
             $form->ignore(['password', 'password_confirmation']);
 
+            $form->model()->load('artistProfile','favouriteGenres');
             $savingUser = $form->model();
-            $form->model()->load('artist');
+
+            $form->getRelations();
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
                 $form->getRelations();
-                $form->date('artist.career_start', 'Дата начала карьеры');
-                $form->textarea('artist.description', 'Описание деятельности');
+                $form->date('artist_profile.career_start', 'Дата начала карьеры')->format("YYYY");
+                $form->textarea('artist_profile.description', 'Описание деятельности');
             }
+
         });
 
+
         $form->saving(function (Form $form) {
-            $form->model()->load('artist');
+            $form->model()->load('artistProfile');
             $form->getRelations();
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = bcrypt($form->password);
@@ -160,14 +219,20 @@ class UserController extends \Encore\Admin\Controllers\UserController
             $savingUser = $form->model();
             $savingUser->roles()->sync(array_filter($form->roles));
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-                $savingUser->artist()->updateOrCreate($form->artist);
+
+                /** @var ArtistProfile $artistProfile */
+                $artistProfile = $savingUser->artistProfile;
+                $artistProfile->update($form->artist_profile);
+                $artistProfile->save();
             }
         });
+        $form->disableReset();
 
         $form->tools(function (Form\Tools $tools) {
             // Disable `Delete` btn.
             $tools->disableDelete();
         });
+
 
         return $form;
     }

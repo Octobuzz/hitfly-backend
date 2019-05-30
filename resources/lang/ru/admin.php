@@ -63,6 +63,7 @@ return [
     'administrator'         => 'Администратор',
     'roles'                 => 'Роли',
     'permissions'           => 'Доступ',
+    'f_genres'           => 'Любимые жанры',
     'slug'                  => 'Слаг',
     'created_at'            => 'Дата создания',
     'updated_at'            => 'Дата обновления',
