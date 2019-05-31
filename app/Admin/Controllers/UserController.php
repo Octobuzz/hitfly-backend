@@ -64,6 +64,17 @@ class UserController extends \Encore\Admin\Controllers\UserController
                 ['text' => $id]
             );
     }
+    public function create(Content $content)
+    {
+        return $content
+            ->header(trans('admin.administrator'))
+            ->description(trans('admin.create'))
+            ->body($this->form())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => 'Создать']
+            );
+    }
 
     public function users(Request $request)
     {

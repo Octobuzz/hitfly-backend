@@ -70,7 +70,7 @@ class CommentController extends Controller
             ->body($this->form()->edit($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
-                ['text' => $id]
+                ['text' => 'Создать']
             );
     }
 
@@ -86,7 +86,10 @@ class CommentController extends Controller
         return $content
             ->header('Отзывы')
             ->description('создание')
-            ->body($this->form());
+            ->body($this->form())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')]
+            );
     }
 
     /**

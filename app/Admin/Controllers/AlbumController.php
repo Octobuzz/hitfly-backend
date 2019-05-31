@@ -89,7 +89,11 @@ class AlbumController extends Controller
         return $content
             ->header('Создать')
             ->description('Создание альбома')
-            ->body($this->form());
+            ->body($this->form())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => 'Создать']
+            );
     }
 
     /**

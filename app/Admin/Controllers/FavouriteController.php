@@ -71,7 +71,11 @@ class FavouriteController extends Controller
         return $content
             ->header('Edit')
             ->description('description')
-            ->body($this->form()->edit($id));
+            ->body($this->form()->edit($id))
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => $id]
+            );
     }
 
     /**
@@ -86,7 +90,11 @@ class FavouriteController extends Controller
         return $content
             ->header('Create')
             ->description('description')
-            ->body($this->form());
+            ->body($this->form())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => 'Создать']
+            );
     }
 
     /**

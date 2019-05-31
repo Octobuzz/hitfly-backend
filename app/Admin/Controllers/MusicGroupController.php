@@ -90,7 +90,11 @@ class MusicGroupController extends Controller
         return $content
             ->header('Создать музыкальную группу')
             ->description('создание музыкальной группы')
-            ->body($this->form());
+            ->body($this->form())
+            ->breadcrumb(
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => 'Создать']
+            );
     }
 
     /**
