@@ -66,13 +66,6 @@ export default {
     FormButton
   },
 
-  props: {
-    containerPaddingClass: {
-      type: String,
-      default: ''
-    }
-  },
-
   data() {
     return {
       trackList: [],
@@ -106,6 +99,10 @@ export default {
 
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
+    },
+
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     }
   },
 
@@ -280,7 +277,7 @@ export default {
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="./MyTracksContainer.scss"

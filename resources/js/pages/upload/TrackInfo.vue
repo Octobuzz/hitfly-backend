@@ -112,7 +112,7 @@
 <script>
   import FormButton from 'components/FormButton.vue';
   import BaseDropdown from 'components/BaseDropdown.vue';
-  import ChooseGenres from './../profile/ChooseGenres/ChooseGenres.vue';
+  import ChooseGenres from '../profile/ChooseGenres/ChooseGenres.vue';
   import BaseInput from 'components/BaseInput.vue';
   import FileInput from 'components/FileInput.vue';
   import ChooseAvatar from '../profile/ChooseAvatar.vue';
@@ -184,7 +184,7 @@
         this.$emit('sendInfo', info);
       },
       onCoverInput(){
-        console.log('ok');
+        // console.log('ok');
       },
       handleAlbumSelect(){
         const selectedAlbum = this.albums.albums.data.filter((album) => {
@@ -218,29 +218,48 @@
           }
         }`,
         update(data){
-          console.log(data);
+          // console.log(data);
           this.albums = data;
         }
       },
-    },
-    mounted() {
-      this.$apollo.query({
-        query: gql`query{
-          myProfile{
-            musicGroups{
+      musicGroups() {
+        return {
+          query: gql`query{
+            myProfile{
+              musicGroups{
+                id
+                name
+              },
+              username,
               id
-              name
-            },
-            username,
-            id
+            }
+          }`,
+          update({ myProfile }) {
+            this.bands = myProfile.musicGroups;
+            this.myData = {id: myProfile.id, name: myProfile.username};
+            this.totalBands();
           }
-        }`
-      }).then((response) => {
-        this.bands = response.data.myProfile.musicGroups;
-        this.myData = {id: response.data.myProfile.id, name: response.data.myProfile.username};
-        this.totalBands();
-      })
+        };
+      }
     }
+    // mounted() {
+    //   this.$apollo.query({
+    //     query: gql`query{
+    //       myProfile{
+    //         musicGroups{
+    //           id
+    //           name
+    //         },
+    //         username,
+    //         id
+    //       }
+    //     }`
+    //   }).then((response) => {
+    //     this.bands = response.data.myProfile.musicGroups;
+    //     this.myData = {id: response.data.myProfile.id, name: response.data.myProfile.username};
+    //     this.totalBands();
+    //   })
+    // }
   }
 </script>
 <style

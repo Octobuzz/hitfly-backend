@@ -4,7 +4,7 @@
       class="return-header__arrow-button"
       @press="onReturn"
     >
-      <ArrowIcon/>
+      <ArrowIcon />
     </IconButton>
     Назад
   </div>
@@ -24,48 +24,13 @@ export default {
     onReturn() {
       this.$emit('press');
 
-      if (this.$router.customData.navHistory[1] === undefined) {
-        this.$router.push('/profile/my-music');
+      const history = this.$store.getters['history/history'];
 
-        return;
+      if (history.length === 0) {
+        this.$router.replace('/profile/my-music');
+      } else {
+        this.$router.go(-1);
       }
-
-      this.$store.commit('profile/setCustomRedirect', true);
-
-      const { $store, $router } = this;
-      const { navHistory } = $router.customData;
-      const toEditGroup = navHistory[1].fullPath === '/profile/update-group';
-      const fromEditGroup = $store.getters['profile/editGroupId'] !== null;
-
-      if (fromEditGroup) {
-        $store.commit('profile/popEditGroupId');
-      }
-
-      if (toEditGroup) {
-        const editGroupIdHistory = $store.getters['profile/editGroupIdHistory'];
-        const nextEditGroupIdIdx = editGroupIdHistory.length - 1;
-
-        const nextEditGroupId = editGroupIdHistory[
-          Math.max(nextEditGroupIdIdx, 0)
-        ];
-
-        $store.commit('profile/setEditGroupId', {
-          id: nextEditGroupId,
-          affectHistory: false
-        });
-
-        if (fromEditGroup) {
-          this.$router.customData.navHistory.shift();
-
-          return;
-        }
-      }
-
-      // when we enter an endpoint one item will be added to the nav history
-      // so remove two preemptively
-
-      navHistory.splice(0, 2);
-      $router.go(-1);
     }
   }
 };
@@ -75,10 +40,10 @@ export default {
   scoped
   lang="scss"
 >
-@import '../../../sass/variables';
+@import '~scss/_variables.scss';
 
 .return-header {
-  font-family: "Gotham Pro", serif;
+  font-family: 'Gotham Pro', sans-serif;
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -87,7 +52,7 @@ export default {
     top: 16px;
     bottom: 16px;
   }
-  box-shadow: 0 1px 0 $borderColor;
+  box-shadow: 0 1px 0 $layout_border_color;
 
   &__arrow-button {
     display: flex;
@@ -96,8 +61,8 @@ export default {
     width: 40px;
     height: 32px;
     margin-right: 16px;
-    border: 1px solid $borderColor;
-    border-radius: 4px;
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius;
 
     svg {
       width: 23px;

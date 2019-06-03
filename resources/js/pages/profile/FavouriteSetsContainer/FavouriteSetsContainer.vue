@@ -26,13 +26,6 @@ export default {
     CollectionScrollHorizontal
   },
 
-  props: {
-    containerPaddingClass: {
-      type: String,
-      default: ''
-    }
-  },
-
   data() {
     return {
       collectionList: [],
@@ -53,6 +46,10 @@ export default {
 
     collectionListLength() {
       return this.collectionList.length > 0;
+    },
+
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     }
   },
 

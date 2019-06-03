@@ -140,7 +140,7 @@
           this.trackID = response.data.uploadTrack.id;
           console.log(this.trackID);
         }).catch((error) => {
-          console.log(error);
+          console.dir(error);
           this.loading = false;
         });
       },

@@ -53,7 +53,7 @@
 </template>
 <script>
   import BaseDropdown from 'components/BaseDropdown.vue';
-  import ChooseGenres from './../profile/ChooseGenres/ChooseGenres.vue';
+  import ChooseGenres from '../profile/ChooseGenres/ChooseGenres.vue';
   import BaseInput from 'components/BaseInput.vue';
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';

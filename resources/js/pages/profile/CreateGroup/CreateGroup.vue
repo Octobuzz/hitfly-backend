@@ -26,7 +26,7 @@
           class="create-group-description__name-input"
         >
           <template #icon>
-            <PencilIcon/>
+            <PencilIcon />
           </template>
         </BaseInput>
 
@@ -134,13 +134,6 @@ export default {
     PencilIcon
   },
 
-  props: {
-    containerPaddingClass: {
-      type: String,
-      default: ''
-    }
-  },
-
   data() {
     return {
       group: {
@@ -164,6 +157,10 @@ export default {
     creationQueryGenres() {
       return this.group.genres
         .map(genre => genre.id);
+    },
+
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     }
   },
 

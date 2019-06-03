@@ -8,12 +8,8 @@ import AboutPage from './pages/AboutPage.vue';
 
 const routes = [
   {
-    path: '/',
-    component: main.MainPage
-  },
-  {
     path: '/profile',
-    component: profile.ProfilePage,
+    component: profile.ProfileLayout,
     children: [
       {
         path: 'edit',
@@ -24,7 +20,7 @@ const routes = [
         component: profile.CreateGroup
       },
       {
-        path: 'update-group',
+        path: 'edit-group/:editGroupId',
         component: profile.UpdateGroup
       },
       {
@@ -46,10 +42,10 @@ const routes = [
     path: '/upload',
     component: UploadPage
   },
-  {
-    path: '/about',
-    component: AboutPage
-  }
+  // {
+  //   path: '/about',
+  //   component: AboutPage
+  // }
 ];
 
 const router = new VueRouter({
@@ -57,24 +53,11 @@ const router = new VueRouter({
   mode: 'history'
 });
 
-router.customData = {
-  navHistory: []
-};
+// TODO: implement this module
 
 router.beforeEach((to, from, next) => {
-  if (!store.getters['profile/customRedirect']
-      && to.fullPath === '/profile/update-group') {
-    router.customData.navHistory = [];
-    store.commit('profile/flushEditGroupIdHistory');
-
-    return next('/profile');
-  }
-  return next();
-});
-
-router.afterEach((to) => {
-  store.commit('profile/setCustomRedirect', false);
-  router.customData.navHistory.unshift(to);
+  store.commit('history/push', to);
+  next();
 });
 
 Vue.use(VueRouter);

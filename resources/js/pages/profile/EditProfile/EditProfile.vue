@@ -34,7 +34,7 @@
             class="edit-profile-form__name-input"
           >
             <template #icon>
-              <UserIcon/>
+              <UserIcon />
             </template>
           </BaseInput>
 
@@ -101,7 +101,7 @@
         </FormButton>
       </div>
 
-      <EditProfileAuth/>
+      <EditProfileAuth />
     </template>
   </div>
 </template>
@@ -136,13 +136,6 @@ export default {
     ChooseGenres,
     ChooseLocation,
     EditProfileAuth
-  },
-
-  props: {
-    containerPaddingClass: {
-      type: String,
-      default: ''
-    }
   },
 
   data() {
@@ -188,6 +181,10 @@ export default {
       return this.myProfile.roles.some(
         role => role.name === 'Исполнитель'
       );
+    },
+
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     }
   },
 

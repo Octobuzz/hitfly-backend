@@ -1,10 +1,12 @@
-@import '../../../sass/_variables.scss';
+@import '~scss/_variables.scss';
+
+$border_radius: 4px;
 
 .up-page__top{
   padding: 15px;
-  border-radius: $border-radius;
+  border-radius: $border_radius;
   text-align: center;
-  border: 1px dashed $borderColor;
+  border: 1px dashed $layout_border_color;
 
   &.dragging {
     z-index: 9999;
@@ -35,8 +37,8 @@
   }
   &__info{
     font-size: 14px;
-    border-radius: $border-radius;
-    background-color: $color_5;
+    border-radius: $border_radius;
+    background-color: #f0f0f0;
     padding: 10px;
     line-height: 22px;
   }
@@ -52,7 +54,7 @@
   }
 }
 
-@media (min-width: $desktop) {
+@media (min-width: 1025px) {
   .radio-pair{
     flex-direction: row;
     justify-content: space-around;

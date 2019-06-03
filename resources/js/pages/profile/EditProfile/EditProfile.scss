@@ -1,4 +1,4 @@
-@import '../../../../sass/variables';
+@import '~scss/_variables.scss';
 
 $avatarSide: 235px;
 $avatarRightMargin: 30px;
@@ -111,7 +111,7 @@ $formRightPadding: 40px;
       border: {
         width: 1px 0 0 0;
         style: solid;
-        color: $borderColor;
+        color: $layout_border_color;
       }
       margin-bottom: 22px;
     }

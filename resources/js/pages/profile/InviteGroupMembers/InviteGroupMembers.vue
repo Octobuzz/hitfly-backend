@@ -4,7 +4,10 @@
       <div
         v-for="member in invitedMembers"
         :key="member"
-        class="invited-members__user-card"
+        :class="[
+          'invited-members__user-card',
+          { 'invited-members__user-card_error': errorMembers.includes(member) }
+        ]"
       >
         <span class="invited-members__label">
           E-mail участника
@@ -16,9 +19,13 @@
           class="invited-members__close-button"
           @press="removeMember(member)"
         >
-          <CrossIcon/>
+          <CrossIcon />
         </IconButton>
       </div>
+    </div>
+
+    <div v-if="showError" class="invited-members__error">
+      {{ errorMessage }}
     </div>
 
     <div class="invited-members__input-row">
@@ -57,6 +64,18 @@ export default {
   },
   props: {
     invitedMembers: {
+      type: Array,
+      default: () => []
+    },
+    showError: {
+      type: Boolean,
+      default: false
+    },
+    errorMessage: {
+      type: String,
+      default: 'Error occurred!'
+    },
+    errorMembers: {
       type: Array,
       default: () => []
     }

@@ -2,8 +2,10 @@
 
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
+import history from './history';
+import appColumns from './appColumns';
+import loading from './loading';
 import player from './player';
-import profile from './profile';
 
 Vue.use(Vuex);
 
@@ -41,8 +43,10 @@ const mutations = {
 
 export default new Store({
   modules: {
-    player,
-    profile
+    history,
+    appColumns,
+    loading,
+    player
   },
   state,
   getters,

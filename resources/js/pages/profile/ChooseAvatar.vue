@@ -19,7 +19,7 @@
       />
     </transition>
     <label class="avatar__upload-button">
-      <CameraIcon/>
+      <CameraIcon />
       <span class="avatat__text">
         {{ caption }}
       </span>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import CameraIcon from '../../sharedComponents/icons/CameraIcon.vue';
+import CameraIcon from 'components/icons/CameraIcon.vue';
 
 export default {
   components: {
@@ -73,7 +73,7 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     this.fileReader.onload = (e) => {
       this.renderInFirstContainer = !this.renderInFirstContainer;
       this.inputUrl = e.target.result;
@@ -85,7 +85,15 @@ export default {
       const file = e.target.files[0];
 
       if (file) {
-        // TODO: file size validation
+        // allow only files under 10mb
+        if (file.size > 10 * 1024 * 1024) {
+          this.$message(
+            'Размер файла не может превышать 10 мегабайт',
+            'info',
+            { timeout: 2000 }
+          );
+          return;
+        }
 
         this.fileReader.readAsDataURL(file);
         this.$emit('input', file);
@@ -103,7 +111,9 @@ export default {
   scoped
   lang="scss"
 >
-@import '../../../sass/variables';
+@import '~scss/_variables.scss';
+
+$border_radius: 4px;
 
 .avatar {
   display: flex;
@@ -111,8 +121,8 @@ export default {
   position: relative;
   height: 100%;
   overflow: hidden;
-  background: $gradient;
-  border-radius: $border-radius;
+  background: $gradient_radial;
+  border-radius: $border_radius;
 
   &:before {
     content: '';
@@ -121,8 +131,8 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-    border: 1px solid $color_pink;
-    border-radius: $border-radius;
+    border: 1px solid $red-violet;
+    border-radius: $border_radius;
     background: rgba(255, 255, 255, 0.7);
   }
 
@@ -147,7 +157,7 @@ export default {
 
   &__upload-button {
     box-sizing: border-box;
-    font-family: "Gotham Pro", serif;
+    font-family: 'Gotham Pro', sans-serif;
     font-size: 12px;
     color: white;
     display: flex;
@@ -159,7 +169,7 @@ export default {
       right: 16px;
     };
     margin-top: 72%;
-    border-radius: $border-radius;
+    border-radius: $input_border_radius;
     z-index: 10;
     cursor: pointer;
     user-select: none;

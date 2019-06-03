@@ -50,15 +50,15 @@ export default {
   scoped
   lang="scss"
 >
-@import '../../../sass/variables';
+@import '~scss/_variables.scss';
 
 .form-button {
   box-sizing: border-box;
   position: relative;
-  font-family: "Gotham Pro", serif;
+  font-family: "Gotham Pro", sans-serif;
   font-size: 14px;
   width: auto;
-  border-radius: $border-radius;
+  border-radius: $input_border_radius;
   cursor: pointer;
   user-select: none;
   transition: color .2s;
@@ -77,26 +77,26 @@ export default {
     color: white;
     padding: 17px 15px 17px 15px;
     border: none;
-    background: $linear-gradient;
+    background: $gradient_linear;
 
     &:hover {
-      color: $color_6;
+      color: #231f20;
       padding: 16px 14px 16px 14px;
-      border: 1px solid $color_pink;
+      border: 1px solid $red_violet;
       background: transparent;
     }
   }
 
   &_secondary {
-    color: $color_6;
+    color: #231f20;
     padding: 16px 14px 16px 14px;
-    border: 1px solid $color_pink;
+    border: 1px solid $red_violet;
 
     &:hover {
       color: white;
       padding: 17px 15px 17px 15px;
       border: none;
-      background: $linear-gradient;
+      background: $gradient_linear;
     }
   }
 }

@@ -1,4 +1,0 @@
-<template>
-  <!--eslint-disable-next-line-->
-  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16"><defs><path id="i304a" d="M1051 319a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2z"/><path id="i304c" d="M1054 315.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/><path id="i304d" d="M1062 315.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/><clipPath id="i304b"><use fill="#fff" xlink:href="#i304a"/></clipPath></defs><g><g transform="translate(-1051 -315)"><use fill="#fff" fill-opacity="0" stroke="#313131" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#i304b&quot;)" xlink:href="#i304a"/></g><g transform="translate(-1051 -315)"><use fill="#313131" xlink:href="#i304c"/></g><g transform="translate(-1051 -315)"><use fill="#313131" xlink:href="#i304d"/></g></g></svg>
-</template>

@@ -1,4 +1,4 @@
-@import '../../../../sass/variables';
+@import '~scss/_variables.scss';
 
 .social-links {
   &__row {
@@ -80,7 +80,7 @@
     }
 
     &__close-button-mobile {
-      color: $color_pink;
+      color: $red-violet;
       display: initial;
       padding: {
         top: 12px;

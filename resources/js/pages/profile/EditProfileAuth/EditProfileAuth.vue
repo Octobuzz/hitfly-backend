@@ -19,7 +19,7 @@
         :disabled="email.disabled"
       >
         <template #icon>
-          <EnvelopeIcon/>
+          <EnvelopeIcon />
         </template>
       </BaseInput>
 
@@ -62,7 +62,7 @@
         :disabled="password.disabled"
       >
         <template #icon>
-          <KeyIcon/>
+          <KeyIcon />
         </template>
       </BaseInput>
 
@@ -75,7 +75,7 @@
           :disabled="password.disabled"
         >
           <template #icon>
-            <KeyIcon/>
+            <KeyIcon />
           </template>
         </BaseInput>
 
@@ -87,7 +87,7 @@
           :disabled="password.disabled"
         >
           <template #icon>
-            <KeyIcon/>
+            <KeyIcon />
           </template>
         </BaseInput>
       </template>
@@ -284,7 +284,7 @@ export default {
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="./EditProfileAuth.scss"

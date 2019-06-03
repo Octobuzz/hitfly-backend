@@ -1,17 +1,16 @@
-@import '../../../../sass/variables';
+@import '~scss/_variables.scss';
 
-$coverSide: 235px;
-$coverRightMargin: 30px;
-$descriptionMaxWidth: 991px;
-$descriptionRightPadding: 37px;
+$cover_side: 235px;
+$cover_right_margin: 30px;
+$description_max_width: 991px;
+$description_right_padding: 37px;
 
 .create-group {
   display: flex;
   flex-wrap: nowrap;
 
   &_loading {
-    // TODO: make header/footer width as variables
-    height: calc(100vh - 185px);
+    height: calc(100vh - #{$header_height_desktop} - #{$footer_height_desktop});
   }
 
   &-container {
@@ -30,12 +29,12 @@ $descriptionRightPadding: 37px;
   }
 
   &-cover {
-    min-width: $coverSide;
-    width: $coverSide;
-    min-height: $coverSide;
-    height: $coverSide;
+    min-width: $cover_side;
+    width: $cover_side;
+    min-height: $cover_side;
+    height: $cover_side;
     margin: {
-      right: $coverRightMargin;
+      right: $cover_right_margin;
       bottom: 24px;
     }
   }
@@ -44,9 +43,9 @@ $descriptionRightPadding: 37px;
     box-sizing: border-box;
     flex-wrap: wrap;
     flex-grow: 1;
-    max-width: $descriptionMaxWidth;
+    max-width: $description_max_width;
     padding: {
-      right: $descriptionRightPadding;
+      right: $description_right_padding;
       bottom: 28px;
     }
 
@@ -124,10 +123,10 @@ $descriptionRightPadding: 37px;
   &-footer {
     box-sizing: border-box;
     position: relative;
-    max-width: $coverSide
-      + $coverRightMargin
-      + $descriptionMaxWidth
-      + $descriptionRightPadding;
+    max-width: $cover_side
+      + $cover_right_margin
+      + $description_max_width
+      + $description_right_padding;
     padding-right: 0;
     margin-bottom: 62px;
 
@@ -137,7 +136,7 @@ $descriptionRightPadding: 37px;
       border: {
         width: 1px 0 0 0;
         style: solid;
-        color: $borderColor;
+        color: $layout_border_color;
       }
       margin-bottom: 22px;
     }
@@ -145,7 +144,7 @@ $descriptionRightPadding: 37px;
     &__save-button {
       box-sizing: border-box;
       display: block;
-      max-width: 180px + $descriptionRightPadding;
+      max-width: 180px + $description_right_padding;
       height: 50px;
       margin-left: auto;
     }
@@ -158,7 +157,7 @@ $descriptionRightPadding: 37px;
   }
 
   .create-group-footer {
-    max-width: $descriptionMaxWidth;
+    max-width: $description_max_width;
     padding-right: 0;
   }
 }
