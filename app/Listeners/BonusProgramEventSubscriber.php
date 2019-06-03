@@ -227,7 +227,7 @@ class BonusProgramEventSubscriber
         $user->purseBonus->processOperation($operation);
     }
 
-    public function registerUser(User $user)
+    public function registerUser($user)
     {
         $bonusType = BonusType::query()
             ->where('constant_name', '=', BonusProgramTypesInterfaces::USER_REGISTER)
