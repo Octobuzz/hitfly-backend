@@ -20,7 +20,7 @@
         </BaseInput>
         <p class="add-track-filename" v-show="filename.length > 0">{{ filename }}</p>
 
-        <BaseInput
+        <!--<BaseInput
           v-model="trackInfo.year.input"
           label="Год создания песни"
           class="add-track-description__year-input"
@@ -28,7 +28,17 @@
           <template #icon>
             <CalendarIcon/>
           </template>
-        </BaseInput>
+        </BaseInput>-->
+
+        <ChooseYear
+          v-model="trackInfo.year.input"
+          class="add-track-description__year-input"
+          title="Год создания песни"
+        >
+          <template #icon>
+            <CalendarIcon/>
+          </template>
+        </ChooseYear>
 
         <FileInput
           label="Загрузить текст песни"
@@ -120,6 +130,7 @@
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
   import NotepadIcon from 'components/icons/NotepadIcon.vue';
   import CreateAlbum from './CreateAlbum.vue';
+  import ChooseYear from '../profile/ChooseYear/ChooseYear.vue';
   import gql from 'graphql-tag';
 
   export default{
@@ -164,7 +175,7 @@
         this.trackInfo.text = file;
       },
       totalBands() {
-        return this.bands.push(this.myData);
+        return this.bands.unshift(this.myData);
       },
       changeTab() {
         this.createAlbum = false
@@ -205,7 +216,8 @@
       PencilIcon,
       CalendarIcon,
       NotepadIcon,
-      CreateAlbum
+      CreateAlbum,
+      ChooseYear
     },
     apollo: {
       getAlbums: {
