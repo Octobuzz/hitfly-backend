@@ -17,15 +17,19 @@ class BirthdayCongratulationsEmailJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $listOfUsers;
     public $user;
-    public $recommendation;
+    public $discount;
+    public $promocode;
+    public $video;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($user, $recommendation)
+    public function __construct($user, $discount,$promocode,$video)
     {
         $this->user = $user;
-        $this->recommendation = $recommendation;
+        $this->discount = $discount;
+        $this->promocode = $promocode;
+        $this->video = $video;
     }
 
     /**
@@ -33,7 +37,7 @@ class BirthdayCongratulationsEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new BirthdayCongratulation($this->user, $this->recommendation));
+        return Mail::to($this->user->email)->send(new BirthdayCongratulation($this->user, $this->discount, $this->promocode,$this->video));
     }
 
     /**

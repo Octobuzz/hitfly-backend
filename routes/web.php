@@ -16,7 +16,7 @@ Route::redirect('/', 'login', 301);
 ////        'value' => 'Значение',
 ////    ];
 //
-//    return $notification->fewComments();
+//    return $notification->birthdayCongratulation();
 //});
 Auth::routes();
 

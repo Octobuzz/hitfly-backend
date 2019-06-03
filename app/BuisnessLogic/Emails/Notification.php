@@ -3,6 +3,7 @@
 namespace App\BuisnessLogic\Emails;
 
 use App\BuisnessLogic\Events\Event;
+use App\BuisnessLogic\Promo\PromoCode;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\FewCommentsJob;
@@ -11,6 +12,7 @@ use App\Jobs\MonthDispatchNotVisitedJob;
 use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
+use App\Mail\BirthdayCongratulation;
 use App\Mail\FewComments;
 use  App\User;
 use Carbon\Carbon;
@@ -36,9 +38,12 @@ class Notification
     public function birthdayCongratulation()
     {
         $this->listOfUsers = $this->getUsersBirthdayToday();
-        $recommend = $this->recommendation;
+       // $this->listOfUsers = User::query()->where('id',31)->get();
+        //$recommend = $this->recommendation;
+        $discount = new PromoCode();
         foreach ($this->listOfUsers as $user) {
-            dispatch(new BirthdayCongratulationsEmailJob($user, $recommend->getBirthdayPlayLists($user)))->onQueue('low');
+            //return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo());
+            dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo()))->onQueue('low');
         }
     }
 
@@ -50,6 +55,15 @@ class Notification
     protected function getUsersBirthdayToday()
     {
         return User::query()->whereMonth('birthday', Carbon::today()->month)->whereDay('birthday', Carbon::today()->day)->whereNotNull('email')->get();
+    }
+
+    protected function getBirthdayVideo()
+    {
+        // TODO получать реальное видео
+        return [
+            'url'=>'/fake_url',
+            'preview_img'=> env('APP_URL').'/images/emails/img/video.png'
+        ];
     }
 
     public function fewComments()
