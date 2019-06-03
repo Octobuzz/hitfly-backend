@@ -18,6 +18,7 @@ class UserRegisterJob implements ShouldQueue
 
     /**
      * UserRegisterJob constructor.
+     * Подтверждение регистрации пользователя.
      *
      * @param User $user
      */

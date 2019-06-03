@@ -11,6 +11,7 @@ use App\Jobs\MonthDispatchNotVisitedJob;
 use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
+use App\Mail\FewComments;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
@@ -57,7 +58,7 @@ class Notification
 
         $tracks = new Tracks();
         foreach ($users as $user) {
-            dispatch(new FewCommentsJob($user, $tracks->getNewTracks(3)))->onQueue('low');
+            dispatch(new FewCommentsJob($user, $tracks->getNewTracks(4)))->onQueue('low');
         }
     }
 

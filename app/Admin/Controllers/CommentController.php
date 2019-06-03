@@ -16,6 +16,7 @@ class CommentController extends Controller
 {
     use HasResourceActions;
     const ROUTE_NAME = 'ROUTE_COMMENT';
+
     /**
      * Index interface.
      *
@@ -49,7 +50,7 @@ class CommentController extends Controller
             ->description('просмотр')
             ->body($this->detail($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -69,7 +70,7 @@ class CommentController extends Controller
             ->description('редактирование')
             ->body($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
     }
@@ -88,7 +89,7 @@ class CommentController extends Controller
             ->description('создание')
             ->body($this->form())
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')]
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')]
             );
     }
 

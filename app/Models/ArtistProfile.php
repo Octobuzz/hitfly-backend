@@ -25,8 +25,8 @@ class ArtistProfile extends Model
         $this->belongsTo(User::class);
     }
 
-    public function setCareerStartAttribute($attr){
-
-        $this->attributes['career_start'] = Carbon::parse($attr)->format("Y-m-d");
+    public function setCareerStartAttribute($attr)
+    {
+        $this->attributes['career_start'] = Carbon::parse($attr)->format('Y-m-d');
     }
 }

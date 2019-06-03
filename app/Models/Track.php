@@ -116,4 +116,15 @@ class Track extends Model
 
         return $baseImage;
     }
+
+    public function getImageUrl(): ?string
+    {
+        if (null === $this->getImage()) {
+            $img = 'default.jpg';
+        } else {
+            $img = $this->getImage();
+        }
+
+        return '/storage/'.$img;
+    }
 }

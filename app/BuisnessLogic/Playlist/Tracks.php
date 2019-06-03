@@ -46,9 +46,9 @@ class Tracks implements TracksContract
             $trackList[] = [
                 'track_name' => $track->track_name,
                 'singer' => $track->singer,
-                'album_img' => $track->album->getAlbumImageURL(),
+                'album_img' => env('APP_URL').$track->getImageUrl(),
                 'link' => 'url', //todo реальный урл(пока неизвестно куда должна идти ссылка)
-                'track_time' => '3:54', //todo получение времени трека
+//                'track_time' => '3:54', //todo получение времени трека
             ];
         }
 

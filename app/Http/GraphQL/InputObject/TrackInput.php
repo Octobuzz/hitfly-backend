@@ -35,7 +35,7 @@ class TrackInput extends GraphQLType
                 'name' => 'genres',
                 'description' => 'Жанры трека',
                 'type' => Type::nonNull(Type::listOf(Type::int())),
-                'rules' => ['required', 'array',"min:1","max:5"],
+                'rules' => ['required', 'array', 'min:1', 'max:5'],
             ],
             'singer' => [
                 'name' => 'singer',

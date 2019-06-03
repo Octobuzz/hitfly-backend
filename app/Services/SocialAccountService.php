@@ -116,7 +116,6 @@ class SocialAccountService
             //$user = $authSocial->user();
 
             if (null !== $authSocial) {
-
                 $user = $this->createOrGetUser($providerUser, $provider, $authSocial);
             }
         } catch (\Exception $e) {

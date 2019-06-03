@@ -50,7 +50,7 @@ class ChartController extends Controller
             ->description('просмотр')
             ->body($this->detail($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -70,7 +70,7 @@ class ChartController extends Controller
             ->description('Редактирование')
             ->body($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -89,7 +89,7 @@ class ChartController extends Controller
             ->description('Создание')
             ->body($this->form())
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
     }
