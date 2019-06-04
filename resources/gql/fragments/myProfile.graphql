@@ -12,9 +12,7 @@ fragment myProfile on MyProfile {
     dateRegister
     careerStart
     followersCount
-#    favouriteSongsCount
     favoriteSongsCount
-#    favouriteAlbumsCount
     favoriteAlbumCount
     avatar(
         sizes: [size_56x56, size_235x235]
@@ -23,7 +21,7 @@ fragment myProfile on MyProfile {
         url
     }
     roles {
-        name
+        ...role
     }
     location {
         ...location

@@ -28,6 +28,7 @@
           class="create-group-description__name-input"
           :show-error="group.name.showError"
           :error-message="group.name.errorMessage"
+          @input="group.name.showError = false"
         >
           <template #icon>
             <PencilIcon />
@@ -49,10 +50,12 @@
         </span>
 
         <ChooseGenres
-          v-model="group.genres"
+          v-model="group.genres.list"
           class="create-group-description__genre-tag-container"
           dropdown-class="create-group-description__dropdown"
           :selected-genres-limit="5"
+          :none-selected-error="group.genres.noneSelectedError"
+          @open="group.genres.noneSelectedError = false"
         />
 
         <span class=" h3 create-group-description__header_subsection">
@@ -68,8 +71,18 @@
           :error-message="group.activity.errorMessage"
         />
 
-        <span class="create-group-description__header_subsection">
+        <span class="h3 create-group-description__header_subsection">
           Ссылки на соц. сети
+        </span>
+
+        <span
+          :class="[
+            'create-group-description__social-links-paragraph',
+            'create-group-description__regular-text'
+          ]"
+        >
+          Мы не будем показывать ссылки другим пользователям.
+          Они нужны для того, чтобы в случае необходимости мы смогли связаться с Вами.
         </span>
 
         <SocialMediaLinks :links.sync="group.socialLinks" />
@@ -183,7 +196,10 @@ export default {
           showError: false,
           errorMessage: ''
         },
-        genres: [],
+        genres: {
+          list: [],
+          noneSelectedError: false
+        },
         socialLinks: [],
         invitedMembers: {
           list: [],
@@ -199,7 +215,7 @@ export default {
 
   computed: {
     creationQueryGenres() {
-      return this.group.genres
+      return this.group.genres.list
         .map(genre => genre.id);
     },
     editGroupId() {
@@ -251,6 +267,40 @@ export default {
     },
 
     validateInput() {
+      const showValidationError = () => {
+        this.$message(
+          'Данные группы не обновлены. Проверьте правильность введенных данных',
+          'info',
+          { timeout: 2000 }
+        );
+      };
+
+      const { name, activity, genres } = this.group;
+      let hasErrors = false;
+
+      if (name.input === '') {
+        name.showError = true;
+        name.errorMessage = 'Имя не может быть пустым';
+        hasErrors = true;
+      }
+
+      if (activity.input === '') {
+        activity.showError = true;
+        activity.errorMessage = 'Описание не может быть пустым';
+        hasErrors = true;
+      }
+
+      if (genres.list.length === 0) {
+        genres.noneSelectedError = true;
+        hasErrors = true;
+      }
+
+      if (hasErrors) {
+        showValidationError();
+
+        return false;
+      }
+
       return true;
     },
 
@@ -288,7 +338,7 @@ export default {
       });
     },
 
-    removeErrors() {
+    removeValidationErrors() {
       const { name, activity, invitedMembers } = this.group;
 
       name.showError = false;
@@ -300,7 +350,7 @@ export default {
     updateGroup() {
       if (this.isSaving) return;
 
-      this.removeErrors();
+      this.removeValidationErrors();
 
       if (!this.validateInput()) return;
 
@@ -320,7 +370,10 @@ export default {
             .map(sl => ({
               socialType: sl.network,
               link: sl.username
-            })),
+            }))
+            .filter(
+              sl => sl.socialType !== '' && sl.link !== ''
+            ),
           activeMemberIds: this.group.activeMemberIds,
           invitedMembers: this.group.invitedMembers.list
             .map(email => ({
@@ -352,8 +405,6 @@ export default {
             { timeout: 2000 }
           );
         }
-
-        console.dir(error.graphQLErrors.map(err => err.validation));
       });
     }
   },
@@ -379,7 +430,7 @@ export default {
           activeMembers
         } = musicGroup;
 
-        this.group.genres = genres;
+        this.group.genres.list = genres;
         this.group.cover.current = avatarGroup
           .filter(image => image.size === 'size_235x235')[0].url;
         this.group.name.input = name;
@@ -397,6 +448,12 @@ export default {
 
       error(err) {
         this.notifyInitialization(false);
+        this.$message(
+          'На сервере произошла ошибка. Не удалось загрузить данные',
+          'info',
+          { timeout: 2000 }
+        );
+
         console.dir(err);
       }
     }

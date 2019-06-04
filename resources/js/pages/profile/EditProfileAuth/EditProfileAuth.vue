@@ -248,7 +248,8 @@ export default {
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_EMAIL,
         variables: {
-          password: this.email.input
+          email: this.email.input,
+          username: this.username
         }
       })
         .then(() => {
@@ -259,6 +260,12 @@ export default {
           );
         })
         .catch((err) => {
+          this.$message(
+            'Ошибка сервера. Email не обновлен',
+            'info',
+            { timeout: 2000 }
+          );
+
           console.dir(err);
         })
         .then(() => {
@@ -276,6 +283,12 @@ export default {
           this.email.input = myProfile.email;
         },
         error(err) {
+          this.$message(
+            'Ошибка сервера. Данные авторизации не получены',
+            'info',
+            { timeout: 2000 }
+          );
+
           console.dir(err);
         }
       };

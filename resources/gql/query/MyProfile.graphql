@@ -1,13 +1,14 @@
 #import "../fragments/genre.graphql"
 #import "../fragments/user.graphql"
 #import "../fragments/musicGroup.graphql"
+#import "../fragments/role.graphql"
 
 query MyProfile {
     myProfile {
         id
         username
         roles {
-            name
+            ...role
         }
         dateRegister
         careerStart

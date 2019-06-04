@@ -41,6 +41,7 @@
             {{ area_region }}
           </span>
         </template>
+        <span v-else />
       </template>
 
       <template #option="{ option: { title, area_region } }">

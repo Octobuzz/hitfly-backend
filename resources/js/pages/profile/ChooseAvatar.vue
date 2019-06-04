@@ -85,6 +85,15 @@ export default {
       const file = e.target.files[0];
 
       if (file) {
+        if (file.type.split('/')[0] !== 'image') {
+          this.$message(
+            'Необходимо выбрать файл изображения',
+            'info',
+            { timeout: 2000 }
+          );
+          return;
+        }
+
         // allow only files under 10mb
         if (file.size > 10 * 1024 * 1024) {
           this.$message(

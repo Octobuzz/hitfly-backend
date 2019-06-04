@@ -231,7 +231,7 @@ export default {
         this.$message(
           'На сервере произошла ошибка. Группа не создана',
           'info',
-          { timeout: 60000 }
+          { timeout: 2000 }
         );
         console.dir(error);
       });

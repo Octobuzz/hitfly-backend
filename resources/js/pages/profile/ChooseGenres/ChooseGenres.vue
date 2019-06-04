@@ -18,7 +18,12 @@
       />
     </div>
 
-    <div :class="['choose-genres__dd']">
+    <div
+      :class="[
+        'choose-genres__dd',
+        { 'choose-genres__dd_none-selected-error': noneSelectedError }
+      ]"
+    >
       <span
         :class="[
           'choose-genres__dd-label',
@@ -54,7 +59,13 @@
         </template>
       </v-select>
 
-      <span class="choose-genres__max-info">
+      <span
+        v-if="noneSelectedError"
+        class="choose-genres__max-info"
+      >
+        Минимальное количество жанров: 1
+      </span>
+      <span v-else-if="selectedGenresLimit !== Infinity" class="choose-genres__max-info">
         Максимальное количество жанров: 5
       </span>
     </div>
@@ -85,6 +96,11 @@ export default {
     selectedGenresLimit: {
       type: Number,
       default: 5
+    },
+
+    noneSelectedError: {
+      type: Boolean,
+      default: false
     },
 
     // to get dropdownClass option to work we should define class
@@ -144,6 +160,7 @@ export default {
 
     onOpen() {
       this.ddClosed = false;
+      this.$emit('open');
     },
 
     onClose() {

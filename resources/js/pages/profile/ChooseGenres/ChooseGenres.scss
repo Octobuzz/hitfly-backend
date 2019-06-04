@@ -28,6 +28,10 @@
     display: block;
     width: 100%;
     position: relative;
+
+    &_none-selected-error {
+      color: $text_color_error;
+    }
   }
 
   &__dd-label {
@@ -74,6 +78,10 @@
         transform: rotate(180deg);
       }
     }
+  }
+
+  &__dd_none-selected-error .multiselect {
+    border-color: $text_color_error;
   }
 }
 

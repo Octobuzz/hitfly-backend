@@ -3,7 +3,7 @@ mutation UpdateMyProfile(
 ) {
     updateMyProfile(
         profile: {
-          email: $email
+            email: $email
         },
     ) {
         id

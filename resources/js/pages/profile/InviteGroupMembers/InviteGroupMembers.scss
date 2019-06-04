@@ -19,7 +19,7 @@
     background: white;
 
     &_error {
-      border-color: #d0021b;;
+      border-color: $text_color_error;;
     }
   }
 
@@ -69,7 +69,7 @@
   }
 
   &__error {
-    color: #d0021b;
+    color: $text_color_error;
     font-size: 12px;
     margin-bottom: 24px;
   }

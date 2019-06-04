@@ -155,7 +155,7 @@ export default {
     }
 
     &_error {
-      border-color: #d0021b;
+      border-color: $text_color_error;
     }
   }
 
@@ -182,7 +182,7 @@ export default {
   }
 
   &__error-message {
-    color: #d0021b;
+    color: $text_color_error;
     font-size: 12px;
   }
 }

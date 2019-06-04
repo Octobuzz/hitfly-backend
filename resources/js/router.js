@@ -53,8 +53,6 @@ const router = new VueRouter({
   mode: 'history'
 });
 
-// TODO: implement this module
-
 router.beforeEach((to, from, next) => {
   store.commit('history/push', to);
   next();
