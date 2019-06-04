@@ -10,6 +10,7 @@ namespace App\BuisnessLogic\Events;
 
 use App\Contracts\Event\EventsContract;
 use App\User;
+use Jenssegers\Date\Date;
 
 class Event implements EventsContract
 {
@@ -48,15 +49,18 @@ class Event implements EventsContract
         return [
             [
                 'name' => 'Название',
-                'img' => '/url',
-                'link' => '/event/url',
-                'participant' => 'The Beatles',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+                'url' => '/fake_url',
             ],
             [
-                'name' => 'Название',
-                'img' => '/url',
-                'link' => '/event/url',
-                'participant' => 'The Beatles',
+                'name' => 'Название2',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+                'url' => '/fake_url',
+            ],
+            [
+                'name' => 'Название3',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+                'url' => '/fake_url',
             ],
         ];
     }
@@ -75,11 +79,11 @@ class Event implements EventsContract
         return [
             [
                 'name' => 'Название',
-                'date' => '2019-01-03',
+                'date' => Date::parse('2019-01-03')->format('d F'),
             ],
             [
                 'name' => 'Название2',
-                'date' => '2019-01-05',
+                'date' => Date::parse('2019-01-05')->format('d F'),
             ],
         ];
     }
@@ -94,7 +98,8 @@ class Event implements EventsContract
     }
 
     /**
-     * Новые мероприятия(кроме звезды)
+     * Новые мероприятия(кроме звезды).
+     *
      * @return mixed
      */
     public function getNewEvents()

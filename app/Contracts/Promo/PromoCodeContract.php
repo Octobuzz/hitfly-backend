@@ -9,8 +9,7 @@ interface PromoCodeContract
     /*
      * получить промокод на годовую подписку
      */
-    public function getYearSubscribePromoCode():string;
+    public function getYearSubscribePromoCode(): string;
 
-    public function getYearSubscribeDiscount():Discount;
-
+    public function getYearSubscribeDiscount(): Discount;
 }

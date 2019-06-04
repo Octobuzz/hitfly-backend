@@ -19,7 +19,7 @@ class BirthdayCongratulation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, $discount, $promocode,$video)
+    public function __construct(User $user, $discount, $promocode, $video)
     {
         $this->discountSize = $discount->getDiscountSize();
         $this->discountType = $discount->getDiscountType();

@@ -24,7 +24,7 @@ class BirthdayCongratulationsEmailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($user, $discount,$promocode,$video)
+    public function __construct($user, $discount, $promocode, $video)
     {
         $this->user = $user;
         $this->discount = $discount;
@@ -37,7 +37,7 @@ class BirthdayCongratulationsEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new BirthdayCongratulation($this->user, $this->discount, $this->promocode,$this->video));
+        return Mail::to($this->user->email)->send(new BirthdayCongratulation($this->user, $this->discount, $this->promocode, $this->video));
     }
 
     /**

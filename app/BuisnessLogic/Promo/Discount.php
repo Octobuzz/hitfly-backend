@@ -1,17 +1,16 @@
 <?php
 
-
 namespace App\BuisnessLogic\Promo;
-
 
 final class Discount
 {
-    private $discountSize, $discountType;
+    private $discountSize;
+    private $discountType;
 
     const TYPE_PERCENT = 'PERCENT';
     const TYPE_NATURAL = 'NATURAL';
 
-    final public function __construct(int $discountSize, $discountType)
+    public function __construct(int $discountSize, $discountType)
     {
         $this->discountSize = $discountSize;
         switch ($discountType) {
@@ -26,13 +25,13 @@ final class Discount
         }
     }
 
-    final public function getDiscountType():string
+    public function getDiscountType(): string
     {
         return env('DISCOUNT_TYPE_'.$this->discountType);
     }
-    final public function getDiscountSize():int
+
+    public function getDiscountSize(): int
     {
         return $this->discountSize;
     }
-
 }

@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class RemindForEventMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $event;
+    public $currEvent;
     public $user;
     public $eventsList;
 
@@ -24,7 +24,7 @@ class RemindForEventMail extends Mailable
     public function __construct($event, User $user, $eventsList)
     {
         $this->user = $user;
-        $this->event = $event;
+        $this->currEvent = $event;
         $this->eventsList = $eventsList;
     }
 
