@@ -35,6 +35,6 @@ class RequestForEventJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new RequestForEventMail($this->event, $this->user, $this->eventsList));
+        return \Mail::to($this->user->email)->send(new RequestForEventMail($this->user, $this->event, $this->eventsList));
     }
 }

@@ -20,7 +20,7 @@ class RequestForEventMail extends Mailable
      * @param $event
      * @param User $user
      */
-    public function __construct($event, User $user, $eventsList)
+    public function __construct(User $user, $event, $eventsList)
     {
         $this->user = $user;
         $this->event = $event;

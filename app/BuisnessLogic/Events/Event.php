@@ -92,8 +92,9 @@ class Event implements EventsContract
     {
         // TODO: Implement getEventById() method.
         return[
-            'name' => 'Битва музыкантов',
-            'link' => '/url',
+            'name' => 'Название',
+            'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+            'url' => '/fake_url',
         ];
     }
 

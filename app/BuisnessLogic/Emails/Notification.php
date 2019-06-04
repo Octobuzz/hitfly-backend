@@ -17,6 +17,7 @@ use App\Mail\BirthdayCongratulation;
 use App\Mail\FewComments;
 use App\Mail\NewEventNotificationMail;
 use App\Mail\RemindForEventMail;
+use App\Mail\RequestForEventMail;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
@@ -174,7 +175,8 @@ class Notification
      */
     public function requestForEvent(User $user, $event)
     {
-        dispatch(new RequestForEventJob($user, $this->events->getEventById(1), $this->events->getUpcomingEvents(3)))->onQueue('low');
+        //return new RequestForEventMail( $user, $this->events->getEventById(1), $this->events->getThisMonthEvents());
+        dispatch(new RequestForEventJob($user, $this->events->getEventById(1), $this->events->getThisMonthEvents()))->onQueue('low');
     }
 
     /**
