@@ -92,4 +92,30 @@ class Event implements EventsContract
             'link' => '/url',
         ];
     }
+
+    /**
+     * Новые мероприятия(кроме звезды)
+     * @return mixed
+     */
+    public function getNewEvents()
+    {
+        // TODO: реальные мероприятия
+        return [
+            [
+                'name' => 'Название',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+                'url' => '/fake_url',
+            ],
+            [
+                'name' => 'Название2',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+                'url' => '/fake_url',
+            ],
+            [
+                'name' => 'Название3',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+                'url' => '/fake_url',
+            ],
+        ];
+    }
 }

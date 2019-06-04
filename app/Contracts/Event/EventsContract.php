@@ -18,4 +18,10 @@ interface EventsContract
     public function getUpcomingEventsForUser(User $user);
 
     public function getEventById(int $id);
+
+    /**
+     * Новые мероприятия(кроме звезды)
+     * @return mixed
+     */
+    public function getNewEvents();
 }

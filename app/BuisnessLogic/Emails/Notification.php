@@ -9,11 +9,13 @@ use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
+use App\Jobs\NewEventNotificationJob;
 use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
 use App\Mail\FewComments;
+use App\Mail\NewEventNotificationMail;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
@@ -184,5 +186,31 @@ class Notification
             $topUrl = '/url';
             dispatch(new ReachTopJob($track, $topUrl, $this->events->getUpcomingEvents(3), $topCount))->onQueue('low');
         }
+    }
+
+
+    /**
+     * Нотификации о новом мероприятии(кроме звезды)
+     */
+    public function newEventNotification()
+    {
+        $users = $this->getSubscribersToEvent();
+        $events = $this->events->getNewEvents();
+        if(!empty($events)) {
+            foreach ($users as $user) {
+//                return new NewEventNotificationMail($events, $user);
+                dispatch(new NewEventNotificationJob($events, $user))->onQueue('low');
+            }
+        }
+    }
+
+    /**
+     * получить список подписчиков на события
+     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    private function getSubscribersToEvent()
+    {
+        // TODO: выборка пользователей подписаных на рассылку о событиях
+        return User::query()->where('id', '=', 31)->get();
     }
 }
