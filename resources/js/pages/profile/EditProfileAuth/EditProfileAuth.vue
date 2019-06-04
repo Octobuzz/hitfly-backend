@@ -218,6 +218,11 @@ export default {
   methods: {
     changePassword() {
       this.password.disabled = !this.password.disabled;
+      this.password.current.input = '';
+      this.password.new.input = '';
+      this.password.confirmatory.input = '';
+
+      this.removePasswordErrors();
     },
 
     changeEmail() {
@@ -261,7 +266,7 @@ export default {
 
       if (current.input === '') {
         current.showError = true;
-        current.errorMessage = 'Укажите старый пароль';
+        current.errorMessage = 'Укажите текущий пароль';
         hasErrors = true;
       }
 
