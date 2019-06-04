@@ -24,6 +24,7 @@ fragment myProfile on MyProfile {
     }
     roles {
         name
+        slug
     }
     location {
         ...location

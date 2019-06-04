@@ -17,6 +17,9 @@
         label="E-mail"
         class="edit-profile-auth__email-input"
         :disabled="email.disabled"
+        :show-error="email.showError"
+        :error-message="email.errorMessage"
+        @input="email.showError = false"
       >
         <template #icon>
           <EnvelopeIcon />
@@ -60,6 +63,9 @@
         :password="true"
         :label="passwordLabel"
         :disabled="password.disabled"
+        :show-error="password.current.showError"
+        :error-message="password.current.errorMessage"
+        @input="removePasswordErrors"
       >
         <template #icon>
           <KeyIcon />
@@ -73,6 +79,9 @@
           :password="true"
           label="Новый пароль"
           :disabled="password.disabled"
+          :show-error="password.new.showError"
+          :error-message="password.new.errorMessage"
+          @input="removePasswordErrors"
         >
           <template #icon>
             <KeyIcon />
@@ -85,6 +94,9 @@
           :password="true"
           label="Подтвердите пароль"
           :disabled="password.disabled"
+          :show-error="password.confirmatory.showError"
+          :error-message="password.confirmatory.errorMessage"
+          @input="removePasswordErrors"
         >
           <template #icon>
             <KeyIcon />
@@ -135,6 +147,8 @@ export default {
   },
   data() {
     return {
+      myProfile: {},
+
       email: {
         disabled: true,
         isSaving: false,
@@ -207,21 +221,82 @@ export default {
     },
 
     changeEmail() {
+      if (!this.email.enabled) {
+        this.email.showError = false;
+        this.email.input = this.myProfile.email;
+      }
+
       this.email.disabled = !this.email.disabled;
+    },
+
+    removePasswordErrors() {
+      this.password.new.showError = false;
+      this.password.confirmatory.showError = false;
+      this.password.current.showError = false;
+    },
+
+    validatePassword() {
+      const showValidationError = () => {
+        this.$message(
+          'Пароль не обновлен. Проверьте правильность введенных данных',
+          'info',
+          { timeout: 2000 }
+        );
+      };
+
+      const { new: newPw, confirmatory, current } = this.password;
+      let hasErrors = false;
+
+      if (newPw.input === '') {
+        newPw.showError = true;
+        newPw.errorMessage = 'Пароль не может быть пустым';
+        hasErrors = true;
+      }
+
+      if (confirmatory.input !== newPw.input) {
+        confirmatory.showError = true;
+        confirmatory.errorMessage = 'Пароли должны совпадать';
+        hasErrors = true;
+      }
+
+      if (current.input === '') {
+        current.showError = true;
+        current.errorMessage = 'Укажите старый пароль';
+        hasErrors = true;
+      }
+
+      if (hasErrors) {
+        showValidationError();
+      }
+
+      return !hasErrors;
     },
 
     savePassword() {
       if (this.password.isSaving) return;
+
+      const { new: newPw, confirmatory, current } = this.password;
+
+      this.removePasswordErrors();
+
+      if (!this.validatePassword()) return;
 
       this.password.isSaving = true;
 
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_PASSWORD,
         variables: {
-          password: this.password.new.input
+          password: newPw.input,
+          confirmPassword: confirmatory.input,
+          oldPassword: current.input
         }
       })
         .then(() => {
+          this.password.disabled = true;
+          newPw.input = '';
+          confirmatory.input = '';
+          current.input = '';
+
           this.$message(
             'Пароль успешно изменен',
             'info',
@@ -229,30 +304,82 @@ export default {
           );
         })
         .catch((err) => {
-          console.dir(err);
+          if (err.message === 'GraphQL error: Старый пароль неверный') {
+            current.showError = true;
+            current.errorMessage = 'Указан неверный пароль';
+          } else if (err.message === 'GraphQL error: validation') {
+            const errors = err.graphQLErrors[0].validation;
+
+            if (errors['password.password']) {
+              newPw.showError = true;
+              [newPw.errorMessage] = errors['password.password'];
+            }
+
+            if (errors['password.confirmPassword']) {
+              confirmatory.showError = true;
+              [confirmatory.errorMessage] = errors['password.confirmPassword'];
+            }
+
+            if (errors['password.oldPassword']) {
+              current.showError = true;
+              [current.errorMessage] = errors['password.oldPassword'];
+            }
+
+            this.$message(
+              'Ошибка валидации. Пароль не обновлен',
+              'info',
+              { timeout: 2000 }
+            );
+          } else {
+            this.$message(
+              'Ошибка сервера. Пароль не обновлен',
+              'info',
+              { timeout: 2000 }
+            );
+
+            console.dir(err);
+          }
         })
         .then(() => {
           this.password.isSaving = false;
-          this.password.disabled = true;
-          this.password.current.input = '';
-          this.password.new.input = '';
-          this.password.confirmatory.input = '';
         });
+    },
+
+    validateEmail() {
+      if (this.email.input === '') {
+        this.email.showError = true;
+        this.email.errorMessage = 'Поле не может быть пустым';
+
+        return false;
+      }
+
+      if (this.email.input === this.myProfile.email) {
+        this.email.showError = true;
+        this.email.errorMessage = 'Введите новый email';
+
+        return false;
+      }
+
+      return true;
     },
 
     saveEmail() {
       if (this.email.isSaving) return;
+
+      this.email.showError = false;
+
+      if (!this.validateEmail()) return;
 
       this.email.isSaving = true;
 
       this.$apollo.mutate({
         mutation: gql.mutation.UPDATE_EMAIL,
         variables: {
-          email: this.email.input,
-          username: this.username
+          email: this.email.input
         }
       })
         .then(() => {
+          this.email.disabled = true;
           this.$message(
             'E-mail успешно изменен',
             'info',
@@ -260,17 +387,27 @@ export default {
           );
         })
         .catch((err) => {
-          this.$message(
-            'Ошибка сервера. Email не обновлен',
-            'info',
-            { timeout: 2000 }
-          );
+          if (err.message === 'GraphQL error: validation') {
+            this.email.showError = true;
+            [this.email.errorMessage] = err.graphQLErrors[0].validation.email;
 
-          console.dir(err);
+            this.$message(
+              'Ошибка валидации. Email не обновлен',
+              'info',
+              { timeout: 2000 }
+            );
+          } else {
+            this.$message(
+              'Ошибка сервера. Email не обновлен',
+              'info',
+              { timeout: 2000 }
+            );
+
+            console.dir(err);
+          }
         })
         .then(() => {
           this.email.isSaving = false;
-          this.email.disabled = true;
         });
     }
   },
@@ -280,6 +417,7 @@ export default {
       return {
         query: gql.query.MY_PROFILE,
         update({ myProfile }) {
+          this.myProfile = myProfile;
           this.email.input = myProfile.email;
         },
         error(err) {

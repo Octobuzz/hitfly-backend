@@ -297,11 +297,9 @@ export default {
 
       if (hasErrors) {
         showValidationError();
-
-        return false;
       }
 
-      return true;
+      return !hasErrors;
     },
 
     populateValidationErrors(graphQLErrors) {
