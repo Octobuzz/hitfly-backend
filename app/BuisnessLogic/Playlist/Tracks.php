@@ -27,7 +27,7 @@ class Tracks implements TracksContract
                 'position' => 5, //todo реальное место в плейлисте
                 'track_name' => $track->track_name,
                 'singer' => $track->singer,
-                'album_img' => $track->album->getAlbumImageURL(),
+                'album_img' => env('APP_URL').$track->getImageUrl(),
                 'link' => 'url', //todo реальный урл(пока неизвестно куда должна идти ссылка)
                 'track_time' => '3:54', //todo получение времени трека
                 'user' => $track->user,

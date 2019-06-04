@@ -17,7 +17,7 @@ Route::redirect('/', 'login', 301);
 ////        'value' => 'Значение',
 ////    ];
 //
-//    return $notification->requestForEvent($user,"d");
+//    return $notification->reachTop();
 //});
 Auth::routes();
 

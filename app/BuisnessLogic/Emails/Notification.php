@@ -16,6 +16,7 @@ use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
 use App\Mail\FewComments;
 use App\Mail\NewEventNotificationMail;
+use App\Mail\ReachTopMail;
 use App\Mail\RemindForEventMail;
 use App\Mail\RequestForEventMail;
 use  App\User;
@@ -181,6 +182,7 @@ class Notification
 
     /**
      * попадение в топ 20.
+     * получает топ, и рассылает письма авторам треков.
      */
     public function reachTop($topCount = 20)
     {
@@ -188,7 +190,8 @@ class Notification
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
             $topUrl = '/url';
-            dispatch(new ReachTopJob($track, $topUrl, $this->events->getUpcomingEvents(3), $topCount))->onQueue('low');
+            //return new ReachTopMail($track, $topUrl, $topCount);
+            dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }
     }
 
