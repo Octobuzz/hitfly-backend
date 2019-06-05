@@ -12,13 +12,13 @@
 */
 
 Route::redirect('/', 'login', 301);
-//Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
-////    $params = [
-////        'value' => 'Значение',
-////    ];
-//
-//    return $notification->reachTop();
-//});
+Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
+//    $params = [
+//        'value' => 'Значение',
+//    ];
+
+    return $notification->longAgoNotVisited();
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

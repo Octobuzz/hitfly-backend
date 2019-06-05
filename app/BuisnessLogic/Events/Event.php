@@ -26,13 +26,13 @@ class Event implements EventsContract
             [
                 'name' => 'Название',
                 'img' => '/url',
-                'link' => '/event/url',
+                'url' => '/event/url',
                 'participant' => 'The Beatles',
             ],
             [
                 'name' => 'Название',
                 'img' => '/url',
-                'link' => '/event/url',
+                'url' => '/event/url',
                 'participant' => 'The Beatles',
             ],
         ];
@@ -41,9 +41,10 @@ class Event implements EventsContract
     /**
      * события текущего месяца.
      *
+     * @param int $count
      * @return array
      */
-    public function getThisMonthEvents()
+    public function getThisMonthEvents(int $count = 4)
     {
         // TODO: Implement getThisMonthEvents() method.
         return [
@@ -122,6 +123,24 @@ class Event implements EventsContract
                 'img' => env('APP_URL').'/images/emails/img/disco-min.png',
                 'url' => '/fake_url',
             ],
+        ];
+    }
+
+    /**
+     * получить важные события(новости, статьи блога, мероприятия) с пометкой "важно"
+     * @param int $count
+     * @return array
+     */
+    public function getImportantEvents(int $count): array
+    {
+        // TODO: Реальные важные новости
+        return [
+            [
+                'name' => 'Битва музыкантов',
+                'img' => env('APP_URL').'/images/emails/img/music-battle.png',
+                'url' => '/fake_url',
+            ],
+
         ];
     }
 }

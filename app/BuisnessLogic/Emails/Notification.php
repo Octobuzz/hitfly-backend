@@ -15,6 +15,7 @@ use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
 use App\Mail\FewComments;
+use App\Mail\LongAgoNotVisited;
 use App\Mail\NewEventNotificationMail;
 use App\Mail\ReachTopMail;
 use App\Mail\RemindForEventMail;
@@ -108,12 +109,13 @@ class Notification
     public function longAgoNotVisited()
     {
         $users = $this->getUsersLongAgoNotVisited();
-
+        $user = User::query()->where('id', '=', 31)->first();
+        return new LongAgoNotVisited(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4));
         foreach ($users['days7'] as $user) {
-            dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
+            dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4)))->onQueue('low');
         }
         foreach ($users['days30'] as $user) {
-            dispatch(new LongAgoNotVisitedJob(30, $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
+            dispatch(new LongAgoNotVisitedJob(30, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4)))->onQueue('low');
         }
     }
 

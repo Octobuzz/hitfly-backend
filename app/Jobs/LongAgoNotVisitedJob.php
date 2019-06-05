@@ -15,7 +15,7 @@ class LongAgoNotVisitedJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     public $tracks;
     public $user;
-    public $recommendation;
+    public $importantEvents;
     public $events;
     public $days;
 
@@ -24,16 +24,16 @@ class LongAgoNotVisitedJob implements ShouldQueue
      *
      * @param $user
      * @param $events
-     * @param $recommendation
+     * @param $importantEvents
      * @param $tracks
      */
-    public function __construct($days, User $user, $events, $recommendation, $tracks)
+    public function __construct($days, User $user, $events, $importantEvents, $tracks)
     {
         $this->days = $days;
         $this->user = $user;
         $this->tracks = $tracks;
         $this->events = $events;
-        $this->recommendation = $recommendation;
+        $this->importantEvents = $importantEvents;
     }
 
     /**
@@ -41,6 +41,6 @@ class LongAgoNotVisitedJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new LongAgoNotVisited($this->days, $this->user, $this->events, $this->recommendation, $this->tracks));
+        return \Mail::to($this->user->email)->send(new LongAgoNotVisited($this->days, $this->user, $this->events, $this->importantEvents, $this->tracks));
     }
 }

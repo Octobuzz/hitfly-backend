@@ -25,4 +25,11 @@ interface EventsContract
      * @return mixed
      */
     public function getNewEvents();
+
+    /**
+     * получить важные события(новости, статьи блога, мероприятия) с пометкой "важно"
+     * @param int $count
+     * @return array
+     */
+    public function getImportantEvents(int $count): array;
 }
