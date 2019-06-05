@@ -28,15 +28,15 @@
       :max-height="500"
       @input="handleFormatChoice"
     />
-    <BaseInput
+    <ChooseYear
       v-model="newAlbum.year"
-      label="Год создания альбома"
       class="add-track-description__year-input"
+      label="Год создания альбома"
     >
       <template #icon>
         <CalendarIcon/>
       </template>
-    </BaseInput>
+    </ChooseYear>
     <ChooseGenres
       v-model="newAlbum.genre"
       class="add-track-description__genre-tag-container"
