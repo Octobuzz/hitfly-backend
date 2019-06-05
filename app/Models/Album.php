@@ -118,6 +118,10 @@ class Album extends Model
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
     }
 
+    public function favourites()
+    {
+        return $this->morphMany(Favourite::class, 'favouriteable');
+    }
     public function getCoverAttribute($image)
     {
         return Storage::disk('admin')->url($image);

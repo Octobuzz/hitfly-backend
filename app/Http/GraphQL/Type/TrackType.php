@@ -84,6 +84,14 @@ class TrackType extends GraphQLType
                 },
                 'selectable' => false,
             ],
+            'favouritesCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество добавлений трека в избранное',
+                'resolve' => function ($model) {
+                    return $model->favourites->count();
+                },
+                'selectable' => false,
+            ],
             'userPlayLists' => [
                 'type' => Type::listOf(GraphQL::type('Collection')),
                 'description' => 'PlayLists пользователя. Только для авторизированных пользователей',
