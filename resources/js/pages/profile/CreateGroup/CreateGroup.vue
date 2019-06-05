@@ -24,6 +24,9 @@
           v-model="group.name.input"
           label="Название группы"
           class="create-group-description__name-input"
+          :show-error="group.name.showError"
+          :error-message="group.name.errorMessage"
+          @input="group.name.showError = false"
         >
           <template #icon>
             <PencilIcon />
@@ -35,7 +38,7 @@
         </span>
 
         <ChooseYear
-          v-model="group.year"
+          v-model="group.year.input"
           class="create-group-description__year-input"
           title="Год начала карьеры"
         />
@@ -45,9 +48,12 @@
         </span>
 
         <ChooseGenres
-          v-model="group.genres"
+          v-model="group.genres.list"
           class="create-group-description__genre-tag-container"
           dropdown-class="create-group-description__dropdown"
+          :selected-genres-limit="5"
+          :none-selected-error="group.genres.noneSelectedError"
+          @open="group.genres.noneSelectedError = false"
         />
 
         <span class="h3 create-group-description__header_subsection">
@@ -59,10 +65,22 @@
           class="create-group-description__activity-textarea"
           label="Описание группы"
           :rows="3"
+          :show-error="group.activity.showError"
+          :error-message="group.activity.errorMessage"
         />
 
         <span class="h3 create-group-description__header_subsection">
           Ссылки на соц. сети
+        </span>
+
+        <span
+          :class="[
+            'create-group-description__social-links-paragraph',
+            'create-group-description__regular-text'
+          ]"
+        >
+          Мы не будем показывать ссылки другим пользователям.
+          Они нужны для того, чтобы в случае необходимости мы смогли связаться с Вами.
         </span>
 
         <SocialMediaLinks :links.sync="group.socialLinks" />
@@ -87,7 +105,12 @@
           придет приглашение со ссылкой на вступление. Вы станете организатором группы.
         </span>
 
-        <InviteGroupMembers v-model="group.invitedMembers" />
+        <InviteGroupMembers
+          v-model="group.invitedMembers.list"
+          :show-error="group.invitedMembers.showError"
+          :error-message="group.invitedMembers.errorMessage"
+          :error-members="group.invitedMembers.errorMembers"
+        />
       </div>
     </div>
     <div class="create-group-footer">
@@ -139,15 +162,31 @@ export default {
       group: {
         cover: null,
         name: {
-          input: ''
+          input: '',
+          showError: false,
+          errorMessage: ''
         },
-        year: new Date().getFullYear().toString(),
+        year: {
+          input: new Date().getFullYear().toString(),
+          showError: false,
+          errorMessage: ''
+        },
         activity: {
-          input: ''
+          input: '',
+          showError: false,
+          errorMessage: ''
         },
-        genres: [],
+        genres: {
+          list: [],
+          noneSelectedError: false
+        },
         socialLinks: [],
-        invitedMembers: []
+        invitedMembers: {
+          list: [],
+          showError: false,
+          errorMessage: '',
+          errorMembers: []
+        }
       },
       isSaving: false
     };
@@ -155,7 +194,7 @@ export default {
 
   computed: {
     creationQueryGenres() {
-      return this.group.genres
+      return this.group.genres.list
         .map(genre => genre.id);
     },
 
@@ -169,8 +208,91 @@ export default {
       this.group.cover = file;
     },
 
+    validateInput() {
+      const showValidationError = () => {
+        this.$message(
+          'Данные группы не обновлены. Проверьте правильность введенных данных',
+          'info',
+          { timeout: 2000 }
+        );
+      };
+
+      const { name, activity, genres } = this.group;
+      let hasErrors = false;
+
+      if (name.input === '') {
+        name.showError = true;
+        name.errorMessage = 'Имя не может быть пустым';
+        hasErrors = true;
+      }
+
+      if (activity.input === '') {
+        activity.showError = true;
+        activity.errorMessage = 'Описание не может быть пустым';
+        hasErrors = true;
+      }
+
+      if (genres.list.length === 0) {
+        genres.noneSelectedError = true;
+        hasErrors = true;
+      }
+
+      if (hasErrors) {
+        showValidationError();
+      }
+
+      return !hasErrors;
+    },
+
+    populateValidationErrors(graphQLErrors) {
+      const errors = graphQLErrors.map(err => err.validation);
+      const { name, activity, invitedMembers } = this.group;
+
+      errors.forEach((err) => {
+        const errKey = Object.keys(err)[0];
+
+        if (errKey.includes('musicGroup.invitedMembers')) {
+          Object.keys(err).forEach((key) => {
+            invitedMembers.showError = true;
+            invitedMembers.errorMessage = 'Введенные адреса почты являются недействительными';
+            invitedMembers.errorMembers.push(
+              invitedMembers.list[+key.split('.')[2]]
+            );
+          });
+
+          return;
+        }
+
+        // eslint-disable-next-line default-case
+        switch (errKey) {
+          case 'musicGroup.name':
+            name.showError = true;
+            [name.errorMessage] = err[errKey];
+            break;
+
+          case 'musicGroup.description':
+            activity.showError = true;
+            [activity.errorMessage] = err[errKey];
+            break;
+        }
+      });
+    },
+
+    removeValidationErrors() {
+      const { name, activity, invitedMembers } = this.group;
+
+      name.showError = false;
+      activity.showError = false;
+      invitedMembers.showError = false;
+      invitedMembers.errorMembers = [];
+    },
+
     createGroup() {
       if (this.isSaving) return;
+
+      this.removeValidationErrors();
+
+      if (!this.validateInput()) return;
 
       this.isSaving = true;
 
@@ -180,7 +302,7 @@ export default {
         variables: {
           avatar: this.group.cover,
           name: this.group.name.input,
-          careerStartYear: `${this.group.year}-1-1`,
+          careerStartYear: `${this.group.year.input}-1-1`,
           description: this.group.activity.input,
           genre: this.creationQueryGenres,
           socialLinks: this.group.socialLinks
@@ -191,7 +313,7 @@ export default {
             .filter(sl => (
               sl.socialType !== '' && sl.link !== ''
             )),
-          invitedMembers: this.group.invitedMembers
+          invitedMembers: this.group.invitedMembers.list
             .map(email => ({
               email
             }))
@@ -228,12 +350,23 @@ export default {
         );
       }).catch((error) => {
         this.isSaving = false;
-        this.$message(
-          'На сервере произошла ошибка. Группа не создана',
-          'info',
-          { timeout: 2000 }
-        );
-        console.dir(error);
+
+        if (error.message === 'GraphQL error: validation') {
+          this.$message(
+            'Данные группы не обновлены. Проверьте правильность введенных данных',
+            'info',
+            { timeout: 2000 }
+          );
+          this.populateValidationErrors(error.graphQLErrors);
+        } else if (false) {
+          // TODO: sixth group error
+        } else {
+          this.$message(
+            'На сервере произошла ошибка. Данные группы не обновлены',
+            'info',
+            { timeout: 2000 }
+          );
+        }
       });
     }
   }
