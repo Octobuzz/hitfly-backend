@@ -151,7 +151,6 @@
           id: Number
         },
       },
-      myData: {},
       createAlbum: false,
       bands: [
         {
@@ -174,12 +173,6 @@
       handleTextfileInput(file){
         this.trackInfo.text = file;
       },
-      totalBands(data) {
-        this.myData = {id: data.myProfile.id, name: data.myProfile.username};
-        this.bands = [this.myData, ...data.myProfile.musicGroups];
-        this.trackInfo.selectedArtist = this.myData.name;
-        console.log(this.bands);
-      },
       changeTab() {
         this.createAlbum = false
       },
@@ -196,9 +189,6 @@
           'album': this.trackInfo.selectedAlbum.id
         };
         this.$emit('sendInfo', info);
-      },
-      onCoverInput(){
-        // console.log('ok');
       },
       handleAlbumSelect(){
         const selectedAlbum = this.albums.albums.data.filter((album) => {
@@ -251,7 +241,9 @@
             }
           }`,
           update(data) {
-            this.totalBands(data);
+            let myData = {id: data.myProfile.id, name: data.myProfile.username};
+            this.bands = [myData, ...data.myProfile.musicGroups];
+            this.trackInfo.selectedArtist = myData.name;
           }
         }
       }
