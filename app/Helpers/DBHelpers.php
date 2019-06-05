@@ -42,4 +42,30 @@ class DBHelpers
     {
         return snake_case($string);
     }
+
+    /**
+     * получает дату периода, от текущей.
+     * @param String $period
+     * @return string
+     */
+    public static function getPeriod(String $period): string
+    {
+        $now = \Carbon\Carbon::now();
+
+        switch ($period) {
+            case 'week':
+                $date = $now->subWeek()->format('Y-m-d');
+                break;
+            case 'month':
+                $date = $now->subMonth()->format('Y-m-d');
+                break;
+            case 'year':
+                $date = $now->subYear()->format('Y-m-d');
+                break;
+            default:
+                $date = $now->subWeek()->format('Y-m-d');
+        }
+
+        return $date;
+    }
 }
