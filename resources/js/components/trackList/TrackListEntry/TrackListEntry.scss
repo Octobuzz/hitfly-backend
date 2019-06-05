@@ -21,9 +21,10 @@
   }
 
   &__album {
+    position: relative;
     width: 32px;
     height: 32px;
-    position: relative;
+    padding: 0;
     margin-right: 8px;
     border-radius: 3px;
     overflow: hidden;
@@ -42,8 +43,8 @@
     }
 
     & img {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
     }
   }
 
