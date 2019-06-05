@@ -58,6 +58,7 @@
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
   import ChooseAvatar from '../profile/ChooseAvatar.vue';
+  import ChooseYear from '../profile/ChooseYear/ChooseYear.vue';
   import gql from 'graphql-tag';
 
   export default {
@@ -139,7 +140,8 @@
       BaseInput,
       PencilIcon,
       CalendarIcon,
-      ChooseAvatar
+      ChooseAvatar,
+      ChooseYear
     }
   }
 </script>
