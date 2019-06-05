@@ -197,6 +197,9 @@
           }
         });
         this.trackInfo.selectedAlbum = selectedAlbum[0];
+      },
+      onCoverInput() {
+        console.log('ok');
       }
     },
     components: {
