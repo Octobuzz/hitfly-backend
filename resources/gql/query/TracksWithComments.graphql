@@ -1,0 +1,29 @@
+# TODO: use additional variables to fetch a particular user tracks
+# TODO: use additional variables to fetch tracks commented in specific period if time
+
+#import "../fragments/track.graphql"
+
+query TracksWithComments(
+    $pageLimit: Int,
+    $pageNumber: Int,
+    $my: Boolean,
+    $commentedInPeriod: CommentPeriodEnum!
+) {
+    tracks(
+        page: $pageNumber,
+        limit: $pageLimit,
+        my: $my
+    ) {
+        total
+        to
+        data {
+            ...track
+            comments(commentPeriod: $commentedInPeriod) {
+                id
+                comment
+                createdAt
+                estimation # rating?
+            }
+        }
+    }
+}

@@ -32,6 +32,10 @@ const routes = [
         component: profile.Favourite
       },
       {
+        path: 'reviews',
+        component: profile.MyReviews
+      },
+      {
         path: '',
         redirect: '/profile/my-music'
         // component: profile.ProfilePage_obsolete
