@@ -56,7 +56,7 @@ class FollowValidator extends Validator
         }
         $follow = Watcheables::query()
             ->where('watcheable_type', '=', $class)
-            ->where('watcheable_id', '=', $data['Follow']['watcheableId'])
+            ->where('watcheable_id', '=', $data['Follow']['FollowId'])
             ->where('user_id', \Auth::user()->id)->first();
         if (null === $follow) {
             return false;

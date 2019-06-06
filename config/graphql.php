@@ -167,6 +167,7 @@ return [
                 'updateAlbum' => \App\Http\GraphQL\Mutations\UpdateAlbumMutation::class,
 
                 'addFollow' => \App\Http\GraphQL\Mutations\FollowMutation::class,
+                'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
