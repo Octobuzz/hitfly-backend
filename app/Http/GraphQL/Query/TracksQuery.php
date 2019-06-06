@@ -32,10 +32,16 @@ class TracksQuery extends Query
                 'name' => 'my',
                 'type' => Type::boolean(),
                 'description' => 'Только мои треки',
+                'rules' => ['mutually_exclusive_args:userId'],
             ],
             'commentPeriod' => [
                 'type' => \GraphQL::type('CommentPeriodEnum'),
                 'description' => 'Фильтрация треков по комментариям (треки которые были прокомментированы)',
+            ],
+            'userId' => [
+                'type' => Type::int(),
+                'description' => 'ID пользователя(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my'],
             ],
         ];
     }
@@ -48,6 +54,9 @@ class TracksQuery extends Query
 
         if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
             $query->where('tracks.user_id', '=', \Auth::user()->id);
+        }
+        if (false === empty($args['userId'])) {
+            $query->where('tracks.user_id', '=', $args['userId']);
         }
 
         if (false === empty($args['commentPeriod'])) {
