@@ -157,6 +157,8 @@ return [
     'emptyPassword' => 'Пароль неможет быть пустым',
     'emailIsBad' => 'Запрещенный или невалидный email',
     'invalidFileFormat' => 'Неверный формат файла',
+    'follow_unique_validate' => 'Вы уже подписались ранее',
+    'follow_delete_validate' => 'Такой подписки несуществует',
 
 
 ];
