@@ -32,7 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
         Date::setlocale(config('app.locale'));
         Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesValidator@validate');
+        Validator::extend('follow_unique_validate', 'App\Validation\FollowValidator@validate');
         Validator::extend('favourites_delete_validate', 'App\Validation\FavouritesValidator@validateDelete');
+        Validator::extend('follow_delete_validate', 'App\Validation\FollowValidator@validateDelete');
 
         $table = config('admin.extensions.config.table', 'admin_config');
         if (Schema::hasTable($table)) {
