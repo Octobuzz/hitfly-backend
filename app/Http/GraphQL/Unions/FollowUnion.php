@@ -2,11 +2,8 @@
 
 namespace App\Http\GraphQL\Unions;
 
-use App\Models\Album;
-use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\MusicGroup;
-use App\Models\Track;
 use App\User;
 use Rebing\GraphQL\Support\UnionType;
 
@@ -21,7 +18,6 @@ class FollowUnion extends UnionType
         return [
             \GraphQL::type('FollowUser'),
             \GraphQL::type('FollowMusicGroup'),
-
         ];
     }
 

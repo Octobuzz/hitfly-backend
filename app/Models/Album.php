@@ -122,6 +122,7 @@ class Album extends Model
     {
         return $this->morphMany(Favourite::class, 'favouriteable');
     }
+
     public function getCoverAttribute($image)
     {
         return Storage::disk('admin')->url($image);

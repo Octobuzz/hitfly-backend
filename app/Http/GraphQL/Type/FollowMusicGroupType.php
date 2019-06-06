@@ -2,10 +2,6 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Http\GraphQL\Fields\CommentsTrackField;
-use App\Http\GraphQL\Fields\PictureField;
-use App\Http\GraphQL\Privacy\IsAuthPrivacy;
-use App\Models\Track;
 use App\Models\Watcheables;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;

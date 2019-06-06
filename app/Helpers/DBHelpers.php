@@ -45,7 +45,9 @@ class DBHelpers
 
     /**
      * получает дату периода, от текущей.
-     * @param String $period
+     *
+     * @param string $period
+     *
      * @return string
      */
     public static function getPeriod(String $period): string

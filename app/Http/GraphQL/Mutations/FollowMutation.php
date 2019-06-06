@@ -2,11 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations;
 
-use App\Models\Album;
-use App\Models\Collection;
-use App\Models\Favourite;
 use App\Models\MusicGroup;
-use App\Models\Track;
 use App\Models\Watcheables;
 use App\User;
 use Illuminate\Support\Facades\Auth;

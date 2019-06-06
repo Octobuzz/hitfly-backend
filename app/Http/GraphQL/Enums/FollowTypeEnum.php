@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Enums;
 
-use App\Models\Favourite;
 use App\Models\Watcheables;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -16,7 +15,6 @@ class FollowTypeEnum extends GraphQLType
         'values' => [
             Watcheables::TYPE_USER => Watcheables::TYPE_USER,
             Watcheables::TYPE_MUSIC_GROUP => Watcheables::TYPE_MUSIC_GROUP,
-
         ],
     ];
 }

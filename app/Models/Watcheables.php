@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Watcheables extends Model
 {
-
     const TYPE_USER = 'user';
     const TYPE_MUSIC_GROUP = 'music_group';
 

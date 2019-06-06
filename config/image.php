@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'driver' => 'imagick',
+    'driver' => 'gd',
 
     //размеры изображений
     'size' => [

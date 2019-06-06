@@ -42,7 +42,6 @@ class TracksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        
         $query = Track::with($fields->getRelations());
 
         $query->select('tracks.*');
@@ -51,7 +50,7 @@ class TracksQuery extends Query
             $query->where('tracks.user_id', '=', \Auth::user()->id);
         }
 
-        if(false === empty($args['commentPeriod'])){
+        if (false === empty($args['commentPeriod'])) {
             $date = DBHelpers::getPeriod($args['commentPeriod']);
             $query->rightJoin('comments', function ($join) {
                 $join->on('tracks.id', '=', 'comments.commentable_id');
@@ -60,11 +59,10 @@ class TracksQuery extends Query
                 ->where('comments.commentable_type', '=', Track::class)
 
                 ->groupBy('tracks.id');
-            ;
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-        return $response;
 
+        return $response;
     }
 }
