@@ -31,19 +31,27 @@ class AlbumsQuery extends Query
                 'name' => 'my',
                 'type' => Type::boolean(),
                 'description' => 'Только мои альбомы',
+                'rules' => ['mutually_exclusive_args:userId'],
+            ],
+            'userId' => [
+                'type' => Type::int(),
+                'description' => 'ID пользователя(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my'],
             ],
         ];
     }
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Album::with($fields->getRelations());
         if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
-            return Album::with($fields->getRelations())
-                ->where('user_id', '=', \Auth::user()->id)
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('user_id', '=', \Auth::user()->id);
         }
+        if (false === empty($args['userId'])) {
+            $query->where('user_id', '=', $args['userId']);
+        }
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
-        return Album::with($fields->getRelations())
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        return $response;
     }
 }
