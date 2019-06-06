@@ -12,7 +12,7 @@
     </span>
 
     <span class="choose-location__icon-container">
-      <BalloonIcon/>
+      <BalloonIcon />
     </span>
 
     <v-select
@@ -41,6 +41,7 @@
             {{ area_region }}
           </span>
         </template>
+        <span v-else />
       </template>
 
       <template #option="{ option: { title, area_region } }">

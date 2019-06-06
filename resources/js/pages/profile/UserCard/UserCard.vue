@@ -38,7 +38,7 @@
           class="user-card__edit-button"
           @press="goToEditProfile"
         >
-          <PencilIcon/>
+          <PencilIcon />
         </IconButton>
       </div>
 
@@ -57,7 +57,7 @@
         >
           Создать свою группу
           <span class="user-card__create-group-arrow">
-            <ArrowIcon/>
+            <ArrowIcon />
           </span>
         </router-link>
       </div>
@@ -99,7 +99,7 @@
           >
 
           <div class="user-card__group-info">
-            <div>
+            <div class="user-card__someone-info">
               <p class="user-card__group-name">
                 {{ group.name }}
               </p>
@@ -114,7 +114,7 @@
             class="user-card__edit-button"
             @press="goToUpdateGroup(group.id)"
           >
-            <PencilIcon/>
+            <PencilIcon />
           </IconButton>
         </div>
       </div>
@@ -161,7 +161,7 @@
               alt="User avatar"
             >
 
-            <div>
+            <div class="user-card__someone-info">
               <p class="user-card__username">
                 {{ user.username }}
               </p>
@@ -197,7 +197,7 @@
               alt="Group cover"
             >
 
-            <div>
+            <div class="user-card__someone-info">
               <p class="user-card__group-name">
                 {{ group.name }}
               </p>
@@ -281,7 +281,7 @@ export default {
       return this.$route.fullPath === '/profile/edit';
     },
     editGroupId() {
-      return this.$store.getters['profile/editGroupId'];
+      return +this.$route.params.editGroupId;
     },
     musicGroupCount() {
       return this.myProfile.musicGroups.length;
@@ -290,7 +290,7 @@ export default {
 
   methods: {
     isUpdatingGroup(groupId) {
-      return this.editGroupId === groupId;
+      return groupId === this.editGroupId;
     },
 
     goToEditProfile() {
@@ -298,23 +298,11 @@ export default {
     },
 
     goToUpdateGroup(groupId) {
-      this.$store.commit('profile/setCustomRedirect', true);
-      this.setEditGroupId(groupId);
-
-      if (this.$route.fullPath !== '/profile/update-group') {
-        this.$router.push('/profile/update-group');
-
-        return;
-      }
-      this.$router.customData.navHistory.unshift(this.$route);
+      this.$router.push(`/profile/edit-group/${groupId}`);
     },
 
     goToCreateGroup() {
       this.$router.push('/profile/create-group');
-    },
-
-    setEditGroupId(id) {
-      this.$store.commit('profile/setEditGroupId', { id });
     }
   },
 

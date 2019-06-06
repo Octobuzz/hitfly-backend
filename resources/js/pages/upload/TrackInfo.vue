@@ -20,7 +20,7 @@
         </BaseInput>
         <p class="add-track-filename" v-show="filename.length > 0">{{ filename }}</p>
 
-        <BaseInput
+        <!--<BaseInput
           v-model="trackInfo.year.input"
           label="Год создания песни"
           class="add-track-description__year-input"
@@ -28,7 +28,17 @@
           <template #icon>
             <CalendarIcon/>
           </template>
-        </BaseInput>
+        </BaseInput>-->
+
+        <ChooseYear
+          v-model="trackInfo.year.input"
+          class="add-track-description__year-input"
+          title="Год создания песни"
+        >
+          <template #icon>
+            <CalendarIcon/>
+          </template>
+        </ChooseYear>
 
         <FileInput
           label="Загрузить текст песни"
@@ -112,7 +122,7 @@
 <script>
   import FormButton from 'components/FormButton.vue';
   import BaseDropdown from 'components/BaseDropdown.vue';
-  import ChooseGenres from './../profile/ChooseGenres/ChooseGenres.vue';
+  import ChooseGenres from '../profile/ChooseGenres/ChooseGenres.vue';
   import BaseInput from 'components/BaseInput.vue';
   import FileInput from 'components/FileInput.vue';
   import ChooseAvatar from '../profile/ChooseAvatar.vue';
@@ -120,6 +130,7 @@
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
   import NotepadIcon from 'components/icons/NotepadIcon.vue';
   import CreateAlbum from './CreateAlbum.vue';
+  import ChooseYear from '../profile/ChooseYear/ChooseYear.vue';
   import gql from 'graphql-tag';
 
   export default{
@@ -140,7 +151,6 @@
           id: Number
         },
       },
-      myData: {},
       createAlbum: false,
       bands: [
         {
@@ -163,9 +173,6 @@
       handleTextfileInput(file){
         this.trackInfo.text = file;
       },
-      totalBands() {
-        return this.bands.push(this.myData);
-      },
       changeTab() {
         this.createAlbum = false
       },
@@ -183,9 +190,6 @@
         };
         this.$emit('sendInfo', info);
       },
-      onCoverInput(){
-        console.log('ok');
-      },
       handleAlbumSelect(){
         const selectedAlbum = this.albums.albums.data.filter((album) => {
           if(album.title === this.trackInfo.displayAlbum){
@@ -193,6 +197,9 @@
           }
         });
         this.trackInfo.selectedAlbum = selectedAlbum[0];
+      },
+      onCoverInput() {
+        console.log('ok');
       }
     },
     components: {
@@ -205,41 +212,44 @@
       PencilIcon,
       CalendarIcon,
       NotepadIcon,
-      CreateAlbum
+      CreateAlbum,
+      ChooseYear
     },
     apollo: {
-      getAlbums: {
-        query: gql`query{
-          albums(limit: 0, page: 0, my: true){
-            data {
-              id
-              title
+      getAlbums() {
+        return {
+          query: gql`query{
+            albums(limit: 0, page: 0, my: true){
+              data {
+                id
+                title
+              }
             }
+          }`,
+          update(data){
+            return this.albums = data;
           }
-        }`,
-        update(data){
-          console.log(data);
-          this.albums = data;
         }
       },
-    },
-    mounted() {
-      this.$apollo.query({
-        query: gql`query{
-          myProfile{
-            musicGroups{
+      musicGroups() {
+        return {
+          query: gql`query{
+            myProfile{
+              musicGroups{
+                id
+                name
+              },
+              username,
               id
-              name
-            },
-            username,
-            id
+            }
+          }`,
+          update(data) {
+            let myData = {id: data.myProfile.id, name: data.myProfile.username};
+            this.bands = [myData, ...data.myProfile.musicGroups];
+            this.trackInfo.selectedArtist = myData.name;
           }
-        }`
-      }).then((response) => {
-        this.bands = response.data.myProfile.musicGroups;
-        this.myData = {id: response.data.myProfile.id, name: response.data.myProfile.username};
-        this.totalBands();
-      })
+        }
+      }
     }
   }
 </script>

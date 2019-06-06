@@ -69,16 +69,11 @@ export default {
         && this.collectionsData
         && this.setsData;
     }
-  },
-
-  beforeRouteLeave(to, from, next) {
-    this.$apollo.provider.clients.defaultClient
-      .clearStore().then(() => next());
   }
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="./Favourite.scss"

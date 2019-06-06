@@ -1,4 +1,4 @@
-@import '../../../../sass/variables';
+@import '~scss/_variables.scss';
 
 $avatarSide: 235px;
 $avatarRightMargin: 30px;
@@ -14,15 +14,7 @@ $formRightPadding: 40px;
     max-width: 991px;
 
     &_loading {
-      // TODO: make header/footer width as variables
-      height: calc(100vh - 185px);
-    }
-
-    &__loader {
-      display: block;
-      margin: auto;
-      top: 50%;
-      transform: translateY(-50%);
+      height: calc(100vh - #{$header_height_desktop} - #{$footer_height_desktop});
     }
 
     &__return-header {
@@ -111,7 +103,7 @@ $formRightPadding: 40px;
       border: {
         width: 1px 0 0 0;
         style: solid;
-        color: $borderColor;
+        color: $layout_border_color;
       }
       margin-bottom: 22px;
     }

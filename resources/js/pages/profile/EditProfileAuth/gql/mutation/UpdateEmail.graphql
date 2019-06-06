@@ -1,11 +1,7 @@
-mutation UpdateMyProfile(
-    $email: String
+mutation UpdateEmail(
+    $email: String!
 ) {
-    updateMyProfile(
-        profile: {
-          email: $email
-        },
-    ) {
+    updateEmail(email: $email) {
         id
         email
     }

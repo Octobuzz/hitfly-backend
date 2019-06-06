@@ -31,7 +31,7 @@
         class="active-group-members__remove-button"
         @click="$emit('remove-member', user.id)"
       >
-        <CrossIcon/>
+        <CrossIcon />
       </button>
     </div>
   </div>

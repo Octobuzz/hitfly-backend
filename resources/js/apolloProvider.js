@@ -16,27 +16,25 @@ const httpLink = new HttpLink({
   uri
 });
 
+const regularCacheRedirect = type => (_, args, { getCacheKey }) => (
+  getCacheKey({ __typename: type, id: args.id })
+);
+
 // TODO: second endpoint
 
 const cache = new InMemoryCache({
   freezeResults: true,
   cacheRedirects: {
     Query: {
-      track: (_, args, { getCacheKey }) => (
-        getCacheKey({ __typename: 'Track', id: args.id })
-      ),
-      album: (_, args, { getCacheKey }) => (
-        getCacheKey({ __typename: 'Album', id: args.id })
-      ),
-      collection: (_, args, { getCacheKey }) => (
-        getCacheKey({ __typename: 'Collection', id: args.id })
-      ),
-      musicGroup: (_, args, { getCacheKey }) => (
-        getCacheKey({ __typename: 'MusicGroup', id: args.id })
-      ),
-      user: (_, args, { getCacheKey }) => (
-        getCacheKey({ __typename: 'User', id: args.id })
-      )
+      track: regularCacheRedirect('Track'),
+
+      album: regularCacheRedirect('Album'),
+
+      collection: regularCacheRedirect('Collection'),
+
+      musicGroup: regularCacheRedirect('MusicGroup'),
+
+      user: regularCacheRedirect('User')
     }
   }
 });

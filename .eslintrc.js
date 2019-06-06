@@ -19,10 +19,7 @@ module.exports = {
   ],
   settings: {
     'import/resolver': {
-      alias: [
-        ['~', path.resolve('nuxt')],
-        ['@', path.resolve('nuxt')]
-      ]
+      webpack: require.resolve('./webpack.config')
     }
   },
   rules: {

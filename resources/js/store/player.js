@@ -33,20 +33,14 @@ const mutations = {
 const actions = {
   play({ commit }, trackId) {
     commit('startPlaying', trackId);
-
-    console.log(`start track, id: ${trackId}`);
   },
 
   pause({ commit }) {
     commit('pausePlaying');
-
-    console.log('pause track');
   },
 
   stop({ commit }) {
     commit('stopPlaying');
-
-    console.log('stop track');
   }
 };
 

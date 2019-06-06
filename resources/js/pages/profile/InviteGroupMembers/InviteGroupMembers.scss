@@ -1,4 +1,4 @@
-@import '../../../../sass/variables';
+@import '~scss/_variables.scss';
 
 .invited-members {
   &__user-card {
@@ -14,21 +14,25 @@
       right: 16px;
       bottom: 16px;
     };
-    border: 1px solid $borderColor;
-    border-radius: $border-radius;
-    background: $color_2;
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius;
+    background: white;
+
+    &_error {
+      border-color: $text_color_error;;
+    }
   }
 
   &__label {
     display: block;
     font-size: 14px;
-    color: $color_3;
+    color: $medium_gray;
     position: absolute;
     top: 16px;
     left: 17px;
     user-select: none;
     cursor: pointer;
-    transition: $trns;
+    transition: all .3s;
     transform: translate(-13%, -10px) scale(.75);
   }
 
@@ -62,6 +66,12 @@
         fill: #313131;
       }
     }
+  }
+
+  &__error {
+    color: $text_color_error;
+    font-size: 12px;
+    margin-bottom: 24px;
   }
 }
 

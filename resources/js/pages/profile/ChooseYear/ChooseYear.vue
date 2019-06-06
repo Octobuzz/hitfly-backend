@@ -4,6 +4,7 @@
     :title="$attrs.title || 'Выберете год'"
     :value="value"
     :options="yearList"
+    :hide-selected="true"
     :searchable="false"
     :max-height="500"
     @input="$emit('input', $event)"

@@ -5,7 +5,7 @@ import VueWindowSize from 'vue-window-size';
 import router from './router';
 import store from './store';
 import apolloProvider from './apolloProvider';
-import App from './pages/App.vue';
+import AppLayout from './components/layout/AppLayout.vue';
 import './bootstrap';
 
 Vue.use(VTooltip);
@@ -23,7 +23,7 @@ try {
     router,
     store,
     apolloProvider,
-    render: h => h(App)
+    render: h => h(AppLayout)
   }).$mount('#app');
 } catch (err) {
   console.log(err);

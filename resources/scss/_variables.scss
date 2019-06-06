@@ -1,0 +1,29 @@
+$text_color_primary: #313131;
+$text_color_secondary: #606060;
+$text_color_error: #d0021b;
+$layout_border_color: #e4e4e4;
+
+$red_violet: #dd61b9;
+$medium_purple: #8181e2;
+$azure: #4297fe;
+$medium_gray: #a6a6a6;
+
+$gradient_color_start: $azure;
+$gradient_color_end: $red_violet;
+
+$gradient_linear: linear-gradient(
+    to right,
+    $gradient_color_start 0%,
+    $gradient_color_end 100%
+);
+$gradient_radial: radial-gradient(
+    at top left,
+    $gradient_color_start 0%,
+    $gradient_color_end 100%
+);
+
+$header_height_desktop: 95px;
+$header_height_mobile: 107px;
+$footer_height_desktop: 90px;
+
+$input-border-radius: 4px;
