@@ -151,7 +151,6 @@
           id: Number
         },
       },
-      myData: {},
       createAlbum: false,
       bands: [
         {
@@ -174,9 +173,6 @@
       handleTextfileInput(file){
         this.trackInfo.text = file;
       },
-      totalBands() {
-        return this.bands.unshift(this.myData);
-      },
       changeTab() {
         this.createAlbum = false
       },
@@ -194,9 +190,6 @@
         };
         this.$emit('sendInfo', info);
       },
-      onCoverInput(){
-        // console.log('ok');
-      },
       handleAlbumSelect(){
         const selectedAlbum = this.albums.albums.data.filter((album) => {
           if(album.title === this.trackInfo.displayAlbum){
@@ -204,6 +197,9 @@
           }
         });
         this.trackInfo.selectedAlbum = selectedAlbum[0];
+      },
+      onCoverInput() {
+        console.log('ok');
       }
     },
     components: {
@@ -220,18 +216,19 @@
       ChooseYear
     },
     apollo: {
-      getAlbums: {
-        query: gql`query{
-          albums(limit: 0, page: 0, my: true){
-            data {
-              id
-              title
+      getAlbums() {
+        return {
+          query: gql`query{
+            albums(limit: 0, page: 0, my: true){
+              data {
+                id
+                title
+              }
             }
+          }`,
+          update(data){
+            return this.albums = data;
           }
-        }`,
-        update(data){
-          // console.log(data);
-          this.albums = data;
         }
       },
       musicGroups() {
@@ -246,32 +243,14 @@
               id
             }
           }`,
-          update({ myProfile }) {
-            this.bands = myProfile.musicGroups;
-            this.myData = {id: myProfile.id, name: myProfile.username};
-            this.totalBands();
+          update(data) {
+            let myData = {id: data.myProfile.id, name: data.myProfile.username};
+            this.bands = [myData, ...data.myProfile.musicGroups];
+            this.trackInfo.selectedArtist = myData.name;
           }
-        };
+        }
       }
     }
-    // mounted() {
-    //   this.$apollo.query({
-    //     query: gql`query{
-    //       myProfile{
-    //         musicGroups{
-    //           id
-    //           name
-    //         },
-    //         username,
-    //         id
-    //       }
-    //     }`
-    //   }).then((response) => {
-    //     this.bands = response.data.myProfile.musicGroups;
-    //     this.myData = {id: response.data.myProfile.id, name: response.data.myProfile.username};
-    //     this.totalBands();
-    //   })
-    // }
   }
 </script>
 <style
