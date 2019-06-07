@@ -1,12 +1,16 @@
-$color_primary: #313131;
-$color_secondary: #606060;
+@import '~scss/_variables.scss';
+
+// due to legacy global styles
+p {
+  padding: 0;
+  margin: 0;
+}
 
 .user-card {
   position: relative;
 
   &_loading {
-    // TODO: make header/footer width as variables
-    height: calc(100vh - 185px);
+    height: calc(100vh - #{$header_height_desktop} - #{$footer_height_desktop});
   }
 
   &__loader {
@@ -30,26 +34,28 @@ $color_secondary: #606060;
   }
 
   &__profile-name {
-    color: $color_primary;
+    font-family: 'Gotham Pro Bold', sans-serif;
+    font-size: 24px;
+    color: $text_color_primary;
   }
 
   &__profile-info {
     margin: {
-      top: 20px;
+      top: 4px;
       right: 20px;
     }
   }
 
   &__followers-count {
     font-size: 12px;
-    color: $color_secondary;
+    color: $text_color_secondary;
     margin-bottom: 8px;
   }
 
   &__location {
     font-size: 16px;
     line-height: 24px;
-    color: $color_secondary;
+    color: $text_color_secondary;
 
     &:before {
       content: '';
@@ -80,7 +86,7 @@ $color_secondary: #606060;
       transition: .2s;
     }
     &:hover svg {
-      fill: $color_primary;
+      fill: $text_color_primary;
     }
   }
 
@@ -103,9 +109,9 @@ $color_secondary: #606060;
   }
 
   &__item-header {
-    font-family: 'GothamPro_bold', serif;
+    font-family: 'Gotham Pro Bold', sans-serif;
     font-size: 24px;
-    color: $color_primary;
+    color: $text_color_primary;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -115,10 +121,10 @@ $color_secondary: #606060;
   }
 
   &__button {
-    font-family: 'Gotham Pro', serif;
+    font-family: 'Gotham Pro', sans-serif;
     border-radius: 4px;
     background-color: #f0f0f0;
-    color: $color_secondary;
+    color: $text_color_secondary;
     padding: 8px;
     font-size: 10px;
   }
@@ -146,6 +152,10 @@ $color_secondary: #606060;
     margin-right: 24px;
   }
 
+  &__someone-info {
+    align-self: center;
+  }
+
   &__group-info,
   &__user-info {
     display: flex;
@@ -156,7 +166,7 @@ $color_secondary: #606060;
   &__group-name,
   &__username {
     font-size: 14px;
-    font-family: 'GothamPro_medium', serif;
+    font-family: 'Gotham Pro Semibold', sans-serif;
     display: block;
     width: 100%;
     margin-bottom: 3px;
@@ -166,7 +176,7 @@ $color_secondary: #606060;
 
   &__group-followers {
     font-size: 12px;
-    color: $color_secondary;
+    color: $text_color_secondary;
   }
 
   &__subsection-header {
@@ -179,7 +189,7 @@ $color_secondary: #606060;
   &__about {
     &__text {
       font-size: 14px;
-      color: $color_secondary;
+      color: $text_color_secondary;
     }
   }
 }

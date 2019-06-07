@@ -5,7 +5,7 @@
       <div class="progressBarBody__done" :class="{animated: loading}"></div>
     </div>
     <div class="progressBarNotice" :class="{done: !loading}">
-      <img src="../../../images/progress.png" alt="">
+      <img src="images/progress.png" alt="">
       <p v-show="loading">Подождите, ваша песня загружается</p>
       <p v-show="!loading">Ваша песня загружена</p>
     </div>

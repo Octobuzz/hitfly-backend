@@ -31,6 +31,7 @@ class FavouriteCollectionType extends GraphQLType
                 'description' => 'ID пользователя',
                 'alias' => 'user_id',
             ],
+
             'createdAt' => [
                 'type' => Type::string(),
                 'alias' => 'created_at',

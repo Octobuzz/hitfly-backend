@@ -34,19 +34,27 @@ class CollectionsQuery extends Query
                 'name' => 'my',
                 'type' => Type::boolean(),
                 'description' => 'Только мои коллекции',
+                'rules' => ['mutually_exclusive_args:userId'],
+            ],
+            'userId' => [
+                'type' => Type::int(),
+                'description' => 'ID пользователя(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my'],
             ],
         ];
     }
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Collection::with($fields->getRelations());
         if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
-            return Collection::with($fields->getRelations())
-                ->where('user_id', '=', \Auth::user()->id)
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('user_id', '=', \Auth::user()->id);
         }
+        if (false === empty($args['userId'])) {
+            $query->where('user_id', '=', $args['userId']);
+        }
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
-        return Collection::with($fields->getRelations())
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        return $response;
     }
 }

@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<styles
+<style
   scoped
   lang="scss"
   src="./MyMusic.scss"

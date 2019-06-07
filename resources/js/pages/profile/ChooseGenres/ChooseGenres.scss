@@ -1,4 +1,4 @@
-@import '../../../../sass/variables';
+@import '~scss/_variables.scss';
 
 .choose-genres {
   &__tag-container {
@@ -24,15 +24,19 @@
   }
 
   &__dd {
-    font-family: "Gotham Pro", serif;
+    font-family: 'Gotham Pro', sans-serif;
     display: block;
     width: 100%;
     position: relative;
+
+    &_none-selected-error {
+      color: $text_color_error;
+    }
   }
 
   &__dd-label {
     font-size: 14px;
-    color: $color_3;
+    color: $medium_gray;
     position: absolute;
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -55,8 +59,8 @@
     min-height: 50px;
     padding-right: 40px;
     cursor: pointer;
-    border: 1px solid $borderColor;
-    border-radius: $border-radius;
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius;
     background: transparent;
 
     &--active::v-deep .multiselect {
@@ -74,6 +78,10 @@
         transform: rotate(180deg);
       }
     }
+  }
+
+  &__dd_none-selected-error .multiselect {
+    border-color: $text_color_error;
   }
 }
 
@@ -110,11 +118,11 @@
       padding: 6px;
 
       &--selected {
-        color: $color_blue;
+        color: $azure;
       }
 
       &--highlight {
-        color: $color_pink;
+        color: $red-violet;
       }
     }
 
@@ -139,7 +147,6 @@
         image: url(~images/dropdown.svg);
         repeat: no-repeat;
         position: center;
-
       }
     }
   }

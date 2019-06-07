@@ -24,7 +24,7 @@
         class="social-links__close-button-desktop"
         @click="removeLink(link.id)"
       >
-        <CrossIcon/>
+        <CrossIcon />
       </button>
 
       <div class="social-links__close-button-row">
@@ -123,7 +123,7 @@ export default {
     },
 
     onUpdate(links) {
-      const { updatedLinks, genId } = this;
+      const { updatedLinks: rawUpdatedLinks, genId } = this;
       const newLinks = [];
 
       const areLinksEqual = (link1, link2) => (
@@ -131,18 +131,25 @@ export default {
           && (link1.network === link2.network)
       );
 
-      // TODO: remove stale links if you want to set links out of this component
-      //  when there already are some data
-
       links.forEach((link) => {
-        const isNew = updatedLinks.every(
+        const isNew = rawUpdatedLinks.every(
           updatedLink => !areLinksEqual(updatedLink, link)
         );
 
         if (isNew) newLinks.push(link);
       });
 
+      // remove links that do not exist in incoming links (stale)
+
+      const updatedLinks = rawUpdatedLinks.filter(rawLink => (
+        links.some(link => areLinksEqual(link, rawLink))
+      ));
+
+      // exit if no new links expected but array is not empty
+
       if (newLinks.length === 0 && updatedLinks.length !== 0) {
+        this.updatedLinks = updatedLinks;
+
         return;
       }
 
@@ -158,6 +165,8 @@ export default {
           username: ''
         });
       }
+
+      this.updatedLinks = updatedLinks;
     }
   }
 };

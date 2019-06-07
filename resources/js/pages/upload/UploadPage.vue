@@ -116,8 +116,10 @@
             }
           }`
         }).then((response) => {
-          console.log(response.data)
-          this.$router.push('/');
+          this.$router.push('/profile/my-music');
+          this.$message(
+            'Ваша песня загружена',
+          );
         }).catch((error) => {
           console.dir(error)
         })
@@ -140,7 +142,7 @@
           this.trackID = response.data.uploadTrack.id;
           console.log(this.trackID);
         }).catch((error) => {
-          console.log(error);
+          console.dir(error);
           this.loading = false;
         });
       },

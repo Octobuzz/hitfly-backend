@@ -1,4 +1,4 @@
-export { default as ProfilePage } from './ProfilePage.vue';
+export { default as ProfileLayout } from './ProfileLayout.vue';
 export { default as UserCard } from './UserCard';
 export { default as EditUser } from './EditProfile';
 export { default as CreateGroup } from './CreateGroup';

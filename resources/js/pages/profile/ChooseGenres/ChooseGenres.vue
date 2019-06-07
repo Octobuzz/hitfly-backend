@@ -18,7 +18,12 @@
       />
     </div>
 
-    <div :class="['choose-genres__dd']">
+    <div
+      :class="[
+        'choose-genres__dd',
+        { 'choose-genres__dd_none-selected-error': noneSelectedError }
+      ]"
+    >
       <span
         :class="[
           'choose-genres__dd-label',
@@ -54,7 +59,13 @@
         </template>
       </v-select>
 
-      <span class="choose-genres__max-info">
+      <span
+        v-if="noneSelectedError"
+        class="choose-genres__max-info"
+      >
+        Минимальное количество жанров: 1
+      </span>
+      <span v-else-if="selectedGenresLimit !== Infinity" class="choose-genres__max-info">
         Максимальное количество жанров: 5
       </span>
     </div>
@@ -82,6 +93,16 @@ export default {
       default: () => []
     },
 
+    selectedGenresLimit: {
+      type: Number,
+      default: 5
+    },
+
+    noneSelectedError: {
+      type: Boolean,
+      default: false
+    },
+
     // to get dropdownClass option to work we should define class
     // under parent selector with ::v-deep
     dropdownClass: {
@@ -101,9 +122,9 @@ export default {
 
   computed: {
     availableGenres() {
-      const selected = new Set(this.selectedGenres);
+      const selected = new Set(this.selectedGenres.map(g => g.id));
 
-      return this.genres.filter(g => !selected.has(g));
+      return this.genres.filter(g => !selected.has(g.id));
     },
 
     selectedGenresLength() {
@@ -121,6 +142,16 @@ export default {
     },
 
     onInput(genre) {
+      if (this.selectedGenres.length >= this.selectedGenresLimit) {
+        this.$message(
+          `Вы не можете выбрать больше ${this.selectedGenresLimit} жанров`,
+          'info',
+          { timeout: 2000 }
+        );
+
+        return;
+      }
+
       this.emitUpdate([
         ...this.selectedGenres,
         genre
@@ -129,6 +160,7 @@ export default {
 
     onOpen() {
       this.ddClosed = false;
+      this.$emit('open');
     },
 
     onClose() {
@@ -150,8 +182,8 @@ export default {
       this.emitUpdate(updatedGenres);
     },
 
-    emitUpdate(selectedTags) {
-      this.$emit('input', selectedTags);
+    emitUpdate(selectedGenres) {
+      this.$emit('input', selectedGenres);
     }
   },
 

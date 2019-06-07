@@ -14,7 +14,7 @@ const webpackOverride = require('./webpack.config');
 
 mix.js('resources/js/app.js', 'public/js');
 
-mix.sass('resources/sass/app.scss', 'public/css').options({
+mix.sass('resources/scss/main.scss', 'public/css/app.css').options({
   autoprefixer: {
     options: {
       browsers: ['last 10 versions']

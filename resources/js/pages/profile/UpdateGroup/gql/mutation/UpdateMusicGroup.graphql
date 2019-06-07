@@ -3,9 +3,9 @@
 mutation UpdateMusicGroup(
     $id: Int!,
     $avatar: Upload
-    $name: String!
+    $name: String = "" # required
     $careerStartYear: String!
-    $description: String!
+    $description: String = "" # rquired
     $genre: [ID]
     $socialLinks: [SocialLinksInput]
     $activeMemberIds: [Int]

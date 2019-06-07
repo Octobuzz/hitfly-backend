@@ -30,13 +30,6 @@ export default {
     AlbumScrollHorizontal
   },
 
-  props: {
-    containerPaddingClass: {
-      type: String,
-      default: ''
-    }
-  },
-
   data() {
     return {
       albumList: [],
@@ -57,6 +50,10 @@ export default {
 
     albumListLength() {
       return this.albumList.length > 0;
+    },
+
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     }
   },
 

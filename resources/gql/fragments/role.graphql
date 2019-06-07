@@ -1,0 +1,4 @@
+fragment role on Role {
+    name
+    slug
+}

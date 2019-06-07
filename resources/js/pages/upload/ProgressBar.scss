@@ -1,4 +1,4 @@
-@import '../../../sass/_variables.scss';
+@import '~scss/_variables.scss';
 
 @keyframes rotate{
   from{
@@ -52,7 +52,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      background: $linear-gradient;
+      background: $gradient_linear;
 
       &.animated {
         animation: 5s width ease-in-out forwards;
@@ -78,7 +78,7 @@
 
     & p {
       font-size: 14px;
-      color: $color_4;
+      color: $text_color_secondary;
     }
 
     & img{
