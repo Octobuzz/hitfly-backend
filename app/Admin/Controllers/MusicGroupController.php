@@ -20,6 +20,7 @@ class MusicGroupController extends Controller
     use HasResourceActions;
 
     const ROUTE_NAME = 'ROUTE_MUSIC_GROUP';
+
     /**
      * Index interface.
      *
@@ -53,7 +54,7 @@ class MusicGroupController extends Controller
             ->description('Музыкальная группа')
             ->body($this->detail($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -73,7 +74,7 @@ class MusicGroupController extends Controller
             ->description('реадктирование музыкальной группы')
             ->body($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -92,7 +93,7 @@ class MusicGroupController extends Controller
             ->description('создание музыкальной группы')
             ->body($this->form())
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
     }

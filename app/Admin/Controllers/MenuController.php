@@ -8,16 +8,11 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\City;
-use App\User;
 use Encore\Admin\Controllers\HasResourceActions;
-use Encore\Admin\Form;
-use Encore\Admin\Grid;
 use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\Box;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 
 class MenuController extends \Encore\Admin\Controllers\MenuController
@@ -64,7 +59,6 @@ class MenuController extends \Encore\Admin\Controllers\MenuController
             );
     }
 
-
     public function edit($id, Content $content)
     {
         return $content
@@ -72,10 +66,8 @@ class MenuController extends \Encore\Admin\Controllers\MenuController
             ->description(trans('Редактирование'))
             ->row($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
-
-
 }

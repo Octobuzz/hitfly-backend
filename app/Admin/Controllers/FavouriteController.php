@@ -12,7 +12,6 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Route;
 
 class FavouriteController extends Controller
 {
@@ -53,7 +52,7 @@ class FavouriteController extends Controller
             ->description('')
             ->body($this->detail($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -73,7 +72,7 @@ class FavouriteController extends Controller
             ->description('description')
             ->body($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -92,7 +91,7 @@ class FavouriteController extends Controller
             ->description('description')
             ->body($this->form())
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
     }
@@ -108,7 +107,6 @@ class FavouriteController extends Controller
         $grid->actions(function ($actions) {
             $actions->disableEdit();
         });
-
 
         $grid->id('#');
         $grid->favouriteable_type('Тип избранного')->display(function ($favourite) {

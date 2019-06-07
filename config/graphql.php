@@ -165,6 +165,9 @@ return [
 
                 'createAlbum' => \App\Http\GraphQL\Mutations\CreateAlbumMutation::class,
                 'updateAlbum' => \App\Http\GraphQL\Mutations\UpdateAlbumMutation::class,
+
+                'addFollow' => \App\Http\GraphQL\Mutations\FollowMutation::class,
+                'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -199,6 +202,8 @@ return [
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
         'ImageSizesType' => \App\Http\GraphQL\Type\ImageSizesType::class,
         'RoleType' => \App\Http\GraphQL\Type\RoleType::class,
+        'FollowUser' => \App\Http\GraphQL\Type\FollowUserType::class,
+        'FollowMusicGroup' => \App\Http\GraphQL\Type\FollowMusicGroupType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -213,6 +218,7 @@ return [
         'MusicGroupUpdateInput' => \App\Http\GraphQL\InputObject\MusicGroupUpdateInput::class,
         'AlbumInput' => \App\Http\GraphQL\InputObject\AlbumInput::class,
         'PasswordInput' => \App\Http\GraphQL\InputObject\PasswordInput::class,
+        'FollowInput' => \App\Http\GraphQL\InputObject\FollowInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
@@ -222,9 +228,11 @@ return [
         'AlbumTypeEnum' => \App\Http\GraphQL\Enums\AlbumTypeEnum::class,
         'PictureSizeEnum' => \App\Http\GraphQL\Enums\PictureSizeEnum::class,
         'CommentPeriodEnum' => \App\Http\GraphQL\Enums\CommentPeriodEnum::class,
+        'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
+        'FollowResult' => \App\Http\GraphQL\Unions\FollowUnion::class,
 
         'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],

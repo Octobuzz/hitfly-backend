@@ -66,6 +66,14 @@ class CollectionType extends GraphQLType
                 },
                 'selectable' => false,
             ],
+            'favouritesCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество добавлений коллекции в избранное',
+                'resolve' => function ($model) {
+                    return $model->favourites->count();
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }

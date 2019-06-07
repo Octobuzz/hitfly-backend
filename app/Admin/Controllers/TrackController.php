@@ -19,6 +19,7 @@ class TrackController extends Controller
 {
     use HasResourceActions;
     const ROUTE_NAME = 'ROUTE_TRACK';
+
     /**
      * Index interface.
      *
@@ -52,7 +53,7 @@ class TrackController extends Controller
             ->description('description')
             ->body($this->detail($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -72,7 +73,7 @@ class TrackController extends Controller
             ->description('description')
             ->body($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -91,7 +92,7 @@ class TrackController extends Controller
             ->description('description')
             ->body($this->form())
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
     }

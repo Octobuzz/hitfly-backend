@@ -41,6 +41,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
             );
     }
+
     public function show($id, Content $content)
     {
         return $content
@@ -48,7 +49,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
             ->description(trans('admin.detail'))
             ->body($this->detail($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
@@ -60,10 +61,11 @@ class UserController extends \Encore\Admin\Controllers\UserController
             ->description(trans('admin.edit'))
             ->body($this->form()->edit($id))
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => $id]
             );
     }
+
     public function create(Content $content)
     {
         return $content
@@ -71,7 +73,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
             ->description(trans('admin.create'))
             ->body($this->form())
             ->breadcrumb(
-                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME . '.index')],
+                ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
     }
@@ -82,8 +84,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         return User::where('username', 'like', "%$q%")->paginate(null, ['id', 'username as text']);
     }
-
-
 
     protected function grid()
     {
@@ -110,6 +110,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         return $grid;
     }
+
     /**
      * Make a show builder.
      *
@@ -137,12 +138,12 @@ class UserController extends \Encore\Admin\Controllers\UserController
             return $roles->pluck('name');
         })->label();
         //if (true === $show->model()->isRole('star') || $show->model()->isRole('performer')) {
-            $show->artistprofile('Дата начала карьеры')->as(function ($carrer) {
-                return Carbon::parse($carrer->career_start)->format("Y");
-            });
-            $show->artist('Описание деятельности')->as(function ($description) {
-                return $description->description;
-            });
+        $show->artistprofile('Дата начала карьеры')->as(function ($carrer) {
+            return Carbon::parse($carrer->career_start)->format('Y');
+        });
+        $show->artist('Описание деятельности')->as(function ($description) {
+            return $description->description;
+        });
         //}
 //        $show->model()->load('artistProfile');
 //        $savingUser = $show->model();
@@ -185,7 +186,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
         $form->multipleSelect('permissions', trans('admin.permissions'))->options($permissionModel::all()->pluck('name', 'id'));
-        $form->multipleSelect('favouritegenre', trans('admin.f_genres'))->options( Genre::all()->pluck('name', 'id'));
+        $form->multipleSelect('favouritegenre', trans('admin.f_genres'))->options(Genre::all()->pluck('name', 'id'));
 
         $form->select('city_id', 'Город')->options(function ($id) {
             $city = City::find($id);
@@ -198,25 +199,21 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->display('created_at', trans('admin.created_at'));
         $form->display('updated_at', trans('admin.updated_at'));
 
-
         $form->divider();
 
         $form->editing(function (Form $form) {
-
             $form->ignore(['password', 'password_confirmation']);
 
-            $form->model()->load('artistProfile','favouriteGenres');
+            $form->model()->load('artistProfile', 'favouriteGenres');
             $savingUser = $form->model();
 
             $form->getRelations();
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
                 $form->getRelations();
-                $form->date('artist_profile.career_start', 'Дата начала карьеры')->format("YYYY");
+                $form->date('artist_profile.career_start', 'Дата начала карьеры')->format('YYYY');
                 $form->textarea('artist_profile.description', 'Описание деятельности');
             }
-
         });
-
 
         $form->saving(function (Form $form) {
             $form->model()->load('artistProfile');
@@ -230,7 +227,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
             $savingUser = $form->model();
             $savingUser->roles()->sync(array_filter($form->roles));
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-
                 /** @var ArtistProfile $artistProfile */
                 $artistProfile = $savingUser->artistProfile;
                 $artistProfile->update($form->artist_profile);
@@ -243,7 +239,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
             // Disable `Delete` btn.
             $tools->disableDelete();
         });
-
 
         return $form;
     }

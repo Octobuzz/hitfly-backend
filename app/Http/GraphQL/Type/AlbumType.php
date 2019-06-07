@@ -62,6 +62,14 @@ class AlbumType extends GraphQLType
                 },
                 'selectable' => false,
             ],
+            'favouritesCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество добавлений альбома в избранное',
+                'resolve' => function ($model) {
+                    return $model->favourites->count();
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }
