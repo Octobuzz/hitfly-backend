@@ -26,8 +26,14 @@ export default {
   apollo: {
     track: {
       query: gql.query.TRACK_WITH_COMMENTS,
-      update(d) {
-        console.log(d);
+      variables() {
+        return {
+          id: this.trackId
+        };
+      },
+      update({ track }) {
+        this.track = track;
+        console.log(track);
       },
       error(err) {
         console.dir(err);
