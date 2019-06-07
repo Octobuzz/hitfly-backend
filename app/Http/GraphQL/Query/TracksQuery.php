@@ -32,7 +32,7 @@ class TracksQuery extends Query
                 'name' => 'my',
                 'type' => Type::boolean(),
                 'description' => 'Только мои треки',
-                'rules' => ['mutually_exclusive_args:userId'],
+                'rules' => ['mutually_exclusive_args:userId,musicGroupId'],
             ],
             'commentPeriod' => [
                 'type' => \GraphQL::type('CommentPeriodEnum'),
@@ -41,7 +41,12 @@ class TracksQuery extends Query
             'userId' => [
                 'type' => Type::int(),
                 'description' => 'ID пользователя(фильтрация)',
-                'rules' => ['mutually_exclusive_args:my'],
+                'rules' => ['mutually_exclusive_args:my,musicGroupId'],
+            ],
+            'musicGroupId' => [
+                'type' => Type::int(),
+                'description' => 'ID группы(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my,userId'],
             ],
         ];
     }
@@ -57,6 +62,9 @@ class TracksQuery extends Query
         }
         if (false === empty($args['userId'])) {
             $query->where('tracks.user_id', '=', $args['userId']);
+        }
+        if (false === empty($args['musicGroupId'])) {
+            $query->where('tracks.music_group_id', '=', $args['musicGroupId']);
         }
 
         if (false === empty($args['commentPeriod'])) {

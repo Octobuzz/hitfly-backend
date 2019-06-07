@@ -56,13 +56,5 @@ class CollectionsQuery extends Query
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;
-//        if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
-//            return Collection::with($fields->getRelations())
-//                ->where('user_id', '=', \Auth::user()->id)
-//                ->paginate($args['limit'], ['*'], 'page', $args['page']);
-//        }
-//
-//        return Collection::with($fields->getRelations())
-//            ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

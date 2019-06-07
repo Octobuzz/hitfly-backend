@@ -31,12 +31,17 @@ class AlbumsQuery extends Query
                 'name' => 'my',
                 'type' => Type::boolean(),
                 'description' => 'Только мои альбомы',
-                'rules' => ['mutually_exclusive_args:userId'],
+                'rules' => ['mutually_exclusive_args:userId,musicGroupId'],
             ],
             'userId' => [
                 'type' => Type::int(),
                 'description' => 'ID пользователя(фильтрация)',
-                'rules' => ['mutually_exclusive_args:my'],
+                'rules' => ['mutually_exclusive_args:my,userId'],
+            ],
+            'musicGroupId' => [
+                'type' => Type::int(),
+                'description' => 'ID группы(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my,userId'],
             ],
         ];
     }
@@ -46,6 +51,9 @@ class AlbumsQuery extends Query
         $query = Album::with($fields->getRelations());
         if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
             $query->where('user_id', '=', \Auth::user()->id);
+        }
+        if (false === empty($args['musicGroupId'])) {
+            $query->where('music_group_id', '=', $args['musicGroupId']);
         }
         if (false === empty($args['userId'])) {
             $query->where('user_id', '=', $args['userId']);
