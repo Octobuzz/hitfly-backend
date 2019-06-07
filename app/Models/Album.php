@@ -82,6 +82,7 @@ class Album extends Model
         'year',
         'cover',
         'album_img',
+        'user_id',
     ];
 
     protected $hidden = [

@@ -87,16 +87,15 @@ class UpdateTrackMutation extends Mutation
         /** @var Track $track */
         $track = Track::query()->find($args['id']);
         $track->genres()->sync($args['infoTrack']['genres']);
-
         $track->update([
             'track_name' => $args['infoTrack']['trackName'],
             'album_id' => empty($args['infoTrack']['album']) ? null : $args['infoTrack']['album'],
+            'music_group_id' => empty($args['infoTrack']['musicGroup']) ? null : $args['infoTrack']['musicGroup'],
             'singer' => $args['infoTrack']['singer'],
             'song_text' => $clean_html,
             'track_date' => Carbon::create($args['infoTrack']['trackDate'], 1, 1),
             'state' => 'fileload',
         ]);
-
         $track->save();
 
         return $track;

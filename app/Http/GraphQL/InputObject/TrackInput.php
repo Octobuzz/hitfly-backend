@@ -2,6 +2,8 @@
 
 namespace App\Http\GraphQL\InputObject;
 
+use App\Rules\OwnerAlbum;
+use App\Rules\OwnerMusicGroup;
 use App\Rules\UploadDocAndTxtFile;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -29,7 +31,7 @@ class TrackInput extends GraphQLType
                 'name' => 'album',
                 'description' => 'Альбом трека',
                 'type' => Type::int(),
-                'rules' => ['nullable', 'integer'],
+                'rules' => ['nullable', 'integer', new OwnerAlbum()],
             ],
             'genres' => [
                 'name' => 'genres',
@@ -42,6 +44,12 @@ class TrackInput extends GraphQLType
                 'description' => 'Испольнитель',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'min:0', 'max:250'],
+            ],
+            'musicGroup' => [
+                'name' => 'musicGroup',
+                'description' => 'Музыкальная группа, к которой принадлежит трек',
+                'type' => Type::int(),
+                'rules' => ['nullable', 'integer', new OwnerMusicGroup()],
             ],
             'trackDate' => [
                 'name' => 'trackDate',

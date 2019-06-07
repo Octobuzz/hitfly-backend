@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\InputObject;
 
+use App\Rules\OwnerMusicGroup;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -46,6 +47,12 @@ class AlbumInput extends GraphQLType
                 'description' => 'id жанров',
                 'type' => Type::listOf(Type::int()),
                 'rules' => ['required'],
+            ],
+            'musicGroup' => [
+                'name' => 'musicGroup',
+                'description' => 'Музыкальная группа, к которой принадлежит трек',
+                'type' => Type::int(),
+                'rules' => ['nullable', 'integer', new OwnerMusicGroup()],
             ],
         ];
     }

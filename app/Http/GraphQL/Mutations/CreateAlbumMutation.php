@@ -46,7 +46,7 @@ class CreateAlbumMutation extends Mutation
         $album->type = $args['album']['type'];
         $album->title = $args['album']['title'];
         $album->author = $args['album']['author'];
-        $album->author = $args['album']['author'];
+        $album->music_group_id = empty($args['album']['musicGroup']) ? null : $args['album']['musicGroup'];
         $album->year = Carbon::createFromFormat('Y', $args['album']['year'])->toDateString();
         if (!empty($args['cover']) && null !== $args['cover']) {
             $album->cover = $this->setCover($album, $args['cover']);
