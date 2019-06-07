@@ -1,0 +1,25 @@
+@import '~scss/_variables.scss';
+
+.review-list-entry {
+  display: flex;
+
+  &__cover-section {
+    width: 150px;
+    margin-right: 32px;
+  }
+
+  &__cover {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .review-list-entry {
+    flex-direction: column;
+
+    &__cover-section {
+      margin-right: 0;
+    }
+  }
+}

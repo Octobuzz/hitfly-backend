@@ -8,7 +8,7 @@
 
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
-import ReviewList from 'components/reviewList/ReviewList';
+import ReviewList from 'components/trackReviews/ReviewList';
 import gql from './gql';
 
 export default {
@@ -18,8 +18,16 @@ export default {
   },
 
   props: {
+    userId: {
+      validator: val => (
+        typeof value === 'number' || val === 'me'
+      ),
+      required: true
+    },
     commentedInPeriod: {
-      type: String,
+      validator: val => (
+        ['week', 'month', 'year'].indexOf(val) !== -1
+      ),
       default: 'month'
     }
   },
@@ -93,7 +101,7 @@ export default {
   apollo: {
     trackList() {
       return {
-        query: gql.query.MY_TRACKS_WITH_COMMENTS,
+        query: gql.query.TRACKS_WITH_COMMENTS,
         variables: this.queryVars,
         fetchPolicy: 'network-only',
 

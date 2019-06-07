@@ -1,17 +1,16 @@
 <template>
-  <MyTrackReviewsContainer commented-in-period="month" />
+  <TrackReviews
+    user-id="me"
+    default-period="week"
+  />
 </template>
 
 <script>
-import MyTrackReviewsContainer from '../MyTrackReviewsContainer';
+import TrackReviews from 'components/trackReviews/TrackReviews';
 
 export default {
   components: {
-    MyTrackReviewsContainer
-  },
-
-  data() {
-    return {};
+    TrackReviews
   }
 };
 </script>
