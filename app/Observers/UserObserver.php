@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\EmailChangeJob;
 use App\Jobs\UserRegisterJob;
 use App\Models\EmailChange;
+use App\Models\Purse;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Support\Facades\App;
@@ -25,6 +26,13 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
+        $purse = new Purse([
+            'balance' => 0,
+            'name' => Purse::NAME_BONUS,
+            'user_id' => $user->id,
+        ]);
+        $user->purse()->save($purse);
+        $purse->save();
         //отправка письма о завершении регистрации
         if ($user->email && App::environment('local') && null !== Auth::user()) {
             dispatch(new UserRegisterJob($user))->onQueue('low');

@@ -61,6 +61,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const GENDER_MEN = 'M';
     const GENDER_WOMEN = 'F';
 
+    const LEVEL_NOVICE = 'LEVEL_NOVICE'; // Новичок
+    const LEVEL_AMATEUR = 'LEVEL_AMATEUR'; // Любитель
+    const LEVEL_CONNOISSEUR_OF_THE_GENRE = 'LEVEL_CONNOISSEUR_OF_THE_GENRE'; // Знаток жанра
+    const LEVEL_SUPER_MUSIC_LOVER = 'LEVEL_SUPER_MUSIC_LOVER'; // Супер меломан
+
     /**
      * The attributes that are mass assignable.
      *

@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int    $id
  * @property int    $balance
- * @property int    $currency_id
  * @property int    $user_id
  * @property int    $operation_id
  * @property string $name
