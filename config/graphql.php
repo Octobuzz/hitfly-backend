@@ -229,6 +229,7 @@ return [
         'PictureSizeEnum' => \App\Http\GraphQL\Enums\PictureSizeEnum::class,
         'CommentPeriodEnum' => \App\Http\GraphQL\Enums\CommentPeriodEnum::class,
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
+        'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

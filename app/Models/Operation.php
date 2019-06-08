@@ -36,6 +36,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $type_id
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereTypeId($value)
+ *
+ * @property string|null       $extra_data
+ * @property \App\Models\Purse $purseBonus
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereExtraData($value)
  */
 class Operation extends Model
 {

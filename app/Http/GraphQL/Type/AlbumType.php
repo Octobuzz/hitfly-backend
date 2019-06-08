@@ -60,7 +60,6 @@ class AlbumType extends GraphQLType
                         return false;
                     }
                 },
-                'selectable' => false,
             ],
             'favouritesCount' => [
                 'type' => Type::int(),
