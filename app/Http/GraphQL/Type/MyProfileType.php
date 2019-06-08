@@ -82,7 +82,7 @@ class MyProfileType extends GraphQLType
                     },
                     'selectable' => false,
                 ],
-                'bpPercent' => [
+                'bpProgressPercent' => [
                     'type' => Type::nonNull(Type::int()),
                     'description' => 'Процент заполнения для перехода на следующий уровень в бонусной программе',
                     'resolve' => function ($model) {
