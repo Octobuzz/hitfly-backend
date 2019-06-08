@@ -5,7 +5,6 @@ namespace App\Http\GraphQL\Type;
 use App\Http\GraphQL\Privacy\UserPrivacy;
 use App\Models\Purse;
 use App\User;
-use Carbon\Carbon;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use GraphQL;
@@ -64,26 +63,15 @@ class MyProfileType extends GraphQLType
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
                 ],
-                'statusBonusProgram' => [
+                'bpLevelBonusProgram' => [
                     'type' => Type::nonNull(GraphQL::type('BonusProgramUserStatusEnum')),
-                    'description' => 'Текущий статус пользователя в бонусной программе',
+                    'description' => 'Текущий уровень пользователя в бонусной программе',
                     'resolve' => function ($model) {
                         $model->level;
                     },
                     'selectable' => false,
                 ],
-                'daysInProgram' => [
-                    'type' => Type::int(),
-                    'description' => 'Количество дней в бонусной программе программе',
-                    'selectable' => false,
-                    'resolve' => function (User $model) {
-                        $dateCreate = $model->created_at;
-                        $carbon = Carbon::now();
-
-                        return $carbon->diffInDays($dateCreate);
-                    },
-                ],
-                'points' => [
+                'bpPoints' => [
                     'type' => Type::nonNull(Type::int()),
                     'description' => 'Количество накопленных баллов',
                     'resolve' => function (User $model) {
@@ -94,7 +82,7 @@ class MyProfileType extends GraphQLType
                     },
                     'selectable' => false,
                 ],
-                'percent' => [
+                'bpPercent' => [
                     'type' => Type::nonNull(Type::int()),
                     'description' => 'Процент заполнения для перехода на следующий уровень в бонусной программе',
                     'resolve' => function ($model) {

@@ -10,6 +10,7 @@ namespace App\Http\GraphQL\Interfaces;
 
 use App\Http\GraphQL\Fields\AvatarSizesField;
 use App\User;
+use Carbon\Carbon;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
 
@@ -93,6 +94,17 @@ class UserInterface extends InterfaceType
                     return [];
                 },
                 'selectable' => false,
+            ],
+            'bpDaysInProgram' => [
+                'type' => Type::int(),
+                'description' => 'Количество дней в бонусной программе программе',
+                'selectable' => false,
+                'resolve' => function (User $model) {
+                    $dateCreate = $model->created_at;
+                    $carbon = Carbon::now();
+
+                    return $carbon->diffInDays($dateCreate);
+                },
             ],
         ];
     }
