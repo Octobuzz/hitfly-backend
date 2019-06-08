@@ -1,12 +1,21 @@
 <template>
   <IconButton
-    :class="$attrs.class"
+    ref="iconButton"
+    :class="[$attrs.class, 'add-to-favourites-button']"
     :passive="passive"
     :hover="hover"
     :active="isFavourite"
     @press="onPress"
   >
-    <HeartIcon />
+    <span class="add-to-favourites-button__content">
+      <HeartIcon />
+      <span
+        v-if="withCounter"
+        class="add-to-favourites-button__counter"
+      >
+        {{ addedToFavTimes || '&#10711;' }}
+      </span>
+    </span>
   </IconButton>
 </template>
 
@@ -43,12 +52,17 @@ export default {
     fake: {
       type: Boolean,
       default: false
+    },
+    withCounter: {
+      type: Boolean,
+      default: false
     }
   },
 
   data() {
     return {
-      isFavourite: false
+      isFavourite: false,
+      addedToFavTimes: 0
     };
   },
 
@@ -74,7 +88,22 @@ export default {
       const { itemType: type } = this;
 
       return type.charAt(0).toUpperCase() + type.slice(1);
+    },
+
+    iconButtonWidthPx() {
+      const defaultWidth = 40;
+      const margin = this.withCounter ? 6 : 0;
+      const symbolWidth = this.withCounter ? 8 : 0;
+
+      return defaultWidth + margin + this.addedToFavTimes.toString().length * symbolWidth;
     }
+  },
+
+  mounted() {
+    const iconButtonStyle = this.$refs.iconButton.$el.style;
+
+    iconButtonStyle.width = `${this.iconButtonWidthPx}px`;
+    iconButtonStyle['max-width'] = `${this.iconButtonWidthPx}px`;
   },
 
   methods: {
@@ -105,7 +134,12 @@ export default {
     },
 
     addToFavourite() {
-      const { itemId, itemType, itemTypeCapital } = this;
+      const {
+        itemId,
+        itemType,
+        itemTypeCapital,
+        addedToFavTimes
+      } = this;
 
       this.$apollo.mutate({
         mutation: gql.mutation.ADD_TO_FAVOURITE,
@@ -128,24 +162,25 @@ export default {
             [itemType]: {
               __typename: itemTypeCapital,
               id: itemId,
-              userFavourite: true
+              userFavourite: true,
+              favouritesCount: addedToFavTimes + 1
             }
           }
         }
       }).then(() => {
-        console.log(
-          'favourite updated:',
-          `type: ${itemType};`,
-          `id: ${itemId};`,
-          `isFav: ${this.isFavourite};`
-        );
+        // handle result if it's needed
       }).catch((error) => {
         console.log(error);
       });
     },
 
     removeFromFavourite() {
-      const { itemId, itemType, itemTypeCapital } = this;
+      const {
+        itemId,
+        itemType,
+        itemTypeCapital,
+        addedToFavTimes
+      } = this;
 
       this.$apollo.mutate({
         mutation: gql.mutation.REMOVE_FROM_FAVOURITE,
@@ -165,7 +200,8 @@ export default {
               [itemType]: {
                 __typename: itemTypeCapital,
                 id: itemId,
-                userFavourite: false
+                userFavourite: false,
+                favouritesCount: addedToFavTimes - 1
               }
             }
           });
@@ -188,12 +224,7 @@ export default {
           }
         }
       }).then(() => {
-        console.log(
-          'favourite updated:',
-          `type: ${itemType};`,
-          `id: ${itemId};`,
-          `isFav: ${this.isFavourite};`
-        );
+        // handle result if it's needed
       }).catch((error) => {
         console.log(error);
       });
@@ -222,7 +253,48 @@ export default {
           console.log(error);
         }
       };
+    },
+
+    addedToFavTimes() {
+      // eslint-disable-next-line consistent-return
+      return {
+        query: typeToQueryMap[this.itemType],
+        variables() {
+          return {
+            id: this.itemId
+          };
+        },
+        update: data => (
+          data[this.itemType].favouritesCount
+        ),
+        error(error) {
+          console.log(error);
+        }
+      };
     }
   }
 };
 </script>
+
+<style
+  scoped
+  lang="scss"
+>
+.add-to-favourites-button {
+  transition: width 0s;
+
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__counter {
+    display: block;
+    transform: translateY(2px);
+    margin-left: 6px;
+  }
+}
+</style>

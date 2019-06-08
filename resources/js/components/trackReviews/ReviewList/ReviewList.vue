@@ -6,6 +6,7 @@
       v-for="trackId in trackIdList"
       :key="trackId"
       :track-id="trackId"
+      :commented-in-period="commentedInPeriod"
     />
     <slot name="loader" />
   </div>
@@ -22,6 +23,12 @@ export default {
     trackIdList: {
       type: Array,
       required: true
+    },
+    commentedInPeriod: {
+      validator: val => (
+        ['week', 'month', 'year'].indexOf(val) !== -1
+      ),
+      default: 'month'
     }
   }
 };

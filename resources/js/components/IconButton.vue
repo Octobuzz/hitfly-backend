@@ -177,7 +177,7 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
     border-style: solid;
     position: absolute;
     margin: 5px;
-    border-color: black;
+    border-color: #313131;
     z-index: 1;
   }
 

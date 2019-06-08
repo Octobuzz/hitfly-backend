@@ -1,5 +1,8 @@
 <template>
-  <ReviewList :track-id-list="trackIdList">
+  <ReviewList
+    :track-id-list="trackIdList"
+    :commented-in-period="commentedInPeriod"
+  >
     <template v-if="isLoading" #loader>
       <SpinnerLoader />
     </template>
@@ -38,8 +41,7 @@ export default {
       isLoading: true,
       hasMoreData: true,
       queryVars: {
-        // TODO: use query vars specific to reviews' data
-        // TODO: pass user/id group as a prop
+        // TODO: pass user/group id as a prop
         pageNumber: 1,
         pageLimit: 5,
         my: false,
@@ -51,6 +53,15 @@ export default {
   computed: {
     trackIdList() {
       return this.trackList.map(track => track.id);
+    }
+  },
+
+  watch: {
+    commentedInPeriod(val) {
+      this.queryVars = {
+        ...this.queryVars,
+        commentedInPeriod: val
+      };
     }
   },
 
@@ -99,25 +110,25 @@ export default {
   },
 
   apollo: {
-    trackList() {
-      return {
-        query: gql.query.TRACKS_WITH_COMMENTS,
-        variables: this.queryVars,
-        fetchPolicy: 'network-only',
+    trackList: {
+      query: gql.query.TRACKS_WITH_COMMENTS,
+      variables() {
+        return this.queryVars;
+      },
+      fetchPolicy: 'network-only',
 
-        update({ tracks: { total, to, data } }) {
-          this.isLoading = false;
-          if (to === total) {
-            this.hasMoreData = false;
-          }
-
-          return data;
-        },
-
-        error(err) {
-          console.dir(err);
+      update({ tracks: { total, to, data } }) {
+        this.isLoading = false;
+        if (to === total) {
+          this.hasMoreData = false;
         }
-      };
+
+        return data;
+      },
+
+      error(err) {
+        console.dir(err);
+      }
     }
   }
 };

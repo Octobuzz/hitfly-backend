@@ -13,6 +13,7 @@ mutation AddToFavourite(
             track {
                 id
                 userFavourite
+                favouritesCount
             }
         }
         ... on FavouriteAlbum {
@@ -20,6 +21,7 @@ mutation AddToFavourite(
             album {
                 id
                 userFavourite
+                favouritesCount
             }
         }
         ... on FavouriteCollection {
@@ -27,6 +29,7 @@ mutation AddToFavourite(
             collection {
                 id
                 userFavourite
+                favouritesCount
             }
         }
     }

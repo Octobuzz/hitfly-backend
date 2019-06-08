@@ -11,6 +11,12 @@
   &__cover {
     width: 150px;
     height: 150px;
+    border-radius: 4px;
+  }
+
+  &__cover-button-container {
+    display: flex;
+    justify-content: space-between;
   }
 }
 
