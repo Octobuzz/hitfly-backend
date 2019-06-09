@@ -12,7 +12,7 @@
       </span>
 
       <span class="review-list-entry__m-singer">
-        {{ track.singer }} alimono aloe vera boys
+        {{ track.singer }}
       </span>
 
       <div class="review-list-entry__cover-button-container">
@@ -157,8 +157,6 @@ export default {
         query: gql.query.TRACK_WITH_COMMENTS,
         variables: this.queryVars,
         update({ track }) {
-          console.log(track);
-
           return track;
         },
         error(err) {

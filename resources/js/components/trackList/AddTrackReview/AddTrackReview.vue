@@ -63,14 +63,44 @@ export default {
         variables: {
           trackId,
           comment: reviewText
+        },
+        update: (store, { data: { createComment } }) => {
+          ['week', 'month', 'year'].forEach((period) => {
+            try {
+              const { track: trackWithComments } = store.readQuery({
+                query: gql.query.TRACK_WITH_COMMENTS,
+                variables: {
+                  id: this.trackId,
+                  commentedInPeriod: period
+                }
+              });
+
+              store.writeQuery({
+                query: gql.query.TRACK_WITH_COMMENTS,
+                variables: {
+                  id: this.trackId,
+                  commentedInPeriod: period
+                },
+                data: {
+                  track: {
+                    ...trackWithComments,
+                    comments: [
+                      createComment,
+                      ...trackWithComments.comments
+                    ]
+                  }
+
+                }
+              });
+            } catch (e) {
+              // no track or track comments found in the store
+            }
+          });
+
+          // TODO: rewrite comments pagination query if exists
         }
       })
         .then((res) => {
-          // attempt to read from cache and write new comment
-          // there must be two query: tracks and commentsTrack
-
-          // TODO: implement after list creation
-
           setTimeout(() => {
             this.reviewText = '';
           }, 300);

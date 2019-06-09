@@ -13,7 +13,7 @@
         v-if="withCounter"
         class="add-to-favourites-button__counter"
       >
-        {{ addedToFavTimes || '&#10711;' }}
+        {{ addedToFavTimes }}
       </span>
     </span>
   </IconButton>

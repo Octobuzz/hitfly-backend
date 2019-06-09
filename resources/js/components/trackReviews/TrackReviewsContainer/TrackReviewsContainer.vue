@@ -62,11 +62,18 @@ export default {
         ...this.queryVars,
         commentedInPeriod: val
       };
+
+      this.hasMoreData = true;
+      this.queryVars.pageNumber = 1;
     }
   },
 
   mounted() {
-    window.loadMoreComments = this.loadMore.bind(this);
+    window.addEventListener('scroll', this.onScroll);
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.onScroll);
   },
 
   methods: {
@@ -106,6 +113,19 @@ export default {
         .catch((err) => {
           console.dir(err);
         });
+    },
+
+    onScroll() {
+      const { innerHeight, pageYOffset } = window;
+      const { scrollHeight } = document.body;
+
+      const maybeLoadMore = Math.abs(
+        (innerHeight + pageYOffset) - scrollHeight
+      ) <= 200;
+
+      if (maybeLoadMore && this.hasMoreData) {
+        this.loadMore();
+      }
     }
   },
 
@@ -119,9 +139,13 @@ export default {
 
       update({ tracks: { total, to, data } }) {
         this.isLoading = false;
-        if (to === total) {
-          this.hasMoreData = false;
-        }
+        this.hasMoreData = to < total;
+
+        // check if the screen has empty space to load more comments
+
+        this.$nextTick(() => {
+          this.onScroll();
+        });
 
         return data;
       },

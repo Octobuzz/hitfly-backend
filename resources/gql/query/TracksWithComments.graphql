@@ -1,5 +1,4 @@
 # TODO: use additional variables to fetch a particular user tracks
-# TODO: use additional variables to fetch tracks commented in specific period if time
 
 #import "../fragments/track.graphql"
 
