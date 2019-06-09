@@ -1,34 +1,36 @@
 <template>
   <div :class="containerPaddingClass">
-    <span
-      v-for="period in periodFilterList"
-      :key="period"
-      class="track-reviews__filter-container"
-    >
-      <input
-        :id="`track-reviews-filter-${period}`"
-        class="track-reviews__filter-input"
-        type="radio"
-        name="track-reviews-filter"
-        :checked="period === periodFilter"
-        @change.prevent="onChange($event, period)"
+    <div class="track-reviews__filter-container">
+      <span
+        v-for="period in periodFilterList"
+        :key="period"
+        class="track-reviews__filter"
       >
-      <label
-        :for="`track-reviews-filter-${period}`"
-        class="track-reviews__filter-button"
-      >
-        <CalendarIcon />
-        <span class="track-reviews__filter-text">
-          {{
-            period === 'week'
-              ? 'За неделю'
-              : period === 'month'
-                ? 'За месяц'
-                : 'За год'
-          }}
-        </span>
-      </label>
-    </span>
+        <input
+          :id="`track-reviews-filter-${period}`"
+          class="track-reviews__filter-input"
+          type="radio"
+          name="track-reviews-filter"
+          :checked="period === periodFilter"
+          @change.prevent="onChange($event, period)"
+        >
+        <label
+          :for="`track-reviews-filter-${period}`"
+          class="track-reviews__filter-button"
+        >
+          <CalendarIcon />
+          <span class="track-reviews__filter-text">
+            {{
+              period === 'week'
+                ? 'За неделю'
+                : period === 'month'
+                  ? 'За месяц'
+                  : 'За год'
+            }}
+          </span>
+        </label>
+      </span>
+    </div>
 
     <!--TODO: search-->
 

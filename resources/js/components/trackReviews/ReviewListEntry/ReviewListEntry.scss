@@ -1,22 +1,79 @@
 @import '~scss/_variables.scss';
 
+$cover_width_desktop: 180px;
+$cover_width_mobile: 72px;
+
 .review-list-entry {
   display: flex;
 
   &__cover-section {
-    width: 150px;
+    width: $cover_width_desktop;
     margin-right: 32px;
   }
 
   &__cover {
-    width: 150px;
-    height: 150px;
+    width: $cover_width_desktop;
+    height: $cover_width_desktop;
     border-radius: 4px;
   }
 
   &__cover-button-container {
     display: flex;
     justify-content: space-between;
+  }
+
+  &__player-reviews-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__d-track-name {
+
+  }
+
+  &__m-track-name {
+    display: none;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  &__d-singer {
+    height: 32px;
+  }
+
+  &__m-singer {
+    font-size: 10px;
+    color: $text_color_secondary;
+    display: none;
+    margin-bottom: 4px;
+  }
+
+  &__singer {
+    box-sizing: border-box;
+    font-size: 15px;
+    display: block;
+    height: 32px;
+  }
+
+  &__player {
+    height: 130px;
+    background: violet;
+    margin-bottom: 24px;
+  }
+
+  &__track-review {
+    margin-bottom: 38px;
+  }
+
+  &__more-reviews-button {
+    color: $text_color_primary;
+    font-size: 14px;
+    align-self: flex-end;
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 4px;
+    border: 1px solid $layout_border_color;
   }
 }
 
@@ -25,7 +82,47 @@
     flex-direction: column;
 
     &__cover-section {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-content: flex-start;
+      width: 100%;
+      max-height: 90px;
       margin-right: 0;
+    }
+
+    &__cover {
+      width: $cover_width_mobile;
+      height: $cover_width_mobile;
+      margin-right: 16px;
+    }
+
+    &__cover-button-container {
+      min-width: 200px;
+    }
+
+    &__player {
+      height: 72px;
+    }
+
+    &__d-track-name {
+      display: none;
+    }
+
+    &__m-track-name {
+      display: block;
+    }
+
+    &__d-singer {
+      display: none;
+    }
+
+    &__m-singer {
+      display: block;
+    }
+
+    &__track-review {
+      margin-bottom: 12px;
     }
   }
 }

@@ -4,7 +4,8 @@
       'lds-spinner',
       {
         'lds-spinner_dark': theme === 'light',
-        'lds-spinner_small': size === 'small'
+        'lds-spinner_small': size === 'small',
+        'lds-spinner_x-small': size === 'x-small'
       },
       $attrs.class
     ]"
@@ -42,6 +43,7 @@ export default {
 
 $normal-size: 64px;
 $small-size: 32px;
+$x-small-size: 16px;
 
 .lds-spinner {
   display: inline-block;
@@ -81,6 +83,22 @@ $small-size: 32px;
     left: 14px;
     width: 3px;
     height: 9px;
+  }
+}
+
+.lds-spinner_x-small {
+  width: $x-small-size;
+  height: $x-small-size;
+
+  div {
+    transform-origin: $x-small-size / 2 $x-small-size / 2;
+  }
+
+  div:after {
+    top: 1px;
+    left: 8px;
+    width: 2px;
+    height: 6px;
   }
 }
 

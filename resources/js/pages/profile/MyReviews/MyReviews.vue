@@ -1,5 +1,6 @@
 <template>
   <TrackReviews
+    class="my-reviews"
     user-id="me"
     default-period="week"
   />
@@ -14,3 +15,12 @@ export default {
   }
 };
 </script>
+
+<style
+  scoped
+  lang="scss"
+>
+.my-reviews {
+  margin-top: 16px;
+}
+</style>

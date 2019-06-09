@@ -13,7 +13,7 @@
     <SpinnerLoader
       v-if="isLoading"
       class="form-button__loader"
-      size="small"
+      :size="loaderSize"
     />
     <slot v-else />
   </button>
@@ -34,6 +34,10 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    loaderSize: {
+      type: String,
+      default: 'small'
     }
   },
   computed: {

@@ -292,6 +292,8 @@ export default {
   }
 
   &__counter {
+    font-family: 'Gotham Pro', sans-serif;
+    font-size: 13px;
     display: block;
     transform: translateY(2px);
     margin-left: 6px;

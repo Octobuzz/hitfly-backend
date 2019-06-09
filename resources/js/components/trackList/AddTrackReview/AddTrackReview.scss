@@ -1,0 +1,24 @@
+.add-track-review {
+  padding-top: 16px;
+
+  &__textarea {
+    margin-bottom: 16px;
+  }
+
+  &__send-button {
+    color: white !important;
+    height: 40px;
+    padding: {
+      top: 11px;
+      bottom: 11px;
+    }
+    margin-bottom: 16px;
+
+    &:hover {
+      padding: {
+        top: 12px;
+        bottom: 12px;
+      }
+    }
+  }
+}

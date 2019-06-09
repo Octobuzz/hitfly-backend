@@ -28,6 +28,10 @@
   }
 
   &__filter-container {
+    margin-bottom: 36px;
+  }
+
+  &__filter {
     padding-right: 8px;
   }
 
@@ -43,9 +47,11 @@
       bottom: 11px;
       left: 14px;
     }
+    margin-bottom: 16px;
     border: 1px solid $layout_border_color;
     border-radius: 20px;
     transition: background, color .3s;
+    cursor: pointer;
     user-select: none;
 
     &::v-deep svg {
@@ -63,5 +69,13 @@
 
   &__filter-text {
     margin-left: 6px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .track-reviews {
+    &__filter-container {
+      margin-bottom: 0;
+    }
   }
 }

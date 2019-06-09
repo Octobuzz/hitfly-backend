@@ -1,6 +1,6 @@
 // popover cannot use scoped styles
 
-$bg-color: #222;
+$bg_color: #222;
 
 .track-actions-popover {
   display: block !important;
@@ -11,7 +11,7 @@ $bg-color: #222;
   }
   border-radius: 5px;
   z-index: 900;
-  background: $bg-color;
+  background: $bg_color;
   box-shadow: 0 0 30px 5px rgba(black, .1);
 
   &__wrapper {
@@ -19,7 +19,7 @@ $bg-color: #222;
   }
 
   &__inner {
-    background: $bg-color;
+    background: $bg_color;
     color: black;
     border-radius: 5px;
   }
@@ -37,7 +37,7 @@ $bg-color: #222;
       top-color: transparent;
       right-color: transparent;
       bottom-color: transparent;
-      left-color: $bg-color;
+      left-color: $bg_color;
     }
     z-index: 900;
   }
@@ -81,6 +81,10 @@ $bg-color: #222;
     height: 1px;
     border: none;
     background: #424242;
+
+    &_zero-on-top {
+      margin-top: 0;
+    }
   }
 
   &__menu {
@@ -110,6 +114,10 @@ $bg-color: #222;
     padding-left: 2px;
   }
 
+  &__review-item {
+    padding-bottom: 8px;
+  }
+
   &__tell-problem {
     font-size: 12px;
     color: #6e6e6e;
@@ -136,6 +144,21 @@ $bg-color: #222;
     padding-top: 18px;
     text-align: center;
     cursor: pointer;
+  }
+
+  &__cancel-button {
+    color: white !important;
+    padding: {
+      top: 11px !important;
+      bottom: 11px !important;
+    }
+
+    &:hover {
+      padding: {
+        top: 12px !important;
+        bottom: 12px !important;
+      }
+    }
   }
 
   &__add-playlist-header {
@@ -169,37 +192,42 @@ $bg-color: #222;
   }
 }
 
-@media screen and (max-width: 410px) {
-  .track-actions-popover {
-    width: 280px;
-    margin: {
-      top: 0;
-      bottom: 100px;
-    }
-
-    &__wrapper {
-      padding:16px;
-    }
-
-    &__arrow {
-      position: absolute;
-      width: 0;
-      height: 0;
-      top: -5px;
-      margin: 0;
-      border: {
-        width: 0 5px 5px 5px;
-        style: solid;
-        top-color: transparent;
-        right-color: transparent;
-        bottom-color: $bg-color;
-        left-color: transparent;
+@mixin position-breakpoint($breakpoint) {
+  @media screen and (max-width: #{$breakpoint}px) {
+    .track-actions-popover_breakpoint-#{$breakpoint} {
+      width: 280px;
+      margin: {
+        top: 0;
+        bottom: 100px;
       }
-      z-index: 900;
-    }
 
-    &__add-playlist-header {
-      padding-left: 8px;
+      .track-actions-popover__wrapper {
+        padding:16px;
+      }
+
+      .track-actions-popover__arrow {
+        position: absolute;
+        width: 0;
+        height: 0;
+        top: -5px;
+        margin: 0;
+        border: {
+          width: 0 5px 5px 5px;
+          style: solid;
+          top-color: transparent;
+          right-color: transparent;
+          bottom-color: $bg_color;
+          left-color: transparent;
+        }
+        z-index: 900;
+      }
+
+      .track-actions-popover__add-playlist-header {
+        padding-left: 8px;
+      }
     }
   }
 }
+
+@include position-breakpoint(767);
+@include position-breakpoint(1024);

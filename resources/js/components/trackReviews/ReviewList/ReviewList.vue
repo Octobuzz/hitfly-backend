@@ -7,6 +7,7 @@
       :key="trackId"
       :track-id="trackId"
       :commented-in-period="commentedInPeriod"
+      class="review-list__entry"
     />
     <slot name="loader" />
   </div>
@@ -33,3 +34,9 @@ export default {
   }
 };
 </script>
+
+<style
+  scoped
+  lang="scss"
+  src="./ReviewList.scss"
+/>

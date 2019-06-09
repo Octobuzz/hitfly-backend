@@ -1,0 +1,9 @@
+.review-list__entry {
+  margin-bottom: 42px;
+}
+
+@media screen and (max-width: 767px) {
+  .review-list__entry {
+    margin-bottom: 24px;
+  }
+}

@@ -4,7 +4,7 @@
     :commented-in-period="commentedInPeriod"
   >
     <template v-if="isLoading" #loader>
-      <SpinnerLoader />
+      <SpinnerLoader class="track-reviews-container__loader"/>
     </template>
   </ReviewList>
 </template>
@@ -133,3 +133,9 @@ export default {
   }
 };
 </script>
+
+<style
+  scoped
+  lang="scss"
+  src="./TrackReviewsContainer.scss"
+/>
