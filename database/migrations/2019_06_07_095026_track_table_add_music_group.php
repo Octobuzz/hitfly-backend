@@ -8,8 +8,6 @@ class TrackTableAddMusicGroup extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -17,15 +15,12 @@ class TrackTableAddMusicGroup extends Migration
             $table->integer('music_group_id')->unsigned()->nullable(true);
         });
         Schema::table('tracks', function (Blueprint $table) {
-            $table->foreign('music_group_id', 'foreign_tracks_music_group')->references('id')->on('music_group');
-
+            $table->foreign('music_group_id', 'foreign_tracks_music_group')->references('id')->on('music_group')->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -33,6 +33,7 @@ class Track extends Model
         'track_date',
         'track_hash',
         'state',
+        'music_group_id',
     ];
 
     protected $hidden = [
@@ -53,6 +54,11 @@ class Track extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function musicGroup(): BelongsTo
+    {
+        return $this->belongsTo(MusicGroup::class, 'music_group_id');
     }
 
     public function album(): BelongsTo

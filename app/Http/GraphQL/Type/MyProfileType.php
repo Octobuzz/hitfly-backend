@@ -3,9 +3,11 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Privacy\UserPrivacy;
+use App\Models\Purse;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use GraphQL;
 
 class MyProfileType extends GraphQLType
 {
@@ -60,6 +62,33 @@ class MyProfileType extends GraphQLType
                 'followersCount' => [
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
+                ],
+                'bpLevelBonusProgram' => [
+                    'type' => Type::nonNull(GraphQL::type('BonusProgramUserStatusEnum')),
+                    'description' => 'Текущий уровень пользователя в бонусной программе',
+                    'resolve' => function ($model) {
+                        $model->level;
+                    },
+                    'selectable' => false,
+                ],
+                'bpPoints' => [
+                    'type' => Type::nonNull(Type::int()),
+                    'description' => 'Количество накопленных баллов',
+                    'resolve' => function (User $model) {
+                        /** @var Purse $purse */
+                        $purse = $model->purseBonus;
+
+                        return $purse->balance;
+                    },
+                    'selectable' => false,
+                ],
+                'bpProgressPercent' => [
+                    'type' => Type::nonNull(Type::int()),
+                    'description' => 'Процент заполнения для перехода на следующий уровень в бонусной программе',
+                    'resolve' => function ($model) {
+                        return 50; // todo доделать
+                    },
+                    'selectable' => false,
                 ],
             ]
         );
