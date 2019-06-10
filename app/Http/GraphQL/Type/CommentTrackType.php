@@ -23,6 +23,11 @@ class CommentTrackType extends GraphQLType
             ],
             'comment' => [
                 'type' => Type::string(),
+                'description' => 'Комментарий',
+            ],
+            'user' => [
+                'type' => \GraphQL::type('User'),
+                'description' => 'Пользователь',
             ],
 //            'track' => [
 //                'type' => GraphQL::type('Track'),
@@ -33,6 +38,7 @@ class CommentTrackType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->created_at;
                 },
+                'description' => 'Дата создания',
             ],
             'estimation' => [
                 'type' => Type::int(),
