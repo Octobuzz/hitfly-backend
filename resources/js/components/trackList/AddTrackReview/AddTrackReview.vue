@@ -100,7 +100,7 @@ export default {
           // TODO: rewrite comments pagination query if exists
         }
       })
-        .then((res) => {
+        .then(() => {
           setTimeout(() => {
             this.reviewText = '';
           }, 300);

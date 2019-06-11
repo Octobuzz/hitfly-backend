@@ -1,0 +1,25 @@
+@mixin universal-scroll-height($item_height_desktop, $item_height_mobile) {
+  // These two selectors should be used with ::v-deep on top in case of scoped style.
+
+  // Take header and scroll into account
+  $item_height_desktop: $item_height_desktop + 76px;
+  $item_height_mobile: $item_height_mobile + 76px;
+
+  .universal-scroll-horizontal {
+    height: $item_height_desktop;
+
+    .vue-recycle-scroller__item-wrapper {
+      height: $item_height_desktop;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .universal-scroll-horizontal {
+      height: $item_height_mobile;
+
+      .vue-recycle-scroller__item-wrapper {
+        height: $item_height_mobile;
+      }
+    }
+  }
+}

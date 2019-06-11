@@ -212,6 +212,10 @@
         </div>
       </div>
 
+      <div :class="itemContainerClass">
+        bonus-program
+      </div>
+
       <div
         v-if="myProfile.activity"
         :class="[

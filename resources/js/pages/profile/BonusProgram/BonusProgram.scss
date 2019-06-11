@@ -1,0 +1,207 @@
+@import '~components/UniversalScrollHorizontal/_UniversalScrollHorizontalMixin.scss';
+@import '~scss/_variables.scss';
+
+.bonus-program {
+  &__header {
+    margin: {
+      top: 32px;
+      bottom: 24px;
+    }
+  }
+
+  &__p {
+    line-height: 24px;
+    margin-bottom: 24px;
+  }
+
+  &__status-list::v-deep {
+    @include universal-scroll-height(
+      $item_height_desktop: 360px,
+      $item_height_mobile: 370px
+    );
+  }
+
+  &__status-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 320px;
+    height: 360px;
+    border-radius: 4px;
+    border: 1px solid $layout_border_color;
+
+    @media screen and (max-width: 767px) {
+      width: 272px;
+      height: 370px;
+    }
+  }
+
+  &__status-image {
+    margin-top: 32px;
+  }
+
+  &__status-name {
+    display: block;
+    margin: {
+      top: 24px;
+      bottom: 8px;
+    }
+  }
+
+  &__status-description {
+    font-family: 'Gotham Pro', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: $text_color_secondary;
+    display: block;
+    margin: {
+      top: 0;
+      right: 14px;
+      left: 14px;
+    }
+  }
+
+  &__middle-section {
+    @media screen and (max-width: 1279px) {
+      overflow-x: scroll;
+    }
+  }
+
+  &__level-container {
+    // calculated out of 1280px screen width
+    min-width: 800px;
+  }
+
+  &__level-images-container {
+    display: flex;
+    margin-bottom: 32px;
+  }
+
+  &__level-image {
+    flex-grow: 1;
+    width: 0;
+    height: 48px;
+  }
+
+  &__level-nicks-container {
+    display: flex;
+    position: relative;
+    height: 16px;
+  }
+
+  &__level-nick-container {
+    flex-grow: 1;
+    width: 0;
+    height: 100%;
+  }
+
+  &__level-nick {
+    width: 8px;
+    height: 100%;
+    border-radius: 2px;
+    background: $text_color_primary;
+  }
+
+  &__progress-background {
+    position: absolute;
+    width: 100%;
+    height: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: $layout_border_color;
+    z-index: -2;
+  }
+
+  &__progress {
+    position: absolute;
+    height: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: $gradient_linear;
+    z-index: -1;
+  }
+
+  &__level-descriptions-container {
+    display: flex;
+  }
+
+  &__level-description {
+    flex-grow: 1;
+    width: 0;
+    margin-bottom: 12px;
+  }
+
+  &__level-description-title {
+    margin: {
+      top: 28px;
+      bottom: 28px;
+    }
+  }
+
+  &__level-description-text {
+    font-size: 14px;
+    line-height: 20px;
+    color: $text_color_secondary;
+    display: block;
+    padding-right: 24px;
+  }
+
+  &__paid-options::v-deep {
+    @include universal-scroll-height(
+      $item_height_desktop: 290px,
+      $item_height_mobile: 336px
+    );
+  }
+
+  &__paid-card {
+    box-sizing: border-box;
+    position: relative;
+    width: 290px;
+    height: 290px;
+    padding: 24px;
+    border-radius: 4px;
+
+    @media screen and (max-width: 767px) {
+      width: 272px;
+      height: 336px;
+    }
+  }
+
+  &__paid-card-title {
+    color: white;
+    margin: {
+      top: 0;
+      bottom: 6px;
+    }
+  }
+
+  &__paid-card-description {
+    font-size: 14px;
+    color: white;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  &__paid-card-cost {
+    color: white;
+    margin-top: 0;
+  }
+
+  &__paid-card-button {
+    font-size: 14px;
+    color: white;
+    background: transparent;
+    position: absolute;
+    padding: 10px 52px;
+    bottom: 32px;
+    border-radius: 4px;
+    border: 1px solid white;
+  }
+
+  &__li {
+    line-height: 18px;
+    margin-bottom: 12px;
+  }
+}
