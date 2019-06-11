@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Interfaces\BonusProgramTypesInterfaces;
+use App\Models\Traits\PictureField;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,4 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BonusType extends Model implements BonusProgramTypesInterfaces
 {
+    use PictureField;
+
+    public function getImage(): ?string
+    {
+        return $this->getOriginal('img');
+    }
+
+    public function user()
+    {
+        return null;
+    }
 }
