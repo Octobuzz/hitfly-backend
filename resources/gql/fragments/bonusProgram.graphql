@@ -1,0 +1,6 @@
+fragment bonusProgram on MyProfile {
+    bpDaysInProgram
+    bpLevelBonusProgram
+    bpPoints
+    bpProgressPercent
+}

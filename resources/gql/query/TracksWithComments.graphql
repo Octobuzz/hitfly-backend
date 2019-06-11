@@ -1,6 +1,7 @@
 # TODO: use additional variables to fetch a particular user tracks
 
 #import "../fragments/track.graphql"
+#import "../fragments/trackComment.graphql"
 
 query TracksWithComments(
     $pageLimit: Int,
@@ -19,10 +20,7 @@ query TracksWithComments(
         data {
             ...track
             comments(commentPeriod: $commentedInPeriod) {
-                id
-                comment
-                createdAt
-                estimation # rating?
+                ...trackComment
             }
         }
     }

@@ -1,0 +1,16 @@
+fragment trackComment on CommentTrack {
+    id
+    comment
+    createdAt
+    estimation # rating?
+    user {
+        id
+        username
+        avatar(
+            sizes: [size_56x56]
+        ) {
+            size
+            url
+        }
+    }
+}

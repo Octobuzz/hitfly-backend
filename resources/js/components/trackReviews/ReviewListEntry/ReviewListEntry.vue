@@ -64,14 +64,16 @@
         <!--TODO: player component goes here-->
       </div>
 
-      <!--TODO: add user data in comment query on backend-->
-
       <TrackReview
         v-for="comment in track.comments.slice(0, 3)"
         :key="comment.id"
         class="review-list-entry__track-review"
-        reviewer="Anonymous"
-        :reviewer-avatar="anonymousAvatar"
+        :reviewer="comment.user.username || 'Anonymous'"
+        :reviewer-avatar="
+          comment.user.avatar.filter(
+            avatar => avatar.size === 'size_56x56'
+          )[0].url || anonymousAvatar
+        "
         :comment="comment.comment"
         :date="comment.createdAt"
       />

@@ -1,4 +1,5 @@
 #import "../fragments/track.graphql"
+#import "../fragments/trackComment.graphql"
 
 query Track(
     $id: Int!,
@@ -7,10 +8,7 @@ query Track(
     track(id: $id) {
         ...track
         comments(commentPeriod: $commentedInPeriod) {
-            id
-            comment
-            createdAt
-            estimation # rating?
+            ...trackComment
         }
     }
 }
