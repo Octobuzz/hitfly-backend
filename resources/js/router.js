@@ -9,7 +9,7 @@ import AboutPage from './pages/AboutPage.vue';
 const routes = [
   {
     path: '/profile',
-    component: profile.ProfileLayout,
+    component: profile.MyProfileLayout,
     children: [
       {
         path: 'edit',
@@ -46,6 +46,21 @@ const routes = [
       }
     ]
   },
+  // {
+  //   path: 'user/:userId',
+  //   component: profile.OtherUserProfileLayout,
+  //   children: [
+  //     {
+  //       // TODO: redirect from star profile
+  //       path: 'music',
+  //       component: ''
+  //     },
+  //     {
+  //       path: 'reviews',
+  //       component: ''
+  //     }
+  //   ]
+  // },
   {
     path: '/upload',
     component: UploadPage

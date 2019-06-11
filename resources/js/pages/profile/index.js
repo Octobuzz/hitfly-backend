@@ -1,5 +1,5 @@
-export { default as ProfileLayout } from './ProfileLayout.vue';
-export { default as UserCard } from './UserCard';
+export { default as MyProfileLayout } from './MyProfileLayout.vue';
+export { default as MyUserCard } from './MyUserCard';
 export { default as EditUser } from './EditProfile';
 export { default as CreateGroup } from './CreateGroup';
 export { default as UpdateGroup } from './UpdateGroup';

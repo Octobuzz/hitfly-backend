@@ -7,21 +7,30 @@ const stateFactory = () => ({
 });
 
 const state = {
-  userCard: '',
   editProfile: '',
   editGroup: '',
-  myMusic: {
-    tracks: '',
-    albums: '',
-    collections: ''
-  },
   favourite: {
     tracks: '',
     albums: '',
     collections: '',
     sets: ''
   },
-  myReviews: ''
+
+  myUserCard: '',
+  myMusic: {
+    tracks: '',
+    albums: '',
+    collections: ''
+  },
+  myReviews: '',
+
+  otherUserMusic: {
+    tracks: '',
+    albums: '',
+    collections: '',
+    newAlbum: ''
+  },
+  otherUserReviews: ''
 };
 
 function populateState(obj) {
@@ -37,8 +46,8 @@ function populateState(obj) {
 populateState(state);
 
 const getters = {
-  userCard({ userCard }) {
-    return userCard;
+  myUserCard({ myUserCard }) {
+    return myUserCard;
   },
 
   editProfile({ editProfile }) {
@@ -53,19 +62,27 @@ const getters = {
     return myMusic;
   },
 
+  otherUserMusic({ otherUserMusic }) {
+    return otherUserMusic;
+  },
+
   favourite({ favourite }) {
     return favourite;
   },
 
   myReviews({ myReviews }) {
     return myReviews;
+  },
+
+  otherUserReviews({ otherUserReviews }) {
+    return otherUserReviews;
   }
 };
 
 const mutations = {
-  setUserCard(state, loading) {
-    state.userCard = {
-      ...state.userCard,
+  setMyUserCard(state, loading) {
+    state.myUserCard = {
+      ...state.myUserCard,
       ...loading
     };
   },

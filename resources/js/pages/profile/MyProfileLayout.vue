@@ -1,8 +1,15 @@
 <template>
   <AppColumns>
     <template #left-column="{ itemContainerClass }">
+      <div
+        v-show="showFirstLoader"
+        class="profile__user-card-loader"
+      >
+        loading user card...
+      </div>
+
       <MyUserCard
-        v-show="renderUserCard"
+        v-show="!showFirstLoader && renderUserCard"
         :item-container-class="itemContainerClass"
       />
     </template>
@@ -18,9 +25,9 @@
               { 'profile__nav-endpoint_active': $route.fullPath === '/profile/my-music' }
             ]"
           >
-            <nuxt-link to="/profile/my-music">
+            <router-link to="/profile/my-music">
               Моя музыка
-            </nuxt-link>
+            </router-link>
           </li>
 
           <li
@@ -29,9 +36,9 @@
               { 'profile__nav-endpoint_active': $route.fullPath === '/profile/favourite' }
             ]"
           >
-            <nuxt-link to="/profile/favourite">
+            <router-link to="/profile/favourite">
               Мне нравится
-            </nuxt-link>
+            </router-link>
           </li>
 
           <li
@@ -40,9 +47,9 @@
               { 'profile__nav-endpoint_active': $route.fullPath === '/profile/reviews' }
             ]"
           >
-            <nuxt-link to="/profile/reviews">
+            <router-link to="/profile/reviews">
               Отзывы
-            </nuxt-link>
+            </router-link>
           </li>
         </ul>
 
@@ -56,15 +63,19 @@
         ПРОФИЛЬ
       </PageHeader>
 
-      <nuxt-child />
+      <div v-show="showSecondLoader">
+        loading...
+      </div>
+
+      <router-view v-show="!showSecondLoader" />
     </template>
   </AppColumns>
 </template>
 
 <script>
-import AppColumns from '~/components/layout/AppColumns.vue';
-import PageHeader from '~/components/shared/PageHeader.vue';
-import UserCard from '~/components/profile/UserCard';
+import AppColumns from 'components/layout/AppColumns.vue';
+import PageHeader from 'components/PageHeader.vue';
+import MyUserCard from './MyUserCard';
 
 const MOBILE_WIDTH = 1024;
 
@@ -72,23 +83,100 @@ export default {
   components: {
     AppColumns,
     PageHeader,
-    UserCard
+    MyUserCard
   },
   computed: {
     desktop() {
-      return process.server ? true : this.windowWidth > MOBILE_WIDTH;
+      return this.windowWidth > MOBILE_WIDTH;
     },
 
     renderNavBar() {
       const { $route: { fullPath } } = this;
 
-      return !/(edit|create)/.test(fullPath);
+      return !/(edit|create|bonus)/.test(fullPath);
     },
 
     renderUserCard() {
       const { desktop, $route: { fullPath } } = this;
 
-      return desktop || !/(edit|create)/.test(fullPath);
+      return desktop || !/(edit|create|bonus)/.test(fullPath);
+    },
+
+    showFirstLoader() {
+      return !this.$store.getters['loading/myUserCard'].initialized;
+    },
+
+    showSecondLoader() {
+      // TODO: if (this.windowWidth <= MOBILE_WIDTH) { ... }
+
+      const path = this.$route.fullPath;
+      const secondSlash = path.indexOf('/', 1);
+      const thirdSlash = path.indexOf('/', secondSlash + 1);
+
+      let trimmedPath = path;
+
+      if (thirdSlash !== -1) {
+        trimmedPath = path.slice(0, thirdSlash);
+      }
+
+      const { getters } = this.$store;
+
+      /* eslint-disable no-fallthrough */
+
+      /*
+
+      /profile/edit
+
+      /profile/edit-group
+
+      /profile/my-music
+
+      /profile/my-music/tracks
+
+      /profile/my-music/albums
+
+      /profile/my-music/album/:id
+
+      /profile/my-music/playlists
+
+      /profile/my-music/playlist/:id
+
+      /profile/favourite
+
+      /profile/favourite/tracks
+
+      /profile/favourite/track/:id
+
+      /profile/favourite/albums
+
+      /profile/favourite/album/:id
+
+      /profile/favourite/playlists
+
+      /profile/favourite/playlist/:id
+
+      /profile/favourite/sets
+
+      /profile/favourite/set/:id
+
+      /profile/reviews
+
+      /profile/review/:id
+
+      */
+
+      switch (trimmedPath) {
+        case '/profile/edit':
+          return !getters['loading/editProfile'].initialized;
+
+        case '/profile/edit-group':
+          return !getters['loading/editGroup'].initialized;
+
+        default:
+          return false;
+      }
+
+      /* eslint-disable no-fallthrough */
     }
   }
 };
@@ -98,7 +186,7 @@ export default {
   scoped
   lang="scss"
 >
-@import '@/assets/scss/_variables.scss';
+@import '~scss/_variables.scss';
 
 $tab_width_desktop: 208px;
 $tab_width_mobile: 150px;
@@ -154,6 +242,10 @@ $tab_width_mobile: 150px;
       width: 68.2%;
     }
   }
+}
+
+.profile__user-card-loader {
+  height: calc(100vh - #{$header_height_desktop} - #{$footer_height_desktop});
 }
 
 @media screen and (max-width: 767px) {
