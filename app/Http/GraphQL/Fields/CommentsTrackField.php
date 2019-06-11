@@ -65,7 +65,7 @@ class CommentsTrackField extends Field
                 $date = $now->subWeek()->format('Y-m-d');
         }
 
-        return $this->model->comments()->where('created_at', '>=', $date)->get();
+        return $this->model->comments()->where('created_at', '>=', $date)->limit(4)->get();
     }
 
     /**

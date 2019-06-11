@@ -44,6 +44,10 @@ class TrackType extends GraphQLType
                 'type' => GraphQL::type('User'),
                 'description' => 'Кто загрузил трек',
             ],
+            'musicGroup' => [
+                'type' => GraphQL::type('MusicGroup'),
+                'description' => 'Музыкальная группа, к которой принадлежит трек',
+            ],
             'singer' => [
                 'type' => Type::string(),
                 'description' => 'Испольнитель',

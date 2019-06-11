@@ -81,6 +81,11 @@ class MusicGroup extends Model
         return $this->hasMany(Album::class);
     }
 
+    public function tracks(): HasMany
+    {
+        return $this->hasMany(Track::class);
+    }
+
     public function creatorGroup()
     {
         return $this->belongsTo(User::class, 'creator_group_id');
