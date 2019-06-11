@@ -104,6 +104,7 @@ export default {
       return {
         query: gql.query.FAVOURITE_ALBUMS,
         variables: this.queryVars,
+        fetchPolicy: 'network-only',
 
         update({ favouriteAlbum: { total, to, data } }) {
           this.isLoading = false;

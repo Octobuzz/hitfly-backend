@@ -101,6 +101,7 @@ export default {
       return {
         query: gql.query.ALBUMS,
         variables: this.queryVars,
+        fetchPolicy: 'network-only',
 
         update({ albums: { total, to, data } }) {
           this.isLoading = false;

@@ -58,6 +58,10 @@
   background-color: $color_2;
   min-height: 107px;
 
+  z-index: 1100;
+  position: absolute;
+  top: 0;
+
   &__left{
     grid-area: left;
     display: flex;

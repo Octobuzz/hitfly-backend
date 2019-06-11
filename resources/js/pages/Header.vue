@@ -67,8 +67,8 @@ export default {
   }
 }
 </script>
-<styles lang="scss" scoped>
-.head {
-  z-index: 1100;
-}
-</styles>
+<style
+  scoped
+  lang="scss"
+  src="../../sass/app.scss"
+/>
