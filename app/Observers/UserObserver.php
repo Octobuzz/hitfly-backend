@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Jobs\EmailChangeJob;
 use App\Jobs\UserRegisterJob;
 use App\Models\EmailChange;
@@ -34,7 +35,7 @@ class UserObserver
         $user->purse()->save($purse);
         $purse->save();
         //отправка письма о завершении регистрации
-        if ($user->email && App::environment('local') && null !== Auth::user()) {
+        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
             dispatch(new UserRegisterJob($user))->onQueue('low');
         }
     }
@@ -46,11 +47,11 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        if (null === Route::current()) {
+        if (null === Route::current() || Route::current()->controller instanceof RegisterController) {
             return true;
         }
         $requestParams = Route::current()->parameters();
-        if ($user->isDirty('email') && !isset($requestParams['token'])) {
+        if ($user->isDirty('email') && (!isset($requestParams['token']))) {
             $hash = md5($user->id.$user->email.microtime());
             $emailChange = EmailChange::updateOrCreate(
                 ['new_email' => $user->email],

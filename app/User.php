@@ -11,6 +11,7 @@ use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -53,7 +54,7 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Administrator implements JWTSubject, CanResetPasswordContract
+class User extends Administrator implements JWTSubject, CanResetPasswordContract, MustVerifyEmail
 {
     use Notifiable;
     use CanResetPassword;
@@ -174,5 +175,35 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function purseBonus(): HasOne
     {
         return $this->hasOne(Purse::class)->where('name', '=', Purse::NAME_BONUS);
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        // TODO: Implement hasVerifiedEmail() method.
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified()
+    {
+        // TODO: Implement markEmailAsVerified() method.
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        // TODO: Implement sendEmailVerificationNotification() method.
     }
 }
