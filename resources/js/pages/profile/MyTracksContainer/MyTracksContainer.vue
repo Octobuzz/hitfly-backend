@@ -254,6 +254,7 @@ export default {
       return {
         query: gql.query.TRACKS,
         variables: this.queryVars,
+        fetchPolicy: 'network-only',
 
         update({ tracks: { total, to, data } }) {
           if (!this.dataInitialized) {

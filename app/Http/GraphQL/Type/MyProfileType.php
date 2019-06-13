@@ -51,14 +51,14 @@ class MyProfileType extends GraphQLType
                         return $model->likesAlbum()->count();
                     },
                 ],
-                'watchingUser' => [
-                    'type' => Type::listOf(\GraphQL::type('User')),
-                    'description' => 'Следит за пользователями',
-                ],
-                'watchingMusicGroup' => [
-                    'type' => Type::listOf(\GraphQL::type('MusicGroup')),
-                    'description' => 'Следит за группами',
-                ],
+//                'watchingUser' => [
+//                    'type' => Type::listOf(\GraphQL::type('User')),
+//                    'description' => 'Следит за пользователями',
+//                ],
+//                'watchingMusicGroup' => [
+//                    'type' => Type::listOf(\GraphQL::type('MusicGroup')),
+//                    'description' => 'Следит за группами',
+//                ],
                 'followersCount' => [
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
@@ -67,7 +67,7 @@ class MyProfileType extends GraphQLType
                     'type' => Type::nonNull(GraphQL::type('BonusProgramUserStatusEnum')),
                     'description' => 'Текущий уровень пользователя в бонусной программе',
                     'resolve' => function ($model) {
-                        $model->level;
+                        return (null === $model->level) ? User::LEVEL_NOVICE : $model->level;
                     },
                     'selectable' => false,
                 ],
@@ -78,7 +78,7 @@ class MyProfileType extends GraphQLType
                         /** @var Purse $purse */
                         $purse = $model->purseBonus;
 
-                        return $purse->balance;
+                        return (null === $purse) ? 0 : $purse->balance;
                     },
                     'selectable' => false,
                 ],

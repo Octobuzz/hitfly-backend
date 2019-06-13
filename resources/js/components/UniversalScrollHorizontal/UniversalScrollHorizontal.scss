@@ -1,0 +1,56 @@
+@import '~scss/_variables.scss';
+
+.universal-scroll-horizontal {
+  overflow-y: hidden;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  &__button-prev,
+  &__button-next {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius 0 0 $input_border_radius;
+
+    &_disabled {
+      svg {
+        opacity: .5;
+      }
+    }
+  }
+
+  &__button-prev {
+    margin-left: auto;
+  }
+
+  &__button-next {
+    margin-left: -1px;
+    transform: rotate(180deg);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .album-scroll-horizontal {
+    &__header {
+      margin-bottom: 12px;
+
+      & > *:first-child {
+        width: 100%;
+      }
+    }
+
+    &__button-prev,
+    &__button-next {
+      margin-bottom: 8px;
+      order: -1;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+#import "../fragments/track.graphql"
+#import "../fragments/trackComment.graphql"
+
+query Track(
+    $id: Int!,
+    $commentedInPeriod: CommentPeriodEnum!
+) {
+    track(id: $id) {
+        ...track
+        comments(commentPeriod: $commentedInPeriod) {
+            ...trackComment
+        }
+    }
+}

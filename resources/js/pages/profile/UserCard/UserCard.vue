@@ -212,6 +212,13 @@
         </div>
       </div>
 
+<!--      <div :class="itemContainerClass">-->
+<!--        level: {{ myProfile.bonusProgram.level }};-->
+<!--        daysPassed: {{ myProfile.bonusProgram.daysPassed }};-->
+<!--        points: {{ myProfile.bonusProgram.points }};-->
+<!--        progressPct: {{ myProfile.bonusProgram.progressPct }};-->
+<!--      </div>-->
+
       <div
         v-if="myProfile.activity"
         :class="[
@@ -241,6 +248,13 @@ import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 import gql from './gql';
 
+const bonusProgramLvlMap = {
+  LEVEL_NOVICE: 'Новичек',
+  LEVEL_AMATEUR: 'Любитель',
+  LEVEL_CONNOISSEUR_OF_THE_GENRE: 'Знаток жанра',
+  LEVEL_SUPER_MUSIC_LOVER: 'Супер меломан'
+};
+
 export default {
   components: {
     SpinnerLoader,
@@ -266,7 +280,13 @@ export default {
         activity: '',
         musicGroups: [],
         watchingUser: [],
-        watchingMusicGroup: []
+        watchingMusicGroup: [],
+        bonusProgram: {
+          level: '',
+          points: '',
+          daysPassed: '',
+          progressPct: 0
+        }
       },
       dataInitialized: false,
       anonymousAvatar
@@ -318,7 +338,11 @@ export default {
           musicGroups,
           watchingUser,
           watchingMusicGroup,
-          roles
+          roles,
+          bpProgressPercent: bpProgressPct,
+          bpLevelBonusProgram: bpLevel,
+          bpDaysInProgram: bpDaysPassed,
+          bpPoints
         } = myProfile;
 
         this.myProfile.avatar = avatar
@@ -328,6 +352,15 @@ export default {
         this.myProfile.musicGroups = musicGroups;
         this.myProfile.watchingUser = watchingUser;
         this.myProfile.watchingMusicGroup = watchingMusicGroup;
+
+        // TODO: uncomment when the api is fixed
+
+        // this.myProfile.bonusProgram = {
+        //   level: bonusProgramLvlMap[bpLevel],
+        //   daysPassed: bpDaysPassed,
+        //   points: bpPoints,
+        //   progressPct: bpProgressPct
+        // };
 
         if (location && location.title) {
           this.myProfile.location = location;

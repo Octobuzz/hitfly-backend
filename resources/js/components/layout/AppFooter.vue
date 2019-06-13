@@ -34,3 +34,9 @@
     <div class="footer__right">FOOTER</div>
   </footer>
 </template>
+
+<style
+  scoped
+  lang="scss"
+  src="../../../sass/app.scss"
+/>

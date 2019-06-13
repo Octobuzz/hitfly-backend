@@ -32,6 +32,14 @@ const routes = [
         component: profile.Favourite
       },
       {
+        path: 'reviews',
+        component: profile.MyReviews
+      },
+      {
+        path: 'bonus-program',
+        component: profile.BonusProgram
+      },
+      {
         path: '',
         redirect: '/profile/my-music'
         // component: profile.ProfilePage_obsolete

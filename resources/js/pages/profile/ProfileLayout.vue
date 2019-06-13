@@ -86,13 +86,13 @@ export default {
     renderNavBar() {
       const { $route: { fullPath } } = this;
 
-      return !/(edit|create)/.test(fullPath);
+      return !/(edit|create|bonus)/.test(fullPath);
     },
 
     renderUserCard() {
       const { desktop, $route: { fullPath } } = this;
 
-      return desktop || !/(edit|create)/.test(fullPath);
+      return desktop || !/(edit|create|bonus)/.test(fullPath);
     },
 
     showSecondLoader() {
@@ -119,7 +119,7 @@ export default {
         case '/profile/edit-group':
           return !getters['loading/editGroup'].initialized;
 
-        // TODO: /profile/my-music and /profile/favourite
+          // TODO: /profile/my-music and /profile/favourite
 
         default:
           return false;

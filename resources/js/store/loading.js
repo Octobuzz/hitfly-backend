@@ -20,7 +20,8 @@ const state = {
     albums: '',
     collections: '',
     sets: ''
-  }
+  },
+  myReviews: ''
 };
 
 function populateState(obj) {
@@ -54,6 +55,10 @@ const getters = {
 
   favourite({ favourite }) {
     return favourite;
+  },
+
+  myReviews({ myReviews }) {
+    return myReviews;
   }
 };
 
@@ -96,6 +101,13 @@ const mutations = {
       };
     });
   },
+
+  setMyReviews(state, loading) {
+    state.myReviews = {
+      ...state.myReviews,
+      ...loading
+    };
+  }
 };
 
 export default {

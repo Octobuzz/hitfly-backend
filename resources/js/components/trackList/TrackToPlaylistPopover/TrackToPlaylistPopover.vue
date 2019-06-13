@@ -1,7 +1,10 @@
 <template>
   <v-popover
     ref="popover"
-    popover-base-class="track-to-playlist-popover"
+    :popover-base-class="[
+      'track-to-playlist-popover',
+      `track-to-playlist-popover_breakpoint-${positionChangeBreakpoint}`
+    ].join(' ')"
     popover-wrapper-class="track-to-playlist-popover__wrapper"
     popover-inner-class="track-to-playlist-popover__inner"
     popover-arrow-class="track-to-playlist-popover__arrow"
@@ -38,8 +41,6 @@
 import gql from './gql';
 import TrackToPlaylist from '../TrackToPlaylist';
 
-const MOBILE_WIDTH = 767;
-
 export default {
   components: {
     TrackToPlaylist
@@ -49,6 +50,13 @@ export default {
     trackId: {
       type: Number,
       required: true
+    },
+    positionChangeBreakpoint: {
+      type: Number,
+      default: 767,
+      validator: val => (
+        [767, 1024].includes(val)
+      )
     }
   },
 
@@ -64,7 +72,10 @@ export default {
           popperOptions: {
             modifiers: {
               flip: { enabled: false },
-              preventOverflow: { enabled: false }
+              preventOverflow: {
+                enabled: true,
+                padding: 20
+              }
             }
           }
         }
@@ -77,13 +88,13 @@ export default {
 
   computed: {
     popoverPlacement() {
-      return this.windowWidth > MOBILE_WIDTH
+      return this.windowWidth > this.positionChangeBreakpoint
         ? this.popover.desktop.placement
         : this.popover.mobile.placement;
     },
 
     popperOptions() {
-      return this.windowWidth > MOBILE_WIDTH
+      return this.windowWidth > this.positionChangeBreakpoint
         ? this.popover.desktop.popperOptions
         : this.popover.mobile.popperOptions;
     },

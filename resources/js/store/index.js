@@ -6,6 +6,7 @@ import history from './history';
 import appColumns from './appColumns';
 import loading from './loading';
 import player from './player';
+import profile from './profile';
 
 Vue.use(Vuex);
 
@@ -46,7 +47,8 @@ export default new Store({
     history,
     appColumns,
     loading,
-    player
+    player,
+    profile
   },
   state,
   getters,

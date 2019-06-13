@@ -8,5 +8,6 @@ fragment collection on Collection {
         url
     }
     userFavourite
+    favouritesCount
     countTracks
 }

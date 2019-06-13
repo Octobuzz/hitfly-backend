@@ -1,0 +1,17 @@
+mutation AddTrackComment(
+    $trackId: Int!
+    $comment: String!
+) {
+    createComment(Comment: {
+        commentableType: track,
+        commentableId: $trackId,
+        comment: $comment
+    }) {
+        ... on CommentTrack {
+            id
+            comment
+            createdAt
+            estimation
+        }
+    }
+}

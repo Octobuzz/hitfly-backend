@@ -80,6 +80,7 @@ export default {
       return {
         query: gql.query.FAVOURITE_TRACKS,
         variables: this.queryVars,
+        fetchPolicy: 'network-only',
 
         update({ favouriteTrack: { total, to, data } }) {
           if (!this.dataInitialized) {

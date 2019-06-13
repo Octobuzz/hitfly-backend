@@ -1,13 +1,16 @@
 <template>
   <v-popover
-    popover-base-class="track-actions-popover"
+    :popover-base-class="[
+      'track-actions-popover',
+      `track-actions-popover_breakpoint-${positionChangeBreakpoint}`
+    ].join(' ')"
     popover-wrapper-class="track-actions-popover__wrapper"
     popover-inner-class="track-actions-popover__inner"
     popover-arrow-class="track-actions-popover__arrow"
     :placement="popoverPlacement"
     :popper-options="popperOptions"
     :auto-hide="true"
-    @auto-hide="leavePlaylistMenu(300)"
+    @auto-hide="leaveAllMenus(300)"
   >
     <slot />
 
@@ -38,10 +41,31 @@
       <hr class="track-actions-popover__delimiter">
 
       <div
-        v-if="!inPlaylistMenu"
+        v-if="!inPlaylistMenu && !inReviewMenu"
         class="track-actions-popover__menu"
       >
         <!--TODO: use interactive elements-->
+        <span
+          v-if="canAddReviews"
+          :class="[
+            'track-actions-popover__menu-item',
+            'track-actions-popover__review-item'
+          ]"
+          @click="enterReviewMenu"
+        >
+          <span class="track-actions-popover__menu-item-icon">
+            <PopupIcon />
+          </span>
+          Написать отзыв
+        </span>
+
+        <hr
+          :class="[
+            'track-actions-popover__delimiter',
+            'track-actions-popover__delimeter_zero-on-top'
+          ]"
+        >
+
         <span
           class="track-actions-popover__menu-item"
         >
@@ -118,13 +142,13 @@
       </div>
 
       <span
-        v-if="!inPlaylistMenu"
+        v-if="!inPlaylistMenu && !inReviewMenu"
         class="track-actions-popover__tell-problem"
       >
         Сообщить о проблеме
       </span>
       <span
-        v-else
+        v-if="inPlaylistMenu"
         class="track-actions-popover__add-playlist-header"
       >
         Добавить в плейлист
@@ -137,6 +161,13 @@
         @track-added="onTrackAdded"
       />
 
+      <AddTrackReview
+        v-show="inReviewMenu"
+        ref="reviewMenu"
+        :track-id="trackId"
+        @review-added="onReviewAdded"
+      />
+
       <span
         v-if="inPlaylistMenu"
         class="track-actions-popover__go-back-button"
@@ -144,12 +175,25 @@
       >
         Назад
       </span>
+
+      <span
+        v-if="inReviewMenu"
+        @click="leaveReviewMenu(50)"
+      >
+        <FormButton
+          class="track-actions-popover__cancel-button"
+          modifier="secondary"
+        >
+          Отменить
+        </FormButton>
+      </span>
     </template>
   </v-popover>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import PopupIcon from 'components/icons/popover/PopupIcon.vue';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
 import PlusIcon from 'components/icons/popover/PlusIcon.vue';
@@ -157,14 +201,17 @@ import HeartIcon from 'components/icons/popover/HeartIcon.vue';
 import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
 import CrossIcon from 'components/icons/popover/CrossIcon.vue';
 import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
+import FormButton from 'components/FormButton.vue';
 import gql from './gql';
 import TrackToPlaylist from '../TrackToPlaylist';
-
-const MOBILE_WIDTH = 767;
+import AddTrackReview from '../AddTrackReview';
 
 export default {
   components: {
     TrackToPlaylist,
+    AddTrackReview,
+    FormButton,
+    PopupIcon,
     PlayNextIcon,
     ListPlusIcon,
     PlusIcon,
@@ -182,6 +229,13 @@ export default {
     showRemoveOption: {
       type: Boolean,
       default: true
+    },
+    positionChangeBreakpoint: {
+      type: Number,
+      default: 767,
+      validator: val => (
+        [767, 1024].includes(val)
+      )
     }
   },
 
@@ -197,26 +251,30 @@ export default {
           popperOptions: {
             modifiers: {
               flip: { enabled: false },
-              preventOverflow: { enabled: false }
+              preventOverflow: {
+                enabled: true,
+                padding: 20
+              }
             }
           }
         }
       },
       track: null,
       inPlaylistMenu: false,
+      inReviewMenu: false,
       isFetching: true
     };
   },
 
   computed: {
     popoverPlacement() {
-      return this.windowWidth > MOBILE_WIDTH
+      return this.windowWidth > this.positionChangeBreakpoint
         ? this.popover.desktop.placement
         : this.popover.mobile.placement;
     },
 
     popperOptions() {
-      return this.windowWidth > MOBILE_WIDTH
+      return this.windowWidth > this.positionChangeBreakpoint
         ? this.popover.desktop.popperOptions
         : this.popover.mobile.popperOptions;
     },
@@ -238,6 +296,11 @@ export default {
 
         return acc;
       }, {});
+    },
+
+    canAddReviews() {
+      return ['star', 'critic', 'professionalCritic']
+        .some(role => this.$store.getters['profile/roles'](role));
     }
   },
 
@@ -265,10 +328,27 @@ export default {
       }, 50);
     },
 
+    enterReviewMenu() {
+      setTimeout(() => {
+        this.inReviewMenu = true;
+      }, 50);
+    },
+
     leavePlaylistMenu(delay) {
       setTimeout(() => {
         this.inPlaylistMenu = false;
       }, delay);
+    },
+
+    leaveReviewMenu(delay) {
+      setTimeout(() => {
+        this.inReviewMenu = false;
+      }, delay);
+    },
+
+    leaveAllMenus(delay) {
+      this.leavePlaylistMenu(delay);
+      this.leaveReviewMenu(delay);
     },
 
     onTrackAdded(addedTrack, toPlaylist) {
@@ -284,6 +364,21 @@ export default {
           );
         }, 200);
       }, 200);
+    },
+
+    onReviewAdded() {
+      setTimeout(() => {
+        this.$refs.closeButton.click();
+        this.leaveReviewMenu(300);
+
+        setTimeout(() => {
+          this.$message(
+            'Отзыв добавлен',
+            'info',
+            { timeout: 2000 }
+          );
+        }, 100);
+      }, 50);
     },
 
     emitRemoveTrack() {

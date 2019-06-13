@@ -100,6 +100,7 @@ export default {
       return {
         query: gql.query.FAVOURITE_COLLECTIONS,
         variables: this.queryVars,
+        fetchPolicy: 'network-only',
 
         update({ favouriteCollection: { total, to, data } }) {
           this.isLoading = false;
