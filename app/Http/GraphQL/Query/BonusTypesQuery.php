@@ -25,6 +25,6 @@ class BonusTypesQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        return BonusType::all();
+        return BonusType::all()->where('show_user', '=', true);
     }
 }

@@ -106,6 +106,7 @@ class BonusTypeController extends Controller
         $grid->name('Название');
         $grid->bonus('Количество баллов');
         $grid->column('constant_name', 'Константа');
+        $grid->column('show_user', 'Отоюражать пользователю');
 
         return $grid;
     }
@@ -126,7 +127,6 @@ class BonusTypeController extends Controller
         $show->bonus('Количество баллов');
         $show->description('Описание');
 
-
         return $show;
     }
 
@@ -144,6 +144,13 @@ class BonusTypeController extends Controller
         $form->text('bonus', 'Кол-во балов');
         $form->textarea('description', 'Описание');
         $form->image('img', 'Картинка');
+
+        $states = [
+            'on' => ['value' => 1, 'text' => 'Да', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => 'Нет', 'color' => 'danger'],
+        ];
+
+        $form->switch('show_user', 'Отображать пользователю')->states($states);
 
         return $form;
     }
