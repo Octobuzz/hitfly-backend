@@ -76,7 +76,6 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Владелец группы (создатель) текущий пользователь',
                 'resolve' => function ($model) {
-                    //return $model->is;
                     if(\Auth::user() !== null){
                         if(\Auth::user()->id === $model->creator_group_id){
                             return true;
