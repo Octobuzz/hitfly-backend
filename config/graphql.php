@@ -136,6 +136,7 @@ return [
                 'favouriteSet' => \App\Http\GraphQL\Query\FavouriteSetQuery::class,
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
+                'bonusTypes' => \App\Http\GraphQL\Query\BonusTypesQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -168,6 +169,8 @@ return [
 
                 'addFollow' => \App\Http\GraphQL\Mutations\FollowMutation::class,
                 'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
+
+                'UseBonusesMutation' => \App\Http\GraphQL\Mutations\UseBonusesMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -204,6 +207,7 @@ return [
         'RoleType' => \App\Http\GraphQL\Type\RoleType::class,
         'FollowUser' => \App\Http\GraphQL\Type\FollowUserType::class,
         'FollowMusicGroup' => \App\Http\GraphQL\Type\FollowMusicGroupType::class,
+        'BonusTypes' => \App\Http\GraphQL\Type\BonusTypesType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
