@@ -137,6 +137,8 @@ return [
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
                 'bonusTypes' => \App\Http\GraphQL\Query\BonusTypesQuery::class,
+                'watchingUser' => \App\Http\GraphQL\Query\WatchingUserQuery::class,
+                'watchingMusicGroup' => \App\Http\GraphQL\Query\WatchingMusicGroupQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -208,6 +210,8 @@ return [
         'FollowUser' => \App\Http\GraphQL\Type\FollowUserType::class,
         'FollowMusicGroup' => \App\Http\GraphQL\Type\FollowMusicGroupType::class,
         'BonusTypes' => \App\Http\GraphQL\Type\BonusTypesType::class,
+        'WatchableUserType' => \App\Http\GraphQL\Type\WatchableUserType::class,
+        'WatchableMusicGroupType' => \App\Http\GraphQL\Type\WatchableMusicGroupType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
