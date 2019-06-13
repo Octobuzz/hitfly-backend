@@ -81,8 +81,9 @@ class RegisterController extends Controller
         if (!empty($data['gender'])) {
             $create['gender'] = $data['gender'];
         }
-
-        return User::create($create);
+        $user = User::create($create);
+        $user->sendEmailVerificationNotification($user->email);
+        return $user;
     }
 
     /**

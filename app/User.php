@@ -10,12 +10,14 @@ use App\Models\Genre;
 use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Track;
+use App\Notifications\HitflyVerifyEmail;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -204,6 +206,6 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
      */
     public function sendEmailVerificationNotification()
     {
-        // TODO: Implement sendEmailVerificationNotification() method.
-    }
+        $this->notify(new HitflyVerifyEmail());
+     }
 }
