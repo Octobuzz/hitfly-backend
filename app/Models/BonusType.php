@@ -27,6 +27,8 @@ class BonusType extends Model implements BonusProgramTypesInterfaces
 {
     use PictureField;
 
+    public $timestamps = false;
+
     public function getImage(): ?string
     {
         return $this->getOriginal('img');
