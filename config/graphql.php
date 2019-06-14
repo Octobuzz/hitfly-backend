@@ -238,6 +238,7 @@ return [
         'CommentPeriodEnum' => \App\Http\GraphQL\Enums\CommentPeriodEnum::class,
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
+        'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
