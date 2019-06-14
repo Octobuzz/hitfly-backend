@@ -26,7 +26,8 @@
         "rebing/graphql-laravel": "^1.19",
         "socialiteproviders/providers": "dev-master",
         "tymon/jwt-auth": "1.0.0-rc.3",
-        "webonyx/graphql-php": "^0.13.0"
+        "webonyx/graphql-php": "^0.13.0",
+        "workerman/gateway-worker": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",

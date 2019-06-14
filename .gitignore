@@ -163,3 +163,4 @@ nuxt/dist
 
 # Service worker
 sw.*
+/app/Http/Controllers/TestController.php

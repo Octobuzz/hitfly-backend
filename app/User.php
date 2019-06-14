@@ -10,6 +10,7 @@ use App\Models\Genre;
 use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Track;
+use App\Models\UserNotification;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -174,5 +175,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function purseBonus(): HasOne
     {
         return $this->hasOne(Purse::class)->where('name', '=', Purse::NAME_BONUS);
+    }
+
+    public function userNotification()
+    {
+        return $this->hasOne(UserNotification::class);
     }
 }
