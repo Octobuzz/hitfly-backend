@@ -86,11 +86,10 @@ class TracksQuery extends Query
             $user = \Auth::user();
             if (
                 true === (bool) $args['iCommented']
-                && true === $user->roles->has('star')
+                && true === $user->roles->has(User::ROLE_STAR)
             ) {
                 $query->where('comments.user_id', '=', $user->id);
             }
-
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);

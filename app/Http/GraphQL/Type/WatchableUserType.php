@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Type;
 
-use App\Models\Favourite;
 use App\Models\Watcheables;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;

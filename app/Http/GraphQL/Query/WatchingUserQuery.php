@@ -2,13 +2,11 @@
 
 namespace App\Http\GraphQL\Query;
 
-use App\Models\Album;
 use App\Models\Watcheables;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
-
 
 class WatchingUserQuery extends Query
 {
@@ -27,7 +25,6 @@ class WatchingUserQuery extends Query
         return [
             'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
             'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
-
         ];
     }
 
