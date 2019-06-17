@@ -103,7 +103,17 @@ export default {
     },
 
     showFirstLoader() {
-      return !this.$store.getters['loading/userCard'].initialized;
+      const {
+        personalInfo,
+        watchedUsers,
+        watchedGroups
+      } = this.$store.getters['loading/userCard'];
+
+      return !(
+        personalInfo.initialized
+        && watchedUsers.initialized
+        && watchedGroups.initialized
+      );
     },
 
     showSecondLoader() {

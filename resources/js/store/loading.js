@@ -7,7 +7,11 @@ const stateFactory = () => ({
 });
 
 const state = {
-  userCard: '',
+  userCard: {
+    personalInfo: '',
+    watchedUsers: '',
+    watchedGroups: ''
+  },
   editProfile: '',
   editGroup: '',
   music: {
@@ -103,11 +107,13 @@ const getters = {
 };
 
 const mutations = {
-  setUserCard(state, loading) {
-    state.userCard = {
-      ...state.userCard,
-      ...loading
-    };
+  setUserCard({ userCard }, loading) {
+    Object.keys(loading).forEach((key) => {
+      userCard[key] = {
+        ...userCard[key],
+        ...loading[key]
+      };
+    });
   },
 
   setEditProfile(state, loading) {

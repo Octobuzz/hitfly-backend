@@ -1,0 +1,25 @@
+#import "gql/fragments/location.graphql"
+
+query WathedMusicGroups {
+    watchingMusicGroup(
+        page: 1,
+        limit: 3
+    ) {
+        data {
+            id
+            group {
+                id
+                name
+                avatarGroup(
+                    sizes: [size_40x40, size_235x235]
+                ) {
+                    size
+                    url
+                }
+                location {
+                    ...location
+                }
+            }
+        }
+    }
+}

@@ -57,7 +57,13 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="body">
-@yield('content')
+
+<!--TODO: remove after refactoring -->
+<div class="non-spa-style">
+    @yield('content')
+</div>
+
+@yield('spa')
 
 
 <!-- Scripts -->
