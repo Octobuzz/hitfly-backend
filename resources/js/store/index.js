@@ -7,6 +7,7 @@ import appColumns from './appColumns';
 import loading from './loading';
 import player from './player';
 import profile from './profile';
+import links from './links';
 
 Vue.use(Vuex);
 
@@ -48,7 +49,8 @@ export default new Store({
     appColumns,
     loading,
     player,
-    profile
+    profile,
+    links
   },
   state,
   getters,

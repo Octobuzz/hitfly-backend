@@ -93,7 +93,7 @@ export default {
     renderNavBar() {
       const { $route: { fullPath } } = this;
 
-      return !/(edit|create|bonus)/.test(fullPath);
+      return !/(edit|create|bonus|tracks|albums|playlists|sets)/.test(fullPath);
     },
 
     renderUserCard() {
@@ -103,67 +103,35 @@ export default {
     },
 
     showFirstLoader() {
-      return !this.$store.getters['loading/myUserCard'].initialized;
+      return !this.$store.getters['loading/userCard'].initialized;
     },
 
     showSecondLoader() {
       // TODO: if (this.windowWidth <= MOBILE_WIDTH) { ... }
 
-      const path = this.$route.fullPath;
-      const secondSlash = path.indexOf('/', 1);
-      const thirdSlash = path.indexOf('/', secondSlash + 1);
-
-      let trimmedPath = path;
-
-      if (thirdSlash !== -1) {
-        trimmedPath = path.slice(0, thirdSlash);
-      }
-
       const { getters } = this.$store;
+      const { fullPath } = this.$route;
+      const trimmedPath = fullPath.split('/').slice(0, 3).join('/');
 
       /* eslint-disable no-fallthrough */
 
-      /*
+      // eslint-disable-next-line default-case
+      switch (fullPath) {
+        case '/profile/my-music/albums':
+          return !getters['loading/music'].albums.initialized;
 
-      /profile/edit
+        case '/profile/my-music/playlists':
+          return !getters['loading/music'].collections.initialized;
 
-      /profile/edit-group
+        case '/profile/favourite/albums':
+          return !getters['loading/favourite'].albums.initialized;
 
-      /profile/my-music
+        case '/profile/favourite/playlists':
+          return !getters['loading/favourite'].collections.initialized;
 
-      /profile/my-music/tracks
-
-      /profile/my-music/albums
-
-      /profile/my-music/album/:id
-
-      /profile/my-music/playlists
-
-      /profile/my-music/playlist/:id
-
-      /profile/favourite
-
-      /profile/favourite/tracks
-
-      /profile/favourite/track/:id
-
-      /profile/favourite/albums
-
-      /profile/favourite/album/:id
-
-      /profile/favourite/playlists
-
-      /profile/favourite/playlist/:id
-
-      /profile/favourite/sets
-
-      /profile/favourite/set/:id
-
-      /profile/reviews
-
-      /profile/review/:id
-
-      */
+        case '/profile/favourite/sets':
+          return !getters['loading/favourite'].sets.initialized;
+      }
 
       switch (trimmedPath) {
         case '/profile/edit':
@@ -171,6 +139,36 @@ export default {
 
         case '/profile/edit-group':
           return !getters['loading/editGroup'].initialized;
+
+        case '/profile/my-music':
+          // eslint-disable-next-line no-case-declarations
+          const {
+            tracks: myTracks,
+            albums: myAlbums,
+            collections: myCollections,
+          } = getters['loading/music'];
+
+          return !(
+            myTracks.initialized
+            && myAlbums.initialized
+            && myCollections.initialized
+          );
+
+        case '/profile/favourite':
+          // eslint-disable-next-line no-case-declarations
+          const {
+            tracks: favouriteTracks,
+            albums: favouriteAlbums,
+            collections: favouriteCollections,
+            sets: favouriteSets
+          } = getters['loading/favourite'];
+
+          return !(
+            favouriteTracks.initialized
+            && favouriteAlbums.initialized
+            && favouriteCollections.initialized
+            && favouriteSets.initialized
+          );
 
         default:
           return false;

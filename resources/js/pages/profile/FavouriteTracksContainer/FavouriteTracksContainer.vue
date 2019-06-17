@@ -1,6 +1,6 @@
 <template>
   <TrackList
-    v-if="dataInitialized"
+    v-if="trackList.length > 0"
     :class="[
       'my-tracks-container',
       { [containerPaddingClass]: desktop }
@@ -23,29 +23,18 @@
         </button>
       </div>
     </template>
-
-    <template #loader>
-      <SpinnerLoader
-        v-if="!dataInitialized"
-        class="my-tracks-container__loader"
-      />
-    </template>
   </TrackList>
 </template>
 
 <script>
 import TrackList from 'components/trackList/TrackList';
-import SpinnerLoader from 'components/SpinnerLoader.vue';
 import gql from './gql';
 
 const MOBILE_WIDTH = 767;
 
-// Due to loadMore blocking ability to remove more tracks the separation was implemented
-
 export default {
   components: {
-    TrackList,
-    SpinnerLoader
+    TrackList
   },
 
   data() {
@@ -55,7 +44,7 @@ export default {
         pageNumber: 1,
         pageLimit: 10
       },
-      dataInitialized: false
+      shownLength: 5
     };
   },
 
@@ -75,6 +64,17 @@ export default {
     }
   },
 
+  methods: {
+    notifyInitialization(success) {
+      this.$store.commit('loading/setFavourite', {
+        tracks: {
+          initialized: true,
+          success
+        }
+      });
+    },
+  },
+
   apollo: {
     trackList() {
       return {
@@ -83,10 +83,7 @@ export default {
         fetchPolicy: 'network-only',
 
         update({ favouriteTrack: { total, to, data } }) {
-          if (!this.dataInitialized) {
-            this.dataInitialized = true;
-            this.$emit('data-initialized');
-          }
+          this.notifyInitialization(true);
 
           if (to >= total) {
             this.hasMoreData = false;
@@ -96,6 +93,8 @@ export default {
         },
 
         error(err) {
+          this.notifyInitialization(false);
+
           console.dir(err);
         }
       };

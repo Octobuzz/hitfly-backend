@@ -7,30 +7,29 @@ const stateFactory = () => ({
 });
 
 const state = {
+  userCard: '',
   editProfile: '',
   editGroup: '',
+  music: {
+    tracks: '',
+    albums: '',
+    collections: ''
+  },
   favourite: {
     tracks: '',
     albums: '',
     collections: '',
     sets: ''
   },
-
-  myUserCard: '',
-  myMusic: {
-    tracks: '',
-    albums: '',
-    collections: ''
-  },
-  myReviews: '',
-
-  otherUserMusic: {
-    tracks: '',
-    albums: '',
-    collections: '',
-    newAlbum: ''
-  },
-  otherUserReviews: ''
+  reviews: '',
+  review: '',
+  tracks: '',
+  albums: '',
+  album: '',
+  playlists: '',
+  playlist: '',
+  sets: '',
+  set: ''
 };
 
 function populateState(obj) {
@@ -46,8 +45,8 @@ function populateState(obj) {
 populateState(state);
 
 const getters = {
-  myUserCard({ myUserCard }) {
-    return myUserCard;
+  userCard({ userCard }) {
+    return userCard;
   },
 
   editProfile({ editProfile }) {
@@ -58,31 +57,55 @@ const getters = {
     return editGroup;
   },
 
-  myMusic({ myMusic }) {
-    return myMusic;
-  },
-
-  otherUserMusic({ otherUserMusic }) {
-    return otherUserMusic;
+  music({ music }) {
+    return music;
   },
 
   favourite({ favourite }) {
     return favourite;
   },
 
-  myReviews({ myReviews }) {
-    return myReviews;
+  reviews({ reviews }) {
+    return reviews;
   },
 
-  otherUserReviews({ otherUserReviews }) {
-    return otherUserReviews;
+  review({ review }) {
+    return review;
+  },
+
+  tracks({ tracks }) {
+    return tracks;
+  },
+
+  albums({ albums }) {
+    return albums;
+  },
+
+  album({ album }) {
+    return album;
+  },
+
+  playlists({ playlists }) {
+    return playlists;
+  },
+
+  playlist({ playlist }) {
+    return playlist;
+  },
+
+  sets({ sets }) {
+    return sets;
+  },
+
+  set({ set }) {
+    return set;
   }
 };
 
 const mutations = {
-  setMyUserCard(state, loading) {
-    state.myUserCard = {
-      ...state.myUserCard,
+  setUserCard(state, loading) {
+    state.userCard = {
+      ...state.userCard,
       ...loading
     };
   },
@@ -101,10 +124,10 @@ const mutations = {
     };
   },
 
-  setMyMusic({ myMusic }, loading) {
+  setMusic({ music }, loading) {
     Object.keys(loading).forEach((key) => {
-      myMusic[key] = {
-        ...myMusic[key],
+      music[key] = {
+        ...music[key],
         ...loading[key]
       };
     });
@@ -119,12 +142,68 @@ const mutations = {
     });
   },
 
-  setMyReviews(state, loading) {
-    state.myReviews = {
-      ...state.myReviews,
+  setReviews(state, loading) {
+    state.reviews = {
+      ...state.reviews,
       ...loading
     };
-  }
+  },
+
+  setReview(state, loading) {
+    state.review = {
+      ...state.review,
+      ...loading
+    };
+  },
+
+  setTracks(state, loading) {
+    state.tracks = {
+      ...state.tracks,
+      ...loading
+    };
+  },
+
+  setAlbums(state, loading) {
+    state.albums = {
+      ...state.albums,
+      ...loading
+    };
+  },
+
+  setAlbum(state, loading) {
+    state.Album = {
+      ...state.Album,
+      ...loading
+    };
+  },
+
+  setPlaylists(state, loading) {
+    state.playlists = {
+      ...state.playlists,
+      ...loading
+    };
+  },
+
+  setPlaylist(state, loading) {
+    state.playlist = {
+      ...state.playlist,
+      ...loading
+    };
+  },
+
+  setSets(state, loading) {
+    state.sets = {
+      ...state.sets,
+      ...loading
+    };
+  },
+
+  setSet(state, loading) {
+    state.set = {
+      ...state.set,
+      ...loading
+    };
+  },
 };
 
 export default {

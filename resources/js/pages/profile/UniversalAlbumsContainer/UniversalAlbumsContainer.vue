@@ -1,31 +1,25 @@
 <template>
   <div>
-    <AlbumScrollHorizontal
-      v-show="albumListLength"
-      class="my-albums-container"
-      :header-class="containerPaddingClass"
+    <slot
+      v-if="albumList.length > 0"
+      name="default"
       :album-id-list="albumIdList"
       :has-more-data="hasMoreData"
-      @load-more="onLoadMore"
+    />
+    <p
+      v-if="initialFetchError"
+      class="universal-albums-container__error"
     >
-      <template #title>
-        <span class="h2 my-albums-container__title">
-          Альбомы
-        </span>
-      </template>
-    </AlbumScrollHorizontal>
+      На сервере произошла ошибка. Не удалось загрузить данные альбомов.
+      Пожалуйста, попробуйте позже или обратитесь к администратору.
+    </p>
   </div>
 </template>
 
 <script>
-import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import gql from './gql';
 
 export default {
-  components: {
-    AlbumScrollHorizontal
-  },
-
   data() {
     return {
       albumList: [],
@@ -35,8 +29,7 @@ export default {
         pageNumber: 1,
         pageLimit: 30,
         my: true
-      },
-      dataInitialized: false
+      }
     };
   },
 
@@ -45,16 +38,27 @@ export default {
       return this.albumList.map(album => album.id);
     },
 
-    albumListLength() {
-      return this.albumList.length > 0;
-    },
+    initialFetchError() {
+      const loading = this.$store.getters['loading/music'].albums;
 
-    containerPaddingClass() {
-      return this.$store.getters['appColumns/paddingClass'];
+      return loading.initialized && !loading.success;
     }
   },
 
+  mounted() {
+    this.$on('load-more', this.onLoadMore.bind(this));
+  },
+
   methods: {
+    notifyInitialization(success) {
+      this.$store.commit('loading/setMusic', {
+        albums: {
+          initialized: true,
+          success
+        }
+      });
+    },
+
     fetchMoreAlbums(vars) {
       return this.$apollo.queries.albumList.fetchMore({
         variables: vars,
@@ -68,7 +72,10 @@ export default {
               __typename: currentList.albums.__typename,
               total,
               to,
-              data: [...currentList.albums.data, ...newAlbums]
+              data: [
+                ...currentList.albums.data,
+                ...newAlbums
+              ]
             }
           };
         },
@@ -91,7 +98,7 @@ export default {
           this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
+          console.dir(err);
         });
     }
   },
@@ -101,13 +108,11 @@ export default {
       return {
         query: gql.query.ALBUMS,
         variables: this.queryVars,
+        fetchPolicy: 'network-only',
 
         update({ albums: { total, to, data } }) {
           this.isLoading = false;
-          if (!this.dataInitialized) {
-            this.dataInitialized = true;
-            this.$emit('data-initialized');
-          }
+          this.notifyInitialization(true);
 
           if (to >= total) {
             this.hasMoreData = false;
@@ -117,7 +122,9 @@ export default {
         },
 
         error(error) {
-          console.log(error);
+          this.notifyInitialization(false);
+
+          console.dir(error);
         }
       };
     }
@@ -128,5 +135,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./MyAlbumsContainer.scss"
+  src="./UniversalAlbumsContainer.scss"
 />

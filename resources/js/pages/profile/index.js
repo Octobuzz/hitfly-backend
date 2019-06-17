@@ -7,4 +7,5 @@ export { default as MyMusic } from './MyMusic';
 export { default as Favourite } from './Favourite';
 export { default as MyReviews } from './MyReviews';
 export { default as BonusProgram } from './BonusProgram';
-export { default as ProfilePage_obsolete } from './ProfilePage_obsolete.vue';
+export { default as AlbumTableContainer } from './AlbumTableContainer';
+export { default as CollectionTableContainer } from './CollectionTableContainer';
