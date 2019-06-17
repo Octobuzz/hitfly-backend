@@ -4,6 +4,7 @@ namespace App\Http\GraphQL\Query;
 
 use App\Helpers\DBHelpers;
 use App\Models\Track;
+use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
@@ -48,6 +49,10 @@ class TracksQuery extends Query
                 'description' => 'ID группы(фильтрация)',
                 'rules' => ['mutually_exclusive_args:my,userId'],
             ],
+            'iCommented' => [
+                'type' => Type::boolean(),
+                'description' => 'Треки откоментированные мною (для звезды, не обязательно). Работает совместно с commentPeriod',
+            ],
         ];
     }
 
@@ -74,8 +79,17 @@ class TracksQuery extends Query
             })
                 ->where('comments.created_at', '>=', $date)
                 ->where('comments.commentable_type', '=', Track::class)
-
                 ->groupBy('tracks.id');
+
+            /// Треки откоментированные мною
+            /** @var User $user */
+            $user = \Auth::user();
+            if (
+                true === (bool) $args['iCommented']
+                && true === $user->roles->has(User::ROLE_STAR)
+            ) {
+                $query->where('comments.user_id', '=', $user->id);
+            }
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);

@@ -72,6 +72,22 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::listOf(\GraphQL::type('SocialLinks')),
                 'description' => 'Соцсети группы',
             ],
+            'isCreator' => [
+                'type' => Type::boolean(),
+                'description' => 'Владелец группы (создатель) текущий пользователь',
+                'resolve' => function ($model) {
+                    if (null !== \Auth::user()) {
+                        if (\Auth::user()->id === $model->creator_group_id) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        throw new \Exception('Пользователь не авторизован');
+                    }
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }

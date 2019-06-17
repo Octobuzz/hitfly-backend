@@ -97,7 +97,7 @@ class UserInterface extends InterfaceType
             ],
             'bpDaysInProgram' => [
                 'type' => Type::int(),
-                'description' => 'Количество дней в бонусной программе программе',
+                'description' => 'Количество дней в бонусной программе',
                 'selectable' => false,
                 'resolve' => function (User $model) {
                     $dateCreate = $model->created_at;
