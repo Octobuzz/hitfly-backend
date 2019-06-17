@@ -6,6 +6,44 @@ import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import AboutPage from './pages/AboutPage.vue';
 
+/*
+  /profile/edit
+
+  /profile/edit-group
+
+  /profile/my-music
+
+  /profile/my-music/tracks
+
+  /profile/my-music/albums
+
+  /profile/my-music/album/:id
+
+  /profile/my-music/playlists
+
+  /profile/my-music/playlist/:id
+
+  /profile/favourite
+
+  /profile/favourite/tracks
+
+  /profile/favourite/albums
+
+  /profile/favourite/album/:id
+
+  /profile/favourite/playlists
+
+  /profile/favourite/playlist/:id
+
+  /profile/favourite/sets
+
+  /profile/favourite/set/:id
+
+  /profile/reviews
+
+  /profile/review/:id
+*/
+
 const routes = [
   {
     path: '/profile',
@@ -25,15 +63,59 @@ const routes = [
       },
       {
         path: 'my-music',
-        component: profile.MyMusic
+        component: profile.MyMusic,
+      },
+      {
+        path: 'my-music/tracks',
+        component: profile.Tracks
+      },
+      {
+        path: 'my-music/albums',
+        component: profile.AlbumTableContainer
+      },
+      {
+        path: 'my-music/playlists',
+        component: profile.CollectionTableContainer
       },
       {
         path: 'favourite',
         component: profile.Favourite
       },
       {
+        path: 'favourite/tracks',
+        component: profile.Tracks
+      },
+      {
+        path: 'favourite/albums',
+        component: profile.AlbumTableContainer
+      },
+      {
+        path: 'favourite/playlists',
+        component: profile.CollectionTableContainer
+      },
+      {
+        path: 'favourite/sets',
+        component: profile.CollectionTableContainer
+      },
+      {
         path: 'reviews',
         component: profile.MyReviews
+      },
+      {
+        path: 'review/:reviewId',
+        component: profile.Review
+      },
+      {
+        path: 'album/:albumId',
+        component: profile.Album
+      },
+      {
+        path: 'playlist/:playlistId',
+        component: profile.Playlist
+      },
+      {
+        path: 'set/:setId',
+        component: profile.Set
       },
       {
         path: 'bonus-program',
@@ -42,7 +124,6 @@ const routes = [
       {
         path: '',
         redirect: '/profile/my-music'
-        // component: profile.ProfilePage_obsolete
       }
     ]
   },

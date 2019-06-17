@@ -1,35 +1,25 @@
 <template>
   <div>
-    <AlbumScrollHorizontal
-      v-show="albumListLength"
-      :class="['favourite-albums-container', $attrs.class]"
-      :header-class="containerPaddingClass"
+    <slot
+      v-if="albumList.length > 0"
+      name="default"
       :album-id-list="albumIdList"
       :has-more-data="hasMoreData"
-      @load-more="onLoadMore"
+    />
+    <p
+      v-if="initialFetchError"
+      class="favourite-albums-container__error"
     >
-      <template #title>
-        <span class="h2 favourite-albums-container__title">
-          Любимые альбомы
-        </span>
-      </template>
-    </AlbumScrollHorizontal>
+      На сервере произошла ошибка. Не удалось загрузить данные альбомов.
+      Пожалуйста, попробуйте позже или обратитесь к администратору.
+    </p>
   </div>
 </template>
 
 <script>
-import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import gql from './gql';
 
-// TODO: consider merge of this component into MyAlbumsComponent
-// We could use js-module for different kind of parsing logic in the query update
-// depending on a prop.
-
 export default {
-  components: {
-    AlbumScrollHorizontal
-  },
-
   data() {
     return {
       albumList: [],
@@ -38,8 +28,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 30
-      },
-      dataInitialized: false
+      }
     };
   },
 
@@ -48,16 +37,27 @@ export default {
       return this.albumList.map(album => album.id);
     },
 
-    albumListLength() {
-      return this.albumList.length > 0;
-    },
+    initialFetchError() {
+      const loading = this.$store.getters['loading/favourite'].albums;
 
-    containerPaddingClass() {
-      return this.$store.getters['appColumns/paddingClass'];
+      return loading.initialized && !loading.success;
     }
   },
 
+  mounted() {
+    this.$on('load-more', this.onLoadMore.bind(this));
+  },
+
   methods: {
+    notifyInitialization(success) {
+      this.$store.commit('loading/setFavourite', {
+        albums: {
+          initialized: true,
+          success
+        }
+      });
+    },
+
     fetchMoreAlbums(vars) {
       return this.$apollo.queries.albumList.fetchMore({
         variables: vars,
@@ -71,7 +71,10 @@ export default {
               __typename: currentList.favouriteAlbum.__typename,
               total,
               to,
-              data: [...currentList.favouriteAlbum.data, ...newAlbums]
+              data: [
+                ...currentList.favouriteAlbum.data,
+                ...newAlbums
+              ]
             }
           };
         },
@@ -94,7 +97,7 @@ export default {
           this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
+          console.dir(err);
         });
     }
   },
@@ -108,10 +111,7 @@ export default {
 
         update({ favouriteAlbum: { total, to, data } }) {
           this.isLoading = false;
-          if (!this.dataInitialized) {
-            this.dataInitialized = true;
-            this.$emit('data-initialized');
-          }
+          this.notifyInitialization(true);
 
           if (to >= total) {
             this.hasMoreData = false;
@@ -121,7 +121,9 @@ export default {
         },
 
         error(error) {
-          console.log(error);
+          this.notifyInitialization(false);
+
+          console.dir(error);
         }
       };
     }

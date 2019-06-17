@@ -308,7 +308,7 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    this.$store.commit('loading/setMyUserCard', {
+    this.$store.commit('loading/setUserCard', {
       initialized: false
     });
     next();
@@ -316,7 +316,7 @@ export default {
 
   methods: {
     notifyInitialization(success) {
-      this.$store.commit('loading/setMyUserCard', {
+      this.$store.commit('loading/setUserCard', {
         initialized: true,
         success
       });

@@ -173,7 +173,7 @@ export default {
       const collectionSpacedWidth = collectionWidth + spaceBetween;
 
       if (scroller.scrollWidth - scroller.scrollLeft < 12 * collectionSpacedWidth) {
-        this.$emit('load-more');
+        this.$parent.$emit('load-more');
       }
     },
 

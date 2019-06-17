@@ -1,23 +1,21 @@
 //@import "normalize";
+//@import 'fonts';
+
 @import 'variables';
 @import 'mixins';
-//@import 'fonts';
 @import 'main-layout';
 @import 'components';
 @import 'styles';
 @import 'nice-select';
 @import 'profile';
 
-// TODO: migrate
-@import '../sass_refactor/main';
-
-body{
+body {
   font-family: $font_main;
   background-color: $color_2;
   color: $text;
 }
 
-a{
+a {
   text-decoration: none;
   color: $color_pink;
 }

@@ -3,6 +3,11 @@
 @import './normalize.scss';
 @import './headers.scss';
 
+// TODO: refactor
+.reg-page {
+  @import '../sass/app.scss';
+}
+
 html,
 body {
   font-family: 'Gotham Pro', sans-serif;
