@@ -33,6 +33,10 @@ class TrackFilterInput extends GraphQLType
                 'description' => 'ID группы(фильтрация)',
                 'rules' => ['mutually_exclusive_args:my,userId'],
             ],
+            'iCommented' => [
+                'type' => Type::boolean(),
+                'description' => 'Треки откоментированные мною (для звезды, не обязательно). Работает совместно с commentPeriod',
+            ],
         ];
     }
 }
