@@ -148,4 +148,19 @@ class Album extends Model
     {
         return $this->getOriginal('cover');
     }
+    public function getImageUrl(): ?string
+    {
+        if (null === $this->getImage()) {
+            $img = 'default.jpg';
+        } else {
+            $img = $this->getImage();
+        }
+
+        return '/storage/'.$img;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
 }

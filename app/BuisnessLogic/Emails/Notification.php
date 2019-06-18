@@ -6,6 +6,7 @@ use App\BuisnessLogic\Events\Event;
 use App\BuisnessLogic\Promo\PromoCode;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use App\Jobs\BirthdayCongratulationsEmailJob;
+use App\Jobs\CommentCreatedJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
@@ -14,12 +15,14 @@ use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
+use App\Mail\CommentCreatedMail;
 use App\Mail\FewComments;
 use App\Mail\LongAgoNotVisited;
 use App\Mail\NewEventNotificationMail;
 use App\Mail\ReachTopMail;
 use App\Mail\RemindForEventMail;
 use App\Mail\RequestForEventMail;
+use App\Models\Comment;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
@@ -221,5 +224,19 @@ class Notification
     {
         // TODO: выборка пользователей подписаных на рассылку о событиях
         return User::query()->where('id', '=', 31)->get();
+    }
+
+
+    /**
+     * Нотификации о новом отзыве
+     */
+    public function newCommentNotification($commentId)
+    {
+        $comment = Comment::query()->find($commentId);
+//        dd($comment->user()->first());
+        return new CommentCreatedMail($comment->commentable->user()->first()->username, $comment);
+        dispatch(new CommentCreatedJob($comment))->onQueue('low');
+
+
     }
 }

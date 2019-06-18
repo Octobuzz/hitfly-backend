@@ -208,4 +208,19 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         $this->notify(new HitflyVerifyEmail());
      }
+
+    public function getImage(): ?string
+    {
+        return $this->getOriginal('avatar');
+    }
+    public function getImageUrl(): ?string
+    {
+        if (null === $this->getImage()) {
+            $img = 'avatars/user2-160x160_size_235x235.jpg';
+        } else {
+            $img = $this->getImage();
+        }
+
+        return '/storage/'.$img;
+    }
 }
