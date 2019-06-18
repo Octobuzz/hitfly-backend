@@ -1,7 +1,0 @@
-#import "../fragments/musicGroup.graphql"
-
-query MusicGroup($id: Int!) {
-    musicGroup(id: $id) {
-        ...musicGroup
-    }
-}

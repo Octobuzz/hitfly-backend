@@ -1,7 +1,0 @@
-#import "../fragments/genre.graphql"
-
-query Genres {
-    genre {
-        ...genre
-    }
-}
