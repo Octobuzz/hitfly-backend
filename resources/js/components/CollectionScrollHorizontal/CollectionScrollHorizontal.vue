@@ -62,7 +62,11 @@
         >
           <BaseLoader :active="hasMoreData" />
         </span>
-        <span v-else style="display: block; width: 120px;" />
+
+        <!-- We better ave some place to insert one more item -->
+        <span
+          v-else
+          :style="{ display: 'block', width: desktop ? '262px' : '188px' }" />
       </template>
     </recycle-scroller>
   </div>

@@ -1,14 +1,4 @@
 <template>
-<!--  <div-->
-<!--    :class="[-->
-<!--      'user-card',-->
-<!--      { 'user-card_loading': !dataInitialized }-->
-<!--    ]"-->
-<!--  >-->
-<!--    <SpinnerLoader-->
-<!--      v-if="!dataInitialized"-->
-<!--      class="user-card__loader"-->
-<!--    />-->
   <div class="user-card">
     <div :class="[itemContainerClass, 'user-card__item']">
       <img
@@ -121,8 +111,8 @@
 
     <div
       v-if="
-        myProfile.watchingUser.length > 0
-          || myProfile.watchingMusicGroup.length > 0
+        myProfile.watchedUsers.length > 0
+          || myProfile.watchedGroups.length > 0
       "
       :class="[
         itemContainerClass,
@@ -140,7 +130,7 @@
       </div>
 
       <div
-        v-if="myProfile.watchingUser.length > 0"
+        v-if="myProfile.watchedUsers.length > 0"
         class="user-card__followed-users"
       >
         <span class="user-card__subsection-header">
@@ -148,7 +138,7 @@
         </span>
 
         <div
-          v-for="user in myProfile.watchingUser.slice(0, 3)"
+          v-for="user in myProfile.watchedUsers.slice(0, 3)"
           :key="user.id"
           class="user-card__user user-card__user-info"
         >
@@ -176,7 +166,7 @@
       </div>
 
       <div
-        v-if="myProfile.watchingMusicGroup.length > 0"
+        v-if="myProfile.watchedGroups.length > 0"
         class="user-card__followed-groups"
       >
         <span class="user-card__subsection-header">
@@ -184,7 +174,7 @@
         </span>
 
         <div
-          v-for="group in myProfile.watchingMusicGroup.slice(0, 3)"
+          v-for="group in myProfile.watchedGroups.slice(0, 3)"
           :key="group.id"
           class="user-card__group user-card__group-info"
         >
@@ -241,7 +231,6 @@
 
 <script>
 import anonymousAvatar from 'images/anonymous-avatar.png';
-import SpinnerLoader from 'components/SpinnerLoader.vue';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
@@ -256,7 +245,6 @@ const bonusProgramLvlMap = {
 
 export default {
   components: {
-    SpinnerLoader,
     IconButton,
     PencilIcon,
     ArrowIcon
@@ -278,8 +266,8 @@ export default {
         followersCount: '',
         activity: '',
         musicGroups: [],
-        watchingUser: [],
-        watchingMusicGroup: [],
+        watchedUsers: [],
+        watchedGroups: [],
         bonusProgram: {
           level: '',
           points: '',
@@ -287,7 +275,6 @@ export default {
           progressPct: 0
         }
       },
-      dataInitialized: false,
       anonymousAvatar
     };
   },
@@ -315,10 +302,12 @@ export default {
   },
 
   methods: {
-    notifyInitialization(success) {
+    notifyInitialization(success, key) {
       this.$store.commit('loading/setUserCard', {
-        initialized: true,
-        success
+        [key]: {
+          initialized: true,
+          success
+        }
       });
     },
 
@@ -349,8 +338,6 @@ export default {
           location,
           description,
           musicGroups,
-          watchingUser,
-          watchingMusicGroup,
           roles,
           bpProgressPercent: bpProgressPct,
           bpLevelBonusProgram: bpLevel,
@@ -363,8 +350,6 @@ export default {
 
         this.myProfile.name = username;
         this.myProfile.musicGroups = musicGroups;
-        this.myProfile.watchingUser = watchingUser;
-        this.myProfile.watchingMusicGroup = watchingMusicGroup;
 
         // TODO: uncomment when the api is fixed
 
@@ -385,14 +370,44 @@ export default {
           }
         }
 
-        this.notifyInitialization(true);
+        this.notifyInitialization(true, 'personalInfo');
       },
       error(err) {
-        this.notifyInitialization(false);
+        this.notifyInitialization(false, 'personalInfo');
 
         console.dir(err);
       }
     },
+
+    watchedUsers: {
+      query: gql.query.WATCHED_USERS,
+      update({ watchingUser: { data } }) {
+        this.myProfile.watchedUsers = data
+          .map(watchedUser => watchedUser.user);
+
+        this.notifyInitialization(true, 'watchedUsers');
+      },
+      error(err) {
+        this.notifyInitialization(false, 'watchedUsers');
+
+        console.dir(err);
+      }
+    },
+
+    watchedGroups: {
+      query: gql.query.WATCHED_GROUPS,
+      update({ watchingMusicGroup: { data } }) {
+        this.myProfile.watchedGroups = data
+          .map(watchedGroup => watchedGroup.group);
+
+        this.notifyInitialization(true, 'watchedGroups');
+      },
+      error(err) {
+        this.notifyInitialization(false, 'watchedGroups');
+
+        console.dir(err);
+      }
+    }
   }
 };
 </script>

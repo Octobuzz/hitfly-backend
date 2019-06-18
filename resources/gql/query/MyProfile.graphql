@@ -38,12 +38,6 @@ query MyProfile {
         email
         favoriteSongsCount
         favoriteAlbumCount
-        watchingUser {
-            ...user
-        }
-        watchingMusicGroup {
-            ...musicGroup
-        }
 #        ...bonusProgram
     }
 }

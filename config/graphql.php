@@ -136,6 +136,9 @@ return [
                 'favouriteSet' => \App\Http\GraphQL\Query\FavouriteSetQuery::class,
                 'myProfile' => \App\Http\GraphQL\Query\MyProfileQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
+                'bonusTypes' => \App\Http\GraphQL\Query\BonusTypesQuery::class,
+                'watchingUser' => \App\Http\GraphQL\Query\WatchingUserQuery::class,
+                'watchingMusicGroup' => \App\Http\GraphQL\Query\WatchingMusicGroupQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -168,6 +171,8 @@ return [
 
                 'addFollow' => \App\Http\GraphQL\Mutations\FollowMutation::class,
                 'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
+
+                'UseBonusesMutation' => \App\Http\GraphQL\Mutations\UseBonusesMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -204,6 +209,9 @@ return [
         'RoleType' => \App\Http\GraphQL\Type\RoleType::class,
         'FollowUser' => \App\Http\GraphQL\Type\FollowUserType::class,
         'FollowMusicGroup' => \App\Http\GraphQL\Type\FollowMusicGroupType::class,
+        'BonusTypes' => \App\Http\GraphQL\Type\BonusTypesType::class,
+        'WatchableUserType' => \App\Http\GraphQL\Type\WatchableUserType::class,
+        'WatchableMusicGroupType' => \App\Http\GraphQL\Type\WatchableMusicGroupType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -230,6 +238,7 @@ return [
         'CommentPeriodEnum' => \App\Http\GraphQL\Enums\CommentPeriodEnum::class,
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
+        'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

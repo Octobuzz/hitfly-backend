@@ -17,18 +17,22 @@ trait PictureField
 
     public function getPath(): string
     {
-        $userId = $this->user->id;
+        if (null !== $this->user()) {
+            $userId = $this->user->id;
 
-        return $this->getSaveFolder().DIRECTORY_SEPARATOR.$userId.DIRECTORY_SEPARATOR;
+            return $this->getSaveFolder().DIRECTORY_SEPARATOR.$userId.DIRECTORY_SEPARATOR;
+        }
+
+        return $this->getSaveFolder().DIRECTORY_SEPARATOR;
     }
 
     public function getSaveFolder()
     {
-        $nameFolder = 'defaultFolder';
         try {
             $reflection = new \ReflectionClass(get_class($this));
             $nameFolder = strtolower($reflection->getShortName()).'s';
         } catch (\ReflectionException $exception) {
+            $nameFolder = 'defaultFolder';
             Log::warning($exception->getMessage());
         }
 

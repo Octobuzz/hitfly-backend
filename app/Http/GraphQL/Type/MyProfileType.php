@@ -51,14 +51,14 @@ class MyProfileType extends GraphQLType
                         return $model->likesAlbum()->count();
                     },
                 ],
-                'watchingUser' => [
-                    'type' => Type::listOf(\GraphQL::type('User')),
-                    'description' => 'Следит за пользователями',
-                ],
-                'watchingMusicGroup' => [
-                    'type' => Type::listOf(\GraphQL::type('MusicGroup')),
-                    'description' => 'Следит за группами',
-                ],
+//                'watchingUser' => [
+//                    'type' => Type::listOf(\GraphQL::type('User')),
+//                    'description' => 'Следит за пользователями',
+//                ],
+//                'watchingMusicGroup' => [
+//                    'type' => Type::listOf(\GraphQL::type('MusicGroup')),
+//                    'description' => 'Следит за группами',
+//                ],
                 'followersCount' => [
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
