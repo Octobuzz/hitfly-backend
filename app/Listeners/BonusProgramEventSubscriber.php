@@ -154,20 +154,20 @@ class BonusProgramEventSubscriber
                 }
                 $bonusTypeConstant = BonusProgramTypesInterfaces::GETTING_TEN_LIKES_FROM_OTHER_USERS_PER_TRACK;
                 break;
-            case Collection::class:
-                $modelId = $favourite->track->id;
-                $countFavorite =
-                    Favourite::query()
-                        ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
-                        ->where($favoriteId, $modelId)
-                        ->count()
-                ;
-                if ($countFavorite < 50) {
-                    return;
-                }
-                $bonusTypeConstant = BonusProgramTypesInterfaces::GETTING_TEN_LIKES_FROM_OTHER_USERS_PER_TRACK;
-                break;
-                break;
+//            case Collection::class:
+//                $modelId = $favourite->collection->id;
+//                $countFavorite =
+//                    Favourite::query()
+//                        ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
+//                        ->where($favoriteId, $modelId)
+//                        ->count()
+//                ;
+//                if ($countFavorite < 50) {
+//                    return;
+//                }
+//                $bonusTypeConstant = BonusProgramTypesInterfaces::GETTING_TEN_LIKES_FROM_OTHER_USERS_PER;
+//                break;
+//                break;
             default:
                 return;
         }

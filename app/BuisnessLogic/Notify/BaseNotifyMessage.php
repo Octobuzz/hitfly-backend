@@ -6,29 +6,26 @@ use App\Interfaces\Notification\BaseUserNotificationInterface;
 
 class BaseNotifyMessage implements BaseUserNotificationInterface
 {
-    private $message;
-    private $title;
-    private $data;
+    private $messageData;
+    private $type;
 
-    public function __construct(string $message, ?string $title, ?array $data)
+    public function __construct(string $type, array $messageData)
     {
-        $this->message = $message;
-        $this->title = $title;
-        $this->data = $data;
+        $this->messageData = $messageData;
+        $this->type = $type;
     }
 
-    public function getTitle(): ?string
+    public function getType(): string
     {
-        return $this->title;
+        return $this->type;
     }
 
-    public function getMessage(): string
+    public function getMessageData(): array
     {
-        return  $this->message;
-    }
-
-    public function getData(): array
-    {
-        return (is_null($this->data)) ? [] : $this->data;
+        return [
+            'date' => new \DateTime(),
+            'type' => $this->getType(),
+            'messageData' => $this->messageData,
+        ];
     }
 }

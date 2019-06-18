@@ -46,25 +46,19 @@ class BaseNotification extends Notification
     {
         $userNotification = $user->userNotification()->first();
         Gateway::sendToClient($userNotification->token_web_socket, json_encode([
-            'message' => $this->baseUserNotification->getMessage(),
-            'title' => $this->baseUserNotification->getTitle(),
-            'data' => $this->baseUserNotification->getData(),
+            'type' => 'notification',
+            'id' => $this->id,
+            'data' => $this->baseUserNotification->getMessageData(),
         ]));
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param User $notifiable
-     *
      * @return array
      */
     public function toArray(User $user)
     {
-        return [
-            'message' => $this->baseUserNotification->getMessage(),
-            'title' => $this->baseUserNotification->getTitle(),
-            'data' => $this->baseUserNotification->getData(),
-        ];
+        return $this->baseUserNotification->getMessageData();
     }
 }

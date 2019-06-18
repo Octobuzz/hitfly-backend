@@ -8,9 +8,7 @@ namespace App\Interfaces\Notification;
  */
 interface BaseUserNotificationInterface
 {
-    public function getTitle(): ?string;
+    public function getType(): ?string;
 
-    public function getMessage(): string;
-
-    public function getData(): array;
+    public function getMessageData(): array;
 }
