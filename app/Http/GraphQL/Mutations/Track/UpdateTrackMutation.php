@@ -6,6 +6,8 @@ use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use PhpOffice\PhpWord\IOFactory;
 use Rebing\GraphQL\Support\Mutation;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -96,8 +98,41 @@ class UpdateTrackMutation extends Mutation
             'track_date' => Carbon::create($args['infoTrack']['trackDate'], 1, 1),
             'state' => 'fileload',
         ]);
+        if (!empty($args['infoTrack']['cover']) && null !== $args['infoTrack']['cover']) {
+            $track->cover = $this->setCover($track, $args['infoTrack']['cover']);
+        }
         $track->save();
 
         return $track;
+    }
+
+    /**
+     * добавление аватарки трека.
+     *
+     * @param Track $track
+     * @param $avatar
+     *
+     * @return string
+     */
+    private function setCover($track, $avatar)
+    {
+        if (null !== $track->getOriginal('cover')) {
+            Storage::disk('public')->delete($track->getOriginal('cover'));
+        }
+        $image = $avatar;
+        $nameFile = md5(microtime());
+        $imagePath = "tracks/$track->user_id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $image_resize = Image::make($image->getRealPath());
+        $image_resize->fit(config('image.size.album.default.height'), config('image.size.album.default.height')/*, function ($constraint) {
+            $constraint->aspectRatio();
+        }*/);
+        $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+        //создадим папку, если несуществует
+        if (!file_exists($path.'tracks/'.$track->user_id)) {
+            Storage::disk('public')->makeDirectory('tracks/'.$track->user_id);
+        }
+        $image_resize->save($path.$imagePath, 100);
+
+        return $imagePath;
     }
 }
