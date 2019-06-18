@@ -227,6 +227,7 @@ return [
         'AlbumInput' => \App\Http\GraphQL\InputObject\AlbumInput::class,
         'PasswordInput' => \App\Http\GraphQL\InputObject\PasswordInput::class,
         'FollowInput' => \App\Http\GraphQL\InputObject\FollowInput::class,
+        'TrackFilterInput' => \App\Http\GraphQL\InputObject\TrackFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
