@@ -64,7 +64,9 @@
         </span>
 
         <!-- We better ave some place to insert one more item -->
-        <span v-else style="display: block; width: 238px;" />
+        <span
+          v-else
+          :style="{ display: 'block', width: desktop ? '262px' : '188px' }" />
       </template>
     </recycle-scroller>
   </div>
