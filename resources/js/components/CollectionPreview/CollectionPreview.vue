@@ -13,7 +13,12 @@
       <div class="collection-preview__drape" />
 
       <span class="collection-preview__title">
-        {{ collection.title }}
+        <router-link
+          :to="titleLink"
+          :style="{ color: 'inherit' }"
+        >
+          {{ collection.title }}
+        </router-link>
       </span>
 
       <img
@@ -95,6 +100,10 @@ export default {
 
       return this.collection.image
         .filter(image => image.size === 'size_214x160')[0].url;
+    },
+
+    titleLink() {
+      return '';
     }
   },
 

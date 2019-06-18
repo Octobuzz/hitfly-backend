@@ -1,12 +1,14 @@
-.my-music_loading {
-  display: flex;
+.my-music__albums-container {
+  max-width: 100%;
+  width: 100%;
+  padding-bottom: 32px;
 }
 
-.my-music__loader {
-  display: block;
-  margin: {
-    top: 64px;
-    left: auto;
-    right: auto;
-  };
+.my-music__albums-title {
+  margin: 0;
+}
+
+.my-music__albums-title,
+.my-music__collections-title {
+  color: black;
 }

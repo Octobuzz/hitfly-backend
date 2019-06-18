@@ -173,7 +173,7 @@ export default {
       const albumSpacedWidth = albumWidth + spaceBetween;
 
       if (scroller.scrollWidth - scroller.scrollLeft < 20 * albumSpacedWidth) {
-        this.$emit('load-more');
+        this.$parent.$emit('load-more');
       }
     },
 

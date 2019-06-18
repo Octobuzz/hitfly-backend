@@ -27,3 +27,8 @@ RUN usermod --non-unique --uid ${UID_USER:-1001} www-data
 RUN groupmod -g ${UID_USER:-1001} www-data
 RUN apt-get install sudo -y
 RUN docker-php-ext-install pcntl
+RUN apt-get install sudo python -y
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN python get-pip.py
+RUN pip install numpy
+

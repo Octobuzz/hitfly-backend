@@ -1,7 +1,7 @@
 <template>
   <AppColumns>
     <template #left-column="{ itemContainerClass }">
-      <UserCard
+      <MyUserCard
         v-show="renderUserCard"
         :item-container-class="itemContainerClass"
       />

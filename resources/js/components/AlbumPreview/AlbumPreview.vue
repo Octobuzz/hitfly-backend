@@ -52,9 +52,11 @@
       v-if="!isLoading"
       class="album-preview__footer"
     >
-      <span class="album-preview__title">
-        {{ album.title }}
-      </span>
+      <router-link :to="titleLink">
+        <span class="album-preview__title">
+          {{ album.title }}
+        </span>
+      </router-link>
       <span class="album-preview__author">
         {{ album.author }}
       </span>
@@ -102,6 +104,13 @@ export default {
 
       return this.album.cover
         .filter(cover => cover.size === 'size_120x120')[0].url;
+    },
+
+    titleLink() {
+      return this.$store.getters['links/album'](
+        this.$route.fullPath,
+        this.albumId
+      );
     }
   },
 

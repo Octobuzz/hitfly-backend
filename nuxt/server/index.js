@@ -19,6 +19,12 @@ async function start() {
     await nuxt.ready();
   }
 
+  app.use((req, res, next) => {
+    console.log(req.cookie);
+
+    next();
+  });
+
   const proxyApi = proxy({
     target: 'http://localhost:9090'
   });
