@@ -63,6 +63,11 @@ class TrackInput extends GraphQLType
                 'type' => Type::nonNull(UploadType::getInstance()),
                 'rules' => ['max:6000', new UploadDocAndTxtFile()],
             ],
+            'cover' => [
+                'name' => 'cover',
+                'description' => 'Обложка трека',
+                'type' => UploadType::getInstance(),
+            ],
         ];
     }
 }
