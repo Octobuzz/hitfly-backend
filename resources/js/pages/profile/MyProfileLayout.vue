@@ -3,9 +3,9 @@
     <template #left-column="{ itemContainerClass }">
       <div
         v-show="showFirstLoader"
-        class="profile__user-card-loader"
+        class="profile__user-card-loader_first"
       >
-        loading user card...
+        <SpinnerLoader />
       </div>
 
       <MyUserCard
@@ -13,7 +13,10 @@
         :item-container-class="itemContainerClass"
       />
     </template>
-    <template #right-column="{ paddingClass }">
+    <template
+      v-if="desktop || !showFirstLoader"
+      #right-column="{ paddingClass }"
+    >
       <div
         v-if="renderNavBar"
         :class="['profile__nav-wrapper', paddingClass]"
@@ -63,8 +66,11 @@
         ПРОФИЛЬ
       </PageHeader>
 
-      <div v-show="showSecondLoader">
-        loading...
+      <div
+        v-show="showSecondLoader"
+        class="profile__user-card-loader_second"
+      >
+        <SpinnerLoader />
       </div>
 
       <router-view v-show="!showSecondLoader" />
@@ -73,6 +79,7 @@
 </template>
 
 <script>
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import AppColumns from 'components/layout/AppColumns.vue';
 import PageHeader from 'components/PageHeader.vue';
 import MyUserCard from './MyUserCard';
@@ -81,10 +88,12 @@ const MOBILE_WIDTH = 1024;
 
 export default {
   components: {
+    SpinnerLoader,
     AppColumns,
     PageHeader,
     MyUserCard
   },
+
   computed: {
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
@@ -117,8 +126,6 @@ export default {
     },
 
     showSecondLoader() {
-      // TODO: if (this.windowWidth <= MOBILE_WIDTH) { ... }
-
       const { getters } = this.$store;
       const { fullPath } = this.$route;
       const trimmedPath = fullPath.split('/').slice(0, 3).join('/');
@@ -252,8 +259,21 @@ $tab_width_mobile: 150px;
   }
 }
 
-.profile__user-card-loader {
-  height: calc(100vh - #{$header_height_desktop} - #{$footer_height_desktop});
+.profile__user-card-loader_first,
+.profile__user-card-loader_second {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__user-card-loader_first {
+  height: calc(100vh - #{$header_height_desktop}
+    - #{$footer_height_desktop});
+}
+
+.profile__user-card-loader_second {
+  height: 250px;
 }
 
 @media screen and (max-width: 767px) {
