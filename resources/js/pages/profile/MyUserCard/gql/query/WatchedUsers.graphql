@@ -1,0 +1,15 @@
+#import "gql/fragments/user.graphql"
+
+query WathedUsers {
+    watchingUser(
+        page: 1,
+        limit: 3
+    ) {
+        data {
+            id
+            user {
+                ...user
+            }
+        }
+    }
+}

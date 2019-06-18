@@ -43,8 +43,8 @@
 }
 .head{
   display: grid;
-  z-index: 2;
-  position: fixed;
+  //z-index: 2;
+  //position: fixed;
   grid-area: header;
   grid-template-columns: 50% 50%;
   grid-template-rows: auto;
@@ -93,7 +93,14 @@
     }
   }
 }
+.head__nav {
+  display: flex;
+  align-items: center;
+}
 .head-right-item{
+  display: flex;
+  align-items: center;
+  position: relative;
   margin-right: 26px;
 
   &:last-child{
@@ -101,6 +108,11 @@
   }
   &_upload{
     display: none;
+  }
+
+  &:nth-child(2),
+  &:nth-child(3) {
+    margin-right: 12px;
   }
 }
 .head-nav-item{
@@ -375,6 +387,11 @@
   }
   .footer-l-icon{
     display: block;
+  }
+}
+.footer__play-button::v-deep {
+  svg {
+    left: 55% !important;
   }
 }
 @media (min-width: $header_xl) {

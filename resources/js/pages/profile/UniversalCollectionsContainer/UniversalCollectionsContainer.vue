@@ -8,7 +8,7 @@
     />
     <p
       v-if="initialFetchError"
-      class="favourite-collections-container__error"
+      class="universal-collections-container__error"
     >
       На сервере произошла ошибка. Не удалось загрузить данные плейлистов.
       Пожалуйста, попробуйте позже или обратитесь к администратору.

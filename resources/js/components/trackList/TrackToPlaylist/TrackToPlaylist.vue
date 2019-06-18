@@ -88,7 +88,7 @@ export default {
             return data;
           },
           error(err) {
-            console.log(err);
+            console.dir(err);
           },
         });
       }
@@ -116,7 +116,7 @@ export default {
           this.emitTrackAdded(collection);
           this.isSaving = false;
         }
-      }).catch(error => console.log(error));
+      }).catch(error => console.dir(error));
     },
 
     createNewPlaylist() {
@@ -157,11 +157,12 @@ export default {
           });
 
           this.updateMyTrackCollections(store, collection);
+          this.updateMyCollectionsContainer(store, collection);
           this.newPlaylistTitle = '';
           this.isSaving = false;
           this.emitTrackAdded(collection);
         }
-      }).catch(error => console.log(error));
+      }).catch(error => console.dir(error));
     },
 
     updateMyTrackCollections(store, collection) {
@@ -201,6 +202,47 @@ export default {
       });
     },
 
+    updateMyCollectionsContainer(store, collection) {
+      try {
+        const vars = {
+          // TODO: variables should always be the same as in the actual container
+          pageNumber: 1,
+          pageLimit: 10,
+          my: true
+        };
+        const { collections } = store.readQuery({
+          query: gql.query.COLLECTIONS,
+          variables: vars
+        });
+
+        // it is assumed there that the collection is always added to the end of the pagination
+
+        const { to, total } = collections;
+
+        if (to >= total) {
+          const updatedCollectionsContainer = [
+            ...collections.data,
+            collection
+          ];
+
+          store.writeQuery({
+            query: gql.query.COLLECTIONS,
+            variables: vars,
+            data: {
+              collections: {
+                ...collections,
+                data: updatedCollectionsContainer,
+                to: to + 1,
+                total: total + 1
+              }
+            }
+          });
+        }
+      } catch (e) {
+        // nothing to read
+      }
+    },
+
     emitTrackAdded(collection) {
       this.$emit('track-added', this.track, collection);
     }
@@ -214,8 +256,8 @@ export default {
           id: this.trackId,
         },
         update: ({ track }) => track,
-        error(error) {
-          console.log(error);
+        error(err) {
+          console.dir(err);
         }
       };
     }

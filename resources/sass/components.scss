@@ -107,6 +107,8 @@
     border: 1px solid $color_2;
     top: -2px;
     right: -4px;
+    z-index: 3000;
+    pointer-events: none;
   }
   &.big{
     font-size: 26px;
