@@ -33,15 +33,24 @@ class FavouriteTrackQuery extends Query
     {
         if (isset($args['trackId'])) {
             return Favourite::with('favouriteable')
-                ->where('favouriteable_type', Track::class)
-                ->where('favouriteable_id', $args['trackId'])
-                ->where('user_id', \Auth::user()->id)
+                ->leftJoin('tracks', function ($join) {
+                    $join->on('favourites.favouriteable_id', '=', 'tracks.id');
+                })
+                    ->where('tracks.deleted_at', '=', null)
+                ->where('favourites.favouriteable_type', Track::class)
+                ->where('favourites.favouriteable_id', $args['trackId'])
+                ->where('favourites.user_id', \Auth::user()->id)
+
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
         return Favourite::with('favouriteable')
-            ->where('favouriteable_type', Track::class)
-            ->where('user_id', \Auth::user()->id)
+            ->where('favourites.favouriteable_type', Track::class)
+            ->where('favourites.user_id', \Auth::user()->id)
+            ->leftJoin('tracks', function ($join) {
+                $join->on('favourites.favouriteable_id', '=', 'tracks.id');
+            })
+            ->where('tracks.deleted_at', '=', null)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

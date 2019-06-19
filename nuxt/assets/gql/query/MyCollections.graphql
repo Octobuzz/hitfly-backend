@@ -1,9 +1,0 @@
-#import "../fragments/collection.graphql"
-
-query MyCollections {
-    collections(limit: 99999, page: 1, my: true){
-        data {
-            ...collection
-        }
-    }
-}

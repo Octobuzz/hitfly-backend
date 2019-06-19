@@ -30,16 +30,16 @@
       >
         Подборки
       </router-link>
-      <router-link
-        to="/"
-        :class="[
-          'button',
-          'head-nav-item',
-          { active: path === '/blogs' }
-        ]"
-      >
-        Блог
-      </router-link>
+<!--      <router-link-->
+<!--        to="/"-->
+<!--        :class="[-->
+<!--          'button',-->
+<!--          'head-nav-item',-->
+<!--          { active: path === '/blogs' }-->
+<!--        ]"-->
+<!--      >-->
+<!--        Блог-->
+<!--      </router-link>-->
       <router-link
         to="/about"
         :class="[
@@ -75,7 +75,7 @@
 
       <img
         class="head__profile head-right-item"
-        :src="anonymousAvatar"
+        :src="myProfile.avatar || anonymousAvatar"
         alt="User avatar"
         @click="goToProfilePage"
       >
@@ -134,6 +134,7 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import LoupeIcon from 'components/icons/LoupeIcon.vue';
 import BellIcon from 'components/icons/BellIcon.vue';
+import gql from './gql';
 
 export default {
   components: {
@@ -145,7 +146,10 @@ export default {
   data() {
     return {
       logo,
-      anonymousAvatar
+      anonymousAvatar,
+      myProfile: {
+        avatar: ''
+      }
     };
   },
 
@@ -162,7 +166,34 @@ export default {
   },
 
   apollo: {
+    myProfile() {
+      return {
+        query: gql.query.MY_PROFILE,
+        update({ myProfile }) {
+          this.$store.commit('profile/setLoggedIn', true);
 
+          this.$store.commit(
+            'profile/setRoles',
+            myProfile.roles.map(role => role.slug)
+          );
+
+          this.$store.commit(
+            'profile/setMyId',
+            myProfile.id
+          );
+
+          const avatar = myProfile.avatar
+            .filter(av => av.size === 'size_56x56')[0].url;
+
+          return {
+            avatar
+          };
+        },
+        error(err) {
+          console.dir(err);
+        }
+      };
+    }
   }
 };
 </script>
@@ -170,5 +201,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="../../sass/app.scss"
+  src="../../../../sass/app.scss"
 />

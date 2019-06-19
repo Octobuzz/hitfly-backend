@@ -5,22 +5,22 @@
         <span class="h4 about__left-section-header">
           Legal
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Terms Of Use
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Privacy Policy
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Cookies Policy
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Community Guidelines
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Law Enforcement Guidelines
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Report illegal content
         </span>
       </div>
@@ -29,10 +29,10 @@
         <span class="h4 about__left-section-header">
           Copyright
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Learn about copyright
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Report copyright infringement
         </span>
       </div>
@@ -41,13 +41,13 @@
         <span class="h4 about__left-section-header">
           About project
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           About Hitfly
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Company information
         </span>
-        <span class="about__left-section-entry">
+        <span class="about__left-section-entry about__link">
           Press Information
         </span>
       </div>
@@ -61,7 +61,10 @@
 
         <span class="h2">О проекте</span>
 
-        Студия звукозаписи Digico — это уникальная площадка, на которой вы можете разместить свои треки. Их услышат тысячи пользователей, но главное — их смогут оценить настоящие профессионалы шоу-бизнеса, а вы получите шанс присоединиться к ним!
+        Студия звукозаписи Hitfly — это уникальная площадка, на которой
+        вы можете разместить свои треки. Их услышат тысячи пользователей,
+        но главное — их смогут оценить настоящие профессионалы шоу-бизнеса,
+        а вы получите шанс присоединиться к ним!
 
         <span class="h2 about__header-question">
           Чем мы отличаемся от других сервисов и групп в социальных сетях?
@@ -73,7 +76,11 @@
               Мы — площадка для профессионального старта
             </span>
             <span class="about__info-entry-content">
-              У нас не просто сайт, на который вы можете загрузить свой трек и услышать мнение своих друзей, учителей пения или простых пользователей. Мы — площадка, с которой вы действительно можете начать свой путь в мир шоу-бизнеса. Ваш успех зависит не от случайности или везения, а от вашего таланта.
+              У нас не просто сайт, на который вы можете загрузить свой трек
+              и услышать мнение своих друзей, учителей пения или простых
+              пользователей. Мы — площадка, с которой вы действительно можете
+              начать свой путь в мир шоу-бизнеса. Ваш успех зависит не от
+              случайности или везения, а от вашего таланта.
             </span>
           </div>
 
@@ -82,7 +89,10 @@
               Ваши песни услышат ваши кумиры
             </span>
             <span class="about__info-entry-content">
-              На нашем сайте ваши треки будут комментировать Валерий Леонтьев, Ирина Аллегрова, Григорий Лепс, Макс Барских и не только. Вы получите ценные советы, увидите свои сильные и слабые стороны и поймете, куда двигаться дальше, чтобы добиться такого же успеха.
+              На нашем сайте ваши треки будут комментировать Валерий Леонтьев,
+              Ирина Аллегрова, Григорий Лепс, Макс Барских и не только. Вы
+              получите ценные советы, увидите свои сильные и слабые стороны и
+              поймете, куда двигаться дальше, чтобы добиться такого же успеха.
             </span>
           </div>
 
@@ -91,54 +101,65 @@
               Мы поможем вам с продвижением
             </span>
             <span class="about__info-entry-content">
-              Большинство молодых исполнителей не имеют возможности продвигать свои треки. Мы возьмем решение финансовых и организационных вопросов на себя и поможем вам попасть на музыкальный рынок: запишем ваш трек на нашей студии (у нас записываются Лобода, Ани Лорак, Сергей Лазарев и не только), найдем музыкальные лейблы, с которыми вы сможете работать, на время станем вашим агентом.
+              Большинство молодых исполнителей не имеют возможности продвигать свои
+              треки. Мы возьмем решение финансовых и организационных вопросов на себя
+              и поможем вам попасть на музыкальный рынок: запишем ваш трек на нашей
+              студии (у нас записываются Лобода, Ани Лорак, Сергей Лазарев и не только),
+              найдем музыкальные лейблы, с которыми вы сможете работать, на время станем
+              вашим агентом.
             </span>
           </div>
         </div>
 
         <span class="about__portal-info">
-          Наш портал — реальная возможность получить объективную оценку треков от известных артистов, услышать, что думают о вашем творчестве ваши кумиры.
+          Наш портал — реальная возможность получить объективную оценку треков от известных
+          артистов, услышать, что думают о вашем творчестве ваши кумиры.
         </span>
 
-        <div class="about__reg-block-section">
+        <div
+          v-if="loggedIn === false"
+          class="about__reg-block-section"
+        >
           <span class="h4 about__reg-suggestion">
-            Мы поощряем талант, и всем, кто действительно талантлив, мы поможем сделать свои первые шаги в мире шоу–бизнеса.
+            Мы поощряем талант, и всем, кто действительно талантлив, мы поможем сделать
+            свои первые шаги в мире шоу–бизнеса.
           </span>
 
           <div class="about__reg-block">
-          <span class="h3 about__reg-block-left">
-            Хочу получать комментарии звезд
-          </span>
-          <FormButton
-            @press="onClick"
-          >
-            Зарегистрироваться
-          </FormButton>
+            <span class="h3 about__reg-block-left">
+              Хочу получать комментарии звезд
+            </span>
+            <FormButton @press="onRegisterClick">
+              Зарегистрироваться
+            </FormButton>
           </div>
         </div>
 
         <div class="about__delimeter"/>
 
         <span class="about__consent">
-          Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <span class="about__link">Условиям использования</span>, и вы не нарушаете авторские права.
+          Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим
+          <router-view to="/terms-of-use" class="about__link">
+            Условиям использования
+          </router-view>,
+          и вы не нарушаете авторские права.
         </span>
 
         <div class="about__footer">
-          <span class="about__footer-left-option">
+          <span class="about__footer-left-option about__link">
             Пользовательское соглашение
           </span>
-          <span class="about__footer-left-option">
+          <span class="about__footer-left-option about__link">
             Авторам
           </span>
-          <span class="about__footer-left-option">
+          <span class="about__footer-left-option about__link">
             Помощь
           </span>
 
-          <span class="about__footer-right-option">
+          <span class="about__footer-right-option about__link">
             Как загрузить песню?
           </span>
         </div>
-
       </div>
     </template>
   </TwoColumnLayout>
@@ -160,10 +181,13 @@ export default {
   computed: {
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
+    },
+    loggedIn() {
+      return this.$store.getters['profile/loggedIn'];
     }
   },
   methods: {
-    onClick() {
+    onRegisterClick() {
       window.location.href = '/login';
     }
   }

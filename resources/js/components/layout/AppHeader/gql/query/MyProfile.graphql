@@ -1,0 +1,15 @@
+query MyHeaderProfile {
+    myProfile {
+        id
+        avatar(
+            sizes: [size_56x56]
+        ) {
+            size
+            url
+        }
+        roles {
+            slug,
+            name
+        }
+    }
+}

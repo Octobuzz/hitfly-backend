@@ -147,6 +147,12 @@ export default {
   watch: {
     tweenedOffset(num) {
       this.$refs.scroller.$el.scrollLeft = num;
+    },
+
+    // To check for arrow buttons when collections have being added manually.
+
+    collectionIdList() {
+      this.onScroll();
     }
   },
 

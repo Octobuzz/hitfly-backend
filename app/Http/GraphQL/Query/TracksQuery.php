@@ -38,10 +38,6 @@ class TracksQuery extends Query
                 'type' => \GraphQL::type('TrackFilterInput'),
                 'description' => 'Фильтры',
             ],
-            'iCommented' => [
-                'type' => Type::boolean(),
-                'description' => 'Треки откоментированные мною (для звезды, не обязательно). Работает совместно с commentPeriod',
-            ],
         ];
     }
 
@@ -94,7 +90,8 @@ class TracksQuery extends Query
             /** @var User $user */
             $user = \Auth::user();
             if (
-                true === (bool) $args['iCommented']
+                false === empty($args['filters']['iCommented'])
+                && true === (bool) $args['filters']['iCommented']
                 && true === $user->roles->has(User::ROLE_STAR)
             ) {
                 $query->where('comments.user_id', '=', $user->id);
