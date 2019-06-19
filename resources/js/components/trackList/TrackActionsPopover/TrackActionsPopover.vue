@@ -45,26 +45,27 @@
         class="track-actions-popover__menu"
       >
         <!--TODO: use interactive elements-->
-        <span
-          v-if="canAddReviews"
-          :class="[
-            'track-actions-popover__menu-item',
-            'track-actions-popover__review-item'
-          ]"
-          @click="enterReviewMenu"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <PopupIcon />
+        <template v-if="canAddReviews">
+          <span
+            :class="[
+              'track-actions-popover__menu-item',
+              'track-actions-popover__review-item'
+            ]"
+            @click="enterReviewMenu"
+          >
+            <span class="track-actions-popover__menu-item-icon">
+              <PopupIcon />
+            </span>
+            Написать отзыв
           </span>
-          Написать отзыв
-        </span>
 
-        <hr
-          :class="[
-            'track-actions-popover__delimiter',
-            'track-actions-popover__delimeter_zero-on-top'
-          ]"
-        >
+          <hr
+            :class="[
+              'track-actions-popover__delimiter',
+              'track-actions-popover__delimeter_zero-on-top'
+            ]"
+          >
+        </template>
 
         <span
           class="track-actions-popover__menu-item"
@@ -77,6 +78,9 @@
         <span
           class="track-actions-popover__menu-item"
         >
+          <!--TODO: removing from queue should be available instead-->
+          <!--of this under corresponding conditions-->
+
           <span class="track-actions-popover__menu-item-icon">
             <ListPlusIcon />
           </span>
@@ -106,6 +110,7 @@
           </span>
         </span>
         <span
+          v-if="notMyTrack"
           class="track-actions-popover__menu-item"
         >
           <span class="track-actions-popover__menu-item-icon">
@@ -120,14 +125,6 @@
             <BendedArrowIcon />
           </span>
           Поделиться песней
-        </span>
-        <span
-          class="track-actions-popover__menu-item"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <CrossIcon />
-          </span>
-          Удалить из списка воспроизведения
         </span>
         <span
           v-if="showRemoveOption"
@@ -298,9 +295,17 @@ export default {
       }, {});
     },
 
+    notMyTrack() {
+      return this.$store.getters['profile/myId'] !== this.track.user.id;
+    },
+
     canAddReviews() {
-      return ['star', 'critic', 'professionalCritic']
-        .some(role => this.$store.getters['profile/roles'](role));
+      const { getters } = this.$store;
+
+      const rolePermission = ['star', 'critic', 'professionalCritic']
+        .some(role => getters['profile/roles'](role));
+
+      return rolePermission && this.notMyTrack;
     }
   },
 

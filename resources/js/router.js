@@ -146,10 +146,10 @@ const routes = [
     path: '/upload',
     component: UploadPage
   },
-  // {
-  //   path: '/about',
-  //   component: AboutPage
-  // }
+  {
+    path: '/about',
+    component: AboutPage
+  }
 ];
 
 const router = new VueRouter({
