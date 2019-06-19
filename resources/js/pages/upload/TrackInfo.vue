@@ -151,6 +151,7 @@
           id: Number
         },
       },
+      textFileError: false,
       createAlbum: false,
       bands: [
         {
@@ -171,7 +172,14 @@
     }),
     methods: {
       handleTextfileInput(file){
-        this.trackInfo.text = file;
+        if(file !== null && file.type.match('application/vnd.openxmlformats-officedocument.wordprocessingml.document|text/plain')){
+          this.trackInfo.text = file;
+        }else{
+          this.trackInfo.text = null;
+          this.$message(
+            'Выберите текстовый файл в формате txt или docx',
+          );
+        }
       },
       changeTab() {
         this.createAlbum = false
