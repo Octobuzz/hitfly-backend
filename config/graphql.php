@@ -139,6 +139,7 @@ return [
                 'bonusTypes' => \App\Http\GraphQL\Query\BonusTypesQuery::class,
                 'watchingUser' => \App\Http\GraphQL\Query\WatchingUserQuery::class,
                 'watchingMusicGroup' => \App\Http\GraphQL\Query\WatchingMusicGroupQuery::class,
+                'SocialConnectQuery' => \App\Http\GraphQL\Query\SocialConnectQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -173,6 +174,8 @@ return [
                 'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
 
                 'UseBonusesMutation' => \App\Http\GraphQL\Mutations\UseBonusesMutation::class,
+
+                'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -212,6 +215,7 @@ return [
         'BonusTypes' => \App\Http\GraphQL\Type\BonusTypesType::class,
         'WatchableUserType' => \App\Http\GraphQL\Type\WatchableUserType::class,
         'WatchableMusicGroupType' => \App\Http\GraphQL\Type\WatchableMusicGroupType::class,
+        'SocialConnectType' => \App\Http\GraphQL\Type\SocialConnectType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
