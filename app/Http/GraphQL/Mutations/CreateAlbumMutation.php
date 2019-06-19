@@ -31,7 +31,7 @@ class CreateAlbumMutation extends Mutation
             'cover' => [
                 'description' => 'обложка альбома',
                 'type' => UploadType::getInstance(),
-                'rules' => ['required'],
+//                'rules' => ['required'],
             ],
         ];
     }
