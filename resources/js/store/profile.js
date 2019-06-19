@@ -1,11 +1,15 @@
 /* eslint-disable no-param-reassign, no-shadow */
 
 const state = {
-  // TODO: use request in header to populate on all pages
-  roles: ['star']
+  myId: null,
+  roles: []
 };
 
 const getters = {
+  myId({ myId }) {
+    return myId;
+  },
+
   roles({ roles }) {
     function getter(roleInQuestion) {
       return roles.some(role => role === roleInQuestion);
@@ -18,6 +22,10 @@ const getters = {
 };
 
 const mutations = {
+  setMyId(state, id) {
+    state.myId = id;
+  },
+
   setRoles(state, roles) {
     state.roles = [...roles];
   }
