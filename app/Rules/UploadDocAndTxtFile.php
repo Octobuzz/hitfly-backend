@@ -33,6 +33,9 @@ class UploadDocAndTxtFile implements Rule
             case 'text/plain':
                 return true;
                 break;
+            case 'application/msword':
+                return true;
+                break;
             default:
                 return false;
         }

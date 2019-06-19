@@ -42,8 +42,8 @@ class TrackInput extends GraphQLType
             'singer' => [
                 'name' => 'singer',
                 'description' => 'Испольнитель',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'min:0', 'max:250'],
+                'type' => Type::string(),
+                'rules' => ['min:0', 'max:250'],
             ],
             'musicGroup' => [
                 'name' => 'musicGroup',
@@ -54,13 +54,13 @@ class TrackInput extends GraphQLType
             'trackDate' => [
                 'name' => 'trackDate',
                 'description' => 'Дата трека (формат: Год трека)',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'date_format:Y'],
+                'type' => Type::string(),
+                'rules' => ['date_format:Y'],
             ],
             'songText' => [
                 'name' => 'songText',
                 'description' => 'Песня трека',
-                'type' => Type::nonNull(UploadType::getInstance()),
+                'type' => UploadType::getInstance(),
                 'rules' => ['max:6000', new UploadDocAndTxtFile()],
             ],
             'cover' => [
