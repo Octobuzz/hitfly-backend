@@ -1,31 +1,25 @@
 <template>
   <div>
-    <CollectionScrollHorizontal
-      v-show="collectionListLength"
-      class="my-collections-container"
-      :header-class="containerPaddingClass"
+    <slot
+      v-if="collectionList.length > 0"
+      name="default"
       :collection-id-list="collectionIdList"
       :has-more-data="hasMoreData"
-      @load-more="onLoadMore"
+    />
+    <p
+      v-if="initialFetchError"
+      class="favourite-collections-container__error"
     >
-      <template #title>
-        <span class="h2 my-collections-container__title">
-          Любимые подборки
-        </span>
-      </template>
-    </CollectionScrollHorizontal>
+      На сервере произошла ошибка. Не удалось загрузить данные подборок.
+      Пожалуйста, попробуйте позже или обратитесь к администратору.
+    </p>
   </div>
 </template>
 
 <script>
-import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
 import gql from './gql';
 
 export default {
-  components: {
-    CollectionScrollHorizontal
-  },
-
   data() {
     return {
       collectionList: [],
@@ -34,8 +28,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 10
-      },
-      dataInitialized: false
+      }
     };
   },
 
@@ -44,16 +37,27 @@ export default {
       return this.collectionList.map(collection => collection.id);
     },
 
-    collectionListLength() {
-      return this.collectionList.length > 0;
-    },
+    initialFetchError() {
+      const loading = this.$store.getters['loading/favourite'].sets;
 
-    containerPaddingClass() {
-      return this.$store.getters['appColumns/paddingClass'];
+      return loading.initialized && !loading.success;
     }
   },
 
+  mounted() {
+    this.$on('load-more', this.onLoadMore.bind(this));
+  },
+
   methods: {
+    notifyInitialization(success) {
+      this.$store.commit('loading/setFavourite', {
+        sets: {
+          initialized: true,
+          success
+        }
+      });
+    },
+
     fetchMoreCollections(vars) {
       return this.$apollo.queries.collectionList.fetchMore({
         variables: vars,
@@ -90,7 +94,7 @@ export default {
           this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
+          console.dir(err);
         });
     }
   },
@@ -104,10 +108,7 @@ export default {
 
         update({ favouriteSet: { total, to, data } }) {
           this.isLoading = false;
-          if (!this.dataInitialized) {
-            this.dataInitialized = true;
-            this.$emit('data-initialized');
-          }
+          this.notifyInitialization(true);
 
           if (to >= total) {
             this.hasMoreData = false;
@@ -117,7 +118,9 @@ export default {
         },
 
         error(error) {
-          console.log(error);
+          this.notifyInitialization(false);
+
+          console.dir(error);
         }
       };
     }
@@ -128,5 +131,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="../MyCollectionsContainer/MyCollectionsContainer.scss"
+  src="../FavouriteCollectionsContainer/FavouriteCollectionsContainer.scss"
 />

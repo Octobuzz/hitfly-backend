@@ -1,3 +1,5 @@
+@import '~scss/_variables.scss';
+
 .about {
   &__page-header {
     font-size: 16px;
@@ -8,7 +10,8 @@
   &__header-question {
     padding-top: 70px;
     padding-bottom: 60px;
-    max-width: 320px;
+    min-width: 270px;
+    max-width: 50%;
   }
 
   &__info {
@@ -90,8 +93,14 @@
     margin-left: auto;
   }
 
-  &__about-link {
-    color: #b675cd;
+  &__link {
+    cursor: pointer;
+    user-select: none;
+    transition: .3s;
+
+    &:hover {
+      color: $red_violet;
+    };
   }
 
   &__left-section {

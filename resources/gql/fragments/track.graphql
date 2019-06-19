@@ -16,6 +16,9 @@ fragment track on Track {
     userPlayLists {
         ...collection
     }
+    user {
+        id
+    }
     userFavourite
     favouritesCount
 }

@@ -3,6 +3,11 @@
 @import './normalize.scss';
 @import './headers.scss';
 
+// TODO: refactor
+.non-spa-style {
+  @import '../sass/app.scss';
+}
+
 html,
 body {
   font-family: 'Gotham Pro', sans-serif;

@@ -62,7 +62,11 @@
         >
           <BaseLoader :active="hasMoreData" />
         </span>
-        <span v-else style="display: block; width: 120px;" />
+
+        <!-- We better ave some place to insert one more item -->
+        <span
+          v-else
+          :style="{ display: 'block', width: desktop ? '262px' : '188px' }" />
       </template>
     </recycle-scroller>
   </div>
@@ -143,6 +147,12 @@ export default {
   watch: {
     tweenedOffset(num) {
       this.$refs.scroller.$el.scrollLeft = num;
+    },
+
+    // To check for arrow buttons when collections have being added manually.
+
+    collectionIdList() {
+      this.onScroll();
     }
   },
 
@@ -173,7 +183,7 @@ export default {
       const collectionSpacedWidth = collectionWidth + spaceBetween;
 
       if (scroller.scrollWidth - scroller.scrollLeft < 12 * collectionSpacedWidth) {
-        this.$emit('load-more');
+        this.$parent.$emit('load-more');
       }
     },
 

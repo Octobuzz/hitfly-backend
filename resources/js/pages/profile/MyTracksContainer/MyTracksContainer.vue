@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="!mobileUser && dataInitialized && !trackListLength"
+      v-if="!mobileUser && dataInitialized && trackList.length === 0"
       :class="['my-tracks-download', containerPaddingClass]"
     >
       <span class="h2 my-tracks-download__text">
@@ -15,7 +15,7 @@
       </FormButton>
     </div>
     <TrackList
-      v-if="dataInitialized && trackListLength"
+      v-if="dataInitialized && trackList.length > 0"
       :class="[
         'my-tracks-container',
         { [containerPaddingClass]: desktop }
@@ -41,7 +41,7 @@
 
       <template #loader>
         <SpinnerLoader
-          v-if="hasMoreData && dataInitialized && trackListLength < shownLength"
+          v-if="hasMoreData && dataInitialized && trackList.length < shownLength"
           class="my-tracks-container__loader"
         />
       </template>
@@ -57,7 +57,8 @@ import gql from './gql';
 
 const MOBILE_WIDTH = 767;
 
-// Due to loadMore blocking ability to remove more tracks the separation was implemented
+// Due to loadMore blocking ability to remove more tracks
+// the separation was implemented.
 
 export default {
   components: {
@@ -79,9 +80,10 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 10, // aspire to have two times more than you have in viewport
-        my: true
+        filters: {
+          my: true
+        }
       },
-      dataInitialized: false,
       mobileUser: /Mobi|Android/i.test(navigator.userAgent)
     };
   },
@@ -93,16 +95,16 @@ export default {
         .slice(0, this.shownLength);
     },
 
-    trackListLength() {
-      return this.trackList.length;
-    },
-
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
     },
 
     containerPaddingClass() {
       return this.$store.getters['appColumns/paddingClass'];
+    },
+
+    dataInitialized() {
+      return this.$store.getters['loading/music'].tracks.initialized;
     }
   },
 
@@ -122,6 +124,15 @@ export default {
   },
 
   methods: {
+    notifyInitialization(success) {
+      this.$store.commit('loading/setMusic', {
+        tracks: {
+          initialized: true,
+          success
+        }
+      });
+    },
+
     onDownloadPress() {
       this.$router.push('/upload');
     },
@@ -145,7 +156,10 @@ export default {
               __typename: currentList.tracks.__typename,
               total,
               to,
-              data: [...currentList.tracks.data, ...newTracks]
+              data: [
+                ...currentList.tracks.data,
+                ...newTracks
+              ]
             }
           };
         },
@@ -174,7 +188,7 @@ export default {
           this.shouldLoadMore = false;
         })
         .catch((err) => {
-          console.log(err);
+          console.dir(err);
         });
     },
 
@@ -239,12 +253,10 @@ export default {
       }).then(() => {
         this.removesInProcess -= 1;
         this.removedCount += 1;
-
-        console.log('track removed, id: ', id);
       }).catch((err) => {
         this.removesInProcess -= 1;
 
-        console.log(err);
+        console.dir(err);
       });
     }
   },
@@ -257,10 +269,7 @@ export default {
         fetchPolicy: 'network-only',
 
         update({ tracks: { total, to, data } }) {
-          if (!this.dataInitialized) {
-            this.dataInitialized = true;
-            this.$emit('data-initialized');
-          }
+          this.notifyInitialization(true);
 
           if (to >= total) {
             this.hasMoreData = false;
@@ -270,7 +279,9 @@ export default {
         },
 
         error(err) {
-          console.log(err);
+          this.notifyInitialization(false);
+
+          console.dir(err);
         }
       };
     }

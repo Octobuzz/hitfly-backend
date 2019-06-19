@@ -76,13 +76,13 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Владелец группы (создатель) текущий пользователь',
                 'resolve' => function ($model) {
-                    if(\Auth::user() !== null){
-                        if(\Auth::user()->id === $model->creator_group_id){
+                    if (null !== \Auth::user()) {
+                        if (\Auth::user()->id === $model->creator_group_id) {
                             return true;
-                        }else{
+                        } else {
                             return false;
                         }
-                    }else{
+                    } else {
                         throw new \Exception('Пользователь не авторизован');
                     }
                 },

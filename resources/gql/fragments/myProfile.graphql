@@ -36,11 +36,5 @@ fragment myProfile on MyProfile {
     musicGroups {
         ...musicGroup
     }
-    watchingUser {
-        ...user
-    }
-    watchingMusicGroup {
-        ...musicGroup
-    }
     ...bonusProgram
 }

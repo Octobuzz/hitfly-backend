@@ -67,6 +67,7 @@
           :rows="3"
           :show-error="group.activity.showError"
           :error-message="group.activity.errorMessage"
+          @input="group.activity.showError = false"
         />
 
         <span class="h3 create-group-description__header_subsection">
@@ -353,16 +354,20 @@ export default {
 
         if (error.message === 'GraphQL error: validation') {
           this.$message(
-            'Данные группы не обновлены. Проверьте правильность введенных данных',
+            'Группа не создана. Проверьте правильность введенных данных',
             'info',
             { timeout: 2000 }
           );
           this.populateValidationErrors(error.graphQLErrors);
-        } else if (false) {
-          // TODO: sixth group error
+        } else if (error.message === 'GraphQL error: Вы привысили максимальный лимит групп') {
+          this.$message(
+            'Группа не создана. Вы уже создали максимальное количество групп',
+            'info',
+            { timeout: 2000 }
+          );
         } else {
           this.$message(
-            'На сервере произошла ошибка. Данные группы не обновлены',
+            'На сервере произошла ошибка. Группа не создана',
             'info',
             { timeout: 2000 }
           );
