@@ -87,14 +87,17 @@
         this.dragging = false;
         this.track = track;
         document.body.classList.remove('blurred');
-        this.uploadTrack(track[0]);
+        if(this.track !== null){
+          this.uploadTrack(track[0]);
+        }
       },
       trackInputed(track){
         this.track = track;
-        this.uploadTrack(track);
+        if(this.track !== null){
+          this.uploadTrack(track);
+        }
       },
       addInfo(info){
-        console.log(info);
         this.$apollo.mutate({
           variables: {
             id: this.trackID,

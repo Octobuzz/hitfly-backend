@@ -42,15 +42,25 @@
       onDrop(e){
         e.preventDefault();
         e.stopPropagation();
-        if(e.dataTransfer.files[0].type.match('audio.*')){
+        if(e.dataTransfer.files[0].type.match('audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a')){
           const track = e.dataTransfer.files;
           this.$emit('droppedTrack', track);
         } else {
-          console.log('выберите корректный  формат файла');
+          this.$message(
+            'Выберите корректный формат файла',
+          );
+          this.$emit('droppedTrack', null);
         }
       },
       fileInput(track){
-        this.$emit('trackInput', track);
+        console.log(track);
+        if(track.type.match('audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a')){
+          this.$emit('trackInput', track);
+        }else{
+          this.$message(
+            'Выберите корректный формат файла',
+          );
+        }
       },
       changeAccess(state){
         this.$emit('accessChanged', state);
