@@ -21,17 +21,32 @@ class TrackFilterInput extends GraphQLType
                 'name' => 'my',
                 'type' => Type::boolean(),
                 'description' => 'Только мои треки',
-                'rules' => ['mutually_exclusive_args:userId,musicGroupId'],
+                'rules' => ['mutually_exclusive_args:userId,musicGroupId,collectionId,playlistId,albumId'],
             ],
             'userId' => [
                 'type' => Type::int(),
                 'description' => 'ID пользователя(фильтрация)',
-                'rules' => ['mutually_exclusive_args:my,musicGroupId'],
+                'rules' => ['mutually_exclusive_args:my,musicGroupId,collectionId,playlistId,albumId'],
             ],
             'musicGroupId' => [
                 'type' => Type::int(),
                 'description' => 'ID группы(фильтрация)',
-                'rules' => ['mutually_exclusive_args:my,userId'],
+                'rules' => ['mutually_exclusive_args:my,userId,collectionId,playlistId,albumId'],
+            ],
+            'albumId' => [
+                'type' => Type::int(),
+                'description' => 'ID Альбома(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my,userId,collectionId,playlistId,musicGroupId'],
+            ],
+            'playlistId' => [
+                'type' => Type::int(),
+                'description' => 'ID плейлиста(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my,userId,collectionId,albumId,musicGroupId'],
+            ],
+            'collectionId' => [
+                'type' => Type::int(),
+                'description' => 'ID коллекции(фильтрация)',
+                'rules' => ['mutually_exclusive_args:my,userId,playlistId,albumId,musicGroupId'],
             ],
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Helpers\DBHelpers;
+use App\Models\Collection;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
@@ -58,6 +59,26 @@ class TracksQuery extends Query
         }
         if (false === empty($args['filters']['musicGroupId'])) {
             $query->where('tracks.music_group_id', '=', $args['filters']['musicGroupId']);
+        }
+        if (false === empty($args['filters']['albumId'])) {
+            $query->where('tracks.album_id', '=', $args['filters']['albumId']);
+        }
+        if (false === empty($args['filters']['playlistId']) || false === empty($args['filters']['collectionId'])) {
+            if (false === empty($args['filters']['playlistId'])) {
+                $filterId = $args['filters']['playlistId'];
+            } else {
+                $filterId = $args['filters']['collectionId'];
+            }
+            $query->rightJoin('collection_track', function ($join) {
+                $join->on('collection_track.track_id', '=', 'tracks.id');
+            });
+            $query->where('collection_track.collection_id', $filterId);
+
+//            $query->leftJoin('collections', function ($join) {
+//                $join->on('collection_track.collection_id', '=', 'collections.id');
+//            });
+//            $query->where('collections.is_admin', '=', 0);
+            $query->groupBy('tracks.id');
         }
 
         if (false === empty($args['commentPeriod'])) {
