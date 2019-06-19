@@ -30,16 +30,16 @@
       >
         Подборки
       </router-link>
-      <router-link
-        to="/"
-        :class="[
-          'button',
-          'head-nav-item',
-          { active: path === '/blogs' }
-        ]"
-      >
-        Блог
-      </router-link>
+<!--      <router-link-->
+<!--        to="/"-->
+<!--        :class="[-->
+<!--          'button',-->
+<!--          'head-nav-item',-->
+<!--          { active: path === '/blogs' }-->
+<!--        ]"-->
+<!--      >-->
+<!--        Блог-->
+<!--      </router-link>-->
       <router-link
         to="/about"
         :class="[
@@ -170,6 +170,8 @@ export default {
       return {
         query: gql.query.MY_PROFILE,
         update({ myProfile }) {
+          this.$store.commit('profile/setLoggedIn', true);
+
           this.$store.commit(
             'profile/setRoles',
             myProfile.roles.map(role => role.slug)

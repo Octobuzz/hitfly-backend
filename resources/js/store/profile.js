@@ -1,11 +1,16 @@
 /* eslint-disable no-param-reassign, no-shadow */
 
 const state = {
+  loggedIn: null,
   myId: null,
   roles: []
 };
 
 const getters = {
+  loggedIn({ loggedIn }) {
+    return loggedIn;
+  },
+
   myId({ myId }) {
     return myId;
   },
@@ -22,6 +27,10 @@ const getters = {
 };
 
 const mutations = {
+  setLoggedIn(state, flag) {
+    state.loggedIn = flag;
+  },
+
   setMyId(state, id) {
     state.myId = id;
   },
