@@ -39,7 +39,7 @@ class MonthDispatchNotVisitedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.notification.monthDispatchNotVisited')
+        return $this->view('emails.notification.longAgoNotVisited')
             ->subject(__('emails.monthDispatchNotVisited.subject'));
     }
 }

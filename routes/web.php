@@ -20,21 +20,21 @@ Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $no
 //    $params = [
 //        'value' => 'Значение',
 //    ];
-    $topPlayList = new Tracks();
-    $recommend = new Recommendation();
-    $events = new Event();
+//    $topPlayList = new Tracks();
+//    $recommend = new Recommendation();
+//    $events = new Event();
+//
+//    return View::make('emails.register.completed',
+//        [
+//            'topList' => $topPlayList->getTopTrack(5),
+//            'playLists' => $recommend->getNewUserPlayList(2),
+//            'linkToProfile' => '/fake_link',
+//            'importantEvents' => $events->getImportantEvents(1),
+//            'star' => true,
+//        ]
+//    );
 
-    return View::make('emails.register.completed',
-        [
-            'topList' => $topPlayList->getTopTrack(5),
-            'playLists' => $recommend->getNewUserPlayList(2),
-            'linkToProfile' => '/fake_link',
-            'importantEvents' => $events->getImportantEvents(1),
-            'star' => true,
-        ]
-    );
-
-    //return $notification->newCommentNotification(1);
+    return $notification->everyMonthDispatchNotVisited();
 });
 Auth::routes(['verify' => true]);
 

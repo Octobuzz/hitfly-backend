@@ -13,7 +13,11 @@
                                 <td style="padding-bottom: 20px;">
                                     <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.longAgoNotVisited.hello'), {{$user->username}}</h3>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0 0 15px;">
-                                        @lang('emails.longAgoNotVisited.text',['count'=>$days])
+                                        @if(isset($days) && $days!== null)
+                                            @lang('emails.longAgoNotVisited.text',['count'=>$days])
+                                        @else
+                                            @lang('emails.longAgoNotVisited.textMonth')
+                                        @endif
                                     </p>
                                 </td>
                             </tr>
@@ -25,7 +29,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            @if($events !== null)
+                            @if(isset($events) && $events !== null)
                             <tr>
                                 <td>
                                     <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">
@@ -84,7 +88,7 @@
                         </table>
                     </td>
                 </tr>
-                @if($importantEvents !== null)
+                @if( isset($importantEvents) && $importantEvents !== null)
                 <tr>
                     <td>
                         <table width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="padding-bottom: 40px;">
@@ -109,7 +113,7 @@
                     </td>
                 </tr>
                 @endif
-                @if($tracks !== null)
+                @if(isset($tracks) && $tracks !== null)
                 <tr>
                     <td>
                         <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">
@@ -147,55 +151,5 @@
             </table>
         </td>
     </tr>
-    {{--<h1>@lang('emails.longAgoNotVisited.hello'), {{$user->username}}!</h1>
 
-    @lang('emails.longAgoNotVisited.text',['count'=>$days])<br>
-    <h3>@lang('emails.longAgoNotVisited.eventsUpcoming')</h3>
-    @lang('emails.longAgoNotVisited.newEvents')<br>
-
-    @forelse ($events as $list)
-        <div>
-            @if($list['link'])<a href="{{$list['link']}}">@endif
-                <div>
-                    @if($list['img'])<img src="{{$list['img']}}">@endif <h5>{{$list['name']}}</h5> {{$list['participant']}}
-                </div>
-                @if($list['link'])</a>@endif
-        </div>
-    @empty
-        @lang('emails.longAgoNotVisited.empty')
-    @endforelse
-
-    <h3>@lang('emails.recommend')</h3>
-    @lang('emails.longAgoNotVisited.playlistRecommend')<br>
-
-    @forelse ($recommendation as $list)
-        <div>
-            @if($list['link'])<a href="{{$list['link']}}">@endif
-                <div>
-                    @if($list['list_img'])<img src="{{$list['list_img']}}">@endif <h5>{{$list['name']}}</h5><span>{{$list['date']}}</span> {{$list['count_tracks']}}
-                </div>
-                @if($list['link'])</a>@endif
-        </div>
-    @empty
-        @lang('emails.longAgoNotVisited.empty')
-    @endforelse
-
-    <h3>@lang('emails.longAgoNotVisited.top')</h3>
-    @lang('emails.longAgoNotVisited.rating')<br>
-    @forelse ($tracks as $track)
-        <div>
-            @if($track['link'])<a href="{{$track['link']}}">@endif
-                <div>
-                    @if($track['album_img'])<img src="{{$track['album_img']}}">@endif <h5>{{$track['track_name']}}</h5><span>{{$track['singer']}}</span> {{$track['track_time']}}
-                </div>
-                @if($track['link'])</a>@endif
-        </div>
-    @empty
-        @lang('emails.longAgoNotVisited.empty')
-    @endforelse
-
-
-
-    @lang('emails.regards'),
-    {{ config('app.name') }} --}}
 @endsection
