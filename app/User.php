@@ -72,6 +72,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const ROLE_STAR = 'star';
     const ROLE_CRITIC = 'critic';
     const ROLE_PROF_CRITIC = 'prof_critic';
+    const ROLE_PERFORMER = 'performer';
 
     /**
      * The attributes that are mass assignable.

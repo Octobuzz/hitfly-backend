@@ -8,14 +8,28 @@
 
 namespace App\Listeners;
 
+use App\Models\Track;
 use App\Services\Auth\JsonGuard;
 use App\User;
+use Encore\Admin\Auth\Database\Role;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Cookie;
 
 class UserEventSubscriber
 {
+    /**
+     * Register the listeners for the subscriber.
+     *
+     * @param \Illuminate\Events\Dispatcher $events
+     */
+    public function subscribe($events)
+    {
+        $events->listen('Illuminate\Auth\Events\Login', 'App\Listeners\UserEventSubscriber@onUserLogin');
+        $events->listen('Illuminate\Auth\Events\Logout', 'App\Listeners\UserEventSubscriber@onUserLogout');
+        $events->listen('eloquent.created: '.Track::class, self::class.'@uploadFirstTrack');
+    }
+
     /**
      * Handle user login events.
      *
@@ -50,20 +64,17 @@ class UserEventSubscriber
     }
 
     /**
-     * Register the listeners for the subscriber.
+     * при загрузке трека слушателем не меняется роль в админке на испольнительы.
      *
-     * @param \Illuminate\Events\Dispatcher $events
+     * @param Track $track
      */
-    public function subscribe($events)
+    public function uploadFirstTrack(Track $track)
     {
-        $events->listen(
-            'Illuminate\Auth\Events\Login',
-            'App\Listeners\UserEventSubscriber@onUserLogin'
-        );
+        /** @var User $user */
+        $user = $track->user;
 
-        $events->listen(
-            'Illuminate\Auth\Events\Logout',
-            'App\Listeners\UserEventSubscriber@onUserLogout'
-        );
+        if (false === $user->isRole(User::ROLE_PERFORMER)) {
+            $user->roles()->save(Role::query()->where('slug', '=', User::ROLE_PERFORMER)->first());
+        }
     }
 }
