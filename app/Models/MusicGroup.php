@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\PictureField;
 use App\User;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -53,7 +54,9 @@ use Illuminate\Support\Facades\Storage;
  */
 class MusicGroup extends Model
 {
-    use SoftDeletes, PictureField;
+    use SoftDeletes, PictureField, CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['tracks', 'albums'];
 
     protected $table = 'music_group';
 
