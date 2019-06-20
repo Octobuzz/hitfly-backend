@@ -130,7 +130,12 @@ class TrackController extends Controller
         });
         $grid->singer('Название трека');
         $grid->user_id('Пользователь')->display(function ($userId) {
-            return User::find($userId)->username;
+            $model = User::find($userId);
+            if (true == empty($model)) {
+                return null;
+            }
+
+            return $model->username;
         });
         $grid->deleted_at(trans('admin.deleted_at'));
         $grid->model()->withTrashed();

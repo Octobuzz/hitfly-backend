@@ -121,6 +121,8 @@ class MusicGroupController extends Controller
         $grid->city_id('Город')->display(function ($city) {
             return City::find($city)->title;
         });
+        $grid->model()->withTrashed();
+        $grid->deleted_at(trans('admin.deleted_at'));
 
         return $grid;
     }
