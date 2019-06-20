@@ -11,6 +11,7 @@ use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Track;
 use App\Notifications\HitflyVerifyEmail;
+use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -85,6 +86,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         'gender',
         'birthday',
         'city_id',
+        'email_verified_at',
     ];
 
     /**
@@ -190,7 +192,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
      */
     public function hasVerifiedEmail()
     {
-        // TODO: Implement hasVerifiedEmail() method.
+       if($this->email_verified_at !== null)
+           return true;
+       else
+           return false;
     }
 
     /**
@@ -200,7 +205,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
      */
     public function markEmailAsVerified()
     {
-        // TODO: Implement markEmailAsVerified() method.
+        if($this->email_verified_at === null){
+            $this->email_verified_at = new Carbon();
+            $this->save();
+        }
+
     }
 
     /**
