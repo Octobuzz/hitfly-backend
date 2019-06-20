@@ -148,6 +148,7 @@ class Album extends Model
     {
         return $this->getOriginal('cover');
     }
+
     public function getImageUrl(): ?string
     {
         if (null === $this->getImage()) {

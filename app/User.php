@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -192,10 +191,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
      */
     public function hasVerifiedEmail()
     {
-       if($this->email_verified_at !== null)
-           return true;
-       else
-           return false;
+        if (null !== $this->email_verified_at) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -205,27 +205,29 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
      */
     public function markEmailAsVerified()
     {
-        if($this->email_verified_at === null){
+        if (null === $this->email_verified_at) {
             $this->email_verified_at = new Carbon();
             $this->save();
+
+            return true;
         }
 
+        return false;
     }
 
     /**
      * Send the email verification notification.
-     *
-     * @return void
      */
     public function sendEmailVerificationNotification()
     {
         $this->notify(new HitflyVerifyEmail());
-     }
+    }
 
     public function getImage(): ?string
     {
         return $this->getOriginal('avatar');
     }
+
     public function getImageUrl(): ?string
     {
         if (null === $this->getImage()) {

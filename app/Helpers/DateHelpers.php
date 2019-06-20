@@ -51,9 +51,10 @@ class DateHelpers
     /**
      * @param $number
      * @param $ending_arr
+     *
      * @return string
      */
-    public static function getNumEnding($number, $ending_arr) :string
+    public static function getNumEnding($number, $ending_arr): string
     {
         $number = $number % 100;
         if ($number >= 11 && $number <= 19) {
@@ -61,15 +62,16 @@ class DateHelpers
         } else {
             $i = $number % 10;
             switch ($i) {
-                case (1): $ending = $ending_arr[0];
+                case 1: $ending = $ending_arr[0];
                     break;
-                case (2):
-                case (3):
-                case (4): $ending = $ending_arr[1];
+                case 2:
+                case 3:
+                case 4: $ending = $ending_arr[1];
                     break;
                 default: $ending = $ending_arr[2];
             }
         }
+
         return $ending;
     }
 }

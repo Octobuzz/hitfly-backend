@@ -86,6 +86,10 @@ class LoginController extends Controller
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
         Auth::login($user);
+        $user->markEmailAsVerified();
+        if (null !== $user->email) {
+            VerificationController::sendNotification($user);
+        }
 
         return redirect()->to('/profile');
     }

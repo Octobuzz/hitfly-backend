@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Mail\EmailChangeMail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 use Illuminate\Support\Carbon;
@@ -13,6 +12,7 @@ class HitflyVerifyEmail extends VerifyEmailBase
 {
     /**
      * @param mixed $notifiable
+     *
      * @return MailMessage
      */
     public function toMail($notifiable)
@@ -24,7 +24,6 @@ class HitflyVerifyEmail extends VerifyEmailBase
         return (new MailMessage())
             ->view('emails.notification.verifyEmail', ['link' => $this->verificationUrl($notifiable)])
             ->subject(__('emails.verifyEmailAddress'));
-
     }
 
     protected function verificationUrl($notifiable)

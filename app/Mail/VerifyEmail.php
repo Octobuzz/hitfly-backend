@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,7 +10,6 @@ class VerifyEmail extends Mailable
 {
     use Queueable, SerializesModels;
     public $link;
-
 
     /**
      * Create a new message instance.

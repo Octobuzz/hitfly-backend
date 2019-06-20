@@ -15,7 +15,6 @@ class CommentCreatedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     public $comment;
     public $track;
     public $username;
@@ -33,7 +32,7 @@ class CommentCreatedJob implements ShouldQueue
      */
     public function handle()
     {
-    //dd($this->comment->commentable->user()->first()->email);die();
+        //dd($this->comment->commentable->user()->first()->email);die();
         return Mail::to($this->comment->commentable->user()->first()->email)->send(new CommentCreatedMail($this->comment->commentable->user()->first()->username, $this->comment));
     }
 }

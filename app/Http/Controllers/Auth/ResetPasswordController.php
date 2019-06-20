@@ -41,6 +41,7 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
     protected function rules()
     {
         return [
@@ -66,14 +67,15 @@ class ResetPasswordController extends Controller
 
         event(new PasswordReset($user));
 
-
         //не авторизуем пользователя после смены пароля
         //$this->guard()->login($user);
     }
+
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function reset(Request $request)
@@ -85,8 +87,8 @@ class ResetPasswordController extends Controller
         // database. Otherwise we will parse the error and return the response.
         $response = $this->broker()->reset(
             $this->credentials($request), function ($user, $password) {
-            $this->resetPassword($user, $password);
-        }
+                $this->resetPassword($user, $password);
+            }
         );
         //отправка уведомления о смене пароля
         if (null !== $request->request->get('email')) {
@@ -96,7 +98,7 @@ class ResetPasswordController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $response == Password::PASSWORD_RESET
+        return Password::PASSWORD_RESET == $response
             ? $this->sendResetResponse($request, $response)
             : $this->sendResetFailedResponse($request, $response);
     }

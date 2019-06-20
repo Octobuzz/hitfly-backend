@@ -83,6 +83,7 @@ class RegisterController extends Controller
         }
         $user = User::create($create);
         $user->sendEmailVerificationNotification($user->email);
+
         return $user;
     }
 

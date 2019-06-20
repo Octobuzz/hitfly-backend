@@ -138,6 +138,7 @@ class Track extends Model
 
         return '/storage/'.$img;
     }
+
     public function getAuthor(): ?string
     {
         return $this->singer;

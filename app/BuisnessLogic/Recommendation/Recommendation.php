@@ -21,14 +21,14 @@ class Recommendation implements RecommendationList
             [
                 'name' => 'Название плейлиста',
                 'date' => '7 декабря',
-                'count_tracks' => '256 '. DateHelpers::getNumEnding(256,['трек','трека','треков']),
+                'count_tracks' => '256 '.DateHelpers::getNumEnding(256, ['трек', 'трека', 'треков']),
                 'list_img' => '/images/emails/img/new-year-playlist.png',
                 'link' => '/url',
             ],
             [
                 'name' => 'Плейлист 2',
                 'date' => '7 декабря',
-                'count_tracks' => '101 '. DateHelpers::getNumEnding(101,['трек','трека','треков']),
+                'count_tracks' => '101 '.DateHelpers::getNumEnding(101, ['трек', 'трека', 'треков']),
                 'list_img' => '/images/emails/img/new-year-playlist.png',
                 'link' => '/url',
             ],
@@ -42,14 +42,14 @@ class Recommendation implements RecommendationList
             [
                 'name' => 'Название плейлиста',
                 'date' => '7 декабря',
-                'count_tracks' => '256 '. DateHelpers::getNumEnding(256,['трек','трека','треков']),
+                'count_tracks' => '256 '.DateHelpers::getNumEnding(256, ['трек', 'трека', 'треков']),
                 'list_img' => '/url',
                 'link' => '/url',
             ],
             [
                 'name' => 'Плейлист 2',
                 'date' => '7 декабря',
-                'count_tracks' => '100 '. DateHelpers::getNumEnding(100,['трек','трека','треков']),
+                'count_tracks' => '100 '.DateHelpers::getNumEnding(100, ['трек', 'трека', 'треков']),
                 'list_img' => '/url',
                 'link' => '/url',
             ],

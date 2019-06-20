@@ -113,6 +113,7 @@ class Notification
     {
         $users = $this->getUsersLongAgoNotVisited();
         $user = User::query()->where('id', '=', 31)->first();
+
         return new LongAgoNotVisited(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4));
         foreach ($users['days7'] as $user) {
             dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4)))->onQueue('low');
@@ -226,9 +227,8 @@ class Notification
         return User::query()->where('id', '=', 31)->get();
     }
 
-
     /**
-     * Нотификации о новом отзыве
+     * Нотификации о новом отзыве.
      */
     public function newCommentNotification($commentId)
     {
@@ -236,7 +236,5 @@ class Notification
 //        dd($comment->user()->first());
         return new CommentCreatedMail($comment->commentable->user()->first()->username, $comment);
         dispatch(new CommentCreatedJob($comment))->onQueue('low');
-
-
     }
 }

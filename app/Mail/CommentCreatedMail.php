@@ -24,7 +24,7 @@ class CommentCreatedMail extends Mailable
     public $commentatorAvatar;
 
     /**
-     * Создан комментарий на трек
+     * Создан комментарий на трек.
      */
     public function __construct($username, $comment)
     {
@@ -51,10 +51,9 @@ class CommentCreatedMail extends Mailable
         }
 
         $this->commentator = $comment->user()->first();
-        $this->link = "/comment_url";
-        $this->allCommentsUrl = "/all_comments_url";
+        $this->link = '/comment_url';
+        $this->allCommentsUrl = '/all_comments_url';
         $this->commentatorAvatar = $comment->user->getImageUrl();
-
     }
 
     /**

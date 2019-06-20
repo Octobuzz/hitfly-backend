@@ -8,16 +8,14 @@
 
 namespace App\Notifications;
 
-use App\Mail\ResetPasswordMail;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Mail;
 
 class ResetPassword extends \Illuminate\Auth\Notifications\ResetPassword
 {
     public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->view('emails.password.changePasswordRequest',['user'=>$notifiable,'url'=>url(config('app.url').route('password.reset', $this->token, false))])
+            ->view('emails.password.changePasswordRequest', ['user' => $notifiable, 'url' => url(config('app.url').route('password.reset', $this->token, false))])
             ->subject(__('emails.resetPassword.subject'));
     }
 }

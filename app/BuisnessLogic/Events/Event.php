@@ -42,6 +42,7 @@ class Event implements EventsContract
      * события текущего месяца.
      *
      * @param int $count
+     *
      * @return array
      */
     public function getThisMonthEvents(int $count = 4)
@@ -127,8 +128,10 @@ class Event implements EventsContract
     }
 
     /**
-     * получить важные события(новости, статьи блога, мероприятия) с пометкой "важно"
+     * получить важные события(новости, статьи блога, мероприятия) с пометкой "важно".
+     *
      * @param int $count
+     *
      * @return array
      */
     public function getImportantEvents(int $count): array
@@ -140,7 +143,6 @@ class Event implements EventsContract
                 'img' => env('APP_URL').'/images/emails/img/music-battle.png',
                 'url' => '/fake_url',
             ],
-
         ];
     }
 }
