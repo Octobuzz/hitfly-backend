@@ -126,6 +126,12 @@
     </div>
 
     <EditProfileAuth />
+
+    <span class="edit-profile__external-auth">
+      Использовать аккаунт соц.сетей?
+    </span>
+
+    <EditProfileExternalAuth />
   </div>
 </template>
 
@@ -143,6 +149,7 @@ import ChooseYear from '../ChooseYear';
 import ChooseGenres from '../ChooseGenres';
 import ChooseLocation from '../ChooseLocation';
 import EditProfileAuth from '../EditProfileAuth';
+import EditProfileExternalAuth from '../EditProfileExternalAuth';
 
 const MOBILE_WIDTH = 767;
 
@@ -158,7 +165,8 @@ export default {
     ChooseYear,
     ChooseGenres,
     ChooseLocation,
-    EditProfileAuth
+    EditProfileAuth,
+    EditProfileExternalAuth
   },
 
   data() {

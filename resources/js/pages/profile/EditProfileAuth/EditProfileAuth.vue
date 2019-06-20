@@ -122,16 +122,11 @@
         {{ passwordButton }}
       </FormButton>
     </div>
-
-    <BaseLink class="edit-profile-auth__social-networks-link">
-      Использовать аккаунт соц.сетей?
-    </BaseLink>
   </div>
 </template>
 
 <script>
 import BaseInput from 'components/BaseInput.vue';
-import BaseLink from 'components/BaseLink.vue';
 import FormButton from 'components/FormButton.vue';
 import EnvelopeIcon from 'components/icons/EnvelopeIcon.vue';
 import KeyIcon from 'components/icons/KeyIcon.vue';
@@ -140,7 +135,6 @@ import gql from './gql';
 export default {
   components: {
     BaseInput,
-    BaseLink,
     FormButton,
     EnvelopeIcon,
     KeyIcon
