@@ -132,6 +132,8 @@ class TrackController extends Controller
         $grid->user_id('Пользователь')->display(function ($userId) {
             return User::find($userId)->username;
         });
+        $grid->deleted_at(trans('admin.deleted_at'));
+        $grid->model()->withTrashed();
 
         return $grid;
     }

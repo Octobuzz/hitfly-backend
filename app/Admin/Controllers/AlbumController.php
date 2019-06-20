@@ -123,6 +123,8 @@ class AlbumController extends Controller
         $grid->music_group_id('Музыкальная группа')->display(function ($genreId) {
             return MusicGroup::find($genreId)->name;
         });
+        $grid->deleted_at(trans('admin.deleted_at'));
+        $grid->model()->withTrashed();
 
         return $grid;
     }
