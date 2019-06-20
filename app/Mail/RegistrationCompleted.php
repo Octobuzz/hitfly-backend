@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\BuisnessLogic\Events\Event;
 use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use Illuminate\Bus\Queueable;
@@ -31,8 +32,16 @@ class RegistrationCompleted extends Mailable
     {
         $topPlayList = new Tracks();
         $recommend = new Recommendation();
-
-        return $this->view('emails.register.completed', ['topList' => $topPlayList->getTopTrack(5), 'playLists' => $recommend->getNewUserPlayList(2)])
+        $events = new Event();
+        return $this->view('emails.register.completed',
+            [
+                'topList' => $topPlayList->getTopTrack(5),
+                'playLists' => $recommend->getNewUserPlayList(2),
+                'linkToProfile'=>'/fake_link',
+                'importantEvents'=>$events->getImportantEvents(1),
+                'star'=>false
+            ]
+        )
             ->subject(__('emails.register.thankForRegister'));
     }
 }

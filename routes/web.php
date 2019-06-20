@@ -11,14 +11,29 @@
 |
 */
 
+use App\BuisnessLogic\Events\Event;
+use App\BuisnessLogic\Playlist\Tracks;
+use App\BuisnessLogic\Recommendation\Recommendation;
+
 Route::redirect('/', 'login', 301);
 Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
 //    $params = [
 //        'value' => 'Значение',
 //    ];
+    $topPlayList = new Tracks();
+    $recommend = new Recommendation();
+    $events = new Event();
+    return View::make('emails.register.completed',
+        [
+            'topList' => $topPlayList->getTopTrack(5),
+            'playLists' => $recommend->getNewUserPlayList(2),
+            'linkToProfile'=>'/fake_link',
+            'importantEvents'=>$events->getImportantEvents(1),
+            'star'=>true
+        ]
+    );
 
-
-    return $notification->newCommentNotification(1);
+    //return $notification->newCommentNotification(1);
 });
 Auth::routes(['verify' => true]);
 
