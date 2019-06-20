@@ -12,8 +12,10 @@ use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
@@ -64,7 +66,9 @@ use Illuminate\Support\Facades\Storage;
  */
 class Album extends Model
 {
-    use SoftDeletes, Itemable, PictureField;
+    use SoftDeletes, Itemable, PictureField, CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['tracks', 'comments', 'favourites'];
 
     public const TYPE_ALBUM = 'album';
     public const TYPE_EP = 'EP';
@@ -147,5 +151,10 @@ class Album extends Model
     public function getImage(): ?string
     {
         return $this->getOriginal('cover');
+    }
+
+    public function tracks(): HasMany
+    {
+        return $this->hasMany(Track::class);
     }
 }
