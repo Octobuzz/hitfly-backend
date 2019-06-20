@@ -159,6 +159,7 @@ return [
                 'updateMyProfile' => \App\Http\GraphQL\Mutations\User\UpdateMyProfileMutation::class,
                 'updatePassword' => \App\Http\GraphQL\Mutations\User\UpdatePasswordMutation::class,
                 'updateEmail' => \App\Http\GraphQL\Mutations\User\UpdateEmailMutation::class,
+                'removeMeMutation' => \App\Http\GraphQL\Mutations\User\RemoveMeMutation::class,
 
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
 
