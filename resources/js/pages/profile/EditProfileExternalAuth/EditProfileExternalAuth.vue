@@ -10,6 +10,7 @@
           [styles[network.social_type].class + '_active']: network.connected
         }
       ]"
+      @click="onClick($event, network)"
     >
       <VkIcon v-if="network.social_type === 'vkontakte'" />
       <FbIcon v-if="network.social_type === 'facebook'" />
@@ -59,11 +60,49 @@ export default {
     InstIcon,
     OkIcon
   },
+
   data() {
     return {
       styles,
       auth: [],
     };
+  },
+
+
+  methods: {
+    onClick(e, network) {
+      if (!network.connected) return;
+
+      e.preventDefault();
+
+      this.$apollo.mutate({
+        mutation: gql.mutation.CEASE_SOCIAL_NETWORK,
+        variables: {
+          network: network.social_type
+        }
+      })
+        .then(() => {
+          const networkInQuestion = this.auth
+            .filter(nw => nw.social_type === network.social_type)[0];
+
+          networkInQuestion.connected = false;
+
+          this.$message(
+            `Профиль ${network.social_type} отвязан`,
+            'info',
+            { timeout: 2000 }
+          );
+        })
+        .catch((err) => {
+          this.$message(
+            'Произошла непредвиденная ошибка. Профиль не отвязан',
+            'info',
+            { timeout: 2000 }
+          );
+
+          console.dir(err);
+        });
+    }
   },
 
   apollo: {
