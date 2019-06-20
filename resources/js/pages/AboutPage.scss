@@ -101,6 +101,10 @@
     &:hover {
       color: $red_violet;
     };
+
+    &_highlighted {
+      color: $red_violet;
+    }
   }
 
   &__left-section {
