@@ -23,7 +23,7 @@ class BaseNotifyMessage implements BaseUserNotificationInterface
     public function getMessageData(): array
     {
         return [
-            'date' => new \DateTime(),
+            'date' => (new \DateTime())->format(\DateTime::ISO8601),
             'type' => $this->getType(),
             'messageData' => $this->messageData,
         ];

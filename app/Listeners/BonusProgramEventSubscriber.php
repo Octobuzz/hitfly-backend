@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\CompletedTaskEvent;
 use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
@@ -59,6 +60,7 @@ class BonusProgramEventSubscriber
                 'type_id' => $bonusType->id,
             ]);
             $user->purseBonus->processOperation($operation);
+            event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
         }
     }
 
@@ -84,6 +86,7 @@ class BonusProgramEventSubscriber
                 'type_id' => $bonusType->id,
             ]);
             $user->purseBonus->processOperation($operation);
+            event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
         }
     }
 
@@ -109,6 +112,7 @@ class BonusProgramEventSubscriber
                 'type_id' => $bonusType->id,
             ]);
             $user->purseBonus->processOperation($operation);
+            event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
         }
     }
 
@@ -199,7 +203,9 @@ class BonusProgramEventSubscriber
             'type_id' => $bonusType->id,
             'extra_data' => $modelId,
         ]);
+
         $user->purseBonus->processOperation($operation);
+        event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 
     /**
@@ -225,6 +231,7 @@ class BonusProgramEventSubscriber
             'type_id' => $bonusType->id,
         ]);
         $user->purseBonus->processOperation($operation);
+        event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 
     public function registerUser($user)
@@ -243,6 +250,7 @@ class BonusProgramEventSubscriber
             'type_id' => $bonusType->id,
         ]);
         $user->purseBonus->processOperation($operation);
+        event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 
     /**
@@ -310,6 +318,7 @@ class BonusProgramEventSubscriber
         ]);
 
         $user->purseBonus->processOperation($operation);
+        event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 
     public function listeningTenTrack(User $user)
@@ -330,5 +339,6 @@ class BonusProgramEventSubscriber
             'type_id' => $bonusType->id,
         ]);
         $user->purseBonus->processOperation($operation);
+        event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 }

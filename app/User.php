@@ -167,7 +167,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function artistProfile()
     {
-        return $this->hasOne(ArtistProfile::class);
+        return $this->hasOne(ArtistProfile::class, 'user_id');
     }
 
     public function artist(): HasOne
