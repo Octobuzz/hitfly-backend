@@ -126,6 +126,7 @@
         }).then((response) => {
           console.log(response.data);
           this.$emit('changeTab');
+          this.$emit('createAlbum');
         }).catch((error) => {
           console.dir(error)
         })

@@ -81,6 +81,7 @@
            class="addAlbumWrapper__content"
            :bands="bands"
            @changeTab="changeTab"
+           @createAlbum="updateAlbums()"
           />
           <div class="addAlbumWrapper__content" v-show="!createAlbum">
             <div class="add-track-chooseAlbum">
@@ -203,6 +204,23 @@
       },
       onCoverInput(file) {
         this.trackInfo.cover = file;
+      },
+      updateAlbums(){
+        this.$apollo.query({
+          fetchPolicy: 'network-only',
+          query: gql`query{
+            albums(limit: 0, page: 0, my: true){
+              data {
+                id
+                title
+              }
+            }
+          }`
+        }).then((res) => {
+          console.log(res);
+        }).catch((err) => {
+          console.log(err);
+        });
       }
     },
     components: {
