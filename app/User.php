@@ -12,6 +12,7 @@ use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
 use Encore\Admin\Auth\Database\Administrator;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -60,6 +61,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use Notifiable;
     use CanResetPassword;
     use SoftDeletes;
+    use CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['socialsConnect'];
 
     const GENDER_MEN = 'M';
     const GENDER_WOMEN = 'F';
