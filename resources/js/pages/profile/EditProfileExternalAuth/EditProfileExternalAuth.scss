@@ -136,3 +136,16 @@
     }
   }
 }
+
+@media screen and (max-width: 767px) {
+  .edit-profile-external-auth {
+    margin-bottom: 24px;
+
+    &__vk,
+    &__fb,
+    &__inst,
+    &__ok {
+      margin-bottom: 12px;
+    }
+  }
+}
