@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\User\ChangeLevelEvent;
 use App\Jobs\EmailChangeJob;
 use App\Jobs\UserRegisterJob;
 use App\Models\EmailChange;
@@ -62,8 +63,10 @@ class UserObserver
             );
             $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
             dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+        }
 
-            return false;
+        if (true === $user->wasChanged('level')) {
+            event(new ChangeLevelEvent($user, $user->level));
         }
 
         return true;
