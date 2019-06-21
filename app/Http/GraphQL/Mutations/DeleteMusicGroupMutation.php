@@ -31,7 +31,7 @@ class DeleteMusicGroupMutation extends Mutation
     {
         $user = \Auth::guard('json')->user();
 
-        $musicGroup = MusicGroup::query()->find($args['id'])->first();
+        $musicGroup = MusicGroup::query()->find($args['id']);
 
         if (null === $musicGroup) {
             throw new \Exception('inncorect');
