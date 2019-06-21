@@ -1,5 +1,5 @@
 <template>
-  <header class="head">
+  <header :class="['head', $attrs.class]">
     <div class="head__left">
       <span class="menu-call is-close">
         <span class="menu-call__rows" />
@@ -166,33 +166,31 @@ export default {
   },
 
   apollo: {
-    myProfile() {
-      return {
-        query: gql.query.MY_PROFILE,
-        update({ myProfile }) {
-          this.$store.commit('profile/setLoggedIn', true);
+    myProfile: {
+      query: gql.query.MY_PROFILE,
+      update({ myProfile }) {
+        this.$store.commit('profile/setLoggedIn', true);
 
-          this.$store.commit(
-            'profile/setRoles',
-            myProfile.roles.map(role => role.slug)
-          );
+        this.$store.commit(
+          'profile/setRoles',
+          myProfile.roles.map(role => role.slug)
+        );
 
-          this.$store.commit(
-            'profile/setMyId',
-            myProfile.id
-          );
+        this.$store.commit(
+          'profile/setMyId',
+          myProfile.id
+        );
 
-          const avatar = myProfile.avatar
-            .filter(av => av.size === 'size_56x56')[0].url;
+        const avatar = myProfile.avatar
+          .filter(av => av.size === 'size_56x56')[0].url;
 
-          return {
-            avatar
-          };
-        },
-        error(err) {
-          console.dir(err);
-        }
-      };
+        return {
+          avatar
+        };
+      },
+      error(err) {
+        console.dir(err);
+      }
     }
   }
 };

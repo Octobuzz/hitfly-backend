@@ -24,7 +24,7 @@
                         <input id="email" name="email" type="email" required value="{{ old('email') }}">
                         <label for="email">{{ __('auth.email') }}*</label>
                     </span>
-                    <span class="input-text-wrapper__error-msg">Введите корректный пароль</span>
+                    <span class="input-text-wrapper__error-msg">Введите корректный адрес</span>
                     @if ($errors->has('email'))
                         <span class="input-text-wrapper__error-msg">{{ $errors->first('email') }}</span>
                     @endif

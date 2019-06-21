@@ -13,22 +13,14 @@
           v-model="trackInfo.name.input"
           label="Название песни"
           class="add-track-description__name-input"
+          :showError="validation.trackName.error"
+          :errorMessage="validation.trackName.message"
         >
           <template #icon>
             <PencilIcon/>
           </template>
         </BaseInput>
         <p class="add-track-filename" v-show="filename.length > 0">{{ filename }}</p>
-
-        <!--<BaseInput
-          v-model="trackInfo.year.input"
-          label="Год создания песни"
-          class="add-track-description__year-input"
-        >
-          <template #icon>
-            <CalendarIcon/>
-          </template>
-        </BaseInput>-->
 
         <ChooseYear
           v-model="trackInfo.year.input"
@@ -55,6 +47,7 @@
         </h3>
 
         <ChooseGenres
+          :noneSelectedError="validation.genre.error"
           v-model="trackInfo.genres"
           class="add-track-description__genre-tag-container"
           dropdown-class="add-track-description__dropdown"
@@ -81,13 +74,14 @@
         <div class="addAlbumWrapper" v-show="addToAlbum">
           <div class="addAlbumWrapper__buttons">
             <div class="buttonSwitcher" @click="createAlbum = true" :class="{active: createAlbum}">Создать альбом</div>
-            <div class="buttonSwitcher" @click="createAlbum = false" :class="{active: !createAlbum}">Мои альбомы</div>
+            <div v-if="albums.albums.data.length > 0" class="buttonSwitcher" @click="createAlbum = false" :class="{active: !createAlbum}">Мои альбомы</div>
           </div>
           <CreateAlbum
            v-show="createAlbum"
            class="addAlbumWrapper__content"
            :bands="bands"
            @changeTab="changeTab"
+           @createAlbum="updateAlbums()"
           />
           <div class="addAlbumWrapper__content" v-show="!createAlbum">
             <div class="add-track-chooseAlbum">
@@ -134,7 +128,7 @@
   import gql from 'graphql-tag';
 
   export default{
-    props: ['loading', 'filename'],
+    props: ['loading', 'filename', 'validation'],
     data: () => ({
       trackInfo:{
         year: {
@@ -150,7 +144,9 @@
         selectedAlbum: {
           id: Number
         },
+        cover: null,
       },
+      textFileError: false,
       createAlbum: false,
       bands: [
         {
@@ -171,7 +167,14 @@
     }),
     methods: {
       handleTextfileInput(file){
-        this.trackInfo.text = file;
+        if(file !== null && file.type.match('application/vnd.openxmlformats-officedocument.wordprocessingml.document|text/plain')){
+          this.trackInfo.text = file;
+        }else{
+          this.trackInfo.text = null;
+          this.$message(
+            'Выберите текстовый файл в формате txt или docx',
+          );
+        }
       },
       changeTab() {
         this.createAlbum = false
@@ -181,6 +184,7 @@
           return genre.id;
         });
         const info = {
+          'cover': this.trackInfo.cover,
           'singer': this.trackInfo.selectedArtist,
           'trackDate': this.trackInfo.year.input,
           'songText': this.trackInfo.text,
@@ -198,8 +202,25 @@
         });
         this.trackInfo.selectedAlbum = selectedAlbum[0];
       },
-      onCoverInput() {
-        console.log('ok');
+      onCoverInput(file) {
+        this.trackInfo.cover = file;
+      },
+      updateAlbums(){
+        this.$apollo.query({
+          fetchPolicy: 'network-only',
+          query: gql`query{
+            albums(limit: 0, page: 0, my: true){
+              data {
+                id
+                title
+              }
+            }
+          }`
+        }).then((res) => {
+          console.log(res);
+        }).catch((err) => {
+          console.log(err);
+        });
       }
     },
     components: {
@@ -227,6 +248,7 @@
             }
           }`,
           update(data){
+            console.log(data);
             return this.albums = data;
           }
         }

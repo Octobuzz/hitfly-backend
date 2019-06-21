@@ -116,6 +116,12 @@ $formRightPadding: 40px;
       margin-left: auto;
     }
   }
+
+  &__external-auth {
+    color: $red_violet;
+    display: block;
+    margin-bottom: 24px;
+  }
 }
 
 @media screen and (max-width: 1440px) {

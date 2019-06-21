@@ -56,10 +56,10 @@
   width: 100%;
   box-sizing: border-box;
   background-color: $color_2;
-  min-height: 107px;
+  height: 107px;
 
   z-index: 1100;
-  position: absolute;
+  position: fixed;
   top: 0;
 
   &__left{
@@ -396,6 +396,7 @@
 }
 @media (min-width: $header_xl) {
   .head{
+    height: 95px;
     padding: 24px 32px;
 
     &__nav{

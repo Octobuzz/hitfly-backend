@@ -57,6 +57,10 @@ class UserInterface extends InterfaceType
                 'type' => \GraphQL::type('CityType'),
                 'description' => 'Локация пользователя',
                 'alias' => 'city_id',
+                'selectable' => false,
+                'resolve' => function ($model) {
+                    return $model->location;
+                },
             ],
             'avatar' => AvatarSizesField::class,
             'favouriteGenres' => [

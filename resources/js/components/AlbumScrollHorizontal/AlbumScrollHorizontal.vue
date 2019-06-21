@@ -143,6 +143,12 @@ export default {
   watch: {
     tweenedOffset(num) {
       this.$refs.scroller.$el.scrollLeft = num;
+    },
+
+    // To check for arrow buttons when albums have being added manually.
+
+    albumIdList() {
+      this.onScroll();
     }
   },
 
