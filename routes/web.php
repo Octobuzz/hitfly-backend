@@ -34,7 +34,8 @@ Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $no
 //        ]
 //    );
 
-    return $notification->everyMonthDispatchNotVisited();
+    return $notification->newStatusNotification();
+    //$this->notify(new ResetPasswordNotification($token));
 });
 Auth::routes(['verify' => true]);
 

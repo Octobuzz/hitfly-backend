@@ -19,6 +19,7 @@ use App\Mail\CommentCreatedMail;
 use App\Mail\FewComments;
 use App\Mail\LongAgoNotVisited;
 use App\Mail\NewEventNotificationMail;
+use App\Mail\NewStatusMail;
 use App\Mail\ReachTopMail;
 use App\Mail\RemindForEventMail;
 use App\Mail\RequestForEventMail;
@@ -234,7 +235,19 @@ class Notification
     {
         $comment = Comment::query()->find($commentId);
 //        dd($comment->user()->first());
-        return new CommentCreatedMail($comment->commentable->user()->first()->username, $comment);
+        //return new CommentCreatedMail($comment->commentable->user()->first()->username, $comment);
         dispatch(new CommentCreatedJob($comment))->onQueue('low');
+    }
+
+
+    /**
+     * Новый статус.
+     */
+    public function newStatusNotification($status,User $user)
+    {
+        //$user = User::query()->find(97);
+       //dd($user->username);
+        //return new NewStatusMail("ststus123", $user);
+        dispatch(new CommentCreatedJob($status,$user))->onQueue('low');
     }
 }

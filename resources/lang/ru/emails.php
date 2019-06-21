@@ -159,6 +159,14 @@ return [
 
 
     ],
+    'newStatus' => [
+        'hello' => 'Поздравляем ',
+        'more' => 'Подробнее о статусах - <a href=":link" style="text-decoration: none; color: #b36fcb;">по ссылке</a>.',
+        'text' => 'Вы получили новый статус - :status.',
+        'subject' => 'Вы получили новый статус!',
+
+
+    ],
 
 
 
