@@ -58,7 +58,7 @@ class UpdateTrackMutation extends Mutation
     {
         $trackInfo = [];
         /* @var UploadedFile $file */
-        if (isset($args['infoTrack']['songText']) && null !== $args['infoTrack']['songText']) {
+        if (false === empty($args['infoTrack']['songText'])) {
             $file = $args['infoTrack']['songText'];
             switch ($file->getClientMimeType()) {
                 case 'text/plain':
