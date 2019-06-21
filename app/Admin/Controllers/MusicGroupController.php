@@ -108,14 +108,21 @@ class MusicGroupController extends Controller
         $grid = new Grid(new MusicGroup());
 
         $grid->id('#');
-        $grid->creator_group_id('Создатель группы')->display(function ($user) {
-            return User::find($user)->username;
+        $grid->creator_group_id('Создатель группы')->display(function ($user_id) {
+            $user = User::find($user_id);
+            if (true === empty($user)) {
+                return null;
+            }
+
+            return $user->username;
         });
         $grid->name('Имя');
         $grid->career_start_year('Дата начала карьеры');
         $grid->city_id('Город')->display(function ($city) {
             return City::find($city)->title;
         });
+        $grid->model()->withTrashed();
+        $grid->deleted_at(trans('admin.deleted_at'));
 
         return $grid;
     }

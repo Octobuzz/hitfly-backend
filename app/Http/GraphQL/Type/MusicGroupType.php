@@ -42,9 +42,13 @@ class MusicGroupType extends GraphQLType
                 'description' => 'Жанр группы',
             ],
             'creatorGroup' => [
-                'type' => GraphQL::type('User'),
+                'type' => Type::nonNull(\GraphQL::type('User')),
                 'description' => 'Создатель группы',
                 'alias' => 'creator_group_id', // Use 'alias', if the database column is different from the type name
+                'resolve' => function ($model) {
+                    return $model->user;
+                },
+                'selectable' => false,
             ],
             'description' => [
                 'type' => Type::string(),
@@ -55,6 +59,10 @@ class MusicGroupType extends GraphQLType
                 'type' => \GraphQL::type('CityType'),
                 'description' => 'Локация группы',
                 'alias' => 'city_id',
+                'resolve' => function ($model) {
+                    return $model->location;
+                },
+                'selectable' => false,
             ],
             'followersCount' => [
                 'type' => Type::int(),
