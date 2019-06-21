@@ -1,10 +1,11 @@
 <template>
   <div>
+    <portal-target name="root" />
     <IconGradientRadial />
     <FlashMessage />
-    <AppHeader />
-    <router-view />
-    <AppFooter />
+    <AppHeader :class="{ 'app-layout_blurred': blurred }" />
+    <router-view :class="{ 'app-layout_blurred': blurred }" />
+    <AppFooter :class="{ 'app-layout_blurred': blurred }" />
   </div>
 </template>
 
@@ -20,6 +21,11 @@ export default {
     FlashMessage,
     AppHeader,
     AppFooter
+  },
+  computed: {
+    blurred() {
+      return this.$store.getters['layout/blurred'];
+    }
   }
 };
 </script>
@@ -29,3 +35,12 @@ export default {
   lang="scss"
   src="../../../sass/app.scss"
 />
+
+<style
+  scoped
+  lang="scss"
+>
+.app-layout_blurred {
+  filter: blur(5px);
+}
+</style>

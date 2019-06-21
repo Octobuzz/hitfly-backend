@@ -1,5 +1,5 @@
 <template>
-  <header class="head">
+  <header :class="['head', $attrs.class]">
     <div class="head__left">
       <span class="menu-call is-close">
         <span class="menu-call__rows" />
