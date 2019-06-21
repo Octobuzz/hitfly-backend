@@ -139,6 +139,8 @@
           this.$router.push('/profile/my-music');
           this.$message(
             'Ваша песня загружена',
+            'info',
+            {timeout: 3000}
           );
         }).catch((error) => {
           let errors = error.graphQLErrors[0].validation;
