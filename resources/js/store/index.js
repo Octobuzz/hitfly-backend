@@ -8,6 +8,7 @@ import loading from './loading';
 import player from './player';
 import profile from './profile';
 import links from './links';
+import layout from './layout';
 
 Vue.use(Vuex);
 
@@ -50,7 +51,8 @@ export default new Store({
     loading,
     player,
     profile,
-    links
+    links,
+    layout
   },
   state,
   getters,
