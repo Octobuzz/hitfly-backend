@@ -19,7 +19,7 @@ return [
     'pushButtonAccept' => 'Нажимая кнопку «Зарегистрироваться», вы соглашаетесь с',
     'useConditions' => 'Условиям использования',
     'haveAccount' => 'У вас уже есть аккаунт',
-    'readyToComeBack' => 'Готовы вернуться к',
+    'readyToComeBack' => 'Готовы вернуться к Hitfly?',
     'signUpWithEmail' => 'или войти через почту',
     'notRegistered' => 'Вы еще не зарегистрированы',
     'forgotPassword' => 'Забыли пароль',
