@@ -227,16 +227,24 @@ class UserController extends \Encore\Admin\Controllers\UserController
             }
             /** @var User $savingUser */
             $savingUser = $form->model();
-            $savingUser->roles()->sync(array_filter($form->roles));
-            if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-                /** @var ArtistProfile $artistProfile */
-                $artistProfile = $savingUser->artistProfile;
-                $artistProfile->update($form->artist_profile);
-                $artistProfile->save();
+            $profile = $form->artist_profile;
+            if (null !== $savingUser->id) {
+                $savingUser->roles()->sync(array_filter($form->roles));
+                if (
+                    (
+                        true === $savingUser->isRole('star')
+                        || $savingUser->isRole('performer')
+                    )
+                    && null !== $profile
+                ) {
+                    $attributes = ['user_id' => $savingUser->id];
+                    /** @var ArtistProfile $artistProfile */
+                    $artistProfile = ArtistProfile::query()->firstOrNew($attributes, $profile);
+                    $savingUser->artistProfile()->save($artistProfile);
+                }
             }
         });
-        $form->disableReset();
-
+        $form->builder()->getFooter()->disableReset(true);
         $form->tools(function (Form\Tools $tools) {
             // Disable `Delete` btn.
             $tools->disableDelete();
