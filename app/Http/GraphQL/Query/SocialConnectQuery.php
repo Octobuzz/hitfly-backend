@@ -41,7 +41,7 @@ class SocialConnectQuery extends Query
         foreach ($this->socialsTypes() as $socialsType) {
             $response[] = [
                 'social_type' => $socialsType,
-                'link' => route('link_socials', ['provider' => $socialsType]),
+                'link' => route('social_auth', ['provider' => $socialsType]),
                 'connected' => $socialsLink->contains('social_driver', $socialsType),
             ];
         }

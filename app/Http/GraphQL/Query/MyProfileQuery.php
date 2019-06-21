@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
@@ -33,6 +34,6 @@ class MyProfileQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info)
     {
-        return \Auth::user();
+        return User::with($fields->getRelations())->where('id', '=', \Auth::user()->id)->first();
     }
 }

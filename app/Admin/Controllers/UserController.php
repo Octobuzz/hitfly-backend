@@ -97,6 +97,8 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->roles(trans('admin.roles'))->pluck('name')->label();
         $grid->created_at(trans('admin.created_at'));
         $grid->updated_at(trans('admin.updated_at'));
+        $grid->deleted_at(trans('admin.deleted_at'));
+        $grid->model()->withTrashed();
 
 //        $grid->actions(function (Grid\Displayers\Actions $actions) {
 //            $actions->disableDelete();

@@ -139,9 +139,12 @@
 
         <span class="about__consent">
           Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим
-          <router-view to="/terms-of-use" class="about__link">
+          <router-link
+            to="/terms-of-use"
+            class="about__link about__link_highlighted"
+          >
             Условиям использования
-          </router-view>,
+          </router-link>,
           и вы не нарушаете авторские права.
         </span>
 
