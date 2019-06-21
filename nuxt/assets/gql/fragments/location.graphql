@@ -1,5 +1,0 @@
-fragment location on CityType {
-    id
-    area_region
-    title
-}

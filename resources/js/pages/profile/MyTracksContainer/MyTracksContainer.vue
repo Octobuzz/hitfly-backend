@@ -80,7 +80,9 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 10, // aspire to have two times more than you have in viewport
-        my: true
+        filters: {
+          my: true
+        }
       },
       mobileUser: /Mobi|Android/i.test(navigator.userAgent)
     };

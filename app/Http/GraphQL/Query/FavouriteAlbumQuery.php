@@ -33,15 +33,23 @@ class FavouriteAlbumQuery extends Query
     {
         if (isset($args['albumId'])) {
             return Favourite::with('favouriteable')
-                ->where('favouriteable_type', Album::class)
-                ->where('favouriteable_id', $args['albumId'])
-                ->where('user_id', \Auth::user()->id)
+                ->where('favourites.favouriteable_type', Album::class)
+                ->where('favourites.favouriteable_id', $args['albumId'])
+                ->where('favourites.user_id', \Auth::user()->id)
+                ->leftJoin('albums', function ($join) {
+                    $join->on('favourites.favouriteable_id', '=', 'albums.id');
+                })
+                ->where('albums.deleted_at', '=', null)
                 ->paginate($args['limit'], ['*'], 'page', $args['page']);
         }
 
         return Favourite::with('favouriteable')
-            ->where('favouriteable_type', Album::class)
-            ->where('user_id', \Auth::user()->id)
+            ->where('favourites.favouriteable_type', Album::class)
+            ->where('favourites.user_id', \Auth::user()->id)
+            ->leftJoin('albums', function ($join) {
+                $join->on('favourites.favouriteable_id', '=', 'albums.id');
+            })
+            ->where('albums.deleted_at', '=', null)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

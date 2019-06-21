@@ -2,9 +2,9 @@
 #import "../fragments/user.graphql"
 #import "../fragments/musicGroup.graphql"
 #import "../fragments/role.graphql"
+#import "../fragments/bonusProgram.graphql"
 
 # TODO: use fragment ad for the update
-# TODO: include bonus program when the api is fixed
 
 query MyProfile {
     myProfile {
@@ -38,6 +38,6 @@ query MyProfile {
         email
         favoriteSongsCount
         favoriteAlbumCount
-#        ...bonusProgram
+        ...bonusProgram
     }
 }

@@ -43,7 +43,7 @@ class CreateMusicGroupMutation extends Mutation
 
         $countgroup = MusicGroup::query()->where('creator_group_id', '=', $user->id)->count();
 
-        if ($countgroup > 5) {
+        if ($countgroup >= 5) {
             return new ValidationError(trans('validation.groupMaxCount'));
         }
 

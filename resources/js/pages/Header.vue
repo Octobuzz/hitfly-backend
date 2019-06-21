@@ -159,6 +159,10 @@ export default {
     goToProfilePage() {
       this.$router.push('/profile/my-music');
     }
+  },
+
+  apollo: {
+
   }
 };
 </script>

@@ -37,6 +37,10 @@ class WatchingUserQuery extends Query
         return Watcheables::with('watcheable')
             ->where('watcheable_type', User::class)
             ->where('user_id', \Auth::user()->id)
+            ->leftJoin('users', function ($join) {
+                $join->on('watcheables.watcheable_id', '=', 'users.id');
+            })
+            ->where('users.deleted_at', '=', null)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

@@ -121,8 +121,15 @@ class AlbumController extends Controller
             return Genre::find($genreId)->name;
         });
         $grid->music_group_id('Музыкальная группа')->display(function ($genreId) {
-            return MusicGroup::find($genreId)->name;
+            $model = MusicGroup::find($genreId);
+            if (true === empty($model)) {
+                return null;
+            }
+
+            return $model->name;
         });
+        $grid->model()->withTrashed();
+        $grid->deleted_at(trans('admin.deleted_at'));
 
         return $grid;
     }

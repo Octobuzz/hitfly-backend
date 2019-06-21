@@ -12,8 +12,10 @@ query TracksWithComments(
     tracks(
         page: $pageNumber,
         limit: $pageLimit,
-        my: $my,
-        commentPeriod: $commentedInPeriod
+        commentPeriod: $commentedInPeriod,
+        filters: {
+            my: $my
+        }
     ) {
         total
         to

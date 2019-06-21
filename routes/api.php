@@ -14,7 +14,7 @@
 Route::group(['prefix' => 'v1'], function () {
     //api-авторизация
     Route::group(['namespace' => 'Api\v1'], function () {
-        Route::get('/login/{provider}', 'SocialController@redirectToProvider');
+        Route::get('/login/{provider}', 'SocialController@redirectToProvider')->name('link_socials');
         Route::get('/login/{provider}/callback', 'SocialController@handleProviderCallback');
         Route::get('/register/providers', 'SocialController@getProvidersList');
 

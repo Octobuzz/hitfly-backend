@@ -56,48 +56,49 @@ class UpdateTrackMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        /** @var UploadedFile $file */
-        $file = $args['infoTrack']['songText'];
-        switch ($file->getClientMimeType()) {
-            case 'text/plain':
-                $text = file_get_contents($file);
-                break;
-            default:
-                $phpWord = IOFactory::load($args['infoTrack']['songText']);
-                $text = '';
-                $sections = $phpWord->getSections();
-                foreach ($sections as $key => $value) {
-                    $sectionElement = $value->getElements();
-                    foreach ($sectionElement as $elementKey => $elementValue) {
-                        if ($elementValue instanceof \PhpOffice\PhpWord\Element\TextRun) {
-                            $secondSectionElement = $elementValue->getElements();
-                            foreach ($secondSectionElement as $secondSectionElementKey => $secondSectionElementValue) {
-                                if ($secondSectionElementValue instanceof \PhpOffice\PhpWord\Element\Text) {
-                                    $text .= "\n".$secondSectionElementValue->getText();
+        $trackInfo = [];
+        /* @var UploadedFile $file */
+        if (false === empty($args['infoTrack']['songText'])) {
+            $file = $args['infoTrack']['songText'];
+            switch ($file->getClientMimeType()) {
+                case 'text/plain':
+                    $text = file_get_contents($file);
+                    break;
+                default:
+                    $phpWord = IOFactory::load($args['infoTrack']['songText']);
+                    $text = '';
+                    $sections = $phpWord->getSections();
+                    foreach ($sections as $key => $value) {
+                        $sectionElement = $value->getElements();
+                        foreach ($sectionElement as $elementKey => $elementValue) {
+                            if ($elementValue instanceof \PhpOffice\PhpWord\Element\TextRun) {
+                                $secondSectionElement = $elementValue->getElements();
+                                foreach ($secondSectionElement as $secondSectionElementKey => $secondSectionElementValue) {
+                                    if ($secondSectionElementValue instanceof \PhpOffice\PhpWord\Element\Text) {
+                                        $text .= "\n".$secondSectionElementValue->getText();
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                break;
-        }
+                    break;
+            }
 
-        $config = \HTMLPurifier_Config::createDefault();
-        $purifier = new \HTMLPurifier($config);
-        $clean_html = $purifier->purify($text);
+            $config = \HTMLPurifier_Config::createDefault();
+            $purifier = new \HTMLPurifier($config);
+            $trackInfo['song_text'] = $purifier->purify($text);
+        }
+        $trackInfo['track_name'] = $args['infoTrack']['trackName'];
+        $trackInfo['album_id'] = empty($args['infoTrack']['album']) ? null : $args['infoTrack']['album'];
+        $trackInfo['music_group_id'] = empty($args['infoTrack']['musicGroup']) ? null : $args['infoTrack']['musicGroup'];
+        $trackInfo['singer'] = empty($args['infoTrack']['singer']) ? null : $args['infoTrack']['singer'];
+        $trackInfo['track_date'] = empty($args['infoTrack']['trackDate']) ? null : Carbon::create($args['infoTrack']['trackDate'], 1, 1);
+        $trackInfo['state'] = 'fileload';
 
         /** @var Track $track */
         $track = Track::query()->find($args['id']);
         $track->genres()->sync($args['infoTrack']['genres']);
-        $track->update([
-            'track_name' => $args['infoTrack']['trackName'],
-            'album_id' => empty($args['infoTrack']['album']) ? null : $args['infoTrack']['album'],
-            'music_group_id' => empty($args['infoTrack']['musicGroup']) ? null : $args['infoTrack']['musicGroup'],
-            'singer' => $args['infoTrack']['singer'],
-            'song_text' => $clean_html,
-            'track_date' => Carbon::create($args['infoTrack']['trackDate'], 1, 1),
-            'state' => 'fileload',
-        ]);
+        $track->update($trackInfo);
         if (!empty($args['infoTrack']['cover']) && null !== $args['infoTrack']['cover']) {
             $track->cover = $this->setCover($track, $args['infoTrack']['cover']);
         }

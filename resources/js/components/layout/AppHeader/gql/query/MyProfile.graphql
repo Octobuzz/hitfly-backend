@@ -1,0 +1,16 @@
+query MyHeaderProfile {
+    myProfile {
+        id
+        avatar(
+#            use both arguments to get update from my profile update mutation
+            sizes: [size_56x56, size_235x235]
+        ) {
+            size
+            url
+        }
+        roles {
+            slug,
+            name
+        }
+    }
+}

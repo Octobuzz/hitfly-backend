@@ -9,6 +9,7 @@ use App\Models\Favourite;
 use App\Models\Genre;
 use App\Models\MusicGroup;
 use App\Models\Purse;
+use App\Models\Social;
 use App\Models\Track;
 use App\Models\UserNotification;
 use Encore\Admin\Auth\Database\Administrator;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -58,6 +60,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 {
     use Notifiable;
     use CanResetPassword;
+    use SoftDeletes;
 
     const GENDER_MEN = 'M';
     const GENDER_WOMEN = 'F';
@@ -70,6 +73,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const ROLE_STAR = 'star';
     const ROLE_CRITIC = 'critic';
     const ROLE_PROF_CRITIC = 'prof_critic';
+    const ROLE_PERFORMER = 'performer';
 
     /**
      * The attributes that are mass assignable.
@@ -163,7 +167,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function artistProfile()
     {
-        return $this->hasOne(ArtistProfile::class, 'user_id');
+        return $this->hasOne(ArtistProfile::class);
     }
 
     public function artist(): HasOne
@@ -184,5 +188,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function userNotification()
     {
         return $this->hasOne(UserNotification::class);
+    }
+
+    public function socialsConnect()
+    {
+        return $this->hasMany(Social::class);
     }
 }

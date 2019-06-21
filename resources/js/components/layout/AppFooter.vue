@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer :class="['footer', $attrs.class]">
     <div class="footer__left footer-info">
       <img class="footer-info__img" src="/images/test_ava.jpg" style="width: 40px; height: 40px;" />
       <div class="footer-info__text">

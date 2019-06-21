@@ -3,12 +3,12 @@
 query Tracks(
     $pageLimit: Int,
     $pageNumber: Int,
-    $my: Boolean
+    $filters: TrackFilterInput
 ) {
     tracks(
         page: $pageNumber,
         limit: $pageLimit,
-        my: $my
+        filters: $filters
     ) {
         total
         to

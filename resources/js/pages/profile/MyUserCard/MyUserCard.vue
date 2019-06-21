@@ -202,12 +202,14 @@
       </div>
     </div>
 
-<!--      <div :class="itemContainerClass">-->
-<!--        level: {{ myProfile.bonusProgram.level }};-->
-<!--        daysPassed: {{ myProfile.bonusProgram.daysPassed }};-->
-<!--        points: {{ myProfile.bonusProgram.points }};-->
-<!--        progressPct: {{ myProfile.bonusProgram.progressPct }};-->
-<!--      </div>-->
+<!--    <div :class="itemContainerClass">-->
+<!--      level: {{ myProfile.bonusProgram.level }};-->
+<!--      <img :src="myProfile.bonusProgram.image" alt="Level image">-->
+<!--      daysPassed: {{ myProfile.bonusProgram.daysPassed }};-->
+<!--      points: {{ myProfile.bonusProgram.points }};-->
+<!--      progressPct: {{ myProfile.bonusProgram.progressPct }};-->
+<!--      pointsToNextLevel: {{ myProfile.bonusProgram.pointsToNextLevel }}-->
+<!--    </div>-->
 
     <div
       v-if="myProfile.activity"
@@ -234,13 +236,37 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
+import levelNoviceImg from 'images/level-novice.svg';
+import levelFanImg from 'images/level-fan.svg';
+import levelConnoisseurImg from 'images/level-connoisseur.svg';
+import levelMusicLoverImg from 'images/level-music-lover.svg';
 import gql from './gql';
 
 const bonusProgramLvlMap = {
-  LEVEL_NOVICE: 'Новичек',
-  LEVEL_AMATEUR: 'Любитель',
-  LEVEL_CONNOISSEUR_OF_THE_GENRE: 'Знаток жанра',
-  LEVEL_SUPER_MUSIC_LOVER: 'Супер меломан'
+  LEVEL_NOVICE: {
+    title: 'Новичек',
+    image: levelNoviceImg,
+    nextLevelImage: levelFanImg,
+    nextLevelPoints: 400
+  },
+  LEVEL_AMATEUR: {
+    title: 'Любитель',
+    image: levelFanImg,
+    nextLevelImage: levelConnoisseurImg,
+    nextLevelPoints: 2500
+  },
+  LEVEL_CONNOISSEUR_OF_THE_GENRE: {
+    title: 'Знаток жанра',
+    image: levelConnoisseurImg,
+    nextLevelImage: levelMusicLoverImg,
+    nextLevelPoints: 5000
+  },
+  LEVEL_SUPER_MUSIC_LOVER: {
+    title: 'Супер меломан',
+    image: levelMusicLoverImg,
+    nextLevelImage: null,
+    nextLevelPoints: null
+  }
 };
 
 export default {
@@ -324,6 +350,15 @@ export default {
     },
 
     goToCreateGroup() {
+      if (this.myProfile.musicGroups.length >= 5) {
+        this.$message(
+          'Создано максимальное количество групп',
+          'info',
+          { timeout: 2000 }
+        );
+        return;
+      }
+
       this.$router.push('/profile/create-group');
     }
   },
@@ -351,14 +386,16 @@ export default {
         this.myProfile.name = username;
         this.myProfile.musicGroups = musicGroups;
 
-        // TODO: uncomment when the api is fixed
-
-        // this.myProfile.bonusProgram = {
-        //   level: bonusProgramLvlMap[bpLevel],
-        //   daysPassed: bpDaysPassed,
-        //   points: bpPoints,
-        //   progressPct: bpProgressPct
-        // };
+        this.myProfile.bonusProgram = {
+          level: bonusProgramLvlMap[bpLevel].title,
+          image: bonusProgramLvlMap[bpLevel].image,
+          nextLevelImage: '',
+          points: bpPoints,
+          pointsToNextLevel: bonusProgramLvlMap[bpLevel].nextLevelPoints
+            - bpPoints,
+          daysPassed: bpDaysPassed,
+          progressPct: bpProgressPct
+        };
 
         if (location && location.title) {
           this.myProfile.location = location;

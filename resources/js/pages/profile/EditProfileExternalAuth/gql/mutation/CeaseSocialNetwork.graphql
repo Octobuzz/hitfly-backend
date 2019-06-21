@@ -1,0 +1,7 @@
+mutation CeaseSocialNetwork(
+    $network: SocialLinksTypeEnum
+) {
+    RemoveSocialConnect(social: $network) {
+        id
+    }
+}

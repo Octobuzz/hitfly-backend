@@ -1,3 +1,0 @@
-fragment role on Role {
-    name
-}
