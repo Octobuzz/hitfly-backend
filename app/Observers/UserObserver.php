@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Admin\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Jobs\EmailChangeJob;
 use App\Jobs\UserRegisterJob;
@@ -47,7 +48,9 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        if (null === Route::current() || Route::current()->controller instanceof RegisterController) {
+        if (null === Route::current() ||
+            Route::current()->controller instanceof RegisterController ||
+            Route::current()->controller instanceof UserController) {
             return true;
         }
         $requestParams = Route::current()->parameters();

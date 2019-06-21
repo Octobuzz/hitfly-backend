@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\NewStatusMail;
+use App\Mail\EmailChangedMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 
-class NewStatusJob implements ShouldQueue
+class EmailChangedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -20,9 +20,8 @@ class NewStatusJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($status, $user)
+    public function __construct($user)
     {
-        $this->status = $status;
         $this->user = $user;
     }
 
@@ -31,6 +30,6 @@ class NewStatusJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new NewStatusMail($this->user->username, $this->status));
+        return Mail::to($this->user->email)->send(new EmailChangedMail($this->user));
     }
 }

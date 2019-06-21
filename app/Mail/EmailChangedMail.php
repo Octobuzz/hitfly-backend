@@ -6,18 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NewStatusMail extends Mailable
+class EmailChangedMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $status;
+
+    public $email;
     public $user;
+    public $url;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($status, $user)
+    public function __construct($user)
     {
-        $this->status = $status;
         $this->user = $user;
     }
 
@@ -28,7 +29,7 @@ class NewStatusMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.notification.newStatus')
-            ->subject(__('emails.newStatus.subject'));
+        return $this->view('emails.notification.emailChanged')
+            ->subject(__('emails.emailChanged.subject'));
     }
 }

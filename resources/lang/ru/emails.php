@@ -140,6 +140,14 @@ return [
 
 
     ],
+    'emailChanged' => [
+        'hello' => 'Здравствуйте',
+        'text' => 'Ваш емейл успешно измненен',
+        'subject' => 'Email изменен',
+        'newEmail' => 'Ваш новый email: ',
+
+
+    ],
     'verifyEmail' => [
         'hello' => 'Спасибо, что присоединились',
         'acceptRegister' => 'Подтвердите регистрацию',

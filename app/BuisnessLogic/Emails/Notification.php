@@ -239,15 +239,14 @@ class Notification
         dispatch(new CommentCreatedJob($comment))->onQueue('low');
     }
 
-
     /**
      * Новый статус.
      */
-    public function newStatusNotification($status,User $user)
+    public function newStatusNotification($status, User $user)
     {
         //$user = User::query()->find(97);
-       //dd($user->username);
+        //dd($user->username);
         //return new NewStatusMail("ststus123", $user);
-        dispatch(new CommentCreatedJob($status,$user))->onQueue('low');
+        dispatch(new CommentCreatedJob($status, $user))->onQueue('low');
     }
 }
