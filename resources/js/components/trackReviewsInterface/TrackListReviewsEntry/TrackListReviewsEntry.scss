@@ -3,7 +3,7 @@
 $cover_width_desktop: 180px;
 $cover_width_mobile: 72px;
 
-.review-list-entry {
+.track-list-reviews-entry {
   display: flex;
 
   &__cover-section {
@@ -78,7 +78,7 @@ $cover_width_mobile: 72px;
 }
 
 @media screen and (max-width: 767px) {
-  .review-list-entry {
+  .track-list-reviews-entry {
     flex-direction: column;
 
     &__cover-section {

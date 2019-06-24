@@ -173,5 +173,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./ReviewListEntry.scss"
+  src="./TrackListReviewsEntry.scss"
 />

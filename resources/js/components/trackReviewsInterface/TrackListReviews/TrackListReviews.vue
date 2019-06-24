@@ -1,24 +1,24 @@
 <template>
-  <div class="review-list">
+  <div class="track-list-reviews">
     <slot name="header" />
 
-    <ReviewListEntry
+    <TrackListReviewsEntry
       v-for="trackId in trackIdList"
       :key="trackId"
       :track-id="trackId"
       :commented-in-period="commentedInPeriod"
-      class="review-list__entry"
+      class="track-list-reviews__entry"
     />
     <slot name="loader" />
   </div>
 </template>
 
 <script>
-import ReviewListEntry from '../ReviewListEntry';
+import TrackListReviewsEntry from '../TrackListReviewsEntry';
 
 export default {
   components: {
-    ReviewListEntry
+    TrackListReviewsEntry
   },
   props: {
     trackIdList: {
@@ -38,5 +38,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./ReviewList.scss"
+  src="./TrackListReviews.scss"
 />

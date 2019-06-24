@@ -1,13 +1,14 @@
 <template>
   <TrackReviews
     class="my-reviews"
-    user-id="me"
+    for-type="user-track-list"
+    for-id="me"
     default-period="week"
   />
 </template>
 
 <script>
-import TrackReviews from 'components/trackReviews/TrackReviews';
+import TrackReviews from 'components/trackReviewsInterface/TrackReviewsInterface';
 
 export default {
   components: {

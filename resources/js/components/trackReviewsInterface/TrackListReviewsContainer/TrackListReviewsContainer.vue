@@ -1,30 +1,35 @@
 <template>
-  <ReviewList
+  <TrackListReviews
     :track-id-list="trackIdList"
     :commented-in-period="commentedInPeriod"
   >
     <template v-if="isLoading" #loader>
-      <SpinnerLoader class="track-reviews-container__loader"/>
+      <SpinnerLoader class="track-reviews-container__loader" />
     </template>
-  </ReviewList>
+  </TrackListReviews>
 </template>
 
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
-import ReviewList from 'components/trackReviews/ReviewList';
+import TrackListReviews from '../TrackListReviews';
 import gql from './gql';
 
 export default {
   components: {
     SpinnerLoader,
-    ReviewList
+    TrackListReviews
   },
 
   props: {
-    userId: {
-      validator: val => (
-        typeof value === 'number' || val === 'me'
-      ),
+    forType: {
+      validator: val => [
+        'user-track-list',
+        'music-group-track-list'
+      ].includes(val),
+      required: true
+    },
+    forId: {
+      validator: val => val === 'me' || typeof val === 'number',
       required: true
     },
     commentedInPeriod: {
@@ -36,16 +41,37 @@ export default {
   },
 
   data() {
+    const { forType, forId } = this;
+    const filters = {};
+
+    switch (forType) {
+      case 'user-track-list':
+        if (forId === 'me') {
+          filters.my = true;
+        } else {
+          filters.userId = forId;
+        }
+        break;
+
+      case 'music-group-track-list':
+        filters.musicGroupId = forId;
+        break;
+
+      default:
+        throw new Error(
+          `Incorrect value for property "forType" passed to TrackReviewsContainerList: ${forType}`
+        );
+    }
+
     return {
       trackList: [],
       isLoading: true,
       hasMoreData: true,
       queryVars: {
-        // TODO: pass user/group id as a prop
         pageNumber: 1,
         pageLimit: 5,
-        my: false,
-        commentedInPeriod: this.commentedInPeriod
+        commentedInPeriod: this.commentedInPeriod,
+        filters
       }
     };
   },
@@ -161,5 +187,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./TrackReviewsContainer.scss"
+  src="./TrackListReviewsContainer.scss"
 />
