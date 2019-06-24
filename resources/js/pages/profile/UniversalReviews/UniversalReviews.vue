@@ -1,6 +1,6 @@
 <template>
-  <div :class="containerPaddingClass">
-    <ReturnHeader v-if="renderHeader" />
+  <div class="universal-reviews">
+    <ReturnHeader v-if="renderHeader" :class="containerPaddingClass" />
     <TrackReviews
       class="universal-reviews"
       :for-type="forType"
