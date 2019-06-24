@@ -36,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('favourites_delete_validate', 'App\Validation\FavouritesValidator@validateDelete');
         Validator::extend('follow_delete_validate', 'App\Validation\FollowValidator@validateDelete');
         Validator::extend('mutually_exclusive_args', 'App\Validation\ManuallyExclusiveArgs@validate');
+        Validator::extend('album_delete_validate', 'App\Validation\AlbumValidator@validateDelete');
+        Validator::extend('collection_delete_validate', 'App\Validation\CollectionValidator@validateDelete');
 
         $table = config('admin.extensions.config.table', 'admin_config');
         if (Schema::hasTable($table)) {

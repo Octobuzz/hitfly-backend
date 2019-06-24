@@ -5,7 +5,6 @@ namespace App\Http\GraphQL\Query;
 use App\Helpers\DBHelpers;
 use App\Models\Album;
 use App\Models\Comment;
-use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
@@ -48,7 +47,6 @@ class CommentsAlbumQuery extends Query
         if (false === empty($args['commentPeriod'])) {
             $date = DBHelpers::getPeriod($args['commentPeriod']);
             $query->where('created_at', '>=', $date);
-
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);

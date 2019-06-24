@@ -43,7 +43,6 @@ class CommentsTrackQuery extends Query
         if (false === empty($args['commentPeriod'])) {
             $date = DBHelpers::getPeriod($args['commentPeriod']);
             $query->where('created_at', '>=', $date);
-
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);

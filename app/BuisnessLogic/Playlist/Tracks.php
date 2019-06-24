@@ -10,7 +10,6 @@ namespace App\BuisnessLogic\Playlist;
 
 use App\Contracts\Playlist\TracksContract;
 use App\Models\Track;
-use Illuminate\Support\Facades\URL;
 
 class Tracks implements TracksContract
 {

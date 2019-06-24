@@ -162,6 +162,7 @@ return [
                 'removeMeMutation' => \App\Http\GraphQL\Mutations\User\RemoveMeMutation::class,
 
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
+                'deleteCollectionMutation' => \App\Http\GraphQL\Mutations\Collection\DeleteCollectionMutation::class,
 
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
@@ -170,6 +171,7 @@ return [
 
                 'createAlbum' => \App\Http\GraphQL\Mutations\CreateAlbumMutation::class,
                 'updateAlbum' => \App\Http\GraphQL\Mutations\UpdateAlbumMutation::class,
+                'deleteAlbumMutation' => \App\Http\GraphQL\Mutations\DeleteAlbumMutation::class,
 
                 'addFollow' => \App\Http\GraphQL\Mutations\FollowMutation::class,
                 'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
