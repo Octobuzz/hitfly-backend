@@ -2,8 +2,10 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Helpers\DBHelpers;
 use App\Models\Album;
 use App\Models\Comment;
+use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
@@ -26,20 +28,31 @@ class CommentsAlbumQuery extends Query
             'albumId' => ['name' => 'albumId', 'type' => Type::int()],
             'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
             'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
+            'commentPeriod' => [
+                'type' => \GraphQL::type('CommentPeriodEnum'),
+                'description' => 'Фильтрация комментов по периоду',
+            ],
         ];
     }
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Comment::with($fields->getRelations());
+
+        $query->select($fields->getSelect());
+        $query->where('commentable_type', Album::class);
         if (isset($args['albumId'])) {
-            return Comment::with($fields->getRelations())->select($fields->getSelect())
-                ->where('commentable_type', Album::class)
-                ->where('commentable_id', $args['albumId'])
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('commentable_id', $args['albumId']);
         }
 
-        return Comment::with($fields->getRelations())->select($fields->getSelect())
-            ->where('commentable_type', Album::class)
-            ->paginate($args['limit'], ['ке и *'], 'page', $args['page']);
+        if (false === empty($args['commentPeriod'])) {
+            $date = DBHelpers::getPeriod($args['commentPeriod']);
+            $query->where('created_at', '>=', $date);
+
+        }
+
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
+        return $response;
     }
 }
