@@ -1,26 +1,43 @@
 @extends('emails.email')
 
 @section('content')
-    <h1>@lang('emails.birthday.hello'), {{$user->name}}!</h1>
-
-    @lang('emails.birthday.text')<br>
-    <h3>@lang('emails.recommend')</h3>
-    @lang('emails.birthday.playlistRecommend')<br>
-
-    @forelse ($playLists as $list)
-        <div>
-            @if($list['link'])<a href="{{$list['link']}}">@endif
-                <div>
-                    @if($list['list_img'])<img src="{{$list['list_img']}}">@endif <h5>{{$list['name']}}</h5><span>{{$list['date']}}</span> {{$list['count_tracks']}}
-                </div>
-                @if($list['link'])</a>@endif
-        </div>
-    @empty
-        @lang('emails.birthday.topEmpty')
-    @endforelse
-
-
-
-    @lang('emails.regards'),
-    {{ config('app.name') }}
+    <tr>
+        <td>
+            <table width="600" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tbody>
+                <tr>
+                    <td>
+                        <table width="504" cellpadding="0" cellspacing="0" border="0" align="center" style="padding: 35px 0;">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.birthday.hello'), {{$user->username}}!</h3>
+                                    <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
+                                        @lang('emails.birthday.text',['discountsize'=> $discountSize,'discounttype' => $discountType,'promocode'=>$promocode])
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="padding-bottom: 40px;">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="{{$video['url']}}" style="display: block; text-decoration: none;">
+                                        <img style="display: block; max-width: 100%;" src="{{$video['preview_img']}}">
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
 @endsection

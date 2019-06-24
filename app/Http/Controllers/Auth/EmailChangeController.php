@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Jobs\EmailChangedJob;
 use App\Models\EmailChange;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -18,6 +19,7 @@ class EmailChangeController extends Controller
             $user->email = $row->new_email;
             $user->save();
             $row->delete();
+            dispatch(new EmailChangedJob($user))->onQueue('low');
 
             return redirect('/email-change');
         }

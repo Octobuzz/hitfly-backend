@@ -178,8 +178,8 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->text('username', 'Имя пользователя')->rules('required');
         $form->text('email', 'Email (логин)')->rules('required');
         $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules('confirmed');
-        $form->password('password_confirmation', trans('admin.password_confirmation'))
+        $form->password('password', trans('admin.password'))->rules('confirmed')->required();
+        $form->password('password_confirmation', trans('admin.password_confirmation'))->required()
             ->default(function ($form) {
                 return null;
             });
@@ -227,16 +227,24 @@ class UserController extends \Encore\Admin\Controllers\UserController
             }
             /** @var User $savingUser */
             $savingUser = $form->model();
-            $savingUser->roles()->sync(array_filter($form->roles));
-            if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-                /** @var ArtistProfile $artistProfile */
-                $artistProfile = $savingUser->artistProfile;
-                $artistProfile->update($form->artist_profile);
-                $artistProfile->save();
+            $profile = $form->artist_profile;
+            if (null !== $savingUser->id) {
+                $savingUser->roles()->sync(array_filter($form->roles));
+                if (
+                    (
+                        true === $savingUser->isRole('star')
+                        || $savingUser->isRole('performer')
+                    )
+                    && null !== $profile
+                ) {
+                    $attributes = ['user_id' => $savingUser->id];
+                    /** @var ArtistProfile $artistProfile */
+                    $artistProfile = ArtistProfile::query()->firstOrNew($attributes, $profile);
+                    $savingUser->artistProfile()->save($artistProfile);
+                }
             }
         });
-        $form->disableReset();
-
+        $form->builder()->getFooter()->disableReset(true);
         $form->tools(function (Form\Tools $tools) {
             // Disable `Delete` btn.
             $tools->disableDelete();

@@ -10,15 +10,21 @@ use Illuminate\Queue\SerializesModels;
 class BirthdayCongratulation extends Mailable
 {
     use Queueable, SerializesModels;
-    public $playLists;
+    public $discountSize;
+    public $discountType;
+    public $promocode;
     public $user;
+    public $video;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, $recommend)
+    public function __construct(User $user, $discount, $promocode, $video)
     {
-        $this->playLists = $recommend;
+        $this->discountSize = $discount->getDiscountSize();
+        $this->discountType = $discount->getDiscountType();
+        $this->promocode = $promocode;
+        $this->video = $video;
         $this->user = $user;
     }
 

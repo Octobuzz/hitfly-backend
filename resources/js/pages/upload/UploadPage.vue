@@ -20,7 +20,13 @@
       <PageHeader class="add-track__page-header" v-show="track !== null">
         Загрузка песни
       </PageHeader>
-      <TrackInfo v-show="track !== null" @sendInfo="addInfo" :loading="loading" :filename="filename"></TrackInfo>
+      <TrackInfo
+      v-show="track !== null"
+      @sendInfo="addInfo"
+      :loading="loading"
+      :filename="filename"
+      :validation="validation"
+      ></TrackInfo>
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
@@ -57,6 +63,16 @@
       trackID: null,
       loading: false,
       filename: '',
+      validation:{
+        trackName: {
+          message: '',
+          error: false
+        },
+        genre: {
+          message: '',
+          error: false
+        }
+      }
     }),
     components: {
       Dropzone,
@@ -108,6 +124,7 @@
               songText: info.songText,
               trackName: info.trackName,
               album: info.album,
+              cover: info.cover
             }
           },
           mutation: gql`mutation($id: Int!, $infoTrack: TrackInput) {
@@ -122,9 +139,20 @@
           this.$router.push('/profile/my-music');
           this.$message(
             'Ваша песня загружена',
+            'info',
+            {timeout: 3000}
           );
         }).catch((error) => {
-          console.dir(error)
+          let errors = error.graphQLErrors[0].validation;
+          if(errors['infoTrack.genres'].length > 0){
+            this.validation.genre.message = errors['infoTrack.genres'][0];
+            this.validation.genre.error = true;
+          };
+          if(errors['infoTrack.trackName'].length > 0){
+            this.validation.trackName.message = errors['infoTrack.trackName'][0];
+            this.validation.trackName.error = true;
+          };
+          console.log(this.validation);
         })
       },
       uploadTrack(track){

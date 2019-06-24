@@ -1,9 +1,28 @@
-@component('mail::message')
-# @lang('emails.resetPassword.passwordChanged')
+@extends('emails.email')
 
-@lang('emails.resetPassword.passwordChangedSuccess')
-
-<br>
-@lang('emails.regards'),<br>
-{{ config('app.name') }}
-@endcomponent
+@section('content')
+    <tr>
+        <td>
+            <table width="600" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tbody>
+                <tr>
+                    <td>
+                        <table width="504" cellpadding="0" cellspacing="0" border="0" align="center" style="padding: 35px 0;">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.resetPassword.passwordChanged')</h3>
+                                    <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
+                                        @lang('emails.resetPassword.passwordChangedSuccess')
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+@endsection

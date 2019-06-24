@@ -22,7 +22,7 @@ class ArtistProfile extends Model
 
     public function user(): BelongsTo
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function setCareerStartAttribute($attr)

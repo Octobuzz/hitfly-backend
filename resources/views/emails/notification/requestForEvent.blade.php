@@ -1,27 +1,63 @@
 @extends('emails.email')
 
 @section('content')
-    <h1>@lang('emails.requestForEvent.hello'), {{$user->username}}!</h1>
-    @lang('emails.requestForEvent.text',['link'=>'<a href="'.$event['link'].'" >ссылке</a>','name'=>$event['name']])<br>
-    <h3>@lang('emails.requestForEvent.eventsUpcoming')</h3>
-    @lang('emails.requestForEvent.newEvents')<br>
 
-    @forelse ($eventsList as $list)
-        <div>
-            @if($list['link'])<a href="{{$list['link']}}">@endif
-                <div>
-                    @if($list['img'])<img src="{{$list['img']}}">@endif <h5>{{$list['name']}}</h5> {{$list['participant']}}
-                </div>
-                @if($list['link'])</a>@endif
-        </div>
-    @empty
-        @lang('emails.requestForEvent.empty')
-    @endforelse
+    <tr>
+        <td>
+            <table width="600" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tbody>
+                <tr>
+                    <td>
+                        <table width="504" cellpadding="0" cellspacing="0" border="0" align="center" style="padding: 35px 0;">
+                            <tbody>
+                            <tr>
+                                <td style="padding-bottom: 20px;">
+                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.requestForEvent.hello'), {{$user->username}}!</h3>
+                                    <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0 0 15px;">
+                                        @lang('emails.requestForEvent.text',['link'=>'<a href="'.$event['url'].'" >ссылке</a>','name'=>$event['name']])
 
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom: 20px;">
+                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;"> @lang('emails.requestForEvent.eventsUpcoming',['month'=> \App\Helpers\DateHelpers::getNameMonthInFuture('2019-01-05')])</h3>
+                                    <p style="font-size: 12px; line-height: 14px; color: #606060; margin: 0;">
+                                        @lang('emails.requestForEvent.newEvents')
+                                    </p>
+                                </td>
+                            </tr>
+                            @if(isset($eventsList) && $eventsList !== null)
+                            <tr>
+                                <td>
+                                    <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">
+                                        <tbody>
+                                        @foreach ($eventsList as $event)
+                                            @if ($loop->iteration%2 !== 0)
+                                                <tr>
+                                                    @endif
+                                                    <td @if ($loop->iteration%2 === 0)align="right" @endif style="width: 50%;">
+                                                        <a href="{{$event['url']}}" style="position: relative; display: block; text-decoration: none;">
+                                                            <img style="display: block; max-width: 100%; margin: 0 0 10px;" src="{{$event['img']}}">
+                                                            <p style="position: absolute; width: 130px; font-size: 14px; font-weight: 700; text-align: left; color: #fff; top: 10px; left: 10px; margin: 0;">{{$event['name']}}</p>
+                                                        </a>
+                                                    </td>
+                                                    @if ($loop->iteration%2 === 0 || $loop->last)
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            @endif
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
 
-
-
-
-    @lang('emails.regards'),
-    {{ config('app.name') }}
 @endsection

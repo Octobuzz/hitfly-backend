@@ -11,18 +11,16 @@ class ReachTopMail extends Mailable
     use Queueable, SerializesModels;
     public $track;
     public $topUrl;
-    public $eventsList;
     public $topCount;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($track, $topUrl, $eventsList, $topCount)
+    public function __construct($track, $topUrl, $topCount)
     {
         $this->track = $track;
         $this->topUrl = $topUrl;
         $this->topCount = $topCount;
-        $this->eventsList = $eventsList;
     }
 
     /**

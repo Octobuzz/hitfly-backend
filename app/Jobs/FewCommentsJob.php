@@ -16,7 +16,7 @@ class FewCommentsJob implements ShouldQueue
     public $user;
 
     /**
-     * Create a new job instance.
+     * Уведомление об отсутствии отзывов.
      *
      * @param $user
      * @param $tracks

@@ -12,7 +12,7 @@ class LongAgoNotVisited extends Mailable
     use Queueable, SerializesModels;
     public $tracks;
     public $user;
-    public $recommendation;
+    public $importantEvents;
     public $events;
     public $days;
 
@@ -22,15 +22,15 @@ class LongAgoNotVisited extends Mailable
      * @param $days
      * @param $user
      * @param $events
-     * @param $recommendation
+     * @param $importantEvents
      * @param $tracks
      */
-    public function __construct($days, User $user, $events, $recommendation, $tracks)
+    public function __construct($days, User $user, $events, $importantEvents, $tracks)
     {
         $this->tracks = $tracks;
         $this->user = $user;
         $this->events = $events;
-        $this->recommendation = $recommendation;
+        $this->importantEvents = $importantEvents;
         $this->days = $days;
     }
 

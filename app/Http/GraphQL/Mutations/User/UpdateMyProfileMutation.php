@@ -72,6 +72,7 @@ class UpdateMyProfileMutation extends Mutation
             $artist = $user->artistProfile;
             if (null === $artist) {
                 $artist = new ArtistProfile();
+                $artist->user()->associate($user);
             }
             $artist->update(DBHelpers::arrayKeysToSnakeCase($args['artistProfile']));
 

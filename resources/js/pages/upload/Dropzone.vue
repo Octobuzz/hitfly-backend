@@ -7,7 +7,7 @@
       <h1 class="up-page__title">Переместите сюда свою песню или альбом</h1>
       <UploadButton
         class="up-page__button"
-        modifier="primary"
+        modifier="secondary"
         inputValue="или загрузите файл с устройства"
         @changed="fileInput"
       >
@@ -42,9 +42,10 @@
       onDrop(e){
         e.preventDefault();
         e.stopPropagation();
-        if(e.dataTransfer.files[0].type.match('audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a')){
+        if(e.dataTransfer.files[0].type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
           const track = e.dataTransfer.files;
           this.$emit('droppedTrack', track);
+          console.log(track);
         } else {
           this.$message(
             'Выберите корректный формат файла',
@@ -54,7 +55,7 @@
       },
       fileInput(track){
         console.log(track);
-        if(track.type.match('audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a')){
+        if(track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
           this.$emit('trackInput', track);
         }else{
           this.$message(
