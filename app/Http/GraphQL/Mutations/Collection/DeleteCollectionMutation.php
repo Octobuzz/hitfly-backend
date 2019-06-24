@@ -27,7 +27,7 @@ class DeleteCollectionMutation extends Mutation
     public function args()
     {
         return [
-            'id' => [
+            'collectionId' => [
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'id коллекции',
                 'rules' => 'collection_delete_validate',
@@ -37,7 +37,7 @@ class DeleteCollectionMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $album = Collection::query()->find($args['id']);
+        $album = Collection::query()->find($args['collectionId']);
         $album->delete();
 
         return null;

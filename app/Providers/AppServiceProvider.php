@@ -38,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('mutually_exclusive_args', 'App\Validation\ManuallyExclusiveArgs@validate');
         Validator::extend('album_delete_validate', 'App\Validation\AlbumValidator@validateDelete');
         Validator::extend('collection_delete_validate', 'App\Validation\CollectionValidator@validateDelete');
+        Validator::extend('remove_track_from_album_validate', 'App\Validation\AlbumValidator@removeTrackFromAlbum');
+        Validator::extend('remove_track_from_collection_validate', 'App\Validation\CollectionValidator@removeTrackFromCollection');
 
         $table = config('admin.extensions.config.table', 'admin_config');
         if (Schema::hasTable($table)) {
