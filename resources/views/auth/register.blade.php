@@ -3,7 +3,7 @@
 @section('content')
     <div class="main__info">
         <div class="reg-page">
-            <h1 class="reg-page__title">{{ __('auth.readyToConnect') }} <img src="/images/logo.svg" alt="digico"> ?</h1>
+            <h1 class="reg-page__title">{{ __('auth.readyToConnect') }}</h1>
             @include('auth.loginBySocial')
             <div class="reg-page__alternative text-with-line">
                 <span>{{ __('auth.orRegisterWithEmail') }}</span>
