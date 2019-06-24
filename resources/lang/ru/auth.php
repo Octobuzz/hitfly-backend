@@ -6,7 +6,7 @@
  * Time: 11:47
  */
 return [
-    'readyToConnect' => 'Готовы присоединиться к',
+    'readyToConnect' => 'Готовы присоединиться к Hitfly?',
     'orRegisterWithEmail' => 'или зарегистрируйтесь через почту',
     'email' => 'E-mail',
     'password' => 'Пароль',
