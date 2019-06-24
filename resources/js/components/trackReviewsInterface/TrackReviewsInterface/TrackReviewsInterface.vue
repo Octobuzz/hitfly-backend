@@ -1,14 +1,14 @@
 <template>
   <div :class="containerPaddingClass">
-    <div class="track-reviews__filter-container">
+    <div class="track-reviews-interface__filter-container">
       <span
         v-for="period in periodFilterList"
         :key="period"
-        class="track-reviews__filter"
+        class="track-reviews-interface__filter"
       >
         <input
           :id="`track-reviews-filter-${period}`"
-          class="track-reviews__filter-input"
+          class="track-reviews-interface__filter-input"
           type="radio"
           name="track-reviews-filter"
           :checked="period === periodFilter"
@@ -16,10 +16,10 @@
         >
         <label
           :for="`track-reviews-filter-${period}`"
-          class="track-reviews__filter-button"
+          class="track-reviews-interface__filter-button"
         >
           <CalendarIcon />
-          <span class="track-reviews__filter-text">
+          <span class="track-reviews-interface__filter-text">
             {{
               period === 'week'
                 ? 'За неделю'
@@ -34,8 +34,16 @@
 
     <!--TODO: search-->
 
+    <TrackListReviewsContainer
+      v-if="forType !== 'track'"
+      :for-type="forType"
+      :for-id="forId"
+      :commented-in-period="periodFilter"
+    />
+
     <TrackReviewsContainer
-      :user-id="'me'"
+      v-if="forType === 'track'"
+      :track-id="forId"
       :commented-in-period="periodFilter"
     />
   </div>
@@ -43,25 +51,38 @@
 
 <script>
 import CalendarIcon from 'components/icons/CalendarIcon.vue';
+import TrackListReviewsContainer from '../TrackListReviewsContainer';
 import TrackReviewsContainer from '../TrackReviewsContainer';
 
 export default {
   components: {
     CalendarIcon,
+    TrackListReviewsContainer,
     TrackReviewsContainer
   },
 
   props: {
-    userId: {
-      validator: val => (
-        typeof value === 'number' || val === 'me'
-      ),
+    // TODO: share validators
+
+    // for user-track-list type you should specify user id or string "me"
+    // for track type you should specify track id
+
+    forType: {
+      validator: val => [
+        'user-track-list',
+        'music-group-track-list',
+        'track'
+      ].includes(val),
       required: true
     },
+
+    forId: {
+      validator: val => val === 'me' || typeof val === 'number',
+      required: true
+    },
+
     defaultPeriod: {
-      validator: val => (
-        ['week', 'month', 'year'].indexOf(val) !== -1
-      ),
+      validator: val => ['week', 'month', 'year'].includes(val),
       default: 'week'
     }
   },
@@ -92,5 +113,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./TrackReviews.scss"
+  src="./TrackReviewsInterface.scss"
 />

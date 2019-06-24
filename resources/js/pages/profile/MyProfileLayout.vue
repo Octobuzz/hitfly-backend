@@ -102,7 +102,7 @@ export default {
     renderNavBar() {
       const { $route: { fullPath } } = this;
 
-      return !/(edit|create|bonus|tracks|albums|playlists|sets)/.test(fullPath);
+      return !/(edit|create|bonus|tracks|albums|playlists|sets|[0-9])/.test(fullPath);
     },
 
     renderUserCard() {

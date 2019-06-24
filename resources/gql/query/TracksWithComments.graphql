@@ -6,16 +6,14 @@
 query TracksWithComments(
     $pageLimit: Int,
     $pageNumber: Int,
-    $my: Boolean,
+    $filters: TrackFilterInput,
     $commentedInPeriod: CommentPeriodEnum!
 ) {
     tracks(
         page: $pageNumber,
         limit: $pageLimit,
         commentPeriod: $commentedInPeriod,
-        filters: {
-            my: $my
-        }
+        filters: $filters
     ) {
         total
         to

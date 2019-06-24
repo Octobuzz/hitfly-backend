@@ -1,0 +1,19 @@
+#import "../fragments/trackComment.graphql"
+
+query TrackComments(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $trackId: Int
+) {
+    commentsTrack(
+        limit: $pageLimit,
+        page: $pageNumber,
+        trackId: $trackId
+    ) {
+        to
+        total
+        data {
+            ...trackComment
+        }
+    }
+}

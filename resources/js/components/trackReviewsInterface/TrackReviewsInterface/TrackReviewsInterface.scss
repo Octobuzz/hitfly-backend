@@ -1,10 +1,10 @@
 @import '~scss/_variables.scss';
 
-.track-reviews {
+.track-reviews-interface {
   &__filter-input {
     display: none;
 
-    &:checked + .track-reviews__filter-button {
+    &:checked + .track-reviews-interface__filter-button {
       color: white;
       padding: {
         top: 12px;
@@ -73,7 +73,7 @@
 }
 
 @media screen and (max-width: 767px) {
-  .track-reviews {
+  .track-reviews-interface {
     &__filter-container {
       margin-bottom: 0;
     }
