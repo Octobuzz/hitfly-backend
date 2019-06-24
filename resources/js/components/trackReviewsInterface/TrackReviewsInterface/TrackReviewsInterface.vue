@@ -41,21 +41,29 @@
       :commented-in-period="periodFilter"
     />
 
-    <!--TODO: TrackReviewsContainer-->
+    <TrackReviewsContainer
+      v-if="forType === 'track'"
+      :track-id="forId"
+      :commented-in-period="periodFilter"
+    />
   </div>
 </template>
 
 <script>
 import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import TrackListReviewsContainer from '../TrackListReviewsContainer';
+import TrackReviewsContainer from '../TrackReviewsContainer';
 
 export default {
   components: {
     CalendarIcon,
-    TrackListReviewsContainer
+    TrackListReviewsContainer,
+    TrackReviewsContainer
   },
 
   props: {
+    // TODO: share validators
+
     // for user-track-list type you should specify user id or string "me"
     // for track type you should specify track id
 
@@ -67,10 +75,12 @@ export default {
       ].includes(val),
       required: true
     },
+
     forId: {
       validator: val => val === 'me' || typeof val === 'number',
       required: true
     },
+
     defaultPeriod: {
       validator: val => ['week', 'month', 'year'].includes(val),
       default: 'week'

@@ -41,7 +41,7 @@ import AboutPage from './pages/AboutPage.vue';
 
   /profile/reviews
 
-  /profile/review/:id
+  /profile/reviews/:id
 */
 
 const routes = [
@@ -99,11 +99,11 @@ const routes = [
       },
       {
         path: 'reviews',
-        component: profile.MyReviews
+        component: profile.UniversalReviews
       },
       {
-        path: 'review/:reviewId',
-        component: profile.Review
+        path: 'reviews/:trackId',
+        component: profile.UniversalReviews
       },
       {
         path: 'album/:albumId',

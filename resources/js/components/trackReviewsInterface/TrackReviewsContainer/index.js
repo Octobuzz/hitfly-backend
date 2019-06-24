@@ -1,1 +1,1 @@
-export { default } from './TrackListReviewsContainer.vue';
+export { default } from './TrackReviewsContainer.vue';

@@ -1,52 +1,20 @@
 @import '~scss/_variables.scss';
 
-$cover_width_desktop: 180px;
-$cover_width_mobile: 72px;
-
 .track-list-reviews-entry {
   display: flex;
-
-  &__cover-section {
-    width: $cover_width_desktop;
-    margin-right: 32px;
-  }
-
-  &__cover {
-    width: $cover_width_desktop;
-    height: $cover_width_desktop;
-    border-radius: 4px;
-  }
-
-  &__cover-button-container {
-    display: flex;
-    justify-content: space-between;
-  }
 
   &__player-reviews-section {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex-grow: 1;
   }
 
   &__d-track-name {
 
   }
 
-  &__m-track-name {
-    display: none;
-    margin-top: 0;
-    margin-bottom: 8px;
-  }
-
   &__d-singer {
     height: 32px;
-  }
-
-  &__m-singer {
-    font-size: 10px;
-    color: $text_color_secondary;
-    display: none;
-    margin-bottom: 4px;
   }
 
   &__singer {
@@ -81,26 +49,6 @@ $cover_width_mobile: 72px;
   .track-list-reviews-entry {
     flex-direction: column;
 
-    &__cover-section {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      align-content: flex-start;
-      width: 100%;
-      max-height: 90px;
-      margin-right: 0;
-    }
-
-    &__cover {
-      width: $cover_width_mobile;
-      height: $cover_width_mobile;
-      margin-right: 16px;
-    }
-
-    &__cover-button-container {
-      min-width: 200px;
-    }
-
     &__player {
       height: 72px;
     }
@@ -109,16 +57,8 @@ $cover_width_mobile: 72px;
       display: none;
     }
 
-    &__m-track-name {
-      display: block;
-    }
-
     &__d-singer {
       display: none;
-    }
-
-    &__m-singer {
-      display: block;
     }
 
     &__track-review {

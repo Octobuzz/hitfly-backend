@@ -1,6 +1,6 @@
 #import "../fragments/trackComment.graphql"
 
-query TrakcComments(
+query TrackComments(
     $pageLimit: Int!,
     $pageNumber: Int!,
     $trackId: Int
@@ -10,7 +10,8 @@ query TrakcComments(
         page: $pageNumber,
         trackId: $trackId
     ) {
-        has_more_pages
+        to
+        total
         data {
             ...trackComment
         }

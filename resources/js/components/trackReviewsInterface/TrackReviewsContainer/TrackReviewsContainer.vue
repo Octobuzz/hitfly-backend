@@ -1,33 +1,34 @@
 <template>
-<!--  <ReviewList-->
-<!--    :track-id-list="trackIdList"-->
-<!--    :commented-in-period="commentedInPeriod"-->
-<!--  >-->
-<!--    <template v-if="isLoading" #loader>-->
-<!--      <SpinnerLoader class="track-reviews-container__loader"/>-->
-<!--    </template>-->
-<!--  </ReviewList>-->
-  <div>
-    track reviews container
-  </div>
+  <TrackReviews
+    :track-id="trackId"
+    :reviews="reviews"
+    :show-loader="hasMoreData"
+  >
+    <template #main-loader>
+      <SpinnerLoader class="track-reviews-container__loader" />
+    </template>
+
+    <template #scroll-loader>
+      <SpinnerLoader class="track-reviews-container__loader" />
+    </template>
+  </TrackReviews>
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
-import ReviewList from 'components/trackReviews/ReviewList';
+import TrackReviews from '../TrackReviews';
 import gql from './gql';
 
 export default {
   components: {
     SpinnerLoader,
-    ReviewList
+    TrackReviews
   },
 
   props: {
-    userId: {
-      validator: val => (
-        typeof value === 'number' || val === 'me'
-      ),
+    trackId: {
+      type: Number,
       required: true
     },
     commentedInPeriod: {
@@ -40,34 +41,28 @@ export default {
 
   data() {
     return {
-      trackList: [],
+      reviews: [],
       isLoading: true,
       hasMoreData: true,
       queryVars: {
-        // TODO: pass user/group id as a prop
         pageNumber: 1,
         pageLimit: 5,
-        my: false,
-        commentedInPeriod: this.commentedInPeriod
+        // TODO: implement sorting when the api is ready
+        // commentedInPeriod: this.commentedInPeriod
       }
     };
   },
 
-  computed: {
-    trackIdList() {
-      return this.trackList.map(track => track.id);
-    }
-  },
-
   watch: {
     commentedInPeriod(val) {
+      this.isLoading = true;
+      this.hasMoreData = true;
+
       this.queryVars = {
         ...this.queryVars,
+        pageNumber: 1,
         commentedInPeriod: val
       };
-
-      this.hasMoreData = true;
-      this.queryVars.pageNumber = 1;
     }
   },
 
@@ -80,20 +75,23 @@ export default {
   },
 
   methods: {
-    fetchMoreTracks(vars) {
-      return this.$apollo.queries.trackList.fetchMore({
+    fetchMoreReviews(vars) {
+      return this.$apollo.queries.reviews.fetchMore({
         variables: vars,
 
-        updateQuery: (currentList, { fetchMoreResult: { tracks } }) => {
-          const { total, to, data: newTracks } = tracks;
+        updateQuery: (currentList, { fetchMoreResult: { commentsTrack } }) => {
+          const { total, to, data: newComments } = commentsTrack;
 
           return {
-            tracks: {
+            commentsTrack: {
               // eslint-disable-next-line no-underscore-dangle
-              __typename: currentList.tracks.__typename,
+              __typename: currentList.commentsTrack.__typename,
               total,
               to,
-              data: [...currentList.tracks.data, ...newTracks]
+              data: [
+                ...currentList.commentsTrack.data,
+                ...newComments
+              ]
             }
           };
         },
@@ -105,7 +103,7 @@ export default {
 
       this.isLoading = true;
 
-      this.fetchMoreTracks({
+      this.fetchMoreReviews({
         ...this.queryVars,
         pageNumber: this.queryVars.pageNumber + 1
       })
@@ -119,45 +117,51 @@ export default {
     },
 
     onScroll() {
-      const { innerHeight, pageYOffset } = window;
-      const { scrollHeight } = document.body;
+      if (!this.debouncedOnScroll) {
+        this.debouncedOnScroll = debounce(() => {
+          const { innerHeight, pageYOffset } = window;
+          const { scrollHeight } = document.body;
 
-      const maybeLoadMore = Math.abs(
-        (innerHeight + pageYOffset) - scrollHeight
-      ) <= 200;
+          const maybeLoadMore = Math.abs(
+            (innerHeight + pageYOffset) - scrollHeight
+          ) <= 200;
 
-      if (maybeLoadMore && this.hasMoreData) {
-        this.loadMore();
+          if (maybeLoadMore && this.hasMoreData) {
+            this.loadMore();
+          }
+        });
       }
+
+      this.debouncedOnScroll();
     }
   },
 
-  // apollo: {
-  //   trackList: {
-  //     query: gql.query.TRACKS_WITH_COMMENTS,
-  //     variables() {
-  //       return this.queryVars;
-  //     },
-  //     fetchPolicy: 'network-only',
-  //
-  //     update({ tracks: { total, to, data } }) {
-  //       this.isLoading = false;
-  //       this.hasMoreData = to < total;
-  //
-  //       // check if the screen has empty space to load more comments
-  //
-  //       this.$nextTick(() => {
-  //         this.onScroll();
-  //       });
-  //
-  //       return data;
-  //     },
-  //
-  //     error(err) {
-  //       console.dir(err);
-  //     }
-  //   }
-  // }
+  apollo: {
+    reviews: {
+      query: gql.query.TRACK_COMMENTS,
+      variables() {
+        return this.queryVars;
+      },
+      fetchPolicy: 'network-only',
+
+      update({ commentsTrack: { total, to, data } }) {
+        this.isLoading = false;
+        this.hasMoreData = to < total;
+
+        // check if the screen has empty space to load more comments
+
+        this.$nextTick(() => {
+          this.onScroll();
+        });
+
+        return data;
+      },
+
+      error(err) {
+        console.dir(err);
+      }
+    }
+  }
 };
 </script>
 

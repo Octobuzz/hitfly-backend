@@ -3,8 +3,8 @@
     :track-id-list="trackIdList"
     :commented-in-period="commentedInPeriod"
   >
-    <template v-if="isLoading" #loader>
-      <SpinnerLoader class="track-reviews-container__loader" />
+    <template v-if="hasMoreData" #loader>
+      <SpinnerLoader class="track-list-reviews-container__loader" />
     </template>
   </TrackListReviews>
 </template>
@@ -41,13 +41,16 @@ export default {
   },
 
   data() {
-    const { forType, forId } = this;
+    const { forType, forId, commentedInPeriod } = this;
     const filters = {};
 
     switch (forType) {
       case 'user-track-list':
         if (forId === 'me') {
           filters.my = true;
+
+          // TODO: api bug ?
+          filters.my = false;
         } else {
           filters.userId = forId;
         }
@@ -70,7 +73,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 5,
-        commentedInPeriod: this.commentedInPeriod,
+        commentedInPeriod,
         filters
       }
     };
@@ -84,13 +87,15 @@ export default {
 
   watch: {
     commentedInPeriod(val) {
+      this.trackList = [];
+      this.isLoading = true;
+      this.hasMoreData = true;
+
       this.queryVars = {
         ...this.queryVars,
-        commentedInPeriod: val
+        pageNumber: 1,
+        commentedInPeriod: val,
       };
-
-      this.hasMoreData = true;
-      this.queryVars.pageNumber = 1;
     }
   },
 

@@ -1,0 +1,64 @@
+@import '~scss/_variables.scss';
+
+$cover_width_desktop: 180px;
+$cover_width_mobile: 72px;
+
+.track-review-header {
+  width: $cover_width_desktop;
+  margin-right: 32px;
+
+  &__cover {
+    width: $cover_width_desktop;
+    height: $cover_width_desktop;
+    border-radius: 4px;
+  }
+
+  &__cover-button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__m-track-name {
+    display: none;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  &__m-singer {
+    font-size: 10px;
+    color: $text_color_secondary;
+    display: none;
+    margin-bottom: 4px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .track-review-header {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: flex-start;
+    width: 100%;
+    max-height: 90px;
+    margin-right: 0;
+
+    &__cover {
+      width: $cover_width_mobile;
+      height: $cover_width_mobile;
+      margin-right: 16px;
+    }
+
+    &__cover-button-container {
+      min-width: 200px;
+    }
+
+    &__m-track-name {
+      display: block;
+    }
+
+    &__m-singer {
+      display: block;
+    }
+  }
+}
+
