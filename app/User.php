@@ -93,8 +93,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         'gender',
         'birthday',
         'city_id',
+        //'avatar',
         'email_verified_at',
     ];
+
+    //protected $appends = ['avatar'];
 
     /**
      * The attributes that should be hidden for arrays.

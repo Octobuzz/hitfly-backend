@@ -34,7 +34,7 @@ class CommentsTrackQuery extends Query
     {
         $query = Comment::with($fields->getRelations());
 
-        $query->select($fields->getSelect());
+        //$query->select($fields->getSelect());
         $query->where('commentable_type', Track::class);
         if (isset($args['trackId'])) {
             $query->where('commentable_id', $args['trackId']);
