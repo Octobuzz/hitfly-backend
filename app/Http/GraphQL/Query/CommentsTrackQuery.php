@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Helpers\DBHelpers;
 use App\Models\Comment;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
@@ -31,15 +32,21 @@ class CommentsTrackQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Comment::with($fields->getRelations());
+
+        //$query->select($fields->getSelect());
+        $query->where('commentable_type', Track::class);
         if (isset($args['trackId'])) {
-            return Comment::with($fields->getRelations())->select($fields->getSelect())
-                ->where('commentable_type', Track::class)
-                ->where('commentable_id', $args['trackId'])
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('commentable_id', $args['trackId']);
         }
 
-        return Comment::with($fields->getRelations())->select($fields->getSelect())
-            ->where('commentable_type', Track::class)
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        if (false === empty($args['commentPeriod'])) {
+            $date = DBHelpers::getPeriod($args['commentPeriod']);
+            $query->where('created_at', '>=', $date);
+        }
+
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
+        return $response;
     }
 }

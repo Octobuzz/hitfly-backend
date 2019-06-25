@@ -3,20 +3,23 @@
  * Created by PhpStorm.
  * User: Dmitrii
  * Date: 28.02.2019
- * Time: 18:36
+ * Time: 18:36.
  */
 return [
-
     'confirmed' => 'Пароли несовпадают',
     'required_with' => 'Обязательно заполнение нескольких связаных полей',
     'date' => 'Неверный формат даты',
     'before' => 'Введите дату в прошлом',
     'favourites_unique_validate' => 'Ранее было добавлено в избранное',
     'favourites_delete_validate' => 'Такой сущности нет в избранном',
+    'album_delete_validate' => 'У вас нет прав на удаление альбома',
+    'remove_track_from_album_validate' => 'У вас нет прав на удаление трека из альбома',
+    'remove_track_from_collection_validate' => 'Вы неможете удалить этот трек',
+    'collection_delete_validate' => 'У вас нет прав на удаление плейлиста',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',
-        'string' =>  "Минимальное количество символов :min",
+        'string' => 'Минимальное количество символов :min',
         'array' => 'The :attribute must have at least :min items.',
     ],
     'mimes' => 'Не корректный тип файла :values',
@@ -142,7 +145,7 @@ return [
     */
 
     'attributes' => [
-        'string' =>  "Минимальное количество символов :min",
+        'string' => 'Минимальное количество символов :min',
     ],
     'authorRateComment' => 'Только владелец трека/альбома может оценивать комментарий',
     'rateNotEstimatedComment' => 'Комментарий уже был оценен',
@@ -162,6 +165,4 @@ return [
     'mutually_exclusive_args' => 'Атрибут :attribute конфликтует с одним из атрибутов',
     'ownerMusicGroup' => 'Вы не являетесь владельцем музыкальной группы',
     'ownerAlbum' => 'Вы не являетесь владельцем альбома',
-
-
 ];

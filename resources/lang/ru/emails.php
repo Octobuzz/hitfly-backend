@@ -23,8 +23,8 @@ return [
         'resetPassword' => 'Сбросить пароль',
         'footer' => 'Если вы не запросили сброс пароля, дальнейшие действия не требуются.',
         'linkExpire' => 'Ссылка для сброса пароля будет действительна в течение :count минут.',
-        'passwordChanged' => 'Пароль сменен',
-        'passwordChangedSuccess' => 'Ваш пароль успешно сменен.',
+        'passwordChanged' => 'Пароль изменен',
+        'passwordChangedSuccess' => 'Ваш пароль успешно изменен.',
 
     ],
     'register' => [

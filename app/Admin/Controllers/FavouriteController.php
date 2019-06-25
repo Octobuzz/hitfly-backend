@@ -124,7 +124,7 @@ class FavouriteController extends Controller
                     return $favouriteable['name'];
                 }
 
-                return 'имя ненайдено';
+                return 'имя не найдено';
             }
         );
         $grid->user('Пользователь')->display(function ($user) {

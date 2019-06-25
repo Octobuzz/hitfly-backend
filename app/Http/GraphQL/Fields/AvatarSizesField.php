@@ -44,6 +44,11 @@ class AvatarSizesField extends Field
     protected function resolve($root, $args)
     {
         $return = [];
+
+        //при запросе через commentsTrack - приходит не полный объект User
+        if (null === $root->getOriginal('avatar')) {
+            $root = User::query()->find($root->id);
+        }
         foreach ($args['sizes'] as $size) {
             $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
             if (null === $root->getOriginal('avatar')) {
