@@ -145,7 +145,7 @@ class CollectionController extends Controller
     {
         $form = new Form(new Collection());
 
-        $form->text('title', 'Заголовок');
+        $form->text('title', 'Заголовок')->required();
         $form->image('image', 'Изображение')->uniqueName();
         $form->select('user_id', 'Пользователь')->options(function ($id) {
             $user = User::find($id);
