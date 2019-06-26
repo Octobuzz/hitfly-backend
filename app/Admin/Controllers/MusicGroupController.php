@@ -144,7 +144,9 @@ class MusicGroupController extends Controller
             $user->username('Имя');
         });
         $show->name('Имя');
-        $show->career_start_year('Дата начала карьеры');
+        $show->career_start_year('Дата начала карьеры')->as(function ($year) {
+            return $year->format('Y');
+        });
 
         $show->genre('Жанр', function ($genre) {
             $genre->setResource('/admin/genre');
@@ -181,7 +183,7 @@ class MusicGroupController extends Controller
         })->ajax('/admin/api/users');
 
         $form->text('name', 'Имя');
-        $form->datetime('career_start_year', 'Старт начала карьеры')->default(date('Y-m-d'));
+        $form->date('career_start_year', 'Старт начала карьеры')->default(date('Y'));
 
         $form->select('genre_id', 'Жанр')->options(function ($id) {
             $genre = Genre::find($id);

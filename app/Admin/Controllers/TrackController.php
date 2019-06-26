@@ -158,6 +158,9 @@ class TrackController extends Controller
         $show->created_at('Создано');
         $show->updated_at('Обновленно');
         $show->track_name('Название трека');
+        $show->track_date('Дата трека')->as(function ($year) {
+            return date('Y', strtotime($year));
+        });
         $show->album('Альбом', function ($album) {
             $album->setResource('/admin/album');
             $album->title('Имя');
@@ -202,7 +205,7 @@ class TrackController extends Controller
         })->ajax('/admin/api/genres')->rules(['required']);
 
         $form->text('singer', 'Исполнитель')->rules(['required']);
-        $form->datetime('track_date', 'Дата трека')->default(date('Y-m-d'))->rules(['required']);
+        $form->date('track_date', 'Дата трека')->default(date('Y'))->rules(['required']);
         $form->textarea('song_text', 'Текст трека')->rules(['required']);
         $form->file('filename', 'Файл')
             ->rules('required|mimetypes:audio/mpeg, audio/mp3')->uniqueName()
