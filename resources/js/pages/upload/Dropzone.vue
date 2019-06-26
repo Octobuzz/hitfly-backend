@@ -45,7 +45,6 @@
         if(e.dataTransfer.files[0].type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
           const track = e.dataTransfer.files;
           this.$emit('droppedTrack', track);
-          console.log(track);
         } else {
           this.$message(
             'Выберите корректный формат файла',
@@ -54,15 +53,16 @@
         }
       },
       fileInput(track){
-        console.log(track);
-        if(track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
-          this.$emit('trackInput', track);
-        }else{
-          this.$message(
-            'Выберите корректный формат файла',
-            'info',
-            {timeout: 3000}
-          );
+        if(track !== undefined){
+          if(track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
+            this.$emit('trackInput', track);
+          }else{
+            this.$message(
+              'Выберите корректный формат файла',
+              'info',
+              {timeout: 3000}
+            );
+          }
         }
       },
       changeAccess(state){
