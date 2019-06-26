@@ -13,7 +13,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class CollectionQuery extends Query
+class CollectionsQuery extends Query
 {
     protected $attributes = [
         'name' => 'Collections Query',
