@@ -20,6 +20,7 @@
                 <input id="email" name="email" type="email" required>
                 <label for="email">{{__('auth.email')}}</label>
             </span>
+            <span class="input-text-wrapper__error-msg">Введите корректный адрес</span>
             @if ($errors->has('email'))
                 <span class="input-text-wrapper__error-msg" role="alert">{{ $errors->first('email') }}</span>
             @endif
@@ -30,6 +31,7 @@
                 <input id="pass" name="password" type="password" required>
                 <label for="pass">{{__('auth.password')}}</label>
             </span>
+            <span class="input-text-wrapper__error-msg">Введите корректный пароль</span>
             @if ($errors->has('password'))
                 <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
             @endif
