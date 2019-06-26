@@ -162,7 +162,6 @@ $(document).ready(function () {
         if(email.val().search(pattern) == 0){
           email.parent().parent().removeClass('error');
         }else{
-          console.log('invalid');
           email.parent().parent().addClass('error');
         }
       }else{
