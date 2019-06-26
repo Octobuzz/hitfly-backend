@@ -9,12 +9,15 @@
 </template>
 
 <script>
+import loadOnScroll from 'mixins/loadOnScroll';
 import AlbumPreview from 'components/AlbumPreview';
 
 export default {
   components: {
     AlbumPreview
   },
+
+  mixins: [loadOnScroll],
 
   props: {
     albumIdList: {
@@ -27,45 +30,20 @@ export default {
     }
   },
 
-  computed: {
-    // TODO: container args depending on the route
-  },
-
   watch: {
     albumIdList: {
       handler() {
         this.$nextTick(() => {
-          this.onScroll();
+          this.loadOnScroll();
         });
       },
       immediate: true
     }
   },
 
-  mounted() {
-    window.addEventListener('scroll', this.onScroll);
-  },
-
-  destroyed() {
-    window.removeEventListener('scroll', this.onScroll);
-  },
-
   methods: {
     loadMore() {
       this.$parent.$emit('load-more');
-    },
-
-    onScroll() {
-      const { innerHeight, pageYOffset } = window;
-      const { scrollHeight } = document.body;
-
-      const maybeLoadMore = Math.abs(
-        (innerHeight + pageYOffset) - scrollHeight
-      ) <= 200;
-
-      if (maybeLoadMore && this.hasMoreData) {
-        this.loadMore();
-      }
     }
   }
 };

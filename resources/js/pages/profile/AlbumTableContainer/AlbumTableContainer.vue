@@ -8,6 +8,8 @@
 
     <UniversalAlbumsContainer
       v-if="containerComponent === 'universal'"
+      :for-type="universalContainerProps.forType"
+      :for-id="universalContainerProps.forId"
     >
       <template #default="container">
         <AlbumTable
@@ -17,7 +19,9 @@
       </template>
     </UniversalAlbumsContainer>
 
-    <FavouriteAlbumsContainer v-else>
+    <FavouriteAlbumsContainer
+      v-if="containerComponent === 'favourite'"
+    >
       <template #default="container">
         <AlbumTable
           :album-id-list="container.albumIdList"
@@ -29,6 +33,7 @@
 </template>
 
 <script>
+import currentPath from 'mixins/currentPath';
 import ReturnHeader from '../ReturnHeader.vue';
 import UniversalAlbumsContainer from '../UniversalAlbumsContainer';
 import FavouriteAlbumsContainer from '../FavouriteAlbumsContainer';
@@ -42,37 +47,65 @@ export default {
     AlbumTable
   },
 
+  mixins: [currentPath],
+
   computed: {
+    // TODO: music-group albums in switches
+
     containerPaddingClass() {
       return this.$store.getters['appColumns/paddingClass'];
     },
 
     header() {
-      const { fullPath } = this.$route;
-      const path = fullPath.split('/');
-
-      if (path[1] === 'profile') {
-        if (path[2] === 'my-music') {
+      switch (this.currentPath) {
+        case '/profile/my-music/albums':
           return 'Мои альбомы';
-        }
-        if (path[2] === 'favourite') {
+
+        case '/profile/favourite/albums':
           return 'Любимые альбомы';
-        }
+
+        case '/user/:userId/music/albums':
+          return 'Альбомы';
+
+        default:
+          return 'Альбомы';
       }
-      return 'Альбомы';
     },
 
     containerComponent() {
-      const { fullPath } = this.$route;
-      const path = fullPath.split('/');
+      switch (this.currentPath) {
+        case '/profile/my-music/albums':
+        case '/user/:userId/music/albums':
+          return 'universal';
 
-      if (path[2] === 'favourite') {
-        return 'favourite';
+        case '/profile/favourite/albums':
+          return 'favourite';
+
+        default:
+          return 'universal';
       }
-      return 'universal';
     },
 
-    // TODO: container args depending on the route
+    universalContainerProps() {
+      const { params } = this.$route;
+
+      switch (this.currentPath) {
+        case '/profile/my-music/albums':
+          return {
+            forType: 'user-album-list',
+            forId: 'me'
+          };
+
+        case '/user/:userId/music/albums':
+          return {
+            forType: 'user-album-list',
+            forId: +params.userId
+          };
+
+        default:
+          return {};
+      }
+    }
   }
 };
 </script>

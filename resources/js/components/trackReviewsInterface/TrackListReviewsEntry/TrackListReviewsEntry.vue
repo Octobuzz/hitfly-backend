@@ -33,7 +33,7 @@
 
       <router-link
         v-if="track.comments.length > 3"
-        :to="`/profile/reviews/${trackId}`"
+        :to="`${$route.fullPath}/${trackId}`"
         class="track-list-reviews-entry__more-reviews-button"
       >
         Все отзывы к этой песне

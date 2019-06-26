@@ -20,7 +20,46 @@
 import gql from './gql';
 
 export default {
+  props: {
+    forType: {
+      validator: val => [
+        'user-album-list',
+        'music-group-album-list'
+      ].includes(val),
+      required: true
+    },
+
+    forId: {
+      validator: val => (
+        val === 'me' || typeof val === 'number'
+      ),
+      required: true
+    },
+  },
+
   data() {
+    const { forType, forId } = this;
+    const filters = {};
+
+    switch (forType) {
+      case 'user-album-list':
+        if (forId === 'me') {
+          filters.my = true;
+        } else {
+          filters.userId = forId;
+        }
+        break;
+
+      case 'music-group-album-list':
+        filters.musicGroupId = forId;
+        break;
+
+      default:
+        throw new Error(
+          `Incorrect value for property "forType" passed to UniversalAlbumsContainer: ${forType}`
+        );
+    }
+
     return {
       albumList: [],
       isLoading: true,
@@ -28,6 +67,10 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 30,
+
+        // TODO: remove 'my: true' and uncomment filters when the api is implemented
+
+        // filters
         my: true
       }
     };

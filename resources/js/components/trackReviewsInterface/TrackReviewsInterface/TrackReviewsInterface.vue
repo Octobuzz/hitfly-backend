@@ -1,5 +1,5 @@
 <template>
-  <div :class="containerPaddingClass">
+  <div class="track-reviews-interface">
     <div class="track-reviews-interface__filter-container">
       <span
         v-for="period in periodFilterList"
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { reviewFilterType, reviewFilterId, commentPeriod } from 'modules/validators';
 import CalendarIcon from 'components/icons/CalendarIcon.vue';
 import TrackListReviewsContainer from '../TrackListReviewsContainer';
 import TrackReviewsContainer from '../TrackReviewsContainer';
@@ -62,27 +63,18 @@ export default {
   },
 
   props: {
-    // TODO: share validators
-
-    // for user-track-list type you should specify user id or string "me"
-    // for track type you should specify track id
-
     forType: {
-      validator: val => [
-        'user-track-list',
-        'music-group-track-list',
-        'track'
-      ].includes(val),
+      validator: reviewFilterType,
       required: true
     },
 
     forId: {
-      validator: val => val === 'me' || typeof val === 'number',
+      validator: reviewFilterId,
       required: true
     },
 
     defaultPeriod: {
-      validator: val => ['week', 'month', 'year'].includes(val),
+      validator: commentPeriod,
       default: 'week'
     }
   },
@@ -92,12 +84,6 @@ export default {
       periodFilterList: ['week', 'month', 'year'],
       periodFilter: this.defaultPeriod
     };
-  },
-
-  computed: {
-    containerPaddingClass() {
-      return this.$store.getters['appColumns/paddingClass'];
-    }
   },
 
   methods: {

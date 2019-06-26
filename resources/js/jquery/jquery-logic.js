@@ -10,7 +10,6 @@ import 'jquery-ui/ui/core';
 import 'jquery-ui/ui/widgets/datepicker';
 
 $(function () {
-
     $('.custom-select').niceSelect();
     $.datepicker.setDefaults({
         closeText: "Закрыть",
@@ -157,12 +156,13 @@ $(document).ready(function () {
       }
 
       //проверка почты
-      const pattern = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i;
+      const pattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
       const email = $('.reg-page__line-input input[name="email"]');
       if(email.val().length >= 8){
         if(email.val().search(pattern) == 0){
           email.parent().parent().removeClass('error');
         }else{
+          console.log('invalid');
           email.parent().parent().addClass('error');
         }
       }else{

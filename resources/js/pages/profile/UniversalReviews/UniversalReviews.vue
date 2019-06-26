@@ -1,7 +1,11 @@
 <template>
-  <div class="universal-reviews">
-    <ReturnHeader v-if="renderHeader" :class="containerPaddingClass" />
-    <TrackReviews
+  <div :class="['universal-reviews', containerPaddingClass]">
+    <ReturnHeader
+      v-if="renderHeader"
+      class="universal-reviews__return"
+    />
+    <TrackReviewsInterface
+      v-if="created"
       class="universal-reviews"
       :for-type="forType"
       :for-id="forId"
@@ -11,22 +15,43 @@
 </template>
 
 <script>
-import TrackReviews from 'components/trackReviewsInterface/TrackReviewsInterface';
+import currentPath from 'mixins/currentPath';
+import TrackReviewsInterface from 'components/trackReviewsInterface/TrackReviewsInterface';
 import ReturnHeader from '../ReturnHeader.vue';
 
 /* eslint-disable no-param-reassign */
 
-const updateProps = (vm) => {
-  const { fullPath, params } = vm.$route;
+const getProps = (vm) => {
+  // eslint-disable-next-line no-shadow
+  const { currentPath, $route: { params } } = vm;
 
-  if (fullPath === '/profile/reviews') {
-    vm.forType = 'user-track-list';
-    vm.forId = 'me';
-  }
+  switch (currentPath) {
+    case '/profile/reviews':
+      return {
+        forType: 'user-track-list',
+        forId: 'me'
+      };
 
-  if (params.trackId) {
-    vm.forType = 'track';
-    vm.forId = +params.trackId;
+    case '/user/:userId/reviews':
+      return {
+        forType: 'user-track-list',
+        forId: +params.userId
+      };
+
+    case '/profile/reviews/:trackId':
+      return {
+        forType: 'track',
+        forId: +params.trackId
+      };
+
+    case '/user/:userId/reviews/:trackId':
+      return {
+        forType: 'track',
+        forId: +params.trackId
+      };
+
+    default:
+      return {};
   }
 };
 
@@ -34,28 +59,49 @@ const updateProps = (vm) => {
 
 export default {
   components: {
-    TrackReviews,
+    TrackReviewsInterface,
     ReturnHeader
   },
+
+  mixins: [currentPath],
+
   data() {
     return {
       forType: null,
-      forId: null
+      forId: null,
+      created: false
     };
   },
+
   computed: {
     containerPaddingClass() {
       return this.$store.getters['appColumns/paddingClass'];
     },
     renderHeader() {
-      return this.$route.fullPath !== '/profile/reviews';
+      switch (this.currentPath) {
+        case '/profile/reviews':
+        case '/user/:userId/reviews':
+          return false;
+
+        default:
+          return true;
+      }
     }
   },
+
   created() {
-    updateProps(this);
+    const { forType, forId } = getProps(this);
+
+    this.forType = forType;
+    this.forId = forId;
+    this.created = true;
   },
+
   beforeUpdate() {
-    updateProps(this);
+    const { forType, forId } = getProps(this);
+
+    this.forType = forType;
+    this.forId = forId;
   }
 };
 </script>
@@ -63,8 +109,5 @@ export default {
 <style
   scoped
   lang="scss"
->
-.universal-reviews {
-  margin-top: 16px;
-}
-</style>
+  src="./UniversalReviews.scss"
+/>
