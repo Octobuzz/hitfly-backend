@@ -12,6 +12,7 @@ use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
 use App\Jobs\NewEventNotificationJob;
+use App\Jobs\NewFavouriteTrackJob;
 use App\Jobs\NewStatusJob;
 use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
@@ -22,11 +23,15 @@ use App\Mail\DecreaseStatusMail;
 use App\Mail\FewComments;
 use App\Mail\LongAgoNotVisited;
 use App\Mail\NewEventNotificationMail;
+use App\Mail\NewFavouriteTrackMail;
 use App\Mail\NewStatusMail;
 use App\Mail\ReachTopMail;
 use App\Mail\RemindForEventMail;
 use App\Mail\RequestForEventMail;
+use App\Models\Album;
 use App\Models\Comment;
+use App\Models\Track;
+use App\Models\Watcheables;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
@@ -262,5 +267,64 @@ class Notification
 //        //dd($user->username);
 //        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
         dispatch(new DecreaseStatusJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
+    }
+
+    /**
+     * новый трек у любимого исполнителя.
+     * Ищет всех подписавшихся на автора трека и рассылает письма.
+     */
+    public function newFavouriteTrackNotification($track)
+    {
+        //$track = Track::query()->find(1);
+        $users = $this->getWatchingUsersByTrack($track);
+        switch (get_class($track)) {
+            case Track::class:
+                $essence = 'track';
+                break;
+            case Album::class:
+                $essence = 'album';
+                break;
+            default:
+                throw new \Exception('неизвестный тип');
+        }
+
+        foreach ($users as $user) {
+            //return new NewFavouriteTrackMail($track->user->username, $track->getName(), $essence, $user);
+            dispatch(new NewFavouriteTrackJob($track->user->username, $track->getName(), $essence, $user))->onQueue('low');
+        }
+    }
+
+    /**
+     * получение наблюдающих пользователей по треку или альбому.
+     *
+     * @param Track $track
+     *
+     * @return array
+     */
+    public function getWatchingUsersByTrack($track)
+    {
+        $watchableUserId = $track->user->id;
+
+        return $this->getWatchingUsers($watchableUserId);
+    }
+
+    /**
+     * получение пользователей следящим за исполнителем
+     *
+     * @param $userId
+     *
+     * @return array
+     */
+    public function getWatchingUsers($userId)
+    {
+        $userList = [];
+        $watchableList = Watcheables::query()
+            ->where('watcheable_type', User::class)
+            ->where('watcheable_id', $userId)->get();
+        foreach ($watchableList as $watch) {
+            $userList[] = $watch->user;
+        }
+
+        return $userList;
     }
 }

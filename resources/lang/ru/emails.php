@@ -8,6 +8,8 @@
 return [
 
     'hello' => 'Здравствуйте',
+    'track' => 'трек',
+    'album' => 'альбом',
     'error' => 'Ошибка',
     'regards' => 'C уважением',
     'verifyEmailAddress' => 'Верификация Email адреса',
@@ -25,7 +27,6 @@ return [
         'linkExpire' => 'Ссылка для сброса пароля будет действительна в течение :count минут.',
         'passwordChanged' => 'Пароль изменен',
         'passwordChangedSuccess' => 'Ваш пароль успешно изменен.',
-
     ],
     'register' => [
         'thankForRegister' => 'Приветствуем вас в HitFly',
@@ -38,8 +39,6 @@ return [
         'playlistRecommend' => 'Плейлисты, собранные специально для тебя',
         'share' => 'Поделитесь своим творчеством',
         'uploadFile' => 'Загрузить файл',
-
-
     ],
 
     'birthday' => [
@@ -51,8 +50,6 @@ return [
         'playlistRecommend' => 'Плейлисты, собранные специально для тебя',
         'topEmpty' => 'Топ пуст',
         'subject' => 'Поздравляем с днем рождения!',
-
-
     ],
     'fewComments' => [
         'hello' => 'Приветствуем',
@@ -62,8 +59,6 @@ return [
         'newTracks' => 'Новые треки',
         'empty' => 'пусто',
         'subject' => 'Мало комментариев на этой неделе',
-
-
     ],
     'longAgoNotVisited' => [
         'hello' => 'Приветсвуем',
@@ -77,8 +72,6 @@ return [
         'top' => 'Топ 50',
         'rating' => 'Рейтинг лучших музыкантов',
         'subject' => 'Вы давно непосещали сайт',
-
-
     ],
     'monthDispatchNotVisited' => [
         'hello' => 'Приветсвуем',
@@ -90,8 +83,6 @@ return [
         'top' => 'Топ 50',
         'rating' => 'Рейтинг лучших музыкантов',
         'subject' => 'Вы давно непосещали сайт',
-
-
     ],
 
     'remindForEvent' => [
@@ -103,15 +94,11 @@ return [
         'newEvents' => 'Новые мероприятия проходящие в этом месяце',
         'empty' => 'пусто',
         'subject' => 'Напоминаем о мероприятии',
-
-
     ],
     'newEventNotification' => [
         'hello' => 'Приветсвуем',
         'text' => 'Оповещаем вас о наших новых мероприятиях на нашем<br> портале.',
         'subject' => 'Новые мероприятия',
-
-
     ],
     'requestForEvent' => [
         'hello' => 'Приветсвуем',
@@ -120,33 +107,24 @@ return [
         'newEvents' => 'Новые мероприятия проходящие в этом месяце',
         'empty' => 'пусто',
         'subject' => 'Регистрация на мероприятии',
-
-
     ],
     'reachTop' => [
         'hello' => 'Приветсвуем',
         'text' => 'Поздравляем ваш трэк «:Name» попал в ТОП–:top.<br>  Перейти к :link <br> Послушайте остальных участников ТОП–:top.',
         'empty' => 'пусто',
-
         'subject' => 'Ваш трек попал в ТОП',
-
-
     ],
 
     'emailChange' => [
         'hello' => 'Здравствуйте',
         'text' => 'Подтвердите смену емейл',
         'subject' => 'Смена Email адреса',
-
-
     ],
     'emailChanged' => [
         'hello' => 'Здравствуйте',
         'text' => 'Ваш емейл успешно измненен',
         'subject' => 'Email изменен',
         'newEmail' => 'Ваш новый email: ',
-
-
     ],
     'verifyEmail' => [
         'hello' => 'Спасибо, что присоединились',
@@ -155,8 +133,6 @@ return [
                                         <a href=":link" style="text-decoration: none; color: #b36fcb;">Ссылке</a><br>
                                         Ссылка действительна в течении 24 часов.',
         'subject' => 'Смена Email адреса',
-
-
     ],
 
     'commentCreated' => [
@@ -164,24 +140,24 @@ return [
         'seeAllComments' => 'Посмотреть все отзывы',
         'text' => 'На ваш :type появился новый отзыв.<br> :commentator оценил ваш :type – «:name».<br> Перейти к <a href=":link" style="text-decoration: none; color: #b36fcb;">отзыву</a>.',
         'subject' => 'Новый комментарий',
-
-
     ],
     'newStatus' => [
         'hello' => 'Поздравляем ',
         'more' => 'Подробнее о статусах - <a href=":link" style="text-decoration: none; color: #b36fcb;">по ссылке</a>.',
         'text' => 'Вы получили новый статус - :status.',
         'subject' => 'Вы получили новый статус!',
-
-
     ],
     'decreaseStatus' => [
         'more' => 'Если вас интересует более подробная информация - <a href=":link" style="text-decoration: none; color: #b36fcb;">напишите</a> нам. И обязательно разберемся в сложившейся ситуации.',
         'text' => 'К сожалению, мы были вынуждены понизить ваш статус с :oldStatus до :decreaseStatus, в связи с нарушением правил использования сервиса.',
         'sorrow' => 'Нам жаль, что так вышло.',
         'subject' => 'Понижение статуса',
+    ],
 
-
+    'newFavouriteTrack' => [
+        'more' => 'Перейдите, чтобы <a href=":link" style="text-decoration: none; color: #b36fcb;">прослушать</a>.',
+        'text' => 'Новый :essence ":nameTrack" у :singer',
+        'subject' => 'Новый :essence у любимого исполнителя',
     ],
 
 
