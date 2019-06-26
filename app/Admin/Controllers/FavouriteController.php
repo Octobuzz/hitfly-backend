@@ -104,6 +104,7 @@ class FavouriteController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Favourite());
+        $grid->disableCreateButton();
         $grid->actions(function ($actions) {
             $actions->disableEdit();
         });
