@@ -107,7 +107,7 @@ class AlbumController extends Controller
         $grid = new Grid(new Album());
 
         $grid->id('#');
-        $grid->title('Назвние');
+        $grid->title('Назавние');
         $grid->author('Автор');
         $grid->year('Год');
         $grid->likes('Лайки');
@@ -148,11 +148,13 @@ class AlbumController extends Controller
         $show->id('#');
         $show->title('Название');
         $show->author('Автор');
-        $show->year('Год');
+        $show->year('Год')->as(function ($year) {
+            return $year->format('Y');
+        });
         $show->cover('Обложка');
         $show->likes('Лайки');
         $show->dislikes('Дизлайки');
-        $show->created_at('Созадно');
+        $show->created_at('Создано');
         $show->updated_at('Обновлено');
         $show->genre('Жанр', function ($genre) {
             $genre->setResource('/admin/genre');
@@ -184,13 +186,14 @@ class AlbumController extends Controller
         $form->text('title', 'Название')->rules(['required']);
         $form->text('author', 'Автор')->rules(['required']);
         $form->image('cover', 'Обложка')->uniqueName();
-        $form->select('genre_id', 'Жанр')->options(function ($id) {
-            $genre = Genre::find($id);
-
-            if ($genre) {
-                return [$genre->id => $genre->name];
-            }
-        })->ajax('/admin/api/genres')->rules(['required']);
+        $form->date('year', 'Год')->default(date('Y'));
+//        $form->select('genre_id', 'Жанр')->options(function ($id) {
+//            $genre = Genre::find($id);
+//
+//            if ($genre) {
+//                return [$genre->id => $genre->name];
+//            }
+//        })->ajax('/admin/api/genres')->rules(['required']);
 
         $form->select('music_group_id', 'Музыкальная группа')->options(function ($id) {
             $musicGroup = MusicGroup::find($id);
