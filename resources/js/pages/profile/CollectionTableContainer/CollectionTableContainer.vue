@@ -8,6 +8,8 @@
 
     <UniversalCollectionsContainer
       v-if="containerComponent === 'universal'"
+      :for-type="universalContainerProps.forType"
+      :for-id="universalContainerProps.forId"
     >
       <template #default="container">
         <CollectionTable
@@ -18,7 +20,7 @@
     </UniversalCollectionsContainer>
 
     <FavouriteCollectionsContainer
-      v-else-if="containerComponent === 'favouritePlaylists'"
+      v-if="containerComponent === 'favourite-playlists'"
     >
       <template #default="container">
         <CollectionTable
@@ -28,7 +30,9 @@
       </template>
     </FavouriteCollectionsContainer>
 
-    <FavouriteSetsContainer v-else>
+    <FavouriteSetsContainer
+      v-if="containerComponent === 'favourite-sets'"
+    >
       <template #default="container">
         <CollectionTable
           :collection-id-list="container.collectionIdList"
@@ -40,6 +44,7 @@
 </template>
 
 <script>
+import currentPath from 'mixins/currentPath';
 import ReturnHeader from '../ReturnHeader.vue';
 import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
 import FavouriteCollectionsContainer from '../FavouriteCollectionsContainer';
@@ -55,47 +60,71 @@ export default {
     CollectionTable
   },
 
+  mixins: [currentPath],
+
   computed: {
+    // TODO: music-group playlists in switches
+
     containerPaddingClass() {
       return this.$store.getters['appColumns/paddingClass'];
     },
 
     header() {
-      const { fullPath } = this.$route;
-      const path = fullPath.split('/');
-
-      if (path[1] === 'profile') {
-        if (path[2] === 'my-music') {
+      switch (this.currentPath) {
+        case '/profile/my-music/playlists':
           return 'Мои плейлисты';
-        }
-        if (path[2] === 'favourite') {
-          if (path[3] === 'playlists') {
-            return 'Любимые плейлисты';
-          }
-          if (path[3] === 'sets') {
-            return 'Любимые подборки';
-          }
-        }
+
+        case '/profile/favourite/playlists':
+          return 'Любимые плейлисты';
+
+        case '/profile/favourite/sets':
+          return 'Любимые подборки';
+
+        case '/user/:userId/music/playlists':
+          return 'Плейлисты';
+
+        default:
+          return 'Плейлисты';
       }
-      return 'Плейлисты';
     },
 
     containerComponent() {
-      const { fullPath } = this.$route;
-      const path = fullPath.split('/');
+      switch (this.currentPath) {
+        case '/profile/my-music/playlists':
+        case '/user/:userId/music/playlists':
+          return 'universal';
 
-      if (path[2] === 'favourite') {
-        if (path[3] === 'playlists') {
-          return 'favouritePlaylists';
-        }
-        if (path[3] === 'sets') {
-          return 'favouriteSets';
-        }
+        case '/profile/favourite/playlists':
+          return 'favourite-playlists';
+
+        case '/profile/favourite/sets':
+          return 'favourite-sets';
+
+        default:
+          return 'universal';
       }
-      return 'universal';
     },
 
-    // TODO: container args depending on the route
+    universalContainerProps() {
+      const { params } = this.$route;
+
+      switch (this.currentPath) {
+        case '/profile/my-music/playlists':
+          return {
+            forType: 'user-playlist-list',
+            forId: 'me'
+          };
+
+        case '/user/:userId/music/playlists':
+          return {
+            forType: 'user-playlist-list',
+            forId: +params.userId
+          };
+
+        default:
+          return {};
+      }
+    }
   }
 };
 </script>

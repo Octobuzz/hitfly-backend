@@ -143,6 +143,7 @@ export default {
             'info',
             { timeout: 2000 }
           );
+
           console.dir(err);
         })
         .then(() => {

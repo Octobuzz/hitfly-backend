@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import loadOnScroll from 'mixins/loadOnScroll';
+import { reviewFilterType, reviewFilterId, commentPeriod } from 'modules/validators';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackListReviews from '../TrackListReviews';
 import gql from './gql';
@@ -20,23 +22,22 @@ export default {
     TrackListReviews
   },
 
+  mixins: [loadOnScroll],
+
   props: {
     forType: {
-      validator: val => [
-        'user-track-list',
-        'music-group-track-list'
-      ].includes(val),
+      validator: reviewFilterType,
       required: true
     },
+
     forId: {
-      validator: val => val === 'me' || typeof val === 'number',
+      validator: reviewFilterId,
       required: true
     },
+
     commentedInPeriod: {
-      validator: val => (
-        ['week', 'month', 'year'].indexOf(val) !== -1
-      ),
-      default: 'month'
+      validator: commentPeriod,
+      default: 'week'
     }
   },
 
@@ -48,9 +49,6 @@ export default {
       case 'user-track-list':
         if (forId === 'me') {
           filters.my = true;
-
-          // TODO: api bug ?
-          filters.my = false;
         } else {
           filters.userId = forId;
         }
@@ -62,7 +60,7 @@ export default {
 
       default:
         throw new Error(
-          `Incorrect value for property "forType" passed to TrackReviewsContainerList: ${forType}`
+          `Incorrect value for property "forType" passed to TrackListReviewsContainer: ${forType}`
         );
     }
 
@@ -74,7 +72,13 @@ export default {
         pageNumber: 1,
         pageLimit: 5,
         commentedInPeriod,
-        filters
+        // filters
+
+        // TODO: seed the db; remove 'filters: { my: false }'; uncomment filters
+
+        filters: {
+          my: false
+        }
       }
     };
   },
@@ -97,14 +101,6 @@ export default {
         commentedInPeriod: val,
       };
     }
-  },
-
-  mounted() {
-    window.addEventListener('scroll', this.onScroll);
-  },
-
-  destroyed() {
-    window.removeEventListener('scroll', this.onScroll);
   },
 
   methods: {
@@ -144,19 +140,6 @@ export default {
         .catch((err) => {
           console.dir(err);
         });
-    },
-
-    onScroll() {
-      const { innerHeight, pageYOffset } = window;
-      const { scrollHeight } = document.body;
-
-      const maybeLoadMore = Math.abs(
-        (innerHeight + pageYOffset) - scrollHeight
-      ) <= 200;
-
-      if (maybeLoadMore && this.hasMoreData) {
-        this.loadMore();
-      }
     }
   },
 
@@ -175,7 +158,7 @@ export default {
         // check if the screen has empty space to load more comments
 
         this.$nextTick(() => {
-          this.onScroll();
+          this.loadOnScroll();
         });
 
         return data;

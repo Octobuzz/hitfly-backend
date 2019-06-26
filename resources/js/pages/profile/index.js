@@ -1,4 +1,4 @@
-export { default as MyProfileLayout } from './MyProfileLayout.vue';
+export { default as MyProfileLayout } from './MyProfileLayout';
 export { default as MyUserCard } from './MyUserCard';
 export { default as EditUser } from './EditProfile';
 export { default as CreateGroup } from './CreateGroup';
@@ -9,3 +9,4 @@ export { default as UniversalReviews } from './UniversalReviews';
 export { default as BonusProgram } from './BonusProgram';
 export { default as AlbumTableContainer } from './AlbumTableContainer';
 export { default as CollectionTableContainer } from './CollectionTableContainer';
+export { default as OtherUserProfileLayout } from './OtherUserProfileLayout';

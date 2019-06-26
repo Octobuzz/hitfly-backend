@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import debounce from 'lodash.debounce';
+import loadOnScroll from 'mixins/loadOnScroll';
+import { commentPeriod } from 'modules/validators';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackReviews from '../TrackReviews';
 import gql from './gql';
@@ -26,15 +27,15 @@ export default {
     TrackReviews
   },
 
+  mixins: [loadOnScroll],
+
   props: {
     trackId: {
       type: Number,
       required: true
     },
     commentedInPeriod: {
-      validator: val => (
-        ['week', 'month', 'year'].indexOf(val) !== -1
-      ),
+      validator: commentPeriod,
       default: 'month'
     }
   },
@@ -64,14 +65,6 @@ export default {
         commentedInPeriod: val
       };
     }
-  },
-
-  mounted() {
-    window.addEventListener('scroll', this.onScroll);
-  },
-
-  destroyed() {
-    window.removeEventListener('scroll', this.onScroll);
   },
 
   methods: {
@@ -114,25 +107,6 @@ export default {
         .catch((err) => {
           console.dir(err);
         });
-    },
-
-    onScroll() {
-      if (!this.debouncedOnScroll) {
-        this.debouncedOnScroll = debounce(() => {
-          const { innerHeight, pageYOffset } = window;
-          const { scrollHeight } = document.body;
-
-          const maybeLoadMore = Math.abs(
-            (innerHeight + pageYOffset) - scrollHeight
-          ) <= 200;
-
-          if (maybeLoadMore && this.hasMoreData) {
-            this.loadMore();
-          }
-        });
-      }
-
-      this.debouncedOnScroll();
     }
   },
 
@@ -151,7 +125,7 @@ export default {
         // check if the screen has empty space to load more comments
 
         this.$nextTick(() => {
-          this.onScroll();
+          this.loadOnScroll();
         });
 
         return data;
