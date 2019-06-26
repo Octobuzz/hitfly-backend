@@ -157,20 +157,20 @@ class CommentController extends Controller
     {
         $form = new Form(new Comment());
 
-        $form->select('id', 'Отзыв к')->options(function ($id) {
-            $comment = Comment::find($id);
-
-            return [$id => (string) $comment->commentable['title'].' ('.__('messages.'.Comment::CLASS_NAME[$comment['commentable_type']]).')'];
-        })->rules('required');
-
-        $form->select('user_id', 'Пользователь')->options(function ($id) {
-            $user = User::find($id);
-            if ($user) {
-                return [$user->id => $user->username];
-            }
-        })->ajax('/admin/api/users');
+//        $form->select('id', 'Отзыв к')->options(function ($id) {
+//            $comment = Comment::find($id);
+//
+//            return [$id => (string) $comment->commentable['title'].' ('.__('messages.'.Comment::CLASS_NAME[$comment['commentable_type']]).')'];
+//        })->rules('required');
+//
+//        $form->select('user_id', 'Пользователь')->options(function ($id) {
+//            $user = User::find($id);
+//            if ($user) {
+//                return [$user->id => $user->username];
+//            }
+//        })->ajax('/admin/api/users');
         $form->textarea('comment', 'Отзыв');
-        $form->select('estimation', 'Оценка')->options([0 => 'Нет', 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5]);
+//        $form->select('estimation', 'Оценка')->options([0 => 'Нет', 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5]);
 
         return $form;
     }
