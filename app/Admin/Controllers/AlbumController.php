@@ -107,7 +107,7 @@ class AlbumController extends Controller
         $grid = new Grid(new Album());
 
         $grid->id('#');
-        $grid->title('Назвние');
+        $grid->title('Назавние');
         $grid->author('Автор');
         $grid->year('Год');
         $grid->likes('Лайки');
@@ -152,7 +152,7 @@ class AlbumController extends Controller
         $show->cover('Обложка');
         $show->likes('Лайки');
         $show->dislikes('Дизлайки');
-        $show->created_at('Созадно');
+        $show->created_at('Создано');
         $show->updated_at('Обновлено');
         $show->genre('Жанр', function ($genre) {
             $genre->setResource('/admin/genre');

@@ -201,7 +201,7 @@ class TrackController extends Controller
             }
         })->ajax('/admin/api/genres')->rules(['required']);
 
-        $form->text('singer', 'Испольнитель')->rules(['required']);
+        $form->text('singer', 'Исполнитель')->rules(['required']);
         $form->datetime('track_date', 'Дата трека')->default(date('Y-m-d'))->rules(['required']);
         $form->textarea('song_text', 'Текст трека')->rules(['required']);
         $form->file('filename', 'Файл')

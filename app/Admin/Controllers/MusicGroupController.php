@@ -150,7 +150,7 @@ class MusicGroupController extends Controller
             $genre->setResource('/admin/genre');
             $genre->name('Имя');
         });
-        $show->description('Description');
+        $show->description('Описание');
         $show->created_at('Создано');
         $show->updated_at('Обновлено');
         $show->deleted_at('Удалено');
