@@ -2,7 +2,7 @@
     <td>
         <table width="600" cellpadding="0" cellspacing="0" border="0" align="center">
             <tbody>
-            <tr>
+            {{--<tr>
                 <td>
                     <table width="504" cellpadding="0" cellspacing="0" border="0" align="center" style="border-top: 2px solid #e4e4e4; border-bottom: 2px solid #e4e4e4; padding: 25px 0;">
                         <tbody>
@@ -47,7 +47,7 @@
                         </tbody>
                     </table>
                 </td>
-            </tr>
+            </tr>--}}
             <tr>
                 <td>
                     <table width="320" cellpadding="0" cellspacing="0" border="0" align="center" style="padding: 20px 0 25px;">
@@ -80,7 +80,7 @@
             </tr>
             <tr>
                 <td>
-                    <p style="font-size: 12px; line-height: 19px; text-align: center; color: #a6a6a6; margin: 0 0 15px;">Digico music concept<br> Krasnoarmeiskaya street 13v<br> Uliyanovsk</p>
+                    <p style="font-size: 12px; line-height: 19px; text-align: center; color: #a6a6a6; margin: 0 0 15px;">HitFly music concept<br> Krasnoarmeiskaya street 13v<br> Uliyanovsk</p>
                 </td>
             </tr>
             </tbody>

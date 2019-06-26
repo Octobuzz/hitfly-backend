@@ -18,4 +18,20 @@ interface EventsContract
     public function getUpcomingEventsForUser(User $user);
 
     public function getEventById(int $id);
+
+    /**
+     * Новые мероприятия(кроме звезды).
+     *
+     * @return mixed
+     */
+    public function getNewEvents();
+
+    /**
+     * получить важные события(новости, статьи блога, мероприятия) с пометкой "важно".
+     *
+     * @param int $count
+     *
+     * @return array
+     */
+    public function getImportantEvents(int $count): array;
 }

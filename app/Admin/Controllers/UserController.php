@@ -178,8 +178,8 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->text('username', 'Имя пользователя')->rules('required');
         $form->text('email', 'Email (логин)')->rules('required');
         $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules('confirmed');
-        $form->password('password_confirmation', trans('admin.password_confirmation'))
+        $form->password('password', trans('admin.password'))->rules('confirmed')->required();
+        $form->password('password_confirmation', trans('admin.password_confirmation'))->required()
             ->default(function ($form) {
                 return null;
             });

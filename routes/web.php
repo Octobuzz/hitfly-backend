@@ -10,15 +10,34 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\BuisnessLogic\Events\Event;
+use App\BuisnessLogic\Playlist\Tracks;
+use App\BuisnessLogic\Recommendation\Recommendation;
+
 Route::redirect('/', 'login', 301);
-//Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
-////    $params = [
-////        'value' => 'Значение',
-////    ];
+Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
+//    $params = [
+//        'value' => 'Значение',
+//    ];
+//    $topPlayList = new Tracks();
+//    $recommend = new Recommendation();
+//    $events = new Event();
 //
-//    return $notification->fewComments();
-//});
-Auth::routes();
+//    return View::make('emails.register.completed',
+//        [
+//            'topList' => $topPlayList->getTopTrack(5),
+//            'playLists' => $recommend->getNewUserPlayList(2),
+//            'linkToProfile' => '/fake_link',
+//            'importantEvents' => $events->getImportantEvents(1),
+//            'star' => true,
+//        ]
+//    );
+
+    return $notification->newStatusNotification();
+    //$this->notify(new ResetPasswordNotification($token));
+});
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/test', 'Controller@test');

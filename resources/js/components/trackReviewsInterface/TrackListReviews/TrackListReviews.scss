@@ -1,0 +1,9 @@
+.track-list-reviews__entry {
+  margin-bottom: 42px;
+}
+
+@media screen and (max-width: 767px) {
+  .track-list-reviews__entry {
+    margin-bottom: 24px;
+  }
+}

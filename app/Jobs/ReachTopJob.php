@@ -14,17 +14,15 @@ class ReachTopJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     public $track;
     public $topUrl;
-    public $eventsList;
     public $topCount;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($track, $topUrl, $eventsList, $topCount)
+    public function __construct($track, $topUrl, $topCount)
     {
         $this->track = $track;
         $this->topUrl = $topUrl;
-        $this->eventsList = $eventsList;
         $this->topCount = $topCount;
     }
 
@@ -33,6 +31,6 @@ class ReachTopJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->track['user']->email)->send(new ReachTopMail($this->track, $this->topUrl, $this->eventsList, $this->topCount));
+        return \Mail::to($this->track['user']->email)->send(new ReachTopMail($this->track, $this->topUrl, $this->topCount));
     }
 }

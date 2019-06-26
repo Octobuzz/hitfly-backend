@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Controllers\Auth\VerificationController;
 use App\Models\Social;
 use App\Services\SocialAccountService;
 use App\Http\Controllers\Controller;
@@ -9,6 +10,7 @@ use App\User;
 use App\Models\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Socialite;
 
@@ -63,10 +65,14 @@ class SocialController extends Controller
                 return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
             }
         }
-
+        /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
         Auth::login($user);
+        $user->markEmailAsVerified();
+        if (null !== $user->email) {
+            VerificationController::sendNotification($user);
+        }
 
         return redirect()->to('/register-success?token='.$user->access_token);
     }

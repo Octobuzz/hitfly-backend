@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from './store';
-import * as main from './pages/main';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import AboutPage from './pages/AboutPage.vue';
@@ -41,7 +40,31 @@ import AboutPage from './pages/AboutPage.vue';
 
   /profile/reviews
 
-  /profile/review/:id
+  /profile/reviews/:id
+
+  /profile/my-reviews
+
+  /profile/my-reviews/:id
+
+  /user/:userId/music
+
+  /user/:userId/music/tracks
+
+  /user/:userId/music/albums
+
+  /user/:userId/music/albums/:id
+
+  /user/:userId/music/playlists
+
+  /user/:userId/music/playlists/:id
+
+  /user/:userId/reviews
+
+  /user/:userId/reviews/:id
+
+  /user/:userId/user-reviews
+
+  /user/:userId/user-reviews/:id
 */
 
 const routes = [
@@ -99,11 +122,11 @@ const routes = [
       },
       {
         path: 'reviews',
-        component: profile.MyReviews
+        component: profile.UniversalReviews
       },
       {
-        path: 'review/:reviewId',
-        component: profile.Review
+        path: 'reviews/:trackId',
+        component: profile.UniversalReviews
       },
       {
         path: 'album/:albumId',
@@ -124,24 +147,61 @@ const routes = [
       {
         path: '',
         redirect: '/profile/my-music'
+        // TODO: use name for redirect
       }
     ]
   },
-  // {
-  //   path: 'user/:userId',
-  //   component: profile.OtherUserProfileLayout,
-  //   children: [
-  //     {
-  //       // TODO: redirect from star profile
-  //       path: 'music',
-  //       component: ''
-  //     },
-  //     {
-  //       path: 'reviews',
-  //       component: ''
-  //     }
-  //   ]
-  // },
+  {
+    path: '/user/:userId',
+    component: profile.OtherUserProfileLayout,
+    children: [
+      {
+        path: 'music',
+        component: profile.OtherUserMusic
+      },
+      {
+        path: 'music/tracks',
+        component: profile.Tracks
+      },
+      {
+        path: 'music/albums',
+        component: profile.AlbumTableContainer
+      },
+      {
+        path: 'music/playlists',
+        component: profile.CollectionTableContainer
+      },
+      {
+        path: 'reviews',
+        component: profile.UniversalReviews
+      },
+      {
+        path: 'user-reviews',
+        component: profile.UniversalReviews
+      },
+      {
+        path: 'reviews/:trackId',
+        component: profile.UniversalReviews
+      },
+      {
+        path: 'user-reviews/:trackId',
+        component: profile.UniversalReviews
+      },
+      {
+        path: 'album/:albumId',
+        component: profile.Album
+      },
+      {
+        path: 'playlist/:playlistId',
+        component: profile.Playlist
+      }
+      // {
+      //   path: '',
+      //   redirect: '/user/:userId/music'
+      //   // use name for redirect
+      // },
+    ]
+  },
   {
     path: '/upload',
     component: UploadPage

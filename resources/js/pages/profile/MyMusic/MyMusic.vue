@@ -4,7 +4,10 @@
       :container-padding-class="containerPaddingClass"
     />
 
-    <UniversalAlbumsContainer>
+    <UniversalAlbumsContainer
+      for-type="user-album-list"
+      for-id="me"
+    >
       <template #default="container">
         <AlbumScrollHorizontal
           class="my-music__albums-container"
@@ -23,7 +26,10 @@
       </template>
     </UniversalAlbumsContainer>
 
-    <UniversalCollectionsContainer>
+    <UniversalCollectionsContainer
+      for-type="user-playlist-list"
+      for-id="me"
+    >
       <template #default="container">
         <CollectionScrollHorizontal
           class="my-music__collections-container"

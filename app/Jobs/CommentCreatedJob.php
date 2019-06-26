@@ -9,23 +9,22 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Mail;
 
 class CommentCreatedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $commentable;
-    public $commentType;
-    public $commentator;
+    public $comment;
+    public $track;
+    public $username;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($commentable, $commentator, $commentType)
+    public function __construct($comment)
     {
-        $this->commentable = $commentable;
-        $this->commentType = $commentType;
-        $this->commentator = $commentator;
+        $this->comment = $comment;
     }
 
     /**
@@ -33,6 +32,7 @@ class CommentCreatedJob implements ShouldQueue
      */
     public function handle()
     {
-        //return Mail::to($this->commentable->user()->email)->send(new CommentCreatedMail($this->commentable->getName(), $this->commentable, $this->commentType));
+        //dd($this->comment->commentable->user()->first()->email);die();
+        return Mail::to($this->comment->commentable->user()->first()->email)->send(new CommentCreatedMail($this->comment->commentable->user()->first()->username, $this->comment));
     }
 }

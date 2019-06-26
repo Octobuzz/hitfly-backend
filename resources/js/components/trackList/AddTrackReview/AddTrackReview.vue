@@ -95,9 +95,39 @@ export default {
             } catch (e) {
               // no track or track comments found in the store
             }
-          });
 
-          // TODO: rewrite comments pagination query if exists
+
+            try {
+              // TODO: synchronize variables with original query, add period
+              const vars = {
+                id: this.trackId,
+                pageLimit: 5,
+                pageNumber: 1
+                // commentedInPeriod: period
+              };
+
+              const { commentsTrack: trackComments } = store.readQuery({
+                query: gql.query.TRACK_COMMENTS,
+                variables: vars
+              });
+
+              store.writeQuery({
+                query: gql.query.TRACK_COMMENTS,
+                variables: vars,
+                data: {
+                  trackComments: {
+                    ...trackComments,
+                    data: [
+                      createComment,
+                      ...trackComments.data
+                    ]
+                  }
+                }
+              });
+            } catch (e) {
+              // no track or track comments found in the store
+            }
+          });
         }
       })
         .then(() => {
@@ -113,6 +143,7 @@ export default {
             'info',
             { timeout: 2000 }
           );
+
           console.dir(err);
         })
         .then(() => {

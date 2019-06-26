@@ -3,15 +3,27 @@
 namespace App\BuisnessLogic\Emails;
 
 use App\BuisnessLogic\Events\Event;
+use App\BuisnessLogic\Promo\PromoCode;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use App\Jobs\BirthdayCongratulationsEmailJob;
+use App\Jobs\CommentCreatedJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
 use App\Jobs\MonthDispatchNotVisitedJob;
+use App\Jobs\NewEventNotificationJob;
 use App\Jobs\ReachTopJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
+use App\Mail\BirthdayCongratulation;
+use App\Mail\CommentCreatedMail;
 use App\Mail\FewComments;
+use App\Mail\LongAgoNotVisited;
+use App\Mail\NewEventNotificationMail;
+use App\Mail\NewStatusMail;
+use App\Mail\ReachTopMail;
+use App\Mail\RemindForEventMail;
+use App\Mail\RequestForEventMail;
+use App\Models\Comment;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
@@ -36,9 +48,12 @@ class Notification
     public function birthdayCongratulation()
     {
         $this->listOfUsers = $this->getUsersBirthdayToday();
-        $recommend = $this->recommendation;
+        // $this->listOfUsers = User::query()->where('id',31)->get();
+        //$recommend = $this->recommendation;
+        $discount = new PromoCode();
         foreach ($this->listOfUsers as $user) {
-            dispatch(new BirthdayCongratulationsEmailJob($user, $recommend->getBirthdayPlayLists($user)))->onQueue('low');
+            //return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo());
+            dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
         }
     }
 
@@ -50,6 +65,15 @@ class Notification
     protected function getUsersBirthdayToday()
     {
         return User::query()->whereMonth('birthday', Carbon::today()->month)->whereDay('birthday', Carbon::today()->day)->whereNotNull('email')->get();
+    }
+
+    protected function getBirthdayVideo()
+    {
+        // TODO получать реальное видео
+        return [
+            'url' => '/fake_url',
+            'preview_img' => env('APP_URL').'/images/emails/img/video.png',
+        ];
     }
 
     public function fewComments()
@@ -89,12 +113,14 @@ class Notification
     public function longAgoNotVisited()
     {
         $users = $this->getUsersLongAgoNotVisited();
+        $user = User::query()->where('id', '=', 31)->first();
 
+        return new LongAgoNotVisited(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4));
         foreach ($users['days7'] as $user) {
-            dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
+            dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4)))->onQueue('low');
         }
         foreach ($users['days30'] as $user) {
-            dispatch(new LongAgoNotVisitedJob(30, $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
+            dispatch(new LongAgoNotVisitedJob(30, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4)))->onQueue('low');
         }
     }
 
@@ -140,7 +166,8 @@ class Notification
         foreach ($users as $user) {
             $events = $this->events->getUpcomingEventsForUser($user);
             foreach ($events as $event) {
-                dispatch(new RemindForEventJob($event, $user, $this->events->getUpcomingEvents(3)))->onQueue('low');
+//                return new RemindForEventMail($event, $user, $this->events->getThisMonthEvents());
+                dispatch(new RemindForEventJob($event, $user, $this->events->getThisMonthEvents()))->onQueue('low');
             }
         }
     }
@@ -148,7 +175,7 @@ class Notification
     private function getApplicantsForEvent()
     {
         // TODO: выборка пользователей подавших заявку на мероприятие
-        return User::query()->where('id', '=', 1)->get();
+        return User::query()->where('id', '=', 31)->get();
     }
 
     /**
@@ -156,11 +183,13 @@ class Notification
      */
     public function requestForEvent(User $user, $event)
     {
-        dispatch(new RequestForEventJob($user, $this->events->getEventById(1), $this->events->getUpcomingEvents(3)))->onQueue('low');
+        //return new RequestForEventMail( $user, $this->events->getEventById(1), $this->events->getThisMonthEvents());
+        dispatch(new RequestForEventJob($user, $this->events->getEventById(1), $this->events->getThisMonthEvents()))->onQueue('low');
     }
 
     /**
      * попадение в топ 20.
+     * получает топ, и рассылает письма авторам треков.
      */
     public function reachTop($topCount = 20)
     {
@@ -168,7 +197,56 @@ class Notification
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
             $topUrl = '/url';
-            dispatch(new ReachTopJob($track, $topUrl, $this->events->getUpcomingEvents(3), $topCount))->onQueue('low');
+            //return new ReachTopMail($track, $topUrl, $topCount);
+            dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }
+    }
+
+    /**
+     * Нотификации о новом мероприятии(кроме звезды).
+     */
+    public function newEventNotification()
+    {
+        $users = $this->getSubscribersToEvent();
+        $events = $this->events->getNewEvents();
+        if (!empty($events)) {
+            foreach ($users as $user) {
+//                return new NewEventNotificationMail($events, $user);
+                dispatch(new NewEventNotificationJob($events, $user))->onQueue('low');
+            }
+        }
+    }
+
+    /**
+     * получить список подписчиков на события.
+     *
+     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    private function getSubscribersToEvent()
+    {
+        // TODO: выборка пользователей подписаных на рассылку о событиях
+        return User::query()->where('id', '=', 31)->get();
+    }
+
+    /**
+     * Нотификации о новом отзыве.
+     */
+    public function newCommentNotification($commentId)
+    {
+        $comment = Comment::query()->find($commentId);
+//        dd($comment->user()->first());
+        //return new CommentCreatedMail($comment->commentable->user()->first()->username, $comment);
+        dispatch(new CommentCreatedJob($comment))->onQueue('low');
+    }
+
+    /**
+     * Новый статус.
+     */
+    public function newStatusNotification($status, User $user)
+    {
+        //$user = User::query()->find(97);
+        //dd($user->username);
+        //return new NewStatusMail("ststus123", $user);
+        dispatch(new CommentCreatedJob($status, $user))->onQueue('low');
     }
 }

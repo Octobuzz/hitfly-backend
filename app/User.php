@@ -11,7 +11,10 @@ use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
+use App\Notifications\HitflyVerifyEmail;
+use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -56,7 +59,7 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Administrator implements JWTSubject, CanResetPasswordContract
+class User extends Administrator implements JWTSubject, CanResetPasswordContract, MustVerifyEmail
 {
     use Notifiable;
     use CanResetPassword;
@@ -90,6 +93,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         'gender',
         'birthday',
         'city_id',
+        'email_verified_at',
     ];
 
     /**
@@ -186,6 +190,61 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function purseBonus(): HasOne
     {
         return $this->hasOne(Purse::class)->where('name', '=', Purse::NAME_BONUS);
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        if (null !== $this->email_verified_at) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified()
+    {
+        if (null === $this->email_verified_at) {
+            $this->email_verified_at = new Carbon();
+            $this->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Send the email verification notification.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new HitflyVerifyEmail());
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->getOriginal('avatar');
+    }
+
+    public function getImageUrl(): ?string
+    {
+        if (null === $this->getImage()) {
+            $img = 'avatars/user2-160x160_size_235x235.jpg';
+        } else {
+            $img = $this->getImage();
+        }
+
+        return '/storage/'.$img;
     }
 
     public function socialsConnect()
