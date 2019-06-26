@@ -153,6 +153,12 @@ return [
         'sorrow' => 'Нам жаль, что так вышло.',
         'subject' => 'Понижение статуса',
     ],
+    'decreaseLevel' => [
+        'more' => 'Если вас интересует более подробная информация - <a href=":link" style="text-decoration: none; color: #b36fcb;">напишите</a> нам. И обязательно разберемся в сложившейся ситуации.',
+        'text' => 'К сожалению, мы были вынуждены понизить ваш уровень с :oldStatus до :decreaseStatus, в связи с нарушением правил использования сервиса.',
+        'sorrow' => 'Нам жаль, что так вышло.',
+        'subject' => 'Понижение статуса',
+    ],
 
     'newFavouriteTrack' => [
         'more' => 'Перейдите, чтобы <a href=":link" style="text-decoration: none; color: #b36fcb;">прослушать</a>.',

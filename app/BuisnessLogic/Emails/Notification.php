@@ -270,6 +270,17 @@ class Notification
     }
 
     /**
+     * понижение уровня.
+     */
+    public function decreaseLevelNotification($decreaseStatus, $oldStatus, User $user)
+    {
+//        $user = User::query()->find(97);
+//        //dd($user->username);
+//        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+        dispatch(new DecreaseStatusJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
+    }
+
+    /**
      * новый трек у любимого исполнителя.
      * Ищет всех подписавшихся на автора трека и рассылает письма.
      */
