@@ -141,10 +141,16 @@ class UserController extends \Encore\Admin\Controllers\UserController
         })->label();
         //if (true === $show->model()->isRole('star') || $show->model()->isRole('performer')) {
         $show->artistprofile('Дата начала карьеры')->as(function ($carrer) {
-            return Carbon::parse($carrer->career_start)->format('Y');
+            if(isset($carrer->career_start))
+                return Carbon::parse($carrer->career_start)->format('Y');
+            else
+                return "";
         });
         $show->artist('Описание деятельности')->as(function ($description) {
-            return $description->description;
+            if(isset($carrer->career_start))
+                return $description->description;
+            else
+                return "";
         });
         //}
 //        $show->model()->load('artistProfile');
@@ -173,7 +179,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
         $form = new Form(new $userModel());
 
-        $form->display('id', 'ID');
+        $form->display('id', '#');
 
         $form->text('username', 'Имя пользователя')->rules('required');
         $form->text('email', 'Email (логин)')->rules('required');
