@@ -16,6 +16,8 @@
                 </span>
                 @if ($errors->has('email'))
                     <span class="input-text-wrapper__error-msg">{{ $errors->first('email') }}</span>
+                @else
+                    <span class="input-text-wrapper__error-msg">Неверный электронный адрес</span>
                 @endif
             </span>
 
@@ -26,6 +28,8 @@
                 </span>
                 @if ($errors->has('password'))
                     <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
+                @else
+                    <span class="input-text-wrapper__error-msg">Введите корректный пароль</span>
                 @endif
             </span>
 
