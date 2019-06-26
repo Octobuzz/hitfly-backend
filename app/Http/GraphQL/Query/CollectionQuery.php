@@ -11,32 +11,43 @@ namespace App\Http\GraphQL\Query;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
+use Rebing\GraphQL\Support\SelectFields;
 
 class CollectionQuery extends Query
 {
     protected $attributes = [
-        'name' => 'Collection Query',
-        'description' => 'Запрос одной коллекции',
+        'name' => 'Collections Query',
+        'description' => 'Коллекции(Playlist)',
     ];
 
     public function type()
     {
-        return \GraphQL::type('Collection');
+        return \GraphQL::paginate('Collection');
     }
 
     public function args()
     {
         return [
-            'id' => ['name' => 'id', 'type' => Type::nonNull(Type::int())],
+            'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
+            'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
+            'filters' => [
+                'type' => \GraphQL::type('CollectionFilterInput'),
+                'description' => 'Фильтры',
+            ],
         ];
     }
 
-    public function resolve($root, $args)
+    public function resolve($root, $args, SelectFields $fields)
     {
-        if (isset($args['id'])) {
-            return Collection::query()->where('id', $args['id'])->first();
+        $query = Collection::with($fields->getRelations());
+        if (false === empty($args['filters']['my']) && true === $args['filters']['my'] && null !== \Auth::user()) {
+            $query->where('user_id', '=', \Auth::user()->id);
         }
+        if (false === empty($args['filters']['userId'])) {
+            $query->where('user_id', '=', $args['filters']['userId']);
+        }
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
-        return null;
+        return $response;
     }
 }
