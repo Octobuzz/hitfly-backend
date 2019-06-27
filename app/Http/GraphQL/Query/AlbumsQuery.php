@@ -27,21 +27,9 @@ class AlbumsQuery extends Query
         return [
             'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
             'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
-            'my' => [
-                'name' => 'my',
-                'type' => Type::boolean(),
-                'description' => 'Только мои альбомы',
-                'rules' => ['mutually_exclusive_args:userId,musicGroupId'],
-            ],
-            'userId' => [
-                'type' => Type::int(),
-                'description' => 'ID пользователя(фильтрация)',
-                'rules' => ['mutually_exclusive_args:my,userId'],
-            ],
-            'musicGroupId' => [
-                'type' => Type::int(),
-                'description' => 'ID группы(фильтрация)',
-                'rules' => ['mutually_exclusive_args:my,userId'],
+            'filters' => [
+                'type' => \GraphQL::type('AlbumFilterInput'),
+                'description' => 'Фильтры',
             ],
         ];
     }
@@ -49,14 +37,14 @@ class AlbumsQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $query = Album::with($fields->getRelations());
-        if (false === empty($args['my']) && true === $args['my'] && null !== \Auth::user()) {
+        if (false === empty($args['filters']['my']) && true === $args['filters']['my'] && null !== \Auth::user()) {
             $query->where('user_id', '=', \Auth::user()->id);
         }
-        if (false === empty($args['musicGroupId'])) {
-            $query->where('music_group_id', '=', $args['musicGroupId']);
+        if (false === empty($args['filters']['musicGroupId'])) {
+            $query->where('music_group_id', '=', $args['filters']['musicGroupId']);
         }
-        if (false === empty($args['userId'])) {
-            $query->where('user_id', '=', $args['userId']);
+        if (false === empty($args['filters']['userId'])) {
+            $query->where('user_id', '=', $args['filters']['userId']);
         }
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
