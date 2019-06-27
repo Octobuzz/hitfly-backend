@@ -5,6 +5,7 @@ namespace App\Http\GraphQL\Type;
 use App\Http\GraphQL\Fields\PictureField;
 use App\Models\Album;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
@@ -66,6 +67,14 @@ class AlbumType extends GraphQLType
                 'description' => 'Количество добавлений альбома в избранное',
                 'resolve' => function ($model) {
                     return $model->favourites->count();
+                },
+                'selectable' => false,
+            ],
+            'my' => [
+                'type' => Type::boolean(),
+                'description' => 'мой альбом',
+                'resolve' => function ($model) {
+                    return $model->user_id === Auth::user()->id ? true : false;
                 },
                 'selectable' => false,
             ],

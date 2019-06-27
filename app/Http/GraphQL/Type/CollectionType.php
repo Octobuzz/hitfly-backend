@@ -74,11 +74,19 @@ class CollectionType extends GraphQLType
                 },
                 'selectable' => false,
             ],
-            'isCollection' => [
+            'isSet' => [
                 'type' => Type::boolean(),
                 'description' => 'Является коллекцией',
                 'resolve' => function ($model) {
                     return 1 === $model->is_admin ? true : false;
+                },
+                'selectable' => false,
+            ],
+            'my' => [
+                'type' => Type::boolean(),
+                'description' => 'мой альбом',
+                'resolve' => function ($model) {
+                    return $model->user_id === Auth::user()->id ? true : false;
                 },
                 'selectable' => false,
             ],
