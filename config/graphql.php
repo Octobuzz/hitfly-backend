@@ -105,7 +105,7 @@ return [
                 'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
-                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
             ],
             'mutation' => [
@@ -128,7 +128,7 @@ return [
                 'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
-                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'favouriteAlbum' => \App\Http\GraphQL\Query\FavouriteAlbumQuery::class,
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
@@ -237,6 +237,9 @@ return [
         'PasswordInput' => \App\Http\GraphQL\InputObject\PasswordInput::class,
         'FollowInput' => \App\Http\GraphQL\InputObject\FollowInput::class,
         'TrackFilterInput' => \App\Http\GraphQL\InputObject\TrackFilterInput::class,
+        'AlbumFilterInput' => \App\Http\GraphQL\InputObject\AlbumFilterInput::class,
+        'CollectionFilterInput' => \App\Http\GraphQL\InputObject\CollectionFilterInput::class,
+        'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
