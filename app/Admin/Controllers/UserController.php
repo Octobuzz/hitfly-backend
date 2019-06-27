@@ -141,16 +141,18 @@ class UserController extends \Encore\Admin\Controllers\UserController
         })->label();
         //if (true === $show->model()->isRole('star') || $show->model()->isRole('performer')) {
         $show->artistprofile('Дата начала карьеры')->as(function ($carrer) {
-            if(isset($carrer->career_start))
+            if (isset($carrer->career_start)) {
                 return Carbon::parse($carrer->career_start)->format('Y');
-            else
-                return "";
+            } else {
+                return '';
+            }
         });
         $show->artist('Описание деятельности')->as(function ($description) {
-            if(isset($carrer->career_start))
+            if (isset($carrer->career_start)) {
                 return $description->description;
-            else
-                return "";
+            } else {
+                return '';
+            }
         });
         //}
 //        $show->model()->load('artistProfile');

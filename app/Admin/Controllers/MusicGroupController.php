@@ -119,7 +119,12 @@ class MusicGroupController extends Controller
         $grid->name('Имя');
         $grid->career_start_year('Дата начала карьеры');
         $grid->city_id('Город')->display(function ($city) {
-            return City::find($city)->title;
+            $city = City::find($city);
+            if (true === empty($city)) {
+                return null;
+            }
+
+            return $city->title;
         });
         $grid->model()->withTrashed();
         $grid->deleted_at(trans('admin.deleted_at'));
