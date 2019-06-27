@@ -27,6 +27,10 @@ class CommentsTrackQuery extends Query
             'trackId' => ['name' => 'trackId', 'type' => Type::int()],
             'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
             'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
+            'filters' => [
+                'type' => \GraphQL::type('CommentsTrackFilterInput'),
+                'description' => 'Фильтры',
+            ],
         ];
     }
 
@@ -34,6 +38,10 @@ class CommentsTrackQuery extends Query
     {
         $query = Comment::with($fields->getRelations());
 
+        if (false === empty($args['filters']['commentPeriod'])) {
+            $date = DBHelpers::getPeriod($args['filters']['commentPeriod']);
+            $query->where('created_at', '>=', $date);
+        }
         //$query->select($fields->getSelect());
         $query->where('commentable_type', Track::class);
         if (isset($args['trackId'])) {

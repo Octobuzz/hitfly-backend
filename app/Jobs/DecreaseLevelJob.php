@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Mail\DecreaseLevelMail;
-use App\Mail\DecreaseStatusMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

@@ -31,7 +31,6 @@ class AlbumsQuery extends Query
                 'type' => \GraphQL::type('AlbumFilterInput'),
                 'description' => 'Фильтры',
             ],
-
         ];
     }
 
