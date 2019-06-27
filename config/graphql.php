@@ -128,7 +128,7 @@ return [
                 'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
-                'collection' => \App\Http\GraphQL\Query\CollectionsQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
                 'favouriteAlbum' => \App\Http\GraphQL\Query\FavouriteAlbumQuery::class,
                 'favouriteTrack' => \App\Http\GraphQL\Query\FavouriteTrackQuery::class,
                 'favouriteGenre' => \App\Http\GraphQL\Query\FavouriteGenreQuery::class,
