@@ -109,5 +109,4 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./UniversalReviews.scss"
-/>
+  src="./Univ

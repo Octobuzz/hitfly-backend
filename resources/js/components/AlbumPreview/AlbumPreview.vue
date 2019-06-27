@@ -108,7 +108,7 @@ export default {
 
     titleLink() {
       return this.$store.getters['links/album'](
-        this.$route.fullPath,
+        this.$route,
         this.albumId
       );
     }

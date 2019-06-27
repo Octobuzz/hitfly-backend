@@ -7,6 +7,7 @@ fragment collection on Collection {
         size
         url
     }
+    isCollection
     userFavourite
     favouritesCount
     countTracks
