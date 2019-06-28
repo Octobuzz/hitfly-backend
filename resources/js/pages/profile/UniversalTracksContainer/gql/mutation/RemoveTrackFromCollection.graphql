@@ -1,0 +1,11 @@
+mutation RemoveTrackFromCollection(
+    $trackId: Int
+    $collectionId: Int
+) {
+    removeTrackFromCollection(
+        trackId: $trackId
+        collectionId: $collectionId
+    ) {
+        id
+    }
+}

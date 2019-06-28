@@ -67,7 +67,13 @@ import AboutPage from './pages/AboutPage.vue';
   /user/:userId/user-reviews/:id
 */
 
+import tracksContainer from './pages/profile/UniversalTracksContainerExample.vue';
+
 const routes = [
+  {
+    path: '/',
+    component: tracksContainer
+  },
   {
     path: '/profile',
     component: profile.MyProfileLayout,

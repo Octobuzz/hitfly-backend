@@ -67,11 +67,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 10,
-
-        // TODO: remove 'my: true' and uncomment filters when the api is implemented
-
-        // filters
-        my: true
+        filters
       }
     };
   },

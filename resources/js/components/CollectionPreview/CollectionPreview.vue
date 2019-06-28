@@ -103,9 +103,7 @@ export default {
     },
 
     titleLink() {
-      // TODO: wait for backend changes and change flag name (isCollection)
-
-      const type = this.collection.isCollection ? 'playlist' : 'set';
+      const type = this.collection.isSet ? 'set' : 'playlist';
 
       return this.$store.getters[`links/${type}`](
         this.$route,

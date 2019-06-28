@@ -209,7 +209,7 @@
         this.$apollo.query({
           fetchPolicy: 'network-only',
           query: gql`query{
-            albums(limit: 0, page: 0, my: true){
+            albums(limit: 0, page: 0, filters: { my: true }){
               data {
                 id
                 title
@@ -240,7 +240,7 @@
       getAlbums() {
         return {
           query: gql`query{
-            albums(limit: 0, page: 0, my: true){
+            albums(limit: 0, page: 0, filters: { my: true }){
               data {
                 id
                 title
