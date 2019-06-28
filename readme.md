@@ -7,12 +7,13 @@
 
 Запуск проекта 
 
-    docker-compose up  
+    docker-compose build --build-arg base_env=$UID
 
 
 Далее вам будет доступен сервер со следующими параметрами 
 
 Адрес сайта http://localhost:9090/
+Порт сокета: 2346
 
 База данных
     
