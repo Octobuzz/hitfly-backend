@@ -69,6 +69,8 @@ class MusicGroupController extends Controller
      */
     public function edit($id, Content $content)
     {
+        MusicGroup::query()->find($id);
+
         return $content
             ->header('Реадктирование музыкальной группы')
             ->description('реадктирование музыкальной группы')
@@ -141,7 +143,7 @@ class MusicGroupController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(MusicGroup::findOrFail($id));
+        $show = new Show(MusicGroup::withTrashed()->findOrFail($id));
 
         $show->id('#');
         $show->user('Пользователь', function ($user) {
@@ -178,6 +180,7 @@ class MusicGroupController extends Controller
     protected function form()
     {
         $form = new Form(new MusicGroup());
+        $form->model()->withTrashed();
 
         $form->select('creator_group_id', 'Пользователь')->options(function ($id) {
             $user = User::find($id);
@@ -188,21 +191,20 @@ class MusicGroupController extends Controller
         })->ajax('/admin/api/users');
 
         $form->text('name', 'Имя');
-        $form->date('career_start_year', 'Старт начала карьеры')->default(date('Y'));
+        $form->date('career_start_year', 'Старт начала карьеры')->format('YYYY')->default('YYYY');
 
-        $form->select('genre_id', 'Жанр')->options(function ($id) {
-            $genre = Genre::find($id);
-
-            if ($genre) {
-                return [$genre->id => $genre->name];
-            }
-        })->ajax('/admin/api/genres');
+//        $form->select('genre_id', 'Жанр')->options(function ($id) {
+//            $genre = Genre::find($id);
+//
+//            if ($genre) {
+//                return [$genre->id => $genre->name];
+//            }
+//        })->ajax('/admin/api/genres');
 
         $form->select('city_id', 'Город')->options(function ($id) {
             $city = City::find($id);
-
             if ($city) {
-                return [$city->id => $city->name];
+                return [$city->id => $city->title];
             }
         })->ajax('/admin/api/city');
         $form->textarea('description', 'Описание');
