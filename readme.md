@@ -7,7 +7,7 @@
 
 Запуск проекта 
 
-    docker-compose up  
+    docker-compose build --build-arg base_env=$UID
 
 
 Далее вам будет доступен сервер со следующими параметрами 
