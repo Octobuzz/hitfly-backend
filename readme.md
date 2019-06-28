@@ -85,3 +85,6 @@ Query
         
         
         
+## Запуск сокета для передачи сообщений
+
+    docker exec -it php_docker sudo -u www-data php artisan workman start 

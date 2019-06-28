@@ -11,6 +11,7 @@ use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
+use App\Models\UserNotification;
 use App\Notifications\HitflyVerifyEmail;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
@@ -193,6 +194,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function purseBonus(): HasOne
     {
         return $this->hasOne(Purse::class)->where('name', '=', Purse::NAME_BONUS);
+    }
+
+    public function userNotification()
+    {
+        return $this->hasOne(UserNotification::class);
     }
 
     /**
