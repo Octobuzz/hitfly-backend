@@ -101,6 +101,11 @@ class TrackType extends GraphQLType
                 'description' => 'PlayLists пользователя. Только для авторизированных пользователей',
                 'privacy' => IsAuthPrivacy::class,
             ],
+            'musicWave' => [
+                'type' => Type::listOf(Type::int()),
+                'description' => 'Музыкальная волна',
+                'alias' => 'music_wave',
+            ],
             'cover' => PictureField::class,
             'comments' => CommentsTrackField::class,
         ];

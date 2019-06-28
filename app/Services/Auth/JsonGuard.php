@@ -19,7 +19,7 @@ class JsonGuard implements Guard
     use GuardHelpers, Macroable;
 
     const HEADER_NAME_TOKEN = 'X-TOKEN-AUTH';
-    private const COLUMN_NAME = 'access_token';
+    const COLUMN_NAME = 'access_token';
 
     /**
      * The name of the Guard. Typically "session".

@@ -36,6 +36,8 @@ services:
     volumes:
       - './:/var/www/html'
       - './docker/php/config/php.ini:/usr/local/etc/php/php.ini'
+    ports:
+      - "2346:2346"
     links:
       - "maria:maria"
     env_file:

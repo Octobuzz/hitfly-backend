@@ -22,6 +22,15 @@ class Track extends Model
 
     protected $table = 'tracks';
 
+    /**
+     * Атрибуты, которые должны быть преобразованы к базовым типам.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'music_wave' => 'array',
+    ];
+
     protected $fillable = [
         'track_name',
         'album_id',
@@ -34,6 +43,7 @@ class Track extends Model
         'track_hash',
         'state',
         'music_group_id',
+        'music_wave',
     ];
 
     protected $hidden = [
