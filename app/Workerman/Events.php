@@ -54,8 +54,12 @@ class Events
     public static function onClose($client_id)
     {
         $notificationUser = UserNotification::query()->where('token_web_socket', '=', $client_id)->first();
-        $notificationUser->token_web_socket = null;
-        $notificationUser->save();
+        if(empty($notificationUser) === false){
+            $notificationUser->token_web_socket = null;
+                    $notificationUser->save();
+        }
+
+
     }
 
     /**
