@@ -217,6 +217,7 @@ const router = new VueRouter({
   mode: 'history'
 });
 
+// TODO: consider using after hook
 router.beforeEach((to, from, next) => {
   store.commit('history/push', to);
   next();
