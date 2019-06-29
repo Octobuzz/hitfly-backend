@@ -10,6 +10,7 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -41,7 +42,7 @@ class CollectionsQuery extends Query
     {
         $query = Collection::with($fields->getRelations());
         if (false === empty($args['filters']['my']) && true === $args['filters']['my'] && null !== \Auth::user()) {
-            $query->where('user_id', '=', \Auth::user()->id);
+            $query->where('user_id', '=', Auth::user()->id);
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('user_id', '=', $args['filters']['userId']);
