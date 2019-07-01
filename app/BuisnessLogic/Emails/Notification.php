@@ -250,9 +250,11 @@ class Notification
     /**
      * Новый статус.
      */
-    public function newStatusNotification($status, User $user)
+    public function newStatusNotification(/*$status, User $user*/)
     {
-        //$user = User::query()->find(97);
+        $user = User::query()->find(113);
+
+        $status = "STSTUSTEST";
         //dd($user->username);
         //return new NewStatusMail("ststus123", $user);
         dispatch(new NewStatusJob($status, $user))->onQueue('low');
