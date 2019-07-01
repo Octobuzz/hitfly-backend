@@ -336,9 +336,8 @@ class Notification
             ->where('watcheable_type', User::class)
             ->where('watcheable_id', $userId)->get();
         foreach ($watchableList as $watch) {
-            $userList[] = $watch->user;
+            $userList[] = $watch->watcher;
         }
-
         return $userList;
     }
 }
