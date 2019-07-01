@@ -129,10 +129,10 @@ return [
     'verifyEmail' => [
         'hello' => 'Спасибо, что присоединились',
         'acceptRegister' => 'Подтвердите регистрацию',
-        'text' => 'Для подтверждения регистрации перейдите по ссылке<br>
-                                        <a href=":link" style="text-decoration: none; color: #b36fcb;">Ссылке</a><br>
-                                        Ссылка действительна в течении 24 часов.',
-        'subject' => 'Смена Email адреса',
+        'text' => 'Вы прошли процедуру регистрации на музыкальном портале HitFly.<br><br>
+                Для того, чтобы использовать полный функционал - подтвердите ваш e-mail, перейдя по 
+                                        <a href=":link" style="text-decoration: none; color: #b36fcb;">ссылке</a><br>',
+        'subject' => 'Верификация Email адреса',
     ],
 
     'commentCreated' => [
