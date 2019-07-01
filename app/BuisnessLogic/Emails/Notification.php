@@ -7,6 +7,7 @@ use App\BuisnessLogic\Promo\PromoCode;
 use App\BuisnessLogic\Recommendation\Recommendation;
 use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\CommentCreatedJob;
+use App\Jobs\DecreaseLevelJob;
 use App\Jobs\DecreaseStatusJob;
 use App\Jobs\FewCommentsJob;
 use App\Jobs\LongAgoNotVisitedJob;
@@ -250,11 +251,11 @@ class Notification
     /**
      * Новый статус.
      */
-    public function newStatusNotification(/*$status, User $user*/)
+    public function newStatusNotification($status, User $user)
     {
-        $user = User::query()->find(113);
-
-        $status = "STSTUSTEST";
+//        $user = User::query()->find(113);
+//
+//        $status = "STSTUSTEST";
         //dd($user->username);
         //return new NewStatusMail("ststus123", $user);
         dispatch(new NewStatusJob($status, $user))->onQueue('low');
@@ -279,7 +280,7 @@ class Notification
 //        $user = User::query()->find(97);
 //        //dd($user->username);
 //        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
-        dispatch(new DecreaseStatusJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
+        dispatch(new DecreaseLevelJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
     }
 
     /**
