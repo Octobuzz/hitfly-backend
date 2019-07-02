@@ -14,6 +14,7 @@ use App\Models\Watcheables;
 use App\Notifications\BaseNotification;
 use App\User;
 use GatewayWorker\Lib\Gateway;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class NotificationEventSubscriber
@@ -53,7 +54,7 @@ class NotificationEventSubscriber
                     'messageData' => $messageData,
                 ],
             ]));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             Log::alert($exception->getMessage(), $exception);
         }
     }
