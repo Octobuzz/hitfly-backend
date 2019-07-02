@@ -63,12 +63,11 @@ class ListeningTrackMutation extends Mutation
         event(new TrackMinimumListening($track, Auth::user()));
 
         $cacheTracks = Cache::get($keyTracks, null);
-        if($cacheTracks !== null){
+        if (null !== $cacheTracks) {
             if (false !== array_search($idTrack, $cacheTracks, true)) {
                 return;
             }
         }
-
 
         $cacheTracks[] = $idTrack;
         Cache::put($keyTracks, $cacheTracks, $minutes);

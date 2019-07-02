@@ -55,6 +55,8 @@ class CreateTopFiftyCommand extends Command
             }
             $topFiftyReturn[$key] = count($users);
         }
+        Cache::forever(TopFifty::TOP_FIFTY_KEY, $topFifty);
+
         arsort($topFiftyReturn);
         $arrTopFifty = array_slice($topFiftyReturn, 0, 50, true);
         Cache::forever(TopFifty::TOP_FIFTY_KEY_CALCULATED, array_keys($arrTopFifty));
