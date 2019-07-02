@@ -196,13 +196,7 @@ class TrackController extends Controller
                 return [$album->id => $album->title];
             }
         })->ajax('/admin/api/album');
-        $form->select('genre_id', 'Жанр')->options(function ($id) {
-            $genre = Genre::find($id);
-
-            if ($genre) {
-                return [$genre->id => $genre->name];
-            }
-        })->ajax('/admin/api/genres')->rules(['required']);
+        $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'));
 
         $form->text('singer', 'Исполнитель')->rules(['required']);
         $form->date('track_date', 'Дата трека')->default(date('Y'))->rules(['required']);
