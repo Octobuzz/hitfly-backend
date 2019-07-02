@@ -25,6 +25,12 @@ class NotificationType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'data',
             ],
+            'readAt' => [
+                'type' => Type::string(),
+                'description' => 'date read',
+                'alias' => 'read_at',
+            ],
+
         ];
     }
 }
