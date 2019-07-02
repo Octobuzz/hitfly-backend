@@ -13,6 +13,7 @@ use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
+use Illuminate\Support\Facades\Auth;
 
 class CollectionType extends GraphQLType
 {

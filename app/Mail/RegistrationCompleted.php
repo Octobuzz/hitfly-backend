@@ -38,7 +38,7 @@ class RegistrationCompleted extends Mailable
             [
                 'topList' => $topPlayList->getTopTrack(5),
                 'playLists' => $recommend->getNewUserPlayList(2),
-                'linkToProfile' => '/fake_link',
+                'linkToProfile' => env('APP_URL').'/profile/my-music',
                 'importantEvents' => $events->getImportantEvents(1),
                 'star' => false,
             ]
