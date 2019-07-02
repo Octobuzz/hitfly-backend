@@ -3,15 +3,12 @@
 query Albums(
     $pageLimit: Int!,
     $pageNumber: Int!
-    # TODO: remove 'my' and add 'filters' field when the api is implemented
-    # $filters: TrackFilterInput
-    $my: Boolean
+    $filters: AlbumFilterInput
 ) {
     albums(
         limit: $pageLimit,
         page: $pageNumber
-        # filters: $filters
-        my: $my
+        filters: $filters
     ) {
         total
         to

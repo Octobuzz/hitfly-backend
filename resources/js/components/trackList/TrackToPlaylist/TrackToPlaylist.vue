@@ -208,7 +208,9 @@ export default {
           // TODO: variables should always be the same as in the actual container
           pageNumber: 1,
           pageLimit: 10,
-          my: true
+          filters: {
+            my: true
+          }
         };
         const { collections } = store.readQuery({
           query: gql.query.COLLECTIONS,

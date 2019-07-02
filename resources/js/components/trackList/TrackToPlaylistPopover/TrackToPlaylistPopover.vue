@@ -106,9 +106,6 @@ export default {
     },
 
     onTrackAdded(addedTrack, toPlaylist) {
-      console.log('track added');
-
-
       setTimeout(() => {
         this.$refs.closeButton.click();
 

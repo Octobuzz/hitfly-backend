@@ -7,7 +7,9 @@ fragment collection on Collection {
         size
         url
     }
+    isSet
     userFavourite
     favouritesCount
     countTracks
+    my
 }

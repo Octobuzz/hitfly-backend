@@ -15,7 +15,7 @@
       <span class="collection-preview__title">
         <router-link
           :to="titleLink"
-          :style="{ color: 'inherit' }"
+          class="collection-preview__title-link"
         >
           {{ collection.title }}
         </router-link>
@@ -103,7 +103,12 @@ export default {
     },
 
     titleLink() {
-      return '';
+      const type = this.collection.isSet ? 'set' : 'playlist';
+
+      return this.$store.getters[`links/${type}`](
+        this.$route,
+        this.collectionId
+      );
     }
   },
 

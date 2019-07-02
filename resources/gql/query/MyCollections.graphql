@@ -3,7 +3,13 @@
 # TODO: pagination for the components using this query
 
 query MyCollections {
-    collections(limit: 99999, page: 1, my: true){
+    collections(
+        limit: 99999,
+        page: 1,
+        filters: {
+            my: true
+        }
+    ){
         data {
             ...collection
         }
