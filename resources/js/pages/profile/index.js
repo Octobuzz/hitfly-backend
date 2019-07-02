@@ -11,3 +11,4 @@ export { default as AlbumTableContainer } from './AlbumTableContainer';
 export { default as CollectionTableContainer } from './CollectionTableContainer';
 export { default as OtherUserProfileLayout } from './OtherUserProfileLayout';
 export { default as OtherUserMusic } from './OtherUserMusic';
+export { default as AlbumTrackList } from './AlbumTrackList';

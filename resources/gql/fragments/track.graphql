@@ -19,6 +19,7 @@ fragment track on Track {
     user {
         id
     }
+    singer
     userFavourite
     favouritesCount
 }

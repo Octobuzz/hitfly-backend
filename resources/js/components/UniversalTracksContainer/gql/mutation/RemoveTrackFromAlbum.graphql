@@ -1,6 +1,6 @@
 mutation RemoveTrackFromAlbum(
-    $trackId: Int
-    $albumId: Int
+    $trackId: Int!
+    $albumId: Int!
 ) {
     removeTrackFromAlbum(
         trackId: $trackId

@@ -26,7 +26,7 @@
 <script>
 import loadOnScroll from 'mixins/loadOnScroll';
 import TrackList from 'components/trackList/TrackList';
-import UniversalTracksContainer from '../UniversalTracksContainer';
+import UniversalTracksContainer from 'components/UniversalTracksContainer';
 
 export default {
   components: {
@@ -95,6 +95,8 @@ export default {
 
   methods: {
     onTracksContainerInitialized(init) {
+      this.$emit('initialized', init.data);
+
       if (init.success) {
         this.initialFetchDone = true;
         this.$nextTick(() => {

@@ -304,6 +304,7 @@ export default {
           if (this.initialFetchDone === false) {
             this.initialFetchDone = true;
             this.$emit('initialized', {
+              data,
               success: true,
               error: null
             });

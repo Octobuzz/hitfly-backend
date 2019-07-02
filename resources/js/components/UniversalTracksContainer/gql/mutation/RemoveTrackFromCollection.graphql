@@ -1,6 +1,6 @@
 mutation RemoveTrackFromCollection(
-    $trackId: Int
-    $collectionId: Int
+    $trackId: Int!
+    $collectionId: Int!
 ) {
     removeTrackFromCollection(
         trackId: $trackId

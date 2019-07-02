@@ -130,7 +130,7 @@ const routes = [
       },
       {
         path: 'album/:albumId',
-        component: profile.Album
+        component: profile.AlbumTrackList
       },
       {
         path: 'playlist/:playlistId',
@@ -189,7 +189,7 @@ const routes = [
       },
       {
         path: 'album/:albumId',
-        component: profile.Album
+        component: profile.AlbumTrackList
       },
       {
         path: 'playlist/:playlistId',
