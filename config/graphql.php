@@ -146,6 +146,7 @@ return [
                 'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
                 'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
+                'NotificationQuery' => \App\Http\GraphQL\Query\NotificationQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -228,6 +229,7 @@ return [
         'WatchableUserType' => \App\Http\GraphQL\Type\WatchableUserType::class,
         'WatchableMusicGroupType' => \App\Http\GraphQL\Type\WatchableMusicGroupType::class,
         'SocialConnectType' => \App\Http\GraphQL\Type\SocialConnectType::class,
+        'NotificationType' => \App\Http\GraphQL\Type\NotificationType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
