@@ -30,7 +30,6 @@ class NotificationType extends GraphQLType
                 'description' => 'date read',
                 'alias' => 'read_at',
             ],
-
         ];
     }
 }
