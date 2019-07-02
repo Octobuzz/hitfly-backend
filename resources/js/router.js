@@ -134,11 +134,11 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.Playlist
+        component: profile.CollectionTrackList
       },
       {
         path: 'set/:setId',
-        component: profile.Set
+        component: profile.CollectionTrackList
       },
       {
         path: 'bonus-program',
@@ -193,7 +193,7 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.Playlist
+        component: profile.CollectionTrackList
       }
       // {
       //   path: '',

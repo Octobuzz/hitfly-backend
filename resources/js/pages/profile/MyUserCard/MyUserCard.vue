@@ -83,7 +83,7 @@
           :src="
             group.avatarGroup.filter(
               avatar => avatar.size === 'size_40x40'
-            )[0].url || anonymousAvatar
+            )[0].url
           "
           alt="Group cover"
         >
@@ -147,7 +147,8 @@
             :src="
               user.avatar.filter(
                 image => image.size === 'size_56x56'
-              )[0].url || anonymousAvatar"
+              )[0].url
+            "
             alt="User avatar"
           >
 
@@ -183,7 +184,8 @@
             :src="
               group.avatarGroup.filter(
                 image => image.size === 'size_40x40'
-              )[0].url || anonymousAvatar"
+              )[0].url
+            "
             alt="Group cover"
           >
 

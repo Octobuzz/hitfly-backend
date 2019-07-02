@@ -1,0 +1,84 @@
+@import '~scss/_variables.scss';
+
+.collection-track-list {
+  &__return-button {
+    margin-bottom: 32px;
+  }
+
+  &__singer {
+    display: block;
+    color: #b4b4b4;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  &__track-section {
+    display: flex;
+    margin-bottom: 16px;
+  }
+
+  &__track-cover {
+    width: 160px;
+    height: 160px;
+    border-radius: 4px;
+    margin-right: 28px;
+  }
+
+  &__player-section {
+    flex-grow: 1;
+  }
+
+  &__collection-title {
+    margin-bottom: 16px;
+  }
+
+  &__collection-data {
+    font-size: 14px;
+    color: $text_color_secondary;
+    display: block;
+    margin-bottom: 28px;
+  }
+
+  &__player {
+    flex-grow: 1;
+    height: 95px;
+    background: $red_violet;
+  }
+
+  &__button-section {
+    display: flex;
+    margin-bottom: 16px;
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
+
+    &_listen {
+      font-size: 14px;
+      color: $text_color_primary;
+      padding: {
+        left: 32px;
+        right: 32px;
+      }
+      border-radius: $input_border_radius;
+      border: 1px solid $layout_border_color;
+      transition: background .2s;
+
+      &:hover {
+        background: $layout_border_color;
+      }
+
+      & > *:first-child {
+        display: block;
+        margin-right: 12px;
+      }
+    }
+  }
+}

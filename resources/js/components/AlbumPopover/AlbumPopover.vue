@@ -150,7 +150,7 @@ export default {
 
   methods: {
     onFavouritePress() {
-
+      this.emit('press-favourite', this.albumId);
     },
 
     onAlbumRemovePress() {

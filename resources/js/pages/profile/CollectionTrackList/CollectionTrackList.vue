@@ -1,13 +1,13 @@
 <template>
-  <div :class="['album-track-list', containerPaddingClass]">
-    <ReturnHeader class="album-track-list__return-button" />
+  <div :class="['collection-track-list', containerPaddingClass]">
+    <ReturnHeader class="collection-track-list__return-button" />
 
-    <template v-if="albumFetched && shownTrack">
-      <span class="album-track-list__singer">
+    <template v-if="collectionFetched && shownTrack">
+      <span class="collection-track-list__singer">
         {{ shownTrack.singer }}
       </span>
 
-      <div class="album-track-list__track-section">
+      <div class="collection-track-list__track-section">
         <img
           :src="
             shownTrack.cover.filter(
@@ -15,26 +15,26 @@
             )[0].url
           "
           alt="Track cover"
-          class="album-track-list__track-cover"
+          class="collection-track-list__track-cover"
         >
 
-        <div class="album-track-list__player-section">
-          <span class="h3 album-track-list__album-title">
-            {{ album.title }}
+        <div class="collection-track-list__player-section">
+          <span class="h3 collection-track-list__collection-title">
+            {{ collection.title }}
           </span>
-          <span class="album-track-list__album-data">
-            stub: album data
+          <span class="collection-track-list__collection-data">
+            stub: collection data
           </span>
 
-          <div class="album-track-list__player" />
+          <div class="collection-track-list__player" />
         </div>
       </div>
 
-      <div class="album-track-list__button-section">
+      <div class="collection-track-list__button-section">
         <button
           :class="[
-            'album-track-list__button',
-            'album-track-list__button_listen'
+            'collection-track-list__button',
+            'collection-track-list__button_listen'
           ]"
         >
           <CirclePlayIcon />
@@ -42,17 +42,17 @@
         </button>
 
         <AddToFavButton
-          class="album-track-list__button"
+          class="collection-track-list__button"
           passive="standard-passive"
           hover="standard-hover"
           modifier="squared bordered"
-          item-type="album"
-          :item-id="albumId"
+          item-type="collection"
+          :item-id="collectionId"
         />
 
-        <AlbumPopover :album-id="albumId">
+        <CollectionPopover :collection-id="collectionId">
           <IconButton
-            class="album-track-list__button"
+            class="collection-track-list__button"
             passive="standard-passive"
             hover="standard-hover"
             modifier="squared bordered"
@@ -60,13 +60,13 @@
           >
             <DotsIcon />
           </IconButton>
-        </AlbumPopover>
+        </CollectionPopover>
       </div>
     </template>
 
     <UniversalTrackList
-      for-type="album"
-      :for-id="albumId"
+      for-type="collection"
+      :for-id="collectionId"
       :show-remove-button="showRemoveButton"
       @initialized="onTrackListInitialized"
     />
@@ -75,13 +75,13 @@
 
 <script>
 // When receive update from vuex for the id of currently playing track
-// we should check if the track album is the same as the album in question.
+// we should check if the track belongs to the collection in question.
 //
 // If true, we should update current data regarding to the track.
 // If false, we should ignore.
 //
 // We also have a case where we visit the page while already listening a track
-// from the album. This case will be handled automatically thanks to reactivity.
+// from the collection. This case will be handled automatically thanks to reactivity.
 
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import currentPath from 'mixins/currentPath';
@@ -91,7 +91,7 @@ import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
-import AlbumPopover from 'components/AlbumPopover';
+import CollectionPopover from 'components/CollectionPopover';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
 
@@ -101,7 +101,7 @@ export default {
   components: {
     UniversalTrackList,
     ReturnHeader,
-    AlbumPopover,
+    CollectionPopover,
     IconButton,
     CirclePlayIcon,
     DotsIcon,
@@ -113,11 +113,11 @@ export default {
   data() {
     return {
       anonymousAvatar,
-      playingTrack: null,
-      firstAlbumTrack: null,
-      firstAlbumTrackId: null,
-      album: null,
-      albumFetched: false,
+      firstCollectionTrack: null,
+      firstCollectionTrackId: null,
+      collection: null,
+      collectionFetched: false,
+      playingTrackBelongsToCollection: false,
       tooltip: {
         more: {
           content: 'Еще'
@@ -127,8 +127,10 @@ export default {
   },
 
   computed: {
-    albumId() {
-      return +this.$route.params.albumId;
+    collectionId() {
+      const { playlistId, setId } = this.$route.params;
+
+      return +(playlistId || setId);
     },
 
     showRemoveButton() {
@@ -153,19 +155,49 @@ export default {
     shownTrack() {
       const {
         playingTrack,
-        firstAlbumTrack,
-        albumId
+        playingTrackBelongsToCollection,
+        firstCollectionTrack
       } = this;
 
-      if (!firstAlbumTrack) {
+      if (!firstCollectionTrack) {
         return null;
       }
 
-      if (playingTrack && playingTrack.album.id === albumId) {
+      if (playingTrackBelongsToCollection) {
         return playingTrack;
       }
 
-      return firstAlbumTrack;
+      return firstCollectionTrack;
+    }
+  },
+
+  watch: {
+    playingTrackId: {
+      handler(id) {
+        // TODO: check if track belongs to current collection asynchronously
+
+        this.$nextTick(() => this.playingTrackBelongsToCollection = false);
+
+        // if (!ofNumber(id)) {
+        //   this.playingTrackBelongsToCollection = false;
+        //
+        //   return;
+        // }
+        //
+        // const playingTrack = this.$apollo.query({
+        //   // fetch playing track
+        // });
+        // const playingTrackBelongsToCollection = this.$apollo.query({
+        //   // ask if it belongs
+        // });
+        //
+        // Promise.all([playingTrack, playingTrackBelongsToCollection])
+        //   .then(([{ track }, pendingApiResponse]) => {
+        //     this.playingTrack = track;
+        //     this.trackBelongsToCollection = pendingApiResponse;
+        //   });
+      },
+      immediate: true
     }
   },
 
@@ -174,33 +206,33 @@ export default {
       if (data instanceof Array === false
         || data.length === 0) return;
 
-      this.firstAlbumTrackId = data[0].id;
+      this.firstCollectionTrackId = data[0].id;
     }
   },
 
   apollo: {
-    album: {
-      query: gql.query.ALBUM,
+    collection: {
+      query: gql.query.COLLECTION,
       variables() {
         return {
-          id: this.albumId
+          id: this.collectionId
         };
       },
-      update({ album }) {
-        this.albumFetched = true;
+      update({ collection }) {
+        this.collectionFetched = true;
 
-        return album;
+        return collection;
       },
       error(err) {
         console.dir(err);
       }
     },
 
-    playingTrack: {
+    firstCollectionTrack: {
       query: gql.query.TRACK,
       variables() {
         return {
-          id: this.playingTrackId
+          id: this.firstCollectionTrackId
         };
       },
       update({ track }) {
@@ -210,25 +242,7 @@ export default {
         console.dir(err);
       },
       skip() {
-        return !ofNumber(this.playingTrackId);
-      }
-    },
-
-    firstAlbumTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return {
-          id: this.firstAlbumTrackId
-        };
-      },
-      update({ track }) {
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.firstAlbumTrackId);
+        return !ofNumber(this.firstCollectionTrackId);
       }
     }
   }
@@ -238,5 +252,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./AlbumTrackList.scss"
+  src="./CollectionTrackList.scss"
 />
