@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Listeners\BonusProgramEventSubscriber;
+use App\Listeners\ConsoleCommandEventSubsriber;
+use App\Listeners\MainCollectionEventSubscriber;
 use App\Listeners\NotificationEvenSubscriber;
 use App\Listeners\UserEventSubscriber;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -43,6 +45,8 @@ class EventServiceProvider extends ServiceProvider
         UserEventSubscriber::class,
         BonusProgramEventSubscriber::class,
         NotificationEvenSubscriber::class,
+        MainCollectionEventSubscriber::class,
+        ConsoleCommandEventSubsriber::class,
     ];
 
     /**

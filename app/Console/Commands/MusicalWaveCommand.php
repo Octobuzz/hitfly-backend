@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class MusicalWave extends Command
+class MusicalWaveCommand extends Command
 {
     const TMP_DIR = '/tmp/';
     /**
