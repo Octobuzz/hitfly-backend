@@ -1,7 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+    <div class="main__info">
+        <div class="forgot-pass">
+            <h1 class="forgot-pass__title">{{__('auth.checkEmail')}}</h1>
+            <p class="forgot-pass__text">
+            @if (session('resent'))
+
+                    {{__('auth.checkEmailLinkResend')}} <br>
+
+            @endif
+                {{__('auth.checkEmailText')}} <a href="{{ route('verification.resend') }}">{{__('auth.checkEmailLink')}}</a>.
+            </p>
+            <p class="forgot-pass__return">
+                <a href="/login">{{__('passwords.backToLogin')}}</a>
+            </p>
+        </div>
+    </div>
+{{--<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -20,5 +36,5 @@
             </div>
         </div>
     </div>
-</div>
+</div>--}}
 @endsection

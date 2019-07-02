@@ -11,12 +11,12 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.newStatus.hello'), {{$user->username}}!</h3>
+                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.newStatus.hello'), {{$user}}!</h3>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
                                         @lang('emails.newStatus.text', ['status'=>$status])
                                     </p>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.newStatus.more', ['link'=>'/fake_url'])
+                                        @lang('emails.newStatus.more', ['link'=> env('APP_URL').'/profile/bonus-program'])
                                     </p>
                                 </td>
                             </tr>
