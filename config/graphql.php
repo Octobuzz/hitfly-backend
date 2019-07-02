@@ -110,6 +110,7 @@ return [
                 'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
                 'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
+                'TrackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -147,6 +148,7 @@ return [
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
                 'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
                 'NotificationQuery' => \App\Http\GraphQL\Query\NotificationQuery::class,
+                'trackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -230,6 +232,7 @@ return [
         'WatchableMusicGroupType' => \App\Http\GraphQL\Type\WatchableMusicGroupType::class,
         'SocialConnectType' => \App\Http\GraphQL\Type\SocialConnectType::class,
         'NotificationType' => \App\Http\GraphQL\Type\NotificationType::class,
+        'TrackBelongsCollection' => \App\Http\GraphQL\Type\TrackBelongsCollectionType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
