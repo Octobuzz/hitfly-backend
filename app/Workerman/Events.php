@@ -72,7 +72,6 @@ class Events
                 case 'query':
 
                     switch ($jsonDecode->data) {
-
                         case 'get-notification-info':
                             $response = [];
                             $response['type'] = 'notification-info';
