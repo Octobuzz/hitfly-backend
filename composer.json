@@ -19,6 +19,7 @@
         "jenssegers/date": "^3.5",
         "jhaoda/socialite-odnoklassniki": "^3.0",
         "laravel-admin-ext/config": "^1.0",
+        "laravel-admin-ext/redis-manager": "^1.0",
         "laravel/framework": "5.7.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "^1.0",

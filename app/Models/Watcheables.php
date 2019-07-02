@@ -45,6 +45,7 @@ class Watcheables extends Model
 
     /**
      * тот кто следит
+     *
      * @return BelongsTo
      */
     public function watcher()

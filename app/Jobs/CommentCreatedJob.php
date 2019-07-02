@@ -33,6 +33,7 @@ class CommentCreatedJob implements ShouldQueue
     public function handle()
     {
         //dd($this->comment->commentable->user()->first()->email);die();
-        return Mail::to($this->comment->commentable->user()->first()->email)->send(new CommentCreatedMail($this->comment->commentable->user()->first()->username, $this->comment));
+//        return Mail::to($this->comment->commentable->user->first()->email)->send(new CommentCreatedMail($this->comment->commentable->user->first()->username, $this->comment));
     }
+
 }

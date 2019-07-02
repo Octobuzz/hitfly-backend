@@ -3,10 +3,12 @@
 namespace App\Http\GraphQL\Mutations\Track;
 
 use App\Events\ListeningTenTrackEvent;
+use App\Events\Track\TrackMinimumListening;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -41,6 +43,7 @@ class ListeningTrackMutation extends Mutation
         if ($args['listening'] < Track::MIN_LISTENING) {
             return;
         }
+
         $date = Carbon::now();
         $dateTomorrow = Carbon::now()->addDays(1)->setTime(0, 0);
 
@@ -57,9 +60,13 @@ class ListeningTrackMutation extends Mutation
             return;
         }
 
+        event(new TrackMinimumListening($track, Auth::user()));
+
         $cacheTracks = Cache::get($keyTracks, null);
-        if (false !== array_search($idTrack, $cacheTracks, true)) {
-            return;
+        if (null !== $cacheTracks) {
+            if (false !== array_search($idTrack, $cacheTracks, true)) {
+                return;
+            }
         }
 
         $cacheTracks[] = $idTrack;
