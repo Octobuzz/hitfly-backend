@@ -107,6 +107,10 @@ return [
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'collection' => \App\Http\GraphQL\Query\CollectionsQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
+                'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
+                'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
+                'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
+                'TrackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -140,6 +144,11 @@ return [
                 'watchingUser' => \App\Http\GraphQL\Query\WatchingUserQuery::class,
                 'watchingMusicGroup' => \App\Http\GraphQL\Query\WatchingMusicGroupQuery::class,
                 'SocialConnectQuery' => \App\Http\GraphQL\Query\SocialConnectQuery::class,
+                'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
+                'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
+                'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
+                'NotificationQuery' => \App\Http\GraphQL\Query\NotificationQuery::class,
+                'trackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -222,6 +231,8 @@ return [
         'WatchableUserType' => \App\Http\GraphQL\Type\WatchableUserType::class,
         'WatchableMusicGroupType' => \App\Http\GraphQL\Type\WatchableMusicGroupType::class,
         'SocialConnectType' => \App\Http\GraphQL\Type\SocialConnectType::class,
+        'NotificationType' => \App\Http\GraphQL\Type\NotificationType::class,
+        'TrackBelongsCollection' => \App\Http\GraphQL\Type\TrackBelongsCollectionType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,

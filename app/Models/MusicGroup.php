@@ -60,8 +60,12 @@ class MusicGroup extends Model
 
     protected $table = 'music_group';
 
-    protected $casts = [
-        'career_start_year' => 'date:Y',
+//    protected $casts = [
+//        'career_start_year' => 'date:Y',
+//    ];
+
+    protected $dates = [
+        'career_start_year',
     ];
 
     protected $fillable = [

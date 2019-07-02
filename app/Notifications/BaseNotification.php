@@ -8,6 +8,7 @@ use App\User;
 use GatewayWorker\Lib\Gateway;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
 class BaseNotification extends Notification
 {
@@ -32,11 +33,15 @@ class BaseNotification extends Notification
         $via = ['database'];
         $userNotification = $user->userNotification()->first();
 
-        if (
-            null !== $userNotification
-            && 1 === Gateway::isOnline($userNotification->token_web_socket)
-        ) {
-            $via[] = WebSocketChannel::class;
+        try {
+            if (
+                null !== $userNotification
+                && 1 === Gateway::isOnline($userNotification->token_web_socket)
+            ) {
+                $via[] = WebSocketChannel::class;
+            }
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception);
         }
 
         return $via;
@@ -45,11 +50,15 @@ class BaseNotification extends Notification
     public function toWebSocket(User $user)
     {
         $userNotification = $user->userNotification()->first();
-        Gateway::sendToClient($userNotification->token_web_socket, json_encode([
-            'type' => 'notification',
-            'id' => $this->id,
-            'data' => $this->baseUserNotification->getMessageData(),
-        ]));
+        try {
+            Gateway::sendToClient($userNotification->token_web_socket, json_encode([
+                'type' => 'notification',
+                'id' => $this->id,
+                'data' => $this->baseUserNotification->getMessageData(),
+            ]));
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception);
+        }
     }
 
     /**

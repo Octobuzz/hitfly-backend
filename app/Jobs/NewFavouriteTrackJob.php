@@ -35,6 +35,6 @@ class NewFavouriteTrackJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new NewFavouriteTrackMail($this->singerName, $this->trackName,$this->essence, $this->user));
+        return Mail::to($this->user->email)->send(new NewFavouriteTrackMail($this->singerName, $this->trackName, $this->essence, $this->user));
     }
 }
