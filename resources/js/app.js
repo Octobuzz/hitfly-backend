@@ -3,12 +3,14 @@ import PortalVue from 'portal-vue';
 import VTooltip from 'v-tooltip';
 import VueFlashMessage from 'vue-flash-message';
 import VueWindowSize from 'vue-window-size';
+import WsTunnel from 'modules/ws';
 import router from './router';
 import store from './store';
 import apolloProvider from './apolloProvider';
 import AppLayout from './components/layout/AppLayout.vue';
 import './bootstrap';
 
+Vue.use(WsTunnel);
 Vue.use(PortalVue);
 Vue.use(VTooltip);
 Vue.use(VueFlashMessage, {

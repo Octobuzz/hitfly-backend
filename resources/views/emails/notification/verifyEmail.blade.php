@@ -8,7 +8,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        <a href="#" style="display: block; width: 600px; height: 230px; text-decoration: none; background-image: url('images/img/thanks.png');">
+                        <a href="#" style="display: block; width: 600px; height: 230px; text-decoration: none; background-image: url('{{ env('APP_URL') }}/images/emails/img/thanks.png');">
                             <p style="font-size: 24px; font-weight: 700; line-height: 38px; text-align: center; text-shadow: 0 0 10px #8c8c8c; color: #fff; margin: 0; padding: 96px 0;">
                                 @lang('emails.verifyEmail.hello')!
                             </p>

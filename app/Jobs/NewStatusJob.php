@@ -31,6 +31,6 @@ class NewStatusJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new NewStatusMail($this->user->username, $this->status));
+        return Mail::to($this->user->email)->send(new NewStatusMail( $this->status,$this->user->username));
     }
 }

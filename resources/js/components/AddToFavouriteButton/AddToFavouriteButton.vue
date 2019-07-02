@@ -4,6 +4,7 @@
     :class="[$attrs.class, 'add-to-favourites-button']"
     :passive="passive"
     :hover="hover"
+    :modifier="modifier"
     :active="isFavourite"
     @press="onPress"
   >

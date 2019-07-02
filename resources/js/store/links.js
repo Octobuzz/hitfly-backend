@@ -1,31 +1,37 @@
-const state = {
-  profile: {
-    album: '/profile/album/',
-    playlist: '/profile/playlist/',
-    set: '/profile/set/'
-  },
-  // TODO: other user/group links
-};
+const state = {};
 
 /* eslint-disable no-shadow */
 
 const getters = {
-  album(state) {
-    return (route, id) => state[
-      route.split('/')[1]
-    ].album + id;
+  album(_, getters) {
+    return getters.universal('album');
   },
 
-  playlist() {
-    return (route, id) => state[
-      route.split('/')[1]
-    ].playlist + id;
+  playlist(_, getters) {
+    return getters.universal('playlist');
   },
 
-  set() {
-    return (route, id) => state[
-      route.split('/')[1]
-    ].set + id;
+  set(_, getters) {
+    return getters.universal('set');
+  },
+
+  universal() {
+    return type => ({ fullPath, params }, id) => {
+      const pathPrefix = fullPath.split('/')[1];
+
+      // TODO: music-group route
+
+      switch (pathPrefix) {
+        case 'profile':
+          return `/profile/${type}/${id}`;
+
+        case 'user':
+          return `/user/${params.userId}/${type}/${id}`;
+
+        default:
+          return `/${type}/${id}`;
+      }
+    };
   }
 };
 

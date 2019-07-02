@@ -79,9 +79,7 @@ $image-side-mobile: 150px;
     color: white;
     text-align: right;
     display: block;
-    top: 0;
-    width: 100%;
-    padding: 12px;
+    margin-left: auto;
     z-index: 300;
     opacity: 0;
     transition: opacity .2s;
@@ -91,6 +89,12 @@ $image-side-mobile: 150px;
     &:hover {
       color:#b36fcb;
     }
+  }
+
+  &__title-link {
+    display: block;
+    padding: 12px;
+    color: inherit;
   }
 
   &:hover &__title {

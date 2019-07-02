@@ -34,17 +34,17 @@ class CommentCreatedMail extends Mailable
         switch ($comment->commentable_type) {
             case Track::class:
                 $this->commentable = $comment->track();
-                $this->type = __('messages.track');
+                $this->type = mb_strtolower(__('messages.track'));
                 $this->commentableName = $comment->track->getName();
                 $this->commentableAuthor = $comment->track->getAuthor();
-                $this->commentableImageUrl = $comment->track->getImageUrl();
+                $this->commentableImageUrl =  env('APP_URL').$comment->track->getImageUrl();
                 break;
             case Album::class:
                 $this->commentable = $comment->album();
-                $this->type = __('messages.album');
+                $this->type = mb_strtolower(__('messages.album'));
                 $this->commentableName = $comment->album->getName();
                 $this->commentableAuthor = $comment->album->getAuthor();
-                $this->commentableImageUrl = $comment->album->getImageUrl();
+                $this->commentableImageUrl = env('APP_URL').$comment->album->getImageUrl();
                 break;
             default:
                 throw new \Exception('Неизвестный тип комментария');
@@ -52,8 +52,8 @@ class CommentCreatedMail extends Mailable
 
         $this->commentator = $comment->user()->first();
         $this->link = '/comment_url';
-        $this->allCommentsUrl = '/all_comments_url';
-        $this->commentatorAvatar = $comment->user->getImageUrl();
+        $this->allCommentsUrl = env('APP_URL').'/profile/reviews';
+        $this->commentatorAvatar = env('APP_URL').$comment->user->getImageUrl();
     }
 
     /**

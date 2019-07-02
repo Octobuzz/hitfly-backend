@@ -6,7 +6,9 @@
       `icon-button_${passive}`,
       `icon-button_${hover || passive}_hover`,
       {
-        'icon-button_active': active
+        'icon-button_active': active,
+        'icon-button_squared': modifier.split(' ').includes('squared'),
+        'icon-button_bordered': modifier.split(' ').includes('bordered')
       },
       $attrs.class
     ]"
@@ -42,6 +44,16 @@ export const props = {
     type: String,
     default: 'standard-hover',
     validator
+  },
+  modifier: {
+    type: String,
+    default: '',
+    validator: (val) => {
+      const possibleMods = new Set(['', 'squared', 'bordered']);
+      const mods = val.split(' ');
+
+      return mods.every(mod => possibleMods.has(mod));
+    }
   },
   active: {
     type: Boolean,
@@ -89,6 +101,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~scss/_variables.scss';
+
 // tooltip cannot use scoped styles
 
 $desktop_diameter: 40px;
@@ -103,7 +117,8 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
   max-height: $desktop_diameter;
   border-radius: $desktop_diameter / 2;
   overflow: hidden;
-  transition: .2s;
+  // transition: .2s;
+  transition: background .2s !important;
 
   & > * {
     position: absolute;
@@ -114,23 +129,25 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
 
   &_standard-passive,
   &_standard-passive_hover:hover {
-
+    svg {
+      fill: $text_color_primary;
+    }
   }
 
   &_standard-hover,
   &_standard-hover_hover:hover {
-    background: #e4e4e4;
+    background: $layout_border_color;
   }
 
   &_secondary-passive,
   &_secondary-passive_hover:hover {
-    fill: #a6a6a6;
+    fill: $medium_gray;
   }
 
   &_secondary-hover,
   &_secondary-hover_hover:hover {
     background: white;
-    fill: #313131;
+    fill: $text_color_primary;
   }
 
   &_mobile-passive,
@@ -141,7 +158,7 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
 
     position: relative;
     transform: scale(.6);
-    background: #313131;
+    background: $text_color_primary;
     fill: white;
     margin: -$desktop_diameter * (1 - $mobile_scale) / 2
       / $mobile_margin_correction;
@@ -155,6 +172,14 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
   &_active svg {
     fill: url(#icon-gradient-radial);
   }
+
+  &_squared {
+    border-radius: $input_border_radius;
+  }
+
+  &_bordered {
+    border: 1px solid $layout_border_color;
+  }
 }
 
 .icon-button-tooltip {
@@ -167,7 +192,7 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
     color: white;
     padding: 12px;
     border-radius: 3px;
-    background: #313131;
+    background: $text_color_primary;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 
@@ -177,7 +202,7 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
     border-style: solid;
     position: absolute;
     margin: 5px;
-    border-color: #313131;
+    border-color: $text_color_primary;
     z-index: 1;
   }
 

@@ -23,7 +23,7 @@ class HitflyVerifyEmail extends VerifyEmailBase
 //        return Mail::to($notifiable->email)->send(new \App\Mail\VerifyEmail($this->verificationUrl($notifiable)));
         return (new MailMessage())
             ->view('emails.notification.verifyEmail', ['link' => $this->verificationUrl($notifiable)])
-            ->subject(__('emails.verifyEmailAddress'));
+            ->subject(__('emails.verifyEmail.subject'));
     }
 
     protected function verificationUrl($notifiable)
