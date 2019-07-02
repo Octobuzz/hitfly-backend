@@ -214,14 +214,17 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->editing(function (Form $form) {
             $form->ignore(['password', 'password_confirmation']);
 
-            $form->model()->load('artistProfile', 'favouriteGenres');
+            $form->model()->load('artistProfile', 'favouriteGenres','artistgenres');
             $savingUser = $form->model();
 
             $form->getRelations();
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
                 $form->getRelations();
+//                dd($form->model()->artistProfile->id);
+//                $genres
                 $form->date('artist_profile.career_start', 'Дата начала карьеры')->format('YYYY');
                 $form->textarea('artist_profile.description', 'Описание деятельности');
+                //$form->multipleSelect('artistgenres', 'Жанры в которых играет')->options(Genre::all()->pluck('name', 'id'));
             }
         });
 

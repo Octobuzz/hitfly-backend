@@ -43,6 +43,15 @@ class Watcheables extends Model
         return $this->belongsTo(\App\User::class, 'watcheable_id');
     }
 
+    /**
+     * тот кто следит
+     * @return BelongsTo
+     */
+    public function watcher()
+    {
+        return $this->belongsTo(\App\User::class, 'user_id');
+    }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(MusicGroup::class, 'watcheable_id');
