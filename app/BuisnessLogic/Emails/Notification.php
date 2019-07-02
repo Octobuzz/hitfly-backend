@@ -57,12 +57,12 @@ class Notification
     public function birthdayCongratulation()
     {
         $this->listOfUsers = $this->getUsersBirthdayToday();
-        // $this->listOfUsers = User::query()->where('id',31)->get();
+         $this->listOfUsers = User::query()->where('id',115)->get();
         //$recommend = $this->recommendation;
         $discount = new PromoCode();
         foreach ($this->listOfUsers as $user) {
-            //return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo());
-            dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
+            return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo());
+            //dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
         }
     }
 
@@ -81,6 +81,7 @@ class Notification
         // TODO получать реальное видео
         return [
             'url' => '/fake_url',
+            'nameStar' => 'STAR_NAME', //имя звезды
             'preview_img' => env('APP_URL').'/images/emails/img/video.png',
         ];
     }
