@@ -92,7 +92,7 @@ class Track extends Model
 
     public function collections(): BelongsToMany
     {
-        return $this->belongsToMany(Track::class, 'collection_track')->withTimestamps();
+        return $this->belongsToMany(Collection::class, 'collection_track')->withTimestamps();
     }
 
     public function userFavourite()

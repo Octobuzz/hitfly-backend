@@ -40,7 +40,6 @@ class BaseNotification extends Notification
             ) {
                 $via[] = WebSocketChannel::class;
             }
-
         } catch (\Exception $exception) {
             Log::alert($exception->getMessage(), $exception);
         }

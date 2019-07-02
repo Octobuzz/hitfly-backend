@@ -27,7 +27,7 @@ class SocialAccountService
         if ($account->user) {
             return $account->user;
         } else {
-            $user = User::whereEmail($providerUser->getEmail())->first();
+            $user = User::query()->withTrashed()->whereEmail($providerUser->getEmail())->first();
 
             if (!$user) {
                 $tmpUser = [
@@ -86,6 +86,7 @@ class SocialAccountService
                 $user = User::create($tmpUser);
             }
             if (null != $authSocial) {
+                $user->deleted_at = null;
                 $authSocial->user()->associate($user);
                 $authSocial->save();
             }

@@ -77,4 +77,9 @@ class Genre extends Model
     {
         return $this->belongsToMany(ArtistProfile::class, 'music_group_genre')->withTimestamps();
     }
+
+    public function tracks()
+    {
+        return $this->morphedByMany(Track::class, 'genreable', 'genres_bindings');
+    }
 }
