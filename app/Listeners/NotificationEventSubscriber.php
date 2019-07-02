@@ -16,7 +16,7 @@ use App\User;
 use GatewayWorker\Lib\Gateway;
 use Illuminate\Support\Facades\Log;
 
-class NotificationEvenSubscriber
+class NotificationEventSubscriber
 {
     /**
      * Register the listeners for the subscriber.
@@ -81,7 +81,7 @@ class NotificationEvenSubscriber
                 $notifyUser = $favourite->album->user;
                 break;
             case Track::class:
-                $title = $favourite->album->name;
+                $title = $favourite->track->title;
                 $type = 'Track';
                 $notifyUser = $favourite->track->user;
                 break;
