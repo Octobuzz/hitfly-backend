@@ -99,6 +99,12 @@ class MenuController extends \Encore\Admin\Controllers\MenuController
         $form->display('created_at', trans('admin.created_at'));
         $form->display('updated_at', trans('admin.updated_at'));
 
+        $form->disableEditingCheck();
+
+        $form->disableCreatingCheck();
+
+        $form->disableViewCheck();
+
         return $form;
     }
 }
