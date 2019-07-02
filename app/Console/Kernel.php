@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\BuisnessLogic\Emails\Notification;
+use App\Console\Commands\CalculateListenedUserCommand;
 use App\Console\Commands\CalculateListeningTrackCommand;
 use App\Console\Commands\CreateTopFiftyCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -57,6 +58,7 @@ class Kernel extends ConsoleKernel
         // Создание топ 50 каждый день в 1 час ночи
         $schedule->call(CreateTopFiftyCommand::class)->dailyAt('01:00');
         $schedule->call(CalculateListeningTrackCommand::class)->everyTenMinutes();
+        $schedule->call(CalculateListenedUserCommand::class)->everyTenMinutes();
     }
 
     /**

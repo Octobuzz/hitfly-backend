@@ -109,6 +109,7 @@ return [
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
                 'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
+                'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -144,6 +145,7 @@ return [
                 'SocialConnectQuery' => \App\Http\GraphQL\Query\SocialConnectQuery::class,
                 'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
+                'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
