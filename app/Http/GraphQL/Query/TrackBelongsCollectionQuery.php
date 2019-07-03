@@ -36,14 +36,20 @@ class TrackBelongsCollectionQuery extends Query
         ];
     }
 
+    /**
+     * @param $root
+     * @param $args
+     * @param SelectFields $fields
+     *
+     * @return bool
+     */
     public function resolve($root, $args, SelectFields $fields)
     {
-        //die(json_encode($args));
         $track = Track::query()->find($args['trackId']);
-//        foreach ($track->collections as $collection){
-//            $ss[] = $collection;
-//        }
-        //die(json_encode($track->collections->contains($args['collectionId'])));
+        if (null === $track) {
+            return false;
+        }
+
         return $track->collections->contains($args['collectionId']);
     }
 }
