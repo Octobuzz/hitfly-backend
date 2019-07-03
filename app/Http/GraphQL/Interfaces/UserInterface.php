@@ -111,7 +111,7 @@ class UserInterface extends InterfaceType
                 },
             ],
             'iWatch' => [
-                'type' => Type::string(),
+                'type' => Type::boolean(),
                 'description' => 'Я слежу за пользователем',
                 'selectable' => false,
                 'resolve' => function (User $model) {
