@@ -42,6 +42,7 @@
         </button>
 
         <AddToFavButton
+          ref="addToFavButton"
           class="collection-track-list__button"
           passive="standard-passive"
           hover="standard-hover"
@@ -50,9 +51,13 @@
           :item-id="collectionId"
         />
 
-        <CollectionPopover :collection-id="collectionId">
+        <CollectionPopover
+          :collection-id="collectionId"
+          @press-favourite="onPressFavourite"
+          @collection-removed="goBack"
+        >
           <IconButton
-            class="collection-track-list__button"
+            class="collection-track-list__button collection-track-list__button_more"
             passive="standard-passive"
             hover="standard-hover"
             modifier="squared bordered"
@@ -78,6 +83,10 @@
 // we should check if the track belongs to the collection in question.
 //
 // If true, we should update current data regarding to the track.
+// The update is async since we cannot define statically if the track
+// belongs to to the collection. For the time of the update last played
+// track lies in place.
+//
 // If false, we should ignore.
 //
 // We also have a case where we visit the page while already listening a track
@@ -86,6 +95,7 @@
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
+import playingTrackId from 'mixins/playingTrackId';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -108,7 +118,7 @@ export default {
     AddToFavButton
   },
 
-  mixins: [currentPath, containerPaddingClass],
+  mixins: [currentPath, containerPaddingClass, playingTrackId],
 
   data() {
     return {
@@ -153,6 +163,7 @@ export default {
     },
 
     shownTrack() {
+      // playingTrack should not be reactive
       const {
         playingTrack,
         playingTrackBelongsToCollection,
@@ -174,28 +185,33 @@ export default {
   watch: {
     playingTrackId: {
       handler(id) {
-        // TODO: check if track belongs to current collection asynchronously
+        if (!ofNumber(id)) {
+          this.playingTrackBelongsToCollection = false;
 
-        this.$nextTick(() => this.playingTrackBelongsToCollection = false);
+          return;
+        }
 
-        // if (!ofNumber(id)) {
-        //   this.playingTrackBelongsToCollection = false;
-        //
-        //   return;
-        // }
-        //
-        // const playingTrack = this.$apollo.query({
-        //   // fetch playing track
-        // });
-        // const playingTrackBelongsToCollection = this.$apollo.query({
-        //   // ask if it belongs
-        // });
-        //
-        // Promise.all([playingTrack, playingTrackBelongsToCollection])
-        //   .then(([{ track }, pendingApiResponse]) => {
-        //     this.playingTrack = track;
-        //     this.trackBelongsToCollection = pendingApiResponse;
-        //   });
+        const playingTrackQuery = this.$apollo.query({
+          query: gql.query.TRACK,
+          variables: { id }
+        });
+        const playingTrackBelongsToCollectionQuery = this.$apollo.query({
+          query: gql.query.TRACK_BELONGS_TO_COLLECTION,
+          variables: {
+            trackId: id,
+            collectionId: this.collectionId
+          }
+        });
+
+        Promise.all([playingTrackQuery, playingTrackBelongsToCollectionQuery])
+          .then(([
+            { data: { track: playingTrack } },
+            { data: { trackBelongsCollection: { inCollection } } }
+          ]) => {
+            this.playingTrack = playingTrack;
+            this.playingTrackBelongsToCollection = inCollection;
+          })
+          .catch(err => console.dir(err));
       },
       immediate: true
     }
@@ -207,6 +223,14 @@ export default {
         || data.length === 0) return;
 
       this.firstCollectionTrackId = data[0].id;
+    },
+
+    onPressFavourite() {
+      this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
+    },
+
+    goBack() {
+      this.$router.go(-1);
     }
   },
 

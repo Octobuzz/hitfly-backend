@@ -1,0 +1,37 @@
+.album-popover-remove-menu {
+  padding-top: 16px;
+
+  &__question,
+  &__remove-button,
+  &__cancel-button {
+    color: white !important;
+  }
+
+  &__question {
+    font-family: 'Gotham Pro Semibold', sans-serif;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  &__remove-button,
+  &__cancel-button {
+    height: 40px;
+  }
+
+  &__remove-button,
+  &__cancel-button {
+    padding: {
+      top: 11px;
+      bottom: 11px;
+    }
+    margin-bottom: 16px;
+
+    &:hover {
+      padding: {
+        top: 12px;
+        bottom: 12px;
+      }
+    }
+  }
+}

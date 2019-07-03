@@ -7,8 +7,15 @@
     :placement="popover.placement"
     :popper-options="popover.popperOptions"
     :auto-hide="true"
+    @auto-hide="leaveRemoveMenu"
   >
     <slot />
+
+    <button
+      ref="closeButton"
+      v-close-popover
+      style="display: none;"
+    />
 
     <template #popover>
       <img
@@ -21,10 +28,10 @@
           {{ collection.title }}
         </span>
         <span
-          v-if="collection.singer"
-          class="collection-popover__singer"
+          v-if="collection.user && collection.user.username"
+          class="collection-popover__user"
         >
-          {{ collection.singer }}
+          {{ collection.user.username }}
         </span>
       </div>
 
@@ -99,7 +106,7 @@
         <span
           v-if="myCollection"
           class="collection-popover__menu-item"
-          @click="onCollectionRemovePress"
+          @click="goToRemoveMenu"
         >
           <span class="collection-popover__menu-item-icon">
             <CrossIcon />
@@ -108,7 +115,12 @@
         </span>
       </div>
 
-      <!--remove collection component-->
+      <CollectionPopoverRemoveMenu
+        v-show="inRemoveMenu"
+        :collection-id="collectionId"
+        @cancel-remove="leaveRemoveMenu"
+        @collection-removed="onCollectionRemoved"
+      />
     </template>
   </v-popover>
 </template>
@@ -120,6 +132,7 @@ import HeartIcon from 'components/icons/popover/HeartIcon.vue';
 import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
 import CrossIcon from 'components/icons/popover/CrossIcon.vue';
 import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
+import CollectionPopoverRemoveMenu from '../CollectionPopoverRemoveMenu';
 import gql from './gql';
 
 export default {
@@ -129,7 +142,8 @@ export default {
     ListPlusIcon,
     UserPlusIcon,
     BendedArrowIcon,
-    CrossIcon
+    CrossIcon,
+    CollectionPopoverRemoveMenu
   },
 
   props: {
@@ -162,11 +176,34 @@ export default {
 
   methods: {
     onFavouritePress() {
-      this.emit('press-favourite', this.collectionId);
+      this.$refs.closeButton.click();
+      setTimeout(() => {
+        this.$emit('press-favourite', this.collectionId);
+      }, 200);
     },
 
-    onCollectionRemovePress() {
+    goToRemoveMenu() {
+      // microtask problem: popover gets handled before click
+      // so that the click could miss popover and collapse it
 
+      setTimeout(() => { this.inRemoveMenu = true; });
+    },
+
+    leaveRemoveMenu() {
+      setTimeout(() => { this.inRemoveMenu = false; });
+    },
+
+    onCollectionRemoved() {
+      this.$refs.closeButton.click();
+
+      setTimeout(() => {
+        this.$emit('collection-removed', this.collectionId);
+
+        this.$eventBus.$emit(
+          'collection-removed',
+          this.collectionId
+        );
+      }, 300);
     }
   },
 

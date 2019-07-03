@@ -21,6 +21,7 @@
 
       <div class="album-preview__button-section">
         <AddToFavouriteButton
+          ref="addToFavouriteButton"
           class="album-preview__icon-button"
           passive="mobile-passive"
           hover="mobile-hover"
@@ -39,15 +40,21 @@
           <PlayIcon />
         </IconButton>
 
-        <IconButton
-          class="album-preview__icon-button"
-          passive="mobile-passive"
-          hover="mobile-hover"
+        <AlbumPopover
+          :album-id="albumId"
+          @press-favourite="onPressFavourite"
         >
-          <DotsIcon />
-        </IconButton>
+          <IconButton
+            class="album-preview__icon-button"
+            passive="mobile-passive"
+            hover="mobile-hover"
+          >
+            <DotsIcon />
+          </IconButton>
+        </AlbumPopover>
       </div>
     </div>
+
     <div
       v-if="!isLoading"
       class="album-preview__footer"
@@ -65,6 +72,7 @@
 </template>
 
 <script>
+import AlbumPopover from 'components/AlbumPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -75,6 +83,7 @@ const MOBILE_WIDTH = 767;
 
 export default {
   components: {
+    AlbumPopover,
     AddToFavouriteButton,
     IconButton,
     DotsIcon,
@@ -112,6 +121,12 @@ export default {
         this.albumId
       );
     }
+  },
+
+  methods: {
+    onPressFavourite() {
+      this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
+    },
   },
 
   apollo: {
