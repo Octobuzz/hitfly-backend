@@ -68,9 +68,12 @@
 
       <span class="head-right-item">
         <span class="button-icon__tips">4</span>
-        <IconButton>
-          <BellIcon />
-        </IconButton>
+
+        <NotificationPopover>
+          <IconButton>
+            <BellIcon />
+          </IconButton>
+        </NotificationPopover>
       </span>
 
       <img
@@ -134,13 +137,15 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import LoupeIcon from 'components/icons/LoupeIcon.vue';
 import BellIcon from 'components/icons/BellIcon.vue';
+import NotificationPopover from 'components/notifications/NotificationPopover';
 import gql from './gql';
 
 export default {
   components: {
     IconButton,
     LoupeIcon,
-    BellIcon
+    BellIcon,
+    NotificationPopover
   },
 
   data() {
@@ -159,9 +164,21 @@ export default {
     }
   },
 
+  created() {
+    this.$wsTunnel.subscribe('notification-info', this.onNotify);
+  },
+
+  destroyed() {
+    this.$wsTunnel.unsubscribe('notification-info', this.onNotify);
+  },
+
   methods: {
     goToProfilePage() {
       this.$router.push('/profile/my-music');
+    },
+
+    onNotify(data) {
+      // handle notification count
     }
   },
 

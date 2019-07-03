@@ -214,7 +214,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->editing(function (Form $form) {
             $form->ignore(['password', 'password_confirmation']);
 
-            $form->model()->load('artistProfile', 'favouriteGenres','artistgenres');
+            $form->model()->load('artistProfile', 'favouriteGenres', 'artistgenres');
             $savingUser = $form->model();
 
             $form->getRelations();

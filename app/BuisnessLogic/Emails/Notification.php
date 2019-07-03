@@ -339,6 +339,7 @@ class Notification
         foreach ($watchableList as $watch) {
             $userList[] = $watch->watcher;
         }
+
         return $userList;
     }
 }

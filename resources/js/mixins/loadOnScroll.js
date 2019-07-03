@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce';
 
 // loadMore and hasMoreData expected in component options
+// loadOnScrollDisabled is optional (default: false)
 
 export default {
   mounted() {
@@ -28,7 +29,9 @@ export default {
         });
       }
 
-      this.debouncedOnScroll();
+      if (!this.loadOnScrollDisabled) {
+        this.debouncedOnScroll();
+      }
     }
   }
 };

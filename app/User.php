@@ -12,6 +12,7 @@ use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
 use App\Models\UserNotification;
+use App\Models\Watcheables;
 use App\Notifications\HitflyVerifyEmail;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use  Illuminate\Auth\Passwords\CanResetPassword;
@@ -147,6 +149,20 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function watchingUser()
     {
         return $this->morphedByMany(User::class, 'watcheable');
+    }
+
+    /**
+     * следит ли текущий пользователь?
+     *
+     * @return bool
+     */
+    public function iWatch()
+    {
+        $watch = Watcheables::query()->where('watcheable_type', '=', User::class)
+            ->where('user_id', '=', Auth::user()->id)
+            ->where('watcheable_id', '=', $this->id)->exists();
+
+        return $watch;
     }
 
     public function watchingMusicGroup()

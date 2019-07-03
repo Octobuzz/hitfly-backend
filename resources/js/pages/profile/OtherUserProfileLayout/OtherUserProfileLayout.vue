@@ -103,7 +103,7 @@ export default {
     },
 
     userId() {
-      return this.$route.params.userId;
+      return +this.$route.params.userId;
     },
 
     renderNavBar() {
@@ -129,6 +129,8 @@ export default {
     },
 
     showSecondLoader() {
+      return false;
+
       const { getters } = this.$store;
 
       /* eslint-disable no-fallthrough, no-case-declarations */

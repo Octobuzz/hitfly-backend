@@ -90,7 +90,7 @@ const routes = [
       },
       {
         path: 'my-music/tracks',
-        component: profile.Tracks
+        component: profile.UserTrackList
       },
       {
         path: 'my-music/albums',
@@ -130,15 +130,15 @@ const routes = [
       },
       {
         path: 'album/:albumId',
-        component: profile.Album
+        component: profile.AlbumTrackList
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.Playlist
+        component: profile.CollectionTrackList
       },
       {
         path: 'set/:setId',
-        component: profile.Set
+        component: profile.CollectionTrackList
       },
       {
         path: 'bonus-program',
@@ -161,7 +161,7 @@ const routes = [
       },
       {
         path: 'music/tracks',
-        component: profile.Tracks
+        component: profile.UserTrackList
       },
       {
         path: 'music/albums',
@@ -189,11 +189,11 @@ const routes = [
       },
       {
         path: 'album/:albumId',
-        component: profile.Album
+        component: profile.AlbumTrackList
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.Playlist
+        component: profile.CollectionTrackList
       }
       // {
       //   path: '',
@@ -217,6 +217,7 @@ const router = new VueRouter({
   mode: 'history'
 });
 
+// TODO: consider using after hook
 router.beforeEach((to, from, next) => {
   store.commit('history/push', to);
   next();

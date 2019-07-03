@@ -20,7 +20,7 @@ const state = {
     album: [],
     collection: []
   },
-  editGroupId: null
+  editGroupId: null,
 };
 
 const getters = {

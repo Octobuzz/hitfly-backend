@@ -157,12 +157,24 @@ export default {
   },
 
   mounted() {
+    this.boundOnCollectionRemoved = this.onCollectionRemoved.bind(this);
+
+    this.$eventBus.$on(
+      'collection-removed',
+      this.boundOnCollectionRemoved
+    );
+
     this.scroller.addEventListener('scroll', this.onScroll);
     window.addEventListener('resize', this.onResize);
     this.onResize();
   },
 
-  destroyed() {
+  beforeDestroy() {
+    this.$eventBus.$off(
+      'collection-removed',
+      this.boundOnCollectionRemoved
+    );
+
     this.scroller.removeEventListener('scroll', this.onScroll);
     window.removeEventListener('resize', this.onResize);
   },
@@ -288,6 +300,17 @@ export default {
 
         clearInterval(arrowsWatcher);
       }, 50);
+    },
+
+    onCollectionRemoved() {
+      const { $data, scroller } = this;
+
+      TweenLite.fromTo(
+        $data,
+        0.5,
+        { tweenedOffset: scroller.scrollLeft },
+        { tweenedOffset: 0 }
+      );
     }
   }
 };

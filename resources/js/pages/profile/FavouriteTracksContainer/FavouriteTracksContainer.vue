@@ -18,9 +18,12 @@
         <span class="h2">
           Любимые песни
         </span>
-        <button class="my-tracks-container__header-button">
+        <router-link
+          to="/profile/favourite/tracks"
+          class="my-tracks-container__header-button"
+        >
           Все песни
-        </button>
+        </router-link>
       </div>
     </template>
   </TrackList>

@@ -26,6 +26,8 @@ export default {
 
       const history = this.$store.getters['history/history'];
 
+      // TODO: handle all go(-n) statements properly
+
       if (history.length === 0) {
         this.$router.replace('/profile/my-music');
       } else {

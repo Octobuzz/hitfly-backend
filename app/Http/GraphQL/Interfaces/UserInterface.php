@@ -110,6 +110,14 @@ class UserInterface extends InterfaceType
                     return $carbon->diffInDays($dateCreate);
                 },
             ],
+            'iWatch' => [
+                'type' => Type::boolean(),
+                'description' => 'Я слежу за пользователем',
+                'selectable' => false,
+                'resolve' => function (User $model) {
+                    return $model->iWatch();
+                },
+            ],
         ];
     }
 

@@ -33,9 +33,12 @@
           <span class="h2">
             Песни
           </span>
-          <button class="my-tracks-container__header-button">
+          <router-link
+            to="/profile/my-music/tracks"
+            class="my-tracks-container__header-button"
+          >
             Все песни
-          </button>
+          </router-link>
         </div>
       </template>
 

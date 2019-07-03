@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fbf7ae640e61870e7f8cb02c8a1d591",
+    "content-hash": "8b1e4ff91d70f27874f419fd7b1d45b2",
     "packages": [
         {
             "name": "alfa6661/laravel-has-many-sync",
@@ -542,16 +542,16 @@
         },
         {
             "name": "encore/laravel-admin",
-            "version": "v1.6.12",
+            "version": "v1.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/z-song/laravel-admin.git",
-                "reference": "8613f6b268dccd6c1864f474c377712c5c7df27c"
+                "reference": "3e65086f806b54699145f58af53843e5dbbb7994"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/z-song/laravel-admin/zipball/8613f6b268dccd6c1864f474c377712c5c7df27c",
-                "reference": "8613f6b268dccd6c1864f474c377712c5c7df27c",
+                "url": "https://api.github.com/repos/z-song/laravel-admin/zipball/3e65086f806b54699145f58af53843e5dbbb7994",
+                "reference": "3e65086f806b54699145f58af53843e5dbbb7994",
                 "shasum": ""
             },
             "require": {
@@ -609,7 +609,7 @@
                 "grid",
                 "laravel"
             ],
-            "time": "2019-04-23T05:24:55+00:00"
+            "time": "2019-05-02T06:18:56+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1296,6 +1296,62 @@
                 "setting"
             ],
             "time": "2018-12-12T04:03:36+00:00"
+        },
+        {
+            "name": "laravel-admin-ext/redis-manager",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-admin-extensions/redis-manager.git",
+                "reference": "ef2bee838e8c6b8744ce9cfa6308958f726e5061"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-admin-extensions/redis-manager/zipball/ef2bee838e8c6b8744ce9cfa6308958f726e5061",
+                "reference": "ef2bee838e8c6b8744ce9cfa6308958f726e5061",
+                "shasum": ""
+            },
+            "require": {
+                "encore/laravel-admin": "~1.5",
+                "laravel/framework": "~5.5",
+                "php": ">=7.0.0",
+                "predis/predis": "~1.0"
+            },
+            "require-dev": {
+                "laravel/laravel": "~5.5",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Encore\\Admin\\RedisManager\\RedisManagerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Encore\\Admin\\RedisManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "z-song",
+                    "email": "zosong@126.com"
+                }
+            ],
+            "description": "Redis manager for laravel-admin",
+            "homepage": "https://github.com/laravel-admin-extensions/redis-manager",
+            "keywords": [
+                "laravel-admin",
+                "manager",
+                "redis"
+            ],
+            "time": "2019-04-02T06:11:32+00:00"
         },
         {
             "name": "laravel/framework",

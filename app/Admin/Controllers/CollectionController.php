@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Collection;
+use App\Models\Track;
 use Encore\Admin\Controllers\HasResourceActions;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -158,6 +159,11 @@ class CollectionController extends Controller
             'off' => ['value' => 0, 'text' => 'Плейлист', 'color' => 'danger'],
         ];
         $form->switch('is_admin', 'Подборка')->states($states);
+
+        $form->listbox('tracks')->options(function (array $selected) {
+            return Track::all()->pluck('track_name', 'id');
+        });
+
         $form->saving(function (Form $form) {
             if (null !== $form->image) {
                 Storage::disk('public')->delete($form->model()->getOriginal('image'));

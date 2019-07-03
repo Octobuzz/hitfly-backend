@@ -2,7 +2,9 @@
 
 namespace App\Workerman;
 
+use App\Models\Notification;
 use App\Models\UserNotification;
+use App\Notifications\BaseNotification;
 use App\Services\Auth\JsonGuard;
 use App\User;
 use GatewayWorker\Lib\Gateway;
@@ -42,8 +44,61 @@ class Events
      */
     public static function onMessage($client_id, $message)
     {
-//        Log::debug($client_id);
-//        Log::debug($message);
+        //todo Переделать
+        /** @var \stdClass | false $jsonDecode */
+        $jsonDecode = json_decode($message);
+
+        if (false === $jsonDecode) {
+            return;
+        }
+
+        if (
+            isset($jsonDecode->type)
+            && isset($jsonDecode->data)
+        ) {
+            $userNotify = UserNotification::query()->where('token_web_socket', '=', $client_id)->first();
+            if (true === empty($userNotify)) {
+                return;
+            }
+            switch ($jsonDecode->type) {
+                case 'notification':
+                    Notification::query()
+                        ->where('notifiable_id', '=', $userNotify->user->id)
+                        ->where('type', '=', BaseNotification::class)
+                        ->where('notifiable_type', '=', User::class)
+                        ->where('read_at', '=', null)
+                        ->update(['read_at' => now()]);
+                    break;
+                case 'query':
+
+                    switch ($jsonDecode->data) {
+                        case 'get-notification-info':
+                            $response = [];
+                            $response['type'] = 'notification-info';
+                            $countUnread = Notification::query()
+                                ->where('notifiable_id', '=', $userNotify->user->id)
+                                ->where('type', '=', BaseNotification::class)
+                                ->where('notifiable_type', '=', User::class)
+                                ->where('read_at', '=', null)
+                                ->count()
+                            ;
+                            $messageUnread = Notification::query()
+                                ->where('notifiable_id', '=', $userNotify->user->id)
+                                ->where('type', '=', BaseNotification::class)
+                                ->where('notifiable_type', '=', User::class)
+                                ->where('read_at', '=', null)
+                                ->limit(3)
+                                ->get()
+                            ;
+                            $response['data'] = [
+                                'unreadCount' => $countUnread,
+                                'unreadNotifications' => $messageUnread,
+                            ];
+                            Gateway::sendToClient($client_id, json_encode($response));
+                            break;
+                    }
+            }
+        }
     }
 
     /**
@@ -54,8 +109,10 @@ class Events
     public static function onClose($client_id)
     {
         $notificationUser = UserNotification::query()->where('token_web_socket', '=', $client_id)->first();
-        $notificationUser->token_web_socket = null;
-        $notificationUser->save();
+        if (false === empty($notificationUser)) {
+            $notificationUser->token_web_socket = null;
+            $notificationUser->save();
+        }
     }
 
     /**

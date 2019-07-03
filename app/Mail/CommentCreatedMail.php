@@ -37,7 +37,7 @@ class CommentCreatedMail extends Mailable
                 $this->type = mb_strtolower(__('messages.track'));
                 $this->commentableName = $comment->track->getName();
                 $this->commentableAuthor = $comment->track->getAuthor();
-                $this->commentableImageUrl =  env('APP_URL').$comment->track->getImageUrl();
+                $this->commentableImageUrl = env('APP_URL').$comment->track->getImageUrl();
                 break;
             case Album::class:
                 $this->commentable = $comment->album();

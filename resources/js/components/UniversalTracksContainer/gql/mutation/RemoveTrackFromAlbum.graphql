@@ -1,0 +1,11 @@
+mutation RemoveTrackFromAlbum(
+    $trackId: Int!
+    $albumId: Int!
+) {
+    removeTrackFromAlbum(
+        trackId: $trackId
+        albumId: $albumId
+    ) {
+        id
+    }
+}

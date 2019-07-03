@@ -67,11 +67,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 10,
-
-        // TODO: remove 'my: true' and uncomment filters when the api is implemented
-
-        // filters
-        my: true
+        filters
       }
     };
   },
@@ -90,6 +86,20 @@ export default {
 
   mounted() {
     this.$on('load-more', this.onLoadMore.bind(this));
+
+    this.boundRemoveCollectionFromStore = this.removeCollectionFromStore.bind(this);
+
+    this.$eventBus.$on(
+      'collection-removed',
+      this.boundRemoveCollectionFromStore
+    );
+  },
+
+  beforeDestroy() {
+    this.$eventBus.$off(
+      'collection-removed',
+      this.boundRemoveCollectionFromStore
+    );
   },
 
   methods: {
@@ -143,6 +153,40 @@ export default {
         .catch((err) => {
           console.dir(err);
         });
+    },
+
+    removeCollectionFromStore(id) {
+      const store = this.$apollo.provider.defaultClient;
+
+      const { collections } = store.readQuery({
+        query: gql.query.COLLECTIONS,
+
+        // cause updateQuery does not update variables in cache entry
+        // we always refer to the first page
+
+        variables: {
+          ...this.queryVars,
+          pageNumber: 1
+        }
+      });
+
+      const updatedCollections = {
+        collections: {
+          ...collections,
+          data: [
+            ...collections.data.filter(col => col.id !== id)
+          ]
+        }
+      };
+
+      store.writeQuery({
+        query: gql.query.COLLECTIONS,
+        variables: {
+          ...this.queryVars,
+          pageNumber: 1
+        },
+        data: updatedCollections
+      });
     }
   },
 

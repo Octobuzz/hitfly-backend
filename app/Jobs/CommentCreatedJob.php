@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Mail\CommentCreatedMail;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CommentCreatedJob implements ShouldQueue
@@ -32,7 +32,12 @@ class CommentCreatedJob implements ShouldQueue
      */
     public function handle()
     {
-        //dd($this->comment->commentable->user()->first()->email);die();
-        return Mail::to($this->comment->commentable->user()->first()->email)->send(new CommentCreatedMail($this->comment->commentable->user()->first()->username, $this->comment));
+        try {
+            $message = new CommentCreatedMail($this->comment->commentable->user->username, $this->comment);
+
+            return Mail::to($this->comment->commentable->user->email)->send($message);
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception);
+        }
     }
 }

@@ -10,7 +10,7 @@
         :src="
           user.avatar.filter(
             avatar => avatar.size === 'size_56x56'
-          )[0].url || anonymousAvatar
+          )[0].url
         "
         alt="User avatar"
       >

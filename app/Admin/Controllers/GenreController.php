@@ -106,6 +106,10 @@ class GenreController extends Controller
         $grid->id('#');
         $grid->name('Название');
 
+        $grid->actions(function (Grid\Displayers\Actions $actions) {
+            $actions->disableDelete();
+        });
+
         return $grid;
     }
 
@@ -137,6 +141,10 @@ class GenreController extends Controller
 
         $form->text('name', 'Название');
         $form->image('image', 'Изображение')->move('genres')->uniqueName();
+
+        $form->tools(function (Form\Tools $tools) {
+            $tools->disableDelete();
+        });
 
         return $form;
     }

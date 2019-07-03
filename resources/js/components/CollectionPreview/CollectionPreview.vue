@@ -15,7 +15,7 @@
       <span class="collection-preview__title">
         <router-link
           :to="titleLink"
-          :style="{ color: 'inherit' }"
+          class="collection-preview__title-link"
         >
           {{ collection.title }}
         </router-link>
@@ -30,6 +30,7 @@
 
       <div class="collection-preview__button-section">
         <AddToFavouriteButton
+          ref="addToFavouriteButton"
           class="collection-preview__icon-button"
           passive="mobile-passive"
           hover="mobile-hover"
@@ -48,19 +49,25 @@
           <PlayIcon />
         </IconButton>
 
-        <IconButton
-          class="collection-preview__icon-button"
-          passive="mobile-passive"
-          hover="mobile-hover"
+        <CollectionPopover
+          :collection-id="collectionId"
+          @press-favourite="onPressFavourite"
         >
-          <DotsIcon />
-        </IconButton>
+          <IconButton
+            class="collection-preview__icon-button"
+            passive="mobile-passive"
+            hover="mobile-hover"
+          >
+            <DotsIcon />
+          </IconButton>
+        </CollectionPopover>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import CollectionPopover from 'components/CollectionPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -71,6 +78,7 @@ const MOBILE_WIDTH = 767;
 
 export default {
   components: {
+    CollectionPopover,
     AddToFavouriteButton,
     IconButton,
     DotsIcon,
@@ -103,8 +111,19 @@ export default {
     },
 
     titleLink() {
-      return '';
+      const type = this.collection.isSet ? 'set' : 'playlist';
+
+      return this.$store.getters[`links/${type}`](
+        this.$route,
+        this.collectionId
+      );
     }
+  },
+
+  methods: {
+    onPressFavourite() {
+      this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
+    },
   },
 
   apollo: {

@@ -26,7 +26,7 @@
           :reviewer-avatar="
             review.user.avatar.filter(
               avatar => avatar.size === 'size_56x56'
-            )[0].url || anonymousAvatar
+            )[0].url
           "
           :comment="review.comment"
           :date="review.createdAt"
