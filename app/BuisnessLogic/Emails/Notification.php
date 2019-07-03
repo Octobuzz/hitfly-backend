@@ -57,11 +57,11 @@ class Notification
     public function birthdayCongratulation()
     {
         $this->listOfUsers = $this->getUsersBirthdayToday();
-         $this->listOfUsers = User::query()->where('id',115)->get();
+        $this->listOfUsers = User::query()->where('id', 115)->get();
         //$recommend = $this->recommendation;
         $discount = new PromoCode();
         foreach ($this->listOfUsers as $user) {
-            return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo());
+            return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo());
             //dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
         }
     }
@@ -207,8 +207,8 @@ class Notification
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
             $topUrl = '/url';
-            //return new ReachTopMail($track, $topUrl, $topCount);
-            dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
+            return new ReachTopMail($track, $topUrl, $topCount);
+            //dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }
     }
 
