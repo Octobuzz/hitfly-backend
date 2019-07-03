@@ -111,6 +111,7 @@ return [
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,
                 'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
                 'TrackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
+                'TracksByIdsQuery' => \App\Http\GraphQL\Query\TracksByIdsQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -149,6 +150,7 @@ return [
                 'GetListenedNowUser' => \App\Http\GraphQL\Query\GetListenedNowUser::class,
                 'NotificationQuery' => \App\Http\GraphQL\Query\NotificationQuery::class,
                 'trackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
+                'TracksByIdsQuery' => \App\Http\GraphQL\Query\TracksByIdsQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
