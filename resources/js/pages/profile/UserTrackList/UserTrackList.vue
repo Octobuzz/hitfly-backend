@@ -70,7 +70,7 @@
     </template>
 
     <UniversalTrackList
-      for-type="track"
+      for-type="user"
       :for-id="userId"
       :show-remove-button="userId === 'me'"
       @initialized="onTrackListInitialized"
