@@ -13,3 +13,4 @@ export { default as OtherUserProfileLayout } from './OtherUserProfileLayout';
 export { default as OtherUserMusic } from './OtherUserMusic';
 export { default as AlbumTrackList } from './AlbumTrackList';
 export { default as CollectionTrackList } from './CollectionTrackList';
+export { default as UserTrackList } from './UserTrackList';

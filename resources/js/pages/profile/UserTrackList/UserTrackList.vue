@@ -1,13 +1,13 @@
 <template>
-  <div :class="['album-track-list', containerPaddingClass]">
-    <ReturnHeader class="album-track-list__return-button" />
+  <div :class="['user-track-list', containerPaddingClass]">
+    <ReturnHeader class="user-track-list__return-button" />
 
-    <template v-if="albumFetched && shownTrack">
-      <span class="album-track-list__singer">
+    <template v-if="tracksDataFetched && shownTrack">
+      <span class="user-track-list__singer">
         {{ shownTrack.singer }}
       </span>
 
-      <div class="album-track-list__track-section">
+      <div class="user-track-list__track-section">
         <img
           :src="
             shownTrack.cover.filter(
@@ -15,26 +15,26 @@
             )[0].url
           "
           alt="Track cover"
-          class="album-track-list__track-cover"
+          class="user-track-list__track-cover"
         >
 
-        <div class="album-track-list__player-section">
-          <span class="h3 album-track-list__album-title">
-            {{ album.title }}
+        <div class="user-track-list__player-section">
+          <span class="h3 user-track-list__list-title">
+            {{ userId === 'me' ? 'Мои песни' : 'Песни пользователя' }}
           </span>
-          <span class="album-track-list__album-data">
-            stub: album data
+          <span class="user-track-list__list-data">
+            stub: tracks data
           </span>
 
-          <div class="album-track-list__player" />
+          <div class="user-track-list__player" />
         </div>
       </div>
 
-      <div class="album-track-list__button-section">
+      <div class="user-track-list__button-section">
         <button
           :class="[
-            'album-track-list__button',
-            'album-track-list__button_listen'
+            'user-track-list__button',
+            'user-track-list__button_listen'
           ]"
         >
           <CirclePlayIcon />
@@ -43,21 +43,21 @@
 
         <AddToFavButton
           ref="addToFavButton"
-          class="album-track-list__button"
+          class="user-track-list__button"
           passive="standard-passive"
           hover="standard-hover"
           modifier="squared bordered"
-          item-type="album"
-          :item-id="albumId"
+          item-type="track"
+          :item-id="shownTrack.id"
         />
 
-        <AlbumPopover
-          :album-id="albumId"
+        <TrackActionsPopover
+          :track-id="shownTrack.id"
+          :show-remove-option="userId === 'me'"
           @press-favourite="onPressFavourite"
-          @album-removed="goBack"
         >
           <IconButton
-            class="album-track-list__button album-track-list__button_more"
+            class="user-track-list__button user-track-list__button_more"
             passive="standard-passive"
             hover="standard-hover"
             modifier="squared bordered"
@@ -65,14 +65,14 @@
           >
             <DotsIcon />
           </IconButton>
-        </AlbumPopover>
+        </TrackActionsPopover>
       </div>
     </template>
 
     <UniversalTrackList
-      for-type="album"
-      :for-id="albumId"
-      :show-remove-button="showRemoveButton"
+      for-type="track"
+      :for-id="userId"
+      :show-remove-button="userId === 'me'"
       @initialized="onTrackListInitialized"
     />
   </div>
@@ -80,7 +80,7 @@
 
 <script>
 // When receive update from vuex for the id of currently playing track
-// we should check if the track album is the same as the album in question.
+// we should check if the track belongs to user tracks.
 //
 // If true, we should update current data regarding to the track.
 // If false, we should ignore.
@@ -96,7 +96,7 @@ import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
-import AlbumPopover from 'components/AlbumPopover';
+import TrackActionsPopover from 'components/trackList/TrackActionsPopover';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
 
@@ -106,7 +106,7 @@ export default {
   components: {
     UniversalTrackList,
     ReturnHeader,
-    AlbumPopover,
+    TrackActionsPopover,
     IconButton,
     CirclePlayIcon,
     DotsIcon,
@@ -118,10 +118,9 @@ export default {
   data() {
     return {
       playingTrack: null,
-      firstAlbumTrack: null,
-      firstAlbumTrackId: null,
-      album: null,
-      albumFetched: false,
+      firstTrack: null,
+      firstTrackId: null,
+      tracksDataFetched: true,
       tooltip: {
         more: {
           content: 'Еще'
@@ -131,45 +130,32 @@ export default {
   },
 
   computed: {
-    albumId() {
-      return +this.$route.params.albumId;
-    },
-
-    showRemoveButton() {
+    userId() {
       const pathPrefix = this.currentPath.split('/')[1];
 
-      switch (pathPrefix) {
-        case 'profile':
-          return true;
-
-        case 'user':
-          return false;
-
-        case 'music-group':
-          // TODO: check if the group belongs to current user
-          return false;
-
-        default:
-          return false;
+      if (pathPrefix === 'profile') {
+        return 'me';
       }
+
+      return +this.$route.params.userId;
     },
 
     shownTrack() {
       const {
         playingTrack,
-        firstAlbumTrack,
-        albumId
+        firstTrack
       } = this;
 
-      if (!firstAlbumTrack) {
+      if (!firstTrack) {
         return null;
       }
 
-      if (playingTrack && playingTrack.album.id === albumId) {
+      if (playingTrack && playingTrack.my === true) {
+        debugger;
         return playingTrack;
       }
 
-      return firstAlbumTrack;
+      return firstTrack;
     }
   },
 
@@ -178,42 +164,21 @@ export default {
       if (data instanceof Array === false
         || data.length === 0) return;
 
-      this.firstAlbumTrackId = data[0].id;
+      this.firstTrackId = data[0].id;
     },
 
     onPressFavourite() {
       this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
-    },
-
-    goBack() {
-      this.$router.go(-1);
     }
   },
 
   apollo: {
-    album: {
-      query: gql.query.ALBUM,
-      variables() {
-        return {
-          id: this.albumId
-        };
-      },
-      update({ album }) {
-        this.albumFetched = true;
-
-        return album;
-      },
-      error(err) {
-        console.dir(err);
-      }
-    },
+    // TODO: user/my tracks data
 
     playingTrack: {
       query: gql.query.TRACK,
       variables() {
-        return {
-          id: this.playingTrackId
-        };
+        return { id: this.playingTrackId };
       },
       update({ track }) {
         return track;
@@ -226,12 +191,10 @@ export default {
       }
     },
 
-    firstAlbumTrack: {
+    firstTrack: {
       query: gql.query.TRACK,
       variables() {
-        return {
-          id: this.firstAlbumTrackId
-        };
+        return { id: this.firstTrackId };
       },
       update({ track }) {
         return track;
@@ -240,7 +203,7 @@ export default {
         console.dir(err);
       },
       skip() {
-        return !ofNumber(this.firstAlbumTrackId);
+        return !ofNumber(this.firstTrackId);
       }
     }
   }
@@ -250,5 +213,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./AlbumTrackList.scss"
+  src="./UserTrackList.scss"
 />

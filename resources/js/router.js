@@ -90,7 +90,7 @@ const routes = [
       },
       {
         path: 'my-music/tracks',
-        component: profile.Tracks
+        component: profile.UserTrackList
       },
       {
         path: 'my-music/albums',
@@ -161,7 +161,7 @@ const routes = [
       },
       {
         path: 'music/tracks',
-        component: profile.Tracks
+        component: profile.UserTrackList
       },
       {
         path: 'music/albums',

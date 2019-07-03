@@ -92,7 +92,6 @@
 // We also have a case where we visit the page while already listening a track
 // from the collection. This case will be handled automatically thanks to reactivity.
 
-import anonymousAvatar from 'images/anonymous-avatar.png';
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
@@ -122,7 +121,6 @@ export default {
 
   data() {
     return {
-      anonymousAvatar,
       firstCollectionTrack: null,
       firstCollectionTrackId: null,
       collection: null,
