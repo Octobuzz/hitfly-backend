@@ -120,6 +120,7 @@ return [
     'emailChange' => [
         'hello' => 'Здравствуйте',
         'text' => 'Подтвердите смену email на ',
+        'link' => 'Для подтверждение пройдите по <a href=":link" style="text-decoration: none; color: #b36fcb;">ссылке</a>.',
         'subject' => 'Смена Email адреса',
     ],
     'emailChanged' => [
