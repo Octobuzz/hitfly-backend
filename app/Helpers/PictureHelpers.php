@@ -8,14 +8,12 @@ use Intervention\Image\Facades\Image;
 
 class PictureHelpers
 {
-
     public static function resizePicture($model, $width = 100, $height = 100): string
     {
-        $size = $width."_".$height;
+        $size = $width.'_'.$height;
         $defaultImage = 'default.jpg';
         $picturePath = $model->getImage(); //todo
         $path = Storage::disk('public')->path($model->getPath());
-
 
         if (false === Storage::disk('public')->exists($picturePath)) {
             $picturePath = $defaultImage;
@@ -32,9 +30,8 @@ class PictureHelpers
         if (false === Storage::disk('public')->exists($savePicturePath)) {
             self::resize($width, $height, $picturePath, $path, $saveName);
         }
+
         return $url;
-
-
     }
 
     /**

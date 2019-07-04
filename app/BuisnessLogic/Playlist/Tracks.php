@@ -23,11 +23,12 @@ class Tracks implements TracksContract
     public function getTopTrack(int $count): array
     {
         $idsTracks = Cache::get(TopFifty::TOP_FIFTY_KEY_CALCULATED, null);
-        if($idsTracks === null) {
+        if (null === $idsTracks || $count < 1) {
             return [];
         }
         $topList = [];
-        $trackList = Track::query()->select('*')->whereIn('id', $idsTracks)->get();
+        $idsTracksChanks = array_chunk($idsTracks, $count, true);
+        $trackList = Track::query()->select('*')->whereIn('id', $idsTracksChanks[0])->get();
         foreach ($trackList as $track) {
             $position = array_search($track->id, $idsTracks);
             if (false !== $position) {
@@ -42,6 +43,7 @@ class Tracks implements TracksContract
                 ];
             }
         }
+
         return $topList;
     }
 

@@ -105,13 +105,18 @@ class Notification
     private function getUsersWithFewComments()
     {
         $users = User::query()->whereIn('id', function ($query) {
-            $query->select('user_id')->from('admin_role_users')->where('role_id', '=', '4')->whereNotIn('user_id', function ($query2) {
-                $query2->select('user_id')
+            $query->select('user_id')->from('admin_role_users')->whereIn('role_id', function ($query2) {
+                $query2->select('id')
+                        ->from('admin_roles')
+                        ->whereIn('slug', ['critic', 'star', 'prof_critic']);
+            }
+                )->whereNotIn('user_id', function ($query2) {
+                    $query2->select('user_id')
                     ->from('comments')
                     ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfDay()])
                     ->groupBy('user_id')
                     ->havingRaw('count(`user_id`) >= ?', [env('FEW_FEEDBACK_PERIOD')]);
-            });
+                });
         }
             )->get();
 
@@ -208,8 +213,8 @@ class Notification
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
             $topUrl = '/url';
-            return new ReachTopMail($track, $topUrl, $topCount);
-            //dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
+            //return new ReachTopMail($track, $topUrl, $topCount);
+            dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }
     }
 
@@ -282,7 +287,7 @@ class Notification
      */
     public function decreaseLevelNotification($decreaseStatus, $oldStatus, User $user)
     {
-        $user = User::query()->find(115);
+        //$user = User::query()->find(115);
 //        //dd($user->username);
 //        $decreaseStatus = "dS";
 //        $oldStatus = "oS";
