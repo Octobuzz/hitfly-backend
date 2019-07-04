@@ -36,6 +36,7 @@ class NotificationQuery extends Query
             ->where('notifiable_id', '=', \Auth::user()->id)
             ->where('notifiable_type', '=', User::class)
             ->where('type', '=', BaseNotification::class)
+            ->orderBy('created_at', 'desc')
             ;
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
