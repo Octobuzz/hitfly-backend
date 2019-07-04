@@ -62,6 +62,6 @@ class CreateTopFiftyCommand extends Command
         $arrTopFifty = array_slice($topFiftyReturn, 0, 50, true);
         Cache::forever(TopFifty::TOP_FIFTY_KEY_CALCULATED, array_keys($arrTopFifty));
 
-        event(new CreatedTopFiftyEvent($arrTopFifty));
+        event(new CreatedTopFiftyEvent(array_keys($arrTopFifty)));
     }
 }

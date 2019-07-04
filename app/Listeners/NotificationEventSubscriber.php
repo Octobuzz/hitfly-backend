@@ -268,7 +268,7 @@ class NotificationEventSubscriber
             $chunks = array_chunk($idsTrack, 20, true);
             $topTwenty = $chunks[0];
         } else {
-            $topTwenty = array_keys($idsTrack);
+            $topTwenty = $idsTrack;
         }
         $tracks = Track::query()->whereIn('id', $topTwenty)->get();
 
