@@ -37,7 +37,7 @@
             <div class="notification-button__delimiter" />
           </div>
         </div>
-        <div v-else>
+        <div v-else class="notification-button__message">
           У вас нет новых уведомлений
         </div>
       </template>
@@ -134,11 +134,13 @@ export default {
       } else {
         this.unreadCount = unreadCount;
 
-        this.$message(
-          'У вас есть непрочитанные уведомления',
-          'info',
-          { timeout: 2000 }
-        );
+        if (unreadCount > 0) {
+          this.$message(
+            'У вас есть непрочитанные уведомления',
+            'info',
+            { timeout: 2000 }
+          );
+        }
       }
 
       unreadNotifications
