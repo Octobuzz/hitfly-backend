@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
 use App\Events\CompletedTaskEvent;
+use App\Events\CreatedTopFiftyEvent;
 use App\Events\User\ChangeLevelEvent;
 use App\Models\Album;
 use App\Models\Collection;
@@ -35,6 +36,7 @@ class NotificationEventSubscriber
         $events->listen('eloquent.created: '.Watcheables::class, self::class.'@createWatcheables'); // У вас новый поклонник Имя пользователя
         $events->listen(CompletedTaskEvent::class, self::class.'@completedTask'); // Вы выполнили задание Название и получили 300 бонусов
         $events->listen(ChangeLevelEvent::class, self::class.'@changeLevel'); // Поздравляем! Вы получили новый уровень/ статус Любитель
+        $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Поздравляем! Ваша песня Название попала в ТОП 20
     }
 
     /**
@@ -256,5 +258,35 @@ class NotificationEventSubscriber
 
         $baseNotifyMessage = new BaseNotifyMessage('completed-task', $messageData);
         $user->notify(new BaseNotification($baseNotifyMessage));
+    }
+
+    public function createdTopFifty(CreatedTopFiftyEvent $createdTopFifty)
+    {
+
+        $idsTrack = $createdTopFifty->getIdsTrack();
+        if (count($idsTrack) > 20) {
+            $chunks = array_chunk($idsTrack, 20, true);
+            $topTwenty = $chunks[0];
+        } else {
+            $topTwenty = array_keys($idsTrack);
+        }
+        $tracks = Track::query()->whereIn('id', $topTwenty)->get();
+
+        foreach ($tracks as $track) {
+            $topNumber = array_search($track->id, $idsTrack);
+            $messageData = [
+                'track' => [
+                    'id' => $track->id,
+                    'title' => $track->track_name,
+                    'cover' => $track->getImageUrl(),
+                ],
+                'top' => $topNumber,
+            ];
+
+            /** @var User $user */
+            $user = $track->user;
+            $baseNotifyMessage = new BaseNotifyMessage('track-in-top', $messageData);
+            $user->notify(new BaseNotification($baseNotifyMessage));
+        }
     }
 }

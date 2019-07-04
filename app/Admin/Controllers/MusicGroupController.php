@@ -216,9 +216,9 @@ class MusicGroupController extends Controller
             $form->image('avatar_group')->move('music_groups/'.$form->user_id)->uniqueName();
         });
 
-        $form->saved(function (Form $form){
+        $form->saved(function (Form $form) {
             /** @var MusicGroup $model */
-            $model  = $form->model();
+            $model = $form->model();
             $model->career_start_year = Carbon::createFromFormat('Y', $form->career_start_year)->format('Y-m-d H:i:s');
             $model->save();
         });

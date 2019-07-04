@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\MusicGroup;
-use App\User;
 use Illuminate\Support\Facades\App;
 
 class MusicGroupObserver

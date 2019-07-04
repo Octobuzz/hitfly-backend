@@ -36,6 +36,7 @@ class BaseNotification extends Notification
         try {
             if (
                 null !== $userNotification
+                && null !== $userNotification->token_web_socket
                 && 1 === Gateway::isOnline($userNotification->token_web_socket)
             ) {
                 $via[] = WebSocketChannel::class;

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\BuisnessLogic\TopFifty;
+use App\Events\CreatedTopFiftyEvent;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -60,5 +61,7 @@ class CreateTopFiftyCommand extends Command
         arsort($topFiftyReturn);
         $arrTopFifty = array_slice($topFiftyReturn, 0, 50, true);
         Cache::forever(TopFifty::TOP_FIFTY_KEY_CALCULATED, array_keys($arrTopFifty));
+
+        event(new CreatedTopFiftyEvent($arrTopFifty));
     }
 }
