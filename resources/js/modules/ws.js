@@ -1,4 +1,4 @@
-import Sockette from 'sockette';
+import Sockette from './sockette-fork';
 
 function createWs(connHandlers) {
   return new Sockette('ws://localhost:2346', {
@@ -11,11 +11,16 @@ function createWs(connHandlers) {
 class WsTunnel {
   constructor() {
     this.ws = createWs({
+      onopen: () => {
+        this.notify('ws-open');
+      },
       onmessage: ({ data }) => {
-        this.notify(data.type, JSON.parse(data));
+        const parsedMessage = JSON.parse(data);
+
+        this.notify(parsedMessage.type, parsedMessage);
       },
       onerror: () => {
-        console.log('Error: WsTunnel onerror callback');
+        console.log('Error: WsTunnel error');
       },
       onclose: (e) => {
         if (e.code === 1009) {
@@ -50,14 +55,12 @@ class WsTunnel {
     this.subscribers[evt].forEach(cb => cb(data));
   }
 
-  sendLastNotificationId(uuid) {
-    this.ws.json({
-      type: 'notification',
-      data: {
-        type: 'all-read',
-        lastId: uuid
-      }
-    });
+  getState() {
+    return this.ws.ws.readyState;
+  }
+
+  json(data) {
+    this.ws.json(data);
   }
 }
 
