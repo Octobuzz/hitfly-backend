@@ -4,10 +4,10 @@ function createWs(connHandlers) {
   // TODO: manage host
 
   const host = process.env.NODE_ENV === 'development'
-    ? 'localhost'
-    : 'digico.itech-test.ru';
+    ? 'ws://localhost:2346'
+    : 'wss://digico.itech-test.ru/ws/';
 
-  return new Sockette(`ws://${host}:2346`, {
+  return new Sockette(host, {
     timeout: 2 * 6e4, // 2 min
     maxAttempts: Infinity,
     ...connHandlers
