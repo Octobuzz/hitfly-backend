@@ -20,6 +20,7 @@ use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
 use App\Mail\CommentCreatedMail;
+use App\Mail\DecreaseLevelMail;
 use App\Mail\DecreaseStatusMail;
 use App\Mail\FewComments;
 use App\Mail\LongAgoNotVisited;
@@ -267,9 +268,12 @@ class Notification
      */
     public function decreaseStatusNotification($decreaseStatus, $oldStatus, User $user)
     {
-//        $user = User::query()->find(97);
+        //$user = User::query()->find(115);
 //        //dd($user->username);
-//        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+//        $decreaseStatus = "dS";
+//        $oldStatus = "oS";
+//               return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+
         dispatch(new DecreaseStatusJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
     }
 
@@ -278,9 +282,11 @@ class Notification
      */
     public function decreaseLevelNotification($decreaseStatus, $oldStatus, User $user)
     {
-//        $user = User::query()->find(97);
+        $user = User::query()->find(115);
 //        //dd($user->username);
-//        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+//        $decreaseStatus = "dS";
+//        $oldStatus = "oS";
+//        return new DecreaseLevelMail("ststusNEW", "ststusOLD", $user);
         dispatch(new DecreaseLevelJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
     }
 
