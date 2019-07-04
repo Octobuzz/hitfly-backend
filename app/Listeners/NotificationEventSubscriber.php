@@ -55,7 +55,7 @@ class NotificationEventSubscriber
                 ],
             ]));
         } catch (Exception $exception) {
-            Log::alert($exception->getMessage(), $exception);
+            Log::info($exception->getMessage(), $exception);
         }
     }
 
