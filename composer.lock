@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "163ec17deea481698d8577a2684cd03d",
+    "content-hash": "9796de9f385b8b741150f04eae04c413",
     "packages": [
         {
             "name": "alfa6661/laravel-has-many-sync",
@@ -48,6 +48,64 @@
             ],
             "description": "Laravel has many sync",
             "time": "2018-08-13T09:35:37+00:00"
+        },
+        {
+            "name": "brexis/laravel-workflow",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brexis/laravel-workflow.git",
+                "reference": "89358dcabf6b23f1e9d4493210fd35d5063d13e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brexis/laravel-workflow/zipball/89358dcabf6b23f1e9d4493210fd35d5063d13e8",
+                "reference": "89358dcabf6b23f1e9d4493210fd35d5063d13e8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
+                "illuminate/support": "5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
+                "php": ">=5.5.9",
+                "symfony/event-dispatcher": "^3.3 || ^4.0",
+                "symfony/process": "^3.3 || ^4.0",
+                "symfony/workflow": "^3.3 || ^4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.8",
+                "phpunit/phpunit": "^6.0 || ~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Brexis\\LaravelWorkflow\\WorkflowServiceProvider"
+                    ],
+                    "aliases": {
+                        "Workflow": "Brexis\\LaravelWorkflow\\Facades\\WorkflowFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Brexis\\LaravelWorkflow\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Integerate Symfony Workflow component into Laravel.",
+            "keywords": [
+                "laravel",
+                "laravel5",
+                "symfony",
+                "workflow"
+            ],
+            "time": "2019-01-03T10:49:24+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -4001,6 +4059,64 @@
             "time": "2019-02-03T12:47:33+00:00"
         },
         {
+            "name": "symfony/inflector",
+            "version": "v4.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/inflector.git",
+                "reference": "889dc28cb6350ddb302fe9b8c796e4e6eb836856"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/889dc28cb6350ddb302fe9b8c796e4e6eb836856",
+                "reference": "889dc28cb6350ddb302fe9b8c796e4e6eb836856",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/polyfill-ctype": "~1.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Inflector\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Inflector Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "inflection",
+                "pluralize",
+                "singularize",
+                "string",
+                "symfony",
+                "words"
+            ],
+            "time": "2019-05-30T09:28:08+00:00"
+        },
+        {
             "name": "symfony/polyfill-ctype",
             "version": "v1.10.0",
             "source": {
@@ -4330,6 +4446,73 @@
             "time": "2019-05-30T16:10:05+00:00"
         },
         {
+            "name": "symfony/property-access",
+            "version": "v4.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-access.git",
+                "reference": "18ea48862a39e364927e71b9e4942af3c1a1cb8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/18ea48862a39e364927e71b9e4942af3c1a1cb8c",
+                "reference": "18ea48862a39e364927e71b9e4942af3c1a1cb8c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/inflector": "~3.4|~4.0"
+            },
+            "require-dev": {
+                "symfony/cache": "~3.4|~4.0"
+            },
+            "suggest": {
+                "psr/cache-implementation": "To cache access methods."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyAccess\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony PropertyAccess Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "access",
+                "array",
+                "extraction",
+                "index",
+                "injection",
+                "object",
+                "property",
+                "property path",
+                "reflection"
+            ],
+            "time": "2019-06-06T10:05:02+00:00"
+        },
+        {
             "name": "symfony/routing",
             "version": "v4.2.3",
             "source": {
@@ -4554,6 +4737,73 @@
                 "dump"
             ],
             "time": "2019-01-30T11:44:30+00:00"
+        },
+        {
+            "name": "symfony/workflow",
+            "version": "v4.2.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/workflow.git",
+                "reference": "e929eea911790a192da2bd451dbae636fcb72722"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/e929eea911790a192da2bd451dbae636fcb72722",
+                "reference": "e929eea911790a192da2bd451dbae636fcb72722",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/property-access": "~3.4|~4.0"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/dependency-injection": "~3.4|~4.0",
+                "symfony/event-dispatcher": "~3.4|~4.0",
+                "symfony/expression-language": "~3.4|~4.0",
+                "symfony/security-core": "~3.4|~4.0",
+                "symfony/validator": "~3.4|~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Workflow\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Workflow Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "petrinet",
+                "place",
+                "state",
+                "statemachine",
+                "transition",
+                "workflow"
+            ],
+            "time": "2019-06-13T10:57:15+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

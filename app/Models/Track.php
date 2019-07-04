@@ -6,6 +6,7 @@ use App\Events\Track\TrackCreatedEvent;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
+use Brexis\LaravelWorkflow\Traits\WorkflowTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Track extends Model
 {
-    use SoftDeletes, Itemable, PictureField;
+    use SoftDeletes, Itemable, PictureField, WorkflowTrait;
 
     const MIN_LISTENING = 50;
 
