@@ -168,7 +168,7 @@ export default {
 
   methods: {
     onAlbumPress() {
-      console.log('album pressed');
+      this.$emit('play-track', this.trackId);
     },
     onFavouritePress() {
       this.$emit('press-favourite', this.trackId);
