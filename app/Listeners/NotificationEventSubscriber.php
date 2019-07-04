@@ -69,7 +69,7 @@ class NotificationEventSubscriber
         /** @var User $user */
         $user = $favourite->user;
         /** @var Favourite $favoriteId */
-        $favoriteId = 'favouriteable_id';
+        $favoriteId = null;
         /** @var User | null $notifyUser */
         $notifyUser = null;
         $title = null;
@@ -77,14 +77,16 @@ class NotificationEventSubscriber
 
         switch (get_class($favourite->favouriteable()->getRelated())) {
             case Album::class:
-                $title = $favourite->album->track_name;
+                $title = $favourite->album->title;
                 $type = 'Album';
                 $notifyUser = $favourite->album->user;
+                $favoriteId = $favourite->album->id;
                 break;
             case Track::class:
-                $title = $favourite->track->title;
+                $title = $favourite->track->track_name;
                 $type = 'Track';
                 $notifyUser = $favourite->track->user;
+                $favoriteId = $favourite->track->id;
                 break;
             default:
                 return;
