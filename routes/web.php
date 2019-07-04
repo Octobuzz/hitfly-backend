@@ -34,7 +34,7 @@ Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $no
 //        ]
 //    );
 
-    return $notification->decreaseLevelNotification();
+    return $notification->fewComments();
     //$this->notify(new ResetPasswordNotification($token));
 });
 Auth::routes(['verify' => true]);

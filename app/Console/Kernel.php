@@ -57,6 +57,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $this->notification->remindForEvent();
         })->dailyAt('10:00');
+        $schedule->call(function () {
+            $this->notification->reachTop(20);
+        })->dailyAt('10:00');
         // Создание топ 50 каждый день в 1 час ночи
         $schedule->call(CreateTopFiftyCommand::class)->dailyAt('01:00');
         $schedule->call(CalculateListeningTrackCommand::class)->everyTenMinutes();

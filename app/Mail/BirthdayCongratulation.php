@@ -26,6 +26,7 @@ class BirthdayCongratulation extends Mailable
         $this->promocode = $promocode;
         $this->video = $video;
         $this->user = $user;
+        //$this->promocode = "";
     }
 
     /**
