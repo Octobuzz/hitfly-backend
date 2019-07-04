@@ -94,7 +94,7 @@ class NotificationEventSubscriber
                 return;
         }
 
-        if (null !== $notifyUser && $user->id === $notifyUser->id) {
+        if (null !== $notifyUser && $user->id !== $notifyUser->id) {
             $messageData = [
                 'user' => [
                     'id' => $user->id,
@@ -262,7 +262,6 @@ class NotificationEventSubscriber
 
     public function createdTopFifty(CreatedTopFiftyEvent $createdTopFifty)
     {
-
         $idsTrack = $createdTopFifty->getIdsTrack();
         if (count($idsTrack) > 20) {
             $chunks = array_chunk($idsTrack, 20, true);

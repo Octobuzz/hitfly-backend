@@ -133,12 +133,18 @@ class BonusProgramEventSubscriber
         switch (get_class($favourite->favouriteable()->getRelated())) {
             case Album::class:
                 $modelId = $favourite->album->id;
+                $albumUser = $favourite->album->user;
+                if ($user->id === $albumUser->id) {
+                    return;
+                }
                 $countFavorite =
                     Favourite::query()
                         ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
                         ->where($favoriteId, $modelId)
+                        ->where('user_id', '<>', $user->id)
                         ->count()
                 ;
+
                 if ($countFavorite < 10) {
                     return;
                 }
@@ -147,10 +153,15 @@ class BonusProgramEventSubscriber
                 break;
             case Track::class:
                 $modelId = $favourite->track->id;
+                $trackUser = $favourite->track->user;
+                if ($user->id === $trackUser->id) {
+                    return;
+                }
                 $countFavorite =
                     Favourite::query()
                         ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
                         ->where($favoriteId, $modelId)
+                        ->where('user_id', '<>', $user->id)
                         ->count()
                 ;
                 if ($countFavorite < 10) {
