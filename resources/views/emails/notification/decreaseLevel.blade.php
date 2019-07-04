@@ -11,12 +11,14 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.emailChanged.hello'), {{$user->username}}!</h3>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.emailChanged.text')
+                                        @lang('emails.decreaseLevel.text', ['oldStatus'=>$oldStatus,'decreaseStatus'=>$decreaseStatus])
                                     </p>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.emailChanged.newEmail') {{$user->email}}
+                                        @lang('emails.decreaseLevel.sorrow')
+                                    </p>
+                                    <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
+                                        @lang('emails.decreaseLevel.more', ['link'=>'/fake_url'])
                                     </p>
                                 </td>
                             </tr>

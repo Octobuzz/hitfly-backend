@@ -20,6 +20,7 @@ use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
 use App\Mail\CommentCreatedMail;
+use App\Mail\DecreaseLevelMail;
 use App\Mail\DecreaseStatusMail;
 use App\Mail\FewComments;
 use App\Mail\LongAgoNotVisited;
@@ -57,12 +58,12 @@ class Notification
     public function birthdayCongratulation()
     {
         $this->listOfUsers = $this->getUsersBirthdayToday();
-        // $this->listOfUsers = User::query()->where('id',31)->get();
+        $this->listOfUsers = User::query()->where('id', 115)->get();
         //$recommend = $this->recommendation;
         $discount = new PromoCode();
         foreach ($this->listOfUsers as $user) {
-            //return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(),$discount->getYearSubscribePromoCode(),$this->getBirthdayVideo());
-            dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
+            return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo());
+            //dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
         }
     }
 
@@ -81,6 +82,7 @@ class Notification
         // TODO получать реальное видео
         return [
             'url' => '/fake_url',
+            'nameStar' => 'STAR_NAME', //имя звезды
             'preview_img' => env('APP_URL').'/images/emails/img/video.png',
         ];
     }
@@ -103,13 +105,18 @@ class Notification
     private function getUsersWithFewComments()
     {
         $users = User::query()->whereIn('id', function ($query) {
-            $query->select('user_id')->from('admin_role_users')->where('role_id', '=', '4')->whereNotIn('user_id', function ($query2) {
-                $query2->select('user_id')
+            $query->select('user_id')->from('admin_role_users')->whereIn('role_id', function ($query2) {
+                $query2->select('id')
+                        ->from('admin_roles')
+                        ->whereIn('slug', ['critic', 'star', 'prof_critic']);
+            }
+                )->whereNotIn('user_id', function ($query2) {
+                    $query2->select('user_id')
                     ->from('comments')
                     ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfDay()])
                     ->groupBy('user_id')
                     ->havingRaw('count(`user_id`) >= ?', [env('FEW_FEEDBACK_PERIOD')]);
-            });
+                });
         }
             )->get();
 
@@ -266,9 +273,12 @@ class Notification
      */
     public function decreaseStatusNotification($decreaseStatus, $oldStatus, User $user)
     {
-//        $user = User::query()->find(97);
+        //$user = User::query()->find(115);
 //        //dd($user->username);
-//        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+//        $decreaseStatus = "dS";
+//        $oldStatus = "oS";
+//               return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+
         dispatch(new DecreaseStatusJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
     }
 
@@ -277,9 +287,11 @@ class Notification
      */
     public function decreaseLevelNotification($decreaseStatus, $oldStatus, User $user)
     {
-//        $user = User::query()->find(97);
+        //$user = User::query()->find(115);
 //        //dd($user->username);
-//        return new DecreaseStatusMail("ststusNEW", "ststusOLD", $user);
+//        $decreaseStatus = "dS";
+//        $oldStatus = "oS";
+//        return new DecreaseLevelMail("ststusNEW", "ststusOLD", $user);
         dispatch(new DecreaseLevelJob($decreaseStatus, $oldStatus, $user))->onQueue('low');
     }
 
