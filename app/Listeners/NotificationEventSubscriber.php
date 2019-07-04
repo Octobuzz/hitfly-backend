@@ -94,7 +94,7 @@ class NotificationEventSubscriber
                 return;
         }
 
-        if (null !== $notifyUser) {
+        if (null !== $notifyUser && $user->id === $notifyUser->id) {
             $messageData = [
                 'user' => [
                     'id' => $user->id,
