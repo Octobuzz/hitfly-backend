@@ -17,7 +17,7 @@ trait PictureField
 
     public function getPath(): string
     {
-        if (null !== $this->user()) {
+        if (null !== $this->user) { //todo check
             $userId = $this->user->id;
 
             return $this->getSaveFolder().DIRECTORY_SEPARATOR.$userId.DIRECTORY_SEPARATOR;
