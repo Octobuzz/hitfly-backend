@@ -108,6 +108,10 @@ class TrackType extends GraphQLType
             ],
             'cover' => PictureField::class,
             'comments' => CommentsTrackField::class,
+            'length' => [
+                'type' => Type::float(),
+                'description' => 'длина трека, МОЖЕТ БЫТЬ ПУСТОЕ ЗНАЧЕНИЕ (NULL) !!!',
+            ],
         ];
     }
 }

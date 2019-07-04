@@ -5,6 +5,7 @@ namespace App\Console;
 use App\BuisnessLogic\Emails\Notification;
 use App\Console\Commands\CalculateListenedUserCommand;
 use App\Console\Commands\CalculateListeningTrackCommand;
+use App\Console\Commands\CreatePlayTimeTrackCommand;
 use App\Console\Commands\CreateTopFiftyCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        CreatePlayTimeTrackCommand::class,
     ];
 
     /**
