@@ -69,10 +69,11 @@ class SocialController extends Controller
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
         Auth::login($user);
-        $user->markEmailAsVerified();
-        if (null !== $user->email) {
+        if (null !== $user->email && false ===$user->hasVerifiedEmail()) {
             VerificationController::sendNotification($user);
         }
+        $user->markEmailAsVerified();
+
 
         return redirect()->to('/register-success?token='.$user->access_token);
     }
