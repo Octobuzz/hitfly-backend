@@ -145,6 +145,10 @@ const routes = [
         component: profile.BonusProgram
       },
       {
+        path: 'notifications',
+        component: profile.UserNotifications
+      },
+      {
         path: '',
         redirect: '/profile/my-music'
         // TODO: use name for redirect
