@@ -7,6 +7,8 @@
     placement="bottom-end"
     :popper-options="popperOptions"
     :auto-hide="true"
+    @show="$emit('show')"
+    @hide="$emit('hide')"
   >
     <slot />
 
@@ -14,6 +16,21 @@
       <span class="h5 notification-popover__header">
         Уведомления
       </span>
+
+      <slot name="popover" />
+
+      <router-link
+        to="/profile/notifications"
+        class="notification-popover__all"
+      >
+        Все уведомления
+      </router-link>
+
+      <button
+        ref="closeButton"
+        v-close-popover
+        style="display: none"
+      />
     </template>
   </v-popover>
 </template>
@@ -32,6 +49,12 @@ export default {
         }
       }
     };
+  },
+
+  watch: {
+    '$route.fullPath': function closePopover() {
+      this.$refs.closeButton.click();
+    }
   }
 };
 </script>

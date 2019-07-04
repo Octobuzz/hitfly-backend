@@ -7,8 +7,7 @@ $text_color_highlighted: white;
 .notification-popover {
   display: block !important;
   position: relative;
-  width: 240px;
-  margin-top: -5px;
+  width: 260px;
   border-radius: 5px;
   z-index: 9999;
   color: $text_color;
@@ -38,10 +37,11 @@ $text_color_highlighted: white;
       bottom-color: $bg_color;
       left-color: transparent;
     }
-    z-index: 900;
+    z-index: 9999;
   }
 
   &__header {
+    font-size: 16px;
     color: white;
     margin: {
       top: 0;
@@ -49,12 +49,12 @@ $text_color_highlighted: white;
     }
   }
 
-  &__delimiter {
-    clear: both;
-    width: 100%;
-    height: 1px;
-    border: none;
-    background: #424242;
+  &__all {
+    font-size: 13px;
+    text-align: center;
+    color: $text_color;
+    display: block;
+    padding-top: 8px;
   }
 
   &[aria-hidden='true'] {
@@ -67,9 +67,5 @@ $text_color_highlighted: white;
     visibility: visible;
     opacity: 1;
     transition: opacity .2s;
-  }
-
-  &.open {
-    transition: transform .2s !important;
   }
 }
