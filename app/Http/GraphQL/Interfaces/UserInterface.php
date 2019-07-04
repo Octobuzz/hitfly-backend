@@ -86,6 +86,18 @@ class UserInterface extends InterfaceType
                     }
                 },
             ],
+            'description' => [
+                'name' => 'description',
+                'description' => 'Описание деятельности',
+                'type' => Type::string(),
+                'resolve' => function (User $model) {
+                    if (null !== $model->artistProfile) {
+                        return $model->artistProfile->description;
+                    } else {
+                        return null;
+                    }
+                },
+            ],
             'genresPlay' => [
                 'name' => 'genresPlay',
                 'description' => 'жанры в которых играет',
