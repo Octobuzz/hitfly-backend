@@ -9,9 +9,11 @@
 
       <div class="album-track-list__track-section">
         <img
-          :src="shownTrack.cover.filter(
-            cover => cover.size === 'size_150x150'
-          )[0].url || anonymousAvatar"
+          :src="
+            shownTrack.cover.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+          "
           alt="Track cover"
           class="album-track-list__track-cover"
         >
@@ -40,6 +42,7 @@
         </button>
 
         <AddToFavButton
+          ref="addToFavButton"
           class="album-track-list__button"
           passive="standard-passive"
           hover="standard-hover"
@@ -48,9 +51,13 @@
           :item-id="albumId"
         />
 
-        <AlbumPopover :album-id="albumId">
+        <AlbumPopover
+          :album-id="albumId"
+          @press-favourite="onPressFavourite"
+          @album-removed="goBack"
+        >
           <IconButton
-            class="album-track-list__button"
+            class="album-track-list__button album-track-list__button_more"
             passive="standard-passive"
             hover="standard-hover"
             modifier="squared bordered"
@@ -81,9 +88,9 @@
 // We also have a case where we visit the page while already listening a track
 // from the album. This case will be handled automatically thanks to reactivity.
 
-import anonymousAvatar from 'images/anonymous-avatar.png';
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
+import playingTrackId from 'mixins/playingTrackId';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -106,11 +113,10 @@ export default {
     AddToFavButton
   },
 
-  mixins: [currentPath, containerPaddingClass],
+  mixins: [currentPath, containerPaddingClass, playingTrackId],
 
   data() {
     return {
-      anonymousAvatar,
       playingTrack: null,
       firstAlbumTrack: null,
       firstAlbumTrackId: null,
@@ -173,6 +179,14 @@ export default {
         || data.length === 0) return;
 
       this.firstAlbumTrackId = data[0].id;
+    },
+
+    onPressFavourite() {
+      this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
+    },
+
+    goBack() {
+      this.$router.go(-1);
     }
   },
 

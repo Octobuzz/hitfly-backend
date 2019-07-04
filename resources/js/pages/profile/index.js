@@ -1,5 +1,4 @@
 export { default as MyProfileLayout } from './MyProfileLayout';
-export { default as MyUserCard } from './MyUserCard';
 export { default as EditUser } from './EditProfile';
 export { default as CreateGroup } from './CreateGroup';
 export { default as UpdateGroup } from './UpdateGroup';
@@ -12,3 +11,6 @@ export { default as CollectionTableContainer } from './CollectionTableContainer'
 export { default as OtherUserProfileLayout } from './OtherUserProfileLayout';
 export { default as OtherUserMusic } from './OtherUserMusic';
 export { default as AlbumTrackList } from './AlbumTrackList';
+export { default as CollectionTrackList } from './CollectionTrackList';
+export { default as UserTrackList } from './UserTrackList';
+export { default as UserNotifications } from 'components/notifications/NotificationsContainer';

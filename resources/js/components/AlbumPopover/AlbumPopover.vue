@@ -7,8 +7,15 @@
     :placement="popover.placement"
     :popper-options="popover.popperOptions"
     :auto-hide="true"
+    @auto-hide="leaveRemoveMenu"
   >
     <slot />
+
+    <button
+      ref="closeButton"
+      v-close-popover
+      style="display: none;"
+    />
 
     <template #popover>
       <img
@@ -87,7 +94,7 @@
         <span
           v-if="myAlbum"
           class="album-popover__menu-item"
-          @click="onAlbumRemovePress"
+          @click="goToRemoveMenu"
         >
           <span class="album-popover__menu-item-icon">
             <CrossIcon />
@@ -96,7 +103,12 @@
         </span>
       </div>
 
-      <!--remove album component-->
+      <AlbumPopoverRemoveMenu
+        v-show="inRemoveMenu"
+        :album-id="albumId"
+        @cancel-remove="leaveRemoveMenu"
+        @album-removed="onAlbumRemoved"
+      />
     </template>
   </v-popover>
 </template>
@@ -108,6 +120,7 @@ import HeartIcon from 'components/icons/popover/HeartIcon.vue';
 import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
 import CrossIcon from 'components/icons/popover/CrossIcon.vue';
 import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
+import AlbumPopoverRemoveMenu from '../AlbumPopoverRemoveMenu';
 import gql from './gql';
 
 export default {
@@ -117,7 +130,8 @@ export default {
     ListPlusIcon,
     UserPlusIcon,
     BendedArrowIcon,
-    CrossIcon
+    CrossIcon,
+    AlbumPopoverRemoveMenu
   },
 
   props: {
@@ -150,11 +164,34 @@ export default {
 
   methods: {
     onFavouritePress() {
-
+      this.$refs.closeButton.click();
+      setTimeout(() => {
+        this.$emit('press-favourite', this.albumId);
+      }, 200);
     },
 
-    onAlbumRemovePress() {
+    goToRemoveMenu() {
+      // microtask problem: popover gets handled before click
+      // so that the click could miss popover and collapse it
 
+      setTimeout(() => { this.inRemoveMenu = true; });
+    },
+
+    leaveRemoveMenu() {
+      setTimeout(() => { this.inRemoveMenu = false; });
+    },
+
+    onAlbumRemoved() {
+      this.$refs.closeButton.click();
+
+      setTimeout(() => {
+        this.$emit('album-removed', this.albumId);
+
+        this.$eventBus.$emit(
+          'album-removed',
+          this.albumId
+        );
+      }, 300);
     }
   },
 

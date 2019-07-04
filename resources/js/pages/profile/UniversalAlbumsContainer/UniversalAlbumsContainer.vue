@@ -86,6 +86,20 @@ export default {
 
   mounted() {
     this.$on('load-more', this.onLoadMore.bind(this));
+
+    this.boundRemoveAlbumFromStore = this.removeAlbumFromStore.bind(this);
+
+    this.$eventBus.$on(
+      'album-removed',
+      this.boundRemoveAlbumFromStore
+    );
+  },
+
+  beforeDestroy() {
+    this.$eventBus.$off(
+      'album-removed',
+      this.boundRemoveAlbumFromStore
+    );
   },
 
   methods: {
@@ -139,6 +153,40 @@ export default {
         .catch((err) => {
           console.dir(err);
         });
+    },
+
+    removeAlbumFromStore(id) {
+      const store = this.$apollo.provider.defaultClient;
+
+      const { albums } = store.readQuery({
+        query: gql.query.ALBUMS,
+
+        // cause updateQuery does not update variables in cache entry
+        // we always refer to the first page
+
+        variables: {
+          ...this.queryVars,
+          pageNumber: 1
+        }
+      });
+
+      const updatedAlbums = {
+        albums: {
+          ...albums,
+          data: [
+            ...albums.data.filter(album => album.id !== id)
+          ]
+        }
+      };
+
+      store.writeQuery({
+        query: gql.query.ALBUMS,
+        variables: {
+          ...this.queryVars,
+          pageNumber: 1
+        },
+        data: updatedAlbums
+      });
     }
   },
 

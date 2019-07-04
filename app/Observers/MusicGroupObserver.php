@@ -13,14 +13,6 @@ class MusicGroupObserver
      */
     public function creating(MusicGroup $musicGroup)
     {
-        $user = \Auth::guard('json')->user();
-
-        if (App::environment('local')) {
-            if (null === $user) {
-                $user = User::inRandomOrder()->first();
-            }
-        }
-        $musicGroup->setUser($user);
     }
 
     /**

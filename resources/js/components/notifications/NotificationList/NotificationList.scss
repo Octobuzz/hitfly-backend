@@ -1,0 +1,29 @@
+@import '~scss/_variables.scss';
+
+.notification-list {
+  padding-top: 16px;
+
+  &__header {
+    margin: {
+      top: 24px;
+      bottom: 20px;
+    }
+  }
+
+  &__entry {
+    border-bottom: 1px solid lightgray;
+
+    &_new {
+      background: #f0f0f0;
+    }
+  }
+
+  &__loader {
+    display: block;
+    margin: {
+      top: 8px;
+      right: auto;
+      left: auto;
+    }
+  }
+}

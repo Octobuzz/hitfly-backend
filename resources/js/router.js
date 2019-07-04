@@ -90,7 +90,7 @@ const routes = [
       },
       {
         path: 'my-music/tracks',
-        component: profile.Tracks
+        component: profile.UserTrackList
       },
       {
         path: 'my-music/albums',
@@ -134,15 +134,19 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.Playlist
+        component: profile.CollectionTrackList
       },
       {
         path: 'set/:setId',
-        component: profile.Set
+        component: profile.CollectionTrackList
       },
       {
         path: 'bonus-program',
         component: profile.BonusProgram
+      },
+      {
+        path: 'notifications',
+        component: profile.UserNotifications
       },
       {
         path: '',
@@ -161,7 +165,7 @@ const routes = [
       },
       {
         path: 'music/tracks',
-        component: profile.Tracks
+        component: profile.UserTrackList
       },
       {
         path: 'music/albums',
@@ -193,7 +197,7 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.Playlist
+        component: profile.CollectionTrackList
       }
       // {
       //   path: '',
