@@ -141,7 +141,7 @@ return [
         'hello' => 'Приветствуем',
         'seeAllComments' => 'Посмотреть все отзывы',
         'text' => 'На ваш :type появился новый отзыв.<br> :commentator оценил ваш :type – «:name».<br> Перейти к <a href=":link" style="text-decoration: none; color: #b36fcb;">отзыву</a>.',
-        'subject' => 'Новый комментарий',
+        'subject' => 'Новый отзыв',
     ],
     'newStatus' => [
         'hello' => 'Поздравляем ',
