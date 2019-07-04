@@ -273,14 +273,13 @@ class NotificationEventSubscriber
         $tracks = Track::query()->whereIn('id', $topTwenty)->get();
 
         foreach ($tracks as $track) {
-            $topNumber = array_search($track->id, $idsTrack);
             $messageData = [
                 'track' => [
                     'id' => $track->id,
                     'title' => $track->track_name,
                     'cover' => $track->getImageUrl(),
                 ],
-                'top' => $topNumber,
+                'top' => 20,
             ];
 
             /** @var User $user */
