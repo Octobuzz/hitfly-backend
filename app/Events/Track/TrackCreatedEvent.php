@@ -11,10 +11,20 @@ class TrackCreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    private $track;
     /**
      * Create a new event instance.
      */
     public function __construct(Track $track)
     {
+        $this->track = $track;
+    }
+
+    /**
+     * @return Track
+     */
+    public function getTrack(): Track
+    {
+        return $this->track;
     }
 }

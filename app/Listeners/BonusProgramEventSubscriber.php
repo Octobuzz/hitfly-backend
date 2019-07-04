@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\CompletedTaskEvent;
 use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
+use App\Events\Track\TrackCreatedEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
 use App\Models\BonusType;
@@ -28,7 +29,7 @@ class BonusProgramEventSubscriber
     public function subscribe($events)
     {
         // Подписка на EVENT создание трека.
-        $events->listen('eloquent.created: '.Track::class, self::class.'@uploadFirstTrack');
+        $events->listen(TrackCreatedEvent::class, self::class.'@uploadFirstTrack');
         $events->listen('eloquent.created: '.Album::class, self::class.'@createFirstAlbum');
         $events->listen('eloquent.created: '.Collection::class, self::class.'@createFirstCollection');
         $events->listen('eloquent.created: '.Favourite::class, self::class.'@favourite');
@@ -39,12 +40,12 @@ class BonusProgramEventSubscriber
     }
 
     /**
-     * @param Track $track
+     * @param TrackCreatedEvent $createdEvent
      */
-    public function uploadFirstTrack(Track $track)
+    public function uploadFirstTrack(TrackCreatedEvent $createdEvent)
     {
         /** @var User $user */
-        $user = $track->user;
+        $user = $createdEvent->getTrack()->user;
         //todo  cache for find
         $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::UPLOAD_FIRST_TRACK)->first();
         if (null === $bonusType) {
