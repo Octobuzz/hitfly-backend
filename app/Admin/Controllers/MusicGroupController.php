@@ -215,6 +215,12 @@ class MusicGroupController extends Controller
             $form->image('avatar_group')->move('music_groups/'.$form->user_id)->uniqueName();
         });
 
+        $form->disableEditingCheck();
+
+        $form->disableCreatingCheck();
+
+        $form->disableViewCheck();
+
         return $form;
     }
 
