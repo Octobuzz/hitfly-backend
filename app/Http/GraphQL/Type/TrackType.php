@@ -7,6 +7,7 @@ use App\Http\GraphQL\Fields\PictureField;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
@@ -111,6 +112,18 @@ class TrackType extends GraphQLType
             'length' => [
                 'type' => Type::float(),
                 'description' => 'длина трека, МОЖЕТ БЫТЬ ПУСТОЕ ЗНАЧЕНИЕ (NULL) !!!',
+            ],
+            'my' => [
+                'type' => Type::boolean(),
+                'description' => 'Мой трек',
+                'resolve' => function ($model) {
+                    if ($model->user_id === Auth::user()->id) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                'selectable' => false,
             ],
         ];
     }
