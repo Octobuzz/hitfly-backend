@@ -96,6 +96,11 @@ class TracksQuery extends Query
             ) {
                 $query->where('comments.user_id', '=', $user->id);
             }
+            if (
+                false === empty($args['filters']['commentedByUser'])
+            ) {
+                $query->where('comments.user_id', '=', $args['filters']['commentedByUser']);
+            }
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
