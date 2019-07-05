@@ -12,9 +12,15 @@
                             <tr>
                                 <td>
                                     <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.birthday.hello'), {{$user->username}}!</h3>
+                                    @if($promocode !== '')
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
                                         @lang('emails.birthday.text',['discountsize'=> $discountSize,'discounttype' => $discountType,'promocode'=>$promocode])
                                     </p>
+                                    @else
+                                    <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
+                                        @lang('emails.birthday.textAlternative',['nameStar'=>$video['nameStar']])
+                                    </p>
+                                    @endif
                                 </td>
                             </tr>
                             </tbody>

@@ -186,8 +186,8 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->text('username', 'Имя пользователя')->rules('required');
         $form->text('email', 'Email (логин)')->rules('required');
         $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules('confirmed')->required();
-        $form->password('password_confirmation', trans('admin.password_confirmation'))->required()
+        $form->password('password', trans('admin.password'))->rules('confirmed');
+        $form->password('password_confirmation', trans('admin.password_confirmation'))
             ->default(function ($form) {
                 return null;
             });
@@ -214,7 +214,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->editing(function (Form $form) {
             $form->ignore(['password', 'password_confirmation']);
 
-            $form->model()->load('artistProfile', 'favouriteGenres', 'artistgenres');
+            $form->model()->load('artistProfile', 'favouriteGenres');
             $savingUser = $form->model();
 
             $form->getRelations();

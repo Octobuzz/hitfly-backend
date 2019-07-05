@@ -194,13 +194,7 @@ class MusicGroupController extends Controller
         $form->text('name', 'Имя');
         $form->date('career_start_year', 'Старт начала карьеры')->format('YYYY')->default('YYYY');
 
-//        $form->select('genre_id', 'Жанр')->options(function ($id) {
-//            $genre = Genre::find($id);
-//
-//            if ($genre) {
-//                return [$genre->id => $genre->name];
-//            }
-//        })->ajax('/admin/api/genres');
+        $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'));
 
         $form->select('city_id', 'Город')->options(function ($id) {
             $city = City::find($id);
@@ -216,9 +210,9 @@ class MusicGroupController extends Controller
             $form->image('avatar_group')->move('music_groups/'.$form->user_id)->uniqueName();
         });
 
-        $form->saved(function (Form $form){
+        $form->saved(function (Form $form) {
             /** @var MusicGroup $model */
-            $model  = $form->model();
+            $model = $form->model();
             $model->career_start_year = Carbon::createFromFormat('Y', $form->career_start_year)->format('Y-m-d H:i:s');
             $model->save();
         });

@@ -52,7 +52,7 @@ class Track extends Model
     ];
 
     protected $dispatchesEvents = [
-        'created' => TrackCreatedEvent::class,
+//        'created' => TrackCreatedEvent::class,
     ];
 
     public function genre(): BelongsTo

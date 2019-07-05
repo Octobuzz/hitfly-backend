@@ -155,8 +155,8 @@ class CollectionController extends Controller
             }
         })->ajax('/admin/api/users');
         $states = [
-            'on' => ['value' => 1, 'text' => 'Админ', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => 'Пользователь', 'color' => 'danger'],
+            'on' => ['value' => 1, 'text' => 'Подборка', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => 'Плейлист', 'color' => 'danger'],
         ];
         $form->switch('is_admin', 'Подборка')->states($states);
 
