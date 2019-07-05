@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign, no-shadow */
 
 const state = {
-  currentTrack: null,
-  isPlaying: false
+  currentTrackId: null,
+  currentTrack: {},
+  isPlaying: false,
+  currentPlaylist: []
 };
 
 const getters = {
@@ -11,22 +13,37 @@ const getters = {
   },
   currentTrack(state) {
     return state.currentTrack;
+  },
+  currentPlaylist(state) {
+    return state.currentPlaylist;
   }
 };
 
 const mutations = {
-  startPlaying(state, trackId) {
+  startPlaying(state) {
     state.isPlaying = true;
-    state.currentTrack = trackId;
+  },
+
+  pickTrack(state, track){
+    state.currentTrack = track;
+    state.isPlaying = true;
   },
 
   pausePlaying(state) {
     state.isPlaying = false;
   },
 
+  togglePlaying(state) {
+    state.isPlaying = !state.isPlaying;
+  },
+
   stopPlaying(state) {
     state.isPlaying = false;
     state.currentTrack = null;
+  },
+
+  pickPlaylist(state, playlist) {
+    state.currentPlaylist = playlist;
   }
 };
 

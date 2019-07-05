@@ -120,6 +120,18 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
   // transition: .2s;
   transition: background .2s !important;
 
+  &.disabled {
+    cursor: default;
+
+    & svg {
+      fill: $medium_gray;
+    }
+    
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
   & > * {
     position: absolute;
     top: 50%;
