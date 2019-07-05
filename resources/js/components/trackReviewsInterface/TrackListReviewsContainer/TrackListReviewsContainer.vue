@@ -42,28 +42,6 @@ export default {
   },
 
   data() {
-    const { forType, forId, commentedInPeriod } = this;
-    const filters = {};
-
-    switch (forType) {
-      case 'user-track-list':
-        if (forId === 'me') {
-          filters.my = true;
-        } else {
-          filters.userId = forId;
-        }
-        break;
-
-      case 'music-group-track-list':
-        filters.musicGroupId = forId;
-        break;
-
-      default:
-        throw new Error(
-          `Incorrect value for property "forType" passed to TrackListReviewsContainer: ${forType}`
-        );
-    }
-
     return {
       trackList: [],
       isLoading: true,
@@ -71,14 +49,8 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 5,
-        commentedInPeriod,
-        // filters
-
-        // TODO: seed the db; remove 'filters: { my: false }'; uncomment filters
-
-        filters: {
-          my: false
-        }
+        commentedInPeriod: this.commentedInPeriod,
+        filters: this.filters // possible backend bug
       }
     };
   },
@@ -86,6 +58,40 @@ export default {
   computed: {
     trackIdList() {
       return this.trackList.map(track => track.id);
+    },
+
+    filters() {
+      const { forType, forId } = this;
+      const filters = {};
+
+      switch (forType) {
+        case 'user-track-list':
+          if (forId === 'me') {
+            filters.my = true;
+          } else {
+            filters.userId = forId;
+          }
+          break;
+
+        case 'commented-by-user-track-list':
+          if (forId === 'me') {
+            filters.iCommented = true;
+          } else {
+            // TODO: handle other user id
+            // filters.commentedByUser = forId;
+          }
+          break;
+
+        case 'music-group-track-list':
+          filters.musicGroupId = forId;
+          break;
+
+        default:
+          throw new Error(
+            `Incorrect value for property "forType" passed to TrackListReviewsContainer: ${forType}`
+          );
+      }
+      return filters;
     }
   },
 
@@ -99,6 +105,18 @@ export default {
         ...this.queryVars,
         pageNumber: 1,
         commentedInPeriod: val,
+      };
+    },
+
+    forType() {
+      this.trackList = [];
+      this.isLoading = true;
+      this.hasMoreData = true;
+
+      this.queryVars = {
+        ...this.queryVars,
+        pageNumber: 1,
+        filters: this.filters,
       };
     }
   },

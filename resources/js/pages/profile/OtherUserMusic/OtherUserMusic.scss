@@ -1,3 +1,39 @@
-.other-user-music {
+@import '~scss/_variables.scss';
 
+.other-user-music {
+  &__track-list {
+    margin-bottom: 54px;
+  }
+
+  &__track-list-header {
+    display: flex;
+    margin-bottom: 24px;
+  }
+
+  &__track-list-more-button {
+    align-self: center;
+    font-family: 'Gotham pro', sans-serif;
+    font-size: 14px;
+    color: #231f20;
+    display: block;
+    border: 1px solid #e4e4e4;
+    border-radius: $input_border_radius;
+    padding: 12px 28px;
+    margin-left: auto;
+  }
+
+  &__albums-container {
+    max-width: 100%;
+    width: 100%;
+    padding-bottom: 32px;
+  }
+
+  &__albums-title {
+    margin: 0;
+  }
+
+  &__albums-title,
+  &__collections-title {
+    color: black;
+  }
 }

@@ -317,11 +317,13 @@ export default {
         },
 
         error(err) {
+          // TODO: error message
+
           if (this.initialFetchDone === false) {
             this.initialFetchDone = true;
             this.$emit('initialized', {
               success: false,
-              error: null
+              error: err
             });
           }
 

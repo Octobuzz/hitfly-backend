@@ -5,68 +5,6 @@ import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import AboutPage from './pages/AboutPage.vue';
 
-/*
-  /profile/edit
-
-  /profile/edit-group
-
-  /profile/my-music
-
-  /profile/my-music/tracks
-
-  /profile/my-music/albums
-
-  /profile/my-music/album/:id
-
-  /profile/my-music/playlists
-
-  /profile/my-music/playlist/:id
-
-  /profile/favourite
-
-  /profile/favourite/tracks
-
-  /profile/favourite/albums
-
-  /profile/favourite/album/:id
-
-  /profile/favourite/playlists
-
-  /profile/favourite/playlist/:id
-
-  /profile/favourite/sets
-
-  /profile/favourite/set/:id
-
-  /profile/reviews
-
-  /profile/reviews/:id
-
-  /profile/my-reviews
-
-  /profile/my-reviews/:id
-
-  /user/:userId/music
-
-  /user/:userId/music/tracks
-
-  /user/:userId/music/albums
-
-  /user/:userId/music/albums/:id
-
-  /user/:userId/music/playlists
-
-  /user/:userId/music/playlists/:id
-
-  /user/:userId/reviews
-
-  /user/:userId/reviews/:id
-
-  /user/:userId/user-reviews
-
-  /user/:userId/user-reviews/:id
-*/
-
 const routes = [
   {
     path: '/profile',
@@ -87,6 +25,7 @@ const routes = [
       {
         path: 'my-music',
         component: profile.MyMusic,
+        name: 'profile-my-music'
       },
       {
         path: 'my-music/tracks',
@@ -125,7 +64,7 @@ const routes = [
         component: profile.UniversalReviews
       },
       {
-        path: 'my-reviews', // TODO
+        path: 'my-reviews',
         component: profile.UniversalReviews
       },
       {
@@ -145,10 +84,6 @@ const routes = [
         component: profile.UniversalReviews
       },
       {
-        path: 'my-reviews/:trackId', // TODO
-        component: profile.UniversalReviews
-      },
-      {
         path: 'bonus-program',
         component: profile.BonusProgram
       },
@@ -158,8 +93,7 @@ const routes = [
       },
       {
         path: '',
-        redirect: '/profile/my-music'
-        // TODO: use name for redirect
+        redirect: { name: 'profile-my-music' }
       }
     ]
   },
@@ -169,7 +103,8 @@ const routes = [
     children: [
       {
         path: 'music',
-        component: profile.OtherUserMusic
+        component: profile.OtherUserMusic,
+        name: 'user-music'
       },
       {
         path: 'music/tracks',
@@ -192,26 +127,21 @@ const routes = [
         component: profile.UniversalReviews
       },
       {
-        path: 'reviews/:trackId',
-        component: profile.UniversalReviews
-      },
-      {
-        path: 'user-reviews/:trackId',
-        component: profile.UniversalReviews
-      },
-      {
         path: 'album/:albumId',
         component: profile.AlbumTrackList
       },
       {
         path: 'playlist/:playlistId',
         component: profile.CollectionTrackList
-      }
-      // {
-      //   path: '',
-      //   redirect: '/user/:userId/music'
-      //   // use name for redirect
-      // },
+      },
+      {
+        path: 'reviews/:trackId',
+        component: profile.UniversalReviews
+      },
+      {
+        path: '',
+        redirect: { name: 'user-music' }
+      },
     ]
   },
   {

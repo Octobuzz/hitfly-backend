@@ -67,7 +67,7 @@
                 ]"
               >
                 <router-link to="/profile/my-reviews">
-                  Моя отзывы
+                  Мои отзывы
                 </router-link>
               </li>
             </template>
@@ -87,7 +87,7 @@
       </template>
 
       <div
-        v-show="showSecondLoader"
+        v-show="showSecondLoader || !loggedIn"
         class="profile__user-card-loader_second"
       >
         <SpinnerLoader />
