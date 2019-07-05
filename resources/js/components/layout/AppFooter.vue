@@ -30,7 +30,7 @@
         </span>
       </div>
 
-      <div class="progress">
+      <div class="progress" v-if="!emptyTrack">
         <div class="progress__bar progress__text">
           <div class="progress__time" v-if="fixedTime">{{ fixedTime }}</div>
           <div class="progress__time" v-else>00:00</div>
