@@ -16,6 +16,40 @@ import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackListReviews from '../TrackListReviews';
 import gql from './gql';
 
+const getFilters = (vm) => {
+  const { forType, forId } = vm;
+  const filters = {};
+
+  switch (forType) {
+    case 'user-track-list':
+      if (forId === 'me') {
+        filters.my = true;
+      } else {
+        filters.userId = forId;
+      }
+      break;
+
+    case 'commented-by-user-track-list':
+      if (forId === 'me') {
+        filters.iCommented = true;
+      } else {
+        // TODO: handle other user id
+        // filters.commentedByUser = forId;
+      }
+      break;
+
+    case 'music-group-track-list':
+      filters.musicGroupId = forId;
+      break;
+
+    default:
+      throw new Error(
+        `Incorrect value for property "forType" passed to TrackListReviewsContainer: ${forType}`
+      );
+  }
+  return filters;
+};
+
 export default {
   components: {
     SpinnerLoader,
@@ -50,7 +84,7 @@ export default {
         pageNumber: 1,
         pageLimit: 5,
         commentedInPeriod: this.commentedInPeriod,
-        filters: this.filters // possible backend bug
+        filters: getFilters(this) // possible backend bug
       }
     };
   },
@@ -58,40 +92,6 @@ export default {
   computed: {
     trackIdList() {
       return this.trackList.map(track => track.id);
-    },
-
-    filters() {
-      const { forType, forId } = this;
-      const filters = {};
-
-      switch (forType) {
-        case 'user-track-list':
-          if (forId === 'me') {
-            filters.my = true;
-          } else {
-            filters.userId = forId;
-          }
-          break;
-
-        case 'commented-by-user-track-list':
-          if (forId === 'me') {
-            filters.iCommented = true;
-          } else {
-            // TODO: handle other user id
-            // filters.commentedByUser = forId;
-          }
-          break;
-
-        case 'music-group-track-list':
-          filters.musicGroupId = forId;
-          break;
-
-        default:
-          throw new Error(
-            `Incorrect value for property "forType" passed to TrackListReviewsContainer: ${forType}`
-          );
-      }
-      return filters;
     }
   },
 
@@ -116,7 +116,7 @@ export default {
       this.queryVars = {
         ...this.queryVars,
         pageNumber: 1,
-        filters: this.filters,
+        filters: getFilters(this),
       };
     }
   },

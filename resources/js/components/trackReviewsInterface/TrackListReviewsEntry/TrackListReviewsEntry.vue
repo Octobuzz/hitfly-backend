@@ -33,7 +33,7 @@
 
       <router-link
         v-if="track.comments.length > 3"
-        :to="`${$route.fullPath}/${trackId}`"
+        :to="trackReviewsLink"
         class="track-list-reviews-entry__more-reviews-button"
       >
         Все отзывы к этой песне
@@ -76,6 +76,14 @@ export default {
       },
       anonymousAvatar
     };
+  },
+
+  computed: {
+    trackReviewsLink() {
+      const prefix = this.$route.fullPath.split('/').slice(0, -1).join('/');
+
+      return `${prefix}/reviews/${this.trackId}`;
+    }
   },
 
   apollo: {
