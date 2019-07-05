@@ -23,6 +23,16 @@ const getters = {
     getter.toString = () => roles;
 
     return getter;
+  },
+
+  ableToComment(state, { roles }) {
+    return ['prof_critic', 'critic', 'star']
+      .some(role => roles(role));
+  },
+
+  ableToPerform(state, { roles }) {
+    return ['listener', 'performer', 'prof_critic']
+      .some(role => roles(role));
   }
 };
 

@@ -148,7 +148,19 @@ export default {
 
   methods: {
     goToProfilePage() {
-      this.$router.push('/profile/my-music');
+      const { getters } = this.$store;
+
+      if (!getters['profile/loggedIn']) return;
+
+      if (getters['profile/ableToPerform']) {
+        this.$router.push('/profile/my-music');
+
+        return;
+      }
+
+      if (getters['profile/ableToComment']) {
+        this.$router.push('/profile/my-reviews');
+      }
     }
   },
 
@@ -163,10 +175,8 @@ export default {
           myProfile.roles.map(role => role.slug)
         );
 
-        this.$store.commit(
-          'profile/setMyId',
-          myProfile.id
-        );
+        this.$store.commit('profile/setMyId', myProfile.id);
+        this.$store.commit('profile/setLoggedIn', true);
 
         const avatar = myProfile.avatar
           .filter(av => av.size === 'size_56x56')[0].url;

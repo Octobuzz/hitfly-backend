@@ -300,10 +300,7 @@ export default {
     },
 
     canAddReviews() {
-      const { getters } = this.$store;
-
-      const rolePermission = ['star', 'critic', 'professionalCritic']
-        .some(role => getters['profile/roles'](role));
+      const rolePermission = this.$store.getters['profile/ableToComment'];
 
       return rolePermission && this.notMyTrack;
     }
