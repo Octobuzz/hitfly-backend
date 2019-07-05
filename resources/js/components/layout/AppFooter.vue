@@ -107,7 +107,7 @@ export default {
 			}
 			const el = e.target.getBoundingClientRect();
 			const seekPos = (e.clientX - el.left) / el.width;
-			this.audio.currentTime = parseInt(this.currentTrack.length * seekPos);
+			this.audio.currentTime = parseInt(Math.floor(this.currentTrack.length) * seekPos);
 		},
     startPause(){
       if(!this.emptyTrack){
@@ -174,10 +174,10 @@ export default {
   },
   computed: {
     percentComplete() {
-		  return this.currentTime / this.currentTrack.length * 100 + '%';
+		  return this.currentTime / Math.floor(this.currentTrack.length) * 100 + '%';
 		},
     currentLength() {
-	    let hhmmss = new Date(this.currentTrack.length * 1000).toISOString().substr(11, 8);
+	    let hhmmss = new Date(Math.floor(this.currentTrack.length) * 1000).toISOString().substr(11, 8);
     	return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
     ...mapState('player', {
