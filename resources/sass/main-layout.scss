@@ -327,6 +327,10 @@
       padding: 20px 32px;
       align-items: center;
       justify-content: flex-end;
+
+      & span{
+        margin: 0 20px;
+      }
     }
     &__center{
       display: flex;
