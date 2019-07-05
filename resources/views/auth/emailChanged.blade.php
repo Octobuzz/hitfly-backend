@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{__('auth.emailChanged')}}</div>
-
-
-            </div>
+    <div class="main__info">
+        <div class="forgot-pass">
+            <p class="forgot-pass__text">
+                {{__('auth.emailChanged')}}
+            </p>
+            <p class="forgot-pass__return">
+                <a href="/login">{{__('passwords.backToLogin')}}</a>
+            </p>
         </div>
     </div>
-</div>
+
 @endsection

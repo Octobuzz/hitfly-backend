@@ -4,6 +4,8 @@ namespace App\Listeners;
 
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
 use App\Events\CompletedTaskEvent;
+use App\Events\CreatedTopFiftyEvent;
+use App\Events\Track\TrackCreatedEvent;
 use App\Events\User\ChangeLevelEvent;
 use App\Models\Album;
 use App\Models\Collection;
@@ -27,7 +29,7 @@ class NotificationEventSubscriber
     public function subscribe($events)
     {
         // Подписка на EVENT создание трека.
-        $events->listen('eloquent.created: '.Track::class, self::class.'@createTrack'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
+        $events->listen(TrackCreatedEvent::class, self::class.'@createTrack'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Album::class, self::class.'@createAlbum'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Collection::class, self::class.'@createCollection'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Favourite::class, self::class.'@favourite'); // Кирилл Савинов оценил(а) вашу песню Драмы больше нет
@@ -35,6 +37,7 @@ class NotificationEventSubscriber
         $events->listen('eloquent.created: '.Watcheables::class, self::class.'@createWatcheables'); // У вас новый поклонник Имя пользователя
         $events->listen(CompletedTaskEvent::class, self::class.'@completedTask'); // Вы выполнили задание Название и получили 300 бонусов
         $events->listen(ChangeLevelEvent::class, self::class.'@changeLevel'); // Поздравляем! Вы получили новый уровень/ статус Любитель
+        $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Поздравляем! Ваша песня Название попала в ТОП 20
     }
 
     /**
@@ -69,7 +72,7 @@ class NotificationEventSubscriber
         /** @var User $user */
         $user = $favourite->user;
         /** @var Favourite $favoriteId */
-        $favoriteId = 'favouriteable_id';
+        $favoriteId = null;
         /** @var User | null $notifyUser */
         $notifyUser = null;
         $title = null;
@@ -77,20 +80,22 @@ class NotificationEventSubscriber
 
         switch (get_class($favourite->favouriteable()->getRelated())) {
             case Album::class:
-                $title = $favourite->album->track_name;
+                $title = $favourite->album->title;
                 $type = 'Album';
                 $notifyUser = $favourite->album->user;
+                $favoriteId = $favourite->album->id;
                 break;
             case Track::class:
-                $title = $favourite->track->title;
+                $title = $favourite->track->track_name;
                 $type = 'Track';
                 $notifyUser = $favourite->track->user;
+                $favoriteId = $favourite->track->id;
                 break;
             default:
                 return;
         }
 
-        if (null !== $notifyUser) {
+        if (null !== $notifyUser && $user->id !== $notifyUser->id) {
             $messageData = [
                 'user' => [
                     'id' => $user->id,
@@ -138,8 +143,9 @@ class NotificationEventSubscriber
         }
     }
 
-    public function createTrack(Track $track)
+    public function createTrack(TrackCreatedEvent $createdEvent)
     {
+        $track = $createdEvent->getTrack();
         $user = $track->user;
         $messageData = [
             'user' => [
@@ -254,5 +260,33 @@ class NotificationEventSubscriber
 
         $baseNotifyMessage = new BaseNotifyMessage('completed-task', $messageData);
         $user->notify(new BaseNotification($baseNotifyMessage));
+    }
+
+    public function createdTopFifty(CreatedTopFiftyEvent $createdTopFifty)
+    {
+        $idsTrack = $createdTopFifty->getIdsTrack();
+        if (count($idsTrack) > 20) {
+            $chunks = array_chunk($idsTrack, 20, true);
+            $topTwenty = $chunks[0];
+        } else {
+            $topTwenty = $idsTrack;
+        }
+        $tracks = Track::query()->whereIn('id', $topTwenty)->get();
+
+        foreach ($tracks as $track) {
+            $messageData = [
+                'track' => [
+                    'id' => $track->id,
+                    'title' => $track->track_name,
+                    'cover' => $track->getImageUrl(),
+                ],
+                'top' => 20,
+            ];
+
+            /** @var User $user */
+            $user = $track->user;
+            $baseNotifyMessage = new BaseNotifyMessage('track-in-top', $messageData);
+            $user->notify(new BaseNotification($baseNotifyMessage));
+        }
     }
 }

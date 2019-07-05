@@ -125,7 +125,7 @@ const routes = [
         component: profile.UniversalReviews
       },
       {
-        path: 'reviews/:trackId',
+        path: 'my-reviews', // TODO
         component: profile.UniversalReviews
       },
       {
@@ -139,6 +139,14 @@ const routes = [
       {
         path: 'set/:setId',
         component: profile.CollectionTrackList
+      },
+      {
+        path: 'reviews/:trackId',
+        component: profile.UniversalReviews
+      },
+      {
+        path: 'my-reviews/:trackId', // TODO
+        component: profile.UniversalReviews
       },
       {
         path: 'bonus-program',

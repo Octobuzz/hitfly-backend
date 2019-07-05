@@ -11,18 +11,18 @@
                             <tbody>
                             <tr>
                                 <td style="padding-bottom: 20px;">
-                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.reachTop.hello'), {{$track['user']->username}}!</h3>
+                                    <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.reachTop.hello',['top'=>$topCount])!</h3>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.reachTop.text',['link'=>'<a href="'.$track['link'].'" >ТОП–'.$topCount.'</a>','name'=>$track['track_name'],'position'=>$track['position'],'top'=>$topCount])
+                                        @lang('emails.reachTop.text',['link'=>$track['link'],'name'=>$track['track_name'],'position'=>$track['position'],'top'=>$topCount])
 
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            {{--<tr>
                                 <td>
-                                    <a href="{{$topUrl}}" style="display: block; width: 208px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ env('APP_URL') }}/images/emails/icons/gradient-link.png');">ТОП-20</a>
+                                    <a href="{{$topUrl}}" style="display: block; width: 208px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ env('APP_URL') }}/images/emails/icons/gradient-link.png');">ТОП-{{$topCount}}</a>
                                 </td>
-                            </tr>
+                            </tr>--}}
                             </tbody>
                         </table>
                     </td>

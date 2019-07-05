@@ -50,6 +50,7 @@ return [
         'playlistRecommend' => 'Плейлисты, собранные специально для тебя',
         'topEmpty' => 'Топ пуст',
         'subject' => 'Поздравляем с днем рождения!',
+        'textAlternative' => 'Мы хотим поздравить Вас с днем рождения и пожелать творческих успехов! Пусть вокруг будет только лучшая музыка! И у нас есть подарок - поздравление от :nameStar',
     ],
     'fewComments' => [
         'hello' => 'Приветствуем',
@@ -109,8 +110,9 @@ return [
         'subject' => 'Регистрация на мероприятии',
     ],
     'reachTop' => [
-        'hello' => 'Приветсвуем',
-        'text' => 'Поздравляем ваш трэк «:Name» попал в ТОП–:top.<br>  Перейти к :link <br> Послушайте остальных участников ТОП–:top.',
+        'hello' => 'Поздравляем! Ваш трек попал в ТОП-:top',
+        'text' => ':Name занял :position место в ТОП<br>
+            Пройдите по <a href=":link" style="text-decoration: none; color: #b36fcb;">ссылке</a>, чтобы прослушать плейлист.',
         'empty' => 'пусто',
         'subject' => 'Ваш трек попал в ТОП',
     ],
@@ -118,6 +120,7 @@ return [
     'emailChange' => [
         'hello' => 'Здравствуйте',
         'text' => 'Подтвердите смену email на ',
+        'link' => 'Для подтверждение пройдите по <a href=":link" style="text-decoration: none; color: #b36fcb;">ссылке</a>.',
         'subject' => 'Смена Email адреса',
     ],
     'emailChanged' => [
@@ -139,7 +142,7 @@ return [
         'hello' => 'Приветствуем',
         'seeAllComments' => 'Посмотреть все отзывы',
         'text' => 'На ваш :type появился новый отзыв.<br> :commentator оценил ваш :type – «:name».<br> Перейти к <a href=":link" style="text-decoration: none; color: #b36fcb;">отзыву</a>.',
-        'subject' => 'Новый комментарий',
+        'subject' => 'Новый отзыв',
     ],
     'newStatus' => [
         'hello' => 'Поздравляем ',

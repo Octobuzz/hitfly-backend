@@ -276,4 +276,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         return $this->hasMany(Social::class);
     }
+
+    public function getPath(): string
+    {
+        return 'avatars/'.$this->user_id.'/';
+    }
 }

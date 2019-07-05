@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Events\Track\TrackCreatedEvent;
 use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
@@ -103,6 +104,8 @@ class UpdateTrackMutation extends Mutation
             $track->cover = $this->setCover($track, $args['infoTrack']['cover']);
         }
         $track->save();
+
+        event(new TrackCreatedEvent($track));
 
         return $track;
     }

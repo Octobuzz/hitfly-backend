@@ -13,58 +13,78 @@
         :item-container-class="itemContainerClass"
       />
     </template>
+
     <template
       v-if="desktop || !showFirstLoader"
       #right-column="{ paddingClass }"
     >
-      <div
-        v-if="renderNavBar"
-        :class="['profile__nav-wrapper', paddingClass]"
-      >
-        <ul class="profile__nav">
-          <li
-            :class="[
-              'profile__nav-endpoint',
-              { 'profile__nav-endpoint_active': currentPath === '/profile/my-music' }
-            ]"
-          >
-            <router-link to="/profile/my-music">
-              Моя музыка
-            </router-link>
-          </li>
+      <template v-if="loggedIn">
+        <div
+          v-if="renderNavBar"
+          :class="['profile__nav-wrapper', paddingClass]"
+        >
+          <ul class="profile__nav">
+            <template v-if="ableToPerform">
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath === '/profile/my-music' }
+                ]"
+              >
+                <router-link to="/profile/my-music">
+                  Моя музыка
+                </router-link>
+              </li>
 
-          <li
-            :class="[
-              'profile__nav-endpoint',
-              { 'profile__nav-endpoint_active': currentPath === '/profile/favourite' }
-            ]"
-          >
-            <router-link to="/profile/favourite">
-              Мне нравится
-            </router-link>
-          </li>
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath === '/profile/favourite' }
+                ]"
+              >
+                <router-link to="/profile/favourite">
+                  Мне нравится
+                </router-link>
+              </li>
 
-          <li
-            :class="[
-              'profile__nav-endpoint',
-              { 'profile__nav-endpoint_active': currentPath === '/profile/reviews' }
-            ]"
-          >
-            <router-link to="/profile/reviews">
-              Отзывы
-            </router-link>
-          </li>
-        </ul>
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath === '/profile/reviews' }
+                ]"
+              >
+                <router-link to="/profile/reviews">
+                  Отзывы
+                </router-link>
+              </li>
+            </template>
 
-        <div class="profile__nav-scroll-cloak" />
-      </div>
+            <template v-if="ableToComment">
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath === '/profile/my-reviews' }
+                ]"
+              >
+                <router-link to="/profile/my-reviews">
+                  Моя отзывы
+                </router-link>
+              </li>
+            </template>
+          </ul>
 
-      <PageHeader
-        v-if="renderNavBar"
-        :class="['profile__page-header', paddingClass]"
-      >
-        ПРОФИЛЬ
-      </PageHeader>
+          <div class="profile__nav-scroll-cloak" />
+        </div>
+
+        <PageHeader
+          v-if="renderNavBar"
+          :class="['profile__page-header', paddingClass]"
+        >
+          ПРОФИЛЬ
+        </PageHeader>
+
+        <router-view v-show="!showSecondLoader" />
+      </template>
 
       <div
         v-show="showSecondLoader"
@@ -72,8 +92,6 @@
       >
         <SpinnerLoader />
       </div>
-
-      <router-view v-show="!showSecondLoader" />
     </template>
   </AppColumns>
 </template>
@@ -197,6 +215,42 @@ export default {
       }
 
       /* eslint-disable no-fallthrough */
+    },
+
+    loggedIn() {
+      return this.$store.getters['profile/loggedIn'];
+    },
+
+    ableToPerform() {
+      return this.$store.getters['profile/ableToPerform'];
+    },
+
+    ableToComment() {
+      return this.$store.getters['profile/ableToComment'];
+    }
+  },
+
+  watch: {
+    loggedIn: {
+      handler(val) {
+        if (val !== true) return;
+
+        // TODO: add possibility to visit review requests page
+
+        const { ableToPerform, ableToComment } = this;
+        const profilePathSection = this.currentPath.split('/')[2];
+
+        if (!ableToComment && profilePathSection === 'my-reviews') {
+          this.$router.push('/profile/my-music');
+
+          return;
+        }
+
+        if (!ableToPerform && profilePathSection !== 'my-reviews') {
+          this.$router.push('/profile/my-reviews');
+        }
+      },
+      immediate: true
     }
   }
 };
