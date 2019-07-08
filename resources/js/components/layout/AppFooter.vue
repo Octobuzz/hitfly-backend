@@ -125,7 +125,11 @@ export default {
         let trackId = null;
         let currentIndex = this.currentPlaylist.indexOf(this.currentTrack.id);
         if(pos === 'next'){
-          trackId = this.currentPlaylist[currentIndex + 1];
+          if(this.currentPlaylist.length === currentIndex - 1){
+            trackId = this.currentPlaylist[0];
+          }else{
+            trackId = this.currentPlaylist[currentIndex + 1];
+          }
         }else{
           trackId = this.currentPlaylist[currentIndex - 1];
         };
@@ -160,6 +164,9 @@ export default {
 			this.currentTime = parseInt(this.audio.currentTime);
 	    let hhmmss = new Date(this.currentTime * 1000).toISOString().substr(11, 8);
     	this.fixedTime =  hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
+      if(this.audio.ended){
+        this.switchTrack('next');
+      }
 		}
   },
   watch: {
