@@ -30,4 +30,5 @@ fragment musicGroup on MusicGroup {
     location {
         ...location
     }
+#    iWatch
 }

@@ -1,0 +1,6 @@
+query AmIFollower($id: Int!) {
+    user(id: $id) {
+        id
+        iWatch
+    }
+}

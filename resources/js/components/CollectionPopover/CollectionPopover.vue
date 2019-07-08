@@ -89,11 +89,12 @@
         <span
           v-if="!myCollection"
           class="collection-popover__menu-item"
+          @click="onWatchOwnerPress"
         >
           <span class="collection-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          Следить за автором
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
 
         <span class="collection-popover__menu-item">
@@ -171,6 +172,22 @@ export default {
 
     myCollection() {
       return this.collection.my;
+    },
+
+    ownerIsGroup() {
+      if (!this.collection) return false;
+
+      return this.collection.musicGroup;
+    },
+
+    ownerIsWatched() {
+      if (!this.collection) return false;
+
+      if (this.ownerIsGroup) {
+        return this.collection.musicGroup.iWatch;
+      }
+
+      return this.collection.user.iWatch;
     }
   },
 
@@ -204,6 +221,22 @@ export default {
           this.collectionId
         );
       }, 300);
+    },
+
+    onWatchOwnerPress() {
+      if (this.ownerIsGroup) {
+
+      } else {
+
+      }
+
+      if (this.ownerIsWatched) {
+
+      } else {
+
+      }
+
+      // mutate
     }
   },
 

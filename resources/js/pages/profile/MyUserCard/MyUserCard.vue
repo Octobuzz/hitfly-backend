@@ -403,7 +403,7 @@ export default {
           this.myProfile.location = location;
         }
 
-        if (roles.some(role => role === 'Артист')) {
+        if (roles.some(role => role.slug === 'performer')) {
           if (description) {
             this.myProfile.activity = description;
           }

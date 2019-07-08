@@ -133,15 +133,9 @@ export default {
     showFirstLoader() {
       const {
         personalInfo,
-        watchedUsers,
-        watchedGroups
       } = this.$store.getters['loading/userCard'];
 
-      return !(
-        personalInfo.initialized
-        && watchedUsers.initialized
-        && watchedGroups.initialized
-      );
+      return !personalInfo.initialized;
     },
 
     showSecondLoader() {

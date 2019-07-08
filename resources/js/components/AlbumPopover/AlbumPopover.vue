@@ -77,11 +77,12 @@
         <span
           v-if="!myAlbum"
           class="album-popover__menu-item"
+          @click="onWatchOwnerPress"
         >
           <span class="album-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          Следить за автором
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
 
         <span class="album-popover__menu-item">
@@ -159,6 +160,22 @@ export default {
 
     myAlbum() {
       return this.album.my;
+    },
+
+    ownerIsGroup() {
+      if (!this.album) return false;
+
+      return this.album.musicGroup;
+    },
+
+    ownerIsWatched() {
+      if (!this.album) return false;
+
+      if (this.ownerIsGroup) {
+        return this.album.musicGroup.iWatch;
+      }
+
+      return this.album.user.iWatch;
     }
   },
 
@@ -192,6 +209,22 @@ export default {
           this.albumId
         );
       }, 300);
+    },
+
+    onWatchOwnerPress() {
+      if (this.ownerIsGroup) {
+
+      } else {
+
+      }
+
+      if (this.ownerIsWatched) {
+
+      } else {
+
+      }
+
+      // mutate
     }
   },
 
@@ -209,7 +242,7 @@ export default {
       error(err) {
         console.dir(err);
       }
-    },
+    }
   }
 };
 </script>

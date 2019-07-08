@@ -151,7 +151,6 @@ export default {
       }
 
       if (playingTrack && playingTrack.my === true) {
-        debugger;
         return playingTrack;
       }
 

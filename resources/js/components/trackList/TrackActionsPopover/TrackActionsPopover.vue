@@ -110,13 +110,14 @@
           </span>
         </span>
         <span
-          v-if="notMyTrack"
+          v-if="!myTrack"
           class="track-actions-popover__menu-item"
+          @click="onWatchOwnerPress"
         >
           <span class="track-actions-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          Следить за автором
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
         <span
           class="track-actions-popover__menu-item"
@@ -295,16 +296,32 @@ export default {
       }, {});
     },
 
-    notMyTrack() {
-      if (!this.track) return false;
+    myTrack() {
+      if (!this.track) return true;
 
-      return this.$store.getters['profile/myId'] !== this.track.user.id;
+      return this.track.my;
     },
 
     canAddReviews() {
       const rolePermission = this.$store.getters['profile/ableToComment'];
 
-      return rolePermission && this.notMyTrack;
+      return rolePermission && !this.myTrack;
+    },
+
+    ownerIsGroup() {
+      if (!this.track) return false;
+
+      return this.track.musicGroup;
+    },
+
+    ownerIsWatched() {
+      if (!this.track) return false;
+
+      if (this.ownerIsGroup) {
+        return this.track.musicGroup.iWatch;
+      }
+
+      return this.track.user.iWatch;
     }
   },
 
@@ -387,6 +404,53 @@ export default {
 
     emitRemoveTrack() {
       this.$emit('remove-track');
+    },
+
+    onWatchOwnerPress() {
+      const { ownerIsGroup, ownerIsWatched, track } = this;
+      let mutation;
+
+      if (ownerIsGroup && ownerIsWatched) {
+        mutation = gql.mutation.STOP_WATCHING_MUSIC_GROUP;
+      }
+
+      if (ownerIsGroup && !ownerIsWatched) {
+        mutation = gql.mutation.START_WATCHING_MUSIC_GROUP;
+      }
+
+      if (!ownerIsGroup && ownerIsWatched) {
+        mutation = gql.mutation.STOP_WATCHING_USER;
+      }
+
+      if (!ownerIsGroup && !ownerIsWatched) {
+        mutation = gql.mutation.START_WATCHING_MUSIC_GROUP;
+      }
+
+      let owner;
+      let ownerName;
+
+      if (ownerIsGroup) {
+        owner = track.musicGroup;
+        ownerName = track.musicGroup.name;
+      } else {
+        owner = track.user;
+        ownerName = track.user.username;
+      }
+
+      this.$apollo.mutate({
+        mutation,
+        variables: { id: +owner.id }
+      })
+        .then(() => {
+          this.$message(
+            `Теперь вы ${ownerIsWatched ? 'не ' : ''}за ${ownerName}`,
+            'info',
+            { timeout: 2000 }
+          );
+        })
+        .catch((err) => {
+          console.dir(err);
+        });
     }
   },
 
