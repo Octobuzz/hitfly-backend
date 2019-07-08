@@ -44,6 +44,7 @@ class Track extends Model
         'state',
         'music_group_id',
         'music_wave',
+        'count_listen',
     ];
 
     protected $hidden = [

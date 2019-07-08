@@ -262,7 +262,6 @@ class NotificationEventSubscriber
 
     public function createdTopFifty(CreatedTopFiftyEvent $createdTopFifty)
     {
-
         $idsTrack = $createdTopFifty->getIdsTrack();
         if (count($idsTrack) > 20) {
             $chunks = array_chunk($idsTrack, 20, true);
