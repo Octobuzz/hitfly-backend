@@ -29,6 +29,14 @@
     border-radius: 3px;
     overflow: hidden;
     user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #313131;
+
+    & svg {
+      fill: #fff;
+    }
 
     &_paused:before {
       content: '';
