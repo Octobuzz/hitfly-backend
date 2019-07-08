@@ -7,7 +7,7 @@ use App\Models\Track;
 class UserTop
 {
     const USER_TOP_CALCULATED = 'USER_TOP_CALCULATED';
-    const USER_TOP_TIME = 1; //время кэша
+    const USER_TOP_TIME = 20; //время кэша
 
     /**
      * @param int $id
