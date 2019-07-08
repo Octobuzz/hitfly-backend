@@ -55,8 +55,8 @@
           <HeartIcon />
         </IconButton>
       </span>
-      <span>
-        <IconButton v-if="!emptyTrack">
+      <span @click="toggleLoop = !toggleLoop">
+        <IconButton v-if="!emptyTrack" :active="toggleLoop">
           <LoopIcon />
         </IconButton>
       </span>
@@ -98,7 +98,8 @@ export default {
   data: () => ({
     audio: undefined,
     currentTime: null,
-    fixedTime: null
+    fixedTime: null,
+    toggleLoop: false
   }),
   methods: {
     seek(e) {
@@ -125,7 +126,7 @@ export default {
         let trackId = null;
         let currentIndex = this.currentPlaylist.indexOf(this.currentTrack.id);
         if(pos === 'next'){
-          if(this.currentPlaylist.length === currentIndex - 1){
+          if(this.currentPlaylist.length === currentIndex + 1){
             trackId = this.currentPlaylist[0];
           }else{
             trackId = this.currentPlaylist[currentIndex + 1];
@@ -148,6 +149,7 @@ export default {
             filename
             singer
             trackName
+            length
             cover(
                 sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
             ) {
@@ -164,8 +166,17 @@ export default {
 			this.currentTime = parseInt(this.audio.currentTime);
 	    let hhmmss = new Date(this.currentTime * 1000).toISOString().substr(11, 8);
     	this.fixedTime =  hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
+      let currentIndex = this.currentPlaylist.indexOf(this.currentTrack.id);
       if(this.audio.ended){
-        this.switchTrack('next');
+        if(this.currentPlaylist.length === currentIndex + 1 && this.toggleLoop){
+          console.log(this.currentPlaylist[0]);
+          let trackId = this.currentPlaylist[0];
+          this.getTrack(trackId);
+        }else if(this.currentPlaylist.length === currentIndex + 1 && !this.toggleLoop){
+          this.$store.commit('player/stopPlaying');
+        }else{
+          this.switchTrack('next');
+        }
       }
 		}
   },
