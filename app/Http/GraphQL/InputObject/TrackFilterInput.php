@@ -51,6 +51,12 @@ class TrackFilterInput extends GraphQLType
             'iCommented' => [
                 'type' => Type::boolean(),
                 'description' => 'Треки откоментированные мною (для звезды, не обязательно). Работает совместно с commentPeriod',
+                'rules' => ['mutually_exclusive_args:commentedByUser'],
+            ],
+            'commentedByUser' => [
+                'type' => Type::int(),
+                'description' => 'откомментированые пользователем(ID фильтрация) Работает совместно с commentPeriod',
+                'rules' => ['mutually_exclusive_args:iCommented'],
             ],
         ];
     }

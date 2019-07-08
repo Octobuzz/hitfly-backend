@@ -246,8 +246,9 @@ class BonusProgramEventSubscriber
         event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 
-    public function registerUser($user)
+    public function registerUser(Registered $registered)
     {
+        $user = $registered->user;
         $bonusType = BonusType::query()
             ->where('constant_name', '=', BonusProgramTypesInterfaces::USER_REGISTER)
             ->first();
