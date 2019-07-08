@@ -6,6 +6,7 @@ use App\Listeners\BonusProgramEventSubscriber;
 use App\Listeners\ConsoleCommandEventSubsriber;
 use App\Listeners\MainCollectionEventSubscriber;
 use App\Listeners\NotificationEventSubscriber;
+use App\Listeners\TrackListenSubscriber;
 use App\Listeners\UserEventSubscriber;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -47,6 +48,7 @@ class EventServiceProvider extends ServiceProvider
         NotificationEventSubscriber::class,
         MainCollectionEventSubscriber::class,
         ConsoleCommandEventSubsriber::class,
+        TrackListenSubscriber::class,
     ];
 
     /**

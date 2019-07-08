@@ -104,6 +104,7 @@ class TracksQuery extends Query
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
         return $response;
     }
 }
