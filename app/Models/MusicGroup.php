@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -135,5 +136,19 @@ class MusicGroup extends Model
     public function getImage(): ?string
     {
         return $this->getOriginal('avatar_group');
+    }
+
+    /**
+     * следит ли текущий пользователь?
+     *
+     * @return bool
+     */
+    public function iWatch()
+    {
+        $watch = Watcheables::query()->where('watcheable_type', '=', MusicGroup::class)
+            ->where('user_id', '=', Auth::user()->id)
+            ->where('watcheable_id', '=', $this->id)->exists();
+
+        return $watch;
     }
 }

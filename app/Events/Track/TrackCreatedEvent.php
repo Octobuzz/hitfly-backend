@@ -12,6 +12,7 @@ class TrackCreatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private $track;
+
     /**
      * Create a new event instance.
      */

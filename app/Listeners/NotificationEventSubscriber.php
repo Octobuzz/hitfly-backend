@@ -123,7 +123,7 @@ class NotificationEventSubscriber
 
         switch (get_class($watcheables->watcheable()->getRelated())) {
             case User::class:
-                $notifyUser = $watcheables->user();
+                $notifyUser = $watcheables->user()->first();
                 break;
             default:
                 return;
@@ -137,7 +137,6 @@ class NotificationEventSubscriber
                     'avatar' => $user->avatar,
                 ],
             ];
-
             $baseNotifyMessage = new BaseNotifyMessage('new-follower', $messageData);
             $notifyUser->notify(new BaseNotification($baseNotifyMessage));
         }
