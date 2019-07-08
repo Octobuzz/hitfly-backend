@@ -7,6 +7,7 @@ use App\Models\Collection;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -88,18 +89,21 @@ class TracksQuery extends Query
 
             /// Треки откоментированные мною
             /** @var User $user */
-            $user = \Auth::user();
+            $user = Auth::user();
             if (
                 false === empty($args['filters']['iCommented'])
                 && true === (bool) $args['filters']['iCommented']
-                && true === $user->roles->has(User::ROLE_STAR)
             ) {
                 $query->where('comments.user_id', '=', $user->id);
+            }
+            if (
+                false === empty($args['filters']['commentedByUser'])
+            ) {
+                $query->where('comments.user_id', '=', $args['filters']['commentedByUser']);
             }
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-
         return $response;
     }
 }
