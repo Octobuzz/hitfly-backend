@@ -194,13 +194,7 @@ class MusicGroupController extends Controller
         $form->text('name', 'Имя');
         $form->date('career_start_year', 'Старт начала карьеры')->format('YYYY')->default('YYYY');
 
-//        $form->select('genre_id', 'Жанр')->options(function ($id) {
-//            $genre = Genre::find($id);
-//
-//            if ($genre) {
-//                return [$genre->id => $genre->name];
-//            }
-//        })->ajax('/admin/api/genres');
+        $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'));
 
         $form->select('city_id', 'Город')->options(function ($id) {
             $city = City::find($id);

@@ -74,8 +74,12 @@ class UpdateMyProfileMutation extends Mutation
                 $artist = new ArtistProfile();
                 $artist->user()->associate($user);
             }
-            $artist->update(DBHelpers::arrayKeysToSnakeCase($args['artistProfile']));
-
+            if (isset($args['artistProfile']['description'])) {
+                $artist->description = $args['artistProfile']['description'];
+            }
+            if (isset($args['artistProfile']['career_start'])) {
+                $artist->career_start = $args['artistProfile']['career_start'];
+            }
             if (!empty($args['artistProfile']['genres'])) {
                 $tmpGenres = [];
                 $genres = Genre::query()->findMany($args['artistProfile']['genres']);

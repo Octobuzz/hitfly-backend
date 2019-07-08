@@ -8,10 +8,12 @@
       class="track-list-entry__album"
       @click="onAlbumPress"
     >
-      <img
+      <img v-if="!activeTrack"
         :src="albumCoverUrl"
         alt="Album cover"
       >
+      <PauseIcon v-else-if="activeTrack && this.$store.getters['player/isPlaying']"/>
+      <PlayIcon v-else/>
     </button>
 
     <AddToFavouriteButton
@@ -102,6 +104,8 @@ import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlusIcon from 'components/icons/PlusIcon.vue';
 import CrossIcon from 'components/icons/CrossIcon.vue';
+import PauseIcon from 'components/icons/PauseIcon.vue';
+import PlayIcon from 'components/icons/PlayIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from '../TrackToPlaylistPopover';
 import TrackActionsPopover from '../TrackActionsPopover';
@@ -116,7 +120,9 @@ export default {
     IconButton,
     DotsIcon,
     PlusIcon,
-    CrossIcon
+    CrossIcon,
+    PauseIcon,
+    PlayIcon
   },
 
   props: {
@@ -163,7 +169,11 @@ export default {
     albumCoverUrl() {
       return this.track.cover
         .filter(cover => cover.size === 'size_32x32')[0].url;
-    }
+    },
+
+    activeTrack() {
+      return this.trackId === this.$store.getters['player/currentTrack'].id;
+    },
   },
 
   methods: {

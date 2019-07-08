@@ -32,9 +32,21 @@ const getProps = (vm) => {
         forId: 'me'
       };
 
+    case '/profile/my-reviews':
+      return {
+        forType: 'commented-by-user-track-list',
+        forId: 'me'
+      };
+
     case '/user/:userId/reviews':
       return {
         forType: 'user-track-list',
+        forId: +params.userId
+      };
+
+    case '/user/:userId/user-reviews':
+      return {
+        forType: 'commented-by-user-track-list',
         forId: +params.userId
       };
 
@@ -80,7 +92,9 @@ export default {
     renderHeader() {
       switch (this.currentPath) {
         case '/profile/reviews':
+        case '/profile/my-reviews':
         case '/user/:userId/reviews':
+        case '/user/:userId/user-reviews':
           return false;
 
         default:

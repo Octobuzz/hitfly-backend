@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
 use App\Events\CompletedTaskEvent;
 use App\Events\CreatedTopFiftyEvent;
+use App\Events\Track\TrackCreatedEvent;
 use App\Events\User\ChangeLevelEvent;
 use App\Models\Album;
 use App\Models\Collection;
@@ -28,7 +29,7 @@ class NotificationEventSubscriber
     public function subscribe($events)
     {
         // Подписка на EVENT создание трека.
-        $events->listen('eloquent.created: '.Track::class, self::class.'@createTrack'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
+        $events->listen(TrackCreatedEvent::class, self::class.'@createTrack'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Album::class, self::class.'@createAlbum'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Collection::class, self::class.'@createCollection'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Favourite::class, self::class.'@favourite'); // Кирилл Савинов оценил(а) вашу песню Драмы больше нет
@@ -94,7 +95,7 @@ class NotificationEventSubscriber
                 return;
         }
 
-        if (null !== $notifyUser) {
+        if (null !== $notifyUser && $user->id !== $notifyUser->id) {
             $messageData = [
                 'user' => [
                     'id' => $user->id,
@@ -122,7 +123,7 @@ class NotificationEventSubscriber
 
         switch (get_class($watcheables->watcheable()->getRelated())) {
             case User::class:
-                $notifyUser = $watcheables->user();
+                $notifyUser = $watcheables->user()->first();
                 break;
             default:
                 return;
@@ -136,14 +137,14 @@ class NotificationEventSubscriber
                     'avatar' => $user->avatar,
                 ],
             ];
-
             $baseNotifyMessage = new BaseNotifyMessage('new-follower', $messageData);
             $notifyUser->notify(new BaseNotification($baseNotifyMessage));
         }
     }
 
-    public function createTrack(Track $track)
+    public function createTrack(TrackCreatedEvent $createdEvent)
     {
+        $track = $createdEvent->getTrack();
         $user = $track->user;
         $messageData = [
             'user' => [
@@ -262,7 +263,6 @@ class NotificationEventSubscriber
 
     public function createdTopFifty(CreatedTopFiftyEvent $createdTopFifty)
     {
-
         $idsTrack = $createdTopFifty->getIdsTrack();
         if (count($idsTrack) > 20) {
             $chunks = array_chunk($idsTrack, 20, true);

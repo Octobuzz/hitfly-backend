@@ -44,6 +44,7 @@ class Track extends Model
         'state',
         'music_group_id',
         'music_wave',
+        'count_listen',
     ];
 
     protected $hidden = [
@@ -52,7 +53,7 @@ class Track extends Model
     ];
 
     protected $dispatchesEvents = [
-        'created' => TrackCreatedEvent::class,
+//        'created' => TrackCreatedEvent::class,
     ];
 
     public function genre(): BelongsTo

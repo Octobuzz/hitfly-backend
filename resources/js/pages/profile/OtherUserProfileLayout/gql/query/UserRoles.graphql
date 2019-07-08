@@ -1,0 +1,9 @@
+query UserRoles($id: Int!) {
+    user(id: $id) {
+        id
+        roles {
+            slug
+            name
+        }
+    }
+}

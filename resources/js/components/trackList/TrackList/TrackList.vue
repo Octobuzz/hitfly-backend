@@ -60,6 +60,7 @@ export default {
               filename
               singer
               trackName
+              length
               cover(
                   sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
               ) {
@@ -70,6 +71,7 @@ export default {
           }`
         })
         .then(response => {
+          console.log(response.data);
           this.$store.commit('player/pickTrack', response.data.track);
           this.$store.commit('player/pickPlaylist', this.trackIdList);
         })
