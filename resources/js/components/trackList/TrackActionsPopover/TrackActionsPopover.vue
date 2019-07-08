@@ -296,6 +296,8 @@ export default {
     },
 
     notMyTrack() {
+      if (!this.track) return false;
+
       return this.$store.getters['profile/myId'] !== this.track.user.id;
     },
 

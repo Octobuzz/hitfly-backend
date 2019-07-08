@@ -48,7 +48,7 @@ class CommentsAlbumQuery extends Query
             $date = DBHelpers::getPeriod($args['commentPeriod']);
             $query->where('created_at', '>=', $date);
         }
-
+        $query->orderBy('created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;

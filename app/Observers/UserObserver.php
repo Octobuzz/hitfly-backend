@@ -29,11 +29,10 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
-        $purse = new Purse([
-            'balance' => 0,
-            'name' => Purse::NAME_BONUS,
-            'user_id' => $user->id,
-        ]);
+        $purse = new Purse();
+        $purse->balance = 0;
+        $purse->name = Purse::NAME_BONUS;
+        $purse->user_id = $user->id;
         $user->purse()->save($purse);
         $purse->save();
 //        //отправка письма о завершении регистрации
