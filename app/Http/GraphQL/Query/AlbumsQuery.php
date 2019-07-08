@@ -45,6 +45,7 @@ class AlbumsQuery extends Query
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('user_id', '=', $args['filters']['userId']);
+            $query->orderBy('created_at', 'desc');
         }
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
