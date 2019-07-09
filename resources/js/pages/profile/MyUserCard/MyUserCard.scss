@@ -38,6 +38,7 @@ p {
     font-family: 'Gotham Pro Bold', sans-serif;
     font-size: 24px;
     color: $text_color_primary;
+    margin-bottom: 4px;
   }
 
   &__profile-info {
@@ -50,13 +51,14 @@ p {
   &__followers-count {
     font-size: 12px;
     color: $text_color_secondary;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 
   &__location {
     font-size: 16px;
     line-height: 24px;
-    color: $text_color_secondary;
+    color: $text_color_primary;
+    margin-bottom: 12px;
 
     &:before {
       content: '';
@@ -76,6 +78,49 @@ p {
         width: 6px;
         height: 8px;
       }
+    }
+  }
+
+  &__played-genres-container {
+    display: flex;
+    margin-bottom: 16px;
+  }
+
+  &__played-genres-icon {
+    padding-right: 6px;
+  }
+
+  &__played-genres {
+    font-size: 16px;
+    color: $text_color_primary;
+    display: block;
+  }
+
+  &__bonus-program {
+    display: flex;
+    width: 100%;
+  }
+
+  &__bonus-program-followers,
+  &__bonus-program-days,
+  &__bonus-program-favourites {
+    box-sizing: border-box;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33.33%;
+    padding: 12px;
+
+    & > *:first-child {
+      margin-bottom: 12px;
+    }
+  }
+
+  &__bonus-program-days {
+    border: {
+      right: 1px solid $layout_border_color;
+      left: 1px solid $layout_border_color;
     }
   }
 

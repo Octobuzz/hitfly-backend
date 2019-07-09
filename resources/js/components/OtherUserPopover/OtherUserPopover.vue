@@ -32,6 +32,13 @@
           </span>
           {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
+
+        <span class="other-user-popover__menu-item">
+          <span class="other-user-popover__menu-item-icon">
+            <BendedArrowIcon />
+          </span>
+          Поделиться
+        </span>
       </div>
 
       <SpinnerLoader
@@ -46,12 +53,14 @@
 import followMixin from 'mixins/followMixin';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
+import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
 import gql from './gql';
 
 export default {
   components: {
     SpinnerLoader,
-    UserPlusIcon
+    UserPlusIcon,
+    BendedArrowIcon
   },
 
   mixins: [followMixin('userWatchData', 'user')],

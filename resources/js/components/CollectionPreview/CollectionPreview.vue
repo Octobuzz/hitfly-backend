@@ -123,7 +123,7 @@ export default {
   methods: {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
-    },
+    }
   },
 
   apollo: {
