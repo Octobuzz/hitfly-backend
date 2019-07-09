@@ -327,8 +327,9 @@
       padding: 20px 32px;
       align-items: center;
       justify-content: flex-end;
+      line-height: 1;
 
-      & span{
+      & > *{
         margin: 0 20px;
       }
     }

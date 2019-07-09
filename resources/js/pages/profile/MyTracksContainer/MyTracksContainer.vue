@@ -93,6 +93,7 @@ export default {
 
   computed: {
     trackIdList() {
+      this.$store.commit('player/pickPlaylist', this.trackList.map(track => track.id));
       return this.trackList
         .map(track => track.id)
         .slice(0, this.shownLength);
