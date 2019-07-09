@@ -42,6 +42,8 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/test', 'Controller@test');
 Route::get('/register-error', 'Auth\RegisterController@registerError');
+Route::get('/register-genres', 'Auth\RegisterController@showGenreForm')->name('register.genres');
+Route::post('/register-genres', 'Auth\RegisterController@setGenres');
 Route::get('/email-change/{id}/{token}', 'Auth\EmailChangeController@changeEmail');
 Route::get('/email-change', 'Auth\EmailChangeController@emailChanged');
 Route::get('/email-change-failed', 'Auth\EmailChangeController@emailChangeFailed');
