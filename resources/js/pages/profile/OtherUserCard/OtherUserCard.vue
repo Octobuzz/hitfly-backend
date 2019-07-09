@@ -13,7 +13,7 @@
             {{ user.username }}
           </p>
           <p class="user-card__followers-count">
-            {{ user.followersCount || '0' }} подписчиков
+            {{ user.followersCount || '0' }} поклонников
           </p>
 
           <p
@@ -21,6 +21,17 @@
             class="user-card__location"
           >
             {{ user.location.title }}
+          </p>
+          <p
+            v-if="playedGenres"
+            class="user-card__played-genres-container"
+          >
+            <span class="user-card__played-genres-icon">
+              <NoteIcon />
+            </span>
+            <span class="user-card__played-genres">
+              {{ playedGenres }}
+            </span>
           </p>
         </div>
       </div>
@@ -40,6 +51,30 @@
           </IconButton>
         </OtherUserPopover>
       </div>
+    </div>
+
+    <div
+      :class="[
+        'user-card__bonus-program',
+        itemContainerClass
+      ]"
+    >
+      <span class="user-card__bonus-program-followers">
+        <BpFollowers />
+        <span>
+          {{ user.followersCount || '0' }} поклонников
+        </span>
+      </span>
+      <span class="user-card__bonus-program-days">
+        <BpDaysPassed />
+        <span>
+          {{ user.bpDaysInProgram || '0' }} дней в Hitfly
+        </span>
+      </span>
+      <span class="user-card__bonus-program-favourites">
+        <BpFavouriteTracks />
+
+      </span>
     </div>
 
     <div
@@ -68,6 +103,10 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import FormButton from 'components/FormButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
+import BpFollowers from 'components/icons/BpFollowers.vue';
+import BpDaysPassed from 'components/icons/BpDaysPassed.vue';
+import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
+import NoteIcon from 'components/icons/NoteIconGrey.vue';
 import OtherUserPopover from 'components/OtherUserPopover';
 import gql from './gql';
 
@@ -76,6 +115,10 @@ export default {
     FormButton,
     IconButton,
     DotsIcon,
+    NoteIcon,
+    BpFollowers,
+    BpDaysPassed,
+    BpFavouriteTracks,
     OtherUserPopover
   },
 
@@ -98,6 +141,18 @@ export default {
   computed: {
     userId() {
       return +this.$route.params.userId;
+    },
+
+    playedGenres() {
+      const { genresPlay } = this.user;
+
+      if (!genresPlay || genresPlay.length === 0) {
+        return null;
+      }
+
+      return genresPlay.map(genre => (
+        genre.name[0].toUpperCase() + genre.name.slice(1)
+      )).join(', ').slice(0, -2);
     }
   },
 
