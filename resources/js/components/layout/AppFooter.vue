@@ -109,7 +109,7 @@ import PlayPreviousIcon from 'components/icons/PlayPreviousIcon.vue';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import gql from 'graphql-tag';
 import { mapState } from 'vuex';
-import TrackToPlaylistPopover from '../tracklist/TrackToPlaylistPopover/TrackToPlaylistPopover.vue';
+import TrackToPlaylistPopover from 'components/tracklist/TrackToPlaylistPopover/TrackToPlaylistPopover.vue';
 
 const MOBILE_WIDTH = 767;
 
