@@ -26,7 +26,10 @@
         alt="Album cover"
         class="track-actions-popover__album-cover"
       >
-      <div class="track-actions-popover__header">
+      <div
+        v-if="track"
+        class="track-actions-popover__header"
+      >
         <span class="track-actions-popover__album-song">
           {{ track.trackName }}
         </span>
@@ -110,7 +113,7 @@
           </span>
         </span>
         <span
-          v-if="!myTrack"
+          v-if="isWatchable"
           class="track-actions-popover__menu-item"
           @click="onWatchOwnerPress"
         >
@@ -190,6 +193,7 @@
 </template>
 
 <script>
+import followMixin from 'mixins/followMixin';
 import { mapGetters } from 'vuex';
 import PopupIcon from 'components/icons/popover/PopupIcon.vue';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
@@ -218,6 +222,8 @@ export default {
     CrossIcon,
     BendedArrowIcon
   },
+
+  mixins: [followMixin('track', 'track')],
 
   props: {
     trackId: {
@@ -278,50 +284,22 @@ export default {
     },
 
     albumCoverUrl() {
+      if (!this.track) return '#';
+
       return this.track.cover
         .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 
-    player() {
-      const getters = mapGetters('player', [
-        'isPlaying',
-        'currentTrack'
-      ]);
-      const getterKeys = Object.keys(getters);
+    isWatchable() {
+      if (!this.track) return false;
 
-      return getterKeys.reduce((acc, key) => {
-        acc[key] = getters[key].call(this);
-
-        return acc;
-      }, {});
-    },
-
-    myTrack() {
-      if (!this.track) return true;
-
-      return this.track.my;
+      return !this.track.my;
     },
 
     canAddReviews() {
       const rolePermission = this.$store.getters['profile/ableToComment'];
 
-      return rolePermission && !this.myTrack;
-    },
-
-    ownerIsGroup() {
-      if (!this.track) return false;
-
-      return this.track.musicGroup;
-    },
-
-    ownerIsWatched() {
-      if (!this.track) return false;
-
-      if (this.ownerIsGroup) {
-        return this.track.musicGroup.iWatch;
-      }
-
-      return this.track.user.iWatch;
+      return rolePermission && this.track && this.track.my;
     }
   },
 
@@ -406,51 +384,8 @@ export default {
       this.$emit('remove-track');
     },
 
-    onWatchOwnerPress() {
-      const { ownerIsGroup, ownerIsWatched, track } = this;
-      let mutation;
-
-      if (ownerIsGroup && ownerIsWatched) {
-        mutation = gql.mutation.STOP_WATCHING_MUSIC_GROUP;
-      }
-
-      if (ownerIsGroup && !ownerIsWatched) {
-        mutation = gql.mutation.START_WATCHING_MUSIC_GROUP;
-      }
-
-      if (!ownerIsGroup && ownerIsWatched) {
-        mutation = gql.mutation.STOP_WATCHING_USER;
-      }
-
-      if (!ownerIsGroup && !ownerIsWatched) {
-        mutation = gql.mutation.START_WATCHING_MUSIC_GROUP;
-      }
-
-      let owner;
-      let ownerName;
-
-      if (ownerIsGroup) {
-        owner = track.musicGroup;
-        ownerName = track.musicGroup.name;
-      } else {
-        owner = track.user;
-        ownerName = track.user.username;
-      }
-
-      this.$apollo.mutate({
-        mutation,
-        variables: { id: +owner.id }
-      })
-        .then(() => {
-          this.$message(
-            `Теперь вы ${ownerIsWatched ? 'не ' : ''}за ${ownerName}`,
-            'info',
-            { timeout: 2000 }
-          );
-        })
-        .catch((err) => {
-          console.dir(err);
-        });
+    followMixinCallback() {
+      this.$refs.closeButton.click();
     }
   },
 

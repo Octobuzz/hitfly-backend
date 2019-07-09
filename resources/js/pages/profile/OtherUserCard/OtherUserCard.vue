@@ -10,7 +10,7 @@
 
         <div class="user-card__profile-info">
           <p class="user-card__profile-name">
-            {{ user.name }}
+            {{ user.username }}
           </p>
           <p class="user-card__followers-count">
             {{ user.followersCount || '0' }} подписчиков
@@ -26,12 +26,16 @@
       </div>
 
       <div class="user-card__item">
-        <FormButton>
-          {{ user.watched ? 'Не следить' : 'Следить' }}
+        <FormButton
+          class="other-user-card__follow-button"
+          :modifier="ownerIsWatched ? 'primary' : 'secondary'"
+          @press="onWatchOwnerPress"
+        >
+          {{ ownerIsWatched ? 'Слежу' : 'Следить' }}
         </FormButton>
 
         <OtherUserPopover :user-id="userId">
-          <IconButton>
+          <IconButton modifier="square bordered">
             <DotsIcon />
           </IconButton>
         </OtherUserPopover>
@@ -39,7 +43,7 @@
     </div>
 
     <div
-      v-if="user.activity"
+      v-if="user.description"
       :class="[
         itemContainerClass,
         'user-card__item',
@@ -52,13 +56,14 @@
         </span>
       </div>
       <p class="user-card__about-text">
-        {{ user.activity }}
+        {{ user.description }}
       </p>
     </div>
   </div>
 </template>
 
 <script>
+import followMixin from 'mixins/followMixin';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import FormButton from 'components/FormButton.vue';
 import IconButton from 'components/IconButton.vue';
@@ -74,6 +79,8 @@ export default {
     OtherUserPopover
   },
 
+  mixins: [followMixin('user', 'user')],
+
   props: {
     itemContainerClass: {
       type: String,
@@ -83,15 +90,8 @@ export default {
 
   data() {
     return {
-      user: {
-        avatar: '',
-        name: '',
-        location: null,
-        followersCount: '',
-        activity: '',
-        watched: false
-      },
-      anonymousAvatar
+      anonymousAvatar,
+      user: null
     };
   },
 
@@ -113,7 +113,7 @@ export default {
   },
 
   apollo: {
-    userProfile: {
+    user: {
       query: gql.query.USER,
 
       variables() {
@@ -123,30 +123,30 @@ export default {
       update({ user }) {
         const {
           avatar,
-          username,
-          location,
           description,
-          roles,
-          iWatch
+          roles
         } = user;
 
-        this.user.avatar = avatar
+        const userAvatar = avatar
           .filter(image => image.size === 'size_56x56')[0].url;
 
-        this.user.name = username;
-        this.user.watched = iWatch;
+        const slugs = new Set(roles.map(role => role.slug));
+        const hasDesc = ['performer', 'critic', 'star']
+          .some(slug => slugs.has(slug));
 
-        if (location && location.title) {
-          this.user.location = location;
-        }
+        let activity;
 
-        if (roles.some(role => role.slug === 'performer')) {
-          if (description) {
-            this.user.activity = description;
-          }
+        if (hasDesc && description) {
+          activity = description;
         }
 
         this.notifyInitialization(true, 'personalInfo');
+
+        return {
+          ...user,
+          avatar: userAvatar,
+          description: activity
+        };
       },
 
       error(err) {
@@ -163,4 +163,10 @@ export default {
   scoped
   lang="scss"
   src="../MyUserCard/MyUserCard.scss"
+/>
+
+<style
+  scoped
+  lang="scss"
+  src="./OtherUserCard.scss"
 />

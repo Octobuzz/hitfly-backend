@@ -75,7 +75,7 @@
         </span>
 
         <span
-          v-if="!myAlbum"
+          v-if="isWatchable"
           class="album-popover__menu-item"
           @click="onWatchOwnerPress"
         >
@@ -93,7 +93,7 @@
         </span>
 
         <span
-          v-if="myAlbum"
+          v-if="isRemovable"
           class="album-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -115,6 +115,7 @@
 </template>
 
 <script>
+import followMixin from 'mixins/followMixin';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
 import HeartIcon from 'components/icons/popover/HeartIcon.vue';
@@ -135,6 +136,8 @@ export default {
     AlbumPopoverRemoveMenu
   },
 
+  mixins: [followMixin('album', 'album')],
+
   props: {
     albumId: {
       type: Number,
@@ -148,7 +151,8 @@ export default {
         placement: 'right-start',
         popperOptions: { modifiers: { offset: { offset: '-30%p' } } }
       },
-      inRemoveMenu: false
+      inRemoveMenu: false,
+      album: null
     };
   },
 
@@ -158,25 +162,17 @@ export default {
         .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 
-    myAlbum() {
+    isWatchable() {
+      if (!this.album) return false;
+
+      return !this.album.my;
+    },
+
+    isRemovable() {
+      if (!this.album) return false;
+
       return this.album.my;
     },
-
-    ownerIsGroup() {
-      if (!this.album) return false;
-
-      return this.album.musicGroup;
-    },
-
-    ownerIsWatched() {
-      if (!this.album) return false;
-
-      if (this.ownerIsGroup) {
-        return this.album.musicGroup.iWatch;
-      }
-
-      return this.album.user.iWatch;
-    }
   },
 
   methods: {
@@ -211,20 +207,8 @@ export default {
       }, 300);
     },
 
-    onWatchOwnerPress() {
-      if (this.ownerIsGroup) {
-
-      } else {
-
-      }
-
-      if (this.ownerIsWatched) {
-
-      } else {
-
-      }
-
-      // mutate
+    followMixinCallback() {
+      this.$refs.closeButton.click();
     }
   },
 

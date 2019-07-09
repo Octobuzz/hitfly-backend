@@ -17,6 +17,6 @@ fragment user on User {
         ...location
     }
     followersCount
-#    description # api bug: cannot use right now
+#    description
     iWatch
 }

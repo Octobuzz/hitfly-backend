@@ -1,4 +1,4 @@
-query AmIFollower($id: Int!) {
+query User($id: Int!) {
     user(id: $id) {
         id
         iWatch

@@ -30,7 +30,7 @@
           <span class="other-user-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          {{ watched ? 'Не следить за автором' : 'Следить за автором' }}
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
       </div>
 
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import followMixin from 'mixins/followMixin';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
 import gql from './gql';
@@ -52,6 +53,8 @@ export default {
     SpinnerLoader,
     UserPlusIcon
   },
+
+  mixins: [followMixin('userWatchData', 'user')],
 
   props: {
     userId: {
@@ -65,25 +68,15 @@ export default {
       popover: {
         placement: 'right-start',
         popperOptions: {}
-      }
+      },
+      myId: null,
+      userWatchData: null
     };
   },
 
   methods: {
-    onWatchOwnerPress() {
-      if (this.watched) {
-        this.unsubscribe();
-      } else {
-        this.subscribe();
-      }
-    },
-
-    subscribe() {
-      console.log('follow');
-    },
-
-    unsubscribe() {
-      console.log('unfollow');
+    followMixinCallback() {
+      this.$refs.closeButton.click();
     }
   },
 
@@ -98,13 +91,13 @@ export default {
       }
     },
 
-    watched: {
-      query: gql.query.AM_I_FOLLOWER,
+    userWatchData: {
+      query: gql.query.USER_WATCH_DATA,
       variables() {
         return { id: this.userId };
       },
-      update({ user: { iWatch } }) {
-        return iWatch;
+      update({ user }) {
+        return user;
       },
       error(err) {
         console.dir(err);
