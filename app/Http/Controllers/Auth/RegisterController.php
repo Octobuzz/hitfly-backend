@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Genre;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -39,7 +41,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except(['setGenres', 'showGenreForm']);
     }
 
     /**
@@ -103,11 +105,35 @@ class RegisterController extends Controller
         $this->guard()->login($user);
 
         return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+            ?: redirect('/register-genres');
     }
 
     public function registerError(Request $request)
     {
         return view('auth.error');
+    }
+
+    public function showGenreForm()
+    {
+        $genres = Genre::all();
+
+        return view('auth.registerGenres', ['genres' => $genres]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function setGenres(Request $request)
+    {
+        $genres = $request->all();
+        if (null !== $genres['genres']) {
+            $user = Auth::user();
+            $user->favouriteGenres()->sync($genres['genres']);
+        }
+
+        return $this->registered($request, Auth::user())
+            ?: redirect($this->redirectPath());
     }
 }
