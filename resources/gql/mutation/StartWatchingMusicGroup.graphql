@@ -1,0 +1,22 @@
+mutation StartWatchingMusicGroup($id: Int!) {
+    addFollow(Follow: {
+        FollowId: $id
+        FollowType: music_group
+    }) {
+#        ... on FollowUser {
+#            user {
+#                id
+#                username
+#                iWatch
+#            }
+#        }
+
+        ... on FollowMusicGroup {
+            musicGroup {
+                id
+                name
+#                iWatch
+            }
+        }
+    }
+}

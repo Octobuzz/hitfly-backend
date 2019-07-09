@@ -376,11 +376,15 @@ export default {
           description,
           musicGroups,
           roles,
+          dateRegister,
           bpProgressPercent: bpProgressPct,
           bpLevelBonusProgram: bpLevel,
           bpDaysInProgram: bpDaysPassed,
           bpPoints
         } = myProfile;
+
+        // this is to prevent handling of other queries result
+        if (!dateRegister) return;
 
         this.myProfile.avatar = avatar
           .filter(image => image.size === 'size_56x56')[0].url;
@@ -403,7 +407,7 @@ export default {
           this.myProfile.location = location;
         }
 
-        if (roles.some(role => role === 'Артист')) {
+        if (roles.some(role => role.slug === 'performer')) {
           if (description) {
             this.myProfile.activity = description;
           }

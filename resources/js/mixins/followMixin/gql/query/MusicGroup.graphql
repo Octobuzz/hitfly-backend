@@ -1,0 +1,6 @@
+query MusicGroup($id: Int!) {
+    musicGroup(id: $id) {
+        id
+        iWatch
+    }
+}

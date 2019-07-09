@@ -1,3 +1,5 @@
+#import "./user.graphql"
+#import "./musicGroup.graphql"
 #import "./album.graphql"
 #import "./collection.graphql"
 
@@ -19,9 +21,13 @@ fragment track on Track {
         ...collection
     }
     user {
-        id
+        ...user
+    }
+    musicGroup {
+        ...musicGroup
     }
     singer
     userFavourite
     favouritesCount
+    my
 }

@@ -1,5 +1,6 @@
 #import "./role.graphql"
 #import "./location.graphql"
+#import "./genre.graphql"
 
 fragment user on User {
     id
@@ -16,4 +17,11 @@ fragment user on User {
     location {
         ...location
     }
+    genresPlay {
+        ...genre
+    }
+    bpDaysInProgram
+    followersCount
+#    description # TODO: uncomment after bug is fixed
+    iWatch
 }

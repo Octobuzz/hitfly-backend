@@ -39,6 +39,7 @@ query MyProfile {
         email
         favoriteSongsCount
         favoriteAlbumCount
+        dateRegister
         ...bonusProgram
     }
 }

@@ -1,40 +1,31 @@
 <template>
   <div class="other-user-music">
-    <UniversalTracksContainer
-      for-type="user"
-      :for-id="userId"
-      :shown-tracks-count="3"
-      @initialized="onTrackListInitialized"
+    <div
+      :class="[
+        'other-user-music__track-list',
+        containerPaddingClass
+      ]"
     >
-      <template #default="container">
-        <div
-          :class="[
-            'other-user-music__track-list',
-            containerPaddingClass
-          ]"
-        >
-          <TrackList
-            v-if="container.trackIdList.length > 0"
-            :track-id-list="container.trackIdList"
-            :show-remove-button="false"
-          >
-            <template #header>
-              <div class="other-user-music__track-list-header">
-                <span class="h2">
-                  Популярные песни
-                </span>
-                <router-link
-                  :to="`/user/${userId}/music/tracks`"
-                  class="other-user-music__track-list-more-button"
-                >
-                  Все песни
-                </router-link>
-              </div>
-            </template>
-          </TrackList>
-        </div>
-      </template>
-    </UniversalTracksContainer>
+      <TrackList
+        v-if="popularTracks.length > 0"
+        :track-id-list="trackIdList"
+        :show-remove-button="false"
+      >
+        <template #header>
+          <div class="other-user-music__track-list-header">
+            <span class="h2">
+              Популярные песни
+            </span>
+            <router-link
+              :to="`/user/${userId}/music/tracks`"
+              class="other-user-music__track-list-more-button"
+            >
+              Все песни
+            </router-link>
+          </div>
+        </template>
+      </TrackList>
+    </div>
 
     <UniversalAlbumsContainer
       for-type="user-album-list"
@@ -87,25 +78,34 @@ import containerPaddingClass from 'mixins/containerPaddingClass';
 import TrackList from 'components/trackList/TrackList';
 import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
-import UniversalTracksContainer from 'components/UniversalTracksContainer';
 import UniversalAlbumsContainer from '../UniversalAlbumsContainer';
 import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
+import gql from './gql';
 
 export default {
   components: {
     TrackList,
     AlbumScrollHorizontal,
     CollectionScrollHorizontal,
-    UniversalTracksContainer,
     UniversalAlbumsContainer,
     UniversalCollectionsContainer
   },
 
   mixins: [containerPaddingClass],
 
+  data() {
+    return {
+      popularTracks: []
+    };
+  },
+
   computed: {
     userId() {
       return +this.$route.params.userId;
+    },
+
+    trackIdList() {
+      return this.popularTracks.map(track => track.id);
     }
   },
 
@@ -133,6 +133,29 @@ export default {
           success
         }
       });
+    }
+  },
+
+  apollo: {
+    popularTracks: {
+      query: gql.query.USER_POPULAR_TRACKS,
+      variables() {
+        return { id: this.userId };
+      },
+      update({ topTrackForUser }) {
+        this.onTrackListInitialized({
+          success: true
+        });
+
+        return topTrackForUser;
+      },
+      error(err) {
+        this.onTrackListInitialized({
+          success: false
+        });
+
+        console.dir(err);
+      }
     }
   }
 };

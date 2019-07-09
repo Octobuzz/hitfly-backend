@@ -45,26 +45,51 @@
       </div>
     </div>
     <div class="footer__right">
+
       <span>
-        <IconButton v-if="!emptyTrack">
-          <PlusIcon />
-        </IconButton>
+        <TrackToPlaylistPopover
+          v-if="!emptyTrack && desktop"
+          :track-id="this.$store.getters['player/currentTrack'].id"
+        >
+          <IconButton
+            :tooltip="tooltip.add"
+          >
+            <PlusIcon />
+          </IconButton>
+        </TrackToPlaylistPopover>
       </span>
-      <span>
-        <IconButton v-if="!emptyTrack">
-          <HeartIcon />
-        </IconButton>
-      </span>
+
+      <AddToFavouriteButton
+        v-if="!emptyTrack"
+        item-type="track"
+        :item-id="currentTrack.id"
+        :with-counter="true"
+      />
+
       <span @click="toggleLoop = !toggleLoop">
-        <IconButton v-if="!emptyTrack" :active="toggleLoop">
+        <IconButton
+        v-if="!emptyTrack"
+        :active="toggleLoop"
+        :tooltip="tooltip.loop"
+        >
           <LoopIcon />
         </IconButton>
       </span>
-      <span>
-        <IconButton v-if="!emptyTrack">
-          <SpeakerIcon />
-        </IconButton>
+
+      <span v-if="!emptyTrack">
+        <AudioVolumePopover
+          :visible="volumeToggle"
+          @volume="changeVolume"
+        >
+          <IconButton
+            @click="volumeToggle = !volumeToggle"
+            :active="volumeToggle"
+          >
+            <SpeakerIcon />
+          </IconButton>
+        </AudioVolumePopover>
       </span>
+
     </div>
     <audio :src="currentTrack.filename" preload="auto"></audio>
   </footer>
@@ -79,9 +104,14 @@ import PlusIcon from 'components/icons/PlusIcon.vue';
 import LoopIcon from 'components/icons/LoopIcon.vue';
 import HeartIcon from 'components/icons/HeartIcon.vue';
 import SpeakerIcon from 'components/icons/SpeakerIcon.vue';
+import AudioVolumePopover from 'components/AudioVolume/AudioVolumePopover.vue';
 import PlayPreviousIcon from 'components/icons/PlayPreviousIcon.vue';
+import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import gql from 'graphql-tag';
 import { mapState } from 'vuex';
+import TrackToPlaylistPopover from '../tracklist/TrackToPlaylistPopover/TrackToPlaylistPopover';
+
+const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -93,15 +123,36 @@ export default {
     HeartIcon,
     LoopIcon,
     PlusIcon,
-    SpeakerIcon
+    SpeakerIcon,
+    TrackToPlaylistPopover,
+    AddToFavouriteButton,
+    AudioVolumePopover
   },
   data: () => ({
     audio: undefined,
     currentTime: null,
     fixedTime: null,
-    toggleLoop: false
+    toggleLoop: false,
+    volumeToggle: false,
+    tooltip: {
+      add: {
+        content: 'Добавить в плейлист'
+      },
+      loop: {
+        content: 'На повтор'
+      },
+      like: {
+        content: 'Мне нравится'
+      }
+    }
   }),
   methods: {
+    changeVolume(value) {
+      this.audio.volume = value;
+    },
+    onPressFavourite() {
+      this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
+    },
     seek(e) {
 			if (!this.playing || e.target.tagName === 'div') {
 				return;
@@ -150,6 +201,8 @@ export default {
             singer
             trackName
             length
+            userFavourite
+            favouritesCount
             cover(
                 sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
             ) {
@@ -168,12 +221,12 @@ export default {
     	this.fixedTime =  hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
       let currentIndex = this.currentPlaylist.indexOf(this.currentTrack.id);
       if(this.audio.ended){
-        if(this.currentPlaylist.length === currentIndex + 1 && this.toggleLoop){
-          console.log(this.currentPlaylist[0]);
+        if(this.toggleLoop){
+          this.audio.currentTime = 0;
+          this.audio.play();
+        }else if(this.currentPlaylist.length === currentIndex + 1){
           let trackId = this.currentPlaylist[0];
           this.getTrack(trackId);
-        }else if(this.currentPlaylist.length === currentIndex + 1 && !this.toggleLoop){
-          this.$store.commit('player/stopPlaying');
         }else{
           this.switchTrack('next');
         }
@@ -191,6 +244,9 @@ export default {
 		},
   },
   computed: {
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
+    },
     percentComplete() {
 		  return this.currentTime / Math.floor(this.currentTrack.length) * 100 + '%';
 		},

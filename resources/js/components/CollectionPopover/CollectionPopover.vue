@@ -86,16 +86,6 @@
           Добавить в список воспроизведения
         </span>
 
-        <span
-          v-if="!myCollection"
-          class="collection-popover__menu-item"
-        >
-          <span class="collection-popover__menu-item-icon">
-            <UserPlusIcon />
-          </span>
-          Следить за автором
-        </span>
-
         <span class="collection-popover__menu-item">
           <span class="collection-popover__menu-item-icon">
             <BendedArrowIcon />
@@ -104,7 +94,7 @@
         </span>
 
         <span
-          v-if="myCollection"
+          v-if="isRemovable"
           class="collection-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -129,7 +119,6 @@
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
 import HeartIcon from 'components/icons/popover/HeartIcon.vue';
-import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
 import CrossIcon from 'components/icons/popover/CrossIcon.vue';
 import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
 import CollectionPopoverRemoveMenu from '../CollectionPopoverRemoveMenu';
@@ -140,7 +129,6 @@ export default {
     PlayNextIcon,
     HeartIcon,
     ListPlusIcon,
-    UserPlusIcon,
     BendedArrowIcon,
     CrossIcon,
     CollectionPopoverRemoveMenu
@@ -159,7 +147,8 @@ export default {
         placement: 'right-start',
         popperOptions: { modifiers: { offset: { offset: '-30%p' } } }
       },
-      inRemoveMenu: false
+      inRemoveMenu: false,
+      collection: null
     };
   },
 
@@ -169,7 +158,9 @@ export default {
         .filter(image => image.size === 'size_48x48')[0].url;
     },
 
-    myCollection() {
+    isRemovable() {
+      if (!this.collection) return false;
+
       return this.collection.my;
     }
   },

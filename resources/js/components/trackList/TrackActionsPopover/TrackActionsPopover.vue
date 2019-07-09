@@ -26,7 +26,10 @@
         alt="Album cover"
         class="track-actions-popover__album-cover"
       >
-      <div class="track-actions-popover__header">
+      <div
+        v-if="track"
+        class="track-actions-popover__header"
+      >
         <span class="track-actions-popover__album-song">
           {{ track.trackName }}
         </span>
@@ -110,13 +113,14 @@
           </span>
         </span>
         <span
-          v-if="notMyTrack"
+          v-if="isWatchable"
           class="track-actions-popover__menu-item"
+          @click="onWatchOwnerPress"
         >
           <span class="track-actions-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          Следить за автором
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
         <span
           class="track-actions-popover__menu-item"
@@ -189,6 +193,7 @@
 </template>
 
 <script>
+import followMixin from 'mixins/followMixin';
 import { mapGetters } from 'vuex';
 import PopupIcon from 'components/icons/popover/PopupIcon.vue';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
@@ -217,6 +222,8 @@ export default {
     CrossIcon,
     BendedArrowIcon
   },
+
+  mixins: [followMixin('track', 'track')],
 
   props: {
     trackId: {
@@ -277,34 +284,22 @@ export default {
     },
 
     albumCoverUrl() {
+      if (!this.track) return '#';
+
       return this.track.cover
         .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 
-    player() {
-      const getters = mapGetters('player', [
-        'isPlaying',
-        'currentTrack'
-      ]);
-      const getterKeys = Object.keys(getters);
-
-      return getterKeys.reduce((acc, key) => {
-        acc[key] = getters[key].call(this);
-
-        return acc;
-      }, {});
-    },
-
-    notMyTrack() {
+    isWatchable() {
       if (!this.track) return false;
 
-      return this.$store.getters['profile/myId'] !== this.track.user.id;
+      return !this.track.my;
     },
 
     canAddReviews() {
       const rolePermission = this.$store.getters['profile/ableToComment'];
 
-      return rolePermission && this.notMyTrack;
+      return rolePermission && this.track && this.track.my;
     }
   },
 
@@ -387,6 +382,10 @@ export default {
 
     emitRemoveTrack() {
       this.$emit('remove-track');
+    },
+
+    followMixinCallback() {
+      this.$refs.closeButton.click();
     }
   },
 
