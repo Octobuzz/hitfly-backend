@@ -35,7 +35,7 @@
         </FormButton>
 
         <OtherUserPopover :user-id="userId">
-          <IconButton modifier="square bordered">
+          <IconButton modifier="squared bordered">
             <DotsIcon />
           </IconButton>
         </OtherUserPopover>
@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       anonymousAvatar,
-      user: null
+      user: {}
     };
   },
 

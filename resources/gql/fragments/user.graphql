@@ -17,6 +17,6 @@ fragment user on User {
         ...location
     }
     followersCount
-#    description
+#    description # TODO: uncomment after bug is fixed
     iWatch
 }
