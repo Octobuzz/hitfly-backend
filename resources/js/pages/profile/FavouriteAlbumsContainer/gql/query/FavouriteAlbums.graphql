@@ -14,8 +14,6 @@ query FavouriteAlbums(
             id
             album {
                 ...album
-#                TODO: include userFavourite in the fragment when bug is fixed
-                userFavourite
             }
         }
     }
