@@ -172,4 +172,10 @@ class Album extends Model
     {
         return $this->hasMany(Track::class);
     }
+
+    public function tracksTime(): float
+    {
+
+        return $this->tracks()->sum('length');
+    }
 }
