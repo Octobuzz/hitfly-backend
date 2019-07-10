@@ -130,6 +130,14 @@ class UserInterface extends InterfaceType
                     return $model->iWatch();
                 },
             ],
+            'favouritesTrackCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество добавленых треков в избранное',
+                'selectable' => false,
+                'resolve' => function (User $model) {
+                    return $model->likesTrack()->count();
+                },
+            ],
         ];
     }
 
