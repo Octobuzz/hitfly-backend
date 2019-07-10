@@ -18,6 +18,7 @@ fragment album on Album {
     musicGroup {
         ...musicGroup
     }
+    userFavourite
     favouritesCount
     my
 }

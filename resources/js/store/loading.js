@@ -17,7 +17,8 @@ const state = {
   music: {
     tracks: '',
     albums: '',
-    collections: ''
+    collections: '',
+    newAlbum: ''
   },
   favourite: {
     tracks: '',

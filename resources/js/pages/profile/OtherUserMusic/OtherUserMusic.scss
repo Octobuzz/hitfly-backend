@@ -36,4 +36,48 @@
   &__collections-title {
     color: black;
   }
+
+  &__new-album-container {
+    display: flex;
+    padding: 24px 0 24px 24px;
+    border-radius: 4px;
+    border: 1px solid $layout_border_color;
+  }
+
+  &__new-album-cover {
+    width: 180px;
+  }
+
+  &__new-album-tracks {
+    flex-grow: 1;
+    padding: 24px;
+  }
+
+  &__new-album-tracks-header {
+    display: flex;
+    margin-bottom: 24px;
+  }
+
+  &__listen-button {
+    font-size: 14px;
+    color: $text_color_primary;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 12px 32px;
+    margin-top: 6px;
+    border-radius: $input_border_radius;
+    border: 1px solid $layout_border_color;
+    transition: background .2s;
+
+    &:hover {
+      background: $layout_border_color;
+    }
+
+    & > *:first-child {
+      display: block;
+      margin-right: 12px;
+    }
+  }
 }
