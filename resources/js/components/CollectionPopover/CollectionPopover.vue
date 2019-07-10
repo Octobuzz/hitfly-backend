@@ -86,12 +86,12 @@
           Добавить в список воспроизведения
         </span>
 
-        <span class="collection-popover__menu-item">
-          <span class="collection-popover__menu-item-icon">
-            <BendedArrowIcon />
-          </span>
-          Поделиться
-        </span>
+<!--        <span class="collection-popover__menu-item">-->
+<!--          <span class="collection-popover__menu-item-icon">-->
+<!--            <BendedArrowIcon />-->
+<!--          </span>-->
+<!--          Поделиться-->
+<!--        </span>-->
 
         <span
           v-if="isRemovable"

@@ -140,6 +140,7 @@ export default {
       popularTracks: [],
       newAlbum: null,
       newAlbumTracks: [],
+      newAlbumExists: true,
       tooltip: {
         more: {
           content: 'Еще'
@@ -262,7 +263,13 @@ export default {
         return { id: this.userId };
       },
       update({ albums: { data: albums } }) {
-        if (albums.length === 0) return null;
+        if (albums.length === 0) {
+          this.onNewAlbumInitialized({
+            success: false
+          });
+
+          return null;
+        }
 
         this.fetchNewAlbumTracks(albums[0].id);
 
