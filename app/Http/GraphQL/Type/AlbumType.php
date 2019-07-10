@@ -78,6 +78,23 @@ class AlbumType extends GraphQLType
                 },
                 'selectable' => false,
             ],
+            'tracksCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество треков в альбоме',
+                'resolve' => function ($model) {
+                    return $model->tracks->count();
+                },
+                'selectable' => false,
+            ],
+            'tracksTime' => [
+                'type' => Type::float(),
+                'description' => 'Общее время треков',
+                'resolve' => function ($model) {
+
+                    return json_encode($model->tracksTime());
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }

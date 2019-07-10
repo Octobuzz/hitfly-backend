@@ -80,7 +80,7 @@ class TracksQuery extends Query
 
         if (false === empty($args['commentPeriod'])) {
             $date = DBHelpers::getPeriod($args['commentPeriod']);
-            $query->rightJoin('comments', function ($join) {
+            $query->leftJoin('comments', function ($join) {
                 $join->on('tracks.id', '=', 'comments.commentable_id');
             })
                 ->where('comments.created_at', '>=', $date)
