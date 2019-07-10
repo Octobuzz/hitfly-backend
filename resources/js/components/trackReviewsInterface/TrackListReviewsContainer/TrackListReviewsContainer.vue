@@ -33,8 +33,7 @@ const getFilters = (vm) => {
       if (forId === 'me') {
         filters.iCommented = true;
       } else {
-        // TODO: handle other user id
-        // filters.commentedByUser = forId;
+        filters.commentedByUser = forId;
       }
       break;
 

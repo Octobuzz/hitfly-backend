@@ -29,6 +29,7 @@
       </TrackToPlaylistPopover>
 
       <AddToFavouriteButton
+        ref="addToFavButton"
         item-type="track"
         :item-id="trackId"
         :with-counter="true"
@@ -38,6 +39,7 @@
         :track-id="trackId"
         :show-remove-option="false"
         :position-change-breakpoint="1024"
+        @press-favourite="onPressFavourite"
       >
         <IconButton
           passive="standard-passive"
@@ -101,6 +103,12 @@ export default {
     trackCoverUrl() {
       return this.track.cover
         .filter(cover => cover.size === 'size_150x150')[0].url;
+    }
+  },
+
+  methods: {
+    onPressFavourite() {
+      this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
     }
   },
 

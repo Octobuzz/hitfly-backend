@@ -149,12 +149,14 @@ export default {
             tracks,
             albums,
             collections,
+            newAlbum
           } = getters['loading/music'];
 
           return !(
             tracks.initialized
             && albums.initialized
             && collections.initialized
+            && newAlbum.initialized
           );
 
         case '/user/:userId/music/albums':
