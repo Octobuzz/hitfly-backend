@@ -175,7 +175,6 @@ class Album extends Model
 
     public function tracksTime(): float
     {
-
         return $this->tracks()->sum('length');
     }
 }

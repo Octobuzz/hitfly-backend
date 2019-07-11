@@ -90,7 +90,6 @@ class AlbumType extends GraphQLType
                 'type' => Type::float(),
                 'description' => 'Общее время треков',
                 'resolve' => function ($model) {
-
                     return json_encode($model->tracksTime());
                 },
                 'selectable' => false,
