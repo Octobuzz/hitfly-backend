@@ -42,6 +42,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except(['setGenres', 'showGenreForm']);
+        $this->middleware('guest:json')->except(['setGenres', 'showGenreForm']);
     }
 
     /**
@@ -102,7 +103,7 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        $this->guard()->login($user);
+        $this->guard('json')->login($user);
 
         return $this->registered($request, $user)
             ?: redirect('/register-genres');

@@ -16,7 +16,7 @@ use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\Recommendation\Recommendation;
 
 Route::redirect('/', 'login', 301);
-Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
+//Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
 //    $params = [
 //        'value' => 'Значение',
 //    ];
@@ -36,7 +36,7 @@ Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $no
 
     //return $notification->fewComments();
     //$this->notify(new ResetPasswordNotification($token));
-});
+//});
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -56,4 +56,4 @@ Route::group(['namespace' => 'Auth'], function () {
 });
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/{parameter}', 'HomeController@index')->name('home')->where('parameter', '.*');
+Route::get('/{parameter}', 'HomeController@index')->where('parameter', '.*');

@@ -97,6 +97,7 @@ class UserInterface extends InterfaceType
                         return null;
                     }
                 },
+                'selectable' => false,
             ],
             'genresPlay' => [
                 'name' => 'genresPlay',
