@@ -56,7 +56,7 @@
                 ]"
               >
                 <router-link :to="`/user/${userId}/user-reviews`">
-                  Отзывы пользователя
+                  Оставленные отзывы
                 </router-link>
               </li>
             </template>

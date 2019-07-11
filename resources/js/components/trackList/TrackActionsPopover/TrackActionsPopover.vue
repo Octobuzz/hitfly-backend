@@ -122,14 +122,14 @@
           </span>
           {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
-        <span
-          class="track-actions-popover__menu-item"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <BendedArrowIcon />
-          </span>
-          Поделиться песней
-        </span>
+<!--        <span-->
+<!--          class="track-actions-popover__menu-item"-->
+<!--        >-->
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <BendedArrowIcon />-->
+<!--          </span>-->
+<!--          Поделиться песней-->
+<!--        </span>-->
         <span
           v-if="showRemoveOption"
           class="track-actions-popover__menu-item"
@@ -142,12 +142,12 @@
         </span>
       </div>
 
-      <span
-        v-if="!inPlaylistMenu && !inReviewMenu"
-        class="track-actions-popover__tell-problem"
-      >
-        Сообщить о проблеме
-      </span>
+<!--      <span-->
+<!--        v-if="!inPlaylistMenu && !inReviewMenu"-->
+<!--        class="track-actions-popover__tell-problem"-->
+<!--      >-->
+<!--        Сообщить о проблеме-->
+<!--      </span>-->
       <span
         v-if="inPlaylistMenu"
         class="track-actions-popover__add-playlist-header"
@@ -194,7 +194,6 @@
 
 <script>
 import followMixin from 'mixins/followMixin';
-import { mapGetters } from 'vuex';
 import PopupIcon from 'components/icons/popover/PopupIcon.vue';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
@@ -299,7 +298,7 @@ export default {
     canAddReviews() {
       const rolePermission = this.$store.getters['profile/ableToComment'];
 
-      return rolePermission && this.track && this.track.my;
+      return rolePermission && this.track && !this.track.my;
     }
   },
 

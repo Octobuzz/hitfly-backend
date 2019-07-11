@@ -13,7 +13,7 @@
                 {{__('auth.checkEmailText')}} <a href="{{ route('verification.resend') }}">{{__('auth.checkEmailLink')}}</a>.
             </p>
             <p class="forgot-pass__return">
-                <a href="/login">{{__('passwords.backToLogin')}}</a>
+                <a href="{{route('home')}}">{{__('auth.homeLink')}}</a>
             </p>
         </div>
     </div>
