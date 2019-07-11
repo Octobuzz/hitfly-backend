@@ -48,6 +48,7 @@
 
       <span>
         <TrackToPlaylistPopover
+          :isFooter="true"
           v-if="!emptyTrack && desktop"
           :track-id="this.$store.getters['player/currentTrack'].id"
         >
