@@ -47,6 +47,11 @@ export default {
   },
 
   props: {
+    isFooter: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     trackId: {
       type: Number,
       required: true
@@ -64,8 +69,14 @@ export default {
     return {
       popover: {
         desktop: {
-          placement: 'left-start',
-          popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+          body: {
+            placement: 'left-start',
+            popperOptions: { modifiers: { offset: { offset: '-30%p' } } },
+          },
+          footer: {
+            placement: 'top',
+            popperOptions: {},
+          }
         },
         mobile: {
           placement: 'bottom-end',
@@ -88,15 +99,15 @@ export default {
 
   computed: {
     popoverPlacement() {
-      return this.windowWidth > this.positionChangeBreakpoint
-        ? this.popover.desktop.placement
-        : this.popover.mobile.placement;
+      return this.windowWidth > this.positionChangeBreakpoint && !this.isFooter ? this.popover.desktop.body.placement :
+        this.windowWidth > this.positionChangeBreakpoint && this.isFooter ? this.popover.desktop.footer.placement :
+        this.popover.mobile.placement
     },
 
     popperOptions() {
-      return this.windowWidth > this.positionChangeBreakpoint
-        ? this.popover.desktop.popperOptions
-        : this.popover.mobile.popperOptions;
+      return this.windowWidth > this.positionChangeBreakpoint && !this.isFooter ? this.popover.desktop.body.popperOptions :
+        this.windowWidth > this.positionChangeBreakpoint && this.isFooter ? this.popover.desktop.footer.popperOptions :
+        this.popover.mobile.placement
     },
   },
 

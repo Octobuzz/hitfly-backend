@@ -141,13 +141,12 @@
             }
           }`
         }).then((response) => {
-          console.log(response);
-          // this.$router.push('/profile/my-music');
-          // this.$message(
-          //   'Ваша песня загружена',
-          //   'info',
-          //   {timeout: 3000}
-          // );
+          this.$router.push('/profile/my-music');
+          this.$message(
+            'Ваша песня загружена',
+            'info',
+            {timeout: 3000}
+          );
         }).catch((error) => {
           console.dir(error);
           let errors = error.graphQLErrors[0].validation;

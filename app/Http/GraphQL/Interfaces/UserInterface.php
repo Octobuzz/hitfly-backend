@@ -51,7 +51,9 @@ class UserInterface extends InterfaceType
             'followersCount' => [
                 'type' => Type::int(),
                 'description' => 'Количество подписчиков',
-                'selectable' => false,
+                'resolve' => function ($model) {
+                    return $model->followers->count();
+                },
             ],
             'location' => [
                 'type' => \GraphQL::type('CityType'),
