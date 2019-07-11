@@ -81,6 +81,12 @@
     width: 0;
   }
 
+  &__duration {
+    color: $text_color_secondary;
+    text-align: center;
+    width: 60px;
+  }
+
   &__icon-button {
     margin-right: 8px;
   }
