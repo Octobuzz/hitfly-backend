@@ -23,6 +23,6 @@ fragment user on User {
     bpDaysInProgram
     followersCount
     favouritesTrackCount
-#    description
+    description
     iWatch
 }
