@@ -225,6 +225,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
                 $form->date('artist_profile.career_start', 'Дата начала карьеры')->format('YYYY');
                 $form->textarea('artist_profile.description', 'Описание деятельности');
                 //$form->multipleSelect('artistgenres', 'Жанры в которых играет')->options(Genre::all()->pluck('name', 'id'));
+                $form->html('<a href="#">Профиль звезды</a>');
             }
         });
 
