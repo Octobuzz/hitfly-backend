@@ -51,6 +51,9 @@ class UserInterface extends InterfaceType
             'followersCount' => [
                 'type' => Type::int(),
                 'description' => 'Количество подписчиков',
+                'resolve' => function ($model) {
+                    return $model->followers->count();
+                },
                 'selectable' => false,
             ],
             'location' => [

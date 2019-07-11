@@ -26,12 +26,12 @@ const getters = {
   },
 
   ableToComment(state, { roles }) {
-    return ['prof_critic', 'critic', 'star']
+    return ['critic', 'prof_critic', 'star']
       .some(role => roles(role));
   },
 
   ableToPerform(state, { roles }) {
-    return ['listener', 'performer', 'prof_critic']
+    return ['listener', 'performer', 'critic']
       .some(role => roles(role));
   }
 };

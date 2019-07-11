@@ -8,12 +8,15 @@
       class="track-list-entry__album"
       @click="onAlbumPress"
     >
-      <img v-if="!activeTrack"
+      <img
+        v-if="!activeTrack"
         :src="albumCoverUrl"
         alt="Album cover"
       >
-      <PauseIcon v-else-if="activeTrack && this.$store.getters['player/isPlaying']"/>
-      <PlayIcon v-else/>
+      <PauseIcon
+        v-else-if="activeTrack && this.$store.getters['player/isPlaying']"
+      />
+      <PlayIcon v-else />
     </button>
 
     <AddToFavouriteButton
@@ -84,6 +87,10 @@
         <DotsIcon />
       </IconButton>
     </TrackActionsPopover>
+
+    <span class="track-list-entry__duration">
+      {{ formatTrackDuration(track.length) }}
+    </span>
 
     <IconButton
       v-if="desktop && showRemoveButton"
@@ -180,14 +187,26 @@ export default {
     onAlbumPress() {
       this.$emit('play-track', this.trackId);
     },
+
     onFavouritePress() {
       this.$emit('press-favourite', this.trackId);
     },
+
     onRemovePress() {
       this.$emit('remove-track', this.trackId);
     },
+
     pressFavourite() {
       this.$refs.addToFavButton.onPress();
+    },
+
+    formatTrackDuration(sec) {
+      if (sec === null) return '';
+
+      const minutes = Math.floor(sec / 60);
+      const seconds = Math.floor(sec % 60);
+
+      return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
     }
   },
 
