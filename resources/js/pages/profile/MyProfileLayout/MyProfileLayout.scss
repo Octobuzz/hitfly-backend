@@ -50,6 +50,8 @@ $tab_width_mobile: 150px;
 }
 
 .profile__page-header {
+  display: block;
+  height: 24px;
   margin-bottom: 8px;
 
   @media screen and (min-width: 1025px) {

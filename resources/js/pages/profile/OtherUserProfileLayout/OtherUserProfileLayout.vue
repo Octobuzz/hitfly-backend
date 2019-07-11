@@ -69,7 +69,9 @@
           v-if="renderNavBar"
           :class="['profile__page-header', paddingClass]"
         >
-          ПРОФИЛЬ
+          <span class="profile__status">
+            {{ status === null ? '' : status }}
+          </span>
         </PageHeader>
 
         <router-view v-show="!showSecondLoader" />
@@ -109,7 +111,8 @@ export default {
     return {
       userRolesFetched: false,
       ableToPerform: false,
-      ableToComment: false
+      ableToComment: false,
+      status: null
     };
   },
 
@@ -176,10 +179,13 @@ export default {
   apollo: {
     userRoles: {
       query: gql.query.USER_ROLES,
+
       fetchPolicy: 'no-cache',
+
       variables() {
         return { id: this.userId };
       },
+
       update({ user }) {
         if (user === null) {
           // TODO: redirect to 404 page
@@ -189,12 +195,45 @@ export default {
 
         const roles = user.roles.map(role => role.slug);
 
-        this.ableToPerform = ['listener', 'performer', 'prof_critic']
+        this.ableToPerform = ['listener', 'performer', 'critic']
           .some(role => roles.includes(role));
 
-        this.ableToComment = ['prof_critic', 'critic', 'star']
+        this.ableToComment = ['critic', 'prof_critic', 'star']
           .some(role => roles.includes(role));
+
+        const statuses = {
+          listener: {
+            priority: 1,
+            title: 'слушатель'
+          },
+          performer: {
+            priority: 2,
+            title: 'исполнитель'
+          },
+          critic: {
+            priority: 3,
+            title: 'критик'
+          },
+          prof_critic: {
+            priority: 4,
+            title: 'критик'
+          },
+          star: {
+            priority: 5,
+            title: 'звезда'
+          }
+        };
+
+        const topStatus = roles.reduce((status, role) => {
+          if (statuses[status].priority < statuses[role].priority) {
+            return role;
+          }
+          return status;
+        }, 'listener');
+
+        this.status = statuses[topStatus].title;
       },
+
       error(err) {
         console.dir(err);
       }

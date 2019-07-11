@@ -1,10 +1,12 @@
 <template>
   <div class="track-review">
-    <img
-      class="track-review__user-avatar"
-      :src="reviewerAvatar"
-      alt="User avatar"
-    >
+    <router-link :to="`/user/${reviewerId}/music`">
+      <img
+        class="track-review__user-avatar"
+        :src="reviewerAvatar"
+        alt="User avatar"
+      >
+    </router-link>
     <div class="track-review__comment-section">
       <div class="track-review__comment-section-header">
         <span class="h4 track-review__reviewer">
@@ -26,6 +28,10 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 
 export default {
   props: {
+    reviewerId: {
+      type: Number,
+      required: true
+    },
     reviewer: {
       type: String,
       default: 'Anonymous'

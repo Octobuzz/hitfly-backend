@@ -142,15 +142,17 @@
           :key="user.id"
           class="user-card__user user-card__user-info"
         >
-          <img
-            class="user-card__user-avatar"
-            :src="
-              user.avatar.filter(
-                image => image.size === 'size_56x56'
-              )[0].url
-            "
-            alt="User avatar"
-          >
+          <router-link :to="`/user/${id}/music`">
+            <img
+              class="user-card__user-avatar"
+              :src="
+                user.avatar.filter(
+                  image => image.size === 'size_56x56'
+                )[0].url
+              "
+              alt="User avatar"
+            >
+          </router-link>
 
           <div class="user-card__someone-info">
             <p class="user-card__username">
