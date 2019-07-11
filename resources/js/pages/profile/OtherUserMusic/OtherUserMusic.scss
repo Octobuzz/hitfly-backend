@@ -55,7 +55,15 @@
 
   &__new-album-tracks-header {
     display: flex;
+  }
+
+  &__new-album-info {
     margin-bottom: 24px;
+  }
+
+  &__new-album-total-tracks {
+    display: inline-block;
+    padding-right: 32px;
   }
 
   &__listen-button {

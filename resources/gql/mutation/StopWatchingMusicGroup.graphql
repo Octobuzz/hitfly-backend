@@ -3,19 +3,12 @@ mutation StopWatchingMusicGroup($id: Int!) {
         FollowId: $id
         FollowType: music_group
     }) {
-#        ... on FollowUser {
-#            user {
-#                id
-#                username
-#                iWatch
-#            }
-#        }
-
         ... on FollowMusicGroup {
             musicGroup {
                 id
                 name
-#                iWatch
+                iWatch
+                followersCount
             }
         }
     }

@@ -28,6 +28,11 @@ function handleClientState(args) {
             variables
           });
 
+          const update = {
+            followersCount: userData.followersCount - 1,
+            iWatch: false
+          };
+
           store.writeQuery({
             query: gql.query.USER,
             variables,
@@ -35,7 +40,7 @@ function handleClientState(args) {
               ...userData,
               user: {
                 ...userData.user,
-                iWatch: false
+                ...update
               }
             }
           });
@@ -45,6 +50,11 @@ function handleClientState(args) {
             variables
           });
 
+          const update = {
+            followersCount: musicGroupData.followersCount - 1,
+            iWatch: false
+          };
+
           store.writeQuery({
             query: gql.query.MUSIC_GROUP,
             variables,
@@ -52,7 +62,7 @@ function handleClientState(args) {
               ...musicGroupData,
               musicGroup: {
                 ...musicGroupData.musicGroup,
-                iWatch: false
+                ...update
               }
             }
           });
@@ -133,7 +143,7 @@ const trackOrAlbumMixinFactory = varInQuestion => ({
 
       const variables = { id: +owner.id };
 
-      handleClientState.call(this, {
+      handleClientState({
         $apollo: this.$apollo,
         mutation,
         variables,

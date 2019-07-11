@@ -62,18 +62,18 @@
       <span class="user-card__bonus-program-followers">
         <BpFollowers />
         <span>
-          {{ user.followersCount || '0' }} поклонников
+          {{ user.followersCount || '0' }} {{ format('followers', user.followersCount || '0') }}
         </span>
       </span>
       <span class="user-card__bonus-program-days">
         <BpDaysPassed />
         <span>
-          {{ user.bpDaysInProgram || '0' }} дней в Hitfly
+          {{ user.bpDaysInProgram || '0' }} {{ format('days', user.bpDaysInProgram || '0') }}
         </span>
       </span>
       <span class="user-card__bonus-program-favourites">
         <BpFavouriteTracks />
-
+        {{ user.favouritesTrackCount }} {{ format('favourites', user.favouritesTrackCount) }}
       </span>
     </div>
 
@@ -109,6 +109,24 @@ import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
 import NoteIcon from 'components/icons/NoteIconGrey.vue';
 import OtherUserPopover from 'components/OtherUserPopover';
 import gql from './gql';
+
+const formatting = {
+  followers: {
+    1: 'поклонник',
+    234: 'поклонника',
+    567890: 'поклонников'
+  },
+  days: {
+    1: 'день в Hitfly',
+    234: 'дня в Hitfly',
+    567890: 'дней Hitfly'
+  },
+  favourites: {
+    1: 'любимая песня',
+    234: 'любимые песни',
+    567890: 'любимых песен'
+  }
+};
 
 export default {
   components: {
@@ -165,6 +183,20 @@ export default {
         }
       });
     },
+
+    format(type, count) {
+      const lastDigit = +count % 10;
+      let lastDigitSet = 567890;
+
+      if (lastDigit === 1) {
+        lastDigitSet = 1;
+      }
+      if (lastDigit >= 2 && lastDigit <= 4) {
+        lastDigitSet = 234;
+      }
+
+      return formatting[type][lastDigitSet];
+    }
   },
 
   apollo: {

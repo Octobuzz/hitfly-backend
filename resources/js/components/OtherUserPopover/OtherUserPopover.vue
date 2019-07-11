@@ -33,12 +33,12 @@
           {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
 
-        <span class="other-user-popover__menu-item">
-          <span class="other-user-popover__menu-item-icon">
-            <BendedArrowIcon />
-          </span>
-          Поделиться
-        </span>
+<!--        <span class="other-user-popover__menu-item">-->
+<!--          <span class="other-user-popover__menu-item-icon">-->
+<!--            <BendedArrowIcon />-->
+<!--          </span>-->
+<!--          Поделиться-->
+<!--        </span>-->
       </div>
 
       <SpinnerLoader

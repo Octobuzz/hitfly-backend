@@ -183,11 +183,24 @@
         const genres = this.trackInfo.genres.map((genre) => {
           return genre.id;
         });
+        let singer = null;
+        let band = null;
+        let bandId = null;
+        if(this.bands[0].name === this.trackInfo.selectedArtist){
+          singer = this.trackInfo.selectedArtist;
+        }else{
+          band = this.bands.filter((band) => {
+            return band.name === this.trackInfo.selectedArtist;
+          });
+          bandId = band[0].id;
+          singer = band[0].name;
+        }
         const info = {
           'cover': this.trackInfo.cover,
-          'singer': this.trackInfo.selectedArtist,
+          'singer': singer,
           'trackDate': this.trackInfo.year.input,
           'songText': this.trackInfo.text,
+          'musicGroup': bandId,
           'genre': genres,
           'trackName': this.trackInfo.name.input,
           'album': this.trackInfo.selectedAlbum.id
@@ -248,7 +261,6 @@
             }
           }`,
           update(data){
-            console.log(data);
             return this.albums = data;
           }
         }
@@ -266,9 +278,10 @@
             }
           }`,
           update(data) {
-            let myData = {id: data.myProfile.id, name: data.myProfile.username};
+            let myData = {id: 0, name: data.myProfile.username};
             this.bands = [myData, ...data.myProfile.musicGroups];
-            this.trackInfo.selectedArtist = myData.name;
+            console.log(this.bands);
+            // this.trackInfo.selectedArtist = myData.name;
           }
         }
       }

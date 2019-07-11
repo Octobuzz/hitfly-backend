@@ -119,6 +119,7 @@
             id: this.trackID,
             infoTrack: {
               singer: info.singer,
+              musicGroup: info.musicGroup,
               genres: info.genre,
               trackDate: info.trackDate,
               songText: info.songText,
@@ -133,6 +134,10 @@
               trackName
               singer
               trackDate
+              musicGroup{
+                id
+                name
+              }
             }
           }`
         }).then((response) => {
@@ -143,6 +148,7 @@
             {timeout: 3000}
           );
         }).catch((error) => {
+          console.dir(error);
           let errors = error.graphQLErrors[0].validation;
           if(errors['infoTrack.genres'].length > 0){
             this.validation.genre.message = errors['infoTrack.genres'][0];

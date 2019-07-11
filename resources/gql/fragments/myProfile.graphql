@@ -12,6 +12,7 @@ fragment myProfile on MyProfile {
     gender
     dateRegister
     careerStart
+    description
     followersCount
     favoriteSongsCount
     favoriteAlbumCount

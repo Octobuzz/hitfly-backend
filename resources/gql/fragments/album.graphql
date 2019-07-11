@@ -20,5 +20,7 @@ fragment album on Album {
     }
     userFavourite
     favouritesCount
+    tracksCount
+    tracksTime
     my
 }
