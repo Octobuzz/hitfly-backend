@@ -36,6 +36,7 @@
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
+          @click="playAlbum"
         >
           <PlayIcon />
         </IconButton>
@@ -127,6 +128,9 @@ export default {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
+    playAlbum() {
+      console.log(this.album.id);
+    }
   },
 
   apollo: {
