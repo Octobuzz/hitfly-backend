@@ -62,6 +62,9 @@ class MyProfileType extends GraphQLType
                 'followersCount' => [
                     'type' => Type::int(),
                     'description' => 'Количество подписчиков',
+                    'resolve' => function ($model) {
+                        return $model->followers->count();
+                    },
                 ],
                 'bpLevelBonusProgram' => [
                     'type' => Type::nonNull(GraphQL::type('BonusProgramUserStatusEnum')),
