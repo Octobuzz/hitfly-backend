@@ -21,6 +21,7 @@
         v-for="comment in track.comments.slice(0, 3)"
         :key="comment.id"
         class="track-list-reviews-entry__track-review"
+        :reviewer-id="comment.user.id"
         :reviewer="comment.user.username || 'Anonymous'"
         :reviewer-avatar="
           comment.user.avatar.filter(

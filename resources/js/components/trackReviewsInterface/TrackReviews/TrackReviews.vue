@@ -22,6 +22,7 @@
           v-for="review in reviews"
           :key="review.id"
           class="track-list-reviews-entry__track-review"
+          :reviewer-id="review.user.id"
           :reviewer="review.user.username || 'Anonymous'"
           :reviewer-avatar="
             review.user.avatar.filter(

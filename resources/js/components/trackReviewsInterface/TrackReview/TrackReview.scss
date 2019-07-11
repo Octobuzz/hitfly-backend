@@ -1,3 +1,5 @@
+@import '~scss/_variables.scss';
+
 .track-review {
   display: flex;
 
@@ -24,6 +26,10 @@
 
   &__reviewer {
     margin-bottom: 12px;
+  }
+
+  &__username {
+    color: $text_color_primary;
   }
 
   &__date {
