@@ -13,7 +13,7 @@
             {{ user.username }}
           </p>
           <p class="user-card__followers-count">
-            {{ user.followersCount || '0' }} поклонников
+            {{ user.followersCount || '0' }} {{ format('followers', user.followersCount || '0') }}
           </p>
 
           <p

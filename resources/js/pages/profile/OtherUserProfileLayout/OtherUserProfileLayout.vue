@@ -225,13 +225,16 @@ export default {
         };
 
         const topStatus = roles.reduce((status, role) => {
+          if (statuses[role] === undefined) {
+            return status;
+          }
           if (statuses[status].priority < statuses[role].priority) {
             return role;
           }
           return status;
         }, 'listener');
 
-        this.status = statuses[topStatus].title;
+        this.status = statuses[topStatus].title.toUpperCase();
       },
 
       error(err) {

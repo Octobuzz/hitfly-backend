@@ -10,7 +10,12 @@
     <div class="track-review__comment-section">
       <div class="track-review__comment-section-header">
         <span class="h4 track-review__reviewer">
-          {{ reviewer }}
+          <router-link
+            class="track-review__username"
+            :to="`/user/${reviewerId}/music`"
+          >
+            {{ reviewer }}
+          </router-link>
         </span>
         <span class="track-review__date">
           {{ date.slice(0, 10) }}
