@@ -79,6 +79,14 @@
                     Все песни
                   </router-link>
                 </div>
+
+                <div class="other-user-music__new-album-info">
+                  <span class="other-user-music__new-album-total-tracks">
+                    {{ totalTracksInfo(newAlbum.tracksCount) }}
+                  </span>
+                  {{ totalDurationInfo('hours', newAlbum.tracksTime) }}
+                  {{ totalDurationInfo('mins', newAlbum.tracksTime) }}
+                </div>
               </template>
             </TrackList>
           </div>
@@ -113,6 +121,7 @@
 <script>
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
+import totalInfoFormatting from 'mixins/totalInfoFormatting';
 import TrackList from 'components/trackList/TrackList';
 import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
@@ -133,7 +142,7 @@ export default {
     UniversalCollectionsContainer
   },
 
-  mixins: [containerPaddingClass, playingTrackId],
+  mixins: [containerPaddingClass, playingTrackId, totalInfoFormatting],
 
   data() {
     return {

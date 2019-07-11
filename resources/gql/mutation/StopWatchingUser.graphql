@@ -8,15 +8,8 @@ mutation StopWatchingUser($id: Int!) {
                 id
                 username
                 iWatch
+                followersCount
             }
         }
-
-#        ... on FollowMusicGroup {
-#            musicGroup {
-#                id
-#                name
-##                iWatch
-#            }
-#        }
     }
 }
