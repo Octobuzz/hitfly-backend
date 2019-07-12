@@ -48,7 +48,7 @@ class MusicGroupType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->user;
                 },
-                'selectable' => false,
+                //'selectable' => false,
             ],
             'description' => [
                 'type' => Type::string(),
