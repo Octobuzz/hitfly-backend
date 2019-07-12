@@ -48,7 +48,7 @@ class MusicGroupType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->user;
                 },
-                'selectable' => false,
+                //'selectable' => false,
             ],
             'description' => [
                 'type' => Type::string(),
@@ -95,6 +95,14 @@ class MusicGroupType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+            ],
+            'iWatch' => [
+                'type' => Type::boolean(),
+                'description' => 'Я слежу за группой',
+                'selectable' => false,
+                'resolve' => function (MusicGroup $model) {
+                    return $model->iWatch();
+                },
             ],
         ];
     }

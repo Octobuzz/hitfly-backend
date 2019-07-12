@@ -39,7 +39,7 @@ const mutations = {
 
   stopPlaying(state) {
     state.isPlaying = false;
-    state.currentTrack = null;
+    state.currentTrack = {};
   },
 
   pickPlaylist(state, playlist) {

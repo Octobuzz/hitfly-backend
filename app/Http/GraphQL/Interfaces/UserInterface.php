@@ -51,13 +51,16 @@ class UserInterface extends InterfaceType
             'followersCount' => [
                 'type' => Type::int(),
                 'description' => 'Количество подписчиков',
+                'resolve' => function ($model) {
+                    return $model->followers->count();
+                },
                 'selectable' => false,
             ],
             'location' => [
                 'type' => \GraphQL::type('CityType'),
                 'description' => 'Локация пользователя',
                 'alias' => 'city_id',
-                'selectable' => false,
+                //'selectable' => false,
                 'resolve' => function ($model) {
                     return $model->location;
                 },
@@ -97,6 +100,7 @@ class UserInterface extends InterfaceType
                         return null;
                     }
                 },
+                'selectable' => false,
             ],
             'genresPlay' => [
                 'name' => 'genresPlay',
@@ -128,6 +132,14 @@ class UserInterface extends InterfaceType
                 'selectable' => false,
                 'resolve' => function (User $model) {
                     return $model->iWatch();
+                },
+            ],
+            'favouritesTrackCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество добавленых треков в избранное',
+                'selectable' => false,
+                'resolve' => function (User $model) {
+                    return $model->likesTrack()->count();
                 },
             ],
         ];

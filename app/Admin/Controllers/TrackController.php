@@ -49,8 +49,8 @@ class TrackController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('Просмотр')
+            ->description('список треков')
             ->body($this->detail($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
@@ -69,8 +69,8 @@ class TrackController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('Редактирование')
+            ->description('список треков')
             ->body($this->form()->edit($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
@@ -88,8 +88,8 @@ class TrackController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('создание')
+            ->description('список треков')
             ->body($this->form())
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],

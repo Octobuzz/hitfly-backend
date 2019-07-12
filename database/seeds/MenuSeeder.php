@@ -134,6 +134,14 @@ class MenuSeeder extends \Illuminate\Database\Seeder
                 'icon' => 'fa-bar-chart',
                 'uri' => '/city',
             ],
+            [
+                'id' => 18,
+                'parent_id' => 2,
+                'order' => 18,
+                'title' => 'Профили артистов',
+                'icon' => 'fa-bar-chart',
+                'uri' => 'auth/artist',
+            ],
         ]);
     }
 }

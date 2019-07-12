@@ -281,4 +281,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         return 'avatars/'.$this->user_id.'/';
     }
+
+    public function followers()
+    {
+        return $this->morphMany(Watcheables::class, 'watcheable');
+    }
 }

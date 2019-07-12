@@ -1,3 +1,5 @@
+#import "./user.graphql"
+#import "./musicGroup.graphql"
 #import "./album.graphql"
 #import "./collection.graphql"
 
@@ -5,6 +7,7 @@ fragment track on Track {
     id
     trackName
     filename
+    length
     cover(
         sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
     ) {
@@ -19,8 +22,33 @@ fragment track on Track {
     }
     user {
         id
+        username
+        avatar(
+            sizes: [size_56x56, size_235x235]
+        ) {
+            size
+            url
+        }
+        roles {
+            ...role
+        }
+        location {
+            ...location
+        }
+        genresPlay {
+            ...genre
+        }
+        bpDaysInProgram
+#        followersCount # api bug
+        favouritesTrackCount
+        description
+        iWatch
+    }
+    musicGroup {
+        ...musicGroup
     }
     singer
     userFavourite
     favouritesCount
+    my
 }

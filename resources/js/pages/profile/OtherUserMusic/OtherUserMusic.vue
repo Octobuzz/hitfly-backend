@@ -1,6 +1,31 @@
 <template>
   <div class="other-user-music">
-    <!--TODO: tracks container-->
+    <div
+      :class="[
+        'other-user-music__track-list',
+        containerPaddingClass
+      ]"
+    >
+      <TrackList
+        v-if="popularTracks.length > 0"
+        :track-id-list="popularTrackIdList"
+        :show-remove-button="false"
+      >
+        <template #header>
+          <div class="other-user-music__track-list-header">
+            <span class="h2">
+              Популярные песни
+            </span>
+            <router-link
+              :to="`/user/${userId}/music/tracks`"
+              class="other-user-music__track-list-more-button"
+            >
+              Все песни
+            </router-link>
+          </div>
+        </template>
+      </TrackList>
+    </div>
 
     <UniversalAlbumsContainer
       for-type="user-album-list"
@@ -23,6 +48,51 @@
         </AlbumScrollHorizontal>
       </template>
     </UniversalAlbumsContainer>
+
+    <template v-if="newAlbumTracks.length > 0">
+      <div :class="containerPaddingClass">
+        <div class="other-user-music__new-album-container">
+          <div class="other-user-music__new-album-cover">
+            <TrackReviewHeader
+              :track-id="newAlbumPlayingTrackId"
+            />
+            <button class="other-user-music__listen-button">
+              <CirclePlayIcon />
+              Слушать
+            </button>
+          </div>
+
+          <div class="other-user-music__new-album-tracks">
+            <TrackList
+              :track-id-list="newAlbumTrackIdList"
+              :show-remove-button="false"
+            >
+              <template #header>
+                <div class="other-user-music__new-album-tracks-header">
+                  <span class="h2">
+                    {{ newAlbum.title }}
+                  </span>
+                  <router-link
+                    :to="`/user/${userId}/album/${newAlbum.id}`"
+                    class="other-user-music__track-list-more-button"
+                  >
+                    Все песни
+                  </router-link>
+                </div>
+
+                <div class="other-user-music__new-album-info">
+                  <span class="other-user-music__new-album-total-tracks">
+                    {{ totalTracksInfo(newAlbum.tracksCount) }}
+                  </span>
+                  {{ totalDurationInfo('hours', newAlbum.tracksTime) }}
+                  {{ totalDurationInfo('mins', newAlbum.tracksTime) }}
+                </div>
+              </template>
+            </TrackList>
+          </div>
+        </div>
+      </div>
+    </template>
 
     <UniversalCollectionsContainer
       for-type="user-playlist-list"
@@ -50,24 +120,173 @@
 
 <script>
 import containerPaddingClass from 'mixins/containerPaddingClass';
+import playingTrackId from 'mixins/playingTrackId';
+import totalInfoFormatting from 'mixins/totalInfoFormatting';
+import TrackList from 'components/trackList/TrackList';
 import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
+import TrackReviewHeader from 'components/trackReviewsInterface/TrackReviewHeader';
+import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import UniversalAlbumsContainer from '../UniversalAlbumsContainer';
 import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
+import gql from './gql';
 
 export default {
   components: {
+    TrackList,
     AlbumScrollHorizontal,
     CollectionScrollHorizontal,
+    TrackReviewHeader,
+    CirclePlayIcon,
     UniversalAlbumsContainer,
     UniversalCollectionsContainer
   },
 
-  mixins: [containerPaddingClass],
+  mixins: [containerPaddingClass, playingTrackId, totalInfoFormatting],
+
+  data() {
+    return {
+      popularTracks: [],
+      newAlbum: null,
+      newAlbumTracks: [],
+      newAlbumExists: true,
+      tooltip: {
+        more: {
+          content: 'Еще'
+        }
+      }
+    };
+  },
 
   computed: {
     userId() {
       return +this.$route.params.userId;
+    },
+
+    popularTrackIdList() {
+      return this.popularTracks.map(track => track.id);
+    },
+
+    newAlbumTrackIdList() {
+      return this.newAlbumTracks.map(track => track.id);
+    },
+
+    newAlbumPlayingTrackId() {
+      // eslint-disable-next-line no-shadow
+      const { playingTrackId, newAlbumTrackIdList } = this;
+
+      if (newAlbumTrackIdList.length === 0) return null;
+
+      if (newAlbumTrackIdList.includes(playingTrackId)) {
+        return playingTrackId;
+      }
+
+      return newAlbumTrackIdList[0];
+    }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('loading/setMusic', {
+      tracks: {
+        initialized: false
+      },
+      albums: {
+        initialized: false
+      },
+      collections: {
+        initialized: false
+      }
+    });
+
+    next();
+  },
+
+  methods: {
+    onTrackListInitialized({ success }) {
+      this.$store.commit('loading/setMusic', {
+        tracks: {
+          initialized: true,
+          success
+        }
+      });
+    },
+
+    onNewAlbumInitialized({ success }) {
+      this.$store.commit('loading/setMusic', {
+        newAlbum: {
+          initialized: true,
+          success
+        }
+      });
+    },
+
+    fetchNewAlbumTracks(albumId) {
+      this.$apollo.provider.defaultClient.query({
+        query: gql.query.USER_ALBUM_TRACKS,
+        variables: { albumId }
+      })
+        .then(({ data: { tracks: { data } } }) => {
+          this.newAlbumTracks = data;
+
+          this.onNewAlbumInitialized({
+            success: true
+          });
+        })
+        .catch((err) => {
+          this.onNewAlbumInitialized({
+            success: false
+          });
+
+          console.dir(err);
+        });
+    }
+  },
+
+  apollo: {
+    popularTracks: {
+      query: gql.query.USER_POPULAR_TRACKS,
+      fetchPolicy: 'network-only',
+      variables() {
+        return { id: this.userId };
+      },
+      update({ topTrackForUser }) {
+        this.onTrackListInitialized({
+          success: true
+        });
+
+        return topTrackForUser;
+      },
+      error(err) {
+        this.onTrackListInitialized({
+          success: false
+        });
+
+        console.dir(err);
+      }
+    },
+
+    newAlbum: {
+      query: gql.query.USER_NEW_ALBUM,
+      fetchPolicy: 'network-only',
+      variables() {
+        return { id: this.userId };
+      },
+      update({ albums: { data: albums } }) {
+        if (albums.length === 0) {
+          this.onNewAlbumInitialized({
+            success: false
+          });
+
+          return null;
+        }
+
+        this.fetchNewAlbumTracks(albums[0].id);
+
+        return albums[0];
+      },
+      error(err) {
+        console.dir(err);
+      }
     }
   }
 };

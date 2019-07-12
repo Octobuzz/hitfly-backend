@@ -26,7 +26,10 @@
         alt="Album cover"
         class="track-actions-popover__album-cover"
       >
-      <div class="track-actions-popover__header">
+      <div
+        v-if="track"
+        class="track-actions-popover__header"
+      >
         <span class="track-actions-popover__album-song">
           {{ track.trackName }}
         </span>
@@ -110,22 +113,23 @@
           </span>
         </span>
         <span
-          v-if="notMyTrack"
+          v-if="isWatchable"
           class="track-actions-popover__menu-item"
+          @click="onWatchOwnerPress"
         >
           <span class="track-actions-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          Следить за автором
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
-        <span
-          class="track-actions-popover__menu-item"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <BendedArrowIcon />
-          </span>
-          Поделиться песней
-        </span>
+<!--        <span-->
+<!--          class="track-actions-popover__menu-item"-->
+<!--        >-->
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <BendedArrowIcon />-->
+<!--          </span>-->
+<!--          Поделиться песней-->
+<!--        </span>-->
         <span
           v-if="showRemoveOption"
           class="track-actions-popover__menu-item"
@@ -138,12 +142,12 @@
         </span>
       </div>
 
-      <span
-        v-if="!inPlaylistMenu && !inReviewMenu"
-        class="track-actions-popover__tell-problem"
-      >
-        Сообщить о проблеме
-      </span>
+<!--      <span-->
+<!--        v-if="!inPlaylistMenu && !inReviewMenu"-->
+<!--        class="track-actions-popover__tell-problem"-->
+<!--      >-->
+<!--        Сообщить о проблеме-->
+<!--      </span>-->
       <span
         v-if="inPlaylistMenu"
         class="track-actions-popover__add-playlist-header"
@@ -189,7 +193,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import followMixin from 'mixins/followMixin';
 import PopupIcon from 'components/icons/popover/PopupIcon.vue';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
@@ -217,6 +221,8 @@ export default {
     CrossIcon,
     BendedArrowIcon
   },
+
+  mixins: [followMixin('track', 'track')],
 
   props: {
     trackId: {
@@ -277,35 +283,22 @@ export default {
     },
 
     albumCoverUrl() {
+      if (!this.track) return '#';
+
       return this.track.cover
         .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 
-    player() {
-      const getters = mapGetters('player', [
-        'isPlaying',
-        'currentTrack'
-      ]);
-      const getterKeys = Object.keys(getters);
+    isWatchable() {
+      if (!this.track) return false;
 
-      return getterKeys.reduce((acc, key) => {
-        acc[key] = getters[key].call(this);
-
-        return acc;
-      }, {});
-    },
-
-    notMyTrack() {
-      return this.$store.getters['profile/myId'] !== this.track.user.id;
+      return !this.track.my;
     },
 
     canAddReviews() {
-      const { getters } = this.$store;
+      const rolePermission = this.$store.getters['profile/ableToComment'];
 
-      const rolePermission = ['star', 'critic', 'professionalCritic']
-        .some(role => getters['profile/roles'](role));
-
-      return rolePermission && this.notMyTrack;
+      return rolePermission && this.track && !this.track.my;
     }
   },
 
@@ -388,6 +381,10 @@ export default {
 
     emitRemoveTrack() {
       this.$emit('remove-track');
+    },
+
+    followMixinCallback() {
+      this.$refs.closeButton.click();
     }
   },
 

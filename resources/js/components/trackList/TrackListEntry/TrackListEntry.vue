@@ -9,9 +9,14 @@
       @click="onAlbumPress"
     >
       <img
+        v-if="!activeTrack"
         :src="albumCoverUrl"
         alt="Album cover"
       >
+      <PauseIcon
+        v-else-if="activeTrack && this.$store.getters['player/isPlaying']"
+      />
+      <PlayIcon v-else />
     </button>
 
     <AddToFavouriteButton
@@ -83,6 +88,10 @@
       </IconButton>
     </TrackActionsPopover>
 
+    <span class="track-list-entry__duration">
+      {{ formatTrackDuration(track.length) }}
+    </span>
+
     <IconButton
       v-if="desktop && showRemoveButton"
       class="track-list-entry__icon-button"
@@ -102,6 +111,8 @@ import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlusIcon from 'components/icons/PlusIcon.vue';
 import CrossIcon from 'components/icons/CrossIcon.vue';
+import PauseIcon from 'components/icons/PauseIcon.vue';
+import PlayIcon from 'components/icons/PlayIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from '../TrackToPlaylistPopover';
 import TrackActionsPopover from '../TrackActionsPopover';
@@ -116,7 +127,9 @@ export default {
     IconButton,
     DotsIcon,
     PlusIcon,
-    CrossIcon
+    CrossIcon,
+    PauseIcon,
+    PlayIcon
   },
 
   props: {
@@ -163,21 +176,37 @@ export default {
     albumCoverUrl() {
       return this.track.cover
         .filter(cover => cover.size === 'size_32x32')[0].url;
-    }
+    },
+
+    activeTrack() {
+      return this.trackId === this.$store.getters['player/currentTrack'].id;
+    },
   },
 
   methods: {
     onAlbumPress() {
       this.$emit('play-track', this.trackId);
     },
+
     onFavouritePress() {
       this.$emit('press-favourite', this.trackId);
     },
+
     onRemovePress() {
       this.$emit('remove-track', this.trackId);
     },
+
     pressFavourite() {
       this.$refs.addToFavButton.onPress();
+    },
+
+    formatTrackDuration(sec) {
+      if (sec === null) return '';
+
+      const minutes = Math.floor(sec / 60);
+      const seconds = Math.floor(sec % 60);
+
+      return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
     }
   },
 

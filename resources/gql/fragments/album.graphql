@@ -1,3 +1,6 @@
+#import "./user.graphql"
+#import "./musicGroup.graphql"
+
 fragment album on Album {
     id
     title
@@ -9,10 +12,15 @@ fragment album on Album {
         size
         url
     }
-    musicGroup {
-        id
-        name
+    user {
+        ...user
     }
+    musicGroup {
+        ...musicGroup
+    }
+    userFavourite
     favouritesCount
+    tracksCount
+    tracksTime
     my
 }

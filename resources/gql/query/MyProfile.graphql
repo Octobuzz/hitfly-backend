@@ -1,44 +1,7 @@
-#import "../fragments/genre.graphql"
-#import "../fragments/user.graphql"
-#import "../fragments/musicGroup.graphql"
-#import "../fragments/role.graphql"
-#import "../fragments/bonusProgram.graphql"
-
-# TODO: use fragment ad for the update
+#import "../fragments/myProfile.graphql"
 
 query MyProfile {
     myProfile {
-        id
-        username
-        roles {
-            ...role
-        }
-        dateRegister
-        careerStart
-        gender
-        description
-        musicGroups {
-            ...musicGroup
-        }
-        followersCount
-        location {
-            ...location
-        }
-        avatar(
-            sizes: [size_56x56, size_235x235]
-        ) {
-            size
-            url
-        }
-        favouriteGenres {
-            ...genre
-        }
-        genresPlay {
-            ...genre
-        }
-        email
-        favoriteSongsCount
-        favoriteAlbumCount
-        ...bonusProgram
+        ...myProfile
     }
 }

@@ -1,0 +1,13 @@
+#import "gql/fragments/album.graphql"
+
+query UserNewAlbum($id: Int!) {
+    albums(
+        page: 1,
+        limit: 1,
+        filters: { userId: $id }
+    ) {
+        data {
+            ...album
+        }
+    }
+}

@@ -75,24 +75,25 @@
         </span>
 
         <span
-          v-if="!myAlbum"
+          v-if="isWatchable"
           class="album-popover__menu-item"
+          @click="onWatchOwnerPress"
         >
           <span class="album-popover__menu-item-icon">
             <UserPlusIcon />
           </span>
-          Следить за автором
+          {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
 
-        <span class="album-popover__menu-item">
-          <span class="album-popover__menu-item-icon">
-            <BendedArrowIcon />
-          </span>
-          Поделиться
-        </span>
+<!--        <span class="album-popover__menu-item">-->
+<!--          <span class="album-popover__menu-item-icon">-->
+<!--            <BendedArrowIcon />-->
+<!--          </span>-->
+<!--          Поделиться-->
+<!--        </span>-->
 
         <span
-          v-if="myAlbum"
+          v-if="isRemovable"
           class="album-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -114,6 +115,7 @@
 </template>
 
 <script>
+import followMixin from 'mixins/followMixin';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
 import HeartIcon from 'components/icons/popover/HeartIcon.vue';
@@ -134,6 +136,8 @@ export default {
     AlbumPopoverRemoveMenu
   },
 
+  mixins: [followMixin('album', 'album')],
+
   props: {
     albumId: {
       type: Number,
@@ -147,7 +151,8 @@ export default {
         placement: 'right-start',
         popperOptions: { modifiers: { offset: { offset: '-30%p' } } }
       },
-      inRemoveMenu: false
+      inRemoveMenu: false,
+      album: null
     };
   },
 
@@ -157,9 +162,17 @@ export default {
         .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 
-    myAlbum() {
+    isWatchable() {
+      if (!this.album) return false;
+
+      return !this.album.my;
+    },
+
+    isRemovable() {
+      if (!this.album) return false;
+
       return this.album.my;
-    }
+    },
   },
 
   methods: {
@@ -192,6 +205,10 @@ export default {
           this.albumId
         );
       }, 300);
+    },
+
+    followMixinCallback() {
+      this.$refs.closeButton.click();
     }
   },
 
@@ -209,7 +226,7 @@ export default {
       error(err) {
         console.dir(err);
       }
-    },
+    }
   }
 };
 </script>

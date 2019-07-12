@@ -3,6 +3,5 @@
 query Album($id: Int!) {
     album(id: $id) {
         ...album
-        userFavourite
     }
 }

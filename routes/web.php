@@ -16,7 +16,7 @@ use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\Recommendation\Recommendation;
 
 Route::redirect('/', 'login', 301);
-Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
+//Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
 //    $params = [
 //        'value' => 'Значение',
 //    ];
@@ -34,14 +34,16 @@ Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $no
 //        ]
 //    );
 
-    return $notification->fewComments();
+    //return $notification->fewComments();
     //$this->notify(new ResetPasswordNotification($token));
-});
+//});
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/test', 'Controller@test');
 Route::get('/register-error', 'Auth\RegisterController@registerError');
+Route::get('/register-genres', 'Auth\RegisterController@showGenreForm')->name('register.genres');
+Route::post('/register-genres', 'Auth\RegisterController@setGenres');
 Route::get('/email-change/{id}/{token}', 'Auth\EmailChangeController@changeEmail');
 Route::get('/email-change', 'Auth\EmailChangeController@emailChanged');
 Route::get('/email-change-failed', 'Auth\EmailChangeController@emailChangeFailed');
@@ -54,4 +56,4 @@ Route::group(['namespace' => 'Auth'], function () {
 });
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/{parameter}', 'HomeController@index')->name('home')->where('parameter', '.*');
+Route::get('/{parameter}', 'HomeController@index')->where('parameter', '.*');

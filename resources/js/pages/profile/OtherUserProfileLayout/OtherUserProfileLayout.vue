@@ -17,63 +17,72 @@
       v-if="desktop || !showFirstLoader"
       #right-column="{ paddingClass }"
     >
+      <template v-if="userRolesFetched">
+        <div
+          v-if="renderNavBar"
+          :class="['profile__nav-wrapper', paddingClass]"
+        >
+          <ul class="profile__nav">
+            <template v-if="ableToPerform">
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath === '/user/:userId/music' }
+                ]"
+              >
+                <router-link :to="`/user/${userId}/music`">
+                  Музыка
+                </router-link>
+              </li>
+
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath ==='/user/:userId/reviews' }
+                ]"
+              >
+                <router-link :to="`/user/${userId}/reviews`">
+                  Отзывы
+                </router-link>
+              </li>
+            </template>
+
+            <template v-if="ableToComment">
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  'profile__nav-endpoint_long',
+                  { 'profile__nav-endpoint_active': currentPath === '/user/:userId/user-reviews' }
+                ]"
+              >
+                <router-link :to="`/user/${userId}/user-reviews`">
+                  Оставленные отзывы
+                </router-link>
+              </li>
+            </template>
+          </ul>
+
+          <div class="profile__nav-scroll-cloak" />
+        </div>
+
+        <PageHeader
+          v-if="renderNavBar"
+          :class="['profile__page-header', paddingClass]"
+        >
+          <span class="profile__status">
+            {{ status === null ? '' : status }}
+          </span>
+        </PageHeader>
+
+        <router-view v-show="!showSecondLoader" />
+      </template>
+
       <div
-        v-if="renderNavBar"
-        :class="['profile__nav-wrapper', paddingClass]"
-      >
-        <ul class="profile__nav">
-          <li
-            :class="[
-              'profile__nav-endpoint',
-              { 'profile__nav-endpoint_active': currentPath === '/user/:userId/music' }
-            ]"
-          >
-            <router-link :to="`/user/${userId}/music`">
-              Музыка
-            </router-link>
-          </li>
-
-          <li
-            :class="[
-              'profile__nav-endpoint',
-              { 'profile__nav-endpoint_active': currentPath ==='/user/:userId/reviews' }
-            ]"
-          >
-            <router-link :to="`/user/${userId}/reviews`">
-              Отзывы
-            </router-link>
-          </li>
-
-          <li
-            :class="[
-              'profile__nav-endpoint',
-              { 'profile__nav-endpoint_active': currentPath === '/user/:userId/my-reviews' }
-            ]"
-          >
-            <router-link :to="`/user/${userId}/my-reviews`">
-              Мои отзывы
-            </router-link>
-          </li>
-        </ul>
-
-        <div class="profile__nav-scroll-cloak" />
-      </div>
-
-      <PageHeader
-        v-if="renderNavBar"
-        :class="['profile__page-header', paddingClass]"
-      >
-        ПРОФИЛЬ
-      </PageHeader>
-
-      <div
-        v-show="showSecondLoader"
+        v-show="showSecondLoader || !userRolesFetched"
         class="profile__user-card-loader_second"
       >
         <SpinnerLoader />
       </div>
-
-      <router-view v-show="!showSecondLoader" />
     </template>
   </AppColumns>
 </template>
@@ -84,6 +93,7 @@ import SpinnerLoader from 'components/SpinnerLoader.vue';
 import AppColumns from 'components/layout/AppColumns.vue';
 import PageHeader from 'components/PageHeader.vue';
 import OtherUserCard from '../OtherUserCard';
+import gql from './gql';
 
 const MOBILE_WIDTH = 1024;
 
@@ -96,6 +106,15 @@ export default {
   },
 
   mixins: [currentPath],
+
+  data() {
+    return {
+      userRolesFetched: false,
+      ableToPerform: false,
+      ableToComment: false,
+      status: null
+    };
+  },
 
   computed: {
     desktop() {
@@ -117,20 +136,12 @@ export default {
     showFirstLoader() {
       const {
         personalInfo,
-        watchedUsers,
-        watchedGroups
       } = this.$store.getters['loading/userCard'];
 
-      return !(
-        personalInfo.initialized
-        && watchedUsers.initialized
-        && watchedGroups.initialized
-      );
+      return !personalInfo.initialized;
     },
 
     showSecondLoader() {
-      return false;
-
       const { getters } = this.$store;
 
       /* eslint-disable no-fallthrough, no-case-declarations */
@@ -141,12 +152,14 @@ export default {
             tracks,
             albums,
             collections,
+            newAlbum
           } = getters['loading/music'];
 
           return !(
             tracks.initialized
             && albums.initialized
             && collections.initialized
+            && newAlbum.initialized
           );
 
         case '/user/:userId/music/albums':
@@ -160,6 +173,73 @@ export default {
       }
 
       /* eslint-disable no-fallthrough */
+    }
+  },
+
+  apollo: {
+    userRoles: {
+      query: gql.query.USER_ROLES,
+
+      fetchPolicy: 'no-cache',
+
+      variables() {
+        return { id: this.userId };
+      },
+
+      update({ user }) {
+        if (user === null) {
+          // TODO: redirect to 404 page
+        }
+
+        this.userRolesFetched = true;
+
+        const roles = user.roles.map(role => role.slug);
+
+        this.ableToPerform = ['listener', 'performer', 'critic']
+          .some(role => roles.includes(role));
+
+        this.ableToComment = ['critic', 'prof_critic', 'star']
+          .some(role => roles.includes(role));
+
+        const statuses = {
+          listener: {
+            priority: 1,
+            title: 'слушатель'
+          },
+          performer: {
+            priority: 2,
+            title: 'исполнитель'
+          },
+          critic: {
+            priority: 3,
+            title: 'критик'
+          },
+          prof_critic: {
+            priority: 4,
+            title: 'критик'
+          },
+          star: {
+            priority: 5,
+            title: 'звезда'
+          }
+        };
+
+        const topStatus = roles.reduce((status, role) => {
+          if (statuses[role] === undefined) {
+            return status;
+          }
+          if (statuses[status].priority < statuses[role].priority) {
+            return role;
+          }
+          return status;
+        }, 'listener');
+
+        this.status = statuses[topStatus].title.toUpperCase();
+      },
+
+      error(err) {
+        console.dir(err);
+      }
     }
   }
 };

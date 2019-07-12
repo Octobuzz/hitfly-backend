@@ -48,8 +48,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 5,
-        // TODO: implement sorting when the api is ready
-        // commentedInPeriod: this.commentedInPeriod
+        commentedInPeriod: this.commentedInPeriod // possible backend bug
       }
     };
   },

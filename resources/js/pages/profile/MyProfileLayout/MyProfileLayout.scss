@@ -27,6 +27,10 @@ $tab_width_mobile: 150px;
     font-family: 'Gotham Pro Ton', sans-serif;
   }
 
+  &_long {
+    width: 250px;
+  }
+
   &::v-deep a {
     color: #313131;
     display: block;
@@ -46,6 +50,8 @@ $tab_width_mobile: 150px;
 }
 
 .profile__page-header {
+  display: block;
+  height: 24px;
   margin-bottom: 8px;
 
   @media screen and (min-width: 1025px) {

@@ -1,0 +1,15 @@
+#import "gql/fragments/track.graphql"
+
+query UserAlbumTracks($albumId: Int!) {
+    tracks(
+        page: 1,
+        limit: 5,
+        filters: {
+            albumId: $albumId
+        }
+    ) {
+        data {
+            ...track
+        }
+    }
+}

@@ -28,7 +28,7 @@
           item-type="album"
           :item-id="album.id"
         />
-
+        
         <IconButton
           :class="[
             'album-preview__play-button',
@@ -36,6 +36,7 @@
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
+          @press="pressEmitted"
         >
           <PlayIcon />
         </IconButton>
@@ -127,6 +128,29 @@ export default {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
+    pressEmitted(){
+      this.$apollo.provider.defaultClient.query({
+        query: gql.query.TRACKS,
+        variables: {
+          pageLimit: 30,
+          pageNumber: 1,
+          filters: {
+            albumId: this.albumId
+          }
+        },
+      })
+      .then(response => {
+        this.$store.commit('player/pausePlaying');
+        this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+        let arrayTr = response.data.tracks.data.map(data => {
+          return data.id;
+        });
+        this.$store.commit('player/pickPlaylist', arrayTr);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
   },
 
   apollo: {

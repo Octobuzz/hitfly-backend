@@ -37,7 +37,7 @@ class CommentCreatedJob implements ShouldQueue
 
             return Mail::to($this->comment->commentable->user->email)->send($message);
         } catch (\Exception $exception) {
-            Log::alert($exception->getMessage(), $exception);
+            Log::alert($exception->getMessage());
         }
     }
 }

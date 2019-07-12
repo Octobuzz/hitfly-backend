@@ -142,19 +142,26 @@
           :key="user.id"
           class="user-card__user user-card__user-info"
         >
-          <img
-            class="user-card__user-avatar"
-            :src="
-              user.avatar.filter(
-                image => image.size === 'size_56x56'
-              )[0].url
-            "
-            alt="User avatar"
-          >
+          <router-link :to="`/user/${user.id}/music`">
+            <img
+              class="user-card__user-avatar"
+              :src="
+                user.avatar.filter(
+                  image => image.size === 'size_56x56'
+                )[0].url
+              "
+              alt="User avatar"
+            >
+          </router-link>
 
           <div class="user-card__someone-info">
             <p class="user-card__username">
-              {{ user.username }}
+              <router-link
+                class="user-card__username-link"
+                :to="`/user/${user.id}/music`"
+              >
+                {{ user.username }}
+              </router-link>
             </p>
             <p
               v-if="user.location"
@@ -376,11 +383,15 @@ export default {
           description,
           musicGroups,
           roles,
+          dateRegister,
           bpProgressPercent: bpProgressPct,
           bpLevelBonusProgram: bpLevel,
           bpDaysInProgram: bpDaysPassed,
           bpPoints
         } = myProfile;
+
+        // this is to prevent handling of other queries result
+        if (!dateRegister) return;
 
         this.myProfile.avatar = avatar
           .filter(image => image.size === 'size_56x56')[0].url;
@@ -403,7 +414,7 @@ export default {
           this.myProfile.location = location;
         }
 
-        if (roles.some(role => role === 'Артист')) {
+        if (roles.some(role => role.slug === 'performer')) {
           if (description) {
             this.myProfile.activity = description;
           }

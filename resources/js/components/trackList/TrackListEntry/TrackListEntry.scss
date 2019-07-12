@@ -29,6 +29,14 @@
     border-radius: 3px;
     overflow: hidden;
     user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #313131;
+
+    & svg {
+      fill: #fff;
+    }
 
     &_paused:before {
       content: '';
@@ -71,6 +79,12 @@
     font-family: 'Gotham Pro', sans-serif;
     flex-grow: 1;
     width: 0;
+  }
+
+  &__duration {
+    color: $text_color_secondary;
+    text-align: center;
+    width: 60px;
   }
 
   &__icon-button {

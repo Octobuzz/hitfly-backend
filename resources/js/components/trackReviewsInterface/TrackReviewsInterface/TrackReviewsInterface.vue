@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       periodFilterList: ['week', 'month', 'year'],
-      periodFilter: this.defaultPeriod
+      periodFilter: this.defaultPeriod,
     };
   },
 

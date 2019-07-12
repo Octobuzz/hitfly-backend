@@ -1,0 +1,5 @@
+query MyId {
+    myProfile {
+        id
+    }
+}
