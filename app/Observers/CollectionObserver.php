@@ -24,7 +24,7 @@ class CollectionObserver
                 $user = \App\User::inRandomOrder()->first();
             }
         }
-        if (false == Admin::user()->isAdministrator()) {
+        if (null == Admin::user()) {
             $collection->user_id = $user->id;
             $collection->is_admin = in_array($user->id, $user->has('roles')->pluck('id')->toArray());
         }
