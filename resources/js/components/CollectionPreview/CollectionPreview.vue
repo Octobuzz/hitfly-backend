@@ -125,7 +125,7 @@ export default {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    pressEmitted(){
+    playCollection(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {

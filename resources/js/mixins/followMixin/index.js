@@ -5,8 +5,29 @@ import gql from './gql';
 // It is taken into account that the entity could be undefined on null.
 // followMixinCallback is expected on the instance to be called after mutation (if exists)
 
+function refetchWatchedUsers($apollo) {
+  $apollo.query({
+    query: gql.query.WATCHED_USERS,
+    fetchPolicy: 'network-only',
+    error(err) {
+      console.dir(err);
+    }
+  });
+}
+
+function refetchWatchedGroups($apollo) {
+  $apollo.query({
+    query: gql.query.WATCHED_GROUPS,
+    fetchPolicy: 'network-only',
+    error(err) {
+      console.dir(err);
+    }
+  });
+}
+
 function handleClientState(args) {
   const {
+    vm,
     $apollo,
     mutation,
     variables,
@@ -19,6 +40,12 @@ function handleClientState(args) {
     mutation,
     variables,
     update(store, { data: { deleteFollow } }) {
+      if (!ownerIsGroup) {
+        refetchWatchedUsers($apollo);
+      } else {
+        refetchWatchedGroups($apollo);
+      }
+
       if (deleteFollow !== null) return;
 
       try {
@@ -73,7 +100,7 @@ function handleClientState(args) {
     }
   })
     .then(() => {
-      this.$message(
+      vm.$message(
         `Теперь вы ${ownerIsWatched ? 'не ' : ''}следите за ${ownerName}`,
         'info',
         { timeout: 2000 }
@@ -83,8 +110,8 @@ function handleClientState(args) {
       console.dir(err);
     })
     .then(() => {
-      if (typeof this.followMixinCallback === 'function') {
-        this.followMixinCallback();
+      if (typeof vm.followMixinCallback === 'function') {
+        vm.followMixinCallback();
       }
     });
 }
@@ -144,6 +171,7 @@ const trackOrAlbumMixinFactory = varInQuestion => ({
       const variables = { id: +owner.id };
 
       handleClientState({
+        vm: this,
         $apollo: this.$apollo,
         mutation,
         variables,

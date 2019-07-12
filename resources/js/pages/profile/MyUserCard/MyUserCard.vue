@@ -21,6 +21,18 @@
         >
           {{ myProfile.location.title }}
         </p>
+
+        <p
+          v-if="playedGenres"
+          class="user-card__played-genres-container"
+        >
+          <span class="user-card__played-genres-icon">
+            <NoteIcon />
+          </span>
+          <span class="user-card__played-genres">
+            {{ playedGenres }}
+          </span>
+        </p>
       </div>
 
       <IconButton
@@ -245,6 +257,7 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
+import NoteIcon from 'components/icons/NoteIconGrey.vue';
 import levelNoviceImg from 'images/level-novice.svg';
 import levelFanImg from 'images/level-fan.svg';
 import levelConnoisseurImg from 'images/level-connoisseur.svg';
@@ -282,7 +295,8 @@ export default {
   components: {
     IconButton,
     PencilIcon,
-    ArrowIcon
+    ArrowIcon,
+    NoteIcon
   },
 
   props: {
@@ -300,6 +314,7 @@ export default {
         location: null,
         followersCount: '',
         activity: '',
+        playedGenres: [],
         musicGroups: [],
         watchedUsers: [],
         watchedGroups: [],
@@ -318,14 +333,29 @@ export default {
     isCreatingGroup() {
       return this.$route.fullPath === '/profile/create-group';
     },
+
     isEditingProfile() {
       return this.$route.fullPath === '/profile/edit';
     },
+
     editGroupId() {
       return +this.$route.params.editGroupId;
     },
+
     musicGroupCount() {
       return this.myProfile.musicGroups.length;
+    },
+
+    playedGenres() {
+      const { playedGenres } = this.myProfile;
+
+      if (!playedGenres || playedGenres.length === 0) {
+        return null;
+      }
+
+      return playedGenres.map(genre => (
+        genre.name[0].toUpperCase() + genre.name.slice(1)
+      )).join(', ').slice(0, -2);
     }
   },
 
@@ -381,6 +411,7 @@ export default {
           username,
           location,
           description,
+          genresPlay,
           musicGroups,
           roles,
           dateRegister,
@@ -397,6 +428,7 @@ export default {
           .filter(image => image.size === 'size_56x56')[0].url;
 
         this.myProfile.name = username;
+        this.myProfile.playedGenres = genresPlay;
         this.myProfile.musicGroups = musicGroups;
 
         this.myProfile.bonusProgram = {

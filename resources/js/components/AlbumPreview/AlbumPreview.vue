@@ -36,7 +36,7 @@
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
-          @press="pressEmitted"
+          @press="playAlbum"
         >
           <PlayIcon />
         </IconButton>
@@ -128,7 +128,7 @@ export default {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    pressEmitted(){
+    playAlbum(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {

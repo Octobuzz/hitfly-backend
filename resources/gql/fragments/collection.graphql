@@ -13,8 +13,8 @@ fragment collection on Collection {
         ...user
     }
     isSet
+    countTracks
     userFavourite
     favouritesCount
-    countTracks
     my
 }

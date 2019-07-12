@@ -40,6 +40,11 @@
     margin-bottom: 28px;
   }
 
+  &__total-tracks-info {
+    display: inline-block;
+    margin-right: 32px;
+  }
+
   &__player {
     flex-grow: 1;
     height: 95px;
