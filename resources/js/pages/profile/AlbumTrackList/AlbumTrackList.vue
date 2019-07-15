@@ -23,7 +23,11 @@
             {{ album.title }}
           </span>
           <span class="album-track-list__album-data">
-            stub: album data
+            <span class="album-track-list__total-tracks-info">
+              {{ totalTracksInfo(album.tracksCount) }}
+            </span>
+            {{ totalDurationInfo('hours', album.tracksTime) }}
+            {{ totalDurationInfo('mins', album.tracksTime) }}
           </span>
 
           <div class="album-track-list__player" />
@@ -74,6 +78,7 @@
       :for-id="albumId"
       :show-remove-button="showRemoveButton"
       @initialized="onTrackListInitialized"
+      @tracks-removed="refetchTotalInfo"
     />
   </div>
 </template>
@@ -91,6 +96,7 @@
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
+import totalTracksInfo from 'mixins/totalInfoFormatting';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -113,7 +119,12 @@ export default {
     AddToFavButton
   },
 
-  mixins: [currentPath, containerPaddingClass, playingTrackId],
+  mixins: [
+    currentPath,
+    containerPaddingClass,
+    playingTrackId,
+    totalTracksInfo
+  ],
 
   data() {
     return {
@@ -187,6 +198,17 @@ export default {
 
     goBack() {
       this.$router.go(-1);
+    },
+
+    refetchTotalInfo() {
+      this.$apollo.query({
+        query: gql.query.ALBUM_TOTAL_INFO,
+        fetchPolicy: 'network-only',
+        variables: { id: this.albumId },
+        error(err) {
+          console.dir(err);
+        }
+      });
     }
   },
 

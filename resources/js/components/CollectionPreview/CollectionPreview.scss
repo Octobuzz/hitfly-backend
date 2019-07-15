@@ -92,7 +92,9 @@ $image-side-mobile: 150px;
   }
 
   &__title-link {
+    word-break: break-word;
     display: block;
+    max-width: 100%;
     padding: 12px;
     color: inherit;
   }

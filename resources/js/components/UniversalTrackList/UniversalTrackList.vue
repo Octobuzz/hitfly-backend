@@ -6,6 +6,7 @@
       :for-id="forId"
       :shown-tracks-count="shownTracksCount"
       @initialized="onTracksContainerInitialized"
+      @tracks-removed="$emit('tracks-removed')"
     >
       <template #default="container">
         <TrackList

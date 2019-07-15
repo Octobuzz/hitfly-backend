@@ -111,8 +111,12 @@ export default {
 
   watch: {
     removesInProcess(count) {
-      if (count === 0 && this.shouldLoadMore) {
-        this.loadMore();
+      if (count === 0) {
+        this.$emit('tracks-removed');
+
+        if (this.shouldLoadMore) {
+          this.loadMore();
+        }
       }
     },
 

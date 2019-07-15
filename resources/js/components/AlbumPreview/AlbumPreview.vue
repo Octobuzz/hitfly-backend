@@ -28,15 +28,16 @@
           item-type="album"
           :item-id="album.id"
         />
-        
+
         <IconButton
+          v-if="album.countTracks > 0"
           :class="[
             'album-preview__play-button',
             'album-preview__icon-button'
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
-          @press="pressEmitted"
+          @press="playAlbum"
         >
           <PlayIcon />
         </IconButton>
@@ -128,7 +129,7 @@ export default {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    pressEmitted(){
+    playAlbum(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {

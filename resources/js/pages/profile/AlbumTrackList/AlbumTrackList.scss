@@ -2,6 +2,7 @@
 
 .album-track-list {
   &__return-button {
+    max-width: 100%;
     margin-bottom: 32px;
   }
 
@@ -19,6 +20,7 @@
   }
 
   &__track-cover {
+    min-width: 160px;
     width: 160px;
     height: 160px;
     border-radius: 4px;
@@ -30,6 +32,7 @@
   }
 
   &__album-title {
+    word-break: break-word;
     margin-bottom: 16px;
   }
 
@@ -38,6 +41,11 @@
     color: $text_color_secondary;
     display: block;
     margin-bottom: 28px;
+  }
+
+  &__total-tracks-info {
+    display: inline-block;
+    margin-right: 32px;
   }
 
   &__player {

@@ -6,6 +6,7 @@
     :hover="hover"
     :modifier="modifier"
     :active="isFavourite"
+    :tooltip="tooltip"
     @press="onPress"
   >
     <span class="add-to-favourites-button__content">
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import refetchMyFavouriteTracksCount from 'mixins/refetchMyFavouriteTracksCount';
 import IconButton, { props as iconButtonProps } from 'components/IconButton.vue';
 import HeartIcon from 'components/icons/HeartIcon.vue';
 import gql from './gql';
@@ -36,6 +38,8 @@ export default {
     IconButton,
     HeartIcon
   },
+
+  mixins: [refetchMyFavouriteTracksCount],
 
   props: {
     ...iconButtonProps,
@@ -57,6 +61,10 @@ export default {
     withCounter: {
       type: Boolean,
       default: false
+    },
+    tooltip: {
+      type: Object,
+      required: false
     }
   },
 
@@ -151,6 +159,8 @@ export default {
         },
 
         update: (store, { data: { addToFavourites } }) => {
+          this.refetchMyFavouriteTracksCount();
+
           if (addToFavourites.id !== -1) {
             this.isButtonDisabled = false;
           }
@@ -192,6 +202,8 @@ export default {
         },
 
         update: (store, { data: { deleteFromFavourite } }) => {
+          this.refetchMyFavouriteTracksCount();
+
           store.writeQuery({
             query: gql.query[itemType.toUpperCase()],
             variables: {

@@ -1,0 +1,7 @@
+query AlbumTotalInfo($id: Int!) {
+    album(id: $id) {
+        id
+        tracksCount
+        tracksTime
+    }
+}
