@@ -97,13 +97,19 @@ p {
     display: block;
   }
 
-  &__bonus-program-header {
+  &__bonus-program-status {
+    display: flex !important;
+    align-items: center;
+  }
 
+  &__bonus-program-button {
+    margin-left: auto;
   }
 
   &__bonus-program-image {
     width: 16px;
     height: 16px;
+    margin-right: 6px;
   }
 
   &__bonus-program-h {
