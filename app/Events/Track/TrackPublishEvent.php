@@ -3,11 +3,11 @@
 namespace App\Events\Track;
 
 use App\Models\Track;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
-class TrackCreatedEvent
+class TrackPublishEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Listeners\BonusProgramEventSubscriber;
-use App\Listeners\ConsoleCommandEventSubsriber;
 use App\Listeners\MainCollectionEventSubscriber;
 use App\Listeners\NotificationEventSubscriber;
 use App\Listeners\TrackListenSubscriber;
@@ -47,7 +46,6 @@ class EventServiceProvider extends ServiceProvider
         BonusProgramEventSubscriber::class,
         NotificationEventSubscriber::class,
         MainCollectionEventSubscriber::class,
-        ConsoleCommandEventSubsriber::class,
         TrackListenSubscriber::class,
     ];
 
