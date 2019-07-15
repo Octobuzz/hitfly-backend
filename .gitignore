@@ -164,3 +164,6 @@ nuxt/dist
 # Service worker
 sw.*
 /app/Http/Controllers/TestController.php
+/track.png
+/get-pip.py
+/_ide_helper.php

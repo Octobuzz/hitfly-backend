@@ -94,7 +94,7 @@ class UpdateTrackMutation extends Mutation
         $trackInfo['music_group_id'] = empty($args['infoTrack']['musicGroup']) ? null : $args['infoTrack']['musicGroup'];
         $trackInfo['singer'] = empty($args['infoTrack']['singer']) ? null : $args['infoTrack']['singer'];
         $trackInfo['track_date'] = empty($args['infoTrack']['trackDate']) ? null : Carbon::create($args['infoTrack']['trackDate'], 1, 1);
-        $trackInfo['state'] = 'fileload';
+        $trackInfo['state'] = Track::CREATE_WAVE;
 
         /** @var Track $track */
         $track = Track::query()->find($args['id']);

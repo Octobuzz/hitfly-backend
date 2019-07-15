@@ -92,4 +92,4 @@ Query
 
 ### WORKFLOW TRACK
 
-    docker exec -it php_docker sudo -u www-data php artisan workflow:dump straight --class App\\Models\\Track
+    docker exec -it php_docker  sudo -u www-data php artisan workflow:dump track --class App\\Models\\Track

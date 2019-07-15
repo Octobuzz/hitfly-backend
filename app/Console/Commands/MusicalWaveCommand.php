@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Events\Track\CreatedMusicWaveEvent;
 use App\Models\Track;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -17,14 +18,14 @@ class MusicalWaveCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'hitfly:musical_wave {track}';
+    protected $signature = 'hitfly:fft:tracks';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Создание спектра сигранала для треков';
 
     /**
      * Create a new command instance.
@@ -41,45 +42,70 @@ class MusicalWaveCommand extends Command
      */
     public function handle()
     {
-        try {
-            $trackId = $this->argument('track');
+        Track::query()
+            ->where('state', '=', Track::CREATE_WAVE)
+            ->chunk(10, function ($tracks) {
+                /** @var Track $track */
+                foreach ($tracks as $track) {
+                    try {
+                        $this->createMusicWaveTrack($track);
+                        $track->state = Track::CONVERT_TRACK;
+                        $track->save();
+                        CreatedMusicWaveEvent::dispatch($track);
+                        continue;
+                    } catch (ProcessFailedException $exception) {
+                        Log::alert($exception->getMessage(), $exception->getTrace());
+                    }
+                    $track->state = Track::PENDING;
+                    $track->save();
+                }
+            });
+    }
 
-            $track = Track::query()->find($trackId);
-            if (true === empty($track)) {
-                return;
-            }
+    private function createMusicWaveTrack(Track $track): bool
+    {
+        $trackFile = Storage::disk('public')->path($track->filename);
 
-            $trackFile = Storage::disk('public')->path($track->filename);
+        $tmpFile = $this->convertTrack($trackFile);
+        $musicWave = $this->createMusicWaveTMP($tmpFile);
 
-            $newNameWav = uniqid().'.wav';
-            $tmpFile = self::TMP_DIR.$newNameWav;
+        $track->music_wave = $musicWave;
 
-            $processConvert = new Process(['/usr/bin/ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
 
-            $processConvert->run();
-            // executes after the command finishes
-            if (!$processConvert->isSuccessful()) {
-                throw new ProcessFailedException($processConvert);
-            }
+        return true;
+    }
 
-            $process = new Process(['/usr/bin/python3', './lib/main.py',  "$tmpFile"]);
-            $process->run();
+    private function convertTrack($trackFile): string
+    {
+        $newNameWav = uniqid().'.wav';
+        $tmpFile = self::TMP_DIR.$newNameWav;
 
-            // executes after the command finishes
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-            $response = json_decode($process->getOutput());
+        $processConvert = new Process(['/usr/bin/ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
 
-            if (null === $response) {
-                return;
-            }
-            $track->music_wave = $response;
-            $track->save();
-
-            CreatedMusicWaveEvent::dispatch($track);
-        } catch (ProcessFailedException $exception) {
-            echo $exception->getMessage();
+        $processConvert->run();
+        // executes after the command finishes
+        if (!$processConvert->isSuccessful()) {
+            throw new ProcessFailedException($processConvert);
         }
+
+        return $tmpFile;
+    }
+
+    private function createMusicWaveTMP($tmpFile): array
+    {
+        $process = new Process(['/usr/bin/python3', './lib/main.py',  "$tmpFile"]);
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        $response = json_decode($process->getOutput());
+
+        if (null === $response) {
+            return [];
+        }
+
+        return $response;
     }
 }

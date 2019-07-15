@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Events\Track\TrackCreatedEvent;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
-use Brexis\LaravelWorkflow\Traits\WorkflowTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,7 +15,14 @@ use Illuminate\Support\Facades\Storage;
 
 class Track extends Model
 {
-    use SoftDeletes, Itemable, PictureField, WorkflowTrait;
+    use SoftDeletes, Itemable, PictureField;
+
+    const FILE_UPLOAD = 'file_upload';
+    const CREATE_WAVE = 'create_wave';
+    const PENDING = 'pending';
+    const CONVERT_TRACK = 'convert_track';
+    const REMOVE = 'remove';
+    const PUBLISHED = 'published';
 
     const MIN_LISTENING = 50;
 
@@ -30,6 +35,13 @@ class Track extends Model
      */
     protected $casts = [
         'music_wave' => 'array',
+    ];
+
+    protected $attributes = [
+        'state' => self::FILE_UPLOAD,
+        'track_name' => 'unknown',
+        'singer' => 'unknown',
+        'song_text' => null,
     ];
 
     protected $fillable = [
@@ -51,10 +63,6 @@ class Track extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-    ];
-
-    protected $dispatchesEvents = [
-//        'created' => TrackCreatedEvent::class,
     ];
 
     public function genre(): BelongsTo
