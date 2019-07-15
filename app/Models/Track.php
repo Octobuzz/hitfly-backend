@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Events\Track\TrackCreatedEvent;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
@@ -12,11 +11,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class Track extends Model
 {
     use SoftDeletes, Itemable, PictureField;
+
+    const FILE_UPLOAD = 'file_upload';
+    const CREATE_WAVE = 'create_wave';
+    const PENDING = 'pending';
+    const CONVERT_TRACK = 'convert_track';
+    const REMOVE = 'remove';
+    const PUBLISHED = 'published';
 
     const MIN_LISTENING = 50;
 
@@ -29,6 +36,13 @@ class Track extends Model
      */
     protected $casts = [
         'music_wave' => 'array',
+    ];
+
+    protected $attributes = [
+        'state' => self::FILE_UPLOAD,
+        'track_name' => 'unknown',
+        'singer' => 'unknown',
+        'song_text' => null,
     ];
 
     protected $fillable = [
@@ -50,10 +64,6 @@ class Track extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-    ];
-
-    protected $dispatchesEvents = [
-//        'created' => TrackCreatedEvent::class,
     ];
 
     public function genre(): BelongsTo
@@ -114,6 +124,10 @@ class Track extends Model
 
     public function getUrl()
     {
+        if (null !== Auth::user() && null !== $this->bitrate_hight) {
+            return Storage::disk('admin')->url($this->bitrate_hight);
+        }
+
         return Storage::disk('admin')->url($this->filename);
     }
 
@@ -152,5 +166,12 @@ class Track extends Model
     public function getAuthor(): ?string
     {
         return $this->singer;
+    }
+
+    public function getPathTrack(): string
+    {
+        $user_id = $this->user_id;
+
+        return "tracks/$user_id";
     }
 }

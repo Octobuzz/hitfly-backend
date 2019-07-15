@@ -89,3 +89,7 @@ Query
 ## Запуск сокета для передачи сообщений
 
     docker exec -it php_docker sudo -u www-data php artisan workman start 
+
+### WORKFLOW TRACK
+
+    docker exec -it php_docker  sudo -u www-data php artisan workflow:dump track --class App\\Models\\Track
