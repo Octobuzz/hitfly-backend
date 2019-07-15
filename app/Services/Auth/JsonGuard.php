@@ -8,10 +8,12 @@
 
 namespace App\Services\Auth;
 
+use App\User;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Traits\Macroable;
 
 class JsonGuard implements Guard
@@ -125,5 +127,15 @@ class JsonGuard implements Guard
         }
 
         return is_bool($token) ? null : $token;
+    }
+
+    public function login(User $user)
+    {
+        Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token, 60 * 60 * 60);
+    }
+
+    public function logout()
+    {
+        $this->request->cookies->remove(self::HEADER_NAME_TOKEN);
     }
 }

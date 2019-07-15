@@ -103,7 +103,8 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        $this->guard('json')->login($user);
+        $this->guard()->login($user);
+        Auth::guard('json')->login($user);
 
         return $this->registered($request, $user)
             ?: redirect('/register-genres');

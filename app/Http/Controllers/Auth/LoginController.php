@@ -40,7 +40,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('guest:json');
     }
 
     /**
@@ -87,6 +86,7 @@ class LoginController extends Controller
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
         Auth::login($user);
+        Auth::guard('json')->login($user);
         if (null !== $user->email && false === $user->hasVerifiedEmail()) {
             VerificationController::sendNotification($user);
         }
