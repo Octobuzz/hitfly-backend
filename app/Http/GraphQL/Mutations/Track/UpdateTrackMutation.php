@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
-use App\Events\Track\TrackCreatedEvent;
 use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
@@ -105,7 +104,6 @@ class UpdateTrackMutation extends Mutation
         }
         $track->save();
 
-        event(new TrackCreatedEvent($track));
 
         return $track;
     }

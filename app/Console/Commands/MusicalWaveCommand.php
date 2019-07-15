@@ -51,6 +51,7 @@ class MusicalWaveCommand extends Command
                         $this->createMusicWaveTrack($track);
                         $track->state = Track::CONVERT_TRACK;
                         $track->save();
+
                         CreatedMusicWaveEvent::dispatch($track);
                         continue;
                     } catch (ProcessFailedException $exception) {
@@ -70,7 +71,6 @@ class MusicalWaveCommand extends Command
         $musicWave = $this->createMusicWaveTMP($tmpFile);
 
         $track->music_wave = $musicWave;
-
 
         return true;
     }

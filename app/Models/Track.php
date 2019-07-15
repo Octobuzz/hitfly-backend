@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class Track extends Model
@@ -123,6 +124,10 @@ class Track extends Model
 
     public function getUrl()
     {
+        if (null !== Auth::user() && null !== $this->bitrate_hight) {
+            return Storage::disk('admin')->url($this->bitrate_hight);
+        }
+
         return Storage::disk('admin')->url($this->filename);
     }
 
@@ -161,5 +166,12 @@ class Track extends Model
     public function getAuthor(): ?string
     {
         return $this->singer;
+    }
+
+    public function getPathTrack(): string
+    {
+        $user_id = $this->user_id;
+
+        return "tracks/$user_id";
     }
 }
