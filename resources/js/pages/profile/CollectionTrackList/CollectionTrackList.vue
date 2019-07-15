@@ -23,7 +23,12 @@
             {{ collection.title }}
           </span>
           <span class="collection-track-list__collection-data">
-            stub: collection data
+            <span class="collection-track-list__total-tracks-info">
+              <!--TODO: change when the api is ready-->
+              {{ totalTracksInfo(collection.countTracks) }}
+            </span>
+            <!--{{ totalDurationInfo('hours', collection.tracksTime) }}-->
+            <!--{{ totalDurationInfo('mins', collection.tracksTime) }}-->
           </span>
 
           <div class="collection-track-list__player" />
@@ -74,6 +79,7 @@
       :for-id="collectionId"
       :show-remove-button="showRemoveButton"
       @initialized="onTrackListInitialized"
+      @tracks-removed="refetchTotalInfo"
     />
   </div>
 </template>
@@ -95,6 +101,7 @@
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
+import totalTracksInfo from 'mixins/totalInfoFormatting';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -117,7 +124,12 @@ export default {
     AddToFavButton
   },
 
-  mixins: [currentPath, containerPaddingClass, playingTrackId],
+  mixins: [
+    currentPath,
+    containerPaddingClass,
+    playingTrackId,
+    totalTracksInfo
+  ],
 
   data() {
     return {
@@ -229,6 +241,17 @@ export default {
 
     goBack() {
       this.$router.go(-1);
+    },
+
+    refetchTotalInfo() {
+      this.$apollo.query({
+        query: gql.query.COLLECTION_TOTAL_INFO,
+        fetchPolicy: 'network-only',
+        variables: { id: this.collectionId },
+        error(err) {
+          console.dir(err);
+        }
+      });
     }
   },
 

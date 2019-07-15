@@ -1,23 +1,29 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: georgio
+ * Date: 12.02.19
+ * Time: 13:33.
+ */
 
 namespace App\Admin\Controllers;
 
-use App\Models\Collection;
-use App\Models\Track;
-use Encore\Admin\Controllers\HasResourceActions;
 use App\Http\Controllers\Controller;
+use App\Models\ArtistProfile;
+use App\Models\Genre;
 use App\User;
+use Carbon\Carbon;
+use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Storage;
 
-class CollectionController extends Controller
+class ArtistController extends Controller
 {
     use HasResourceActions;
-    const ROUTE_NAME = 'ROUTE_COLLECT';
+    const ROUTE_NAME = 'ROUTE_ARTIST';
 
     /**
      * Index interface.
@@ -29,8 +35,8 @@ class CollectionController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Коллекции')
-            ->description('список')
+            ->header('Профили артистов')
+            ->description('профили артистов')
             ->body($this->grid())
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME)]
@@ -48,8 +54,8 @@ class CollectionController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Коллекции')
-            ->description('просмотр')
+            ->header('Просмотр')
+            ->description('профили артистов')
             ->body($this->detail($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
@@ -68,8 +74,8 @@ class CollectionController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Коллекции')
-            ->description('редактирование')
+            ->header('Редактирование')
+            ->description('профили артистов')
             ->body($this->form()->edit($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
@@ -87,8 +93,8 @@ class CollectionController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Коллекции')
-            ->description('создание')
+            ->header('Создание')
+            ->description('профили артистов')
             ->body($this->form())
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
@@ -103,15 +109,22 @@ class CollectionController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Collection());
+        $grid = new Grid(new ArtistProfile());
 
         $grid->id('#');
-        $grid->title('Заголовок');
-        $grid->image('Изображение');
+        $grid->user_id('Пользователь')->display(function ($userId) {
+            $model = User::find($userId);
+            if (true == empty($model)) {
+                return null;
+            }
 
-        $grid->user_id('Создатель коллекции')->display(function ($userId) {
-            return User::find($userId)['username'];
+            return $model->username;
         });
+        $grid->career_start('Дата начала карьеры')->display(function ($date) {
+            return Carbon::parse($date)->format('Y');
+        });
+        $grid->description('Описание');
+        $grid->deleted_at(trans('admin.deleted_at'));
 
         return $grid;
     }
@@ -125,14 +138,24 @@ class CollectionController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Collection::findOrFail($id));
+        $show = new Show(ArtistProfile::findOrFail($id));
 
         $show->id('#');
-        $show->title('Заголовок');
-        $show->image('Изображение');
-        $show->user_id('ID пользователя');
-        $show->is_admin('Подборка');
-        //как показать связанные треки?
+        $show->user_id('Пользователь')->display(function ($userId) {
+            $model = User::find($userId);
+            if (true == empty($model)) {
+                return null;
+            }
+
+            return $model->username;
+        });
+        $show->career_start('Дата начала карьеры')->display(function ($date) {
+            return Carbon::parse($date)->format('Y');
+        });
+        $show->description('Описание');
+        $show->genres('Жанры')->as(function ($genres) {
+            return $genres->pluck('name');
+        })->label();
 
         return $show;
     }
@@ -144,32 +167,18 @@ class CollectionController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Collection());
+        $form = new Form(new ArtistProfile());
 
-        $form->text('title', 'Заголовок')->required();
-        $form->image('image', 'Изображение')->uniqueName();
+        $form->text('id')->disable();
         $form->select('user_id', 'Пользователь')->options(function ($id) {
             $user = User::find($id);
             if ($user) {
                 return [$user->id => $user->username];
             }
         })->ajax('/admin/api/users');
-        $states = [
-            'on' => ['value' => 1, 'text' => 'Подборка', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => 'Плейлист', 'color' => 'danger'],
-        ];
-        $form->switch('is_admin', 'Подборка')->states($states);
-
-        $form->listbox('tracks', 'Треки')->options(function (?array $selected) {
-            return Track::all()->pluck('track_name', 'id');
-        });
-
-        $form->saving(function (Form $form) {
-            if (null !== $form->image) {
-                Storage::disk('public')->delete($form->model()->getOriginal('image'));
-            }
-            $form->image('image')->move('collections/'.$form->user_id)->uniqueName();
-        });
+        $form->date('career_start', 'Дата начала карьеры')->default(date('Y'));
+        $form->textarea('description', 'Описание')->rules(['required']);
+        $form->multipleSelect('genres', 'Жанры')->options(Genre::all()->pluck('name', 'id'))->rules(['required']);
 
         return $form;
     }
