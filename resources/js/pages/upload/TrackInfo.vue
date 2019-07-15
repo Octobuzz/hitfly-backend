@@ -280,8 +280,7 @@
           update(data) {
             let myData = {id: 0, name: data.myProfile.username};
             this.bands = [myData, ...data.myProfile.musicGroups];
-            console.log(this.bands);
-            // this.trackInfo.selectedArtist = myData.name;
+            this.trackInfo.selectedArtist = myData.name;
           }
         }
       }

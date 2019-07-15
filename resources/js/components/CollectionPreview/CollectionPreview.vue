@@ -38,7 +38,8 @@
           :item-id="collection.id"
         />
 
-        <IconButton
+        <iconButton
+          v-if="collection.countTracks > 0"
           :class="[
             'collection-preview__play-button',
             'collection-preview__icon-button'
@@ -125,14 +126,14 @@ export default {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    pressEmitted(){
+    playCollection(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {
           pageLimit: 30,
           pageNumber: 1,
           filters: {
-            albumId: this.collectionId
+            collectionId: this.collectionId
           }
         },
       })
@@ -163,7 +164,6 @@ export default {
         },
         update: ({ collection }) => {
           this.isLoading = false;
-
           return collection;
         },
         error: (error) => {

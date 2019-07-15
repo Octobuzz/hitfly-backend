@@ -6,6 +6,7 @@
     :hover="hover"
     :modifier="modifier"
     :active="isFavourite"
+    :tooltip="tooltip"
     @press="onPress"
   >
     <span class="add-to-favourites-button__content">
@@ -57,6 +58,10 @@ export default {
     withCounter: {
       type: Boolean,
       default: false
+    },
+    tooltip: {
+      type: Object,
+      required: false
     }
   },
 
