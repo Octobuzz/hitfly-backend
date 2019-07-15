@@ -38,7 +38,8 @@
           :item-id="collection.id"
         />
 
-        <IconButton
+        <iconButton
+          v-if="collection.countTracks > 0"
           :class="[
             'collection-preview__play-button',
             'collection-preview__icon-button'
@@ -132,7 +133,7 @@ export default {
           pageLimit: 30,
           pageNumber: 1,
           filters: {
-            albumId: this.collectionId
+            collectionId: this.collectionId
           }
         },
       })
@@ -163,7 +164,6 @@ export default {
         },
         update: ({ collection }) => {
           this.isLoading = false;
-
           return collection;
         },
         error: (error) => {
