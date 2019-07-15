@@ -21,7 +21,7 @@
         Главная
       </router-link>
       <router-link
-        to="/"
+        to="/sets"
         :class="[
           'button',
           'head-nav-item',
@@ -50,7 +50,7 @@
         Загрузить музыку
       </router-link>
 
-      <span class="head-right-item">
+      <span class="head-right-item app-header__loupe-icon">
         <IconButton>
           <LoupeIcon />
         </IconButton>
@@ -198,3 +198,9 @@ export default {
   lang="scss"
   src="../../../../sass/app.scss"
 />
+
+<style scoped>
+.app-header__loupe-icon::v-deep svg {
+  fill: transparent !important;
+}
+</style>
