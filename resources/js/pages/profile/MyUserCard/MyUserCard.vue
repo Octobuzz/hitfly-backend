@@ -315,9 +315,9 @@ import gql from './gql';
 
 const formatting = {
   bonuses: {
-    1: 'поклонник',
-    234: 'поклонника',
-    567890: 'поклонников'
+    1: 'бонус',
+    234: 'бонуса',
+    567890: 'бонусов'
   },
   days: {
     1: 'день в Hitfly',
@@ -530,8 +530,10 @@ export default {
           nextLevelImage: bonusProgramLvlMap[bpLevel].nextLevelImage,
           nextLevelText: bonusProgramLvlMap[bpLevel].nextLevelText,
           points: bpPoints,
-          pointsToNextLevel: bonusProgramLvlMap[bpLevel].nextLevelPoints
-            - bpPoints,
+          pointsToNextLevel: Math.max(
+            0,
+            bonusProgramLvlMap[bpLevel].nextLevelPoints - bpPoints
+          ),
           daysPassed: bpDaysPassed
         };
 
