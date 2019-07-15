@@ -96,6 +96,30 @@ p {
     display: block;
   }
 
+  &__bonus-program-header {
+
+  }
+
+  &__bonus-program-image {
+    width: 16px;
+    height: 16px;
+  }
+
+  &__bonus-program-h {
+    display: inline;
+  }
+
+  &__bonus-program-p {
+    color: $text_color_primary;
+    font-size: 12px;
+    display: block;
+    padding-bottom: 4px;
+
+    &:nth-child(2) {
+      margin-bottom: 12px;
+    }
+  }
+
   &__bonus-program {
     display: flex;
     width: 100%;

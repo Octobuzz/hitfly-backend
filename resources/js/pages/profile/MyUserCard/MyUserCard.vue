@@ -223,14 +223,60 @@
       </div>
     </div>
 
-<!--    <div :class="itemContainerClass">-->
-<!--      level: {{ myProfile.bonusProgram.level }};-->
-<!--      <img :src="myProfile.bonusProgram.image" alt="Level image">-->
-<!--      daysPassed: {{ myProfile.bonusProgram.daysPassed }};-->
-<!--      points: {{ myProfile.bonusProgram.points }};-->
-<!--      progressPct: {{ myProfile.bonusProgram.progressPct }};-->
-<!--      pointsToNextLevel: {{ myProfile.bonusProgram.pointsToNextLevel }}-->
-<!--    </div>-->
+    <div :class="itemContainerClass">
+      <p class="user-card__bonus-program-p">
+        <img
+          :src="myProfile.bonusProgram.image"
+          alt="Bonus program level"
+          class="user-card__bonus-program-image"
+        >
+        <span class="h3 user-card__bonus-program-h">
+          {{ myProfile.bonusProgram.level }}
+        </span>
+      </p>
+
+      <p
+        v-if="myProfile.bonusProgram.pointsToNextLevel"
+        class="user-card__bonus-program-p"
+      >
+        <span>
+          до
+          <img
+            :src="myProfile.bonusProgram.nextLevelImage"
+            alt="Bonus program level"
+            class="user-card__bonus-program-image"
+          >
+          {{ myProfile.bonusProgram.nextLevelText }}
+          осталось
+          <span class="h5 user-card__bonus-program-h">
+            {{ myProfile.bonusProgram.pointsToNextLevel }} б
+          </span>
+        </span>
+      </p>
+
+      <div class="user-card__bonus-program">
+        <span class="user-card__bonus-program-followers">
+          <BpFollowers />
+          <span>
+            {{ myProfile.bonusProgram.points || '0' }}
+            {{ format('bonuses', myProfile.bonusProgram.points || '0') }}
+          </span>
+        </span>
+
+        <span class="user-card__bonus-program-days">
+          <BpDaysPassed />
+          <span>
+            {{ myProfile.bonusProgram.daysPassed || '0' }}
+            {{ format('days', myProfile.bonusProgram.daysPassed || '0') }}
+          </span>
+        </span>
+        <span class="user-card__bonus-program-favourites">
+          <BpFavouriteTracks />
+  <!--        {{ user.favouritesTrackCount }}-->
+  <!--        {{ format('favourites', user.favouritesTrackCount) }}-->
+        </span>
+      </div>
+    </div>
 
     <div
       v-if="myProfile.activity"
@@ -258,41 +304,72 @@ import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 import NoteIcon from 'components/icons/NoteIconGrey.vue';
+import BpFollowers from 'components/icons/BpFollowers.vue';
+import BpDaysPassed from 'components/icons/BpDaysPassed.vue';
+import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
 import levelNoviceImg from 'images/level-novice.svg';
 import levelFanImg from 'images/level-fan.svg';
 import levelConnoisseurImg from 'images/level-connoisseur.svg';
 import levelMusicLoverImg from 'images/level-music-lover.svg';
 import gql from './gql';
 
+const formatting = {
+  bonuses: {
+    1: 'поклонник',
+    234: 'поклонника',
+    567890: 'поклонников'
+  },
+  days: {
+    1: 'день в Hitfly',
+    234: 'дня в Hitfly',
+    567890: 'дней Hitfly'
+  },
+  favourites: {
+    1: 'любимая песня',
+    234: 'любимые песни',
+    567890: 'любимых песен'
+  }
+};
+
 const bonusProgramLvlMap = {
   LEVEL_NOVICE: {
     title: 'Новичек',
     image: levelNoviceImg,
     nextLevelImage: levelFanImg,
-    nextLevelPoints: 400
+    nextLevelText: 'Любителя',
+    nextLevelPoints: 400,
+    slug: 'LEVEL_NOVICE'
   },
   LEVEL_AMATEUR: {
     title: 'Любитель',
     image: levelFanImg,
     nextLevelImage: levelConnoisseurImg,
-    nextLevelPoints: 2500
+    nextLevelText: 'Знатока жанра',
+    nextLevelPoints: 2500,
+    slug: 'LEVEL_AMATEUR'
   },
   LEVEL_CONNOISSEUR_OF_THE_GENRE: {
     title: 'Знаток жанра',
     image: levelConnoisseurImg,
     nextLevelImage: levelMusicLoverImg,
-    nextLevelPoints: 5000
+    nextLevelText: 'Супер меломана',
+    nextLevelPoints: 5000,
+    slug: 'LEVEL_CONNOISSEUR_OF_THE_GENRE'
   },
   LEVEL_SUPER_MUSIC_LOVER: {
     title: 'Супер меломан',
     image: levelMusicLoverImg,
     nextLevelImage: null,
-    nextLevelPoints: null
+    nextLevelPoints: null,
+    slug: 'LEVEL_SUPER_MUSIC_LOVER'
   }
 };
 
 export default {
   components: {
+    BpFollowers,
+    BpDaysPassed,
+    BpFavouriteTracks,
     IconButton,
     PencilIcon,
     ArrowIcon,
@@ -399,6 +476,20 @@ export default {
       }
 
       this.$router.push('/profile/create-group');
+    },
+
+    format(type, count) {
+      const lastDigit = +count % 10;
+      let lastDigitSet = 567890;
+
+      if (lastDigit === 1) {
+        lastDigitSet = 1;
+      }
+      if (lastDigit >= 2 && lastDigit <= 4) {
+        lastDigitSet = 234;
+      }
+
+      return formatting[type][lastDigitSet];
     }
   },
 
@@ -415,7 +506,6 @@ export default {
           musicGroups,
           roles,
           dateRegister,
-          bpProgressPercent: bpProgressPct,
           bpLevelBonusProgram: bpLevel,
           bpDaysInProgram: bpDaysPassed,
           bpPoints
@@ -434,12 +524,12 @@ export default {
         this.myProfile.bonusProgram = {
           level: bonusProgramLvlMap[bpLevel].title,
           image: bonusProgramLvlMap[bpLevel].image,
-          nextLevelImage: '',
+          nextLevelImage: bonusProgramLvlMap[bpLevel].nextLevelImage,
+          nextLevelText: bonusProgramLvlMap[bpLevel].nextLevelText,
           points: bpPoints,
           pointsToNextLevel: bonusProgramLvlMap[bpLevel].nextLevelPoints
             - bpPoints,
-          daysPassed: bpDaysPassed,
-          progressPct: bpProgressPct
+          daysPassed: bpDaysPassed
         };
 
         if (location && location.title) {
