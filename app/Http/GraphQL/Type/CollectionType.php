@@ -91,6 +91,22 @@ class CollectionType extends GraphQLType
                 },
                 'selectable' => false,
             ],
+            'tracksTime' => [
+                'type' => Type::float(),
+                'description' => 'Время треков коллекции(плейлисте)',
+                'resolve' => function ($model) {
+                    return $model->tracks()->sum('length');
+                },
+                'selectable' => false,
+            ],
+            'tracksCount' => [
+                'type' => Type::float(),
+                'description' => 'Количество треков коллекции(плейлисте)',
+                'resolve' => function ($model) {
+                    return $model->tracks()->count();
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }

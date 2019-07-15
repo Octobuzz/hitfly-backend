@@ -142,6 +142,14 @@ class UserInterface extends InterfaceType
                     return $model->likesTrack()->count();
                 },
             ],
+            'favouritesTrackTime' => [
+                'type' => Type::float(),
+                'description' => 'Время моих избранных треков',
+                'resolve' => function (User $model) {
+                    return $model->favouritesTracks()->sum('length');
+                },
+                'selectable' => false,
+            ],
         ];
     }
 

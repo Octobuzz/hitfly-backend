@@ -94,6 +94,23 @@ class MyProfileType extends GraphQLType
                     },
                     'selectable' => false,
                 ],
+
+                'myTracksCount' => [
+                    'type' => Type::int(),
+                    'description' => 'Количество моих треков',
+                    'resolve' => function ($model) {
+                        return  $model->tracks->count();
+                    },
+                    'selectable' => false,
+                ],
+                'myTracksTime' => [
+                    'type' => Type::float(),
+                    'description' => 'Время моих треков',
+                    'resolve' => function ($model) {
+                        return  $model->myTracksTime();
+                    },
+                    'selectable' => false,
+                ],
             ]
         );
     }
