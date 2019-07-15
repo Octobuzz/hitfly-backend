@@ -1,20 +1,24 @@
 <template>
   <div class="my-music">
     <UniversalTracksContainer
+      ref="myTracksContainer"
       for-type="user"
       for-id="me"
-      :shown-tracks-count="5"
+      :shown-tracks-count="shownTracksCount"
       @initialized="onTracksContainerInitialized"
+      @tracks-removed="maybeLoadMoreTracks"
     >
       <template #default="container">
         <TrackList
           v-if="container.trackIdList.length > 0"
+          ref="myTracksList"
           :class="[
             containerPaddingClass,
             'my-music__my-tracks'
           ]"
           :track-id-list="container.trackIdList"
           :show-remove-button="true"
+          @remove-track="callContainerRemove"
         >
           <template #header>
             <div class="my-music__my-tracks-header">
@@ -97,10 +101,22 @@ export default {
     UniversalCollectionsContainer
   },
 
+  data() {
+    return {
+      shownTracksCount: 5
+    };
+  },
+
   computed: {
     containerPaddingClass() {
       return this.$store.getters['appColumns/paddingClass'];
-    }
+    },
+    myTracksContainer() {
+      return this.$refs.myTracksContainer;
+    },
+    myTracksList() {
+      return this.$refs.myTracksList;
+    },
   },
 
   beforeRouteLeave(to, from, next) {
@@ -127,6 +143,14 @@ export default {
           initialized: true
         }
       });
+    },
+    callContainerRemove(trackId) {
+      this.myTracksContainer.callRemoveTrack(trackId);
+    },
+    maybeLoadMoreTracks() {
+      if (this.myTracksList.trackIdList.length < this.shownTracksCount) {
+        this.myTracksContainer.callLoadMore();
+      }
     }
   }
 };
