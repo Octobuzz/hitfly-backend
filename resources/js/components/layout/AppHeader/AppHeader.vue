@@ -21,7 +21,7 @@
         Главная
       </router-link>
       <router-link
-        to="/"
+        to="/sets"
         :class="[
           'button',
           'head-nav-item',
