@@ -272,8 +272,8 @@
         </span>
         <span class="user-card__bonus-program-favourites">
           <BpFavouriteTracks />
-  <!--        {{ user.favouritesTrackCount }}-->
-  <!--        {{ format('favourites', user.favouritesTrackCount) }}-->
+          {{ myProfile.favouriteTracksCount }}
+          {{ format('favourites', myProfile.favouriteTracksCount) }}
         </span>
       </div>
     </div>
@@ -390,6 +390,7 @@ export default {
         name: '',
         location: null,
         followersCount: '',
+        favouriteTracksCount: '0',
         activity: '',
         playedGenres: [],
         musicGroups: [],
@@ -505,6 +506,7 @@ export default {
           genresPlay,
           musicGroups,
           roles,
+          favoriteSongsCount,
           dateRegister,
           bpLevelBonusProgram: bpLevel,
           bpDaysInProgram: bpDaysPassed,
@@ -520,6 +522,7 @@ export default {
         this.myProfile.name = username;
         this.myProfile.playedGenres = genresPlay;
         this.myProfile.musicGroups = musicGroups;
+        this.myProfile.favouriteTracksCount = favoriteSongsCount;
 
         this.myProfile.bonusProgram = {
           level: bonusProgramLvlMap[bpLevel].title,
