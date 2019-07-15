@@ -15,6 +15,7 @@
   align-items: center;
   flex-direction: column;
   position: fixed;
+  max-width: 100%;
   max-height: 400px;
   top: 10%;
   left: 50%;
@@ -26,6 +27,7 @@
     font-family: 'Gotham Pro', sans-serif;
     font-size: 14px;
     color: white;
+    word-break: break-word;
     position: relative;
     padding: 15px 60px 15px 15px;
     margin-bottom: 10px;
