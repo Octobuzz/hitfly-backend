@@ -4,7 +4,7 @@
     @drop="onDrop"
     >
     <div class="up-page__top-wrapper">
-      <h1 class="up-page__title">Переместите сюда свою песню или альбом</h1>
+      <h1 class="up-page__title">Переместите сюда свою песню</h1>
       <UploadButton
         class="up-page__button"
         modifier="secondary"

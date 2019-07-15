@@ -28,8 +28,9 @@
           item-type="album"
           :item-id="album.id"
         />
-        
+
         <IconButton
+          v-if="album.countTracks > 0"
           :class="[
             'album-preview__play-button',
             'album-preview__icon-button'

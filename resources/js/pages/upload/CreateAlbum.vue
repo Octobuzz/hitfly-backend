@@ -104,12 +104,25 @@
             return true;
           }
         });
+        let singer = null;
+        let band = null;
+        let bandId = null;
+        if(this.bands[0].name === this.newAlbum.author){
+          singer = this.newAlbum.author;
+        }else{
+          band = this.bands.filter((band) => {
+            return band.name === this.newAlbum.author;
+          });
+          bandId = band[0].id;
+          singer = band[0].name;
+        }
         this.$apollo.mutate({
           variables: {
             album: {
               type: format[0].value,
               title: this.newAlbum.name,
-              author: this.newAlbum.author,
+              author: singer,
+              musicGroup: bandId,
               year: this.newAlbum.year,
               genres: genres,
               author: this.newAlbum.author,
@@ -120,11 +133,14 @@
             createAlbum (album: $album, cover: $cover) {
               title
               id
+              musicGroup{
+                id
+              }
+              author
               cover(sizes:[size_48x48]){size, url}
             }
           }`
         }).then((response) => {
-          console.log(response.data);
           this.$emit('changeTab');
           this.$emit('createAlbum');
         }).catch((error) => {

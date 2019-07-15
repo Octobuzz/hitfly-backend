@@ -65,6 +65,7 @@
         item-type="track"
         :item-id="currentTrack.id"
         :with-counter="true"
+        :tooltip="tooltip.like"
       />
 
       <span @click="toggleLoop = !toggleLoop">
@@ -85,6 +86,7 @@
           <IconButton
             @click="volumeToggle = !volumeToggle"
             :active="volumeToggle"
+            :tooltip="tooltip.volume"
           >
             <SpeakerIcon />
           </IconButton>
@@ -144,6 +146,9 @@ export default {
       },
       like: {
         content: 'Мне нравится'
+      },
+      volume: {
+        content: 'Громкость'
       }
     }
   }),
