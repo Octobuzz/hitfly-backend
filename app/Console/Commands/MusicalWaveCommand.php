@@ -80,7 +80,7 @@ class MusicalWaveCommand extends Command
         $newNameWav = uniqid().'.wav';
         $tmpFile = self::TMP_DIR.$newNameWav;
 
-        $processConvert = new Process(['/usr/bin/ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
+        $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
 
         $processConvert->run();
         // executes after the command finishes
