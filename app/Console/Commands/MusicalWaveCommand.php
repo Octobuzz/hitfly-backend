@@ -80,7 +80,7 @@ class MusicalWaveCommand extends Command
         $newNameWav = uniqid().'.wav';
         $tmpFile = self::TMP_DIR.$newNameWav;
 
-        $processConvert = new Process(['/usr/bin/ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
+        $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
 
         $processConvert->run();
         // executes after the command finishes
@@ -93,7 +93,7 @@ class MusicalWaveCommand extends Command
 
     private function createMusicWaveTMP($tmpFile): array
     {
-        $process = new Process(['/usr/bin/python3', './lib/main.py',  "$tmpFile"]);
+        $process = new Process(['/usr/bin/python3.5', './lib/main.py',  "$tmpFile"]);
         $process->run();
 
         // executes after the command finishes

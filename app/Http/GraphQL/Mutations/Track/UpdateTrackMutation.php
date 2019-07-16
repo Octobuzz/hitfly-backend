@@ -104,7 +104,6 @@ class UpdateTrackMutation extends Mutation
         }
         $track->save();
 
-
         return $track;
     }
 

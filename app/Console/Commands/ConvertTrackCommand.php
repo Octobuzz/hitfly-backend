@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\Track\TrackPublishEvent;
 use App\Models\Track;
 use getID3;
 use Illuminate\Console\Command;
@@ -50,20 +51,26 @@ class ConvertTrackCommand extends Command
                     $info = $driver->analyze(Storage::disk('public')->path($track->filename));
                     try {
                         $oldName = $track->filename;
-                        if ($info['audio']['bitrate'] > 192000) {
-                            $this->convertToMp3($track);
-                        }
-                        $this->convertToStandartmp3($track);
-                        $track->state = Track::PUBLISHED;
+                        if (isset($info['audio'])) {
+                            if ($info['audio']['bitrate'] > 192000) {
+                                $this->convertToMp3($track);
+                            }
 
-                        if ($oldName !== $track->filename) {
-                            Storage::disk('public')->delete($oldName);
+                            $this->convertToStandartmp3($track);
+                            $track->state = Track::PUBLISHED;
+
+                            if ($oldName !== $track->filename) {
+                                Storage::disk('public')->delete($oldName);
+                            }
+                        } else {
+                            $track->state = Track::PENDING;
                         }
                     } catch (ProcessFailedException $exception) {
                         $track->state = Track::PENDING;
                     }
 
                     $track->save();
+                    event(new TrackPublishEvent($track));
                 }
             });
     }
@@ -80,7 +87,7 @@ class ConvertTrackCommand extends Command
 
         $trackFile = Storage::disk('public')->path($track->filename);
 
-        $processConvert = new Process(['/usr/bin/ffmpeg',  '-i', "$trackFile", '-ab', '192k', '-map_metadata', '0', '-id3v2_version', '3', "$tmpFile192"]);
+        $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile", '-ab', '192k', '-map_metadata', '0', '-id3v2_version', '3', "$tmpFile192"]);
         $processConvert->run();
         // executes after the command finishes
         if (!$processConvert->isSuccessful()) {
@@ -102,7 +109,7 @@ class ConvertTrackCommand extends Command
 
         $trackFile = Storage::disk('public')->path($track->filename);
 
-        $processConvert = new Process(['/usr/bin/ffmpeg',  '-i', "$trackFile", '-ab', '320k', '-map_metadata', '0', '-id3v2_version', '3', "$tmpFile320"]);
+        $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile", '-ab', '320k', '-map_metadata', '0', '-id3v2_version', '3', "$tmpFile320"]);
         $processConvert->run();
         // executes after the command finishes
         if (!$processConvert->isSuccessful()) {
