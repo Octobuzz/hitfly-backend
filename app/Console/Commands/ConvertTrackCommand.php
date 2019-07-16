@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\Track\TrackPublishEvent;
 use App\Models\Track;
 use getID3;
 use Illuminate\Console\Command;
@@ -59,11 +60,13 @@ class ConvertTrackCommand extends Command
                         if ($oldName !== $track->filename) {
                             Storage::disk('public')->delete($oldName);
                         }
+
                     } catch (ProcessFailedException $exception) {
                         $track->state = Track::PENDING;
                     }
 
                     $track->save();
+                    event(new TrackPublishEvent($track));
                 }
             });
     }
