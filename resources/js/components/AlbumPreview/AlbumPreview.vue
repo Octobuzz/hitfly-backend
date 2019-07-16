@@ -30,7 +30,7 @@
         />
 
         <IconButton
-          v-if="album.countTracks > 0"
+          v-if="tracksCount > 0"
           :class="[
             'album-preview__play-button',
             'album-preview__icon-button'
@@ -117,12 +117,16 @@ export default {
         .filter(cover => cover.size === 'size_120x120')[0].url;
     },
 
+    tracksCount() {
+      return this.album.tracksCount;
+    },
+
     titleLink() {
       return this.$store.getters['links/album'](
         this.$route,
         this.albumId
       );
-    }
+    },
   },
 
   methods: {

@@ -74,6 +74,7 @@ export default {
         })
         .then(response => {
           this.$store.commit('player/pickTrack', response.data.track);
+          this.$store.commit('player/pickPlaylist', this.trackIdList);
         })
         .catch(error => {
           console.dir(error)
