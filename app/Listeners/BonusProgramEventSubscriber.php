@@ -51,6 +51,9 @@ class BonusProgramEventSubscriber
         if (null === $bonusType) {
             return;
         }
+        if (null === $user->purse) {
+            return;
+        }
         $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
         $countOperation = Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id)->count();
         if (0 === $countOperation) {

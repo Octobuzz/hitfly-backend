@@ -51,16 +51,20 @@ class ConvertTrackCommand extends Command
                     $info = $driver->analyze(Storage::disk('public')->path($track->filename));
                     try {
                         $oldName = $track->filename;
-                        if ($info['audio']['bitrate'] > 192000) {
-                            $this->convertToMp3($track);
-                        }
-                        $this->convertToStandartmp3($track);
-                        $track->state = Track::PUBLISHED;
+                        if (isset($info['audio'])) {
+                            if ($info['audio']['bitrate'] > 192000) {
+                                $this->convertToMp3($track);
+                            }
 
-                        if ($oldName !== $track->filename) {
-                            Storage::disk('public')->delete($oldName);
-                        }
+                            $this->convertToStandartmp3($track);
+                            $track->state = Track::PUBLISHED;
 
+                            if ($oldName !== $track->filename) {
+                                Storage::disk('public')->delete($oldName);
+                            }
+                        } else {
+                            $track->state = Track::PENDING;
+                        }
                     } catch (ProcessFailedException $exception) {
                         $track->state = Track::PENDING;
                     }
