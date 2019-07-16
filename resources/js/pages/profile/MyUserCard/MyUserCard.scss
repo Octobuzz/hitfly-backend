@@ -37,6 +37,7 @@ p {
   &__profile-name {
     font-family: 'Gotham Pro Bold', sans-serif;
     font-size: 24px;
+    word-break: break-word;
     color: $text_color_primary;
     margin-bottom: 4px;
   }
@@ -96,13 +97,19 @@ p {
     display: block;
   }
 
-  &__bonus-program-header {
+  &__bonus-program-status {
+    display: flex !important;
+    align-items: center;
+  }
 
+  &__bonus-program-button {
+    margin-left: auto;
   }
 
   &__bonus-program-image {
     width: 16px;
     height: 16px;
+    margin-right: 6px;
   }
 
   &__bonus-program-h {
@@ -215,6 +222,7 @@ p {
 
   &__group-cover,
   &__user-avatar {
+    word-break: break-word;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -238,6 +246,7 @@ p {
   &__username {
     font-size: 14px;
     font-family: 'Gotham Pro Semibold', sans-serif;
+    word-break: break-word;
     display: block;
     width: 100%;
     margin-bottom: 3px;

@@ -170,7 +170,7 @@ export default {
 
       return genresPlay.map(genre => (
         genre.name[0].toUpperCase() + genre.name.slice(1)
-      )).join(', ').slice(0, -2);
+      )).join(', ');
     }
   },
 
