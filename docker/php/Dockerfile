@@ -33,5 +33,6 @@ RUN apt install ffmpeg -y
 ARG base_env
 RUN usermod --non-unique --uid ${base_env} www-data
 RUN groupmod -g ${base_env} www-data
+RUN apt-get install graphviz -y
 
 

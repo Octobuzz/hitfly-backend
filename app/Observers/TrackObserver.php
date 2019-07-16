@@ -41,9 +41,9 @@ class TrackObserver
     /**
      * Handle the collection "updated" event.
      *
-     * @param \App\Models\Track $collection
+     * @param \App\Models\Track $track
      */
-    public function updated(Track $collection)
+    public function updated(Track $track)
     {
     }
 

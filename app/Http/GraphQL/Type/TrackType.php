@@ -125,6 +125,18 @@ class TrackType extends GraphQLType
                 },
                 'selectable' => false,
             ],
+            'commentedByMe' => [
+                'type' => Type::boolean(),
+                'description' => 'Откомментирован мной',
+                'resolve' => function ($model) {
+                    if ($model->comments()->where('user_id', Auth::user()->id)->count() > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }

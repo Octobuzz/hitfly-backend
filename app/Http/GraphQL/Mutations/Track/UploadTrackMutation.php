@@ -40,12 +40,8 @@ class UploadTrackMutation extends Mutation
         $name = Storage::disk('public')->putFile("tracks/$user->id", $file);
 
         $track = Track::query()->create([
-            'track_name' => 'newTrack',
-            'singer' => '',
-            'song_text' => '',
             'track_date' => new \DateTime(),
             'track_hash' => hash_file('md5', $file),
-            'state' => 'fileload',
             'user_id' => $user->id,
             'filename' => $name,
         ]);

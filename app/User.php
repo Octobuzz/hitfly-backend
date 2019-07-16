@@ -19,7 +19,6 @@ use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -126,9 +125,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         $this->access_token = md5(microtime());
     }
 
-    public function tracks(): BelongsToMany
+    public function tracks(): HasMany
     {
-        return $this->belongsToMany(Track::class, 'user_track', 'user_id', 'track_id')->withPivot('listen_counts')->withTimestamps();
+        return $this->hasMany(Track::class, 'user_id');
     }
 
     public function musicGroups(): HasMany
@@ -285,5 +284,15 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function followers()
     {
         return $this->morphMany(Watcheables::class, 'watcheable');
+    }
+
+    public function myTracksTime(): float
+    {
+        return $this->tracks()->sum('length');
+    }
+
+    public function favouritesTracks()
+    {
+        return $this->morphedByMany(Track::class, 'favouriteable', 'favourites')->withTimestamps();
     }
 }
