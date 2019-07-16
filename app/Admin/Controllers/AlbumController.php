@@ -69,8 +69,8 @@ class AlbumController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('Редактирование')
+            ->description('редактирование альбома')
             ->body($this->form()->edit($id))
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
@@ -107,7 +107,7 @@ class AlbumController extends Controller
         $grid = new Grid(new Album());
 
         $grid->id('#');
-        $grid->title('Назавние');
+        $grid->title('Название');
         $grid->author('Автор');
         $grid->year('Год');
         $grid->likes('Лайки');
