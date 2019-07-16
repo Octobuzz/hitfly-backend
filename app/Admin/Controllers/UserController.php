@@ -186,7 +186,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->text('username', 'Имя пользователя')->rules('required');
         $form->text('email', 'Email (логин)')->rules('required');
         $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules('confirmed');
+        $form->password('password', trans('admin.password'))->rules(['confirmed', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i']);
         $form->password('password_confirmation', trans('admin.password_confirmation'))
             ->default(function ($form) {
                 return null;
@@ -218,7 +218,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
             $savingUser = $form->model();
 
             $form->getRelations();
-            if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
+            if ((true === $savingUser->isRole('star') || $savingUser->isRole('performer')) &&  null !== $form->model()->artistProfile) {
                 $form->getRelations();
                 $form->html('<a href="/admin/auth/artist/'.$form->model()->artistProfile->id.'/edit">Профиль артиста</a>');
                 $form->date('artist_profile.career_start', 'Дата начала карьеры')->format('YYYY');
