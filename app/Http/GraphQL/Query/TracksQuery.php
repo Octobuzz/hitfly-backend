@@ -85,6 +85,7 @@ class TracksQuery extends Query
             })
                 ->where('comments.created_at', '>=', $date)
                 ->where('comments.commentable_type', '=', Track::class)
+                ->orderBy('tracks.id', 'DESC')
                 ->groupBy('tracks.id');
 
             /// Треки откоментированные мною
