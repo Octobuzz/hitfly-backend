@@ -34,7 +34,7 @@
         <div class="progress__bar progress__text">
           <div class="progress__time" v-if="fixedTime">{{ fixedTime }}</div>
           <div class="progress__time" v-else>00:00</div>
-          <div class="progress__time" v-if="currentLength">{{ currentLength }}</div>
+          <div class="progress__time" v-if="currentLength">-{{ currentLength }}</div>
           <div class="progress__time" v-else>--:--</div>
         </div>
         <div class="progress__bar progress__progress" @click="seek">
@@ -257,7 +257,8 @@ export default {
 		  return this.currentTime / Math.floor(this.currentTrack.length) * 100 + '%';
 		},
     currentLength() {
-	    let hhmmss = new Date(Math.floor(this.currentTrack.length) * 1000).toISOString().substr(11, 8);
+      let countdown = (Math.floor(this.currentTrack.length) - this.currentTime);
+	    let hhmmss = new Date(countdown * 1000).toISOString().substr(11, 8);
     	return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
     ...mapState('player', {

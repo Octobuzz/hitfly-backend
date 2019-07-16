@@ -20,7 +20,7 @@
             <PencilIcon/>
           </template>
         </BaseInput>
-        <p class="add-track-filename" v-show="filename.length > 0">{{ filename }}</p>
+        <!-- <p class="add-track-filename" v-show="filename.length > 0">{{ filename }}</p> -->
 
         <ChooseYear
           v-model="trackInfo.year.input"
