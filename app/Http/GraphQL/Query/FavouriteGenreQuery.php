@@ -13,6 +13,7 @@ class FavouriteGenreQuery extends Query
 {
     protected $attributes = [
         'name' => 'Избранные жанры',
+        'description' => 'Запрос любимых жанров',
     ];
 
     public function type()

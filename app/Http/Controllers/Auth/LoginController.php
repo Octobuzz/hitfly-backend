@@ -92,6 +92,6 @@ class LoginController extends Controller
         }
         $user->markEmailAsVerified();
 
-        return redirect()->to('/profile');
+        return redirect()->to('/register-genres');
     }
 }

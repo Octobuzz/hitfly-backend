@@ -16,6 +16,7 @@ class CreateMusicGroupMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'CreateMusicGroup',
+        'description' => 'Создание музыкальной группы',
     ];
 
     public function type()

@@ -24,6 +24,7 @@ class TrackType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::int(),
+                'description' => 'ID трека',
             ],
             'trackName' => [
                 'type' => Type::string(),

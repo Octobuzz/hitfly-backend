@@ -13,6 +13,7 @@ class FavouriteTrackQuery extends Query
 {
     protected $attributes = [
         'name' => 'Favourite track Query',
+        'description' => 'Запрос любимых треков',
     ];
 
     public function type()

@@ -26,7 +26,7 @@ class UserInterface extends InterfaceType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the character.',
+                'description' => 'id пользователя',
             ],
             'username' => [
                 'type' => Type::string(),

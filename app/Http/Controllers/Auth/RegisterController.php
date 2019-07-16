@@ -42,7 +42,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except(['setGenres', 'showGenreForm']);
-        $this->middleware('guest:json')->except(['setGenres', 'showGenreForm']);
+//        $this->middleware('guest:json')->except(['setGenres', 'showGenreForm']);
     }
 
     /**

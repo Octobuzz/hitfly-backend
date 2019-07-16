@@ -13,6 +13,7 @@ class DeleteFromFavouriteMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'DeleteFromFavourite',
+        'description' => 'Удалить из избранного',
     ];
 
     public function type()
