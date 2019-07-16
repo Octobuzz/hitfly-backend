@@ -59,7 +59,7 @@
             v-model="myProfile.playedGenres.list"
             class="edit-profile-form__choose-genres"
             dropdown-class="edit-profile-form__genre-dropdown"
-            :selected-genres-limit="10"
+            :selected-genres-limit="5"
           />
 
           <span class="h3 edit-profile-form__subsection">
