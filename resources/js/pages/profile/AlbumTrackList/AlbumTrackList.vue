@@ -211,7 +211,7 @@ export default {
         }
       });
     },
-    playCollection(){
+    playAlbum(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {

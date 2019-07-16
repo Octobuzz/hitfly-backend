@@ -273,6 +273,9 @@
       }
     }
   }
+  main.main-genre .main__info {
+    flex-grow: 1;
+  }
   .head{
     grid-template-columns: min-content auto auto;
     grid-template-rows: 1fr;

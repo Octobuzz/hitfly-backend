@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <main class="main">
+    <main class="main main-genre">
         <aside class="main__aside aside">
             <div class="aside__content" data-scroll-speed="10">
                 <div class="s-genre-side">

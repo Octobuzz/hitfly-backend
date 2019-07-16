@@ -126,7 +126,7 @@ export default {
         this.$route,
         this.albumId
       );
-    }
+    },
   },
 
   methods: {
