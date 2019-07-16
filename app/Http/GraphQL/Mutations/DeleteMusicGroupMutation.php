@@ -10,6 +10,7 @@ class DeleteMusicGroupMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'UpdateMusicGroup',
+        'description' => 'Удаление музыкальной группы',
     ];
 
     public function type()

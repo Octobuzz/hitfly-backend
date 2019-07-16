@@ -21,13 +21,13 @@ class RateCommentInput extends GraphQLType
         return [
             'commentId' => [
                 'name' => 'commentId',
-                'description' => 'name',
+                'description' => 'ID комментария',
                 'type' => Type::nonNull(Type::int()),
                 'rules' => ['max:250', new AuthorRateComment(), new RateNotEstimatedComment()],
             ],
             'rate' => [
                 'name' => 'rate',
-                'description' => 'name',
+                'description' => 'Оценка',
                 'type' => Type::nonNull(Type::int()),
                 'rules' => ['max:250'],
             ],

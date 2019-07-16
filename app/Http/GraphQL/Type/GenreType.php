@@ -19,7 +19,7 @@ class GenreType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id',
+                'description' => 'id жанра',
             ],
             'name' => [
                 'type' => Type::string(),

@@ -10,6 +10,7 @@ class MusicGroupQuery extends Query
 {
     protected $attributes = [
         'name' => 'Music Group Query',
+        'description' => 'Запрос музыкальной группы',
     ];
 
     public function type()
