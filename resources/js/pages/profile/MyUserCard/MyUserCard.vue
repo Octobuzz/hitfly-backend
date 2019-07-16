@@ -12,7 +12,8 @@
           {{ myProfile.name }}
         </p>
         <p class="user-card__followers-count">
-          {{ myProfile.followersCount || '0' }} подписчиков
+          {{ myProfile.followersCount || '0' }}
+          {{ format('followers', myProfile.followersCount) }}
         </p>
 
         <p
@@ -106,7 +107,8 @@
               {{ group.name }}
             </p>
             <p class="user-card__group-followers">
-              {{ group.followersCount || '0' }} подписчиков
+              {{ group.followersCount || '0' }}
+              {{ format('followers', group.followersCount) }}
             </p>
           </div>
         </div>
@@ -224,7 +226,7 @@
     </div>
 
     <div :class="itemContainerClass">
-      <p class="user-card__bonus-program-p">
+      <p class="user-card__bonus-program-p user-card__bonus-program-status">
         <img
           :src="myProfile.bonusProgram.image"
           alt="Bonus program level"
@@ -233,6 +235,13 @@
         <span class="h3 user-card__bonus-program-h">
           {{ myProfile.bonusProgram.level }}
         </span>
+
+        <router-link
+          to="/profile/bonus-program"
+          class="user-card__button user-card__bonus-program-button"
+        >
+          Подробнее
+        </router-link>
       </p>
 
       <p
@@ -315,9 +324,9 @@ import gql from './gql';
 
 const formatting = {
   bonuses: {
-    1: 'поклонник',
-    234: 'поклонника',
-    567890: 'поклонников'
+    1: 'бонус',
+    234: 'бонуса',
+    567890: 'бонусов'
   },
   days: {
     1: 'день в Hitfly',
@@ -328,7 +337,12 @@ const formatting = {
     1: 'любимая песня',
     234: 'любимые песни',
     567890: 'любимых песен'
-  }
+  },
+  followers: {
+    1: 'поклонник',
+    234: 'поклонника',
+    567890: 'поклонников'
+  },
 };
 
 const bonusProgramLvlMap = {
@@ -530,8 +544,10 @@ export default {
           nextLevelImage: bonusProgramLvlMap[bpLevel].nextLevelImage,
           nextLevelText: bonusProgramLvlMap[bpLevel].nextLevelText,
           points: bpPoints,
-          pointsToNextLevel: bonusProgramLvlMap[bpLevel].nextLevelPoints
-            - bpPoints,
+          pointsToNextLevel: Math.max(
+            0,
+            bonusProgramLvlMap[bpLevel].nextLevelPoints - bpPoints
+          ),
           daysPassed: bpDaysPassed
         };
 

@@ -48,7 +48,7 @@
         @input="onCoverInput"
       />
     </div>
-    <div class="createAlbum__button button" @click="createAlbum">Создать альбом</div>
+    <div class="createAlbum__button button form-button_primary" @click="createAlbum">Создать альбом</div>
   </div>
 </template>
 <script>
