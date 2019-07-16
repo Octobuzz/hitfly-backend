@@ -255,7 +255,6 @@ export default {
       });
     },
     playCollection(){
-      console.log(this.collectionId);
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {
