@@ -93,7 +93,7 @@ class MusicalWaveCommand extends Command
 
     private function createMusicWaveTMP($tmpFile): array
     {
-        $process = new Process(['/usr/bin/python3', './lib/main.py',  "$tmpFile"]);
+        $process = new Process(['/usr/bin/python3.5', './lib/main.py',  "$tmpFile"]);
         $process->run();
 
         // executes after the command finishes
