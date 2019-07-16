@@ -220,13 +220,10 @@ class UserController extends \Encore\Admin\Controllers\UserController
             $form->getRelations();
             if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
                 $form->getRelations();
-//                dd($form->model()->artistProfile->id);
-//                $genres
                 $form->html('<a href="/admin/auth/artist/'.$form->model()->artistProfile->id.'/edit">Профиль артиста</a>');
                 $form->date('artist_profile.career_start', 'Дата начала карьеры')->format('YYYY');
                 $form->textarea('artist_profile.description', 'Описание деятельности');
-                //$form->multipleSelect('artistgenres', 'Жанры в которых играет')->options(Genre::all()->pluck('name', 'id'));
-                $form->html('<a href="#">Профиль звезды</a>');
+
             }
         });
 
