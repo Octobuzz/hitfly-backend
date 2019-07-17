@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,6 +23,15 @@ class Collection extends Model
         'user_id',
         'is_admin',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('image', function (Builder $builder) {
+            $builder->addSelect('image');
+        });
+    }
 
     public function user(): BelongsTo
     {
