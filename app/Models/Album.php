@@ -13,6 +13,7 @@ use App\Models\Traits\PictureField;
 use App\User;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -96,6 +97,15 @@ class Album extends Model
     protected $casts = [
         'year' => 'date:Y',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('cover', function (Builder $builder) {
+            $builder->addSelect('cover');
+        });
+    }
 
     public function musicGroup(): BelongsTo
     {

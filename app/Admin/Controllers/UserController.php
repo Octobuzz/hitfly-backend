@@ -218,12 +218,11 @@ class UserController extends \Encore\Admin\Controllers\UserController
             $savingUser = $form->model();
 
             $form->getRelations();
-            if ((true === $savingUser->isRole('star') || $savingUser->isRole('performer')) &&  null !== $form->model()->artistProfile) {
+            if ((true === $savingUser->isRole('star') || $savingUser->isRole('performer')) && null !== $form->model()->artistProfile) {
                 $form->getRelations();
                 $form->html('<a href="/admin/auth/artist/'.$form->model()->artistProfile->id.'/edit">Профиль артиста</a>');
                 $form->date('artist_profile.career_start', 'Дата начала карьеры')->format('YYYY');
                 $form->textarea('artist_profile.description', 'Описание деятельности');
-
             }
         });
 

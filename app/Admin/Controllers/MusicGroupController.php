@@ -208,7 +208,7 @@ class MusicGroupController extends Controller
         $form->image('avatar_group', 'Обложка')->uniqueName();
 
         $form->saving(function (Form $form) {
-            $form->image('avatar_group')->move('music_groups/'.$form->user_id)->uniqueName();
+            $form->image('avatar_group')->move(MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR.$form->user_id)->uniqueName();
         });
 
         $form->saved(function (Form $form) {
@@ -219,7 +219,7 @@ class MusicGroupController extends Controller
 
             if (null !== $form->avatar_group) {
                 $cover = $form->avatar_group;
-                $nameCover = Storage::disk('public')->putFile('musicgroups/'.$form->model()->creator_group_id, $cover);
+                $nameCover = Storage::disk('public')->putFile(MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR.$form->model()->creator_group_id, $cover);
                 $form->model()->avatar_group = $nameCover;
                 $form->model()->save();
             }
