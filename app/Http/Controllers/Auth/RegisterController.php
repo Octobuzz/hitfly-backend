@@ -130,7 +130,7 @@ class RegisterController extends Controller
     public function setGenres(Request $request)
     {
         $genres = $request->all();
-        if (null !== $genres['genres']) {
+        if (isset($genres['genres']) && null !== $genres['genres']) {
             $user = Auth::user();
             $user->favouriteGenres()->sync($genres['genres']);
         }
