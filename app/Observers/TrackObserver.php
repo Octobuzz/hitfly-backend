@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\Track\CreatePlayTimeJob;
 use App\Models\Track;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
@@ -42,6 +43,9 @@ class TrackObserver
      */
     public function updated(Track $track)
     {
+        if ($track->isDirty('cover')) {
+            Cache::tags(Track::class.$track->id)->flush();
+        }
     }
 
     /**

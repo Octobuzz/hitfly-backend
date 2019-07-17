@@ -9,8 +9,12 @@
 namespace App\Http\GraphQL\Fields;
 
 use App\Models\Album;
+use App\Models\Collection;
+use App\Models\MusicGroup;
+use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Http\File;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Field;
@@ -18,7 +22,7 @@ use Rebing\GraphQL\Support\Field;
 class PictureField extends Field
 {
     /**
-     * @var Album
+     * @var Album | Collection | Track | MusicGroup
      */
     private $model;
     protected $attributes = [
@@ -50,12 +54,19 @@ class PictureField extends Field
     protected function resolve($root, $args)
     {
         $this->model = $root;
+        $class = get_class($root);
+        $defaultImage = 'default.jpg';
+        $keyCache = md5($this->model->id.json_encode($args));
+        $cacheValue = Cache::get($keyCache, null);
+
+        if (null !== $cacheValue) {
+            return $cacheValue;
+        }
+
+        $picturePath = $this->model::find($this->model->id)->getImage();
+        $path = Storage::disk('public')->path($this->model->getPath());
 
         $return = [];
-
-        $defaultImage = 'default.jpg';
-        $picturePath = $this->model->getImage(); //todo
-        $path = Storage::disk('public')->path($this->model->getPath());
 
         foreach ($args['sizes'] as $size) {
             if (false === Storage::disk('public')->exists($picturePath)) {
@@ -80,6 +91,8 @@ class PictureField extends Field
                 'url' => $url,
             ];
         }
+
+        Cache::tags([$class.$root->id])->add($keyCache, $return, now()->addHour(6));
 
         return $return;
     }

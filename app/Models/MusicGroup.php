@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Traits\PictureField;
 use App\User;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -79,15 +78,6 @@ class MusicGroup extends Model
         'created_at',
         'updated_at',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('avatar_group', function (Builder $builder) {
-            $builder->addSelect('avatar_group');
-        });
-    }
 
     public function genres(): BelongsToMany
     {
