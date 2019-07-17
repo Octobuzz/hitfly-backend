@@ -80,12 +80,9 @@
 
       <span v-if="!emptyTrack">
         <AudioVolumePopover
-          :visible="volumeToggle"
           @volume="changeVolume"
         >
           <IconButton
-            @click="volumeToggle = !volumeToggle"
-            :active="volumeToggle"
             :tooltip="tooltip.volume"
           >
             <SpeakerIcon />
@@ -142,7 +139,7 @@ export default {
         content: 'Добавить в плейлист'
       },
       loop: {
-        content: 'На повтор'
+        content: 'Повтор'
       },
       like: {
         content: 'Мне нравится'

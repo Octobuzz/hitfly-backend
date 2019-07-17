@@ -1,8 +1,10 @@
 <template>
   <v-popover
-    class="volume-popover"
+    :popover-base-class="['volume-popover']"
+    :placement="popoverPlacement"
   >
   <slot />
+  <template #popover>
     <div
       class="volume"
       @click="seek"
@@ -13,6 +15,7 @@
         </div>
       </div>
     </div>
+  </template>
   </v-popover>
 </template>
 <script>
@@ -25,6 +28,7 @@
     },
     data: () => ({
       volume: 1,
+      popoverPlacement: 'top'
     }),
     watch:{
       volume(value) {
@@ -38,16 +42,26 @@
     },
     methods:{
       seek(e){
-  			const el = e.target.getBoundingClientRect();
-  			const seekPos = (e.clientY - el.bottom) / el.height;
-  			this.volume = 100 * (-seekPos) / 100;
+  			let el = e.target.getBoundingClientRect();
+        let targetEl = document.getElementsByClassName('volume__bar')[0];
+  			let seekPos = -((e.clientY - el.bottom) / targetEl.offsetHeight);
+        console.log(seekPos);
+        if(seekPos >= 1){
+    			this.volume = 1;
+        } else if(seekPos <= 0) {
+    			this.volume = 0;
+        }else{
+  			  this.volume = seekPos;
+        }
       }
     }
   }
 </script>
-<style scoped lang="scss">
+<style lang="scss">
   .volume-popover {
     position: relative;
+    z-index: 1100;
+
 
     &.open .volume {
       display: flex;
@@ -55,7 +69,6 @@
   }
 
   .volume {
-    display: none;
     background-color: #313131;
     width: 24px;
     height: 90px;
@@ -75,10 +88,6 @@
       bottom: -8px;
       border: 4px solid transparent;
       border-top: 4px solid #313131;
-    }
-
-    &.popover__invisible {
-      display: none;
     }
 
     &__bar {
