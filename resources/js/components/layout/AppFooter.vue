@@ -80,12 +80,9 @@
 
       <span v-if="!emptyTrack">
         <AudioVolumePopover
-          :visible="volumeToggle"
           @volume="changeVolume"
         >
           <IconButton
-            @click="volumeToggle = !volumeToggle"
-            :active="volumeToggle"
             :tooltip="tooltip.volume"
           >
             <SpeakerIcon />
@@ -142,7 +139,7 @@ export default {
         content: 'Добавить в плейлист'
       },
       loop: {
-        content: 'На повтор'
+        content: 'Повтор'
       },
       like: {
         content: 'Мне нравится'
@@ -160,7 +157,7 @@ export default {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
     seek(e) {
-			if (!this.playing || e.target.tagName === 'div') {
+			if (e.target.tagName === 'div') {
 				return;
 			}
 			const el = e.target.getBoundingClientRect();

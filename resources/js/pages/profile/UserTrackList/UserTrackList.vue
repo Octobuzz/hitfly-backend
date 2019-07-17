@@ -32,6 +32,7 @@
 
       <div class="user-track-list__button-section">
         <button
+          @click="playTracks"
           :class="[
             'user-track-list__button',
             'user-track-list__button_listen'
@@ -168,7 +169,31 @@ export default {
 
     onPressFavourite() {
       this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
-    }
+    },
+
+    // playTracks(){
+    //   this.$apollo.provider.defaultClient.query({
+    //     query: gql.query.TRACKS,
+    //     variables: {
+    //       pageLimit: 30,
+    //       pageNumber: 1,
+    //       filters: {
+    //         albumId: this.albumId
+    //       }
+    //     },
+    //   })
+    //   .then(response => {
+    //     this.$store.commit('player/pausePlaying');
+    //     this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+    //     let arrayTr = response.data.tracks.data.map(data => {
+    //       return data.id;
+    //     });
+    //     this.$store.commit('player/pickPlaylist', arrayTr);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   })
+    // }
   },
 
   apollo: {
