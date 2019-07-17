@@ -84,14 +84,18 @@ class LoginController extends Controller
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
-
         Auth::login($user);
         Auth::guard('json')->login($user);
-        if (null !== $user->email && false === $user->hasVerifiedEmail()) {
-            VerificationController::sendNotification($user);
+        /** @var User $user */
+        if (false === $user->hasVerifiedEmail()) {
+            if (null !== $user->email && false === $user->hasVerifiedEmail()) {
+                VerificationController::sendNotification($user);
+            }
+            $user->markEmailAsVerified();
+            //при регистрации редиректим на выбор жанров
+            return redirect()->to('/register-genres');
         }
-        $user->markEmailAsVerified();
 
-        return redirect()->to('/register-genres');
+        return redirect()->to('/profile');
     }
 }
