@@ -16,6 +16,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    const TIME_CREATE_TOP_FIFTY = '01:00';
     private $notification;
 
     public function __construct(Application $app, Dispatcher $events, Notification $notification)
@@ -63,11 +64,11 @@ class Kernel extends ConsoleKernel
             $this->notification->reachTop(20);
         })->dailyAt('10:00');
         // Создание топ 50 каждый день в 1 час ночи
-        $schedule->call(CreateTopFiftyCommand::class)->dailyAt('01:00');
-        $schedule->call(CalculateListeningTrackCommand::class)->everyTenMinutes();
-        $schedule->call(CalculateListenedUserCommand::class)->everyTenMinutes();
-        $schedule->call(MusicalWaveCommand::class)->everyTenMinutes()->name('create_music_wave')->withoutOverlapping();
-        $schedule->call(ConvertTrackCommand::class)->everyTenMinutes()->name('convert_track')->withoutOverlapping();
+        $schedule->command(CreateTopFiftyCommand::class)->dailyAt(self::TIME_CREATE_TOP_FIFTY);
+        $schedule->command(CalculateListeningTrackCommand::class)->everyTenMinutes();
+        $schedule->command(CalculateListenedUserCommand::class)->everyTenMinutes();
+        $schedule->command(MusicalWaveCommand::class)->everyFiveMinutes()->name('create_music_wave')->withoutOverlapping();
+        $schedule->command(ConvertTrackCommand::class)->everyFiveMinutes()->name('convert_track')->withoutOverlapping();
     }
 
     /**
