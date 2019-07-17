@@ -7,6 +7,7 @@ use App\User;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CollectionObserver
 {
@@ -39,6 +40,9 @@ class CollectionObserver
      */
     public function updated(Collection $collection)
     {
+        if ($collection->isDirty('cover')) {
+            Cache::tags(Collection::class.$collection->id)->flush();
+        }
     }
 
     /**
