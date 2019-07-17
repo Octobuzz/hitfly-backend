@@ -9,6 +9,23 @@
       @tracks-removed="maybeLoadMoreTracks"
     >
       <template #default="container">
+        <div
+          v-if="!mobileUser
+            && tracksContainerInitialized
+            && container.trackIdList.length === 0"
+          :class="['my-tracks-download', containerPaddingClass]"
+        >
+          <span class="h2 my-music__my-tracks-download-text">
+            Загрузите свою первую песню
+          </span>
+          <FormButton
+            class="my-music__my-tracks-download-button"
+            @press="onDownloadPress"
+          >
+            Загрузить музыку
+          </FormButton>
+        </div>
+
         <TrackList
           v-if="container.trackIdList.length > 0"
           ref="myTracksList"
@@ -84,6 +101,7 @@
 </template>
 
 <script>
+import FormButton from 'components/FormButton.vue';
 import TrackList from 'components/trackList/TrackList';
 import UniversalTracksContainer from 'components/UniversalTracksContainer';
 import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
@@ -93,6 +111,7 @@ import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
 
 export default {
   components: {
+    FormButton,
     TrackList,
     UniversalTracksContainer,
     AlbumScrollHorizontal,
@@ -117,6 +136,12 @@ export default {
     myTracksList() {
       return this.$refs.myTracksList;
     },
+    mobileUser() {
+      return /Mobi|Android/i.test(navigator.userAgent);
+    },
+    tracksContainerInitialized() {
+      return this.$store.getters['loading/music'].tracks;
+    }
   },
 
   beforeRouteLeave(to, from, next) {
@@ -148,10 +173,15 @@ export default {
       this.myTracksContainer.callRemoveTrack(trackId);
     },
     maybeLoadMoreTracks() {
+      if (!this.myTracksList) return;
+
       if (this.myTracksList.trackIdList.length < this.shownTracksCount) {
         this.myTracksContainer.callLoadMore();
       }
-    }
+    },
+    onDownloadPress() {
+      this.$router.push('/upload');
+    },
   }
 };
 </script>
