@@ -157,7 +157,7 @@ export default {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
     seek(e) {
-			if (!this.playing || e.target.tagName === 'div') {
+			if (e.target.tagName === 'div') {
 				return;
 			}
 			const el = e.target.getBoundingClientRect();
