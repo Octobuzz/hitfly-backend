@@ -1,9 +1,7 @@
-// TODO: bind store
-
 export default {
   computed: {
     playingTrackId() {
-      return 328;
+      return this.$store.getters['player/currentTrack'].id;
     }
   }
 };
