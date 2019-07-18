@@ -55,7 +55,7 @@ class TrackInput extends GraphQLType
                 'name' => 'trackDate',
                 'description' => 'Дата трека (формат: Год трека)',
                 'type' => Type::string(),
-                'rules' => ['date_format:Y'],
+                'rules' => ['nullable', 'date_format:Y'],
             ],
             'songText' => [
                 'name' => 'songText',
