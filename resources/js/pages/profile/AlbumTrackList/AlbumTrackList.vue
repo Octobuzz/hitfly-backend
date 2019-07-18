@@ -42,8 +42,14 @@
             'album-track-list__button_listen'
           ]"
         >
-          <CirclePlayIcon />
-          Слушать
+          <template v-if="currentPlaying">
+            <CirclePauseIcon />
+            Пауза
+          </template>
+          <template v-else>
+            <CirclePlayIcon />
+            Слушать
+          </template>
         </button>
 
         <AddToFavButton
@@ -100,6 +106,7 @@ import playingTrackId from 'mixins/playingTrackId';
 import totalTracksInfo from 'mixins/totalInfoFormatting';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
+import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
@@ -117,7 +124,8 @@ export default {
     IconButton,
     CirclePlayIcon,
     DotsIcon,
-    AddToFavButton
+    AddToFavButton,
+    CirclePauseIcon
   },
 
   mixins: [
@@ -133,6 +141,7 @@ export default {
       shownTrack: null,
       firstAlbumTrack: null,
       firstAlbumTrackId: null,
+      newVar: String,
       album: null,
       albumFetched: false,
       tooltip: {
@@ -144,6 +153,12 @@ export default {
   },
 
   computed: {
+    currentPlaying() {
+      return this.currentType.type === 'album' && this.currentType.id === this.albumId && this.$store.getters['player/isPlaying'];
+    },
+    currentType() {
+      return this.$store.getters['player/getCurrentType'];
+    },
     albumId() {
       return +this.$route.params.albumId;
     },
@@ -229,27 +244,41 @@ export default {
     },
 
     playAlbum(){
-      this.$apollo.provider.defaultClient.query({
-        query: gql.query.TRACKS,
-        variables: {
-          pageLimit: 30,
-          pageNumber: 1,
-          filters: {
-            albumId: this.albumId
-          }
-        },
-      })
-      .then(response => {
+      if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
-        this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-        let arrayTr = response.data.tracks.data.map(data => {
-          return data.id;
-        });
-        this.$store.commit('player/pickPlaylist', arrayTr);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      }else{
+        if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
+          this.$store.commit('player/startPlaying');
+        }else{
+          this.$apollo.provider.defaultClient.query({
+            query: gql.query.TRACKS,
+            variables: {
+              pageLimit: 30,
+              pageNumber: 1,
+              filters: {
+                albumId: this.albumId
+              }
+            },
+          })
+          .then(response => {
+            let data = {
+              'type': 'album',
+              'id': this.albumId
+            };
+            this.$store.commit('player/pausePlaying');
+            this.$store.commit('player/changeCurrentType', data);
+            console.log(response.data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        }
+      }
     }
   },
 
