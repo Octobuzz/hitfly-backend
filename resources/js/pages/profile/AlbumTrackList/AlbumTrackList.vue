@@ -4,7 +4,7 @@
 
     <template v-if="albumFetched && shownTrack">
       <span class="album-track-list__singer">
-        {{ shownTrack.singer }}
+        {{ album.title }}
       </span>
 
       <div class="album-track-list__track-section">
@@ -20,7 +20,7 @@
 
         <div class="album-track-list__player-section">
           <span class="h3 album-track-list__album-title">
-            {{ album.title }}
+            {{ shownTrack.trackName }}
           </span>
           <span class="album-track-list__album-data">
             <span class="album-track-list__total-tracks-info">
@@ -130,6 +130,7 @@ export default {
   data() {
     return {
       playingTrack: null,
+      shownTrack: null,
       firstAlbumTrack: null,
       firstAlbumTrackId: null,
       album: null,
@@ -164,24 +165,17 @@ export default {
         default:
           return false;
       }
-    },
+    }
+  },
 
-    shownTrack() {
-      const {
-        playingTrack,
-        firstAlbumTrack,
-        albumId
-      } = this;
-
-      if (!firstAlbumTrack) {
-        return null;
-      }
-
-      if (playingTrack && playingTrack.album.id === albumId) {
-        return playingTrack;
-      }
-
-      return firstAlbumTrack;
+  watch: {
+    playingTrackId: {
+      handler() {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+      },
+      immediate: true
     }
   },
 
@@ -201,6 +195,28 @@ export default {
       this.$router.go(-1);
     },
 
+    updateShownTrack() {
+      const getShownTrack = () => {
+        const {
+          playingTrack,
+          firstAlbumTrack,
+          albumId
+        } = this;
+
+        if (!firstAlbumTrack) {
+          return null;
+        }
+
+        if (playingTrack && playingTrack.album.id === albumId) {
+          return playingTrack;
+        }
+
+        return firstAlbumTrack;
+      };
+
+      this.shownTrack = getShownTrack();
+    },
+
     refetchTotalInfo() {
       this.$apollo.query({
         query: gql.query.ALBUM_TOTAL_INFO,
@@ -211,6 +227,7 @@ export default {
         }
       });
     },
+
     playAlbum(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
@@ -280,6 +297,10 @@ export default {
         };
       },
       update({ track }) {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+
         return track;
       },
       error(err) {
