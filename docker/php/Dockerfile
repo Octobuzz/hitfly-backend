@@ -34,5 +34,9 @@ ARG base_env
 RUN usermod --non-unique --uid ${base_env} www-data
 RUN groupmod -g ${base_env} www-data
 RUN apt-get install graphviz -y
+RUN pecl install apcu && docker-php-ext-enable apcu
+RUN pecl install -o -f redis \
+  &&  rm -rf /tmp/pear \
+  &&  docker-php-ext-enable redis
 
 
