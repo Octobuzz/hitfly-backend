@@ -4,7 +4,7 @@
     :popover-base-class="[
       'track-to-playlist-popover',
       `track-to-playlist-popover_breakpoint-${positionChangeBreakpoint}`
-    ].join(' ')"
+    ]"
     popover-wrapper-class="track-to-playlist-popover__wrapper"
     popover-inner-class="track-to-playlist-popover__inner"
     popover-arrow-class="track-to-playlist-popover__arrow"
