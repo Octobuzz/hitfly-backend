@@ -57,7 +57,7 @@ function handleClientState(args) {
           });
 
           const update = {
-            followersCount: userData.followersCount - 1,
+            followersCount: userData.user.followersCount - 1,
             iWatch: false
           };
 
@@ -79,7 +79,7 @@ function handleClientState(args) {
           });
 
           const update = {
-            followersCount: musicGroupData.followersCount - 1,
+            followersCount: musicGroupData.musicGroup.followersCount - 1,
             iWatch: false
           };
 
