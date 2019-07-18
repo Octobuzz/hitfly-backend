@@ -113,6 +113,7 @@ return [
                 'TrackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
                 'TracksByIdsQuery' => \App\Http\GraphQL\Query\TracksByIdsQuery::class,
                 'topTrackForUser' => \App\Http\GraphQL\Query\TopTrackForUser::class,
+                'news' => \App\Http\GraphQL\Query\NewsQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -153,6 +154,7 @@ return [
                 'trackBelongsCollection' => \App\Http\GraphQL\Query\TrackBelongsCollectionQuery::class,
                 'TracksByIdsQuery' => \App\Http\GraphQL\Query\TracksByIdsQuery::class,
                 'topTrackForUser' => \App\Http\GraphQL\Query\TopTrackForUser::class,
+                'news' => \App\Http\GraphQL\Query\NewsQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -237,6 +239,7 @@ return [
         'SocialConnectType' => \App\Http\GraphQL\Type\SocialConnectType::class,
         'NotificationType' => \App\Http\GraphQL\Type\NotificationType::class,
         'TrackBelongsCollection' => \App\Http\GraphQL\Type\TrackBelongsCollectionType::class,
+        'NewsType' => \App\Http\GraphQL\Type\NewsType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,

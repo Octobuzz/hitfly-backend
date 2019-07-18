@@ -124,5 +124,6 @@ return [
         \App\Admin\Controllers\LogController::ROUTE_NAME => 'Журнал событий',
         \App\Admin\Controllers\BonusTypeController::ROUTE_NAME => 'Типы бонусов',
         \App\Admin\Controllers\ArtistController::ROUTE_NAME => 'Профили артистов',
+        \App\Admin\Controllers\NewsController::ROUTE_NAME => 'Новости',
     ]
 ];

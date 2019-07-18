@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-07-04 21:59:45.
+    * Generated on 2019-07-18 08:37:47.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -130,7 +130,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -146,7 +145,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -169,7 +167,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -291,7 +288,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -307,7 +303,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -330,7 +325,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -452,7 +446,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -468,7 +461,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -491,7 +483,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -613,7 +604,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -629,7 +619,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -652,7 +641,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -774,7 +762,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -790,7 +777,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -813,7 +799,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -935,7 +920,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -951,7 +935,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -974,7 +957,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -1096,7 +1078,6 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
-        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -1112,7 +1093,6 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
-        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -1135,7 +1115,6 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
-        'workflow' => \Brexis\LaravelWorkflow\WorkflowRegistry::class,
     ]));
 
     override(\Illuminate\Support\Arr::add(0), type(0));
