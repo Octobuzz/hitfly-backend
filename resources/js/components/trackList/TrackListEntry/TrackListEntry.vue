@@ -37,9 +37,10 @@
     >
       {{ track.trackName }}
     </span>
-    <span class="track-list-entry__track-author">
-      {{ track.singer }}
-    </span>
+    <WordTrimmedWithTooltip
+      class="track-list-entry__track-author"
+      :word="track.singer"
+    />
 
     <div
       v-if="!desktop"
@@ -100,6 +101,7 @@
 </template>
 
 <script>
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import AddToFavouriteButton from 'components/AddToFavouriteButton';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -115,6 +117,7 @@ const MOBILE_WIDTH = 767;
 
 export default {
   components: {
+    WordTrimmedWithTooltip,
     TrackToPlaylistPopover,
     TrackActionsPopover,
     AddToFavouriteButton,
@@ -174,7 +177,7 @@ export default {
 
     activeTrack() {
       return this.trackId === this.$store.getters['player/currentTrack'].id;
-    },
+    }
   },
 
   methods: {
