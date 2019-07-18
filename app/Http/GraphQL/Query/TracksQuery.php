@@ -9,7 +9,6 @@ use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -49,11 +48,9 @@ class TracksQuery extends Query
         $keyCache = md5(json_encode($args).json_encode($root).json_encode($fields));
 
         $response = Cache::get($keyCache, null);
-        if (null !== $response) {
+        if (false === empty($response)) {
             return $response;
         }
-
-        Log::debug(md5($response));
 
         $query = Track::with($fields->getRelations());
 
