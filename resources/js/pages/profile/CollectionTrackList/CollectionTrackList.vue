@@ -4,7 +4,7 @@
 
     <template v-if="collectionFetched && shownTrack">
       <span class="collection-track-list__singer">
-        {{ shownTrack.singer }}
+        {{ collection.title }}
       </span>
 
       <div class="collection-track-list__track-section">
@@ -20,7 +20,7 @@
 
         <div class="collection-track-list__player-section">
           <span class="h3 collection-track-list__collection-title">
-            {{ collection.title }}
+            {{ shownTrack.trackName }}
           </span>
           <span class="collection-track-list__collection-data">
             <span class="collection-track-list__total-tracks-info">
@@ -139,6 +139,8 @@ export default {
       collection: null,
       collectionFetched: false,
       playingTrackBelongsToCollection: false,
+      playingTrack: null,
+      shownTrack: null,
       tooltip: {
         more: {
           content: 'Еще'
@@ -171,25 +173,6 @@ export default {
         default:
           return false;
       }
-    },
-
-    shownTrack() {
-      // playingTrack should not be reactive
-      const {
-        playingTrack,
-        playingTrackBelongsToCollection,
-        firstCollectionTrack
-      } = this;
-
-      if (!firstCollectionTrack) {
-        return null;
-      }
-
-      if (playingTrackBelongsToCollection) {
-        return playingTrack;
-      }
-
-      return firstCollectionTrack;
     }
   },
 
@@ -221,6 +204,10 @@ export default {
           ]) => {
             this.playingTrack = playingTrack;
             this.playingTrackBelongsToCollection = inCollection;
+
+            this.$nextTick(() => {
+              this.updateShownTrack();
+            });
           })
           .catch(err => console.dir(err));
       },
@@ -244,6 +231,29 @@ export default {
       this.$router.go(-1);
     },
 
+    updateShownTrack() {
+      const getShownTrack = () => {
+        const {
+          playingTrack,
+          playingTrackBelongsToCollection,
+          firstCollectionTrack
+        } = this;
+
+        // collection and its first track aren't fetched yet
+        if (!firstCollectionTrack) {
+          return null;
+        }
+
+        if (playingTrackBelongsToCollection) {
+          return playingTrack;
+        }
+
+        return firstCollectionTrack;
+      };
+
+      this.shownTrack = getShownTrack();
+    },
+
     refetchTotalInfo() {
       this.$apollo.query({
         query: gql.query.COLLECTION_TOTAL_INFO,
@@ -254,6 +264,7 @@ export default {
         }
       });
     },
+
     playCollection(){
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
@@ -305,6 +316,10 @@ export default {
         };
       },
       update({ track }) {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+
         return track;
       },
       error(err) {
