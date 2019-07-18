@@ -210,7 +210,8 @@ const userMixinFactory = varInQuestion => ({
         mutation = gql.mutation.START_WATCHING_USER;
       }
 
-      handleClientState.call(this, {
+      handleClientState({
+        vm: this,
         $apollo: this.$apollo,
         variables: { id: +user.id },
         ownerName: user.username,
