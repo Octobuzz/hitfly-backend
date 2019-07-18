@@ -38,8 +38,14 @@
             'user-track-list__button_listen'
           ]"
         >
-          <CirclePlayIcon />
-          Слушать
+          <template v-if="currentPlaying">
+            <CirclePauseIcon />
+            Пауза
+          </template>
+          <template v-else>
+            <CirclePlayIcon />
+            Слушать
+          </template>
         </button>
 
         <AddToFavButton
@@ -94,6 +100,7 @@ import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
+import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
@@ -111,7 +118,8 @@ export default {
     IconButton,
     CirclePlayIcon,
     DotsIcon,
-    AddToFavButton
+    AddToFavButton,
+    CirclePauseIcon
   },
 
   mixins: [currentPath, containerPaddingClass, playingTrackId],
@@ -131,11 +139,27 @@ export default {
   },
 
   computed: {
+    currentPlaying() {
+      return this.currentType.type === 'tracks' && this.currentType.id === this.currentId && this.$store.getters['player/isPlaying'];
+    },
+    currentType() {
+      return this.$store.getters['player/getCurrentType'];
+    },
     userId() {
       const pathPrefix = this.currentPath.split('/')[1];
 
       if (pathPrefix === 'profile') {
         return 'me';
+      }
+
+      return +this.$route.params.userId;
+    },
+    currentId() {
+
+      const pathPrefix = this.currentPath.split('/')[1];
+
+      if (pathPrefix === 'profile') {
+        return this.$store.getters['profile/myId'];
       }
 
       return +this.$route.params.userId;
@@ -171,29 +195,48 @@ export default {
       this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
     },
 
-    // playTracks(){
-    //   this.$apollo.provider.defaultClient.query({
-    //     query: gql.query.TRACKS,
-    //     variables: {
-    //       pageLimit: 30,
-    //       pageNumber: 1,
-    //       filters: {
-    //         albumId: this.albumId
-    //       }
-    //     },
-    //   })
-    //   .then(response => {
-    //     this.$store.commit('player/pausePlaying');
-    //     this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-    //     let arrayTr = response.data.tracks.data.map(data => {
-    //       return data.id;
-    //     });
-    //     this.$store.commit('player/pickPlaylist', arrayTr);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   })
-    // }
+    playTracks(){
+      if(this.currentPlaying){
+        this.$store.commit('player/pausePlaying');
+      }else{
+        if(this.currentType.type === 'tracks' && this.currentType.id === this.currentId) {
+          this.$store.commit('player/startPlaying');
+        }else{
+          let userId = null;
+          if(this.userId === 'me'){
+            userId = this.$store.getters['profile/myId']
+          }else{
+            userId = this.$route.params.userId
+          };
+          this.$apollo.provider.defaultClient.query({
+            query: gql.query.TRACKS,
+            variables: {
+              pageLimit: 30,
+              pageNumber: 1,
+              filters: {
+                userId: userId
+              }
+            },
+          })
+          .then(response => {
+            let data = {
+              'type': 'tracks',
+              'id': userId
+            };
+            this.$store.commit('player/pausePlaying');
+            this.$store.commit('player/changeCurrentType', data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        }
+      }
+    }
   },
 
   apollo: {
