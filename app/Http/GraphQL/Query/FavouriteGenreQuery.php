@@ -3,9 +3,11 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Models\Favourite;
+use App\Models\Genre;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Database\Query\JoinClause;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -32,17 +34,16 @@ class FavouriteGenreQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Favourite::with($fields->getRelations());
+        $query->select($fields->getSelect());
+        $query->where('favouriteable_type', '=', Genre::class);
         if (isset($args['genreId'])) {
-            return Favourite::with('favouriteable')
-                ->where('favouriteable_type', Track::class)
-                ->where('favouriteable_id', $args['genreId'])
-                ->where('user_id', \Auth::user()->id)
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('favouriteable_id', $args['genreId']);
         }
+        $query->where('user_id', \Auth::user()->id);
+        //$query->orderBy('created_at', 'desc');
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
-        return Favourite::with('favouriteable')
-            ->where('favouriteable_type', Track::class)
-            ->where('user_id', \Auth::user()->id)
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        return $response;
     }
 }
