@@ -76,9 +76,14 @@
   }
 
   &__track-author {
-    font-family: 'Gotham Pro', sans-serif;
     flex-grow: 1;
     width: 0;
+  }
+
+  &__album-title {
+    flex-grow: 1;
+    width: 0;
+    margin: 12px;
   }
 
   &__duration {
