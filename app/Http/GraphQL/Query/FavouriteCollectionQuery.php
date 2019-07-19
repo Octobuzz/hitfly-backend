@@ -6,6 +6,7 @@ use App\Models\Collection;
 use App\Models\Favourite;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Database\Query\JoinClause;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -32,25 +33,20 @@ class FavouriteCollectionQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Favourite::with($fields->getRelations());
+        $query->select($fields->getSelect());
+        $query->where('favourites.favouriteable_type', '=', Collection::class);
         if (isset($args['collectionId'])) {
-            return Favourite::with('favouriteable')
-                ->where('favourites.favouriteable_type', Collection::class)
-                ->where('favourites.favouriteable_id', $args['collectionId'])
-                ->where('favourites.user_id', \Auth::user()->id)
-                ->leftJoin('collections', function ($join) {
-                    $join->on('favourites.favouriteable_id', '=', 'collections.id');
-                })
-                ->where('collections.is_admin', '=', 0)
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('favourites.favouriteable_id', $args['collectionId']);
         }
+        $query->leftJoin('collections', function (JoinClause $join) {
+            $join->on('favourites.favouriteable_id', '=', 'collections.id');
+        });
+        $query->where('collections.is_admin', '=', 0);
 
-        return Favourite::with('favouriteable')
-            ->where('favourites.favouriteable_type', Collection::class)
-            ->where('favourites.user_id', \Auth::user()->id)
-            ->leftJoin('collections', function ($join) {
-                $join->on('favourites.favouriteable_id', '=', 'collections.id');
-            })
-            ->where('collections.is_admin', '=', 0)
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        //$query->orderBy('created_at', 'desc');
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
+        return $response;
     }
 }

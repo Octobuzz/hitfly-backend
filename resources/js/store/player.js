@@ -4,7 +4,11 @@ const state = {
   currentTrackId: null,
   currentTrack: {},
   isPlaying: false,
-  currentPlaylist: []
+  currentPlaylist: [],
+  currentType: {
+    'type': String,
+    'id': Number
+  }
 };
 
 const getters = {
@@ -16,6 +20,9 @@ const getters = {
   },
   currentPlaylist(state) {
     return state.currentPlaylist;
+  },
+  getCurrentType(state) {
+    return state.currentType;
   }
 };
 
@@ -44,6 +51,10 @@ const mutations = {
 
   pickPlaylist(state, playlist) {
     state.currentPlaylist = playlist;
+  },
+
+  changeCurrentType(state, data) {
+    state.currentType = data;
   }
 };
 

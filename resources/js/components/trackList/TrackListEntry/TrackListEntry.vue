@@ -41,6 +41,12 @@
       class="track-list-entry__track-author"
       :word="track.singer"
     />
+    <span
+      v-if="showAlbumSection"
+      class="track-list-entry__album-title"
+    >
+      {{ track.album && track.album.title }}
+    </span>
 
     <div
       v-if="!desktop"
@@ -137,6 +143,10 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    showAlbumSection: {
+      type: Boolean,
+      default: false
     },
     fakeFavButton: {
       type: Boolean,

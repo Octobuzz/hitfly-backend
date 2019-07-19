@@ -10,7 +10,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const uri = prod
   ? '/graphql/user'
-  : 'http://localhost:3000/graphql/user';
+  : 'http://localhost:9090/graphql/user';
 
 const httpLink = new HttpLink({
   uri

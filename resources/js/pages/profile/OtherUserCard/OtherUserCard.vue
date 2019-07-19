@@ -203,6 +203,8 @@ export default {
     user: {
       query: gql.query.USER,
 
+      fetchPolicy: 'network-only',
+
       variables() {
         return { id: this.userId };
       },
