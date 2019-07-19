@@ -2,11 +2,38 @@
   <div class="track-list">
     <slot name="header" />
 
+    <div
+      v-if="showTableHeader"
+      class="track-list__header"
+    >
+      <span class="track-list__header-number">
+        №
+      </span>
+      <span class="track-list__header-song">
+        Песня
+      </span>
+      <span class="track-list__header-singer">
+        Музыкант
+      </span>
+      <span class="track-list__header-album">
+        Альбом
+      </span>
+      <span
+        :class="[
+          'track-list__header-duration',
+          { 'track-list__header-duration_padded': showRemoveButton }
+        ]"
+      >
+        Время
+      </span>
+    </div>
+
     <TrackListEntry
       v-for="(trackId, index) in trackIdList"
       :key="trackId"
       :index="index + 1"
       :track-id="trackId"
+      :show-album-section="showAlbumSection"
       :fake-fav-button="fakeFavButton"
       :show-remove-button="showRemoveButton"
       @remove-track="onTrackRemove"
@@ -30,6 +57,14 @@ export default {
     trackIdList: {
       type: Array,
       required: true
+    },
+    showTableHeader: {
+      type: Boolean,
+      default: false
+    },
+    showAlbumSection: {
+      type: Boolean,
+      default: false
     },
     fakeFavButton: {
       type: Boolean,
@@ -86,3 +121,9 @@ export default {
   }
 };
 </script>
+
+<style
+  scoped
+  lang="scss"
+  src="./TrackList.scss"
+/>
