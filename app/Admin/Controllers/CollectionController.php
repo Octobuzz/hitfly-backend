@@ -160,6 +160,8 @@ class CollectionController extends Controller
         ];
         $form->switch('is_admin', 'Подборка')->states($states);
 
+        $form->switch('super_music_fan', 'Супер Меломан');
+
         $form->listbox('tracks', 'Треки')->options(function (?array $selected) {
             return Track::all()->pluck('track_name', 'id');
         });

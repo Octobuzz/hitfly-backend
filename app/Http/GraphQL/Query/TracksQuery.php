@@ -3,7 +3,6 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Helpers\DBHelpers;
-use App\Models\Collection;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
@@ -79,10 +78,6 @@ class TracksQuery extends Query
             });
             $query->where('collection_track.collection_id', $filterId);
 
-//            $query->leftJoin('collections', function ($join) {
-//                $join->on('collection_track.collection_id', '=', 'collections.id');
-//            });
-//            $query->where('collections.is_admin', '=', 0);
             $query->groupBy('tracks.id');
         }
 
