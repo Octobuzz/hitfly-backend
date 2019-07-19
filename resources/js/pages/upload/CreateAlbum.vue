@@ -48,13 +48,23 @@
         @input="onCoverInput"
       />
     </div>
-    <div class="createAlbum__button button form-button_primary" @click="createAlbum">Создать альбом</div>
+
+
+    <FormButton
+      class="createAlbum__button"
+      modifier="primary"
+      loader-size="x-small"
+      @press="createAlbum"
+    >
+      Создать альбом
+    </FormButton>
   </div>
 </template>
 <script>
   import BaseDropdown from 'components/BaseDropdown.vue';
   import ChooseGenres from '../profile/ChooseGenres/ChooseGenres.vue';
   import BaseInput from 'components/BaseInput.vue';
+  import FormButton from 'components/FormButton.vue';
   import PencilIcon from 'components/icons/PencilIcon.vue';
   import CalendarIcon from 'components/icons/CalendarIcon.vue';
   import ChooseAvatar from '../profile/ChooseAvatar.vue';
@@ -158,7 +168,8 @@
       PencilIcon,
       CalendarIcon,
       ChooseAvatar,
-      ChooseYear
+      ChooseYear,
+      FormButton
     }
   }
 </script>
