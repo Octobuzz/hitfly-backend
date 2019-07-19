@@ -4,10 +4,8 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Favourite;
 use App\Models\Genre;
-use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Database\Query\JoinClause;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 

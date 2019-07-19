@@ -4,7 +4,6 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Collection;
 use App\Models\Favourite;
-use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Query\JoinClause;
 use Rebing\GraphQL\Support\Query;

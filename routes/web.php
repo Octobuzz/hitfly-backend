@@ -16,7 +16,7 @@ use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\Recommendation\Recommendation;
 
 Route::redirect('/', 'login', 301);
-//Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
+Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
 //    $params = [
 //        'value' => 'Значение',
 //    ];
@@ -34,9 +34,10 @@ Route::redirect('/', 'login', 301);
 //        ]
 //    );
 
-    //return $notification->fewComments();
+    return $notification->everyMonthDispatchNotVisited();
     //$this->notify(new ResetPasswordNotification($token));
-//});
+//return new \App\Mail\RegistrationCompleted(\App\User::find(215));
+});
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');

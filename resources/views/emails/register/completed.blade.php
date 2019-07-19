@@ -71,13 +71,12 @@
                                         <tr>
                                             @foreach ($playLists as $list)
                                             <td style="width: 50%;">
-                                                @if($list['link'])<a href="{{$list['link']}}" style="position: relative; display: block; text-decoration: none;">@endif
-                                                    @if($list['list_img'])<img src="{{$list['list_img']}}" style="display: block; max-width: 100%; margin: 0 0 10px;">@endif
-                                                    <p style="position: absolute; width: 120px; font-size: 12px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; top: 10px; right: 20px; margin: 0;">
+                                                @if($list['link'])<a href="{{$list['link']}}" style="display: block; width: 247px; height: 160px; text-decoration: none; @if($list['list_img'])background-image: url('{{$list['list_img']}}');@endif margin-right: 5px;">@endif
+                                                    <p style="width: 227px; height: 120px; font-size: 12px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; margin: 0; padding: 10px;">
                                                         {{$list['name']}}<br>
                                                         <span style="font-size: 10px; line-height: 14px; color: #fff;">{{$list['date']}}</span>
                                                     </p>
-                                                    <p style="position: absolute; width: 120px; font-size: 10px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; bottom: 20px; right: 20px; margin: 0;">
+                                                    <p style="width: 227px; font-size: 10px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; margin: 0; padding: 0 10px 0 10px;">
                                                         {{$list['count_tracks']}}
                                                     </p>
                                                 @if($list['link'])</a>@endif
@@ -147,9 +146,8 @@
                                        <tr>
                                            @endif
                                            <td>
-                                               <a href="{{$impEvent['url']}}" style="position: relative; display: block; text-decoration: none;">
-                                                   <img style="display: block; max-width: 100%;" src="{{$impEvent['img']}}">
-                                                   <p style="position: absolute; width: 330px; font-size: 24px; font-weight: 700; color: #fff; top: 25px; left: 50px; margin: 0;">{{$impEvent['name']}}</p>
+                                               <a href="{{$impEvent['url']}}" style="display: block; width: 600px; height: 272px; text-decoration: none; background-image: url('{{$impEvent['img']}}');">
+                                                   <p style="width: 500px; font-size: 24px; font-weight: 700; color: #fff; margin: 0; padding: 25px 50px 25px 50px;">{{$impEvent['name']}}</p>
                                                </a>
                                            </td>
                                            @if ($loop->iteration%2 === 0 || $loop->last)
