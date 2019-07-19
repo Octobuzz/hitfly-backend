@@ -127,16 +127,16 @@
 <!--          </span>-->
 <!--          Поделиться песней-->
 <!--        </span>-->
-        <span
-          v-if="showRemoveOption"
-          class="track-actions-popover__menu-item"
-          @click="emitRemoveTrack"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <CrossIcon />
-          </span>
-          Удалить из текущего списка
-        </span>
+<!--        <span-->
+<!--          v-if="showRemoveOption"-->
+<!--          class="track-actions-popover__menu-item"-->
+<!--          @click="emitRemoveTrack"-->
+<!--        >-->
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <CrossIcon />-->
+<!--          </span>-->
+<!--          Удалить из текущего списка-->
+<!--        </span>-->
       </div>
 
 <!--      <span-->
