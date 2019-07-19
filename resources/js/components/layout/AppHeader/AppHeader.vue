@@ -44,6 +44,7 @@
 
     <div class="head__right">
       <router-link
+        v-if="ableToPerform"
         to="/upload"
         class="button gradient head-right-item head-right-item_upload"
       >
@@ -143,6 +144,10 @@ export default {
   computed: {
     path() {
       return this.$route.fullPath;
+    },
+
+    ableToPerform() {
+      return this.$store.getters['profile/ableToPerform'];
     }
   },
 
@@ -152,7 +157,7 @@ export default {
 
       if (!getters['profile/loggedIn']) return;
 
-      if (getters['profile/ableToPerform']) {
+      if (this.ableToPerform) {
         this.$router.push('/profile/my-music');
 
         return;
