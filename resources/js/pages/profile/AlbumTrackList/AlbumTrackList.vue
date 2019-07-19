@@ -2,12 +2,15 @@
   <div :class="['album-track-list', containerPaddingClass]">
     <ReturnHeader class="album-track-list__return-button" />
 
-    <template v-if="albumFetched && shownTrack">
+    <template v-if="albumFetched">
       <span class="album-track-list__singer">
         {{ album.title }}
       </span>
 
-      <div class="album-track-list__track-section">
+      <div
+        v-if="shownTrack && trackListDataExists"
+        class="album-track-list__track-section"
+      >
         <img
           :src="
             shownTrack.cover.filter(
@@ -34,12 +37,25 @@
         </div>
       </div>
 
+      <div v-if="!trackListDataExists">
+        <img
+          :src="
+            album.cover.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+          "
+          alt="Track cover"
+          class="album-track-list__track-cover"
+        >
+      </div>
+
       <div class="album-track-list__button-section">
         <button
           @click="playAlbum"
           :class="[
             'album-track-list__button',
-            'album-track-list__button_listen'
+            'album-track-list__button_listen',
+            { 'album-track-list__button_disabled': !trackListDataExists }
           ]"
         >
           <CirclePlayIcon />
@@ -58,6 +74,7 @@
 
         <AlbumPopover
           :album-id="albumId"
+          :hide-player-actions="!trackListDataExists"
           @press-favourite="onPressFavourite"
           @album-removed="goBack"
         >
@@ -135,6 +152,7 @@ export default {
       firstAlbumTrackId: null,
       album: null,
       albumFetched: false,
+      trackListDataExists: false,
       tooltip: {
         more: {
           content: 'Еще'
@@ -176,13 +194,25 @@ export default {
         });
       },
       immediate: true
+    },
+
+    'album.tracksCount': function collelctionTracksCount(count) {
+      if (count === 0) {
+        this.trackListDataExists = false;
+      }
     }
   },
 
   methods: {
     onTrackListInitialized(data) {
       if (data instanceof Array === false
-        || data.length === 0) return;
+          || data.length === 0) {
+        this.trackListDataExists = false;
+
+        return;
+      }
+
+      this.trackListDataExists = true;
 
       this.firstAlbumTrackId = data[0].id;
     },
@@ -229,6 +259,9 @@ export default {
     },
 
     playAlbum(){
+      // prevent attempt to listen nonexistent track
+      if (!this.shownTrack) return;
+
       this.$apollo.provider.defaultClient.query({
         query: gql.query.TRACKS,
         variables: {
