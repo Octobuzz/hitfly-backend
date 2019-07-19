@@ -87,6 +87,7 @@
 
         <SocialMediaLinks :links.sync="group.socialLinks" />
 
+        <!--
         <span
           :class="[
             'h2',
@@ -126,6 +127,7 @@
           :error-message="group.invitedMembers.errorMessage"
           :error-members="group.invitedMembers.errorMembers"
         />
+        -->
       </div>
     </div>
     <div class="create-group-footer">
