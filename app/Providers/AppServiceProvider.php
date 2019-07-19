@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\BuisnessLogic\Top\TopWeekly;
+use App\Interfaces\Top\TopWeeklyInterface;
 use App\Models\Album;
 use App\Models\Comment;
 use App\Models\MusicGroup;
@@ -22,6 +24,10 @@ use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $singletons = [
+        TopWeeklyInterface::class => TopWeekly::class,
+    ];
+
     /**
      * Bootstrap any application services.
      */

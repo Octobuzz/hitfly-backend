@@ -5,6 +5,7 @@ namespace App\Console;
 use App\BuisnessLogic\Emails\Notification;
 use App\Console\Commands\CalculateListenedUserCommand;
 use App\Console\Commands\CalculateListeningTrackCommand;
+use App\Console\Commands\CalculateTopWeeklyCommand;
 use App\Console\Commands\ConvertTrackCommand;
 use App\Console\Commands\CreatePlayTimeTrackCommand;
 use App\Console\Commands\CreateTopFiftyCommand;
@@ -69,6 +70,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(CalculateListenedUserCommand::class)->everyTenMinutes();
         $schedule->command(MusicalWaveCommand::class)->everyFiveMinutes()->name('create_music_wave')->withoutOverlapping();
         $schedule->command(ConvertTrackCommand::class)->everyFiveMinutes()->name('convert_track')->withoutOverlapping();
+        $schedule->command(CalculateTopWeeklyCommand::class)->weeklyOn(1);
     }
 
     /**

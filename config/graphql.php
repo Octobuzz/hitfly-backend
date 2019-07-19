@@ -114,6 +114,7 @@ return [
                 'TracksByIdsQuery' => \App\Http\GraphQL\Query\TracksByIdsQuery::class,
                 'topTrackForUser' => \App\Http\GraphQL\Query\TopTrackForUser::class,
                 'news' => \App\Http\GraphQL\Query\NewsQuery::class,
+                'TopWeeklyQuery' => \App\Http\GraphQL\Query\TopWeeklyQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -155,6 +156,7 @@ return [
                 'TracksByIdsQuery' => \App\Http\GraphQL\Query\TracksByIdsQuery::class,
                 'topTrackForUser' => \App\Http\GraphQL\Query\TopTrackForUser::class,
                 'news' => \App\Http\GraphQL\Query\NewsQuery::class,
+                'TopWeeklyQuery' => \App\Http\GraphQL\Query\TopWeeklyQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
