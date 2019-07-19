@@ -42,7 +42,10 @@
         class="album-popover__menu"
       >
         <!--TODO: use interactive elements-->
-        <span class="album-popover__menu-item">
+        <span
+          v-if="!hidePlayerActions"
+          class="album-popover__menu-item"
+        >
           <span class="album-popover__menu-item-icon">
             <PlayNextIcon />
           </span>
@@ -64,7 +67,10 @@
           </span>
         </span>
 
-        <span class="album-popover__menu-item">
+        <span
+          v-if="!hidePlayerActions"
+          class="album-popover__menu-item"
+        >
           <!--TODO: removing from queue should be available instead-->
           <!--of this under corresponding conditions-->
 
@@ -142,6 +148,10 @@ export default {
     albumId: {
       type: Number,
       required: true
+    },
+    hidePlayerActions: {
+      type: Boolean,
+      default: false
     }
   },
 

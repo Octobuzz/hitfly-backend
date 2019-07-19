@@ -2,12 +2,15 @@
   <div :class="['collection-track-list', containerPaddingClass]">
     <ReturnHeader class="collection-track-list__return-button" />
 
-    <template v-if="collectionFetched && shownTrack">
+    <template v-if="collectionFetched">
       <span class="collection-track-list__singer">
         {{ collection.title }}
       </span>
 
-      <div class="collection-track-list__track-section">
+      <div
+        v-if="shownTrack && trackListDataExists"
+        class="collection-track-list__track-section"
+      >
         <img
           :src="
             shownTrack.cover.filter(
@@ -35,12 +38,28 @@
         </div>
       </div>
 
+      <div v-if="!trackListDataExists">
+        <img
+          :src="
+            collection.image.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+          "
+          alt="Track cover"
+          :class="[
+            'collection-track-list__track-cover',
+            'collection-track-list__track-cover_margin-bottom'
+          ]"
+        >
+      </div>
+
       <div class="collection-track-list__button-section">
         <button
           @click="playCollection"
           :class="[
             'collection-track-list__button',
-            'collection-track-list__button_listen'
+            'collection-track-list__button_listen',
+            { 'collection-track-list__button_disabled': !trackListDataExists }
           ]"
         >
           <template v-if="currentPlaying">
@@ -65,6 +84,7 @@
 
         <CollectionPopover
           :collection-id="collectionId"
+          :hide-player-actions="!trackListDataExists"
           @press-favourite="onPressFavourite"
           @collection-removed="goBack"
         >
@@ -146,6 +166,7 @@ export default {
       firstCollectionTrackId: null,
       collection: null,
       collectionFetched: false,
+      trackListDataExists: false,
       playingTrackBelongsToCollection: false,
       playingTrack: null,
       shownTrack: null,
@@ -226,13 +247,25 @@ export default {
           .catch(err => console.dir(err));
       },
       immediate: true
+    },
+
+    'collection.countTracks': function collelctionTracksCount(count) {
+      if (count === 0) {
+        this.trackListDataExists = false;
+      }
     }
   },
 
   methods: {
     onTrackListInitialized(data) {
       if (data instanceof Array === false
-        || data.length === 0) return;
+          || data.length === 0) {
+        this.trackListDataExists = false;
+
+        return;
+      }
+
+      this.trackListDataExists = true;
 
       this.firstCollectionTrackId = data[0].id;
     },
@@ -280,6 +313,9 @@ export default {
     },
 
     playCollection(){
+      // prevent attempt to listen nonexistent track
+      if (!this.shownTrack) return;
+
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
