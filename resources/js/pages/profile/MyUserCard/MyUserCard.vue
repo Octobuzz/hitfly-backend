@@ -78,7 +78,7 @@
           Мои группы
         </span>
         <button
-          v-if="!isCreatingGroup"
+          v-if="ableToPerform && !isCreatingGroup"
           class="user-card__button"
           @click="goToCreateGroup"
         >
@@ -422,6 +422,10 @@ export default {
   },
 
   computed: {
+    ableToPerform() {
+      return this.$store.getters['profile/ableToPerform'];
+    },
+
     isCreatingGroup() {
       return this.$route.fullPath === '/profile/create-group';
     },
