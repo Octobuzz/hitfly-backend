@@ -42,6 +42,7 @@ class FavouriteTrackQuery extends Query
             $join->on('favourites.favouriteable_id', '=', 'tracks.id');
         });
         $query->where('tracks.deleted_at', '=', null);
+        $query->where('tracks.id', '<>', null);
         $query->where('favourites.user_id', \Auth::user()->id);
 
         //$query->orderBy('created_at', 'desc');

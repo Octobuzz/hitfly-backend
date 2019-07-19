@@ -42,6 +42,7 @@ class FavouriteAlbumQuery extends Query
             $join->on('favourites.favouriteable_id', '=', 'albums.id');
         });
         $query->where('albums.deleted_at', '=', null);
+        $query->where('albums.id', '<>', null);
         $query->where('favourites.user_id', \Auth::user()->id);
 
         //$query->orderBy('created_at', 'desc');
