@@ -119,25 +119,9 @@
           </span>
           {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
-<!--        <span-->
-<!--          class="track-actions-popover__menu-item"-->
-<!--        >-->
-<!--          <span class="track-actions-popover__menu-item-icon">-->
-<!--            <BendedArrowIcon />-->
-<!--          </span>-->
-<!--          Поделиться песней-->
-<!--        </span>-->
-<!--        <span-->
-<!--          v-if="showRemoveOption"-->
-<!--          class="track-actions-popover__menu-item"-->
-<!--          @click="emitRemoveTrack"-->
-<!--        >-->
-<!--          <span class="track-actions-popover__menu-item-icon">-->
-<!--            <CrossIcon />-->
-<!--          </span>-->
-<!--          Удалить из текущего списка-->
-<!--        </span>-->
       </div>
+
+<!--      Commented code should be present in future releases-->
 
 <!--      <span-->
 <!--        v-if="!inPlaylistMenu && !inReviewMenu"-->
