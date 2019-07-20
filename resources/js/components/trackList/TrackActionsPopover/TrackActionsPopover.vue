@@ -119,9 +119,20 @@
           </span>
           {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
+
+<!--        Commented code should be present in future release        -->
+
+<!--        <span-->
+<!--          class="track-actions-popover__menu-item"-->
+<!--        >-->
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <BendedArrowIcon />-->
+<!--          </span>-->
+<!--          Поделиться песней-->
+<!--        </span>-->
       </div>
 
-<!--      Commented code should be present in future releases-->
+<!--      Commented code should be present in future release-->
 
 <!--      <span-->
 <!--        v-if="!inPlaylistMenu && !inReviewMenu"-->
