@@ -119,6 +119,9 @@
           </span>
           {{ ownerIsWatched ? 'Не следить за автором' : 'Следить за автором' }}
         </span>
+
+<!--        Commented code should be present in future release        -->
+
 <!--        <span-->
 <!--          class="track-actions-popover__menu-item"-->
 <!--        >-->
@@ -127,17 +130,9 @@
 <!--          </span>-->
 <!--          Поделиться песней-->
 <!--        </span>-->
-        <span
-          v-if="showRemoveOption"
-          class="track-actions-popover__menu-item"
-          @click="emitRemoveTrack"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <CrossIcon />
-          </span>
-          Удалить из текущего списка
-        </span>
       </div>
+
+<!--      Commented code should be present in future release-->
 
 <!--      <span-->
 <!--        v-if="!inPlaylistMenu && !inReviewMenu"-->
