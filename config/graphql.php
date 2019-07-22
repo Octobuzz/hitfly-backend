@@ -157,6 +157,7 @@ return [
                 'topTrackForUser' => \App\Http\GraphQL\Query\TopTrackForUser::class,
                 'news' => \App\Http\GraphQL\Query\NewsQuery::class,
                 'TopWeeklyQuery' => \App\Http\GraphQL\Query\TopWeeklyQuery::class,
+                'myTracksSearch' => \App\Http\GraphQL\Query\MyTracksSearch::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,

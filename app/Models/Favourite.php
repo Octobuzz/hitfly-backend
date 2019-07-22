@@ -15,7 +15,6 @@ class Favourite extends Model
     const TYPE_GENRE = 'genre';
     const TYPE_COLLECTION = 'collection';
 
-
     const CLASS_NAME = [
         Album::class => self::TYPE_ALBUM,
         Track::class => self::TYPE_TRACK,
