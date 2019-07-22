@@ -11,6 +11,7 @@ namespace App\Validation;
 use App\Models\MusicGroup;
 use App\Models\Watcheables;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FollowValidator extends Validator
@@ -34,6 +35,17 @@ class FollowValidator extends Validator
             ->where('watcheable_id', '=', $data['Follow']['FollowId'])
             ->where('user_id', \Auth::user()->id)->first();
         if (null === $follow) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function followMyself(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
+    {
+        $data = $validator->getData();
+
+        if (Watcheables::TYPE_MUSIC_GROUP === $data['Follow']['FollowType'] || ($data['Follow']['FollowId'] !== Auth::user()->id && Watcheables::TYPE_USER === $data['Follow']['FollowType'])) {
             return true;
         } else {
             return false;

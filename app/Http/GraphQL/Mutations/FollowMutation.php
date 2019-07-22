@@ -25,7 +25,7 @@ class FollowMutation extends Mutation
         return [
             'Follow' => [
                 'type' => \GraphQL::type('FollowInput'),
-                'rules' => 'follow_unique_validate',
+                'rules' => ['follow_unique_validate', 'follow_myself_validate'],
             ],
         ];
     }

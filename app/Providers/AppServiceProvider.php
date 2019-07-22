@@ -42,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         Date::setlocale(config('app.locale'));
         Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesValidator@validate');
         Validator::extend('follow_unique_validate', 'App\Validation\FollowValidator@validate');
+        Validator::extend('follow_myself_validate', 'App\Validation\FollowValidator@followMyself');
         Validator::extend('favourites_delete_validate', 'App\Validation\FavouritesValidator@validateDelete');
         Validator::extend('follow_delete_validate', 'App\Validation\FollowValidator@validateDelete');
         Validator::extend('mutually_exclusive_args', 'App\Validation\ManuallyExclusiveArgs@validate');
