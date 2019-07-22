@@ -161,7 +161,8 @@ export default {
 				return;
 			}
 			const el = e.target.getBoundingClientRect();
-			const seekPos = (e.clientX - el.left) / el.width;
+      let barWidth = document.getElementsByClassName('progress__bar')[0].offsetWidth;
+			const seekPos = (e.clientX - el.left) / barWidth;
 			this.audio.currentTime = parseInt(Math.floor(this.currentTrack.length) * seekPos);
 		},
     startPause(){
