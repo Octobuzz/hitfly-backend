@@ -58,6 +58,11 @@ class TrackFilterInput extends GraphQLType
                 'description' => 'откомментированые пользователем(ID фильтрация) Работает совместно с commentPeriod',
                 'rules' => ['mutually_exclusive_args:iCommented'],
             ],
+            'genre' => [
+                'type' => Type::int(),
+                'description' => 'Фильтрация по жанру',
+                'rules' => ['nullable', 'int'],
+            ],
         ];
     }
 }

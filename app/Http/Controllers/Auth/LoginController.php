@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\SocialAccountService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use Exception;
@@ -86,8 +87,10 @@ class LoginController extends Controller
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
         Auth::login($user);
         Auth::guard('json')->login($user);
+
         /** @var User $user */
         if (false === $user->hasVerifiedEmail()) {
+            event(new Registered($user));
             if (null !== $user->email && false === $user->hasVerifiedEmail()) {
                 VerificationController::sendNotification($user);
             }

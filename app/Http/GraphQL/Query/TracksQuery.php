@@ -3,11 +3,11 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Helpers\DBHelpers;
-use App\Models\Collection;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -44,6 +44,13 @@ class TracksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $keyCache = md5(json_encode($args).json_encode($root).json_encode($fields));
+
+        $response = Cache::get($keyCache, null);
+        if (false === empty($response)) {
+            return $response;
+        }
+
         $query = Track::with($fields->getRelations());
 
         $query->select('tracks.*');
@@ -71,10 +78,6 @@ class TracksQuery extends Query
             });
             $query->where('collection_track.collection_id', $filterId);
 
-//            $query->leftJoin('collections', function ($join) {
-//                $join->on('collection_track.collection_id', '=', 'collections.id');
-//            });
-//            $query->where('collections.is_admin', '=', 0);
             $query->groupBy('tracks.id');
         }
 
@@ -104,7 +107,18 @@ class TracksQuery extends Query
             }
         }
 
+        if (false === empty($args['filters']['genre'])) {
+            $query->leftJoin('genres_bindings', function ($join) {
+                $join->on('tracks.id', '=', 'genres_bindings.genreable_id');
+            })
+                ->where('genres_bindings.genre_id', '=', $args['filters']['genre'])
+                ->where('genres_bindings.genreable_type', '=', Track::class)
+            ;
+        }
+
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
+        Cache::add($keyCache, $response, now()->addMinute(10));
 
         return $response;
     }
