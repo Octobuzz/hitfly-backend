@@ -27,13 +27,14 @@ function refetchWatchedGroups($apollo) {
 
 function handleClientState(args) {
   const {
-    vm,
     $apollo,
     mutation,
     variables,
     ownerIsGroup,
     ownerIsWatched,
-    ownerName
+    ownerName,
+    followMixinCallback,
+    $message
   } = args;
 
   return $apollo.mutate({
@@ -56,7 +57,7 @@ function handleClientState(args) {
           });
 
           const update = {
-            followersCount: userData.followersCount - 1,
+            followersCount: userData.user.followersCount - 1,
             iWatch: false
           };
 
@@ -78,7 +79,7 @@ function handleClientState(args) {
           });
 
           const update = {
-            followersCount: musicGroupData.followersCount - 1,
+            followersCount: musicGroupData.musicGroup.followersCount - 1,
             iWatch: false
           };
 
@@ -100,7 +101,7 @@ function handleClientState(args) {
     }
   })
     .then(() => {
-      vm.$message(
+      $message(
         `Теперь вы ${ownerIsWatched ? 'не ' : ''}следите за ${ownerName}`,
         'info',
         { timeout: 2000 }
@@ -110,8 +111,8 @@ function handleClientState(args) {
       console.dir(err);
     })
     .then(() => {
-      if (typeof vm.followMixinCallback === 'function') {
-        vm.followMixinCallback();
+      if (typeof followMixinCallback === 'function') {
+        followMixinCallback();
       }
     });
 }
@@ -170,14 +171,21 @@ const trackOrAlbumMixinFactory = varInQuestion => ({
 
       const variables = { id: +owner.id };
 
+      let followMixinCallback;
+
+      if (typeof this.followMixinCallback === 'function') {
+        followMixinCallback = this.followMixinCallback.bind(this);
+      }
+
       handleClientState({
-        vm: this,
         $apollo: this.$apollo,
         mutation,
         variables,
         ownerIsGroup,
         ownerIsWatched,
-        ownerName
+        ownerName,
+        followMixinCallback,
+        $message: this.$message.bind(this)
       });
     }
   }
@@ -210,13 +218,22 @@ const userMixinFactory = varInQuestion => ({
         mutation = gql.mutation.START_WATCHING_USER;
       }
 
-      handleClientState.call(this, {
+      let followMixinCallback;
+
+      if (typeof this.followMixinCallback === 'function') {
+        followMixinCallback = this.followMixinCallback.bind(this);
+      }
+
+      handleClientState({
+        vm: this,
         $apollo: this.$apollo,
         variables: { id: +user.id },
         ownerName: user.username,
         ownerIsGroup: false,
         ownerIsWatched,
-        mutation
+        mutation,
+        followMixinCallback,
+        $message: this.$message.bind(this)
       });
     }
   }

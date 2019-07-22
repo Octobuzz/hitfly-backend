@@ -13,6 +13,8 @@
           v-if="container.trackIdList.length > 0"
           :track-id-list="container.trackIdList"
           :show-remove-button="showRemoveButton"
+          :show-table-header="showTableHeader"
+          :show-album-section="showAlbumSection"
           @remove-track="onRemoveTrack"
         >
           <template #header>
@@ -83,6 +85,12 @@ export default {
 
       return !initialFetchDone
         || shownTracksCount <= tracksContainer.trackIdList.length;
+    },
+    showTableHeader() {
+      return this.forType === 'collection';
+    },
+    showAlbumSection() {
+      return this.forType === 'collection';
     }
   },
 
@@ -92,6 +100,8 @@ export default {
         this.loadOnScroll();
       });
     });
+
+    this.$emit('data');
   },
 
   methods: {

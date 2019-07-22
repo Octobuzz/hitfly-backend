@@ -24,6 +24,7 @@ use App\Mail\DecreaseLevelMail;
 use App\Mail\DecreaseStatusMail;
 use App\Mail\FewComments;
 use App\Mail\LongAgoNotVisited;
+use App\Mail\MonthDispatchNotVisitedMail;
 use App\Mail\NewEventNotificationMail;
 use App\Mail\NewFavouriteTrackMail;
 use App\Mail\NewStatusMail;
@@ -93,6 +94,7 @@ class Notification
 
         $tracks = new Tracks();
         foreach ($users as $user) {
+            //return new FewComments($user, $tracks->getNewTracks(4));
             dispatch(new FewCommentsJob($user, $tracks->getNewTracks(4)))->onQueue('low');
         }
     }
@@ -129,9 +131,9 @@ class Notification
     public function longAgoNotVisited()
     {
         $users = $this->getUsersLongAgoNotVisited();
-        $user = User::query()->where('id', '=', 31)->first();
-
-        return new LongAgoNotVisited(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4));
+//        $user = User::query()->where('id', '=', 214)->first();
+//
+//        return new LongAgoNotVisited(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4));
         foreach ($users['days7'] as $user) {
             dispatch(new LongAgoNotVisitedJob(7, $user, $this->events->getThisMonthEvents(2), $this->events->getImportantEvents(1), $this->tracks->getTopTrack(4)))->onQueue('low');
         }
@@ -161,7 +163,9 @@ class Notification
     public function everyMonthDispatchNotVisited()
     {
         $users = $this->getMonthDispatchNotVisited();
-
+//        $user = User::query()->where('id', '=', 214)->first();
+//
+//        return new MonthDispatchNotVisitedMail( $user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5));
         foreach ($users as $user) {
             dispatch(new MonthDispatchNotVisitedJob($user, $this->events->getUpcomingEvents(3), $this->recommendation->getNewUserPlayList(2), $this->tracks->getTopTrack(5)))->onQueue('low');
         }
@@ -241,7 +245,7 @@ class Notification
     private function getSubscribersToEvent()
     {
         // TODO: выборка пользователей подписаных на рассылку о событиях
-        return User::query()->where('id', '=', 31)->get();
+        return User::query()->where('id', '=', 214)->get();
     }
 
     /**

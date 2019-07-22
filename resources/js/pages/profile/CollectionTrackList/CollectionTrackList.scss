@@ -25,6 +25,10 @@
     height: 160px;
     border-radius: 4px;
     margin-right: 28px;
+
+    &_margin-bottom {
+      margin-bottom: 32px;
+    }
   }
 
   &__player-section {
@@ -70,6 +74,7 @@
 
     &_listen {
       font-size: 14px;
+      width: 160px;
       color: $text_color_primary;
       padding: {
         left: 32px;
@@ -86,6 +91,14 @@
       & > *:first-child {
         display: block;
         margin-right: 12px;
+      }
+    }
+
+    &_disabled {
+      color: grey;
+
+      &:hover {
+        background: white;
       }
     }
   }

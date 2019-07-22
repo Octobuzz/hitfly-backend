@@ -180,32 +180,34 @@
         this.createAlbum = false
       },
       addInfo(){
-        const genres = this.trackInfo.genres.map((genre) => {
-          return genre.id;
-        });
-        let singer = null;
-        let band = null;
-        let bandId = null;
-        if(this.bands[0].name === this.trackInfo.selectedArtist){
-          singer = this.trackInfo.selectedArtist;
-        }else{
-          band = this.bands.filter((band) => {
-            return band.name === this.trackInfo.selectedArtist;
+        if(!this.loading){
+          const genres = this.trackInfo.genres.map((genre) => {
+            return genre.id;
           });
-          bandId = band[0].id;
-          singer = band[0].name;
+          let singer = null;
+          let band = null;
+          let bandId = null;
+          if(this.bands[0].name === this.trackInfo.selectedArtist){
+            singer = this.trackInfo.selectedArtist;
+          }else{
+            band = this.bands.filter((band) => {
+              return band.name === this.trackInfo.selectedArtist;
+            });
+            bandId = band[0].id;
+            singer = band[0].name;
+          }
+          const info = {
+            'cover': this.trackInfo.cover,
+            'singer': singer,
+            'trackDate': this.trackInfo.year.input,
+            'songText': this.trackInfo.text,
+            'musicGroup': bandId,
+            'genre': genres,
+            'trackName': this.trackInfo.name.input,
+            'album': this.trackInfo.selectedAlbum.id
+          };
+          this.$emit('sendInfo', info);
         }
-        const info = {
-          'cover': this.trackInfo.cover,
-          'singer': singer,
-          'trackDate': this.trackInfo.year.input,
-          'songText': this.trackInfo.text,
-          'musicGroup': bandId,
-          'genre': genres,
-          'trackName': this.trackInfo.name.input,
-          'album': this.trackInfo.selectedAlbum.id
-        };
-        this.$emit('sendInfo', info);
       },
       handleAlbumSelect(){
         const selectedAlbum = this.albums.albums.data.filter((album) => {

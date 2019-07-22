@@ -25,13 +25,13 @@ class Event implements EventsContract
         return [
             [
                 'name' => 'Название',
-                'img' => '/url',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
                 'url' => '/event/url',
                 'participant' => 'The Beatles',
             ],
             [
                 'name' => 'Название',
-                'img' => '/url',
+                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
                 'url' => '/event/url',
                 'participant' => 'The Beatles',
             ],

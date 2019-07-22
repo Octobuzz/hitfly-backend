@@ -70,6 +70,7 @@
 
     &_listen {
       font-size: 14px;
+      width: 160px;
       color: $text_color_primary;
       padding: {
         left: 32px;
@@ -87,6 +88,14 @@
         display: block;
         margin-right: 12px;
       }
+    }
+  }
+
+  &_disabled {
+    color: grey;
+
+    &:hover {
+      background: white;
     }
   }
 }

@@ -2,12 +2,15 @@
   <div :class="['album-track-list', containerPaddingClass]">
     <ReturnHeader class="album-track-list__return-button" />
 
-    <template v-if="albumFetched && shownTrack">
+    <template v-if="albumFetched">
       <span class="album-track-list__singer">
-        {{ shownTrack.singer }}
+        {{ album.title }}
       </span>
 
-      <div class="album-track-list__track-section">
+      <div
+        v-if="shownTrack && trackListDataExists"
+        class="album-track-list__track-section"
+      >
         <img
           :src="
             shownTrack.cover.filter(
@@ -20,7 +23,7 @@
 
         <div class="album-track-list__player-section">
           <span class="h3 album-track-list__album-title">
-            {{ album.title }}
+            {{ shownTrack.trackName }}
           </span>
           <span class="album-track-list__album-data">
             <span class="album-track-list__total-tracks-info">
@@ -34,16 +37,35 @@
         </div>
       </div>
 
+      <div v-if="!trackListDataExists">
+        <img
+          :src="
+            album.cover.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+          "
+          alt="Track cover"
+          class="album-track-list__track-cover"
+        >
+      </div>
+
       <div class="album-track-list__button-section">
         <button
           @click="playAlbum"
           :class="[
             'album-track-list__button',
-            'album-track-list__button_listen'
+            'album-track-list__button_listen',
+            { 'album-track-list__button_disabled': !trackListDataExists }
           ]"
         >
-          <CirclePlayIcon />
-          Слушать
+          <template v-if="currentPlaying">
+            <CirclePauseIcon />
+            Пауза
+          </template>
+          <template v-else>
+            <CirclePlayIcon />
+            Слушать
+          </template>
         </button>
 
         <AddToFavButton
@@ -58,6 +80,7 @@
 
         <AlbumPopover
           :album-id="albumId"
+          :hide-player-actions="!trackListDataExists"
           @press-favourite="onPressFavourite"
           @album-removed="goBack"
         >
@@ -100,6 +123,7 @@ import playingTrackId from 'mixins/playingTrackId';
 import totalTracksInfo from 'mixins/totalInfoFormatting';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
+import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
@@ -117,7 +141,8 @@ export default {
     IconButton,
     CirclePlayIcon,
     DotsIcon,
-    AddToFavButton
+    AddToFavButton,
+    CirclePauseIcon
   },
 
   mixins: [
@@ -130,10 +155,13 @@ export default {
   data() {
     return {
       playingTrack: null,
+      shownTrack: null,
       firstAlbumTrack: null,
       firstAlbumTrackId: null,
+      newVar: String,
       album: null,
       albumFetched: false,
+      trackListDataExists: false,
       tooltip: {
         more: {
           content: 'Еще'
@@ -143,6 +171,12 @@ export default {
   },
 
   computed: {
+    currentPlaying() {
+      return this.currentType.type === 'album' && this.currentType.id === this.albumId && this.$store.getters['player/isPlaying'];
+    },
+    currentType() {
+      return this.$store.getters['player/getCurrentType'];
+    },
     albumId() {
       return +this.$route.params.albumId;
     },
@@ -164,31 +198,36 @@ export default {
         default:
           return false;
       }
+    }
+  },
+
+  watch: {
+    playingTrackId: {
+      handler() {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+      },
+      immediate: true
     },
 
-    shownTrack() {
-      const {
-        playingTrack,
-        firstAlbumTrack,
-        albumId
-      } = this;
-
-      if (!firstAlbumTrack) {
-        return null;
+    'album.tracksCount': function collelctionTracksCount(count) {
+      if (count === 0) {
+        this.trackListDataExists = false;
       }
-
-      if (playingTrack && playingTrack.album.id === albumId) {
-        return playingTrack;
-      }
-
-      return firstAlbumTrack;
     }
   },
 
   methods: {
     onTrackListInitialized(data) {
       if (data instanceof Array === false
-        || data.length === 0) return;
+          || data.length === 0) {
+        this.trackListDataExists = false;
+
+        return;
+      }
+
+      this.trackListDataExists = true;
 
       this.firstAlbumTrackId = data[0].id;
     },
@@ -201,6 +240,28 @@ export default {
       this.$router.go(-1);
     },
 
+    updateShownTrack() {
+      const getShownTrack = () => {
+        const {
+          playingTrack,
+          firstAlbumTrack,
+          albumId
+        } = this;
+
+        if (!firstAlbumTrack) {
+          return null;
+        }
+
+        if (playingTrack && playingTrack.album.id === albumId) {
+          return playingTrack;
+        }
+
+        return firstAlbumTrack;
+      };
+
+      this.shownTrack = getShownTrack();
+    },
+
     refetchTotalInfo() {
       this.$apollo.query({
         query: gql.query.ALBUM_TOTAL_INFO,
@@ -211,28 +272,46 @@ export default {
         }
       });
     },
+
     playAlbum(){
-      this.$apollo.provider.defaultClient.query({
-        query: gql.query.TRACKS,
-        variables: {
-          pageLimit: 30,
-          pageNumber: 1,
-          filters: {
-            albumId: this.albumId
-          }
-        },
-      })
-      .then(response => {
+      // prevent attempt to listen nonexistent track
+      if (!this.shownTrack) return;
+
+      if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
-        this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-        let arrayTr = response.data.tracks.data.map(data => {
-          return data.id;
-        });
-        this.$store.commit('player/pickPlaylist', arrayTr);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      }else{
+        if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
+          this.$store.commit('player/startPlaying');
+        }else{
+          this.$apollo.provider.defaultClient.query({
+            query: gql.query.TRACKS,
+            variables: {
+              pageLimit: 30,
+              pageNumber: 1,
+              filters: {
+                albumId: this.albumId
+              }
+            },
+          })
+          .then(response => {
+            let data = {
+              'type': 'album',
+              'id': this.albumId
+            };
+            this.$store.commit('player/pausePlaying');
+            this.$store.commit('player/changeCurrentType', data);
+            console.log(response.data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        }
+      }
     }
   },
 
@@ -280,6 +359,10 @@ export default {
         };
       },
       update({ track }) {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+
         return track;
       },
       error(err) {
