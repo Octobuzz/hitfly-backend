@@ -15,15 +15,25 @@ Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== 'production';
 
 const state = {
+  isAuthenticated: false,
   favInProcess: {
     track: [],
     album: [],
     collection: []
   },
-  editGroupId: null,
+  editGroupId: null
 };
 
 const getters = {
+  isAuthenticated() {
+    // TODO: implement authentication
+    return true;
+  },
+
+  apolloClient(_, getters) {
+    return getters.isAuthenticated ? 'private' : 'public';
+  },
+
   favInProcess({ favInProcess }) {
     return ({ type, id }) => (
       favInProcess[type]

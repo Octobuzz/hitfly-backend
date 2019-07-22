@@ -8,19 +8,24 @@ Vue.use(VueApollo);
 
 const prod = process.env.NODE_ENV === 'production';
 
-const uri = prod
+const publicUri = prod
+  ? '/graphql'
+  : 'http://localhost:9090/graphql';
+const privateUri = prod
   ? '/graphql/user'
   : 'http://localhost:9090/graphql/user';
 
-const httpLink = new HttpLink({
-  uri
+
+const publicHttpLink = new HttpLink({
+  uri: publicUri
+});
+const privateHttpLink = new HttpLink({
+  uri: privateUri
 });
 
 const regularCacheRedirect = type => (_, args, { getCacheKey }) => (
   getCacheKey({ __typename: type, id: args.id })
 );
-
-// TODO: second endpoint
 
 const cache = new InMemoryCache({
   freezeResults: true,
@@ -39,13 +44,25 @@ const cache = new InMemoryCache({
   }
 });
 
-const apolloClient = new ApolloClient({
+const sharedOptions = {
   cache,
-  link: httpLink,
   credentials: 'include',
   connectToDevTools: !prod
+};
+
+const publicClient = new ApolloClient({
+  ...sharedOptions,
+  link: publicHttpLink
+});
+const privateClient = new ApolloClient({
+  ...sharedOptions,
+  link: privateHttpLink
 });
 
 export default new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: privateClient,
+  clients: {
+    public: publicClient,
+    private: privateClient
+  }
 });
