@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Favourite extends Model
 {
+    use SoftDeletes;
     const TYPE_ALBUM = 'album';
     const TYPE_TRACK = 'track';
     const TYPE_GENRE = 'genre';
     const TYPE_COLLECTION = 'collection';
+
 
     const CLASS_NAME = [
         Album::class => self::TYPE_ALBUM,
