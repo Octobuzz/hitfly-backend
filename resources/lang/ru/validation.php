@@ -161,6 +161,7 @@ return [
     'emailIsBad' => 'Запрещенный или невалидный email',
     'invalidFileFormat' => 'Неверный формат файла',
     'follow_unique_validate' => 'Вы уже подписались ранее',
+    'follow_myself_validate' => 'Нельзя следить за самим собой',
     'follow_delete_validate' => 'Такой подписки несуществует',
     'mutually_exclusive_args' => 'Атрибут :attribute конфликтует с одним из атрибутов',
     'ownerMusicGroup' => 'Вы не являетесь владельцем музыкальной группы',
