@@ -68,7 +68,17 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use SoftDeletes;
     use CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['socialsConnect'];
+    protected $cascadeDeletes = [
+        'socialsConnect',
+        'tracks',
+        'musicGroups',
+        'likesAlbum',
+        'likesGenre',
+        'artistProfile',
+        'likesTrack',
+        'watchUser',
+        'watchMusicGroup',
+    ];
 
     const GENDER_MEN = 'M';
     const GENDER_WOMEN = 'F';
@@ -143,6 +153,19 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function likesAlbum()
     {
         return $this->hasMany(Favourite::class)->where('favouriteable_type', '=', Album::class);
+    }
+
+    public function likesGenre()
+    {
+        return $this->hasMany(Favourite::class)->where('favouriteable_type', '=', Genre::class);
+    }
+    public function watchUser()
+    {
+        return $this->hasMany(Watcheables::class)->where('watcheable_type', '=', User::class);
+    }
+    public function watchMusicGroup()
+    {
+        return $this->hasMany(Watcheables::class)->where('watcheable_type', '=', MusicGroup::class);
     }
 
     public function watchingUser()
