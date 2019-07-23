@@ -71,7 +71,7 @@ class Track extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('age', function (Builder $builder) {
+        static::addGlobalScope('state', function (Builder $builder) {
             $builder->where('state', '=', self::PUBLISHED);
         });
     }
