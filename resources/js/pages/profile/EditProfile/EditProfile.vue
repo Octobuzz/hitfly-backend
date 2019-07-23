@@ -125,14 +125,16 @@
       </FormButton>
     </div>
 
-    <EditProfileAuth />
+    <div class="edit-profile__auth-input-group">
+      <EditProfileAuth />
 
-    <span class="edit-profile__external-auth">
-      Использовать аккаунт соц.сетей?
-    </span>
-    <EditProfileExternalAuth />
+      <span class="edit-profile__external-auth">
+        Использовать аккаунт соц.сетей?
+      </span>
+      <EditProfileExternalAuth />
 
-    <DeleteAccount />
+      <DeleteAccount />
+    </div>
   </div>
 </template>
 

@@ -117,6 +117,10 @@ $formRightPadding: 40px;
     }
   }
 
+  &__auth-input-group {
+    margin-left: $avatarSide + $avatarRightMargin;
+  }
+
   &__external-auth {
     color: $red_violet;
     display: block;
@@ -127,6 +131,10 @@ $formRightPadding: 40px;
 @media screen and (max-width: 1440px) {
   .edit-profile {
     flex-wrap: wrap;
+
+    &__auth-input-group {
+      margin-left: 0;
+    }
   }
 
   .edit-profile-form {
