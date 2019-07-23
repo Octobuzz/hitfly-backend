@@ -90,4 +90,12 @@
       }
     }
   }
+
+  &_disabled {
+    color: grey;
+
+    &:hover {
+      background: white;
+    }
+  }
 }

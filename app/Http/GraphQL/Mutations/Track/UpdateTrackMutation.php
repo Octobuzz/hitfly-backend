@@ -2,7 +2,6 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
-use App\Events\Track\TrackCreatedEvent;
 use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
@@ -44,7 +43,7 @@ class UpdateTrackMutation extends Mutation
         return [
             'id' => ['required', function ($attribute, $value, $fail) {
                 $user = \Auth::user();
-                $track = Track::query()->find($value);
+                $track = Track::query()->withoutGlobalScope('state')->find($value);
                 if (true === empty($track)) {
                     $fail('Трек  не найден');
                 }
@@ -94,18 +93,16 @@ class UpdateTrackMutation extends Mutation
         $trackInfo['music_group_id'] = empty($args['infoTrack']['musicGroup']) ? null : $args['infoTrack']['musicGroup'];
         $trackInfo['singer'] = empty($args['infoTrack']['singer']) ? null : $args['infoTrack']['singer'];
         $trackInfo['track_date'] = empty($args['infoTrack']['trackDate']) ? null : Carbon::create($args['infoTrack']['trackDate'], 1, 1);
-        $trackInfo['state'] = 'fileload';
+        $trackInfo['state'] = Track::CREATE_WAVE;
 
         /** @var Track $track */
-        $track = Track::query()->find($args['id']);
+        $track = Track::query()->withoutGlobalScope('state')->find($args['id']);
         $track->genres()->sync($args['infoTrack']['genres']);
         $track->update($trackInfo);
         if (!empty($args['infoTrack']['cover']) && null !== $args['infoTrack']['cover']) {
             $track->cover = $this->setCover($track, $args['infoTrack']['cover']);
         }
         $track->save();
-
-        event(new TrackCreatedEvent($track));
 
         return $track;
     }

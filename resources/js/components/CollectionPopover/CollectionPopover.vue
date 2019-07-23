@@ -42,7 +42,10 @@
         class="collection-popover__menu"
       >
         <!--TODO: use interactive elements-->
-        <span class="collection-popover__menu-item">
+        <span
+          v-if="!hidePlayerActions"
+          class="collection-popover__menu-item"
+        >
           <span class="collection-popover__menu-item-icon">
             <PlayNextIcon />
           </span>
@@ -76,7 +79,10 @@
           </template>
         </span>
 
-        <span class="collection-popover__menu-item">
+        <span
+          v-if="!hidePlayerActions"
+          class="collection-popover__menu-item"
+        >
           <!--TODO: removing from queue should be available instead-->
           <!--of this under corresponding conditions-->
 
@@ -138,6 +144,10 @@ export default {
     collectionId: {
       type: Number,
       required: true
+    },
+    hidePlayerActions: {
+      type: Boolean,
+      default: false
     }
   },
 

@@ -14,6 +14,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Storage;
 
 class TrackController extends Controller
 {
@@ -196,15 +197,11 @@ class TrackController extends Controller
                 return [$album->id => $album->title];
             }
         })->ajax('/admin/api/album');
-        $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'));
+        $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'))->required();
 
         $form->text('singer', 'Исполнитель')->rules(['required']);
-        $form->date('track_date', 'Дата трека')->default(date('Y'));
+        $form->date('track_date', 'Дата трека')->default(date('Y'))->required(true);
         $form->textarea('song_text', 'Текст трека');
-        $form->file('filename', 'Файл')
-            ->rules('required|mimetypes:audio/ogg,audio/wave,audio/x-wav,audio/x-pn-wav,audio/aac,audio/mp4,audio/vnd.wave,audio/flac,audio/x-flac,audio/vnd.wave,audio/x-aiff,audio/aiff,audio/x-m4a')->uniqueName()
-        ;
-        $form->image('cover', 'Обложка')->uniqueName();
         $form->select('user_id', 'Пользователь')->options(function ($id) {
             $user = User::find($id);
 
@@ -212,9 +209,27 @@ class TrackController extends Controller
                 return [$user->id => $user->username];
             }
         })->ajax('/admin/api/users')->rules(['required']);
+        $form->file('filename', 'Файл')
+            ->rules('required|mimetypes:audio/ogg,audio/wave,audio/x-wav,audio/x-pn-wav,audio/aac,audio/mp4,audio/vnd.wave,audio/flac,audio/x-flac,audio/vnd.wave,audio/x-aiff,audio/aiff,audio/x-m4a')
+        ;
+        $form->image('cover', 'Обложка')
+        ;
 
-        $form->saving(function (Form $form) {
-            $form->file('filename')->move('tracks/'.$form->user_id)->uniqueName();
+        $form->saved(function (Form $form) {
+            $file = $form->filename;
+            if (false === empty($file)) {
+                $name = Storage::disk('public')->putFile('tracks/'.$form->model()->user_id, $file);
+                $form->model()->filename = $name;
+                $form->model()->state = Track::CREATE_WAVE;
+                $form->model()->save();
+            }
+
+            if (null !== $form->cover) {
+                $cover = $form->cover;
+                $nameCover = Storage::disk('public')->putFile('tracks/'.$form->model()->user_id, $cover);
+                $form->model()->cover = $nameCover;
+                $form->model()->save();
+            }
         });
 
         return $form;

@@ -9,6 +9,8 @@
 
   &__list {
     font-size: 12px;
+    overflow-y: scroll;
+    max-height: 300px;
     margin: 6px 0 18px 28px;
     padding-left: 0;
     list-style: none;

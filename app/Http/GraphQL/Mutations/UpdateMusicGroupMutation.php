@@ -122,15 +122,15 @@ class UpdateMusicGroupMutation extends Mutation
         }
         $image = $avatar;
         $nameFile = md5(microtime());
-        $imagePath = "music_groups/$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $imagePath = MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR."$musicGroup->creator_group_id/".$nameFile.'.'.$image->getClientOriginalExtension();
         $image_resize = Image::make($image->getRealPath());
         $image_resize->resize(config('image.size.music_group.default.height'), config('image.size.music_group.default.height'), function ($constraint) {
             $constraint->aspectRatio();
         });
         $path = Storage::disk('public')->getAdapter()->getPathPrefix();
         //создадим папку, если несуществует
-        if (!file_exists($path.'music_groups/'.$musicGroup->creator_group_id)) {
-            Storage::disk('public')->makeDirectory('music_groups/'.$musicGroup->creator_group_id);
+        if (!file_exists($path.MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR.$musicGroup->creator_group_id)) {
+            Storage::disk('public')->makeDirectory(MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR.$musicGroup->creator_group_id);
         }
         $image_resize->save($path.$imagePath, 100);
 

@@ -306,6 +306,14 @@ return [
     |
     */
     'extensions' => [
+        'ckeditor' => [
+            //Set to false if you want to disable this extension
+            'enable' => true,
+
+            // Editor configuration
+            'config' => [
+            ],
+        ],
     ],
 
     'default_avatar' => '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg',

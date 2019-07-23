@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\Track\CreatePlayTimeJob;
 use App\Models\Track;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
@@ -16,11 +17,8 @@ class TrackObserver
      */
     public function creating(Track $track)
     {
-        $pathTrack = Storage::disk('public')->path($track->filename);
-//        $track->track_hash = md5_file($pathTrack);
-
         if (empty($track->state)) {
-            $track->state = 'fileload';
+            $track->state = Track::CREATE_WAVE;
         }
 
         return true;
@@ -41,10 +39,13 @@ class TrackObserver
     /**
      * Handle the collection "updated" event.
      *
-     * @param \App\Models\Track $collection
+     * @param \App\Models\Track $track
      */
-    public function updated(Track $collection)
+    public function updated(Track $track)
     {
+        if ($track->isDirty('cover')) {
+            Cache::tags(Track::class.$track->id)->flush();
+        }
     }
 
     /**

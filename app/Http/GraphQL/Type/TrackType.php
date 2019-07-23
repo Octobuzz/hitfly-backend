@@ -24,6 +24,7 @@ class TrackType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::int(),
+                'description' => 'ID трека',
             ],
             'trackName' => [
                 'type' => Type::string(),
@@ -118,6 +119,18 @@ class TrackType extends GraphQLType
                 'description' => 'Мой трек',
                 'resolve' => function ($model) {
                     if ($model->user_id === Auth::user()->id) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                'selectable' => false,
+            ],
+            'commentedByMe' => [
+                'type' => Type::boolean(),
+                'description' => 'Откомментирован мной',
+                'resolve' => function ($model) {
+                    if ($model->comments()->where('user_id', Auth::user()->id)->count() > 0) {
                         return true;
                     } else {
                         return false;

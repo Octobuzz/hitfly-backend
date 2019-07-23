@@ -13,6 +13,7 @@ class AddToFavouriteMutation extends Mutation
 {
     protected $attributes = [
         'name' => 'AddToFavourite',
+        'description' => 'Добавить в избранное',
     ];
 
     public function type()

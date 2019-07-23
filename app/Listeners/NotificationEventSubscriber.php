@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
 use App\Events\CompletedTaskEvent;
 use App\Events\CreatedTopFiftyEvent;
-use App\Events\Track\TrackCreatedEvent;
+use App\Events\Track\TrackPublishEvent;
 use App\Events\User\ChangeLevelEvent;
 use App\Models\Album;
 use App\Models\Collection;
@@ -29,7 +29,7 @@ class NotificationEventSubscriber
     public function subscribe($events)
     {
         // Подписка на EVENT создание трека.
-        $events->listen(TrackCreatedEvent::class, self::class.'@createTrack'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
+        $events->listen(TrackPublishEvent::class, self::class.'@createTrack'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Album::class, self::class.'@createAlbum'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Collection::class, self::class.'@createCollection'); // Новая песня/ альбом/ плейлсит Название у Имя пользователя
         $events->listen('eloquent.created: '.Favourite::class, self::class.'@favourite'); // Кирилл Савинов оценил(а) вашу песню Драмы больше нет
@@ -45,8 +45,9 @@ class NotificationEventSubscriber
      *
      * @param string $type
      * @param array  $messageData
+     * @param array  $exclude_client_id
      */
-    private function sendBroadCast(string $type, array $messageData)
+    private function sendBroadCast(string $type, array $messageData, $exclude_client_id = null)
     {
         try {
             Gateway::sendToAll(json_encode([
@@ -56,7 +57,7 @@ class NotificationEventSubscriber
                     'date' => (new \DateTime())->format(\DateTime::ISO8601),
                     'messageData' => $messageData,
                 ],
-            ]));
+            ]), null, $exclude_client_id);
         } catch (Exception $exception) {
             Log::info($exception->getMessage(), $exception);
         }
@@ -142,9 +143,17 @@ class NotificationEventSubscriber
         }
     }
 
-    public function createTrack(TrackCreatedEvent $createdEvent)
+    public function createTrack(TrackPublishEvent $createdEvent)
     {
         $track = $createdEvent->getTrack();
+
+        /** @var User $user */
+        $user = $track->user;
+        $exclude_client_id = [];
+        if (null !== $user->userNotification) {
+            $exclude_client_id[] = $user->userNotification->token_web_socket;
+        }
+
         $user = $track->user;
         $messageData = [
             'user' => [
@@ -158,12 +167,18 @@ class NotificationEventSubscriber
                 'title' => $track->track_name,
             ],
         ];
-        $this->sendBroadCast('new-music', $messageData);
+        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
     }
 
     public function createAlbum(Album $album)
     {
+        /** @var User $user */
         $user = $album->user;
+        $exclude_client_id = [];
+        if (null !== $user->userNotification) {
+            $exclude_client_id[] = $user->userNotification->token_web_socket;
+        }
+
         $messageData = [
             'user' => [
                 'id' => $user->id,
@@ -176,12 +191,17 @@ class NotificationEventSubscriber
                 'title' => $album->title,
             ],
         ];
-        $this->sendBroadCast('new-music', $messageData);
+        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
     }
 
     public function createCollection(Collection $collection)
     {
+        /** @var User $user */
         $user = $collection->user;
+        $exclude_client_id = [];
+        if (null !== $user->userNotification) {
+            $exclude_client_id[] = $user->userNotification->token_web_socket;
+        }
         $messageData = [
             'user' => [
                 'id' => $user->id,
@@ -194,7 +214,10 @@ class NotificationEventSubscriber
                 'title' => $collection->title,
             ],
         ];
-        $this->sendBroadCast('new-music', $messageData);
+        if (null !== $user->userNotification) {
+            $exclude_client_id[] = $user->userNotification->token_web_socket;
+        }
+        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
     }
 
     public function criticReview(Comment $comment)

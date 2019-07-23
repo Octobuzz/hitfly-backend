@@ -68,7 +68,8 @@ class SocialController extends Controller
         /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
-        Auth::login($user);
+        //Auth::login($user);
+        //Auth::guard('json')->login($user);
         if (null !== $user->email && false === $user->hasVerifiedEmail()) {
             VerificationController::sendNotification($user);
         }

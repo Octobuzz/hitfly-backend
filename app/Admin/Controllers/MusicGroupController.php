@@ -15,6 +15,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Storage;
 
 class MusicGroupController extends Controller
 {
@@ -207,7 +208,7 @@ class MusicGroupController extends Controller
         $form->image('avatar_group', 'Обложка')->uniqueName();
 
         $form->saving(function (Form $form) {
-            $form->image('avatar_group')->move('music_groups/'.$form->user_id)->uniqueName();
+            $form->image('avatar_group')->move(MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR.$form->user_id)->uniqueName();
         });
 
         $form->saved(function (Form $form) {
@@ -215,6 +216,13 @@ class MusicGroupController extends Controller
             $model = $form->model();
             $model->career_start_year = Carbon::createFromFormat('Y', $form->career_start_year)->format('Y-m-d H:i:s');
             $model->save();
+
+            if (null !== $form->avatar_group) {
+                $cover = $form->avatar_group;
+                $nameCover = Storage::disk('public')->putFile(MusicGroup::PATH_FOLDER.DIRECTORY_SEPARATOR.$form->model()->creator_group_id, $cover);
+                $form->model()->avatar_group = $nameCover;
+                $form->model()->save();
+            }
         });
 
         $form->disableEditingCheck();

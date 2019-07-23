@@ -38,10 +38,10 @@
                                             @if ($loop->iteration%2 !== 0)
                                                 <tr>
                                                     @endif
-                                                    <td @if ($loop->iteration%2 === 0)align="right" @endif style="width: 50%;">
-                                                        <a href="{{$event['url']}}" style="position: relative; display: block; text-decoration: none;">
-                                                            <img style="display: block; max-width: 100%; margin: 0 0 10px;" src="{{$event['img']}}">
-                                                            <p style="position: absolute; width: 130px; font-size: 14px; font-weight: 700; text-align: left; color: #fff; top: 10px; left: 10px; margin: 0;">{{$event['name']}}</p>
+                                                    <td style="width: 50%;">
+                                                        <a href="{{$event['url']}}" style="display: block; width: 247px; height: 115px; text-decoration: none; background-image: url('{{$event['img']}}');
+                                                        @if ($loop->iteration%2 === 0)margin: 0 0 10px 5px;@else margin: 0 5px 10px 0; @endif">
+                                                            <p style="width: 130px; font-size: 14px; font-weight: 700; color: #fff; margin: 0; padding: 10px;">{{$event['name']}}</p>
                                                         </a>
                                                     </td>
                                                     @if ($loop->iteration%2 === 0 || $loop->last)
@@ -98,9 +98,8 @@
                                     <tr>
                                         @endif
                                         <td>
-                                            <a href="{{$impEvent['url']}}" style="position: relative; display: block; text-decoration: none;">
-                                                <img style="display: block; max-width: 100%;" src="{{$impEvent['img']}}">
-                                                <p style="position: absolute; width: 330px; font-size: 24px; font-weight: 700; color: #fff; top: 25px; left: 50px; margin: 0;">{{$impEvent['name']}}</p>
+                                            <a href="{{$impEvent['url']}}" style="display: block; width: 600px; height: 272px; text-decoration: none; background-image: url('{{$impEvent['img']}}');">
+                                                <p style="width: 500px; font-size: 24px; font-weight: 700; color: #fff; margin: 0; padding: 25px 50px 25px 50px;">{{$impEvent['name']}}</p>
                                             </a>
                                         </td>
                                         @if ($loop->iteration%2 === 0 || $loop->last)

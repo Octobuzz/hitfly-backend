@@ -20,6 +20,7 @@ class CommentTrackType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
+                'description' => 'ID',
             ],
             'comment' => [
                 'type' => Type::string(),

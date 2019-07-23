@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\BuisnessLogic\Top\TopWeekly;
+use App\Interfaces\Top\TopWeeklyInterface;
+use App\Models\Album;
 use App\Models\Comment;
 use App\Models\MusicGroup;
 use App\Models\Track;
+use App\Observers\AlbumObserver;
 use App\Observers\CommentObserver;
 use App\Observers\MusicGroupObserver;
 use App\Models\Collection;
@@ -20,6 +24,10 @@ use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $singletons = [
+        TopWeeklyInterface::class => TopWeekly::class,
+    ];
+
     /**
      * Bootstrap any application services.
      */
@@ -30,9 +38,11 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Track::observe(TrackObserver::class);
         Comment::observe(CommentObserver::class);
+        Album::observe(AlbumObserver::class);
         Date::setlocale(config('app.locale'));
         Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesValidator@validate');
         Validator::extend('follow_unique_validate', 'App\Validation\FollowValidator@validate');
+        Validator::extend('follow_myself_validate', 'App\Validation\FollowValidator@followMyself');
         Validator::extend('favourites_delete_validate', 'App\Validation\FavouritesValidator@validateDelete');
         Validator::extend('follow_delete_validate', 'App\Validation\FollowValidator@validateDelete');
         Validator::extend('mutually_exclusive_args', 'App\Validation\ManuallyExclusiveArgs@validate');

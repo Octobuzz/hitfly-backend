@@ -4,6 +4,7 @@ namespace App\Http\GraphQL\Type;
 
 use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class GenreType extends GraphQLType
@@ -19,7 +20,7 @@ class GenreType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id',
+                'description' => 'id жанра',
             ],
             'name' => [
                 'type' => Type::string(),
@@ -42,6 +43,22 @@ class GenreType extends GraphQLType
                 'selectable' => false,
                 'privacy' => function (array $args) {
                     return \Auth::check();
+                },
+            ],
+            'countTracks' => [
+                'type' => Type::nonNull(Type::int()),
+                'description' => 'Кол-во треков',
+                'selectable' => false,
+                'resolve' => function (Genre $model) {
+                    $keyCache = md5($model);
+                    $result = Cache::get($keyCache, null);
+                    if (null !== $result) {
+                        return $result;
+                    }
+                    $result = $model->tracks()->count();
+                    Cache::add($keyCache, $result, now()->addMinutes(10));
+
+                    return $result;
                 },
             ],
         ];

@@ -2,12 +2,15 @@
   <div :class="['collection-track-list', containerPaddingClass]">
     <ReturnHeader class="collection-track-list__return-button" />
 
-    <template v-if="collectionFetched && shownTrack">
+    <template v-if="collectionFetched">
       <span class="collection-track-list__singer">
-        {{ shownTrack.singer }}
+        {{ collection.title }}
       </span>
 
-      <div class="collection-track-list__track-section">
+      <div
+        v-if="shownTrack && trackListDataExists"
+        class="collection-track-list__track-section"
+      >
         <img
           :src="
             shownTrack.cover.filter(
@@ -20,7 +23,7 @@
 
         <div class="collection-track-list__player-section">
           <span class="h3 collection-track-list__collection-title">
-            {{ collection.title }}
+            {{ shownTrack.trackName }}
           </span>
           <span class="collection-track-list__collection-data">
             <span class="collection-track-list__total-tracks-info">
@@ -35,12 +38,28 @@
         </div>
       </div>
 
+      <div v-if="!trackListDataExists">
+        <img
+          :src="
+            collection.image.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+          "
+          alt="Track cover"
+          :class="[
+            'collection-track-list__track-cover',
+            'collection-track-list__track-cover_margin-bottom'
+          ]"
+        >
+      </div>
+
       <div class="collection-track-list__button-section">
         <button
           @click="playCollection"
           :class="[
             'collection-track-list__button',
-            'collection-track-list__button_listen'
+            'collection-track-list__button_listen',
+            { 'collection-track-list__button_disabled': !trackListDataExists }
           ]"
         >
           <template v-if="currentPlaying">
@@ -65,6 +84,7 @@
 
         <CollectionPopover
           :collection-id="collectionId"
+          :hide-player-actions="!trackListDataExists"
           @press-favourite="onPressFavourite"
           @collection-removed="goBack"
         >
@@ -146,7 +166,10 @@ export default {
       firstCollectionTrackId: null,
       collection: null,
       collectionFetched: false,
+      trackListDataExists: false,
       playingTrackBelongsToCollection: false,
+      playingTrack: null,
+      shownTrack: null,
       tooltip: {
         more: {
           content: 'Еще'
@@ -185,25 +208,6 @@ export default {
         default:
           return false;
       }
-    },
-
-    shownTrack() {
-      // playingTrack should not be reactive
-      const {
-        playingTrack,
-        playingTrackBelongsToCollection,
-        firstCollectionTrack
-      } = this;
-
-      if (!firstCollectionTrack) {
-        return null;
-      }
-
-      if (playingTrackBelongsToCollection) {
-        return playingTrack;
-      }
-
-      return firstCollectionTrack;
     }
   },
 
@@ -235,17 +239,33 @@ export default {
           ]) => {
             this.playingTrack = playingTrack;
             this.playingTrackBelongsToCollection = inCollection;
+
+            this.$nextTick(() => {
+              this.updateShownTrack();
+            });
           })
           .catch(err => console.dir(err));
       },
       immediate: true
+    },
+
+    'collection.countTracks': function collelctionTracksCount(count) {
+      if (count === 0) {
+        this.trackListDataExists = false;
+      }
     }
   },
 
   methods: {
     onTrackListInitialized(data) {
       if (data instanceof Array === false
-        || data.length === 0) return;
+          || data.length === 0) {
+        this.trackListDataExists = false;
+
+        return;
+      }
+
+      this.trackListDataExists = true;
 
       this.firstCollectionTrackId = data[0].id;
     },
@@ -258,6 +278,29 @@ export default {
       this.$router.go(-1);
     },
 
+    updateShownTrack() {
+      const getShownTrack = () => {
+        const {
+          playingTrack,
+          playingTrackBelongsToCollection,
+          firstCollectionTrack
+        } = this;
+
+        // collection and its first track aren't fetched yet
+        if (!firstCollectionTrack) {
+          return null;
+        }
+
+        if (playingTrackBelongsToCollection) {
+          return playingTrack;
+        }
+
+        return firstCollectionTrack;
+      };
+
+      this.shownTrack = getShownTrack();
+    },
+
     refetchTotalInfo() {
       this.$apollo.query({
         query: gql.query.COLLECTION_TOTAL_INFO,
@@ -268,7 +311,11 @@ export default {
         }
       });
     },
+
     playCollection(){
+      // prevent attempt to listen nonexistent track
+      if (!this.shownTrack) return;
+
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
@@ -332,6 +379,10 @@ export default {
         };
       },
       update({ track }) {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+
         return track;
       },
       error(err) {

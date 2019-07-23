@@ -3,52 +3,7 @@
     <template #left-column="{ itemContainerClass }">
       <div class="about__left-section" style="padding-top: 46px;">
         <span class="h4 about__left-section-header">
-          Legal
-        </span>
-        <span class="about__left-section-entry about__link">
-          Terms Of Use
-        </span>
-        <span class="about__left-section-entry about__link">
-          Privacy Policy
-        </span>
-        <span class="about__left-section-entry about__link">
-          Cookies Policy
-        </span>
-        <span class="about__left-section-entry about__link">
-          Community Guidelines
-        </span>
-        <span class="about__left-section-entry about__link">
-          Law Enforcement Guidelines
-        </span>
-        <span class="about__left-section-entry about__link">
-          Report illegal content
-        </span>
-      </div>
-
-      <div class="about__left-section" style="padding-top: 46px;">
-        <span class="h4 about__left-section-header">
-          Copyright
-        </span>
-        <span class="about__left-section-entry about__link">
-          Learn about copyright
-        </span>
-        <span class="about__left-section-entry about__link">
-          Report copyright infringement
-        </span>
-      </div>
-
-      <div class="about__left-section" style="padding-top: 46px;">
-        <span class="h4 about__left-section-header">
-          About project
-        </span>
-        <span class="about__left-section-entry about__link">
-          About Hitfly
-        </span>
-        <span class="about__left-section-entry about__link">
-          Company information
-        </span>
-        <span class="about__left-section-entry about__link">
-          Press Information
+          О проекте
         </span>
       </div>
     </template>
@@ -56,15 +11,15 @@
     <template #right-column="{ paddingClass }">
       <div :class="paddingClass">
         <PageHeader class="about__page-header">
-          О нас
+          О проекте
         </PageHeader>
 
-        <span class="h2">О проекте</span>
-
-        Студия звукозаписи Hitfly — это уникальная площадка, на которой
-        вы можете разместить свои треки. Их услышат тысячи пользователей,
-        но главное — их смогут оценить настоящие профессионалы шоу-бизнеса,
-        а вы получите шанс присоединиться к ним!
+        Это уникальная площадка, которая даёт возможность начинающим
+        артистам по-настоящему быть услышанными, получить действительно
+        полезные знания и опыт в музыкальной сфере. Обзавестись новыми,
+        а главное полезными знакомствами, получить отзывы от профессионалов
+        самого высокого уровня, научиться чему-то новому и как итог –
+        стать популярным.
 
         <span class="h2 about__header-question">
           Чем мы отличаемся от других сервисов и групп в социальных сетях?
@@ -135,7 +90,7 @@
           </div>
         </div>
 
-        <div class="about__delimeter"/>
+        <div class="about__delimeter" />
 
         <span class="about__consent">
           Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим

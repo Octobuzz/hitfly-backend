@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\SocialAccountService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use Exception;
@@ -84,13 +85,19 @@ class LoginController extends Controller
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
-
         Auth::login($user);
         Auth::guard('json')->login($user);
-        if (null !== $user->email && false === $user->hasVerifiedEmail()) {
-            VerificationController::sendNotification($user);
+
+        /** @var User $user */
+        if (false === $user->hasVerifiedEmail()) {
+            event(new Registered($user));
+            if (null !== $user->email && false === $user->hasVerifiedEmail()) {
+                VerificationController::sendNotification($user);
+            }
+            $user->markEmailAsVerified();
+            //при регистрации редиректим на выбор жанров
+            return redirect()->to('/register-genres');
         }
-        $user->markEmailAsVerified();
 
         return redirect()->to('/profile');
     }

@@ -34,8 +34,9 @@ Route::redirect('/', 'login', 301);
 //        ]
 //    );
 
-    //return $notification->fewComments();
+//    return $notification->everyMonthDispatchNotVisited();
     //$this->notify(new ResetPasswordNotification($token));
+//return new \App\Mail\RegistrationCompleted(\App\User::find(215));
 //});
 Auth::routes(['verify' => true]);
 

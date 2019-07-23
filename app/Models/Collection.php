@@ -16,6 +16,11 @@ class Collection extends Model
 
     protected $nameFolder = 'collection';
 
+    protected $attributes = [
+        'is_admin' => false,
+        'super_music_fan' => false,
+    ];
+
     protected $fillable = [
         'image',
         'title',

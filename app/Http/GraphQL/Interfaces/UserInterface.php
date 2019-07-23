@@ -26,7 +26,7 @@ class UserInterface extends InterfaceType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the character.',
+                'description' => 'id пользователя',
             ],
             'username' => [
                 'type' => Type::string(),
@@ -141,6 +141,14 @@ class UserInterface extends InterfaceType
                 'resolve' => function (User $model) {
                     return $model->likesTrack()->count();
                 },
+            ],
+            'favouritesTrackTime' => [
+                'type' => Type::float(),
+                'description' => 'Время моих избранных треков',
+                'resolve' => function (User $model) {
+                    return $model->favouritesTracks()->sum('length');
+                },
+                'selectable' => false,
             ],
         ];
     }

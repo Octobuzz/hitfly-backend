@@ -21,6 +21,7 @@ class ArtistProfileInput extends GraphQLType
                 'name' => 'description',
                 'description' => 'Имя пользователя',
                 'type' => Type::string(),
+                'rules' => 'max:300',
             ],
             'careerStart' => [
                 'name' => 'careerStart',

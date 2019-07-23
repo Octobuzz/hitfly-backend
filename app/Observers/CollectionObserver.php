@@ -3,10 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Collection;
-use App\User;
-use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CollectionObserver
 {
@@ -17,19 +15,6 @@ class CollectionObserver
      */
     public function creating(Collection $collection)
     {
-        /** @var User $user */
-        $user = Auth::user();
-        if (App::environment('local')) {
-            if (null === $user) {
-                $user = \App\User::inRandomOrder()->first();
-            }
-        }
-        if (null == Admin::user()) {
-            $collection->user_id = $user->id;
-            $collection->is_admin = in_array($user->id, $user->has('roles')->pluck('id')->toArray());
-        }
-
-        return true;
     }
 
     /**
@@ -39,6 +24,9 @@ class CollectionObserver
      */
     public function updated(Collection $collection)
     {
+        if ($collection->isDirty('cover')) {
+            Cache::tags(Collection::class.$collection->id)->flush();
+        }
     }
 
     /**

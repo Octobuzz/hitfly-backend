@@ -26,6 +26,7 @@ Route::group([
     $router->resource('/city', CityController::class)->names(\App\Admin\Controllers\CityController::ROUTE_NAME);
     $router->resource('/bonus', BonusTypeController::class)->names(\App\Admin\Controllers\BonusTypeController::ROUTE_NAME);
     $router->resource('/auth/artist', ArtistController::class)->names(\App\Admin\Controllers\ArtistController::ROUTE_NAME);
+    $router->resource('/news', NewsController::class)->names(\App\Admin\Controllers\NewsController::ROUTE_NAME);
 
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');

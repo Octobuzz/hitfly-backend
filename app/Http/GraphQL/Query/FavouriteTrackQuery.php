@@ -4,8 +4,8 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Favourite;
 use App\Models\Track;
-use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Database\Query\JoinClause;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -13,6 +13,7 @@ class FavouriteTrackQuery extends Query
 {
     protected $attributes = [
         'name' => 'Favourite track Query',
+        'description' => 'Запрос любимых треков',
     ];
 
     public function type()
@@ -31,26 +32,22 @@ class FavouriteTrackQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $query = Favourite::with($fields->getRelations());
+        $query->select($fields->getSelect());
+        $query->where('favourites.favouriteable_type', '=', Track::class);
         if (isset($args['trackId'])) {
-            return Favourite::with('favouriteable')
-                ->leftJoin('tracks', function ($join) {
-                    $join->on('favourites.favouriteable_id', '=', 'tracks.id');
-                })
-                    ->where('tracks.deleted_at', '=', null)
-                ->where('favourites.favouriteable_type', Track::class)
-                ->where('favourites.favouriteable_id', $args['trackId'])
-                ->where('favourites.user_id', \Auth::user()->id)
-
-                ->paginate($args['limit'], ['*'], 'page', $args['page']);
+            $query->where('favourites.favouriteable_id', $args['trackId']);
         }
+        $query->leftJoin('tracks', function (JoinClause $join) {
+            $join->on('favourites.favouriteable_id', '=', 'tracks.id');
+        });
+        $query->where('tracks.deleted_at', '=', null);
+        $query->where('tracks.id', '<>', null);
+        $query->where('favourites.user_id', \Auth::user()->id);
 
-        return Favourite::with('favouriteable')
-            ->where('favourites.favouriteable_type', Track::class)
-            ->where('favourites.user_id', \Auth::user()->id)
-            ->leftJoin('tracks', function ($join) {
-                $join->on('favourites.favouriteable_id', '=', 'tracks.id');
-            })
-            ->where('tracks.deleted_at', '=', null)
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        //$query->orderBy('created_at', 'desc');
+        $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
+        return $response;
     }
 }

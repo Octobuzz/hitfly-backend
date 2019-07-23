@@ -59,6 +59,7 @@ class MusicGroup extends Model
 
     protected $cascadeDeletes = ['tracks', 'albums'];
 
+    const PATH_FOLDER = 'musicgroups';
     protected $table = 'music_group';
 
     protected $dates = [

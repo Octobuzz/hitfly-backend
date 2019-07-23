@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\CompletedTaskEvent;
 use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
-use App\Events\Track\TrackCreatedEvent;
+use App\Events\Track\TrackPublishEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
 use App\Models\BonusType;
@@ -29,7 +29,7 @@ class BonusProgramEventSubscriber
     public function subscribe($events)
     {
         // Подписка на EVENT создание трека.
-        $events->listen(TrackCreatedEvent::class, self::class.'@uploadFirstTrack');
+        $events->listen(TrackPublishEvent::class, self::class.'@uploadFirstTrack');
         $events->listen('eloquent.created: '.Album::class, self::class.'@createFirstAlbum');
         $events->listen('eloquent.created: '.Collection::class, self::class.'@createFirstCollection');
         $events->listen('eloquent.created: '.Favourite::class, self::class.'@favourite');
@@ -40,15 +40,18 @@ class BonusProgramEventSubscriber
     }
 
     /**
-     * @param TrackCreatedEvent $createdEvent
+     * @param TrackPublishEvent $trackPublishEvent
      */
-    public function uploadFirstTrack(TrackCreatedEvent $createdEvent)
+    public function uploadFirstTrack(TrackPublishEvent $trackPublishEvent)
     {
         /** @var User $user */
-        $user = $createdEvent->getTrack()->user;
+        $user = $trackPublishEvent->getTrack()->user;
         //todo  cache for find
         $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::UPLOAD_FIRST_TRACK)->first();
         if (null === $bonusType) {
+            return;
+        }
+        if (null === $user->purse) {
             return;
         }
         $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);

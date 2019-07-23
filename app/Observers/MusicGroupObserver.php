@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\MusicGroup;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 
 class MusicGroupObserver
 {
@@ -30,6 +31,9 @@ class MusicGroupObserver
      */
     public function updated(MusicGroup $musicGroup)
     {
+        if ($musicGroup->isDirty('avatar_group')) {
+            Cache::tags(MusicGroup::class.$musicGroup->id)->flush();
+        }
     }
 
     /**

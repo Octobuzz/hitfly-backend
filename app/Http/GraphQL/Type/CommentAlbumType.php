@@ -21,12 +21,15 @@ class CommentAlbumType extends GraphQLType
             'id' => [
                 'type' => Type::nonNull(Type::int()),
                 'alias' => 'id', // Use 'alias', if the database column is different from the type name
+                'description' => 'ID',
             ],
             'album' => [
                 'type' => GraphQL::type('Album'),
+                'description' => 'Альбом',
             ],
             'comment' => [
                 'type' => Type::string(),
+                'description' => 'Комментарий',
             ],
             'createdAt' => [
                 'type' => Type::string(),
@@ -34,9 +37,11 @@ class CommentAlbumType extends GraphQLType
                 'resolve' => function ($model) {
                     return $model->created_at;
                 },
+                'description' => 'Дата создания',
             ],
             'estimation' => [
                 'type' => Type::int(),
+                'description' => 'Оценка',
             ],
         ];
     }

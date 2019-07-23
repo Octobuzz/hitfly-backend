@@ -37,11 +37,15 @@
     >
       {{ track.trackName }}
     </span>
-    <span
-      v-if="track.album && desktop"
+    <WordTrimmedWithTooltip
       class="track-list-entry__track-author"
+      :word="track.singer"
+    />
+    <span
+      v-if="showAlbumSection"
+      class="track-list-entry__album-title"
     >
-      {{ track.album.author }}
+      {{ track.album && track.album.title }}
     </span>
 
     <div
@@ -52,11 +56,8 @@
         {{ track.trackName }}
       </span>
       <br>
-      <span
-        v-if="track.album"
-        class="track-list-entry__track-author"
-      >
-        {{ track.album.author }}
+      <span class="track-list-entry__track-author">
+        {{ track.singer }}
       </span>
     </div>
 
@@ -106,6 +107,7 @@
 </template>
 
 <script>
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import AddToFavouriteButton from 'components/AddToFavouriteButton';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -121,6 +123,7 @@ const MOBILE_WIDTH = 767;
 
 export default {
   components: {
+    WordTrimmedWithTooltip,
     TrackToPlaylistPopover,
     TrackActionsPopover,
     AddToFavouriteButton,
@@ -140,6 +143,10 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    showAlbumSection: {
+      type: Boolean,
+      default: false
     },
     fakeFavButton: {
       type: Boolean,
@@ -180,7 +187,7 @@ export default {
 
     activeTrack() {
       return this.trackId === this.$store.getters['player/currentTrack'].id;
-    },
+    }
   },
 
   methods: {

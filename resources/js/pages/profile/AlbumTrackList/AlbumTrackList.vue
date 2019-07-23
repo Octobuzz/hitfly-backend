@@ -2,12 +2,15 @@
   <div :class="['album-track-list', containerPaddingClass]">
     <ReturnHeader class="album-track-list__return-button" />
 
-    <template v-if="albumFetched && shownTrack">
+    <template v-if="albumFetched">
       <span class="album-track-list__singer">
-        {{ shownTrack.singer }}
+        {{ album.title }}
       </span>
 
-      <div class="album-track-list__track-section">
+      <div
+        v-if="shownTrack && trackListDataExists"
+        class="album-track-list__track-section"
+      >
         <img
           :src="
             shownTrack.cover.filter(
@@ -20,7 +23,7 @@
 
         <div class="album-track-list__player-section">
           <span class="h3 album-track-list__album-title">
-            {{ album.title }}
+            {{ shownTrack.trackName }}
           </span>
           <span class="album-track-list__album-data">
             <span class="album-track-list__total-tracks-info">
@@ -34,12 +37,25 @@
         </div>
       </div>
 
+      <div v-if="!trackListDataExists">
+        <img
+          :src="
+            album.cover.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+          "
+          alt="Track cover"
+          class="album-track-list__track-cover"
+        >
+      </div>
+
       <div class="album-track-list__button-section">
         <button
           @click="playAlbum"
           :class="[
             'album-track-list__button',
-            'album-track-list__button_listen'
+            'album-track-list__button_listen',
+            { 'album-track-list__button_disabled': !trackListDataExists }
           ]"
         >
           <template v-if="currentPlaying">
@@ -64,6 +80,7 @@
 
         <AlbumPopover
           :album-id="albumId"
+          :hide-player-actions="!trackListDataExists"
           @press-favourite="onPressFavourite"
           @album-removed="goBack"
         >
@@ -138,11 +155,13 @@ export default {
   data() {
     return {
       playingTrack: null,
+      shownTrack: null,
       firstAlbumTrack: null,
       firstAlbumTrackId: null,
       newVar: String,
       album: null,
       albumFetched: false,
+      trackListDataExists: false,
       tooltip: {
         more: {
           content: 'Еще'
@@ -179,31 +198,36 @@ export default {
         default:
           return false;
       }
+    }
+  },
+
+  watch: {
+    playingTrackId: {
+      handler() {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+      },
+      immediate: true
     },
 
-    shownTrack() {
-      const {
-        playingTrack,
-        firstAlbumTrack,
-        albumId
-      } = this;
-
-      if (!firstAlbumTrack) {
-        return null;
+    'album.tracksCount': function collelctionTracksCount(count) {
+      if (count === 0) {
+        this.trackListDataExists = false;
       }
-
-      if (playingTrack && playingTrack.album.id === albumId) {
-        return playingTrack;
-      }
-
-      return firstAlbumTrack;
     }
   },
 
   methods: {
     onTrackListInitialized(data) {
       if (data instanceof Array === false
-        || data.length === 0) return;
+          || data.length === 0) {
+        this.trackListDataExists = false;
+
+        return;
+      }
+
+      this.trackListDataExists = true;
 
       this.firstAlbumTrackId = data[0].id;
     },
@@ -216,6 +240,28 @@ export default {
       this.$router.go(-1);
     },
 
+    updateShownTrack() {
+      const getShownTrack = () => {
+        const {
+          playingTrack,
+          firstAlbumTrack,
+          albumId
+        } = this;
+
+        if (!firstAlbumTrack) {
+          return null;
+        }
+
+        if (playingTrack && playingTrack.album.id === albumId) {
+          return playingTrack;
+        }
+
+        return firstAlbumTrack;
+      };
+
+      this.shownTrack = getShownTrack();
+    },
+
     refetchTotalInfo() {
       this.$apollo.query({
         query: gql.query.ALBUM_TOTAL_INFO,
@@ -226,7 +272,11 @@ export default {
         }
       });
     },
+
     playAlbum(){
+      // prevent attempt to listen nonexistent track
+      if (!this.shownTrack) return;
+
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
@@ -309,6 +359,10 @@ export default {
         };
       },
       update({ track }) {
+        this.$nextTick(() => {
+          this.updateShownTrack();
+        });
+
         return track;
       },
       error(err) {
