@@ -43,7 +43,7 @@ class UpdateTrackMutation extends Mutation
         return [
             'id' => ['required', function ($attribute, $value, $fail) {
                 $user = \Auth::user();
-                $track = Track::query()->find($value);
+                $track = Track::query()->withoutGlobalScope('state')->find($value);
                 if (true === empty($track)) {
                     $fail('Трек  не найден');
                 }
@@ -96,7 +96,7 @@ class UpdateTrackMutation extends Mutation
         $trackInfo['state'] = Track::CREATE_WAVE;
 
         /** @var Track $track */
-        $track = Track::query()->find($args['id']);
+        $track = Track::query()->withoutGlobalScope('state')->find($args['id']);
         $track->genres()->sync($args['infoTrack']['genres']);
         $track->update($trackInfo);
         if (!empty($args['infoTrack']['cover']) && null !== $args['infoTrack']['cover']) {
