@@ -51,7 +51,7 @@ export default {
       // eslint-disable-next-line default-case
       switch (level) {
         case 'LEVEL_NOVICE':
-          return 'Новичек';
+          return 'Новичок';
 
         case 'LEVEL_AMATEUR':
           return 'Любитель';
