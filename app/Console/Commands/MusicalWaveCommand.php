@@ -44,6 +44,7 @@ class MusicalWaveCommand extends Command
     {
         Track::query()
             ->where('state', '=', Track::CREATE_WAVE)
+            ->withoutGlobalScope('state')
             ->chunk(10, function ($tracks) {
                 /** @var Track $track */
                 foreach ($tracks as $track) {
