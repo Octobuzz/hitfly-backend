@@ -347,7 +347,7 @@ const formatting = {
 
 const bonusProgramLvlMap = {
   LEVEL_NOVICE: {
-    title: 'Новичек',
+    title: 'Новичок',
     image: levelNoviceImg,
     nextLevelImage: levelFanImg,
     nextLevelText: 'Любителя',
