@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -65,6 +66,15 @@ class Track extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('age', function (Builder $builder) {
+            $builder->where('state', '=', self::PUBLISHED);
+        });
+    }
 
     public function genre(): BelongsTo
     {
