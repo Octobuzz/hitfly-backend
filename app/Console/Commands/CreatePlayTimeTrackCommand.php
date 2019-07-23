@@ -40,7 +40,7 @@ class CreatePlayTimeTrackCommand extends Command
     {
         $trackId = $this->argument('track');
 
-        $track = Track::query()->find($trackId);
+        $track = Track::query()->withoutGlobalScope('state')->find($trackId);
         if (true === empty($track)) {
             return;
         }
