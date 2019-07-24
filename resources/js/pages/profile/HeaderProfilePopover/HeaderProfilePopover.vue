@@ -8,6 +8,12 @@
     :auto-hide="true"
     @show="fetchAllowed = true"
   >
+    <button
+      ref="closeButton"
+      style="display: none"
+      v-close-popover
+    />
+
     <slot />
 
     <template #popover>
@@ -19,16 +25,10 @@
         <hr class="header-profile-popover__delimiter">
 
         <router-link
-          to="/profile/edit"
-          class="header-profile-popover__link"
-        >
-          Мой профиль
-        </router-link>
-
-        <router-link
           v-if="myMusicLink"
           :to="myMusicLink"
           class="header-profile-popover__link"
+          @click.native="closePopover"
         >
           Моя музыка
         </router-link>
@@ -37,8 +37,17 @@
           v-if="reviewsLink"
           :to="reviewsLink"
           class="header-profile-popover__link"
+          @click.native="closePopover"
         >
           Мои отзывы
+        </router-link>
+
+        <router-link
+          to="/profile/edit"
+          class="header-profile-popover__link"
+          @click.native="closePopover"
+        >
+          Редактирование профиля
         </router-link>
 
         <router-link
@@ -113,6 +122,12 @@ export default {
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])
+  },
+
+  methods: {
+    closePopover() {
+      this.$refs.closeButton.click();
+    }
   },
 
   apollo: {
