@@ -1,0 +1,25 @@
+@import './_variables.scss';
+.asideBlock {
+  padding: 49px 32px 0;
+
+  &__header {
+    position: relative;
+
+    & p {
+      font-size: 12px;
+      line-height: 14px;
+      color: $text_color_secondary;
+    }
+
+    button {
+      border-radius: 4px;
+      padding: 8px 12px;
+      background-color: #F0F0F0;
+      color: $text_color_secondary;
+      font-size: 10px;
+      line-height: 12px;
+      cursor: pointer;
+    }
+  }
+
+}
