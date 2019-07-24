@@ -1,12 +1,17 @@
 <template>
-  <div class="spinner-loader-wrapper">
+  <div :class="['spinner-loader-wrapper', wrapperClass]">
     <SpinnerLoader
       v-if="isLoading"
       class="spinner-loader-wrapper__spinner"
       v-bind="$attrs"
       :is-loading="isLoading"
     />
-    <slot v-else />
+    <div
+      v-show="!isLoading"
+      :class="contentContainerClass"
+    >
+      <slot v-if="!isBlocking" />
+    </div>
   </div>
 </template>
 
@@ -21,6 +26,18 @@ export default {
     isLoading: {
       type: Boolean,
       required: true
+    },
+    isBlocking: {
+      type: Boolean,
+      default: false
+    },
+    wrapperClass: {
+      type: String,
+      default: ''
+    },
+    contentContainerClass: {
+      type: String,
+      default: ''
     }
   }
 };
