@@ -1,0 +1,27 @@
+.header-profile-popover-bonus-program {
+  font-size: 11px;
+  color: #979797;
+  display: flex;
+
+  &__image {
+    //display: inline-block;
+    width: 12px;
+    height: 12px;
+  }
+
+  &__arrow-section {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+  }
+
+  &__status-section,
+  &__next-level-section {
+    max-width: 45%;
+  }
+
+  &__points {
+    font-family: "Gotham Pro Bold", serif;
+  }
+}

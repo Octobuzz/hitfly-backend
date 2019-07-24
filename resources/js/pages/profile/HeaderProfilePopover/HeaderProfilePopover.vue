@@ -8,27 +8,32 @@
     :auto-hide="true"
     @show="fetchAllowed = true"
   >
+    <button
+      ref="closeButton"
+      style="display: none"
+      v-close-popover
+    />
+
     <slot />
 
-    <template #popover>
+    <template v-if="fetchAllowed" #popover>
       <SpinnerLoaderWrapper :is-loading="isFetching" size="small">
         <span class="header-profile-popover__header">
           {{ myProfile.username }}
         </span>
 
-        <hr class="header-profile-popover__delimiter">
+        <HeaderProfilePopoverBonusProgram
+          v-if="isAuthenticated"
+          class="header-profile-popover__bonus-program"
+        />
 
-        <router-link
-          to="/profile/edit"
-          class="header-profile-popover__link"
-        >
-          Мой профиль
-        </router-link>
+        <hr class="header-profile-popover__delimiter">
 
         <router-link
           v-if="myMusicLink"
           :to="myMusicLink"
           class="header-profile-popover__link"
+          @click.native="closePopover"
         >
           Моя музыка
         </router-link>
@@ -37,6 +42,7 @@
           v-if="reviewsLink"
           :to="reviewsLink"
           class="header-profile-popover__link"
+          @click.native="closePopover"
         >
           Мои отзывы
         </router-link>
@@ -55,11 +61,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import SpinnerLoaderWrapper from 'components/SpinnerLoaderWrapper.vue';
+import HeaderProfilePopoverBonusProgram from 'pages/profile/HeaderProfilePopoverBonusProgram';
 import gql from './gql';
 
 export default {
   components: {
-    SpinnerLoaderWrapper
+    SpinnerLoaderWrapper,
+    HeaderProfilePopoverBonusProgram
   },
 
   data() {
@@ -113,6 +121,12 @@ export default {
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])
+  },
+
+  methods: {
+    closePopover() {
+      this.$refs.closeButton.click();
+    }
   },
 
   apollo: {
