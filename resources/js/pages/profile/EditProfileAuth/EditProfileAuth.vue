@@ -198,13 +198,13 @@ export default {
 
     passwordButton() {
       return this.password.disabled
-        ? 'Изменить'
+        ? 'Изменить пароль'
         : 'Отмена';
     },
 
     emailButton() {
       return this.email.disabled
-        ? 'Изменить'
+        ? 'Изменить e-mail'
         : 'Отмена';
     },
   },

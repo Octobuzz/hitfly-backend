@@ -1,0 +1,8 @@
+query store_MyProfile {
+    myProfile {
+        id
+        roles {
+            slug
+        }
+    }
+}

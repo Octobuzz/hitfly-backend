@@ -8,7 +8,8 @@ module.exports = {
       gql: path.resolve('resources', 'gql'),
       components: path.resolve('resources', 'js', 'components'),
       modules: path.resolve('resources', 'js', 'modules'),
-      mixins: path.resolve('resources', 'js', 'mixins')
+      mixins: path.resolve('resources', 'js', 'mixins'),
+      pages: path.resolve('resources', 'js', 'pages')
     }
   },
   module: {

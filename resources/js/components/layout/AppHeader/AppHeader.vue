@@ -61,12 +61,15 @@
         <NotificationButtonWithPopover />
       </span>
 
-      <img
-        class="head__profile head-right-item"
-        :src="myProfile.avatar || anonymousAvatar"
-        alt="User avatar"
-        @click="goToProfilePage"
-      >
+      <div class="head-right-item head-right-item_profile">
+        <HeaderProfilePopover>
+          <img
+            class="head__profile"
+            :src="myProfile.avatar || anonymousAvatar"
+            alt="User avatar"
+          >
+        </HeaderProfilePopover>
+      </div>
     </div>
 
     <div class="drop-menu">
@@ -122,13 +125,15 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import LoupeIcon from 'components/icons/LoupeIcon.vue';
 import NotificationButtonWithPopover from 'components/notifications/NotificationButtonWithPopover';
+import HeaderProfilePopover from 'pages/profile/HeaderProfilePopover';
 import gql from './gql';
 
 export default {
   components: {
     IconButton,
     LoupeIcon,
-    NotificationButtonWithPopover
+    NotificationButtonWithPopover,
+    HeaderProfilePopover
   },
 
   data() {

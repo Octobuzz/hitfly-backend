@@ -1,0 +1,9 @@
+query HeaderProfilePopover_MyProfile {
+    myProfile {
+        id
+        username
+        roles {
+            slug
+        }
+    }
+}

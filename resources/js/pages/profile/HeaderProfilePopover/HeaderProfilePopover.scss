@@ -1,0 +1,81 @@
+// popover cannot use scoped styles
+
+$bg_color: #222;
+$text_color: #979797;
+$text_color_highlighted: white;
+
+.header-profile-popover {
+  display: block !important;
+  position: relative;
+  width: 240px;
+  margin-top: 5px;
+  border-radius: 5px;
+  z-index: 9999;
+  color: $text_color;
+  background: $bg_color;
+  box-shadow: 0 0 30px 5px rgba(black, .1);
+
+  &__wrapper {
+    padding: 16px;
+  }
+
+  &__inner {
+    background: $bg_color;
+    color: black;
+    border-radius: 5px;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: -5px;
+    border: {
+      width: 0 5px 5px 5px;
+      style: solid;
+      top-color: transparent;
+      right-color: transparent;
+      bottom-color: $bg_color;
+      left-color: transparent;
+    }
+    z-index: 9999;
+  }
+
+  &__header {
+    font-family: 'Gotham Pro Bold', serif;
+    font-size: 16px;
+    color: white;
+    display: block;
+    margin: {
+      top: 0;
+      bottom: 8px;
+    }
+  }
+
+  &__link {
+    font-size: 13px;
+    color: $text_color;
+    display: block;
+    padding-top: 10px;
+
+    &:hover {
+      color: white;
+    }
+
+    &_top-padded {
+      padding-top: 18px;
+    }
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s, visibility .2s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+}
