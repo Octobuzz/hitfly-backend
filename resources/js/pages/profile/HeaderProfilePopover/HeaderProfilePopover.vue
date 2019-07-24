@@ -16,11 +16,16 @@
 
     <slot />
 
-    <template #popover>
+    <template v-if="fetchAllowed" #popover>
       <SpinnerLoaderWrapper :is-loading="isFetching" size="small">
         <span class="header-profile-popover__header">
           {{ myProfile.username }}
         </span>
+
+        <HeaderProfilePopoverBonusProgram
+          v-if="isAuthenticated"
+          class="header-profile-popover__bonus-program"
+        />
 
         <hr class="header-profile-popover__delimiter">
 
@@ -64,11 +69,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import SpinnerLoaderWrapper from 'components/SpinnerLoaderWrapper.vue';
+import HeaderProfilePopoverBonusProgram from 'pages/profile/HeaderProfilePopoverBonusProgram';
 import gql from './gql';
 
 export default {
   components: {
-    SpinnerLoaderWrapper
+    SpinnerLoaderWrapper,
+    HeaderProfilePopoverBonusProgram
   },
 
   data() {

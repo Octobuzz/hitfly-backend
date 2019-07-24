@@ -1,0 +1,7 @@
+query HeaderProfilePopoverBonusProgram_MyProfile {
+    myProfile {
+        id
+        bpLevelBonusProgram
+        bpPoints
+    }
+}
