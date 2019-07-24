@@ -27,7 +27,7 @@ const regularCacheRedirect = type => (_, args, { getCacheKey }) => (
   getCacheKey({ __typename: type, id: args.id })
 );
 
-const cache = new InMemoryCache({
+export const cache = new InMemoryCache({
   freezeResults: true,
   cacheRedirects: {
     Query: {

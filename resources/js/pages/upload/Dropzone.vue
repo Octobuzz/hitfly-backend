@@ -13,7 +13,7 @@
       >
         или загрузите файл с устройства
       </UploadButton>
-      <div class="radio-pair">
+      <!-- <div class="radio-pair">
         <span class="input-radio">
           <input name="access" id="free" value="1" type="radio" checked @change="changeAccess(true)">
           <label for="free">открытый доступ</label>
@@ -22,7 +22,7 @@
           <input name="access" id="limited" value="2" type="radio" @change="changeAccess(false)">
           <label for="limited">доступ по ссылке</label>
         </span>
-      </div>
+      </div> -->
     </div>
     <p class="up-page__info">
       Для наилучшего качества звука мы принимаем следующие форматы: FLAC, WAV, AIFF, ALAC.

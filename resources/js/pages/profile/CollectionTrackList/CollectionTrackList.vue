@@ -319,12 +319,9 @@ export default {
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
-        console.log(this.currentPlaying);
         if(this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
-          console.log('exact collection');
           this.$store.commit('player/startPlaying');
         }else{
-          console.log('another');
           this.$apollo.provider.defaultClient.query({
             query: gql.query.TRACKS,
             variables: {
@@ -342,7 +339,6 @@ export default {
             };
             this.$store.commit('player/pausePlaying');
             this.$store.commit('player/changeCurrentType', data);
-            console.log(response.data);
             this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
             let arrayTr = response.data.tracks.data.map(data => {
               return data.id;

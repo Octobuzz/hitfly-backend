@@ -62,6 +62,10 @@ $text_color_highlighted: white;
     display: block;
     padding-top: 10px;
 
+    &:hover {
+      color: white;
+    }
+
     &_top-padded {
       padding-top: 18px;
     }

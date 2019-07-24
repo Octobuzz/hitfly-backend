@@ -8,7 +8,7 @@ $factory->define(\App\Models\Comment::class, function (Faker $faker) {
         App\Models\Album::class,
     ];
     $commentableType = $faker->randomElement($commentables);
-    $commentableId = $commentableType::inRandomOrder()->first()->id;
+    $commentableId = $commentableType::withoutGlobalScope('state')->inRandomOrder()->first()->id;
 
     return [
         'commentable_id' => $commentableId,

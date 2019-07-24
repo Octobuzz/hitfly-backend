@@ -3,7 +3,7 @@
 query WathedMusicGroups {
     watchingMusicGroup(
         page: 1,
-        limit: 3
+        limit: 5
     ) {
         data {
             id

@@ -9,13 +9,41 @@ import player from './player';
 import profile from './profile';
 import links from './links';
 import layout from './layout';
+import { cache } from '../apolloProvider';
+import MY_PROFILE from './MyProfile.graphql';
 
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
+// TODO: consider including all header/footer data
+// inject auth and profile data into stores
+
+const authuserMeta = document.head.querySelector('meta[authuser]');
+const myId = parseInt(authuserMeta.getAttribute('authuser'), 10);
+const isAuthenticated = !Number.isNaN(myId);
+
+if (!Number.isNaN(myId)) {
+  const rolesMeta = document.head.querySelector('meta[roles]');
+  const roles = JSON.parse(rolesMeta.getAttribute('roles'));
+  const roleSlugs = roles.map(role => role.slug);
+
+  cache.writeData({
+    query: MY_PROFILE,
+    data: {
+      myProfile: {
+        __typename: 'MyProfile',
+        roles: roleSlugs.map(slug => ({
+          __typename: 'Role',
+          slug
+        }))
+      }
+    }
+  });
+}
+
 const state = {
-  isAuthenticated: false,
+  isAuthenticated,
   favInProcess: {
     track: [],
     album: [],
@@ -25,9 +53,8 @@ const state = {
 };
 
 const getters = {
-  isAuthenticated() {
-    // TODO: implement authentication
-    return true;
+  isAuthenticated({ isAuthenticated }) {
+    return isAuthenticated;
   },
 
   apolloClient(_, getters) {

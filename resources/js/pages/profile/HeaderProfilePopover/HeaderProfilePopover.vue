@@ -47,20 +47,12 @@
           Мои отзывы
         </router-link>
 
-        <router-link
-          to="/profile/edit"
-          class="header-profile-popover__link"
-          @click.native="closePopover"
-        >
-          Редактирование профиля
-        </router-link>
-
-        <router-link
-          to="/logout"
+        <a
+          href="/logout"
           class="header-profile-popover__link header-profile-popover__link_top-padded"
         >
           Выйти
-        </router-link>
+        </a>
       </SpinnerLoaderWrapper>
     </template>
   </v-popover>

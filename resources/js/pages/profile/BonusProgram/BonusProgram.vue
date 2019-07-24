@@ -263,7 +263,7 @@ export default {
       levelList: {
         novice: {
           image: levelNoviceImg,
-          title: 'Новичек',
+          title: 'Новичок',
           description: 'Зарегистрируйтесь и получите уровень Новичка и свои '
             + 'первые 100 баллов.'
         },

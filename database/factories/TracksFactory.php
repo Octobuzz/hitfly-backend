@@ -15,7 +15,7 @@ $factory->define(\App\Models\Track::class, function (Faker $faker) {
         'singer' => $faker->name,
         'track_date' => $faker->dateTimeAD,
         'song_text' => $faker->paragraph,
-        'state' => 'fileload',
+        'state' => \App\Models\Track::CREATE_WAVE,
         'user_id' => function () {
             return \App\User::inRandomOrder()->first()->id;
         },
