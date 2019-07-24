@@ -43,10 +43,10 @@ const routes = [
         path: 'favourite',
         component: profile.Favourite
       },
-      {
-        path: 'favourite/tracks',
-        component: profile.FavouriteTrackList
-      },
+      // {
+      //   path: 'favourite/tracks',
+      //   component: profile.FavouriteTrackList
+      // },
       {
         path: 'favourite/albums',
         component: profile.AlbumTableContainer
