@@ -68,8 +68,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(CreateTopFiftyCommand::class)->dailyAt(self::TIME_CREATE_TOP_FIFTY);
         $schedule->command(CalculateListeningTrackCommand::class)->everyTenMinutes();
         $schedule->command(CalculateListenedUserCommand::class)->everyTenMinutes();
-        $schedule->command(MusicalWaveCommand::class)->everyFiveMinutes()->name('create_music_wave')->withoutOverlapping();
-        $schedule->command(ConvertTrackCommand::class)->everyFiveMinutes()->name('convert_track')->withoutOverlapping();
+        $schedule->command(MusicalWaveCommand::class)->everyMinute()->name('create_music_wave')->withoutOverlapping();
+        $schedule->command(ConvertTrackCommand::class)->everyMinute()->name('convert_track')->withoutOverlapping();
         $schedule->command(CalculateTopWeeklyCommand::class)->weeklyOn(1);
     }
 

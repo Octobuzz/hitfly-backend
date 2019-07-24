@@ -168,9 +168,11 @@ return [
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
+
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
                 'updateComment' => \App\Http\GraphQL\Mutations\UpdateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
+                'requestForComment' => \App\Http\GraphQL\Mutations\RequestForCommentMutation::class,
 
                 'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
                 'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
@@ -243,6 +245,7 @@ return [
         'NotificationType' => \App\Http\GraphQL\Type\NotificationType::class,
         'TrackBelongsCollection' => \App\Http\GraphQL\Type\TrackBelongsCollectionType::class,
         'NewsType' => \App\Http\GraphQL\Type\NewsType::class,
+        'OperationType' => \App\Http\GraphQL\Type\OperationType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
