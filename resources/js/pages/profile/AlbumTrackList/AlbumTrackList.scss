@@ -89,13 +89,13 @@
         margin-right: 12px;
       }
     }
-  }
 
-  &_disabled {
-    color: grey;
+    &_disabled {
+      color: grey;
 
-    &:hover {
-      background: white;
+      &:hover {
+        background: white;
+      }
     }
   }
 }
