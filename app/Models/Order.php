@@ -25,6 +25,6 @@ class Order extends Model
 
     public function attributes()
     {
-        return $this->belongsToMany(Attribute::class, 'order_attribute_value')->withTimestamps();
+        return $this->belongsToMany(Attribute::class, 'order_attribute_value')->withPivot('value')->withTimestamps();
     }
 }
