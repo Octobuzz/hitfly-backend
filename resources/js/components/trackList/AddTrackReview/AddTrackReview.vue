@@ -5,6 +5,9 @@
       class="add-track-review__textarea"
       label="Напишите отзыв на песню"
       :rows="6"
+      :show-error="showError"
+      :error-message="errorMessage"
+      @input="hideError"
     />
     <FormButton
       class="add-track-review__send-button"
@@ -39,7 +42,9 @@ export default {
   data() {
     return {
       reviewText: '',
-      isSending: false
+      isSending: false,
+      showError: false,
+      errorMessage: ''
     };
   },
 
@@ -54,7 +59,20 @@ export default {
         $apollo
       } = this;
 
-      if (isSending || reviewText === '') return;
+      if (isSending) return;
+
+      if (reviewText === '') {
+        this.showError = true;
+        this.errorMessage = 'Заполните поле отзыва';
+
+        return;
+      }
+      if (reviewText.length >= 250) {
+        this.showError = true;
+        this.errorMessage = 'Длина отзыва должна быть не больше 250 символов';
+
+        return;
+      }
 
       this.isSending = true;
 
@@ -151,6 +169,12 @@ export default {
         .then(() => {
           this.isSending = false;
         });
+    },
+
+    hideError() {
+      if (this.showError) {
+        this.showError = false;
+      }
     }
   }
 };
