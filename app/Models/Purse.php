@@ -61,10 +61,13 @@ class Purse extends Model
         return $this->hasMany(Operation::class);
     }
 
-    public function processOperation(Operation $operation)
+    public function processOperation(Operation $operation): bool
     {
         switch ($operation->direction) {
             case Operation::DIRECTION_DECREASE:
+                if ($this->balance < $operation->amount) {
+                    return false;
+                }
                 $this->decreaseBalance($operation->amount);
                 break;
             case Operation::DIRECTION_INCREASE:
@@ -76,6 +79,8 @@ class Purse extends Model
         $operation->purseBonus()->associate($this);
         $operation->save();
         $this->save();
+
+        return true;
     }
 
     public function hasPositiveBalance()

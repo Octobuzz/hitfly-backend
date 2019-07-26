@@ -157,6 +157,8 @@ return [
                 'topTrackForUser' => \App\Http\GraphQL\Query\TopTrackForUser::class,
                 'news' => \App\Http\GraphQL\Query\NewsQuery::class,
                 'TopWeeklyQuery' => \App\Http\GraphQL\Query\TopWeeklyQuery::class,
+                'myTracksSearch' => \App\Http\GraphQL\Query\MyTracksSearch::class,
+                'requestsForComments' => \App\Http\GraphQL\Query\RequestsForCommentsQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -167,9 +169,11 @@ return [
                 'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
                 'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
                 'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
+
                 'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
                 'updateComment' => \App\Http\GraphQL\Mutations\UpdateCommentMutation::class,
                 'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
+                'requestForComment' => \App\Http\GraphQL\Mutations\RequestForCommentMutation::class,
 
                 'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
                 'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
@@ -242,6 +246,9 @@ return [
         'NotificationType' => \App\Http\GraphQL\Type\NotificationType::class,
         'TrackBelongsCollection' => \App\Http\GraphQL\Type\TrackBelongsCollectionType::class,
         'NewsType' => \App\Http\GraphQL\Type\NewsType::class,
+        'OperationType' => \App\Http\GraphQL\Type\OperationType::class,
+        'OrderType' => \App\Http\GraphQL\Type\OrderType::class,
+        'ProductType' => \App\Http\GraphQL\Type\ProductType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -277,6 +284,7 @@ return [
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
         'FollowResult' => \App\Http\GraphQL\Unions\FollowUnion::class,
+        'AttributeResult' => \App\Http\GraphQL\Unions\AttributesUnion::class,
 
         'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],

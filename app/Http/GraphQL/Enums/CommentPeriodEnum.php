@@ -10,7 +10,7 @@ class CommentPeriodEnum extends GraphQLType
 
     protected $attributes = [
         'name' => 'CommentPeriodEnum',
-        'description' => 'Размеры аватарок',
+        'description' => 'Периоды комментирования',
         'values' => [
             'week' => 'week',
             'month' => 'month',

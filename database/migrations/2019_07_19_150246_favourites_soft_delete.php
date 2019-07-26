@@ -8,8 +8,6 @@ class FavouritesSoftDelete extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -23,8 +21,6 @@ class FavouritesSoftDelete extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -34,6 +30,5 @@ class FavouritesSoftDelete extends Migration
         Schema::table('watcheables', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
-
     }
 }

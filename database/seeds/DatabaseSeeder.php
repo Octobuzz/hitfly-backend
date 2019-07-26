@@ -27,6 +27,10 @@ class DatabaseSeeder extends Seeder
         DB::table('admin_role_users')->delete();
         DB::table('admin_roles')->delete();
         DB::table('admin_config')->delete();
+        DB::table('orders')->delete();
+        DB::table('products')->delete();
+        DB::table('attributes')->delete();
+        DB::table('product_attribute')->delete();
 
         if (App::environment('local')) {
             $this->call([
@@ -45,6 +49,7 @@ class DatabaseSeeder extends Seeder
 //                WatchingSeeder::class,
 //                FavouritesSeeder::class,
                 ConfigSeeder::class,
+                ProductsSeeder::class,
             ]);
         }
         if (App::environment('prod')) {
@@ -54,6 +59,7 @@ class DatabaseSeeder extends Seeder
                 MenuSeeder::class,
                 UserSeeder::class,
                 ConfigSeeder::class,
+                ProductsSeeder::class,
             ]);
         }
     }
