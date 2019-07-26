@@ -12,6 +12,16 @@ mutation AddTrackComment(
             comment
             createdAt
             estimation
+            user {
+                id
+                username
+                avatar(
+                    sizes: [size_56x56]
+                ) {
+                    size
+                    url
+                }
+            }
         }
     }
 }
