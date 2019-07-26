@@ -13,6 +13,7 @@
       >
         или загрузите файл с устройства
       </UploadButton>
+      <!-- радиокнопки скрыты, ожидается реализация функционала на стороне бэкенда -->
       <!-- <div class="radio-pair">
         <span class="input-radio">
           <input name="access" id="free" value="1" type="radio" checked @change="changeAccess(true)">

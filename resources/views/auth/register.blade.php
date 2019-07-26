@@ -39,7 +39,7 @@
                     @if ($errors->has('password'))
                         <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
                     @else
-                        <span class="input-text-wrapper__error-msg">Введите корректный пароль</span>
+                        <span class="input-text-wrapper__error-msg">Пароль должен включать буквы латинского алфавита в разных регистрах, цифры, спецсимволы и быть более 8 символов. Например, MyHitfly1!</span>
                     @endif
                 </span>
 

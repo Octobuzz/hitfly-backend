@@ -129,6 +129,7 @@ export default {
     AudioVolumePopover
   },
   data: () => ({
+    percentage: Number,
     audio: undefined,
     currentTime: null,
     fixedTime: null,
@@ -189,6 +190,23 @@ export default {
         }else{
           trackId = this.currentPlaylist[currentIndex - 1];
         };
+        this.$apollo.provider.defaultClient.mutate({
+          variables: {
+            id: this.currentTrack.id,
+            listening: this.percentage
+          },
+          mutation: gql`mutation($id: Int!, $listening: Int!){
+            listeningTrack(id: $id, listening: $listening){
+              trackName
+            }
+          }`
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
         this.getTrack(trackId);
       }
     },
@@ -220,6 +238,9 @@ export default {
       })
     },
     update(e) {
+      if(this.audio.duration){
+        this.percentage =  Math.floor(this.audio.played.end(0) / this.audio.duration * 100);
+      };
 			this.currentTime = parseInt(this.audio.currentTime);
 	    let hhmmss = new Date(this.currentTime * 1000).toISOString().substr(11, 8);
     	this.fixedTime =  hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;

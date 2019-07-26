@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import store from './store';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
+import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
 import FaqPage from './pages/FaqPage.vue';
 
@@ -148,6 +149,10 @@ const routes = [
   {
     path: '/upload',
     component: UploadPage
+  },
+  {
+    path: '/home',
+    component: main.MainPageLayout
   },
   {
     path: '/about',

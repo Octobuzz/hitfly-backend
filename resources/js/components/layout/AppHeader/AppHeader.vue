@@ -15,7 +15,7 @@
         :class="[
           'button',
           'head-nav-item',
-          { active: path === '/' }
+          { active: path === '/home' }
         ]"
       >
         Главная
