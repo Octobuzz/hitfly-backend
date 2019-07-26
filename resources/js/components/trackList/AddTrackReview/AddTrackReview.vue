@@ -65,7 +65,9 @@ export default {
           comment: reviewText
         },
         update: (store, { data: { createComment } }) => {
-          ['week', 'month', 'year'].forEach((period) => {
+          const periods = ['week', 'month', 'year'];
+
+          periods.forEach((period) => {
             try {
               const { track: trackWithComments } = store.readQuery({
                 query: gql.query.TRACK_WITH_COMMENTS,
@@ -89,21 +91,21 @@ export default {
                       ...trackWithComments.comments
                     ]
                   }
-
                 }
               });
             } catch (e) {
               // no track or track comments found in the store
             }
+          });
 
-
+          periods.forEach((period) => {
             try {
               // TODO: synchronize variables with original query, add period
               const vars = {
                 id: this.trackId,
                 pageLimit: 5,
-                pageNumber: 1
-                // commentedInPeriod: period
+                pageNumber: 1,
+                commentPeriod: period
               };
 
               const { commentsTrack: trackComments } = store.readQuery({
@@ -115,7 +117,7 @@ export default {
                 query: gql.query.TRACK_COMMENTS,
                 variables: vars,
                 data: {
-                  trackComments: {
+                  commentsTrack: {
                     ...trackComments,
                     data: [
                       createComment,
