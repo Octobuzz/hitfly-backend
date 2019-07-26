@@ -40,7 +40,6 @@
           @press="playAlbum"
         >
           <PlayIcon />
-          Слушать
         </IconButton>
         <IconButton
           v-else
@@ -52,7 +51,6 @@
           @press="playAlbum"
         >
             <PauseIcon />
-            Пауза
           </IconButton>
 
         <AlbumPopover
