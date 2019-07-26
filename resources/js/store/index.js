@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
+import MY_ID_AND_ROLES from 'gql/query/MyId.graphql';
 import history from './history';
 import appColumns from './appColumns';
 import loading from './loading';
@@ -10,7 +11,6 @@ import profile from './profile';
 import links from './links';
 import layout from './layout';
 import { cache } from '../apolloProvider';
-import MY_PROFILE from './MyProfile.graphql';
 
 Vue.use(Vuex);
 
@@ -29,10 +29,11 @@ if (!Number.isNaN(myId)) {
   const roleSlugs = roles.map(role => role.slug);
 
   cache.writeData({
-    query: MY_PROFILE,
+    query: MY_ID_AND_ROLES,
     data: {
       myProfile: {
         __typename: 'MyProfile',
+        id: myId,
         roles: roleSlugs.map(slug => ({
           __typename: 'Role',
           slug
