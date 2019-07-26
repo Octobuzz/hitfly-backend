@@ -150,8 +150,8 @@ const routes = [
     component: UploadPage
   },
   {
-    path: '/',
-    component: main
+    path: '/home',
+    component: main.MainPageLayout
   },
   {
     path: '/about',

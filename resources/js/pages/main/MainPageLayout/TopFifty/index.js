@@ -1,1 +1,1 @@
-export { default as TopFifty } from './TopFifty.vue'
+export { default } from './TopFifty.vue'

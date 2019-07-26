@@ -19,6 +19,17 @@
       font-size: 10px;
       line-height: 12px;
       cursor: pointer;
+      position: absolute;
+      top: 2px;
+      right: 0;
+    }
+  }
+
+  &__body {
+
+    & .track-list {
+      max-height: 168px;
+      overflow: hidden;
     }
   }
 

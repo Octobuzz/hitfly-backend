@@ -1,8 +1,8 @@
 <template>
   <div class="asideBlock">
     <div class="asideBlock__header">
-      <h2 class="h2">Топ 50</h2>
-      <p>Рейтинг лучших музыкантов</p>
+      <h2 class="h2">Сейчас слушают</h2>
+      <p v-show="!isLoading">{{ currentlyListening }} человек слушают эти песни</p>
       <button>Все</button>
     </div>
     <div class="asideBlock__body">
@@ -33,7 +33,8 @@ import gql from './gql';
   export default {
     data: () => ({
       isLoading: true,
-      tracks: []
+      tracks: [],
+      currentlyListening: Number
     }),
     components: {
       SpinnerLoader,
@@ -44,32 +45,33 @@ import gql from './gql';
         console.log('onRemoveTrack');
       }
     },
-    computed: {
-      dataInitialized() {
-        console.log(this.$store.getters['loading/music'].tracks.initialized);
-        return this.$store.getters['loading/music'].tracks.initialized;
-      }
-    },
     apollo: {
-      topFifty() {
+      GetListenedNow() {
         return {
-          query: gql.query.GET_TOP_FIFTY,
+          query: gql.query.CURRENTLY_LISTENING,
           variables: {
             pageLimit: 50,
             pageNumber: 1
           },
           update(data) {
-            this.tracks = data.GetTopFifty.data;
+            this.tracks = data.GetListenedNowUser;
             this.isLoading = false;
-            this.visibleTracks = this.tracks.slice(0, 1);
           }
         }
-      }
+      },
+      quantityListening() {
+        return {
+          query: gql.query.CURRENTLY_LISTENING,
+          update(data) {
+            this.currentlyListening = data.GetListenedNowUser;
+          }
+        }
+      },
     }
   }
 </script>
 <style
   scoped
   lang="scss"
-  src="./TopFifty.scss"
+  src="./ListenedNow.scss"
 />

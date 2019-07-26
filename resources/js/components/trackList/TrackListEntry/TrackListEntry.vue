@@ -1,6 +1,8 @@
 <template>
   <div class="track-list-entry">
-    <span class="track-list-entry__index">
+    <span class="track-list-entry__index"
+      v-if="showTrackIndex"
+    >
       {{ index }}
     </span>
 
@@ -32,24 +34,25 @@
     />
 
     <span
-      v-if="desktop"
+      v-show="desktop && !columnLayout"
       class="track-list-entry__track-name"
     >
       {{ track.trackName }}
     </span>
     <WordTrimmedWithTooltip
+      v-show="!columnLayout"
       class="track-list-entry__track-author"
       :word="track.singer"
     />
     <span
-      v-if="showAlbumSection"
+      v-show="showAlbumSection"
       class="track-list-entry__album-title"
     >
       {{ track.album && track.album.title }}
     </span>
 
     <div
-      v-if="!desktop"
+      v-show="!desktop || columnLayout"
       class="track-list-entry__track-data"
     >
       <span class="track-list-entry__track-name">
@@ -62,7 +65,7 @@
     </div>
 
     <TrackToPlaylistPopover
-      v-if="desktop"
+      v-if="desktop && showAddToPlayList"
       :track-id="trackId"
     >
       <IconButton
@@ -144,6 +147,18 @@ export default {
       type: Number,
       required: true
     },
+    showAddToPlayList: {
+      type: Boolean,
+      default: true
+    },
+    columnLayout: {
+      type: Boolean,
+      default: false
+    },
+    showTrackIndex: {
+      type: Boolean,
+      default: true
+    },
     showAlbumSection: {
       type: Boolean,
       default: false
@@ -171,7 +186,7 @@ export default {
         actions: {
           content: 'Еще...'
         },
-      }
+      },
     };
   },
 
@@ -224,7 +239,10 @@ export default {
         variables: {
           id: this.trackId,
         },
-        update: ({ track }) => track,
+        update: ({ track }) => {
+          this.trackLoaded = true;
+          return track
+        },
         error(error) {
           console.log(error);
         }
