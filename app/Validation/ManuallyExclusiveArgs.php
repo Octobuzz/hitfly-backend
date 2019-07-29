@@ -14,7 +14,7 @@ class ManuallyExclusiveArgs extends Validator
 
     public function validate(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
     {
-        $this->params = $params;
+        $this->params = array_map('trim', $params);
         if (empty($params)) {
             throw new  Exception('Не переданы зависимые параметры для проверки');
         }
