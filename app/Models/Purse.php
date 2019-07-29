@@ -61,7 +61,7 @@ class Purse extends Model
         return $this->hasMany(Operation::class);
     }
 
-    public function processOperation(Operation $operation)
+    public function processOperation(Operation $operation): bool
     {
         switch ($operation->direction) {
             case Operation::DIRECTION_DECREASE:
