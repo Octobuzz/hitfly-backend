@@ -56,9 +56,18 @@
             <TrackReviewHeader
               :track-id="newAlbumPlayingTrackId"
             />
-            <button class="other-user-music__listen-button">
-              <CirclePlayIcon />
-              Слушать
+            <button
+              @click="playAlbum"
+              class="other-user-music__listen-button"
+            >
+              <template v-if="currentPlaying">
+                <CirclePauseIcon />
+                Пауза
+              </template>
+              <template v-else>
+                <CirclePlayIcon />
+                Слушать
+              </template>
             </button>
           </div>
 
@@ -159,6 +168,14 @@ export default {
   },
 
   computed: {
+    currentPlaying() {
+      return this.currentType.type === 'album' && this.currentType.id === this.albumId && this.$store.getters['player/isPlaying'];
+    },
+
+    currentType() {
+      return this.$store.getters['player/getCurrentType'];
+    },
+
     userId() {
       return +this.$route.params.userId;
     },
@@ -239,6 +256,46 @@ export default {
 
           console.dir(err);
         });
+    },
+
+    playAlbum(){
+      // prevent attempt to listen nonexistent track
+      if (!this.shownTrack) return;
+
+      if(this.currentPlaying){
+        this.$store.commit('player/pausePlaying');
+      }else{
+        if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
+          this.$store.commit('player/startPlaying');
+        }else{
+          this.$apollo.provider.defaultClient.query({
+            query: gql.query.TRACKS,
+            variables: {
+              pageLimit: 30,
+              pageNumber: 1,
+              filters: {
+                albumId: this.newAlbum.id
+              }
+            },
+          })
+          .then(response => {
+            let data = {
+              'type': 'album',
+              'id': this.newAlbum.id
+            };
+            this.$store.commit('player/pausePlaying');
+            this.$store.commit('player/changeCurrentType', data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        }
+      }
     }
   },
 

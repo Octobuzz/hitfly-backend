@@ -67,6 +67,12 @@ $cover-side-mobile: 104px;
     }
   }
 
+  &__icon-button::v-deep {
+    svg {
+      fill: #fff;
+    }
+  }
+
   &__footer {
     padding-top: 6px;
     user-select: none;

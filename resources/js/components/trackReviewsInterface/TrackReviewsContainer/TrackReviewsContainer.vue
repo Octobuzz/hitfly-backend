@@ -48,7 +48,7 @@ export default {
       queryVars: {
         pageNumber: 1,
         pageLimit: 5,
-        commentedInPeriod: this.commentedInPeriod // possible backend bug
+        commentPeriod: this.commentedInPeriod
       }
     };
   },
@@ -61,7 +61,7 @@ export default {
       this.queryVars = {
         ...this.queryVars,
         pageNumber: 1,
-        commentedInPeriod: val
+        commentPeriod: val
       };
     }
   },

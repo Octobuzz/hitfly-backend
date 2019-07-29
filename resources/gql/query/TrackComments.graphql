@@ -3,12 +3,16 @@
 query TrackComments(
     $pageLimit: Int!,
     $pageNumber: Int!,
-    $trackId: Int
+    $trackId: Int,
+    $commentPeriod: CommentPeriodEnum
 ) {
     commentsTrack(
         limit: $pageLimit,
         page: $pageNumber,
-        trackId: $trackId
+        trackId: $trackId,
+        filters: {
+            commentPeriod: $commentPeriod
+        }
     ) {
         to
         total

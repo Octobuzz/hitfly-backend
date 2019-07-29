@@ -10,6 +10,10 @@
     background: #f0f0f0;
   }
 
+  &__track-data {
+    flex-grow: 1;
+  }
+
   &__index {
     font-family: 'Gotham Pro', sans-serif;
     font-size: 12px;
@@ -117,10 +121,6 @@
   .track-list-entry {
     &__index {
       margin-right: 2px;
-    }
-
-    &__track-data {
-      flex-grow: 1;
     }
 
     &__track-name,

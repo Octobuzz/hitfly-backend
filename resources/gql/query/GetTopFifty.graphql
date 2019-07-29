@@ -1,0 +1,15 @@
+#import "../fragments/track.graphql"
+
+query GetTopFifty(
+    $pageLimit: Int,
+    $pageNumber: Int
+) {
+    GetTopFifty(
+        page: $pageNumber,
+        limit: $pageLimit
+    ) {
+        data {
+            ...track
+        }
+    }
+}

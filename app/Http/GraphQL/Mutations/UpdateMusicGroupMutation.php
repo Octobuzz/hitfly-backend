@@ -68,6 +68,8 @@ class UpdateMusicGroupMutation extends Mutation
             }
 
             $musicGroup->socialLinks()->sync($sync, true);
+        } else {
+            $musicGroup->socialLinks()->sync([], true);
         }
         if (!empty($args['musicGroup']['invitedMembers'])) {
             foreach ($args['musicGroup']['invitedMembers'] as $members) {

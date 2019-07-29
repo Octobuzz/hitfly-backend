@@ -36,6 +36,9 @@
       :show-album-section="showAlbumSection"
       :fake-fav-button="fakeFavButton"
       :show-remove-button="showRemoveButton"
+      :show-track-index="showTrackIndex"
+      :show-add-to-play-list="showAddToPlayList"
+      :column-layout="columnLayout"
       @remove-track="onTrackRemove"
       @press-favourite="onFavouritePress"
       @play-track="playTrack"
@@ -61,6 +64,18 @@ export default {
     showTableHeader: {
       type: Boolean,
       default: false
+    },
+    showAddToPlayList: {
+      type: Boolean,
+      default: false
+    },
+    columnLayout: {
+      type: Boolean,
+      default: false
+    },
+    showTrackIndex: {
+      type: Boolean,
+      default: true
     },
     showAlbumSection: {
       type: Boolean,

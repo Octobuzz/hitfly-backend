@@ -25,8 +25,16 @@ const getters = {
         case 'profile':
           return `/profile/${type}/${id}`;
 
-        case 'user':
-          return `/user/${params.userId}/${type}/${id}`;
+        case 'user': {
+          let actualType = type;
+
+          // this is used to redirect admin's sets as playlists
+          if (type === 'playlist' || type === 'set') {
+            actualType = 'playlist';
+          }
+
+          return `/user/${params.userId}/${actualType}/${id}`;
+        }
 
         default:
           return `/${type}/${id}`;

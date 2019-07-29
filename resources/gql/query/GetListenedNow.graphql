@@ -1,0 +1,15 @@
+#import "../fragments/track.graphql"
+
+query GetListenedNow(
+    $pageLimit: Int,
+    $pageNumber: Int
+) {
+    GetListenedNow(
+        page: $pageNumber,
+        limit: $pageLimit
+    ) {
+        data {
+            ...track
+        }
+    }
+}

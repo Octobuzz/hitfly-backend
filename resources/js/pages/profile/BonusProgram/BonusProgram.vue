@@ -141,9 +141,12 @@
             <span class="h4 bonus-program__paid-card-cost">
               {{ option.cost }}
             </span>
-            <button class="bonus-program__paid-card-button">
-              {{ option.button }}
-            </button>
+
+<!--            Commented button should be available in next release-->
+<!--            <button class="bonus-program__paid-card-button">-->
+<!--              {{ option.button }}-->
+<!--            </button>-->
+
           </div>
         </template>
         <template #title>

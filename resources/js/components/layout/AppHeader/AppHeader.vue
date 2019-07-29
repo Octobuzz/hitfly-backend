@@ -15,7 +15,7 @@
         :class="[
           'button',
           'head-nav-item',
-          { active: path === '/' }
+          { active: path === '/home' }
         ]"
       >
         Главная
@@ -84,36 +84,44 @@
             Бонусная программа
           </span>
         </router-link>
-        <router-link to="/" class="drop-menu-list__item">
-          <span>
-            Мои покупки
-          </span>
-        </router-link>
-        <router-link to="/" class="drop-menu-list__item">
+
+<!--        Commented button should be available in next release-->
+<!--        <router-link to="/" class="drop-menu-list__item">-->
+<!--          <span>-->
+<!--            Мои покупки-->
+<!--          </span>-->
+<!--        </router-link>-->
+
+        <router-link to="/faq" class="drop-menu-list__item">
           <span>
             Вопросы и ответы
           </span>
         </router-link>
-        <router-link to="/" class="drop-menu-list__item">
-          <span>
-            Истории победителей
-          </span>
-        </router-link>
+
+<!--        Commented button should be available in next release-->
+<!--        <router-link to="/" class="drop-menu-list__item">-->
+<!--          <span>-->
+<!--            Истории победителей-->
+<!--          </span>-->
+<!--        </router-link>-->
+
         <router-link to="/" class="drop-menu-list__item">
           <span>
             Звезды
           </span>
         </router-link>
-        <router-link to="/" class="drop-menu-list__item">
+        <router-link to="/profile/edit" class="drop-menu-list__item">
           <span>
             Настройки
           </span>
         </router-link>
-        <router-link to="/" class="drop-menu-list__item">
-          <span>
-            Форма обратной связи
-          </span>
-        </router-link>
+
+<!--        Commented button should be available in next release-->
+<!--        <router-link to="/" class="drop-menu-list__item">-->
+<!--          <span>-->
+<!--            Форма обратной связи-->
+<!--          </span>-->
+<!--        </router-link>-->
       </div>
     </div>
   </header>

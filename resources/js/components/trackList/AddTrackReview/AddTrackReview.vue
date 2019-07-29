@@ -5,6 +5,9 @@
       class="add-track-review__textarea"
       label="Напишите отзыв на песню"
       :rows="6"
+      :show-error="showError"
+      :error-message="errorMessage"
+      @input="hideError"
     />
     <FormButton
       class="add-track-review__send-button"
@@ -39,7 +42,9 @@ export default {
   data() {
     return {
       reviewText: '',
-      isSending: false
+      isSending: false,
+      showError: false,
+      errorMessage: ''
     };
   },
 
@@ -54,7 +59,20 @@ export default {
         $apollo
       } = this;
 
-      if (isSending || reviewText === '') return;
+      if (isSending) return;
+
+      if (reviewText === '') {
+        this.showError = true;
+        this.errorMessage = 'Заполните поле отзыва';
+
+        return;
+      }
+      if (reviewText.length >= 250) {
+        this.showError = true;
+        this.errorMessage = 'Длина отзыва должна быть не больше 250 символов';
+
+        return;
+      }
 
       this.isSending = true;
 
@@ -65,7 +83,9 @@ export default {
           comment: reviewText
         },
         update: (store, { data: { createComment } }) => {
-          ['week', 'month', 'year'].forEach((period) => {
+          const periods = ['week', 'month', 'year'];
+
+          periods.forEach((period) => {
             try {
               const { track: trackWithComments } = store.readQuery({
                 query: gql.query.TRACK_WITH_COMMENTS,
@@ -89,21 +109,21 @@ export default {
                       ...trackWithComments.comments
                     ]
                   }
-
                 }
               });
             } catch (e) {
               // no track or track comments found in the store
             }
+          });
 
-
+          periods.forEach((period) => {
             try {
               // TODO: synchronize variables with original query, add period
               const vars = {
                 id: this.trackId,
                 pageLimit: 5,
-                pageNumber: 1
-                // commentedInPeriod: period
+                pageNumber: 1,
+                commentPeriod: period
               };
 
               const { commentsTrack: trackComments } = store.readQuery({
@@ -115,7 +135,7 @@ export default {
                 query: gql.query.TRACK_COMMENTS,
                 variables: vars,
                 data: {
-                  trackComments: {
+                  commentsTrack: {
                     ...trackComments,
                     data: [
                       createComment,
@@ -149,6 +169,12 @@ export default {
         .then(() => {
           this.isSending = false;
         });
+    },
+
+    hideError() {
+      if (this.showError) {
+        this.showError = false;
+      }
     }
   }
 };
