@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Events\Order\CreateOrder;
 use App\Models\BonusType;
 use App\Models\Operation;
 use App\Models\Order;
@@ -61,7 +62,7 @@ class RequestForCommentMutation extends Mutation
             if (true === $operationResult) {
                 $order = new Order([
                     'name' => $product->name,
-                    'user_id' => $args['userId'],
+                    'user_id' => Auth::user()->id,
                     'product_id' => $product->id,
                 ]);
                 $order->save();
@@ -74,6 +75,7 @@ class RequestForCommentMutation extends Mutation
 
                     $order->attributes()->attach($attr->id, ['value' => $productAttr]);
                 }
+                event(new CreateOrder($order));
             } else {
                 throw new \Exception('На вашем счету недостаточно бонусов');
             }
