@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Events\Order\CreateOrder;
 use App\Models\BonusType;
 use App\Models\Operation;
 use App\Models\Order;
@@ -58,25 +59,25 @@ class RequestForCommentMutation extends Mutation
             /** @var User $user */
             $user = Auth::user();
             $operationResult = $user->purseBonus->processOperation($operation);
-            if (true === $operationResult) {
-                $order = new Order([
-                    'name' => $product->name,
-                    'user_id' => $args['userId'],
-                    'product_id' => $product->id,
-                ]);
-                $order->save();
-                foreach ($product->attributes as $attr) {
-                    if (Track::class === $attr->model) {
-                        $productAttr = $args['trackId'];
-                    } else {
-                        $productAttr = $args['userId'];
-                    }
-
-                    $order->attributes()->attach($attr->id, ['value' => $productAttr]);
-                }
-            } else {
-                throw new \Exception('На вашем счету недостаточно бонусов');
+            if (false === $operationResult) {
+                throw new \Exception('На вашем счете недостаточно бонусов');
             }
+            $order = new Order([
+                'name' => $product->name,
+                'user_id' => Auth::user()->id,
+                'product_id' => $product->id,
+            ]);
+            $order->save();
+            foreach ($product->attributes as $attr) {
+                if (Track::class === $attr->model) {
+                    $productAttr = $args['trackId'];
+                } else {
+                    $productAttr = $args['userId'];
+                }
+
+                $order->attributes()->attach($attr->id, ['value' => $productAttr]);
+            }
+            event(new CreateOrder($order));
         }
 
         return $operation;

@@ -49,13 +49,18 @@ class CollectionsQuery extends Query
         }
 
         // Запрос подборок
-        if (false === empty($args['filters']['collection']) && true === (bool) $args['filters']['collection']) {
-            $query->where('is_admin', '=', (bool) $args['filters']['collection']);
+        if (false === empty($args['filters']['collection'])) {
+            $query->where('is_admin', '=', 1);
         }
 
         // Запрос супер меломан
-        if (false === empty($args['filters']['superMusicFan']) && true === (bool) $args['filters']['superMusicFan']) {
-            $query->where('super_music_fan', '=', (bool) $args['filters']['superMusicFan']);
+        if (false === empty($args['filters']['superMusicFan'])) {
+            $query->where('super_music_fan', '=', 1);
+        }
+
+        //запрос плейлистов
+        if (false === empty($args['filters']['playlist'])) {
+            $query->where('is_admin', '=', 0);
         }
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 

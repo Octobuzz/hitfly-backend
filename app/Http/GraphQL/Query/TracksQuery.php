@@ -107,6 +107,20 @@ class TracksQuery extends Query
             }
         }
 
+        if (false === empty($args['filters']['lastCommented'])) {
+            $userQuery = User::query()->select('users.id');
+            $userQuery->leftJoin('admin_role_users', 'users.id', '=', 'admin_role_users.user_id')
+                ->leftJoin('admin_roles', 'admin_role_users.role_id', '=', 'admin_roles.id')
+                ->where('admin_roles.slug', '=', 'star');
+            $query->leftJoin('comments', function ($join) {
+                $join->on('tracks.id', '=', 'comments.commentable_id');
+            })
+                ->whereIn('comments.user_id', $userQuery)
+                ->where('comments.commentable_type', '=', Track::class)
+                ->orderBy('tracks.id', 'DESC')
+                ->groupBy('tracks.id');
+        }
+
         if (false === empty($args['filters']['genre'])) {
             $query->leftJoin('genres_bindings', function ($join) {
                 $join->on('tracks.id', '=', 'genres_bindings.genreable_id');
