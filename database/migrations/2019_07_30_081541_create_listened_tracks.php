@@ -12,7 +12,7 @@ class CreateListenedTracks extends Migration
     public function up()
     {
         Schema::create('listened_tracks', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id');
             $table->integer('user_id')->unsigned();
             $table->integer('track_id')->unsigned();
             $table->timestamps();
@@ -20,6 +20,7 @@ class CreateListenedTracks extends Migration
         Schema::table('listened_tracks', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('track_id')->references('id')->on('tracks')->onDelete('cascade');
+            $table->primary(['user_id', 'track_id']);
         });
     }
 
