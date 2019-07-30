@@ -150,6 +150,14 @@ class UserInterface extends InterfaceType
                 },
                 'selectable' => false,
             ],
+            'countListenedTracks' => [
+                'type' => Type::int(),
+                'description' => 'Количество прослушаных треков',
+                'resolve' => function (User $model) {
+                    return $model->listenedTracks()->count();
+                },
+                'selectable' => false,
+            ],
         ];
     }
 
