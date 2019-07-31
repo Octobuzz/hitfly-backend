@@ -252,10 +252,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
                         ]);
                         $ap->save();
                     } else {
-                        /** @var ArtistProfile $artistProfile */
-                        $artistProfile = ArtistProfile::query()->where('user_id', '=', $savingUser->id)->first();
-                        $artistProfile->fill($profile);
-                        $artistProfile->save();
+                        ArtistProfile::updateOrCreate(['user_id' => $savingUser->id], $profile);
                     }
                 }
             }
