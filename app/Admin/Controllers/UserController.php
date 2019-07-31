@@ -236,7 +236,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
             }
             /** @var User $savingUser */
             $savingUser = $form->model();
-            $profile = $form->artist_profile;
+
             if (null !== $savingUser->id) {
                 $savingUser->roles()->sync(array_filter($form->roles));
                 if (
@@ -244,12 +244,19 @@ class UserController extends \Encore\Admin\Controllers\UserController
                         true === $savingUser->isRole('star')
                         || $savingUser->isRole('performer')
                     )
-                    && null !== $profile
                 ) {
-                    $attributes = ['user_id' => $savingUser->id];
-                    /** @var ArtistProfile $artistProfile */
-                    $artistProfile = ArtistProfile::query()->firstOrNew($attributes, $profile);
-                    $savingUser->artistProfile()->save($artistProfile);
+                    $profile = $form->artist_profile;
+                    if (null == $profile) {
+                        $ap = new ArtistProfile([
+                            'user_id' => $savingUser->id,
+                        ]);
+                        $ap->save();
+                    } else {
+                        /** @var ArtistProfile $artistProfile */
+                        $artistProfile = ArtistProfile::query()->where('user_id', '=', $savingUser->id)->first();
+                        $artistProfile->fill($profile);
+                        $artistProfile->save();
+                    }
                 }
             }
         });
