@@ -16,10 +16,6 @@
 
       </RecommendedTracks>
 
-      <MainPageGenres>
-        
-      </MainPageGenres>
-
       <NewTracks>
 
       </NewTracks>
@@ -42,7 +38,6 @@ import RecommendedTracks from './RecommendedTracks/RecommendedTracks.vue';
 import SuperMelomaniac from './SuperMelomaniac/SuperMelomaniac.vue';
 import NewTracks from './NewTracks/NewTracks.vue';
 import WeeklyTop from './WeeklyTop/WeeklyTop.vue';
-import MainPageGenres from './MainPageGenres/MainPageGenres.vue';
 import AppColumns from 'components/layout/AppColumns.vue';
 import PageHeader from 'components/PageHeader.vue';
 
@@ -56,7 +51,6 @@ export default {
     SuperMelomaniac,
     NewTracks,
     WeeklyTop,
-    MainPageGenres
   },
   data: () => ({
 
