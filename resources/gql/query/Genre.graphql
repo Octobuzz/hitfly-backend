@@ -1,0 +1,7 @@
+#import "../fragments/genre.graphql"
+
+query Genre($id: Int!) {
+    genre(id: $id) {
+        ...genre
+    }
+}

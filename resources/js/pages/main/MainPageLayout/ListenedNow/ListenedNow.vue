@@ -48,13 +48,13 @@ import gql from './gql';
     apollo: {
       GetListenedNow() {
         return {
-          query: gql.query.CURRENTLY_LISTENING,
+          query: gql.query.GET_LISTENED_NOW,
           variables: {
             pageLimit: 50,
             pageNumber: 1
           },
           update(data) {
-            this.tracks = data.GetListenedNowUser;
+            this.tracks = data.GetListenedNow.data;
             this.isLoading = false;
           }
         }
