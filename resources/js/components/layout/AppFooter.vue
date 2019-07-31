@@ -201,9 +201,6 @@ export default {
             }
           }`
         })
-        .then(response => {
-          console.log(response);
-        })
         .catch(error => {
           console.log(error);
         });
@@ -234,6 +231,12 @@ export default {
           }
         }`
       }).then(response => {
+        let type = this.$store.getters['player/getCurrentType'].type;
+        let data = {
+          'type': type,
+          'id': response.data.track.id
+        };
+        this.$store.commit('player/changeCurrentType', data);
         this.$store.commit('player/pickTrack', response.data.track);
       })
     },

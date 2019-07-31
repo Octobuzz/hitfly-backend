@@ -36,7 +36,7 @@
             <span class="input-text-wrapper forgot-pass__input">
                 <span class="input-text password">
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                    <label for="password">{{__('passwords.passwordConfirm')}}</label>
+                    <label for="password-confirm">{{__('passwords.passwordConfirm')}}</label>
                 </span>
                 <span class="input-text-wrapper__error-msg"></span>
             </span>

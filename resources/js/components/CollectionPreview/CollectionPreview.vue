@@ -38,11 +38,11 @@
           :item-id="collection.id"
         />
 
-        <iconButton
-          v-if="collection.countTracks > 0"
+        <IconButton
+          v-if="collection.countTracks > 0 && !currentPlaying"
           :class="[
-            'collection-preview__play-button',
-            'collection-preview__icon-button'
+            'collection-preview__icon-button',
+            'collection-preview__play-button'
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
@@ -50,6 +50,17 @@
         >
           <PlayIcon />
         </IconButton>
+        <IconButton
+          v-else
+          :class="[
+            'collection-preview__icon-button'
+          ]"
+          passive="mobile-passive"
+          hover="mobile-hover"
+          @press="playCollection"
+        >
+            <PauseIcon />
+          </IconButton>
 
         <CollectionPopover
           :collection-id="collectionId"
@@ -74,6 +85,7 @@ import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavourite
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
+import PauseIcon from 'components/icons/PauseIcon.vue';
 import gql from './gql';
 
 const MOBILE_WIDTH = 767;
@@ -84,7 +96,8 @@ export default {
     AddToFavouriteButton,
     IconButton,
     DotsIcon,
-    PlayIcon
+    PlayIcon,
+    PauseIcon
   },
 
   props: {
@@ -119,7 +132,15 @@ export default {
         this.$route,
         this.collectionId
       );
-    }
+    },
+
+    currentPlaying() {
+      return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
+    },
+
+    currentType() {
+      return this.$store.getters['player/getCurrentType'];
+    },
   },
 
   methods: {
@@ -127,28 +148,40 @@ export default {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
     playCollection(){
-      this.$apollo.provider.defaultClient.query({
-        query: gql.query.TRACKS,
-        variables: {
-          pageLimit: 30,
-          pageNumber: 1,
-          filters: {
-            collectionId: this.collectionId
-          }
-        },
-      })
-      .then(response => {
-        this.$store.commit('player/playlistId');
+      if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
-        this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-        let arrayTr = response.data.tracks.data.map(data => {
-          return data.id;
-        });
-        this.$store.commit('player/pickPlaylist', arrayTr);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      }else{
+        if(this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
+          this.$store.commit('player/startPlaying');
+        }else{
+          this.$apollo.provider.defaultClient.query({
+            query: gql.query.TRACKS,
+            variables: {
+              pageLimit: 30,
+              pageNumber: 1,
+              filters: {
+                collectionId: this.collectionId
+              }
+            },
+          })
+          .then(response => {
+            let data = {
+              'type': 'collection',
+              'id': this.collectionId
+            };
+            this.$store.commit('player/pausePlaying');
+            this.$store.commit('player/changeCurrentType', data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        }
+      }
     }
   },
 

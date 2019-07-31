@@ -173,7 +173,7 @@ const routes = [
     component: UploadPage
   },
   {
-    path: '/home',
+    path: '/',
     component: main.MainPageLayout
   },
   {
