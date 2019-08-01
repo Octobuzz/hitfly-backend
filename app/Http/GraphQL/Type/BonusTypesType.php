@@ -11,7 +11,7 @@ class BonusTypesType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'BonusTypes',
-        'model' => BonusOperationType::class,
+        'model' => BonusType::class,
         'description' => 'Список на что можно постратить бонусные балы',
     ];
 

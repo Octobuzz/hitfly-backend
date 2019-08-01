@@ -2,7 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations;
 
-use App\Models\BonusOperationType;
+use App\Models\BonusType;
 use App\Models\Operation;
 use App\Models\Purse;
 use App\User;
@@ -37,7 +37,7 @@ class UseBonusesMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $bonusType = BonusOperationType::query()->where('constant_name', '=', $args['constantBonus'])->first();
+        $bonusType = BonusType::query()->where('constant_name', '=', $args['constantBonus'])->first();
 
         if (null === $bonusType) {
             return null;
