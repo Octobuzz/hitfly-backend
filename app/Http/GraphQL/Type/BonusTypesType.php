@@ -3,7 +3,7 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
-use App\Models\BonusOperationType;
+use App\Models\BonusType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
