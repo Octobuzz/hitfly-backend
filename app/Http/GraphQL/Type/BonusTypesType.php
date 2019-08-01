@@ -3,7 +3,7 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
-use App\Models\BonusType;
+use App\Models\BonusOperationType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -11,7 +11,7 @@ class BonusTypesType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'BonusTypes',
-        'model' => BonusType::class,
+        'model' => BonusOperationType::class,
         'description' => 'Список на что можно постратить бонусные балы',
     ];
 
