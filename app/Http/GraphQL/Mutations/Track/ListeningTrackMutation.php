@@ -4,6 +4,7 @@ namespace App\Http\GraphQL\Mutations\Track;
 
 use App\Events\ListeningTenTrackEvent;
 use App\Events\Track\TrackMinimumListening;
+use App\Models\ListenedTrack;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
@@ -59,8 +60,16 @@ class ListeningTrackMutation extends Mutation
         if (null === $track) {
             return;
         }
-
+        //проверка на прослушивание одного трека только один раз, иначе бонусы неположены
+        //получить данные надо перед вызовом события TrackMinimumListening, пока в бд не записалось текущее прослушивание
+        $listenedTrack = ListenedTrack::query()->select('id')->where('user_id', Auth::user()->id)
+            ->where('track_id', $track->id)->first();
         event(new TrackMinimumListening($track, Auth::user()));
+
+        //если уже прослушивал этот трек, не засчитываем прослушивание
+        if (null !== $listenedTrack) {
+            return;
+        }
 
         $cacheTracks = Cache::get($keyTracks, null);
         if (null !== $cacheTracks) {
@@ -73,11 +82,9 @@ class ListeningTrackMutation extends Mutation
         Cache::put($keyTracks, $cacheTracks, $minutes);
 
         /** @var int $cacheUser */
-        $cacheUser = Cache::get($keyUser, null);
-        if (null !== $cacheUser) {
-            $cacheUser = ($cacheUser > 0) ? $cacheUser++ : 1;
-            Cache::put($keyUser, $cacheUser, $minutes);
-        }
+        $cacheUser = (int) Cache::get($keyUser, 0);
+        ++$cacheUser;
+        Cache::put($keyUser, $cacheUser, $minutes);
 
         if ($cacheUser < 10 || $cacheUser > 10) {
             return;

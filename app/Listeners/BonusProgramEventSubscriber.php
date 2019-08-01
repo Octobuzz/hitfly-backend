@@ -337,8 +337,9 @@ class BonusProgramEventSubscriber
         event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
     }
 
-    public function listeningTenTrack(User $user)
+    public function listeningTenTrack(ListeningTenTrackEvent $listeningTenTrackEvent)
     {
+        $user = $listeningTenTrackEvent->getUser();
         $bonusType = BonusType::query()
             ->where('constant_name', '=', BonusProgramTypesInterfaces::LISTENING_TEN_TRACKS)
             ->first();
