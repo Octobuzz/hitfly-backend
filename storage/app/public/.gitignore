@@ -1,3 +1,6 @@
 *
 !.gitignore
 !default.jpg
+!default_album.png
+!default_playlist.png
+!default_track.png

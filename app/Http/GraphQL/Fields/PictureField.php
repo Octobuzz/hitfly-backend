@@ -55,7 +55,21 @@ class PictureField extends Field
     {
         $this->model = $root;
         $class = get_class($root);
-        $defaultImage = 'default.jpg';
+        switch ($class){
+            case Album::class:
+                $defaultImage = 'default_album.png';
+                break;
+            case Collection::class:
+                $defaultImage = 'default_playlist.png';
+                break;
+            case MusicGroup::class:
+                $defaultImage = 'default_musicgroup.jpg';
+                break;
+            default:
+                $defaultImage = 'default_track.png';
+                break;
+        }
+
         $keyCache = md5($this->model->id.json_encode($args));
         $cacheValue = Cache::get($keyCache, null);
 
