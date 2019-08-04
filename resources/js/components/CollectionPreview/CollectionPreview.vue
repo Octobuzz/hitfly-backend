@@ -112,7 +112,7 @@ export default {
     IconButton,
     DotsIcon,
     PlayIcon,
-    PauseIcon
+    PauseIcon,
     UnauthenticatedPopoverWrapper,
   },
 
