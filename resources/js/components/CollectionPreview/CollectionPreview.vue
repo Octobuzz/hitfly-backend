@@ -149,9 +149,6 @@ export default {
       );
     },
 
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
-    },
-
     currentPlaying() {
       return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
     },
@@ -159,6 +156,8 @@ export default {
     currentType() {
       return this.$store.getters['player/getCurrentType'];
     },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
