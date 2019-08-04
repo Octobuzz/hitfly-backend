@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import MY_ID_AND_ROLES from 'gql/query/MyIdAndRoles.graphql';
 import store from './store';
+import { cache } from './apolloProvider';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
@@ -102,6 +104,26 @@ const routes = [
   {
     path: '/user/:userId',
     component: profile.OtherUserProfileLayout,
+    beforeEnter({ params: { userId } }, from, next) {
+      const { isAuthenticated } = store.getters;
+
+      if (!isAuthenticated) {
+        next();
+
+        return;
+      }
+
+      const { myProfile: { id: myId } } = cache.readQuery({
+        query: MY_ID_AND_ROLES
+      });
+
+      if (+userId === myId) {
+        next({ name: 'profile-my-music' });
+
+        return;
+      }
+      next();
+    },
     children: [
       {
         path: 'music',
@@ -151,7 +173,7 @@ const routes = [
     component: UploadPage
   },
   {
-    path: '/home',
+    path: '/',
     component: main.MainPageLayout
   },
   {

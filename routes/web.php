@@ -40,7 +40,7 @@ Route::redirect('/', 'login', 301);
 //});
 Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 //Route::get('/test', 'Controller@test');
 Route::get('/register-error', 'Auth\RegisterController@registerError');
 Route::get('/register-genres', 'Auth\RegisterController@showGenreForm')->name('register.genres');

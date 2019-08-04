@@ -171,10 +171,8 @@ export default {
 
     playAlbum(){
       if(this.currentPlaying){
-        console.log('currentPlaying');
         this.$store.commit('player/pausePlaying');
       }else{
-        console.log('not currentPlaying');
         if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
           this.$store.commit('player/startPlaying');
         }else{
@@ -195,7 +193,6 @@ export default {
             };
             this.$store.commit('player/pausePlaying');
             this.$store.commit('player/changeCurrentType', data);
-            console.log(response.data);
             this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
             let arrayTr = response.data.tracks.data.map(data => {
               return data.id;

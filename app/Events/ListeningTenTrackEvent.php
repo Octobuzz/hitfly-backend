@@ -24,6 +24,11 @@ class ListeningTenTrackEvent
         $this->user = $user;
     }
 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
     /**
      * Get the channels the event should broadcast on.
      *

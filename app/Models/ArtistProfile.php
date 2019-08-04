@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class ArtistProfile extends Model
 {
     protected $fillable = [
+        'user_id',
         'career_start',
         'description',
     ];

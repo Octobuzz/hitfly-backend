@@ -56,7 +56,7 @@ class Purse extends Model
         return $this;
     }
 
-    public function operations(?string $direction): HasMany
+    public function operations(): HasMany
     {
         return $this->hasMany(Operation::class);
     }

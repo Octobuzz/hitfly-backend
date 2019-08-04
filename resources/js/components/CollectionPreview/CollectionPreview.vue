@@ -53,11 +53,11 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <iconButton
-          v-if="collection.countTracks > 0"
+        <IconButton
+          v-if="collection.countTracks > 0 && !currentPlaying"
           :class="[
-            'collection-preview__play-button',
-            'collection-preview__icon-button'
+            'collection-preview__icon-button',
+            'collection-preview__play-button'
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
@@ -65,6 +65,17 @@
         >
           <PlayIcon />
         </IconButton>
+        <IconButton
+          v-else
+          :class="[
+            'collection-preview__icon-button'
+          ]"
+          passive="mobile-passive"
+          hover="mobile-hover"
+          @press="playCollection"
+        >
+            <PauseIcon />
+          </IconButton>
 
         <CollectionPopover
           :collection-id="collectionId"
@@ -91,6 +102,7 @@ import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
+import PauseIcon from 'components/icons/PauseIcon.vue';
 import gql from './gql';
 
 export default {
@@ -100,7 +112,8 @@ export default {
     IconButton,
     DotsIcon,
     PlayIcon,
-    UnauthenticatedPopoverWrapper
+    PauseIcon
+    UnauthenticatedPopoverWrapper,
   },
 
   props: {
@@ -137,36 +150,58 @@ export default {
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])
+    },
+
+    currentPlaying() {
+      return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
+    },
+
+    currentType() {
+      return this.$store.getters['player/getCurrentType'];
+    },
   },
 
   methods: {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    playCollection(){
-      this.$apollo.provider.clients[this.apolloClient].query({
-        query: gql.query.QUEUE_TRACKS,
-        variables: {
-          isAuthenticated: this.isAuthenticated,
-          pageLimit: 30,
-          pageNumber: 1,
-          filters: {
-            collectionId: this.collectionId
-          }
-        },
-      })
-      .then(response => {
-        this.$store.commit('player/playlistId');
+    playCollection()
+    {
+      if (this.currentPlaying) {
         this.$store.commit('player/pausePlaying');
-        this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-        let arrayTr = response.data.tracks.data.map(data => {
-          return data.id;
-        });
-        this.$store.commit('player/pickPlaylist', arrayTr);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      } else {
+        if (this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
+          this.$store.commit('player/startPlaying');
+        } else {
+          this.$apollo.provider.clients[this.apolloClient].query({
+            query: gql.query.QUEUE_TRACKS,
+            variables: {
+              isAuthenticated: this.isAuthenticated,
+              pageLimit: 30,
+              pageNumber: 1,
+              filters: {
+                collectionId: this.collectionId
+              }
+            },
+          })
+            .then(response => {
+              let data = {
+                'type': 'collection',
+                'id': this.collectionId
+              };
+              this.$store.commit('player/pausePlaying');
+              this.$store.commit('player/changeCurrentType', data);
+              this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+              let arrayTr = response.data.tracks.data.map(data => {
+                return data.id;
+              });
+              this.$store.commit('player/pickPlaylist', arrayTr);
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        }
+      }
     }
   },
 

@@ -8,6 +8,7 @@
 
 namespace App\Listeners;
 
+use App\Models\ArtistProfile;
 use App\Models\Track;
 use App\Services\Auth\JsonGuard;
 use App\User;
@@ -75,6 +76,11 @@ class UserEventSubscriber
 
         if (false === $user->isRole(User::ROLE_PERFORMER)) {
             $user->roles()->save(Role::query()->where('slug', '=', User::ROLE_PERFORMER)->first());
+            //создаем профиль артиста
+            $ap = new ArtistProfile([
+                'user_id' => $user->id,
+            ]);
+            $ap->save();
         }
     }
 }

@@ -20,6 +20,14 @@ const state = {
     collections: '',
     newAlbum: ''
   },
+  mainPage: {
+    news: '',
+    recommended: '',
+    genres: '',
+    newTracks: '',
+    superMelomaniac: '',
+    weeklyTop: '',
+  },
   favourite: {
     tracks: '',
     albums: '',
@@ -68,6 +76,10 @@ const getters = {
 
   favourite({ favourite }) {
     return favourite;
+  },
+
+  mainPage({ mainPage }) {
+    return mainPage;
   },
 
   reviews({ reviews }) {
@@ -135,6 +147,15 @@ const mutations = {
     Object.keys(loading).forEach((key) => {
       music[key] = {
         ...music[key],
+        ...loading[key]
+      };
+    });
+  },
+
+  setMainPage({ mainPage }, loading) {
+    Object.keys(loading).forEach((key) => {
+      mainPage[key] = {
+        ...mainPage[key],
         ...loading[key]
       };
     });

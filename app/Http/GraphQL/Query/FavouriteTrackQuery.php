@@ -43,6 +43,7 @@ class FavouriteTrackQuery extends Query
         });
         $query->where('tracks.deleted_at', '=', null);
         $query->where('tracks.id', '<>', null);
+        $query->where('tracks.state', '=', 'published');
         $query->where('favourites.user_id', \Auth::user()->id);
 
         //$query->orderBy('created_at', 'desc');
