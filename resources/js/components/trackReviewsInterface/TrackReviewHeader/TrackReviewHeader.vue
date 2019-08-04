@@ -15,25 +15,53 @@
     </span>
 
     <div class="track-review-header__cover-button-container">
-      <TrackToPlaylistPopover
-        :track-id="trackId"
-        :position-change-breakpoint="1024"
-      >
-        <IconButton
-          passive="standard-passive"
-          hover="standard-hover"
-          :tooltip="tooltip.add"
-        >
-          <PlusIcon />
-        </IconButton>
-      </TrackToPlaylistPopover>
+      <UnauthenticatedPopoverWrapper>
+        <template #auth-content>
+          <TrackToPlaylistPopover
+            :track-id="trackId"
+            :position-change-breakpoint="1024"
+          >
+            <IconButton
+              passive="standard-passive"
+              hover="standard-hover"
+              :tooltip="tooltip.add"
+            >
+              <PlusIcon />
+            </IconButton>
+          </TrackToPlaylistPopover>
+        </template>
 
-      <AddToFavouriteButton
-        ref="addToFavButton"
-        item-type="track"
-        :item-id="trackId"
-        :with-counter="true"
-      />
+        <template #unauth-popover-trigger>
+          <IconButton
+            passive="standard-passive"
+            hover="standard-hover"
+            :tooltip="tooltip.add"
+          >
+            <PlusIcon />
+          </IconButton>
+        </template>
+      </UnauthenticatedPopoverWrapper>
+
+      <UnauthenticatedPopoverWrapper>
+        <template #auth-content>
+          <AddToFavouriteButton
+            ref="addToFavButton"
+            item-type="track"
+            :item-id="trackId"
+            :with-counter="true"
+          />
+        </template>
+
+        <template #unauth-popover-trigger>
+          <AddToFavouriteButton
+            ref="addToFavButton"
+            item-type="track"
+            :item-id="trackId"
+            :with-counter="true"
+            :fake="true"
+          />
+        </template>
+      </UnauthenticatedPopoverWrapper>
 
       <TrackActionsPopover
         :track-id="trackId"
@@ -54,12 +82,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TrackToPlaylistPopover from 'components/trackList/TrackToPlaylistPopover';
 import TrackActionsPopover from 'components/trackList/TrackActionsPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton';
 import IconButton from 'components/IconButton.vue';
 import PlusIcon from 'components/icons/PlusIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
 
 export default {
@@ -69,7 +99,8 @@ export default {
     PlusIcon,
     DotsIcon,
     TrackToPlaylistPopover,
-    TrackActionsPopover
+    TrackActionsPopover,
+    UnauthenticatedPopoverWrapper
   },
 
   props: {
@@ -82,9 +113,6 @@ export default {
   data() {
     return {
       track: null,
-      queryVars: {
-        id: this.trackId,
-      },
       tooltip: {
         add: {
           content: 'Добавить в плейлист'
@@ -103,7 +131,8 @@ export default {
     trackCoverUrl() {
       return this.track.cover
         .filter(cover => cover.size === 'size_150x150')[0].url;
-    }
+    },
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -115,8 +144,12 @@ export default {
   apollo: {
     track() {
       return {
+        client: this.apolloClient,
         query: gql.query.TRACK,
-        variables: this.queryVars,
+        variables: {
+          isAuthenticated: this.isAuthenticated,
+          id: this.trackId
+        },
         update({ track }) {
           return track;
         },

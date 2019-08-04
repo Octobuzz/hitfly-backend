@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -65,6 +66,7 @@ export default {
       isLoading: true,
       hasMoreData: true,
       queryVars: {
+        isAuthenticated: this.$store.getters.isAuthenticated,
         pageNumber: 1,
         pageLimit: 30,
         filters
@@ -81,7 +83,9 @@ export default {
       const loading = this.$store.getters['loading/music'].albums;
 
       return loading.initialized && !loading.success;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   mounted() {
@@ -156,7 +160,7 @@ export default {
     },
 
     removeAlbumFromStore(id) {
-      const store = this.$apollo.provider.defaultClient;
+      const store = this.$apollo.provider.clients[this.apolloClient];
 
       const { albums } = store.readQuery({
         query: gql.query.ALBUMS,
@@ -193,6 +197,7 @@ export default {
   apollo: {
     albumList() {
       return {
+        client: this.apolloClient,
         query: gql.query.ALBUMS,
         variables: this.queryVars,
         fetchPolicy: 'network-only',

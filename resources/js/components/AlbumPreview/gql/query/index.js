@@ -1,2 +1,2 @@
-export { default as ALBUM } from 'gql/query/Album.graphql';
-export { default as TRACKS } from 'gql/query/Tracks.graphql';
+export { default as ALBUM } from './Album.graphql';
+export { default as TRACKS } from 'gql/query/QueueTrack.graphql';

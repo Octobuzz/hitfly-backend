@@ -4,7 +4,7 @@
 
     <!--TODO: make a slot for comments-->
 
-    <div class="track-list-reviews-entry__player-reviews-section">
+    <div v-if="track" class="track-list-reviews-entry__player-reviews-section">
       <span class="h4 track-list-reviews-entry__d-track-name">
         {{ track.trackName }}
       </span>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import TrackReview from '../TrackReview';
 import TrackReviewHeader from '../TrackReviewHeader';
@@ -84,12 +85,15 @@ export default {
       const prefix = this.$route.fullPath.split('/').slice(0, -1).join('/');
 
       return `${prefix}/reviews/${this.trackId}`;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   apollo: {
     track() {
       return {
+        client: this.apolloClient,
         query: gql.query.TRACK_WITH_COMMENTS,
         variables: this.queryVars,
         update({ track }) {

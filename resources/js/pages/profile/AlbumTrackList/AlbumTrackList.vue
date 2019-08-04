@@ -68,15 +68,33 @@
           </template>
         </button>
 
-        <AddToFavButton
-          ref="addToFavButton"
+        <UnauthenticatedPopoverWrapper
           class="album-track-list__button"
-          passive="standard-passive"
-          hover="standard-hover"
-          modifier="squared bordered"
-          item-type="album"
-          :item-id="albumId"
-        />
+          placement="right"
+        >
+          <template #auth-content>
+            <AddToFavButton
+              ref="addToFavButton"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              item-type="album"
+              :item-id="albumId"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavButton
+              ref="addToFavButton"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              item-type="album"
+              :item-id="albumId"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
 
         <AlbumPopover
           :album-id="albumId"
@@ -117,6 +135,7 @@
 // We also have a case where we visit the page while already listening a track
 // from the album. This case will be handled automatically thanks to reactivity.
 
+import { mapGetters } from 'vuex';
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
@@ -128,6 +147,7 @@ import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
 import AlbumPopover from 'components/AlbumPopover';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
 
@@ -142,14 +162,15 @@ export default {
     CirclePlayIcon,
     DotsIcon,
     AddToFavButton,
-    CirclePauseIcon
+    CirclePauseIcon,
+    UnauthenticatedPopoverWrapper
   },
 
   mixins: [
     currentPath,
     containerPaddingClass,
     playingTrackId,
-    totalTracksInfo
+    totalTracksInfo,
   ],
 
   data() {
@@ -198,7 +219,9 @@ export default {
         default:
           return false;
       }
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   watch: {
@@ -226,9 +249,7 @@ export default {
 
         return;
       }
-
       this.trackListDataExists = true;
-
       this.firstAlbumTrackId = data[0].id;
     },
 
@@ -264,9 +285,12 @@ export default {
 
     refetchTotalInfo() {
       this.$apollo.query({
+        client: this.apolloClient,
         query: gql.query.ALBUM_TOTAL_INFO,
         fetchPolicy: 'network-only',
-        variables: { id: this.albumId },
+        variables: {
+          id: this.albumId
+        },
         error(err) {
           console.dir(err);
         }
@@ -283,9 +307,10 @@ export default {
         if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
           this.$store.commit('player/startPlaying');
         }else{
-          this.$apollo.provider.defaultClient.query({
-            query: gql.query.TRACKS,
+          this.$apollo.provider.clients[this.apolloProvider].query({
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
@@ -307,7 +332,7 @@ export default {
             this.$store.commit('player/pickPlaylist', arrayTr);
           })
           .catch(error => {
-            console.log(error);
+            console.log('queue error', error);
           })
         }
       }
@@ -315,61 +340,73 @@ export default {
   },
 
   apollo: {
-    album: {
-      query: gql.query.ALBUM,
-      variables() {
-        return {
-          id: this.albumId
-        };
-      },
-      update({ album }) {
-        this.albumFetched = true;
+    album() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.ALBUM,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.albumId
+          };
+        },
+        update({ album }) {
+          this.albumFetched = true;
 
-        return album;
-      },
-      error(err) {
-        console.dir(err);
-      }
+          return album;
+        },
+        error(err) {
+          console.dir(err);
+        }
+      };
     },
 
-    playingTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return {
-          id: this.playingTrackId
-        };
-      },
-      update({ track }) {
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.playingTrackId);
-      }
+    playingTrack() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACK,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.playingTrackId
+          };
+        },
+        update({ track }) {
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.playingTrackId);
+        }
+      };
     },
 
-    firstAlbumTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return {
-          id: this.firstAlbumTrackId
-        };
-      },
-      update({ track }) {
-        this.$nextTick(() => {
-          this.updateShownTrack();
-        });
+    firstAlbumTrack() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACK,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.firstAlbumTrackId
+          };
+        },
+        update({ track }) {
+          this.$nextTick(() => {
+            this.updateShownTrack();
+          });
 
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.firstAlbumTrackId);
-      }
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.firstAlbumTrackId);
+        }
+      };
     }
   }
 };

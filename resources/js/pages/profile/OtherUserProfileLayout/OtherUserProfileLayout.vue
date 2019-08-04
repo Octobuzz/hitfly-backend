@@ -13,10 +13,8 @@
         :item-container-class="itemContainerClass"
       />
     </template>
-    <template
-      v-if="desktop || !showFirstLoader"
-      #right-column="{ paddingClass }"
-    >
+
+    <template #right-column="{ paddingClass }">
       <template v-if="userRolesFetched">
         <div
           v-if="renderNavBar"
@@ -88,6 +86,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import currentPath from 'mixins/currentPath';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import AppColumns from 'components/layout/AppColumns.vue';
@@ -171,75 +170,80 @@ export default {
         default:
           return false;
       }
-
       /* eslint-disable no-fallthrough */
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   apollo: {
-    userRoles: {
-      query: gql.query.USER_ROLES,
+    userRoles() {
+      return {
+        client: this.apolloClient,
 
-      fetchPolicy: 'no-cache',
+        query: gql.query.USER_ROLES,
 
-      variables() {
-        return { id: this.userId };
-      },
+        fetchPolicy: 'no-cache',
 
-      update({ user }) {
-        if (user === null) {
-          // TODO: redirect to 404 page
-        }
+        variables() {
+          return { id: this.userId };
+        },
 
-        this.userRolesFetched = true;
-
-        const roles = user.roles.map(role => role.slug);
-
-        this.ableToPerform = ['listener', 'performer', 'critic']
-          .some(role => roles.includes(role));
-
-        this.ableToComment = ['critic', 'prof_critic', 'star']
-          .some(role => roles.includes(role));
-
-        const statuses = {
-          listener: {
-            priority: 1,
-            title: 'слушатель'
-          },
-          performer: {
-            priority: 2,
-            title: 'исполнитель'
-          },
-          critic: {
-            priority: 3,
-            title: 'критик'
-          },
-          prof_critic: {
-            priority: 4,
-            title: 'критик'
-          },
-          star: {
-            priority: 5,
-            title: 'звезда'
+        update({ user }) {
+          if (user === null) {
+            // TODO: redirect to 404 page
           }
-        };
 
-        const topStatus = roles.reduce((status, role) => {
-          if (statuses[role] === undefined) {
+          this.userRolesFetched = true;
+
+          const roles = user.roles.map(role => role.slug);
+
+          this.ableToPerform = ['listener', 'performer', 'critic']
+            .some(role => roles.includes(role));
+
+          this.ableToComment = ['critic', 'prof_critic', 'star']
+            .some(role => roles.includes(role));
+
+          const statuses = {
+            listener: {
+              priority: 1,
+              title: 'слушатель'
+            },
+            performer: {
+              priority: 2,
+              title: 'исполнитель'
+            },
+            critic: {
+              priority: 3,
+              title: 'критик'
+            },
+            prof_critic: {
+              priority: 4,
+              title: 'критик'
+            },
+            star: {
+              priority: 5,
+              title: 'звезда'
+            }
+          };
+
+          const topStatus = roles.reduce((status, role) => {
+            if (statuses[role] === undefined) {
+              return status;
+            }
+            if (statuses[status].priority < statuses[role].priority) {
+              return role;
+            }
             return status;
-          }
-          if (statuses[status].priority < statuses[role].priority) {
-            return role;
-          }
-          return status;
-        }, 'listener');
+          }, 'listener');
 
-        this.status = statuses[topStatus].title.toUpperCase();
-      },
+          this.status = statuses[topStatus].title.toUpperCase();
+        },
 
-      error(err) {
-        console.dir(err);
-      }
+        error(err) {
+          console.dir(err);
+        }
+      };
     }
   }
 };

@@ -1,0 +1,12 @@
+fragment queueTrack on Track {
+    trackName
+    filename
+    length
+    cover(
+        sizes: [size_48x48, size_150x150]
+    ) {
+        size
+        url
+    }
+    singer
+}

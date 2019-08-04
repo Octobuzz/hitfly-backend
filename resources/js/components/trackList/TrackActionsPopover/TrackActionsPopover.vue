@@ -45,7 +45,7 @@
         class="track-actions-popover__menu"
       >
         <!--TODO: use interactive elements-->
-        <template v-if="canAddReviews">
+        <template v-if="isAuthenticated && canAddReviews">
           <span
             :class="[
               'track-actions-popover__menu-item',
@@ -75,9 +75,7 @@
           </span>
           Слушать далее
         </span>
-        <span
-          class="track-actions-popover__menu-item"
-        >
+        <span class="track-actions-popover__menu-item">
           <!--TODO: removing from queue should be available instead-->
           <!--of this under corresponding conditions-->
 
@@ -87,6 +85,7 @@
           Добавить в список воспроизведения
         </span>
         <span
+          v-if="isAuthenticated"
           class="track-actions-popover__menu-item"
           @click="enterPlaylistMenu"
         >
@@ -96,6 +95,7 @@
           Добавить в плейлист
         </span>
         <span
+          v-if="isAuthenticated"
           class="track-actions-popover__menu-item"
           @click="onFavouritePress"
         >
@@ -110,7 +110,7 @@
           </span>
         </span>
         <span
-          v-if="isWatchable"
+          v-if="isAuthenticated && isWatchable"
           class="track-actions-popover__menu-item"
           @click="onWatchOwnerPress"
         >
@@ -141,13 +141,14 @@
 <!--        Сообщить о проблеме-->
 <!--      </span>-->
       <span
-        v-if="inPlaylistMenu"
+        v-if="isAuthenticated && inPlaylistMenu"
         class="track-actions-popover__add-playlist-header"
       >
         Добавить в плейлист
       </span>
 
       <TrackToPlaylist
+        v-if="isAuthenticated"
         v-show="inPlaylistMenu"
         ref="playlistMenu"
         :track-id="trackId"
@@ -185,6 +186,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import PopupIcon from 'components/icons/popover/PopupIcon.vue';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
@@ -291,7 +293,9 @@ export default {
       const rolePermission = this.$store.getters['profile/ableToComment'];
 
       return rolePermission && this.track && !this.track.my;
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -383,13 +387,15 @@ export default {
   apollo: {
     track() {
       return {
+        client: this.apolloClient,
         query: gql.query.TRACK,
         variables: {
+          isAuthenticated: this.isAuthenticated,
           id: this.trackId,
         },
         update: ({ track }) => track,
         error(error) {
-          console.log(error);
+          console.dir(error);
         }
       };
     }

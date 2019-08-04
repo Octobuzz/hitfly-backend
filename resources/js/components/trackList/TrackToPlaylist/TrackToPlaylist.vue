@@ -92,9 +92,24 @@ export default {
           },
         });
       }
+
+      if (!this.$apollo.queries.track) {
+        this.$apollo.addSmartQuery('track', {
+          query: gql.query.TRACK,
+          variables: {
+            id: this.trackId,
+          },
+          update: ({ track }) => track,
+          error(err) {
+            console.dir(err);
+          }
+        });
+      }
     },
 
     trackBelongsToPlaylist(playlistId) {
+      if (!this.track) return false;
+
       return this.track.userPlayLists
         .some(userPlaylist => userPlaylist.id === playlistId);
     },
@@ -206,6 +221,7 @@ export default {
       try {
         const vars = {
           // TODO: variables should always be the same as in the actual container
+          isAuthenticated: true,
           pageNumber: 1,
           pageLimit: 10,
           filters: {
@@ -247,21 +263,6 @@ export default {
 
     emitTrackAdded(collection) {
       this.$emit('track-added', this.track, collection);
-    }
-  },
-
-  apollo: {
-    track() {
-      return {
-        query: gql.query.TRACK,
-        variables: {
-          id: this.trackId,
-        },
-        update: ({ track }) => track,
-        error(err) {
-          console.dir(err);
-        }
-      };
     }
   }
 };

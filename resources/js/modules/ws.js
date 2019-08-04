@@ -58,6 +58,8 @@ class WsTunnel {
   }
 
   notify(evt, data) {
+    if (!this.subscribers[evt]) return;
+
     this.subscribers[evt].forEach(cb => cb(data));
   }
 

@@ -41,6 +41,13 @@
         v-if="!inRemoveMenu"
         class="collection-popover__menu"
       >
+        <span
+          v-if="!isAuthenticated && hidePlayerActions"
+          class="collection-popover__menu-item collection-popover__menu-item_no-hover"
+        >
+          В настоящее время у вас нет действий, которые вы можете совершить с альбомом
+        </span>
+
         <!--TODO: use interactive elements-->
         <span
           v-if="!hidePlayerActions"
@@ -53,6 +60,7 @@
         </span>
 
         <span
+          v-if="isAuthenticated"
           class="collection-popover__menu-item"
           @click="onFavouritePress"
         >
@@ -100,7 +108,7 @@
 <!--        </span>-->
 
         <span
-          v-if="isRemovable"
+          v-if="isAuthenticated && isRemovable"
           class="collection-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -112,6 +120,7 @@
       </div>
 
       <CollectionPopoverRemoveMenu
+        v-if="isAuthenticated"
         v-show="inRemoveMenu"
         :collection-id="collectionId"
         @cancel-remove="leaveRemoveMenu"
@@ -122,6 +131,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
 import HeartIcon from 'components/icons/popover/HeartIcon.vue';
@@ -172,7 +182,9 @@ export default {
       if (!this.collection) return false;
 
       return this.collection.my;
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -209,19 +221,23 @@ export default {
   },
 
   apollo: {
-    collection: {
-      query: gql.query.COLLECTION,
-      variables() {
-        return {
-          id: this.collectionId
-        };
-      },
-      update({ collection }) {
-        return collection;
-      },
-      error(err) {
-        console.dir(err);
-      }
+    collection() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.COLLECTION,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.collectionId
+          };
+        },
+        update({ collection }) {
+          return collection;
+        },
+        error(err) {
+          console.dir(err);
+        }
+      };
     },
   }
 };

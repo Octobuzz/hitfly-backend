@@ -18,7 +18,7 @@
       v-if="desktop || !showFirstLoader"
       #right-column="{ paddingClass }"
     >
-      <template v-if="loggedIn">
+      <template v-if="isAuthenticated">
         <div
           v-if="renderNavBar"
           :class="['profile__nav-wrapper', paddingClass]"
@@ -87,7 +87,7 @@
       </template>
 
       <div
-        v-show="showSecondLoader || !loggedIn"
+        v-show="showSecondLoader || !isAuthenticated"
         class="profile__user-card-loader_second"
       >
         <SpinnerLoader />
@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import currentPath from 'mixins/currentPath';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import AppColumns from 'components/layout/AppColumns.vue';
@@ -217,27 +218,25 @@ export default {
       /* eslint-disable no-fallthrough */
     },
 
-    loggedIn() {
-      return this.$store.getters['profile/loggedIn'];
-    },
-
     ableToPerform() {
       return this.$store.getters['profile/ableToPerform'];
     },
 
     ableToComment() {
       return this.$store.getters['profile/ableToComment'];
-    }
+    },
+
+    ...mapGetters(['isAuthenticated'])
   },
 
   watch: {
-    loggedIn: {
+    isAuthenticated: {
       handler(val) {
         if (val !== true) return;
 
         // TODO: add possibility to visit review requests page
 
-        const { ableToPerform, ableToComment } = this;
+        const { ableToComment, $store: { getters } } = this;
         const profilePathSection = this.currentPath.split('/')[2];
 
         if (!ableToComment && profilePathSection === 'my-reviews') {
@@ -246,7 +245,7 @@ export default {
           return;
         }
 
-        if (!ableToPerform && profilePathSection !== 'my-reviews') {
+        if (getters['profile/roles']('star') && profilePathSection !== 'my-reviews') {
           this.$router.push('/profile/my-reviews');
         }
       },

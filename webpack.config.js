@@ -9,7 +9,8 @@ module.exports = {
       components: path.resolve('resources', 'js', 'components'),
       modules: path.resolve('resources', 'js', 'modules'),
       mixins: path.resolve('resources', 'js', 'mixins'),
-      pages: path.resolve('resources', 'js', 'pages')
+      pages: path.resolve('resources', 'js', 'pages'),
+      'graphql-containers': path.resolve('resources', 'js', 'graphql-containers')
     }
   },
   module: {
@@ -17,7 +18,7 @@ module.exports = {
       {
         test: /\.(graphql|gql)$/,
         exclude: /node_modules/,
-        loader: 'graphql-tag/loader',
+        loader: 'graphql-tag/loader'
       }
     ],
   }

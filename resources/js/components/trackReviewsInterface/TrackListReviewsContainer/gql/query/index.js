@@ -1,1 +1,1 @@
-export { default as TRACKS_WITH_COMMENTS } from 'gql/query/TracksWithComments.graphql';
+export { default as TRACKS_WITH_COMMENTS } from './TracksWithComments.graphql';

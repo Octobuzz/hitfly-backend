@@ -1,0 +1,23 @@
+query AlbumPopover_album(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    album(id: $id) {
+        id
+        title
+        author
+        cover(
+            # the sizes are needed to support caching
+            sizes: [size_48x48, size_120x120, size_150x150]
+        ) {
+            size
+            url
+        }
+        user @include(if: $isAuthenticated) {
+            id
+            iWatch
+        }
+        userFavourite @include(if: $isAuthenticated)
+        my @include(if: $isAuthenticated)
+    }
+}

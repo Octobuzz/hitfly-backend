@@ -10,7 +10,7 @@
       <div class="user-track-list__track-section">
         <img
           :src="
-            shownTrack.cover.filter(
+            shownTrack.albumCover.filter(
               cover => cover.size === 'size_150x150'
             )[0].url
           "
@@ -22,9 +22,11 @@
           <span class="h3 user-track-list__list-title">
             {{ userId === 'me' ? 'Мои песни' : 'Песни пользователя' }}
           </span>
-          <span class="user-track-list__list-data">
-            stub: tracks data
-          </span>
+
+<!--          TODO: add tracks data-->
+<!--          <span class="user-track-list__list-data">-->
+<!--            stub: tracks data-->
+<!--          </span>-->
 
           <div class="user-track-list__player" />
         </div>
@@ -48,31 +50,50 @@
           </template>
         </button>
 
-        <AddToFavButton
-          ref="addToFavButton"
+        <UnauthenticatedPopoverWrapper
           class="user-track-list__button"
-          passive="standard-passive"
-          hover="standard-hover"
-          modifier="squared bordered"
-          item-type="track"
-          :item-id="shownTrack.id"
-        />
-
-        <TrackActionsPopover
-          :track-id="shownTrack.id"
-          :show-remove-option="userId === 'me'"
-          @press-favourite="onPressFavourite"
+          placement="right"
         >
-          <IconButton
-            class="user-track-list__button user-track-list__button_more"
-            passive="standard-passive"
-            hover="standard-hover"
-            modifier="squared bordered"
-            :tooltip="tooltip.more"
+          <template #auth-content>
+            <AddToFavButton
+              ref="addToFavButton"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              item-type="track"
+              :item-id="shownTrack.id"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavButton
+              ref="addToFavButton"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              item-type="track"
+              :item-id="shownTrack.id"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
+
+        <span class="user-track-list__button user-track-list__button_more">
+          <TrackActionsPopover
+            :track-id="shownTrack.id"
+            :show-remove-option="userId === 'me'"
+            @press-favourite="onPressFavourite"
           >
-            <DotsIcon />
-          </IconButton>
-        </TrackActionsPopover>
+            <IconButton
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              :tooltip="tooltip.more"
+            >
+              <DotsIcon />
+            </IconButton>
+          </TrackActionsPopover>
+        </span>
       </div>
     </template>
 
@@ -95,6 +116,7 @@
 // We also have a case where we visit the page while already listening a track
 // from the album. This case will be handled automatically thanks to reactivity.
 
+import { mapGetters } from 'vuex';
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
@@ -105,6 +127,7 @@ import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
 import TrackActionsPopover from 'components/trackList/TrackActionsPopover';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
 
@@ -119,13 +142,15 @@ export default {
     CirclePlayIcon,
     DotsIcon,
     AddToFavButton,
-    CirclePauseIcon
+    CirclePauseIcon,
+    UnauthenticatedPopoverWrapper
   },
 
   mixins: [currentPath, containerPaddingClass, playingTrackId],
 
   data() {
     return {
+      isAuthenticated: this.$store.getters.isAuthenticated,
       playingTrack: null,
       firstTrack: null,
       firstTrackId: null,
@@ -142,9 +167,11 @@ export default {
     currentPlaying() {
       return this.currentType.type === 'tracks' && this.currentType.id === this.currentId && this.$store.getters['player/isPlaying'];
     },
+
     currentType() {
       return this.$store.getters['player/getCurrentType'];
     },
+
     userId() {
       const pathPrefix = this.currentPath.split('/')[1];
 
@@ -154,8 +181,8 @@ export default {
 
       return +this.$route.params.userId;
     },
-    currentId() {
 
+    currentId() {
       const pathPrefix = this.currentPath.split('/')[1];
 
       if (pathPrefix === 'profile') {
@@ -180,7 +207,9 @@ export default {
       }
 
       return firstTrack;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   methods: {
@@ -208,13 +237,16 @@ export default {
           }else{
             userId = this.$route.params.userId
           };
-          this.$apollo.provider.defaultClient.query({
-            query: gql.query.TRACKS,
+
+          this.$apollo.query({
+            client: this.apolloClient,
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
-                userId: userId
+                userId
               }
             },
           })
@@ -242,36 +274,48 @@ export default {
   apollo: {
     // TODO: user/my tracks data
 
-    playingTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return { id: this.playingTrackId };
-      },
-      update({ track }) {
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.playingTrackId);
-      }
+    playingTrack() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACK,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.playingTrackId
+          };
+        },
+        update({ track }) {
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.playingTrackId);
+        }
+      };
     },
 
-    firstTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return { id: this.firstTrackId };
-      },
-      update({ track }) {
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.firstTrackId);
-      }
+    firstTrack() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACK,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.firstTrackId
+          };
+        },
+        update({ track }) {
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.firstTrackId);
+        }
+      };
     }
   }
 };

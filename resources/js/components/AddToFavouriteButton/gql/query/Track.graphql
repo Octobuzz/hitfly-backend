@@ -1,7 +1,10 @@
-query Track($id: Int!) {
+query AddToFavouriteButton_track(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
     track(id: $id) {
-        id,
-        userFavourite
+        id
         favouritesCount
+        userFavourite @include (if: $isAuthenticated)
     }
 }

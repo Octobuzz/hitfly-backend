@@ -1,1 +1,1 @@
-export { default as ALBUMS } from 'gql/query/Albums.graphql';
+export { default as ALBUMS } from './Albums.graphql';

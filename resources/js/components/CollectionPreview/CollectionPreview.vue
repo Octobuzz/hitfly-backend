@@ -29,14 +29,29 @@
       >
 
       <div class="collection-preview__button-section">
-        <AddToFavouriteButton
-          ref="addToFavouriteButton"
-          class="collection-preview__icon-button"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          item-type="collection"
-          :item-id="collection.id"
-        />
+        <UnauthenticatedPopoverWrapper placement="right">
+          <template #auth-content>
+            <AddToFavouriteButton
+              ref="addToFavouriteButton"
+              class="collection-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="collection"
+              :item-id="collection.id"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavouriteButton
+              class="collection-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="collection"
+              :item-id="collection.id"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
 
         <iconButton
           v-if="collection.countTracks > 0"
@@ -69,14 +84,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import CollectionPopover from 'components/CollectionPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
-
-const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -84,7 +99,8 @@ export default {
     AddToFavouriteButton,
     IconButton,
     DotsIcon,
-    PlayIcon
+    PlayIcon,
+    UnauthenticatedPopoverWrapper
   },
 
   props: {
@@ -103,9 +119,8 @@ export default {
 
   computed: {
     collectionImageUrl() {
-      if (this.windowWidth <= MOBILE_WIDTH) {
-        return this.collection.image
-          .filter(image => image.size === 'size_150x150')[0].url;
+      if (!this.collection.image) {
+        return '';
       }
 
       return this.collection.image
@@ -119,7 +134,9 @@ export default {
         this.$route,
         this.collectionId
       );
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -127,9 +144,10 @@ export default {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
     playCollection(){
-      this.$apollo.provider.defaultClient.query({
-        query: gql.query.TRACKS,
+      this.$apollo.provider.clients[this.apolloClient].query({
+        query: gql.query.QUEUE_TRACKS,
         variables: {
+          isAuthenticated: this.isAuthenticated,
           pageLimit: 30,
           pageNumber: 1,
           filters: {
@@ -155,6 +173,7 @@ export default {
   apollo: {
     collection() {
       return {
+        client: this.apolloClient,
         query: gql.query.COLLECTION,
         variables() {
           // use function to allow rendering another album when the prop changes
@@ -168,7 +187,7 @@ export default {
           return collection;
         },
         error: (error) => {
-          console.log(error);
+          console.dir(error);
         }
       };
     }

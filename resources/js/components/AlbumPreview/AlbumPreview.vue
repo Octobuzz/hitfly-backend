@@ -20,14 +20,30 @@
       >
 
       <div class="album-preview__button-section">
-        <AddToFavouriteButton
-          ref="addToFavouriteButton"
-          class="album-preview__icon-button"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          item-type="album"
-          :item-id="album.id"
-        />
+        <UnauthenticatedPopoverWrapper placement="right">
+          <template #auth-content>
+            <AddToFavouriteButton
+              ref="addToFavouriteButton"
+              class="album-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="album"
+              :item-id="album.id"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavouriteButton
+              ref="addToFavouriteButton"
+              class="album-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="album"
+              :item-id="album.id"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
 
         <IconButton
           v-if="tracksCount > 0 && !currentPlaying"
@@ -50,8 +66,8 @@
           hover="mobile-hover"
           @press="playAlbum"
         >
-            <PauseIcon />
-          </IconButton>
+          <PauseIcon />
+        </IconButton>
 
         <AlbumPopover
           :album-id="albumId"
@@ -85,15 +101,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import AlbumPopover from 'components/AlbumPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import PauseIcon from 'components/icons/PauseIcon.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
-
-const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -102,7 +118,8 @@ export default {
     IconButton,
     DotsIcon,
     PlayIcon,
-    PauseIcon
+    PauseIcon,
+    UnauthenticatedPopoverWrapper
   },
 
   props: {
@@ -121,11 +138,6 @@ export default {
 
   computed: {
     albumCoverUrl() {
-      if (this.windowWidth <= MOBILE_WIDTH) {
-        return this.album.cover
-          .filter(cover => cover.size === 'size_104x104')[0].url;
-      }
-
       return this.album.cover
         .filter(cover => cover.size === 'size_120x120')[0].url;
     },
@@ -148,6 +160,8 @@ export default {
     currentType() {
       return this.$store.getters['player/getCurrentType'];
     },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -164,7 +178,7 @@ export default {
         if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
           this.$store.commit('player/startPlaying');
         }else{
-          this.$apollo.provider.defaultClient.query({
+          this.$apollo.provider.clients[this.apolloClient].query({
             query: gql.query.TRACKS,
             variables: {
               pageLimit: 30,
@@ -199,6 +213,7 @@ export default {
   apollo: {
     album() {
       return {
+        client: this.apolloClient,
         query: gql.query.ALBUM,
         variables() {
           // use function to allow rendering another album when the prop changes

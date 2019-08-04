@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import loadOnScroll from 'mixins/loadOnScroll';
 import { commentPeriod } from 'modules/validators';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
@@ -51,6 +52,10 @@ export default {
         commentPeriod: this.commentedInPeriod
       }
     };
+  },
+
+  computed: {
+    ...mapGetters(['apolloClient'])
   },
 
   watch: {
@@ -110,29 +115,32 @@ export default {
   },
 
   apollo: {
-    reviews: {
-      query: gql.query.TRACK_COMMENTS,
-      variables() {
-        return this.queryVars;
-      },
-      fetchPolicy: 'network-only',
+    reviews() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACK_COMMENTS,
+        variables() {
+          return this.queryVars;
+        },
+        fetchPolicy: 'network-only',
 
-      update({ commentsTrack: { total, to, data } }) {
-        this.isLoading = false;
-        this.hasMoreData = to < total;
+        update({ commentsTrack: { total, to, data } }) {
+          this.isLoading = false;
+          this.hasMoreData = to < total;
 
-        // check if the screen has empty space to load more comments
+          // check if the screen has empty space to load more comments
 
-        this.$nextTick(() => {
-          this.loadOnScroll();
-        });
+          this.$nextTick(() => {
+            this.loadOnScroll();
+          });
 
-        return data;
-      },
+          return data;
+        },
 
-      error(err) {
-        console.dir(err);
-      }
+        error(err) {
+          console.dir(err);
+        }
+      };
     }
   }
 };

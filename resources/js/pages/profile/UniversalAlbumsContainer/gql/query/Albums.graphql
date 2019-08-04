@@ -1,0 +1,41 @@
+query UniversalAlbumsContainer_albums(
+    $isAuthenticated: Boolean!,
+    $pageLimit: Int!,
+    $pageNumber: Int!
+    $filters: AlbumFilterInput
+) {
+    albums(
+        limit: $pageLimit,
+        page: $pageNumber
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            #AlbumPreview #AlbumPopover
+            id
+            title
+            author
+            cover(
+                sizes: [size_48x48, size_120x120, size_150x150]
+            ) {
+                size
+                url
+            }
+
+            #AlbumPreview
+            tracksCount
+
+            #AlbumPopover
+            user @include(if: $isAuthenticated) {
+                id
+                iWatch
+            }
+            userFavourite @include(if: $isAuthenticated)
+            my @include(if: $isAuthenticated)
+
+            #AddToFavouriteButton
+            favouritesCount
+        }
+    }
+}

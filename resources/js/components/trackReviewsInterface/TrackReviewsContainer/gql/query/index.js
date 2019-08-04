@@ -1,1 +1,1 @@
-export { default as TRACK_COMMENTS } from 'gql/query/TrackComments.graphql';
+export { default as TRACK_COMMENTS } from './TrackComments.graphql';

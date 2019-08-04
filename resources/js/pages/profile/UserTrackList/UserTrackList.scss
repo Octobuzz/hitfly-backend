@@ -56,8 +56,12 @@
     justify-content: center;
     align-items: center;
 
-    &:not(&_more) {
-      margin-right: 16px;
+    &:not(:first-child) {
+      margin-left: 16px;
+    }
+
+    &_more {
+      margin-left: 16px;
     }
 
     &_listen {

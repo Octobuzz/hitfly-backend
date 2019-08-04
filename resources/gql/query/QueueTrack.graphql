@@ -1,0 +1,12 @@
+#import "../fragments/queueTrack.graphql"
+
+query QueueTrack(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    track(id: $id) {
+        id
+        ...queueTrack
+        userFavourite @include(if: $isAuthenticated)
+    }
+}

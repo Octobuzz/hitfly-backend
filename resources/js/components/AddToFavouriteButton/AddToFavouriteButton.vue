@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import refetchMyFavouriteTracksCount from 'mixins/refetchMyFavouriteTracksCount';
 import IconButton, { props as iconButtonProps } from 'components/IconButton.vue';
 import HeartIcon from 'components/icons/HeartIcon.vue';
@@ -105,7 +106,9 @@ export default {
       const symbolWidth = this.withCounter ? 8 : 0;
 
       return defaultWidth + margin + this.addedToFavTimes.toString().length * symbolWidth;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   mounted() {
@@ -207,6 +210,7 @@ export default {
           store.writeQuery({
             query: gql.query[itemType.toUpperCase()],
             variables: {
+              isAuthenticated: true,
               id: itemId
             },
             data: {
@@ -256,6 +260,7 @@ export default {
         query: typeToQueryMap[this.itemType],
         variables() {
           return {
+            isAuthenticated: !this.fake,
             id: this.itemId
           };
         },
@@ -264,16 +269,19 @@ export default {
         ),
         error(error) {
           console.log(error);
-        }
+        },
+        skip: this.fake
       };
     },
 
     addedToFavTimes() {
       // eslint-disable-next-line consistent-return
       return {
+        client: this.apolloClient,
         query: typeToQueryMap[this.itemType],
         variables() {
           return {
+            isAuthenticated: !this.fake,
             id: this.itemId
           };
         },

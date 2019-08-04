@@ -1,0 +1,29 @@
+mutation AddToCollection(
+    $collectionId: Int!
+    $trackIds: [Int]!
+) {
+    addInCollection(
+        tracksId: $trackIds,
+        collectionId: $collectionId
+    ) {
+        id
+        title
+
+        #UniversalCollectionContainer
+        image(
+            sizes: [size_48x48, size_150x150, size_214x160]
+        ) {
+            size
+            url
+        }
+        isSet
+        countTracks
+        user {
+            id
+            username
+        }
+        favouritesCount
+        userFavourite
+        my
+    }
+}
