@@ -87,10 +87,10 @@ export default {
         || shownTracksCount <= tracksContainer.trackIdList.length;
     },
     showTableHeader() {
-      return this.forType === 'collection' && this.forType === 'album';
+      return this.forType === 'collection' || this.forType === 'album';
     },
     showAlbumSection() {
-      return this.forType === 'collection' && this.forType === 'album';
+      return this.forType === 'collection' || this.forType === 'album';
     }
   },
 
