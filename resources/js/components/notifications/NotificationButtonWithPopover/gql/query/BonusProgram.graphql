@@ -1,0 +1,8 @@
+query NotificationButtonWithPopover {
+    myProfile {
+        bpDaysInProgram
+        bpLevelBonusProgram
+        bpPoints
+        bpProgressPercent
+    }
+}
