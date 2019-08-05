@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function index($asdadsa = null)
     {
         if (null === \Auth::user()) {
-            return redirect('/login');
+//             return redirect('/login');
         } else {
             Cookie::queue(\App\Services\Auth\JsonGuard::HEADER_NAME_TOKEN, \Auth::user()->access_token, 864000);
         }
