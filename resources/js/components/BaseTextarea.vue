@@ -1,12 +1,11 @@
 <template>
   <div>
     <label :class="['base-textarea', $attrs.class]">
+      <div class="base-textarea__label-backdrop" />
       <span
         :class="[
           'base-textarea__label',
-          {
-            'base-textarea__label_top': focus || !empty
-          }
+          { 'base-textarea__label_top': focus || !empty }
         ]"
       >
         {{ label }}
@@ -103,6 +102,14 @@ export default {
     &_top {
       transform: translate(-13%, -14px) scale(.75);
     }
+  }
+
+  &__label-backdrop {
+    position: absolute;
+    width: calc(100% - 16px);
+    height: 25px;
+    top: 0;
+    background: linear-gradient(to bottom, white 85%, transparent 100%);
   }
 
   &__textarea {
