@@ -2,7 +2,6 @@ fragment trackComment on CommentTrack {
     id
     comment
     createdAt
-    estimation # rating?
     user {
         id
         username

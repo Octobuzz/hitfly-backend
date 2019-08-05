@@ -100,7 +100,6 @@ export default {
         this.loadOnScroll();
       });
     });
-
     this.$emit('data');
   },
 

@@ -57,8 +57,8 @@
               :track-id="newAlbumPlayingTrackId"
             />
             <button
-              @click="playAlbum"
               class="other-user-music__listen-button"
+              @click="playAlbum"
             >
               <template v-if="currentPlaying">
                 <CirclePauseIcon />
@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
 import totalInfoFormatting from 'mixins/totalInfoFormatting';
@@ -199,7 +200,9 @@ export default {
       }
 
       return newAlbumTrackIdList[0];
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   beforeRouteLeave(to, from, next) {
@@ -238,9 +241,12 @@ export default {
     },
 
     fetchNewAlbumTracks(albumId) {
-      this.$apollo.provider.defaultClient.query({
+      this.$apollo.provider.clients[this.apolloClient].query({
         query: gql.query.USER_ALBUM_TRACKS,
-        variables: { albumId }
+        variables: {
+          isAuthenticated: this.isAuthenticated,
+          albumId
+        }
       })
         .then(({ data: { tracks: { data } } }) => {
           this.newAlbumTracks = data;
@@ -268,9 +274,10 @@ export default {
         if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
           this.$store.commit('player/startPlaying');
         }else{
-          this.$apollo.provider.defaultClient.query({
-            query: gql.query.TRACKS,
+          this.$apollo.provider.clients[this.apolloClient].query({
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
@@ -300,50 +307,61 @@ export default {
   },
 
   apollo: {
-    popularTracks: {
-      query: gql.query.USER_POPULAR_TRACKS,
-      fetchPolicy: 'network-only',
-      variables() {
-        return { id: this.userId };
-      },
-      update({ topTrackForUser }) {
-        this.onTrackListInitialized({
-          success: true
-        });
+    popularTracks() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.USER_POPULAR_TRACKS,
+        fetchPolicy: 'network-only',
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.userId
+          };
+        },
+        update({ topTrackForUser }) {
+          this.onTrackListInitialized({
+            success: true
+          });
 
-        return topTrackForUser;
-      },
-      error(err) {
-        this.onTrackListInitialized({
-          success: false
-        });
-
-        console.dir(err);
-      }
-    },
-
-    newAlbum: {
-      query: gql.query.USER_NEW_ALBUM,
-      fetchPolicy: 'network-only',
-      variables() {
-        return { id: this.userId };
-      },
-      update({ albums: { data: albums } }) {
-        if (albums.length === 0) {
-          this.onNewAlbumInitialized({
+          return topTrackForUser;
+        },
+        error(err) {
+          this.onTrackListInitialized({
             success: false
           });
 
-          return null;
+          console.dir(err);
         }
+      };
+    },
 
-        this.fetchNewAlbumTracks(albums[0].id);
+    newAlbum() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.USER_NEW_ALBUM,
+        fetchPolicy: 'network-only',
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.userId
+          };
+        },
+        update({ albums: { data: albums } }) {
+          if (albums.length === 0) {
+            this.onNewAlbumInitialized({
+              success: false
+            });
 
-        return albums[0];
-      },
-      error(err) {
-        console.dir(err);
-      }
+            return null;
+          }
+          this.fetchNewAlbumTracks(albums[0].id);
+
+          return albums[0];
+        },
+        error(err) {
+          console.dir(err);
+        }
+      };
     }
   }
 };

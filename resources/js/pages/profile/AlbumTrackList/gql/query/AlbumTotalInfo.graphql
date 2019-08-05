@@ -1,4 +1,4 @@
-query AlbumTotalInfo($id: Int!) {
+query AlbumTrackList_album($id: Int!) {
     album(id: $id) {
         id
         tracksCount

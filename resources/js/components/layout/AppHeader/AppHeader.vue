@@ -43,13 +43,23 @@
     </nav>
 
     <div class="head__right">
-      <router-link
-        v-if="ableToPerform"
-        to="/upload"
-        class="button gradient head-right-item head-right-item_upload"
-      >
-        Загрузить музыку
-      </router-link>
+      <UnauthenticatedPopoverWrapper>
+        <template #auth-content>
+          <router-link
+            v-if="ableToPerform"
+            to="/upload"
+            class="button gradient head-right-item head-right-item_upload"
+          >
+            Загрузить музыку
+          </router-link>
+        </template>
+
+        <template #unauth-popover-trigger>
+          <button class="button gradient head-right-item head-right-item_upload">
+            Загрузить музыку
+          </button>
+        </template>
+      </UnauthenticatedPopoverWrapper>
 
       <span class="head-right-item app-header__loupe-icon">
         <IconButton>
@@ -62,13 +72,25 @@
       </span>
 
       <div class="head-right-item head-right-item_profile">
-        <HeaderProfilePopover>
-          <img
-            class="head__profile"
-            :src="myProfile.avatar || anonymousAvatar"
-            alt="User avatar"
-          >
-        </HeaderProfilePopover>
+        <UnauthenticatedPopoverWrapper>
+          <template #auth-content>
+            <HeaderProfilePopover>
+              <img
+                class="head__profile"
+                :src="myProfile.avatar || anonymousAvatar"
+                alt="User avatar"
+              >
+            </HeaderProfilePopover>
+          </template>
+
+          <template #unauth-popover-trigger>
+            <img
+              class="head__profile"
+              :src="myProfile.avatar || anonymousAvatar"
+              alt="User avatar"
+            >
+          </template>
+        </UnauthenticatedPopoverWrapper>
       </div>
     </div>
 
@@ -128,12 +150,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import logo from 'images/logo.svg';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import LoupeIcon from 'components/icons/LoupeIcon.vue';
 import NotificationButtonWithPopover from 'components/notifications/NotificationButtonWithPopover';
 import HeaderProfilePopover from 'pages/profile/HeaderProfilePopover';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
 
 export default {
@@ -141,7 +165,8 @@ export default {
     IconButton,
     LoupeIcon,
     NotificationButtonWithPopover,
-    HeaderProfilePopover
+    HeaderProfilePopover,
+    UnauthenticatedPopoverWrapper
   },
 
   data() {
@@ -161,14 +186,16 @@ export default {
 
     ableToPerform() {
       return this.$store.getters['profile/ableToPerform'];
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
     goToProfilePage() {
       const { getters } = this.$store;
 
-      if (!getters['profile/loggedIn']) return;
+      if (!this.isAuthenticated) return;
 
       if (this.ableToPerform) {
         this.$router.push('/profile/my-music');
@@ -183,29 +210,24 @@ export default {
   },
 
   apollo: {
-    myProfile: {
-      query: gql.query.MY_PROFILE,
-      update({ myProfile }) {
-        this.$store.commit('profile/setLoggedIn', true);
+    myProfile() {
+      return {
+        query: gql.query.MY_PROFILE,
+        update({ myProfile }) {
+          const avatar = myProfile.avatar
+            .filter(av => av.size === 'size_56x56')[0].url;
 
-        this.$store.commit(
-          'profile/setRoles',
-          myProfile.roles.map(role => role.slug)
-        );
-
-        this.$store.commit('profile/setMyId', myProfile.id);
-        this.$store.commit('profile/setLoggedIn', true);
-
-        const avatar = myProfile.avatar
-          .filter(av => av.size === 'size_56x56')[0].url;
-
-        return {
-          avatar
-        };
-      },
-      error(err) {
-        console.dir(err);
-      }
+          return {
+            avatar
+          };
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !this.isAuthenticated;
+        }
+      };
     }
   }
 };

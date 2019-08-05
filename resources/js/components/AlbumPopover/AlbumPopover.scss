@@ -97,6 +97,10 @@ $text_color_highlighted: white;
     &:hover {
       color: white;
     }
+
+    &_no-hover:hover {
+      color: inherit;
+    }
   }
 
   &__menu-item-icon {

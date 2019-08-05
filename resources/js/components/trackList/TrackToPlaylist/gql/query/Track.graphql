@@ -1,0 +1,9 @@
+query TrackToPlaylist_track($id: Int!) {
+    track(id: $id) {
+        id
+        userPlayLists {
+            id
+            title
+        }
+    }
+}

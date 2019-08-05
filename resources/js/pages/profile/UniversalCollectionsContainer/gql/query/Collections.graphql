@@ -1,0 +1,41 @@
+query UniversalCollectionsContainer_collections(
+    $isAuthenticated: Boolean!,
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $filters: CollectionFilterInput
+) {
+    collections(
+        limit: $pageLimit,
+        page: $pageNumber,
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            #CollectionPreview #CollectionPopover
+            id
+            title
+            image(
+                sizes: [size_48x48, size_150x150, size_214x160]
+            ) {
+                size
+                url
+            }
+            isSet
+
+            #CollectionPreview
+            countTracks
+
+            #CollectionPopover
+            user {
+                id
+                username
+            }
+            userFavourite @include(if: $isAuthenticated)
+            my @include(if: $isAuthenticated)
+
+            #AddToFavouriteButton
+            favouritesCount
+        }
+    }
+}

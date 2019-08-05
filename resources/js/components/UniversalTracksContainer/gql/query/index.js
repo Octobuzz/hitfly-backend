@@ -1,1 +1,1 @@
-export { default as TRACKS } from 'gql/query/Tracks.graphql';
+export { default as TRACKS } from './Tracks.graphql';

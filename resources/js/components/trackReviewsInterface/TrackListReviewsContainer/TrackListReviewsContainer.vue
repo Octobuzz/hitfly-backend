@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import loadOnScroll from 'mixins/loadOnScroll';
 import { reviewFilterType, reviewFilterId, commentPeriod } from 'modules/validators';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
@@ -80,6 +81,7 @@ export default {
       isLoading: true,
       hasMoreData: true,
       queryVars: {
+        isAuthenticated: this.$store.getters.isAuthenticated,
         pageNumber: 1,
         pageLimit: 5,
         commentedInPeriod: this.commentedInPeriod,
@@ -91,7 +93,8 @@ export default {
   computed: {
     trackIdList() {
       return this.trackList.map(track => track.id);
-    }
+    },
+    ...mapGetters(['apolloClient'])
   },
 
   watch: {
@@ -161,29 +164,32 @@ export default {
   },
 
   apollo: {
-    trackList: {
-      query: gql.query.TRACKS_WITH_COMMENTS,
-      variables() {
-        return this.queryVars;
-      },
-      fetchPolicy: 'network-only',
+    trackList() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACKS_WITH_COMMENTS,
+        variables() {
+          return this.queryVars;
+        },
+        fetchPolicy: 'network-only',
 
-      update({ tracks: { total, to, data } }) {
-        this.isLoading = false;
-        this.hasMoreData = to < total;
+        update({ tracks: { total, to, data } }) {
+          this.isLoading = false;
+          this.hasMoreData = to < total;
 
-        // check if the screen has empty space to load more comments
+          // check if the screen has empty space to load more comments
 
-        this.$nextTick(() => {
-          this.loadOnScroll();
-        });
+          this.$nextTick(() => {
+            this.loadOnScroll();
+          });
 
-        return data;
-      },
+          return data;
+        },
 
-      error(err) {
-        console.dir(err);
-      }
+        error(err) {
+          console.dir(err);
+        }
+      };
     }
   }
 };

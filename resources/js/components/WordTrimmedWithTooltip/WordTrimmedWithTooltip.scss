@@ -1,6 +1,8 @@
 @import '~scss/_variables.scss';
 
 .word-trimmer-with-tooltip {
+  pointer-events: none;
+
   &__word {
     white-space: nowrap;
     text-overflow: ellipsis;

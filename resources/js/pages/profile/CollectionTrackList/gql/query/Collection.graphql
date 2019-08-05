@@ -1,0 +1,28 @@
+query CollectionTrackList_collection(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    collection(id: $id) {
+        id
+        title
+        image(
+            sizes: [size_48x48, size_150x150, size_214x160]
+        ) {
+            size
+            url
+        }
+        countTracks
+#        TODO: change when the api is ready
+#        tracksCount
+#        tracksTime
+        userFavourite @include(if: $isAuthenticated)
+
+        #CollectionPopover
+        user {
+            id
+            username
+        }
+        isSet
+        my @include(if: $isAuthenticated)
+    }
+}

@@ -11,7 +11,7 @@
     font-size: 12px;
     overflow-y: scroll;
     max-height: 300px;
-    margin: 6px 0 18px 28px;
+    margin: 6px 0 18px 0;
     padding-left: 0;
     list-style: none;
     color: #6e6e6e;
@@ -20,7 +20,7 @@
   &__list-item {
     word-break: break-word;
     position: relative;
-    padding: 12px 8px;
+    padding: 12px 8px 12px 40px;
     border-radius: 5px;
     user-select: none;
     cursor: pointer;
@@ -33,7 +33,7 @@
   &__tick {
     position: absolute;
     color: white;
-    left: -22px;
+    left: 12px;
   }
 
   &__input::v-deep .base-input__label {
@@ -41,7 +41,10 @@
   }
 
   &__input::v-deep .base-input__input {
-    padding-left: 8px;
+    padding: {
+      right: 55px;
+      left: 8px;
+    }
   }
 
   &__save-button {

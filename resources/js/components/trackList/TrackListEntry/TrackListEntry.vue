@@ -1,7 +1,8 @@
 <template>
   <div class="track-list-entry">
-    <span class="track-list-entry__index"
+    <span
       v-if="showTrackIndex"
+      class="track-list-entry__index"
     >
       {{ index }}
     </span>
@@ -21,17 +22,34 @@
       <PlayIcon v-else />
     </button>
 
-    <AddToFavouriteButton
-      v-show="desktop"
-      ref="addToFavButton"
-      class="track-list-entry__icon-button"
-      passive="secondary-passive"
-      hover="secondary-hover"
-      item-type="track"
-      :item-id="trackId"
-      :fake="fakeFavButton"
-      @press-favourite="onFavouritePress"
-    />
+    <UnauthenticatedPopoverWrapper placement="right">
+      <template #auth-content>
+        <AddToFavouriteButton
+          v-show="desktop"
+          ref="addToFavButton"
+          class="track-list-entry__icon-button"
+          passive="secondary-passive"
+          hover="secondary-hover"
+          item-type="track"
+          :item-id="trackId"
+          :fake="fakeFavButton"
+          @press-favourite="onFavouritePress"
+        />
+      </template>
+
+      <template #unauth-popover-trigger>
+        <AddToFavouriteButton
+          v-show="desktop"
+          ref="addToFavButton"
+          class="track-list-entry__icon-button"
+          passive="secondary-passive"
+          hover="secondary-hover"
+          item-type="track"
+          :item-id="trackId"
+          :fake="true"
+        />
+      </template>
+    </UnauthenticatedPopoverWrapper>
 
     <span
       v-show="desktop && !columnLayout"
@@ -64,18 +82,32 @@
       </span>
     </div>
 
-    <TrackToPlaylistPopover
-      v-if="desktop && showAddToPlayList"
-      :track-id="trackId"
-    >
-      <IconButton
-        passive="secondary-passive"
-        hover="secondary-hover"
-        :tooltip="tooltip.add"
-      >
-        <PlusIcon />
-      </IconButton>
-    </TrackToPlaylistPopover>
+    <UnauthenticatedPopoverWrapper placement="left">
+      <template #auth-content>
+        <TrackToPlaylistPopover
+          v-if="desktop && showAddToPlaylist"
+          :track-id="trackId"
+        >
+          <IconButton
+            passive="secondary-passive"
+            hover="secondary-hover"
+            :tooltip="tooltip.add"
+          >
+            <PlusIcon />
+          </IconButton>
+        </TrackToPlaylistPopover>
+      </template>
+
+      <template #unauth-popover-trigger>
+        <IconButton
+          passive="secondary-passive"
+          hover="secondary-hover"
+          :tooltip="tooltip.add"
+        >
+          <PlusIcon />
+        </IconButton>
+      </template>
+    </UnauthenticatedPopoverWrapper>
 
     <TrackActionsPopover
       :track-id="trackId"
@@ -97,7 +129,7 @@
     </span>
 
     <IconButton
-      v-if="desktop && showRemoveButton"
+      v-if="desktop && isAuthenticated && showRemoveButton"
       class="track-list-entry__icon-button"
       passive="secondary-passive"
       hover="secondary-hover"
@@ -110,6 +142,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import AddToFavouriteButton from 'components/AddToFavouriteButton';
 import IconButton from 'components/IconButton.vue';
@@ -126,6 +160,7 @@ const MOBILE_WIDTH = 767;
 
 export default {
   components: {
+    UnauthenticatedPopoverWrapper,
     WordTrimmedWithTooltip,
     TrackToPlaylistPopover,
     TrackActionsPopover,
@@ -147,7 +182,7 @@ export default {
       type: Number,
       required: true
     },
-    showAddToPlayList: {
+    showAddToPlaylist: {
       type: Boolean,
       default: true
     },
@@ -186,7 +221,7 @@ export default {
         actions: {
           content: 'Еще...'
         },
-      },
+      }
     };
   },
 
@@ -197,12 +232,14 @@ export default {
 
     albumCoverUrl() {
       return this.track.cover
-        .filter(cover => cover.size === 'size_32x32')[0].url;
+        .filter(cover => cover.size === 'size_48x48')[0].url;
     },
 
     activeTrack() {
       return this.trackId === this.$store.getters['player/currentTrack'].id;
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -235,13 +272,16 @@ export default {
   apollo: {
     track() {
       return {
+        client: this.apolloClient,
         query: gql.query.TRACK,
         variables: {
+          isAuthenticated: this.isAuthenticated,
           id: this.trackId,
         },
         update: ({ track }) => {
           this.trackLoaded = true;
-          return track
+
+          return track;
         },
         error(error) {
           console.log(error);

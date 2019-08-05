@@ -1,0 +1,8 @@
+query ProfileDataProvider_myProfile {
+    myProfile {
+        id
+        roles {
+            slug
+        }
+    }
+}

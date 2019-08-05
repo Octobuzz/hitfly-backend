@@ -1,1 +1,1 @@
-export { default as COLLECTION } from 'gql/query/Collection.graphql';
+export { default as COLLECTION } from './Collection.graphql';

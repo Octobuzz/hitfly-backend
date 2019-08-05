@@ -1,0 +1,15 @@
+fragment trackListEntryData on Track {
+    trackName
+    singer
+    length
+    cover(
+        sizes: [size_48x48, size_150x150]
+    ) {
+        size
+        url
+    }
+    album {
+        id
+        title
+    }
+}

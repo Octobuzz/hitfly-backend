@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import TrackReview from '../TrackReview';
 import TrackReviewHeader from '../TrackReviewHeader';
@@ -76,11 +77,17 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
+  },
+
   apollo: {
     track() {
       return {
+        client: this.apolloClient,
         query: gql.query.TRACK,
         variables: {
+          isAuthenticated: this.isAuthenticated,
           id: this.trackId
         },
         update({ track }) {

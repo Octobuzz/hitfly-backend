@@ -28,10 +28,10 @@
           {{ album.title }}
         </span>
         <span
-          v-if="album.singer"
+          v-if="album.author"
           class="album-popover__singer"
         >
-          {{ album.singer }}
+          {{ album.author }}
         </span>
       </div>
 
@@ -41,6 +41,13 @@
         v-if="!inRemoveMenu"
         class="album-popover__menu"
       >
+        <span
+          v-if="!isAuthenticated && hidePlayerActions"
+          class="album-popover__menu-item album-popover__menu-item_no-hover"
+        >
+          В настоящее время у вас нет действий, которые вы можете совершить с альбомом
+        </span>
+
         <!--TODO: use interactive elements-->
         <span
           v-if="!hidePlayerActions"
@@ -53,6 +60,7 @@
         </span>
 
         <span
+          v-if="isAuthenticated"
           class="album-popover__menu-item"
           @click="onFavouritePress"
         >
@@ -81,7 +89,7 @@
         </span>
 
         <span
-          v-if="isWatchable"
+          v-if="isAuthenticated && isWatchable"
           class="album-popover__menu-item"
           @click="onWatchOwnerPress"
         >
@@ -99,7 +107,7 @@
 <!--        </span>-->
 
         <span
-          v-if="isRemovable"
+          v-if="isAuthenticated && isRemovable"
           class="album-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -111,6 +119,7 @@
       </div>
 
       <AlbumPopoverRemoveMenu
+        v-if="isAuthenticated"
         v-show="inRemoveMenu"
         :album-id="albumId"
         @cancel-remove="leaveRemoveMenu"
@@ -121,6 +130,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
@@ -183,6 +193,8 @@ export default {
 
       return this.album.my;
     },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
@@ -223,19 +235,23 @@ export default {
   },
 
   apollo: {
-    album: {
-      query: gql.query.ALBUM,
-      variables() {
-        return {
-          id: this.albumId
-        };
-      },
-      update({ album }) {
-        return album;
-      },
-      error(err) {
-        console.dir(err);
-      }
+    album() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.ALBUM,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.albumId
+          };
+        },
+        update({ album }) {
+          return album;
+        },
+        error(err) {
+          console.dir(err);
+        }
+      };
     }
   }
 };

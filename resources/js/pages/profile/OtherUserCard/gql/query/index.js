@@ -1,1 +1,1 @@
-export { default as USER } from 'gql/query/User.graphql';
+export { default as USER } from './User.graphql';

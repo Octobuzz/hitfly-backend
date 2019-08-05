@@ -1,7 +1,10 @@
-query Album($id: Int!) {
+query AddToFavouriteButton_album(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
     album(id: $id) {
-        id,
-        userFavourite
+        id
         favouritesCount
+        userFavourite @include (if: $isAuthenticated)
     }
 }

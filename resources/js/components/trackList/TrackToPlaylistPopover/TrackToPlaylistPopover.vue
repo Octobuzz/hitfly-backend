@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import gql from './gql';
 import TrackToPlaylist from '../TrackToPlaylist';
 
 export default {
@@ -128,21 +127,6 @@ export default {
           );
         }, 200);
       }, 200);
-    }
-  },
-
-  apollo: {
-    track() {
-      return {
-        query: gql.query.TRACK,
-        variables: {
-          id: this.trackId,
-        },
-        update: ({ track }) => track,
-        error(error) {
-          console.log(error);
-        }
-      };
     }
   }
 };

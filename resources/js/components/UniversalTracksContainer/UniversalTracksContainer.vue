@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import gql from './gql';
 
@@ -92,6 +93,7 @@ export default {
       hasMoreData: true,
       initialFetchDone: false,
       queryVars: {
+        isAuthenticated: this.$store.getters.isAuthenticated,
         pageNumber: 1,
         pageLimit: 15,
         filters
@@ -106,7 +108,8 @@ export default {
       return this.trackList
         .map(track => track.id)
         .slice(0, this.shownTracksCount);
-    }
+    },
+    ...mapGetters(['apolloClient'])
   },
 
   watch: {
@@ -224,7 +227,7 @@ export default {
         }
       };
 
-      this.$apollo.mutate({
+      this.$apollo.provider.clients[this.apolloProvider].mutate({
         mutation,
         variables,
         optimisticResponse,
@@ -300,6 +303,7 @@ export default {
   apollo: {
     trackList() {
       return {
+        client: this.apolloClient,
         query: gql.query.TRACKS,
         variables: this.queryVars,
         fetchPolicy: 'network-only',
@@ -330,8 +334,6 @@ export default {
               error: err
             });
           }
-
-          console.dir(err);
         }
       };
     }

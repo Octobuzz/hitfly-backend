@@ -1,2 +1,2 @@
-export { default as CREATE_COLLECTION } from 'gql/mutation/CreateCollection.graphql';
-export { default as ADD_TO_COLLECTION } from 'gql/mutation/AddToCollection.graphql';
+export { default as CREATE_COLLECTION } from './CreateCollection.graphql';
+export { default as ADD_TO_COLLECTION } from './AddToCollection.graphql';

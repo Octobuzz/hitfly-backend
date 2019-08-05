@@ -72,15 +72,33 @@
           </template>
         </button>
 
-        <AddToFavButton
-          ref="addToFavButton"
+        <UnauthenticatedPopoverWrapper
           class="collection-track-list__button"
-          passive="standard-passive"
-          hover="standard-hover"
-          modifier="squared bordered"
-          item-type="collection"
-          :item-id="collectionId"
-        />
+          placement="right"
+        >
+          <template #auth-content>
+            <AddToFavButton
+              ref="addToFavButton"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              item-type="collection"
+              :item-id="collectionId"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavButton
+              ref="addToFavButton"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              item-type="collection"
+              :item-id="collectionId"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
 
         <CollectionPopover
           :collection-id="collectionId"
@@ -125,6 +143,7 @@
 // We also have a case where we visit the page while already listening a track
 // from the collection. This case will be handled automatically thanks to reactivity.
 
+import { mapGetters } from 'vuex';
 import currentPath from 'mixins/currentPath';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
@@ -135,6 +154,7 @@ import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import UniversalTrackList from 'components/UniversalTrackList';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import CollectionPopover from 'components/CollectionPopover';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
@@ -150,7 +170,8 @@ export default {
     CirclePlayIcon,
     CirclePauseIcon,
     DotsIcon,
-    AddToFavButton
+    AddToFavButton,
+    UnauthenticatedPopoverWrapper
   },
 
   mixins: [
@@ -182,9 +203,11 @@ export default {
     currentPlaying() {
       return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
     },
+
     currentType() {
       return this.$store.getters['player/getCurrentType'];
     },
+
     collectionId() {
       const { playlistId, setId } = this.$route.params;
 
@@ -208,7 +231,9 @@ export default {
         default:
           return false;
       }
-    }
+    },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   watch: {
@@ -222,7 +247,10 @@ export default {
 
         const playingTrackQuery = this.$apollo.query({
           query: gql.query.TRACK,
-          variables: { id }
+          variables: {
+            isAuthenticated: this.isAuthenticated,
+            id
+          }
         });
         const playingTrackBelongsToCollectionQuery = this.$apollo.query({
           query: gql.query.TRACK_BELONGS_TO_COLLECTION,
@@ -264,9 +292,7 @@ export default {
 
         return;
       }
-
       this.trackListDataExists = true;
-
       this.firstCollectionTrackId = data[0].id;
     },
 
@@ -322,9 +348,10 @@ export default {
         if(this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
           this.$store.commit('player/startPlaying');
         }else{
-          this.$apollo.provider.defaultClient.query({
-            query: gql.query.TRACKS,
+          this.$apollo.provider.clients[this.apolloClient].query({
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
@@ -354,43 +381,51 @@ export default {
   },
 
   apollo: {
-    collection: {
-      query: gql.query.COLLECTION,
-      variables() {
-        return {
-          id: this.collectionId
-        };
-      },
-      update({ collection }) {
-        this.collectionFetched = true;
+    collection() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.COLLECTION,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.collectionId
+          };
+        },
+        update({ collection }) {
+          this.collectionFetched = true;
 
-        return collection;
-      },
-      error(err) {
-        console.dir(err);
-      }
+          return collection;
+        },
+        error(err) {
+          console.dir(err);
+        }
+      };
     },
 
-    firstCollectionTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return {
-          id: this.firstCollectionTrackId
-        };
-      },
-      update({ track }) {
-        this.$nextTick(() => {
-          this.updateShownTrack();
-        });
+    firstCollectionTrack() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.TRACK,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.firstCollectionTrackId
+          };
+        },
+        update({ track }) {
+          this.$nextTick(() => {
+            this.updateShownTrack();
+          });
 
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.firstCollectionTrackId);
-      }
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.firstCollectionTrackId);
+        }
+      };
     }
   }
 };

@@ -49,13 +49,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TrackListEntry from '../TrackListEntry';
-import gql from 'graphql-tag';
+import gql from './gql';
 
 export default {
   components: {
     TrackListEntry
   },
+
   props: {
     trackIdList: {
       type: Array,
@@ -90,6 +92,11 @@ export default {
       default: true
     }
   },
+
+  computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
+  },
+
   methods: {
     onTrackRemove(id) {
       this.$emit('remove-track', id);
@@ -100,27 +107,12 @@ export default {
     playTrack(id) {
       if(this.$store.getters['player/currentTrack'].id !== id){
         this.$store.commit('player/pausePlaying');
-        this.$apollo.provider.defaultClient.query({
+        this.$apollo.provider.clients[this.apolloClient].query({
           variables: {
-            id: id
+            isAuthenticated: this.isAuthenticated,
+            id
           },
-          query: gql`query tracks {
-            track(id: $id) {
-              id
-              filename
-              singer
-              trackName
-              length
-              userFavourite
-              favouritesCount
-              cover(
-                  sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
-              ) {
-                  size
-                  url
-              }
-            }
-          }`
+          query: gql.query.QUEUE_TRACK
         })
         .then(response => {
           this.$store.commit('player/pickTrack', response.data.track);

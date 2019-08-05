@@ -29,14 +29,29 @@
       >
 
       <div class="collection-preview__button-section">
-        <AddToFavouriteButton
-          ref="addToFavouriteButton"
-          class="collection-preview__icon-button"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          item-type="collection"
-          :item-id="collection.id"
-        />
+        <UnauthenticatedPopoverWrapper placement="right">
+          <template #auth-content>
+            <AddToFavouriteButton
+              ref="addToFavouriteButton"
+              class="collection-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="collection"
+              :item-id="collection.id"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavouriteButton
+              class="collection-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="collection"
+              :item-id="collection.id"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
 
         <IconButton
           v-if="collection.countTracks > 0 && !currentPlaying"
@@ -80,15 +95,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import CollectionPopover from 'components/CollectionPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import PauseIcon from 'components/icons/PauseIcon.vue';
 import gql from './gql';
-
-const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -97,7 +112,8 @@ export default {
     IconButton,
     DotsIcon,
     PlayIcon,
-    PauseIcon
+    PauseIcon,
+    UnauthenticatedPopoverWrapper,
   },
 
   props: {
@@ -116,9 +132,8 @@ export default {
 
   computed: {
     collectionImageUrl() {
-      if (this.windowWidth <= MOBILE_WIDTH) {
-        return this.collection.image
-          .filter(image => image.size === 'size_150x150')[0].url;
+      if (!this.collection.image) {
+        return '';
       }
 
       return this.collection.image
@@ -141,22 +156,26 @@ export default {
     currentType() {
       return this.$store.getters['player/getCurrentType'];
     },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    playCollection(){
-      if(this.currentPlaying){
+    playCollection()
+    {
+      if (this.currentPlaying) {
         this.$store.commit('player/pausePlaying');
-      }else{
-        if(this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
+      } else {
+        if (this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
           this.$store.commit('player/startPlaying');
-        }else{
-          this.$apollo.provider.defaultClient.query({
-            query: gql.query.TRACKS,
+        } else {
+          this.$apollo.provider.clients[this.apolloClient].query({
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
@@ -164,22 +183,22 @@ export default {
               }
             },
           })
-          .then(response => {
-            let data = {
-              'type': 'collection',
-              'id': this.collectionId
-            };
-            this.$store.commit('player/pausePlaying');
-            this.$store.commit('player/changeCurrentType', data);
-            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-            let arrayTr = response.data.tracks.data.map(data => {
-              return data.id;
-            });
-            this.$store.commit('player/pickPlaylist', arrayTr);
-          })
-          .catch(error => {
-            console.log(error);
-          })
+            .then(response => {
+              let data = {
+                'type': 'collection',
+                'id': this.collectionId
+              };
+              this.$store.commit('player/pausePlaying');
+              this.$store.commit('player/changeCurrentType', data);
+              this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+              let arrayTr = response.data.tracks.data.map(data => {
+                return data.id;
+              });
+              this.$store.commit('player/pickPlaylist', arrayTr);
+            })
+            .catch(error => {
+              console.log(error);
+            })
         }
       }
     }
@@ -188,6 +207,7 @@ export default {
   apollo: {
     collection() {
       return {
+        client: this.apolloClient,
         query: gql.query.COLLECTION,
         variables() {
           // use function to allow rendering another album when the prop changes
@@ -201,7 +221,7 @@ export default {
           return collection;
         },
         error: (error) => {
-          console.log(error);
+          console.dir(error);
         }
       };
     }

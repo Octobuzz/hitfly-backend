@@ -1,0 +1,15 @@
+#import "gql/fragments/trackComment.graphql"
+
+query TrackListReviewsEntry_track(
+    $id: Int
+    $commentedInPeriod: CommentPeriodEnum!
+) {
+    track(id: $id) {
+        id
+        trackName
+        singer
+        comments(commentPeriod: $commentedInPeriod) {
+            ...trackComment
+        }
+    }
+}

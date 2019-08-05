@@ -1,13 +1,12 @@
-#import "gql/fragments/album.graphql"
-
-query UserNewAlbum($id: Int!) {
+query OtherUserMusic_albums($id: Int!) {
     albums(
         page: 1,
         limit: 1,
         filters: { userId: $id }
     ) {
         data {
-            ...album
+            id
+            title
         }
     }
 }

@@ -1,7 +1,10 @@
-query Collection($id: Int!) {
+query AddToFavouriteButton_collection(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
     collection(id: $id) {
-        id,
-        userFavourite
+        id
         favouritesCount
+        userFavourite @include (if: $isAuthenticated)
     }
 }

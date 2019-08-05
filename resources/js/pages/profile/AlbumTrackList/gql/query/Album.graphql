@@ -1,0 +1,26 @@
+query AlbumTrackList_album(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    album(id: $id) {
+        id
+        title
+        cover(
+            sizes: [size_48x48, size_120x120, size_150x150]
+        ) {
+            size
+            url
+        }
+        tracksCount
+        tracksTime
+        userFavourite @include(if: $isAuthenticated)
+
+        #AlbumPopover
+        author
+        user @include(if: $isAuthenticated) {
+            id
+            iWatch
+        }
+        my @include(if: $isAuthenticated)
+    }
+}

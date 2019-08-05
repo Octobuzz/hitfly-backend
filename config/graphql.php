@@ -105,7 +105,7 @@ return [
                 'tracks' => \App\Http\GraphQL\Query\TracksQuery::class,
                 'track' => \App\Http\GraphQL\Query\TrackQuery::class,
                 'collections' => \App\Http\GraphQL\Query\CollectionsQuery::class,
-                'collection' => \App\Http\GraphQL\Query\CollectionsQuery::class,
+                'collection' => \App\Http\GraphQL\Query\CollectionQuery::class,
                 'locations' => \App\Http\GraphQL\Query\LocationsQuery::class,
                 'GetTopFifty' => \App\Http\GraphQL\Query\GetTopFifty::class,
                 'GetListenedNow' => \App\Http\GraphQL\Query\GetListenedNow::class,

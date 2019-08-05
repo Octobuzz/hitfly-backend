@@ -4,7 +4,7 @@ fragment collection on Collection {
     id
     title
     image(
-        sizes: [size_150x150, size_214x160, size_48x48]
+        sizes: [size_48x48, size_150x150, size_214x160]
     ) {
         size
         url

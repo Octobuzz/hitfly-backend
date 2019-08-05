@@ -72,7 +72,7 @@
         </span>
 
         <div
-          v-if="loggedIn === false"
+          v-if="!isAuthenticated"
           class="about__reg-block-section"
         >
           <span class="h4 about__reg-suggestion">
@@ -124,6 +124,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TwoColumnLayout from 'components/TwoColumnLayout.vue';
 import PageHeader from 'components/PageHeader.vue';
 import FormButton from 'components/FormButton.vue';
@@ -140,9 +141,7 @@ export default {
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
     },
-    loggedIn() {
-      return this.$store.getters['profile/loggedIn'];
-    }
+    ...mapGetters(['isAuthenticated'])
   },
   methods: {
     onRegisterClick() {

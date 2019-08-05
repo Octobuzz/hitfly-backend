@@ -13,7 +13,8 @@
             {{ user.username }}
           </p>
           <p class="user-card__followers-count">
-            {{ user.followersCount || '0' }} {{ format('followers', user.followersCount || '0') }}
+            {{ user.followersCount || '0' }}
+            {{ format('followers', user.followersCount || '0') }}
           </p>
 
           <p
@@ -36,20 +37,43 @@
         </div>
       </div>
 
-      <div class="user-card__item">
-        <FormButton
-          class="other-user-card__follow-button"
-          :modifier="ownerIsWatched ? 'primary' : 'secondary'"
-          @press="onWatchOwnerPress"
-        >
-          {{ ownerIsWatched ? 'Слежу' : 'Следить' }}
-        </FormButton>
+      <div class="user-card__item other-user-card__button-container">
+        <UnauthenticatedPopoverWrapper placement="right">
+          <template #auth-content>
+            <FormButton
+              class="other-user-card__follow-button"
+              :modifier="ownerIsWatched ? 'primary' : 'secondary'"
+              @press="onWatchOwnerPress"
+            >
+              {{ ownerIsWatched ? 'Слежу' : 'Следить' }}
+            </FormButton>
+          </template>
 
-        <OtherUserPopover :user-id="userId">
-          <IconButton modifier="squared bordered">
-            <DotsIcon />
-          </IconButton>
-        </OtherUserPopover>
+          <template #unauth-popover-trigger>
+            <FormButton
+              class="other-user-card__follow-button"
+              modifier="secondary"
+            >
+              Следить
+            </FormButton>
+          </template>
+        </UnauthenticatedPopoverWrapper>
+
+        <UnauthenticatedPopoverWrapper placement="right">
+          <template #auth-content>
+            <OtherUserPopover :user-id="userId">
+              <IconButton modifier="squared bordered">
+                <DotsIcon />
+              </IconButton>
+            </OtherUserPopover>
+          </template>
+
+          <template #unauth-popover-trigger>
+            <IconButton modifier="squared bordered">
+              <DotsIcon />
+            </IconButton>
+          </template>
+        </UnauthenticatedPopoverWrapper>
       </div>
     </div>
 
@@ -62,18 +86,21 @@
       <span class="user-card__bonus-program-followers">
         <BpFollowers />
         <span>
-          {{ user.followersCount || '0' }} {{ format('followers', user.followersCount || '0') }}
+          {{ user.followersCount || '0' }}
+          {{ format('followers', user.followersCount || '0') }}
         </span>
       </span>
       <span class="user-card__bonus-program-days">
         <BpDaysPassed />
         <span>
-          {{ user.bpDaysInProgram || '0' }} {{ format('days', user.bpDaysInProgram || '0') }}
+          {{ user.bpDaysInProgram || '0' }}
+          {{ format('days', user.bpDaysInProgram || '0') }}
         </span>
       </span>
       <span class="user-card__bonus-program-favourites">
         <BpFavouriteTracks />
-        {{ user.favouritesTrackCount }} {{ format('favourites', user.favouritesTrackCount) }}
+        {{ user.favouritesTrackCount }}
+        {{ format('favourites', user.favouritesTrackCount) }}
       </span>
     </div>
 
@@ -98,6 +125,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import FormButton from 'components/FormButton.vue';
@@ -108,6 +136,7 @@ import BpDaysPassed from 'components/icons/BpDaysPassed.vue';
 import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
 import NoteIcon from 'components/icons/NoteIconGrey.vue';
 import OtherUserPopover from 'components/OtherUserPopover';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
 
 const formatting = {
@@ -137,7 +166,8 @@ export default {
     BpFollowers,
     BpDaysPassed,
     BpFavouriteTracks,
-    OtherUserPopover
+    OtherUserPopover,
+    UnauthenticatedPopoverWrapper,
   },
 
   mixins: [followMixin('user', 'user')],
@@ -171,7 +201,9 @@ export default {
       return genresPlay.map(genre => (
         genre.name[0].toUpperCase() + genre.name.slice(1)
       )).join(', ');
-    }
+    },
+
+    ...mapGetters(['apolloClient', 'isAuthenticated'])
   },
 
   methods: {
@@ -200,49 +232,54 @@ export default {
   },
 
   apollo: {
-    user: {
-      query: gql.query.USER,
+    user() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.USER,
+        fetchPolicy: 'network-only',
 
-      fetchPolicy: 'network-only',
+        variables() {
+          return {
+            id: this.userId,
+            isAuthenticated: this.isAuthenticated
+          };
+        },
 
-      variables() {
-        return { id: this.userId };
-      },
+        update({ user }) {
+          const {
+            avatar,
+            description,
+            roles
+          } = user;
 
-      update({ user }) {
-        const {
-          avatar,
-          description,
-          roles
-        } = user;
+          const userAvatar = avatar
+            .filter(image => image.size === 'size_56x56')[0].url;
 
-        const userAvatar = avatar
-          .filter(image => image.size === 'size_56x56')[0].url;
+          const slugs = new Set(roles.map(role => role.slug));
+          const hasDesc = ['performer', 'critic', 'star']
+            .some(slug => slugs.has(slug));
 
-        const slugs = new Set(roles.map(role => role.slug));
-        const hasDesc = ['performer', 'critic', 'star']
-          .some(slug => slugs.has(slug));
+          let activity;
 
-        let activity;
+          if (hasDesc && description) {
+            activity = description;
+          }
 
-        if (hasDesc && description) {
-          activity = description;
+          this.notifyInitialization(true, 'personalInfo');
+
+          return {
+            ...user,
+            avatar: userAvatar,
+            description: activity
+          };
+        },
+
+        error(err) {
+          this.notifyInitialization(false, 'personalInfo');
+
+          console.dir(err);
         }
-
-        this.notifyInitialization(true, 'personalInfo');
-
-        return {
-          ...user,
-          avatar: userAvatar,
-          description: activity
-        };
-      },
-
-      error(err) {
-        this.notifyInitialization(false, 'personalInfo');
-
-        console.dir(err);
-      }
+      };
     }
   }
 };
