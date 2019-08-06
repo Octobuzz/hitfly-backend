@@ -13,7 +13,7 @@
         </p>
         <p class="user-card__followers-count">
           {{ myProfile.followersCount || '0' }}
-          {{ format('followers', myProfile.followersCount) }}
+          {{ format('FOLLOWER', myProfile.followersCount) }}
         </p>
 
         <p
@@ -108,7 +108,7 @@
             </p>
             <p class="user-card__group-followers">
               {{ group.followersCount || '0' }}
-              {{ format('followers', group.followersCount) }}
+              {{ format('FOLLOWER', group.followersCount) }}
             </p>
           </div>
         </div>
@@ -268,7 +268,7 @@
           <BpFollowers />
           <span>
             {{ myProfile.bonusProgram.points || '0' }}
-            {{ format('bonuses', myProfile.bonusProgram.points || '0') }}
+            {{ format('BONUS', myProfile.bonusProgram.points || '0') }}
           </span>
         </span>
 
@@ -276,13 +276,14 @@
           <BpDaysPassed />
           <span>
             {{ myProfile.bonusProgram.daysPassed || '0' }}
-            {{ format('days', myProfile.bonusProgram.daysPassed || '0') }}
+            {{ format('DAY', myProfile.bonusProgram.daysPassed || '0') }}
           </span>
         </span>
+
         <span class="user-card__bonus-program-favourites">
           <BpFavouriteTracks />
           {{ myProfile.favouriteTracksCount }}
-          {{ format('favourites', myProfile.favouriteTracksCount) }}
+          {{ format('FAVOURITE_SONG', myProfile.favouriteTracksCount) }}
         </span>
       </div>
     </div>
@@ -308,6 +309,8 @@
 </template>
 
 <script>
+import { bonusProgramLvl } from 'modules/bonus-program';
+import endingFormatter from 'modules/plural-form-endings-formatter';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
@@ -316,68 +319,7 @@ import NoteIcon from 'components/icons/NoteIconGrey.vue';
 import BpFollowers from 'components/icons/BpFollowers.vue';
 import BpDaysPassed from 'components/icons/BpDaysPassed.vue';
 import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
-import levelNoviceImg from 'images/level-novice.svg';
-import levelFanImg from 'images/level-fan.svg';
-import levelConnoisseurImg from 'images/level-connoisseur.svg';
-import levelMusicLoverImg from 'images/level-music-lover.svg';
 import gql from './gql';
-
-const formatting = {
-  bonuses: {
-    1: 'бонус',
-    234: 'бонуса',
-    567890: 'бонусов'
-  },
-  days: {
-    1: 'день в Hitfly',
-    234: 'дня в Hitfly',
-    567890: 'дней Hitfly'
-  },
-  favourites: {
-    1: 'любимая песня',
-    234: 'любимые песни',
-    567890: 'любимых песен'
-  },
-  followers: {
-    1: 'поклонник',
-    234: 'поклонника',
-    567890: 'поклонников'
-  },
-};
-
-const bonusProgramLvlMap = {
-  LEVEL_NOVICE: {
-    title: 'Новичок',
-    image: levelNoviceImg,
-    nextLevelImage: levelFanImg,
-    nextLevelText: 'Любителя',
-    nextLevelPoints: 400,
-    slug: 'LEVEL_NOVICE'
-  },
-  LEVEL_AMATEUR: {
-    title: 'Любитель',
-    image: levelFanImg,
-    nextLevelImage: levelConnoisseurImg,
-    nextLevelText: 'Знатока жанра',
-    nextLevelPoints: 2500,
-    slug: 'LEVEL_AMATEUR'
-  },
-  LEVEL_CONNOISSEUR_OF_THE_GENRE: {
-    title: 'Знаток жанра',
-    image: levelConnoisseurImg,
-    nextLevelImage: levelMusicLoverImg,
-    nextLevelText: 'Супер меломана',
-    nextLevelPoints: 5000,
-    slug: 'LEVEL_CONNOISSEUR_OF_THE_GENRE'
-  },
-  LEVEL_SUPER_MUSIC_LOVER: {
-    title: 'Супер меломан',
-    image: levelMusicLoverImg,
-    nextLevelImage: null,
-    nextLevelPoints: null,
-    slug: 'LEVEL_SUPER_MUSIC_LOVER'
-  }
-};
 
 export default {
   components: {
@@ -497,18 +439,8 @@ export default {
       this.$router.push('/profile/create-group');
     },
 
-    format(type, count) {
-      const lastDigit = +count % 10;
-      let lastDigitSet = 567890;
-
-      if (lastDigit === 1) {
-        lastDigitSet = 1;
-      }
-      if (lastDigit >= 2 && lastDigit <= 4) {
-        lastDigitSet = 234;
-      }
-
-      return formatting[type][lastDigitSet];
+    format(word, count) {
+      return endingFormatter(word, count);
     }
   },
 
@@ -524,9 +456,10 @@ export default {
           genresPlay,
           musicGroups,
           roles,
-          favoriteSongsCount,
+          followersCount,
+          favoriteSongsCount: favouriteSongsCount,
           dateRegister,
-          bpLevelBonusProgram: bpLevel,
+          bpLevelBonusProgram: bpLevelSlug,
           bpDaysInProgram: bpDaysPassed,
           bpPoints
         } = myProfile;
@@ -540,18 +473,21 @@ export default {
         this.myProfile.name = username;
         this.myProfile.playedGenres = genresPlay;
         this.myProfile.musicGroups = musicGroups;
-        this.myProfile.favouriteTracksCount = favoriteSongsCount;
+        this.myProfile.favouriteTracksCount = favouriteSongsCount;
+        this.myProfile.followersCount = followersCount;
+
+        const bpLevel = bonusProgramLvl[bpLevelSlug];
+        const bpNextLevel = bonusProgramLvl[bpLevel.nextLevelSlug];
 
         this.myProfile.bonusProgram = {
-          level: bonusProgramLvlMap[bpLevel].title,
-          image: bonusProgramLvlMap[bpLevel].image,
-          nextLevelImage: bonusProgramLvlMap[bpLevel].nextLevelImage,
-          nextLevelText: bonusProgramLvlMap[bpLevel].nextLevelText,
+          level: bpLevel.title,
+          image: bpLevel.image,
+          nextLevelImage: bpNextLevel && bpNextLevel.image,
+          nextLevelText: bpNextLevel && bpNextLevel.title,
           points: bpPoints,
-          pointsToNextLevel: Math.max(
-            0,
-            bonusProgramLvlMap[bpLevel].nextLevelPoints - bpPoints
-          ),
+          pointsToNextLevel: bpNextLevel
+            ? Math.max(0, bpNextLevel.points - bpPoints)
+            : 0,
           daysPassed: bpDaysPassed
         };
 
