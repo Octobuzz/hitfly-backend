@@ -27,6 +27,8 @@ class BonusType extends Model implements BonusProgramTypesInterfaces
 {
     use PictureField;
 
+    const BONUS_TYPE = 'BONUS_TYPE';
+
     public $timestamps = false;
 
     public function getImage(): ?string

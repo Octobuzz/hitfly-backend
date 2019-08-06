@@ -6,18 +6,23 @@ use App\Events\CompletedTaskEvent;
 use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
 use App\Events\Track\TrackPublishEvent;
+use App\Events\User\ChangeLevelEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
+use App\Models\ArtistProfile;
 use App\Models\BonusType;
 use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Operation;
 use App\Models\Purse;
+use App\Models\Social;
 use App\Models\Track;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class BonusProgramEventSubscriber
 {
@@ -37,6 +42,14 @@ class BonusProgramEventSubscriber
         $events->listen(Registered::class, self::class.'@registerUser');
         $events->listen(EntranceInAppEvent::class, self::class.'@entranceInApp');
         $events->listen(ListeningTenTrackEvent::class, self::class.'@listeningTenTrack');
+        $events->listen('eloquent.updated: '.User::class, self::class.'@uploadAvatar');
+        $events->listen('eloquent.updated: '.User::class, self::class.'@fillUsername');
+        $events->listen('eloquent.updated: '.User::class, self::class.'@fillCity');
+        $events->listen('eloquent.updated: '.ArtistProfile::class, self::class.'@fillCareerStart');
+        $events->listen('eloquent.updated: '.ArtistProfile::class, self::class.'@fillArtistDescription');
+        $events->listen('eloquent.saved: '.ArtistProfile::class, self::class.'@fillArtistGenres');
+        $events->listen('eloquent.saved: '.Social::class, self::class.'@fillSocials');
+        $events->listen(CompletedTaskEvent::class, self::class.'@changeLevel');
     }
 
     /**
@@ -357,5 +370,169 @@ class BonusProgramEventSubscriber
         ]);
         $user->purseBonus->processOperation($operation);
         event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+    }
+
+    /**
+     * Загрузка аватарки.
+     *
+     * @param User $user
+     */
+    public function uploadAvatar(User $user)
+    {
+        /** @var User $user */
+        if (false !== $user->isDirty('avatar')) {
+            $this->accureBonus(BonusProgramTypesInterfaces::AVATAR, $user);
+        }
+    }
+
+    /**
+     * Заполнение имени пользователя.
+     *
+     * @param User $user
+     *
+     * @return bool|void
+     */
+    public function fillUsername(User $user)
+    {
+        /** @var User $user */
+        if (false !== $user->isDirty('username')) {
+            $this->accureBonus(BonusProgramTypesInterfaces::USER_NAME, $user);
+        }
+    }
+
+    /**
+     * Заполнение Города.
+     *
+     * @param User $user
+     *
+     * @return bool|void
+     */
+    public function fillCity(User $user)
+    {
+        /** @var User $user */
+        if (false !== $user->isDirty('city_id')) {
+            $this->accureBonus(BonusProgramTypesInterfaces::CITY, $user);
+        }
+    }
+
+    /**
+     * Заполнение Города.
+     *
+     * @param User $user
+     *
+     * @return bool|void
+     */
+    public function fillCareerStart(ArtistProfile $artist)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        if (false !== $artist->isDirty('career_start')) {
+            $this->accureBonus(BonusProgramTypesInterfaces::CAREER_START, $user);
+        }
+    }
+
+    /**
+     * Заполнение описания.
+     *
+     * @param User $user
+     *
+     * @return bool|void
+     */
+    public function fillArtistDescription(ArtistProfile $artist)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        if (false !== $artist->isDirty('description')) {
+            $this->accureBonus(BonusProgramTypesInterfaces::ARTIST_DESCRIPTION, $user);
+        }
+    }
+
+    /**
+     * Заполнение жанров в которых играет.
+     *
+     * @param User $user
+     *
+     * @return bool|void
+     */
+    public function fillArtistGenres(ArtistProfile $artist)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        if (0 !== $artist->genres->count()) {
+            $this->accureBonus(BonusProgramTypesInterfaces::ARTIST_GENRES, $user);
+        }
+    }
+
+    /**
+     * Заполнение соц. сети.
+     *
+     * @param User $user
+     *
+     * @return bool|void
+     */
+    public function fillSocials(Social $social)
+    {
+        /** @var User $user */
+        $user = $social->user;
+        if (null !== $user) {
+            $this->accureBonus(BonusProgramTypesInterfaces::SOCIALS, $user);
+        }
+    }
+
+    public function changeLevel(CompletedTaskEvent $event)
+    {
+        /** @var User $user */
+        $user = $event->getUser();
+        $balance = $user->purseBonus->balance;
+        $keyLevel = array_search($user->level, $user->levels);
+        if (false === $keyLevel) {
+            throw  new \Exception('Нет такого уровня в иерархии уровней.');
+        }
+        if ($balance >= 400 && $balance < 3000 && User::LEVEL_AMATEUR !== $user->level && $keyLevel < 1) {
+            $user->level = User::LEVEL_AMATEUR;
+            $user->save();
+            event(new ChangeLevelEvent($user, $user->level));
+        } elseif ($balance >= 3000 && $balance < 5000 && User::LEVEL_CONNOISSEUR_OF_THE_GENRE !== $user->level && $keyLevel < 2) {
+            $user->level = User::LEVEL_CONNOISSEUR_OF_THE_GENRE;
+            $user->save();
+            event(new ChangeLevelEvent($user, $user->level));
+        } elseif ($balance >= 5000 && User::LEVEL_SUPER_MUSIC_LOVER !== $user->level && $keyLevel < 3) {
+            $user->level = User::LEVEL_SUPER_MUSIC_LOVER;
+            $user->save();
+            event(new ChangeLevelEvent($user, $user->level));
+        }
+    }
+
+    /**
+     * начисление бонуса.
+     *
+     * @param $bonusName
+     * @param User $user
+     */
+    public function accureBonus($bonusName, User $user)
+    {
+        $bonusType = Cache::get(BonusType::BONUS_TYPE.'_'.$bonusName);
+        if (null === $bonusType) {
+            $bonusType = BonusType::query()->where('constant_name', '=', $bonusName)->first();
+            Cache::put(BonusType::BONUS_TYPE.'_'.$bonusName, $bonusType, 60);
+        }
+
+        if (null !== $bonusType) {
+            $purse = $user->purseBonus;
+            if (null === $purse) {//при регистрации через соцсети может не быть кошелька
+                $purse = $user->purseBonus()->firstOrCreate(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
+            }
+            $countOperation = Operation::countOperation($bonusType, $user);
+            if (0 === $countOperation) {
+                $operation = new Operation([
+                    'direction' => Operation::DIRECTION_INCREASE,
+                    'amount' => $bonusType->bonus,
+                    'description' => $bonusType->name,
+                    'type_id' => $bonusType->id,
+                ]);
+                $purse->processOperation($operation);
+                event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+            }
+        }
     }
 }

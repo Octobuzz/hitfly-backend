@@ -55,7 +55,7 @@ class PictureField extends Field
     {
         $this->model = $root;
         $class = get_class($root);
-        switch ($class){
+        switch ($class) {
             case Album::class:
                 $defaultImage = 'default_album.png';
                 break;

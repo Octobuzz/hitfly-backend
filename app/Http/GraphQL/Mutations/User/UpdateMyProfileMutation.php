@@ -77,8 +77,8 @@ class UpdateMyProfileMutation extends Mutation
             if (isset($args['artistProfile']['description'])) {
                 $artist->description = $args['artistProfile']['description'];
             }
-            if (isset($args['artistProfile']['career_start'])) {
-                $artist->career_start = $args['artistProfile']['career_start'];
+            if (isset($args['artistProfile']['careerStart'])) {
+                $artist->career_start = $args['artistProfile']['careerStart'];
             }
             if (!empty($args['artistProfile']['genres'])) {
                 $tmpGenres = [];
