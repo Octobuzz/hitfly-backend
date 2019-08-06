@@ -126,7 +126,7 @@ $mobile_scale: $mobile_diameter / $desktop_diameter;
     & svg {
       fill: $medium_gray;
     }
-    
+
     &:hover {
       background-color: transparent;
     }

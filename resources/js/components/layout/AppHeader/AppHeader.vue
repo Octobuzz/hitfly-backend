@@ -62,21 +62,31 @@
       </UnauthenticatedPopoverWrapper>
 
       <span class="head-right-item app-header__loupe-icon">
-        <IconButton>
+        <IconButton class="head-right-item__button">
           <LoupeIcon />
         </IconButton>
       </span>
 
       <span class="head-right-item">
-        <NotificationButtonWithPopover />
+        <UnauthenticatedPopoverWrapper>
+          <template #auth-content>
+            <NotificationButtonWithPopover />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <IconButton class="block">
+              <BellIcon />
+            </IconButton>
+          </template>
+        </UnauthenticatedPopoverWrapper>
       </span>
 
-      <div class="head-right-item head-right-item_profile">
+      <span class="app-header__right-item">
         <UnauthenticatedPopoverWrapper>
           <template #auth-content>
             <HeaderProfilePopover>
               <img
-                class="head__profile"
+                class="app-header__right-item app-header__profile-image block"
                 :src="myProfile.avatar || anonymousAvatar"
                 alt="User avatar"
               >
@@ -85,13 +95,13 @@
 
           <template #unauth-popover-trigger>
             <img
-              class="head__profile"
+              class="app-header__right-item app-header__profile-image block"
               :src="myProfile.avatar || anonymousAvatar"
               alt="User avatar"
             >
           </template>
         </UnauthenticatedPopoverWrapper>
-      </div>
+      </span>
     </div>
 
     <div class="drop-menu">
@@ -132,7 +142,11 @@
             Звезды
           </span>
         </router-link>
-        <router-link to="/profile/edit" class="drop-menu-list__item">
+        <router-link
+          v-if="isAuthenticated"
+          to="/profile/edit"
+          class="drop-menu-list__item"
+        >
           <span>
             Настройки
           </span>
@@ -155,6 +169,7 @@ import logo from 'images/logo.svg';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import LoupeIcon from 'components/icons/LoupeIcon.vue';
+import BellIcon from 'components/icons/BellIcon.vue';
 import NotificationButtonWithPopover from 'components/notifications/NotificationButtonWithPopover';
 import HeaderProfilePopover from 'pages/profile/HeaderProfilePopover';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
@@ -164,6 +179,7 @@ export default {
   components: {
     IconButton,
     LoupeIcon,
+    BellIcon,
     NotificationButtonWithPopover,
     HeaderProfilePopover,
     UnauthenticatedPopoverWrapper
@@ -242,5 +258,17 @@ export default {
 <style scoped>
 .app-header__loupe-icon::v-deep svg {
   fill: transparent !important;
+}
+
+.app-header__right-item {
+  height: 40px;
+}
+
+.app-header__profile-image {
+  border-radius: 50%;
+}
+
+.block {
+  display: block;
 }
 </style>
