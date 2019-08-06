@@ -2,6 +2,7 @@
 
 .notification-body {
   display: flex;
+
   &__logo,
   &__image {
     width: 56px;
@@ -38,8 +39,7 @@
     &__image {
       width: 24px;
       height: 24px;
-      margin-top: 8px;
-      margin-right: 8px;
+      margin: 8px 8px 0 0;
     }
 
     &__image {

@@ -20,6 +20,13 @@
             v-for="notification in queue"
             :key="notification.id"
           >
+            <!-- Currently we show only those notifications which have been -->
+            <!-- arrived in the period since the popover was closed last time.-->
+            <!-- If we want to show previous notifications when open the popover-->
+            <!-- (which have already been read and up until 3 according to queue size)-->
+            <!-- we should remove string-->
+            <!-- :style="observedNotifications[notification.id] ? 'display:none' : ''"-->
+
             <component
               :is="'Notification' + pascalCase(notification.data.type)"
               :class="
@@ -31,6 +38,7 @@
                   }
                 ]
               "
+              :style="observedNotifications[notification.id] ? 'display:none' : ''"
               :data="notification.data"
             />
 
@@ -61,6 +69,7 @@ import {
   NotificationTrackInTop,
   NotificationTrackReviewed
 } from '../notificationBodies';
+import gql from './gql';
 
 export default {
   components: {
@@ -152,6 +161,12 @@ export default {
         .forEach(notification => this.queuePush(notification));
     },
 
+    shouldUpdateBonus(notificationType) {
+      const triggers = ['new-level', 'new-status', 'completed-task'];
+
+      return triggers.includes(notificationType);
+    },
+
     onNotification(data) {
       if (this.popoverIsOpen) {
         this.unreadCount = 0;
@@ -160,6 +175,20 @@ export default {
         );
       } else {
         this.unreadCount += 1;
+      }
+
+      const shouldUpdateBonus = this.shouldUpdateBonus(
+        data.data.type
+      );
+
+      if (shouldUpdateBonus) {
+        this.$apollo.provider.clients.private.query({
+          fetchPolicy: 'network-only',
+          query: gql.query.BONUS_PROGRAM,
+          error(err) {
+            console.dir(err);
+          }
+        });
       }
 
       this.queuePush(data);
