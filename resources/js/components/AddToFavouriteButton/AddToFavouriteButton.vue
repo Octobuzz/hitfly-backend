@@ -154,6 +154,8 @@ export default {
       } = this;
 
       this.$apollo.mutate({
+        client: 'private',
+
         mutation: gql.mutation.ADD_TO_FAVOURITE,
 
         variables: {
@@ -162,7 +164,9 @@ export default {
         },
 
         update: (store, { data: { addToFavourites } }) => {
-          this.refetchMyFavouriteTracksCount();
+          if (itemType === 'track') {
+            this.refetchMyFavouriteTracksCount();
+          }
 
           if (addToFavourites.id !== -1) {
             this.isButtonDisabled = false;
@@ -184,7 +188,7 @@ export default {
       }).then(() => {
         // handle result if it's needed
       }).catch((error) => {
-        console.log(error);
+        console.dir(error);
       });
     },
 
@@ -243,7 +247,7 @@ export default {
       }).then(() => {
         // handle result if it's needed
       }).catch((error) => {
-        console.log(error);
+        console.dir(error);
       });
     }
   },
@@ -257,6 +261,7 @@ export default {
 
       // eslint-disable-next-line consistent-return
       return {
+        client: this.apolloClient,
         query: typeToQueryMap[this.itemType],
         variables() {
           return {
@@ -268,7 +273,7 @@ export default {
           data[this.itemType].userFavourite
         ),
         error(error) {
-          console.log(error);
+          console.dir(error);
         },
         skip: this.fake
       };
@@ -289,7 +294,7 @@ export default {
           data[this.itemType].favouritesCount
         ),
         error(error) {
-          console.log(error);
+          console.dir(error);
         }
       };
     }

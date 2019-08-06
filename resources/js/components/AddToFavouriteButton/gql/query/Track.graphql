@@ -5,6 +5,6 @@ query AddToFavouriteButton_track(
     track(id: $id) {
         id
         favouritesCount
-        userFavourite @include (if: $isAuthenticated)
+        userFavourite @include(if: $isAuthenticated)
     }
 }
