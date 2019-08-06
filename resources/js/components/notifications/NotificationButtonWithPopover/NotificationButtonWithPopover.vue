@@ -10,7 +10,7 @@
       @show="popoverOnOpen"
       @hide="popoverOnClose"
     >
-      <IconButton>
+      <IconButton style="display: block">
         <BellIcon />
       </IconButton>
 

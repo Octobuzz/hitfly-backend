@@ -103,11 +103,16 @@
   position: relative;
   margin-right: 26px;
 
-  &:last-child{
-    margin-right: 0;
+  &__button {
+    display: block !important;
   }
-  &_upload{
-    display: none;
+
+  &_upload {
+    margin-right: 12px;
+  }
+
+  &:last-child:not(&_upload) {
+    margin-right: 0;
   }
 
   &:nth-child(2),
@@ -304,6 +309,7 @@
     margin-right: 5px;
 
     &_upload{
+      margin-right: 12px;
       display: inline-block;
     }
   }
@@ -416,5 +422,9 @@
   }
   .head-right-item{
     margin-right: 25px;
+
+    &_upload {
+      margin-right: 12px;
+    }
   }
 }
