@@ -39,7 +39,7 @@ class UserLevels
                 $balance >= 5000
                 && User::LEVEL_SUPER_MUSIC_LOVER !== $user->level
                 && $keyLevel < 3
-                && $this->checkGenresListeners($countListen, 1, 10000)
+                && $user->listenedTracks()->count() >= 10000
             ) {
                 $user->level = User::LEVEL_SUPER_MUSIC_LOVER;
                 $user->save();
