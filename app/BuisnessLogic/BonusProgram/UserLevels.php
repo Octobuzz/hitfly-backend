@@ -7,6 +7,10 @@ use App\Models\ListenedTrack;
 use App\Models\Track;
 use App\User;
 
+/**
+ * Класс повышения уровня пользователя
+ * Class UserLevels.
+ */
 class UserLevels
 {
     public function changeUserLevel(User $user)

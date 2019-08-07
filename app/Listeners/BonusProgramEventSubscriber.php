@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
+use App\BuisnessLogic\BonusProgram\UserLevels;
 use App\Events\CompletedTaskEvent;
 use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
 use App\Events\Track\TrackPublishEvent;
-use App\Events\User\ChangeLevelEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
 use App\Models\ArtistProfile;
@@ -483,24 +483,8 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = $event->getUser();
-        $balance = $user->purseBonus->balance;
-        $keyLevel = array_search($user->level, $user->levels);
-        if (false === $keyLevel) {
-            throw  new \Exception('Нет такого уровня в иерархии уровней.');
-        }
-        if ($balance >= 400 && $balance < 3000 && User::LEVEL_AMATEUR !== $user->level && $keyLevel < 1) {
-            $user->level = User::LEVEL_AMATEUR;
-            $user->save();
-            event(new ChangeLevelEvent($user, $user->level));
-        } elseif ($balance >= 3000 && $balance < 5000 && User::LEVEL_CONNOISSEUR_OF_THE_GENRE !== $user->level && $keyLevel < 2) {
-            $user->level = User::LEVEL_CONNOISSEUR_OF_THE_GENRE;
-            $user->save();
-            event(new ChangeLevelEvent($user, $user->level));
-        } elseif ($balance >= 5000 && User::LEVEL_SUPER_MUSIC_LOVER !== $user->level && $keyLevel < 3) {
-            $user->level = User::LEVEL_SUPER_MUSIC_LOVER;
-            $user->save();
-            event(new ChangeLevelEvent($user, $user->level));
-        }
+        $userLevel = new UserLevels();
+        $userLevel->changeUserLevel($user);
     }
 
     /**

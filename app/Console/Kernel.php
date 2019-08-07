@@ -10,6 +10,7 @@ use App\Console\Commands\ConvertTrackCommand;
 use App\Console\Commands\CreatePlayTimeTrackCommand;
 use App\Console\Commands\CreateTopFiftyCommand;
 use App\Console\Commands\MusicalWaveCommand;
+use App\Jobs\CheckUserNewLevelJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
@@ -71,6 +72,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(MusicalWaveCommand::class)->everyMinute()->name('create_music_wave')->withoutOverlapping();
         $schedule->command(ConvertTrackCommand::class)->everyMinute()->name('convert_track')->withoutOverlapping();
         $schedule->command(CalculateTopWeeklyCommand::class)->weeklyOn(1);
+
+        $schedule->job(new CheckUserNewLevelJob())->name('check_user_new_level')->dailyAt('01:00');
     }
 
     /**
