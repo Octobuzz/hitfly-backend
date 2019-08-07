@@ -1,0 +1,35 @@
+query WatchedUsersContainer_watchingUser(
+    $pageNumber: Int!,
+    $pageLimit: Int!
+) {
+    watchingUser(
+        page: $pageNumber,
+        limit: $pageLimit
+    ) {
+        total
+        to
+        data {
+            id
+            user {
+                id
+                username
+                iWatch
+                followersCount
+                avatar(
+                    sizes: [size_56x56]
+                ) {
+                    size
+                    url
+                }
+                location {
+                    id
+                    title
+                }
+                genresPlay {
+                    id
+                    name
+                }
+            }
+        }
+    }
+}

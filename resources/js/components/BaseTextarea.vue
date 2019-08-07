@@ -108,7 +108,8 @@ export default {
     position: absolute;
     width: calc(100% - 16px);
     height: 25px;
-    top: 0;
+    top: 1px;
+    right: 1px;
     background: linear-gradient(to bottom, white 85%, transparent 100%);
   }
 

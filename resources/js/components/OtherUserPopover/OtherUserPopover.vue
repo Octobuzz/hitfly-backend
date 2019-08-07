@@ -69,13 +69,17 @@ export default {
     userId: {
       type: Number,
       required: true
+    },
+    placement: {
+      type: String,
+      default: 'right-start'
     }
   },
 
   data() {
     return {
       popover: {
-        placement: 'right-start',
+        placement: this.placement,
         popperOptions: {}
       },
       myId: null,
