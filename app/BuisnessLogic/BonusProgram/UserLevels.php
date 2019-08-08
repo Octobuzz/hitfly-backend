@@ -3,7 +3,6 @@
 namespace App\BuisnessLogic\BonusProgram;
 
 use App\Events\User\ChangeLevelEvent;
-use App\Models\ListenedTrack;
 use App\Models\Track;
 use App\User;
 
@@ -13,6 +12,8 @@ use App\User;
  */
 class UserLevels
 {
+    const MAX_GENRE_COUNT = 5; //максимальное количество жанров, которое понадобится для рассчета
+
     public function changeUserLevel(User $user)
     {
         $balance = $user->purseBonus->balance;
@@ -28,7 +29,7 @@ class UserLevels
             event(new ChangeLevelEvent($user, $user->level));
         } else {
             //получим количество прослушиваний один раз для всех последующих условий
-            $countListen = $this->getCountListenedTracksByGenres($user, 5);
+            $countListen = $this->getCountListenedTracksByGenres($user, self::MAX_GENRE_COUNT);
             if ($balance >= config('bonus.levelBonusPoint.'.User::LEVEL_CONNOISSEUR_OF_THE_GENRE)
                 && $balance < config('bonus.levelBonusPoint.'.User::LEVEL_SUPER_MUSIC_LOVER)
                 && User::LEVEL_CONNOISSEUR_OF_THE_GENRE !== $user->level
@@ -42,7 +43,7 @@ class UserLevels
                 $balance >= config('bonus.levelBonusPoint.'.User::LEVEL_SUPER_MUSIC_LOVER)
                 && User::LEVEL_SUPER_MUSIC_LOVER !== $user->level
                 && $keyLevel < 3
-                && $this->checkGenresListeners($countListen, 1, config('bonus.levelListenTrack.'.User::LEVEL_SUPER_MUSIC_LOVER))
+                && $this->checkGenresListeners($countListen, self::MAX_GENRE_COUNT, config('bonus.levelListenTrack.'.User::LEVEL_SUPER_MUSIC_LOVER))
             ) {
                 $user->level = User::LEVEL_SUPER_MUSIC_LOVER;
                 $user->save();
@@ -61,17 +62,14 @@ class UserLevels
      */
     public function getCountListenedTracksByGenres(User $user, $countGenres = 1)
     {
-        $query = ListenedTrack::query()->selectRaw('count(*) as count, genres_bindings.genre_id')
-            ->where('listened_tracks.user_id', $user->id)
-            ->leftJoin('genres_bindings', function ($join) {
-                $join->on('genres_bindings.genreable_id', '=', 'listened_tracks.track_id');
-                $join->where('genres_bindings.genreable_type', '=', Track::class);
-            });
-        $countArray = $query->groupBy('genres_bindings.genre_id')->get()->pluck('count', 'genre_id')->toArray();
-        arsort($countArray);
-        $countArray = array_slice($countArray, 0, $countGenres, true);
-        // $countArray : ключ - id жанра, значение - количество прослушиваний
-        return $countArray;
+        $countArray = $user->listenedTracks()->selectRaw('count(*) as count, genres_bindings.genre_id')->leftJoin('genres_bindings', function ($join) {
+            $join->on('genres_bindings.genreable_id', '=', 'listened_tracks.track_id');
+            $join->where('genres_bindings.genreable_type', '=', Track::class);
+        })->groupBy('genres_bindings.genre_id')
+            ->orderBy('count', 'desc')->limit($countGenres)->get()
+            ->pluck('count', 'genre_id');
+
+        return $countArray->toArray();
     }
 
     /**
@@ -80,6 +78,7 @@ class UserLevels
      * @param $countArray
      * @param int $countGenres кол-во жанров, необходимое для проходение условия
      * @param int $countListen кол-во прослушиваний необходимое для прохождения условия
+     * @return bool
      */
     private function checkGenresListeners(array $countArray, $countGenres = 1, $countListen = 100)
     {
