@@ -2,10 +2,15 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\BuisnessLogic\BonusProgram\UserLevels;
+use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Http\GraphQL\Privacy\UserPrivacy;
+use App\Models\Genre;
 use App\Models\Purse;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use GraphQL;
 
@@ -86,13 +91,23 @@ class MyProfileType extends GraphQLType
                     },
                     'selectable' => false,
                 ],
-                'bpProgressPercent' => [
-                    'type' => Type::nonNull(Type::int()),
-                    'description' => 'Процент заполнения для перехода на следующий уровень в бонусной программе',
+                'bpListenedTracksByGenres' => [
+                    'type' => Type::listOf(GraphQL::type('Genre')),
+                    'description' => 'получить количество прослушанных треков по жанрам',
                     'resolve' => function ($model) {
-                        return 50; // todo доделать
+                        $user = Auth::user();
+                        $userLevels = new UserLevels();
+                        $keyCache = $user->id.'_getCountListenedTracksByGenres';
+                        $listenGenres = Cache::tags(['countListenedTracksByGenres'])->get($keyCache, null);
+                        if (null === $listenGenres) {
+                            $listenGenres = $userLevels->getCountListenedTracksByGenres($user, 5);
+                            Cache::tags(['countListenedTracksByGenres'])->put($keyCache, $listenGenres, now()->addHours(24));
+                        }
+
+                        return  Genre::query()->whereIn('id', array_keys($listenGenres))->get();
                     },
                     'selectable' => false,
+                    'privacy' => IsAuthPrivacy::class,
                 ],
 
                 'myTracksCount' => [

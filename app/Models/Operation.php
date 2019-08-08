@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -54,5 +55,12 @@ class Operation extends Model
     public function purseBonus()
     {
         return $this->belongsTo(Purse::class, 'purse_id');
+    }
+
+    public static function countOperation(BonusType $bonusType, User $user): int
+    {
+        $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
+
+        return Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id)->count();
     }
 }

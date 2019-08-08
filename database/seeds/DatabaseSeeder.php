@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
 
         if (App::environment('local')) {
             $this->call([
+                BonusTypesSeeder::class,
                 PermissionSeeder::class,
                 RoleSeeder::class,
                 MenuSeeder::class,
@@ -54,6 +55,7 @@ class DatabaseSeeder extends Seeder
         }
         if (App::environment('prod')) {
             $this->call([
+                BonusTypesSeeder::class,
                 PermissionSeeder::class,
                 RoleSeeder::class,
                 MenuSeeder::class,

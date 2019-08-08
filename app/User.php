@@ -89,6 +89,13 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const LEVEL_CONNOISSEUR_OF_THE_GENRE = 'LEVEL_CONNOISSEUR_OF_THE_GENRE'; // Знаток жанра
     const LEVEL_SUPER_MUSIC_LOVER = 'LEVEL_SUPER_MUSIC_LOVER'; // Супер меломан
 
+    public $levels = [
+        self::LEVEL_NOVICE,
+        self::LEVEL_AMATEUR,
+        self::LEVEL_CONNOISSEUR_OF_THE_GENRE,
+        self::LEVEL_SUPER_MUSIC_LOVER,
+    ];
+
     const ROLE_STAR = 'star';
     const ROLE_CRITIC = 'critic';
     const ROLE_PROF_CRITIC = 'prof_critic';
@@ -106,6 +113,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         'gender',
         'birthday',
         'city_id',
+        'level',
         //'avatar',
         'email_verified_at',
     ];

@@ -50,4 +50,19 @@ interface BonusProgramTypesInterfaces
 
     // Рецензия от критика
     const CRITIC_REVIEW = 'CRITIC_REVIEW';
+
+    //загрузка аватара
+    const AVATAR = 'AVATAR';
+    //Заполнение имени
+    const USER_NAME = 'USER_NAME';
+    //заполнение города
+    const CITY = 'CITY';
+    //заполнение даты начала карьеры
+    const CAREER_START = 'CAREER_START';
+    //заполнение жанров в которых играет артист
+    const ARTIST_GENRES = 'ARTIST_GENRES';
+    //заполнение описания артиста
+    const ARTIST_DESCRIPTION = 'ARTIST_DESCRIPTION';
+    //заполнение соцсетей
+    const SOCIALS = 'SOCIALS';
 }

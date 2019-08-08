@@ -280,7 +280,7 @@ class NotificationEventSubscriber
             'level' => $event->getLevel(),
         ];
 
-        $baseNotifyMessage = new BaseNotifyMessage('completed-task', $messageData);
+        $baseNotifyMessage = new BaseNotifyMessage('new-level', $messageData);
         $user->notify(new BaseNotification($baseNotifyMessage));
     }
 
