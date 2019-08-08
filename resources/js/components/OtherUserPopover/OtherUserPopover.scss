@@ -29,15 +29,7 @@ $text_color_highlighted: white;
     position: absolute;
     width: 0;
     height: 0;
-    left: -5px;
-    border: {
-      width: 5px 5px 5px 0;
-      style: solid;
-      top-color: transparent;
-      right-color: $bg_color;
-      bottom-color: transparent;
-      left-color: transparent;
-    }
+    border-style: solid;
     z-index: 900;
   }
 
@@ -71,6 +63,32 @@ $text_color_highlighted: white;
 
   &[x-placement^="right"] {
     margin-left: 5px;
+
+    .other-user-popover__arrow {
+      left: -5px;
+      border: {
+        width: 5px 5px 5px 0;
+        top-color: transparent;
+        right-color: $bg_color;
+        bottom-color: transparent;
+        left-color: transparent;
+      }
+    }
+  }
+
+  &[x-placement^="left"] {
+    margin-right: 5px;
+
+    .other-user-popover__arrow {
+      right: -5px;
+      border: {
+        width: 5px 0 5px 5px;
+        top-color: transparent;
+        right-color: transparent;
+        bottom-color: transparent;
+        left-color: $bg_color;
+      }
+    }
   }
 
   &[aria-hidden='true'] {

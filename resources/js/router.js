@@ -96,6 +96,10 @@ const routes = [
         component: profile.UserNotifications
       },
       {
+        path: 'watched-users',
+        component: profile.WatchedUsersContainer
+      },
+      {
         path: '',
         redirect: { name: 'profile-my-music' }
       }

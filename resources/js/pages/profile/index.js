@@ -14,4 +14,5 @@ export { default as OtherUserMusic } from './OtherUserMusic';
 export { default as AlbumTrackList } from './AlbumTrackList';
 export { default as CollectionTrackList } from './CollectionTrackList';
 export { default as UserTrackList } from './UserTrackList';
+export { default as WatchedUsersContainer } from './WatchedUsersContainer';
 export { default as UserNotifications } from 'components/notifications/NotificationsContainer';

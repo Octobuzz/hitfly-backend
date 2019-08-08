@@ -138,9 +138,12 @@
         <span>
           Слежу
         </span>
-        <button class="user-card__button">
+        <router-link
+          to="/profile/watched-users"
+          class="user-card__button"
+        >
           Все
-        </button>
+        </router-link>
       </div>
 
       <div
