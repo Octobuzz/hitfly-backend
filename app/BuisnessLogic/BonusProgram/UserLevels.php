@@ -68,7 +68,7 @@ class UserLevels
         })->groupBy('genres_bindings.genre_id')
             ->orderBy('count', 'desc')->limit($countGenres)->get()
             ->pluck('count', 'genre_id');
-
+        // $countArray : ключ - id жанра, значение - количество прослушиваний
         return $countArray->toArray();
     }
 
