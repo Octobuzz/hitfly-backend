@@ -20,26 +20,29 @@ class UserLevels
         if (false === $keyLevel) {
             throw  new \Exception('Нет такого уровня в иерархии уровней.');
         }
-        if ($balance >= 400 && $balance < 3000 && User::LEVEL_AMATEUR !== $user->level && $keyLevel < 1) {
+        if ($balance >= config('bonus.levelBonusPoint.'.User::LEVEL_NOVICE)
+            && $balance < config('bonus.levelBonusPoint.'.User::LEVEL_CONNOISSEUR_OF_THE_GENRE)
+            && User::LEVEL_AMATEUR !== $user->level && $keyLevel < 1) {
             $user->level = User::LEVEL_AMATEUR;
             $user->save();
             event(new ChangeLevelEvent($user, $user->level));
         } else {
             //получим количество прослушиваний один раз для всех последующих условий
-            $countListen = $this->getCountListenedTracksOfGenres($user, 1);
-            if ($balance >= 3000 && $balance < 5000
+            $countListen = $this->getCountListenedTracksByGenres($user, 5);
+            if ($balance >= config('bonus.levelBonusPoint.'.User::LEVEL_CONNOISSEUR_OF_THE_GENRE)
+                && $balance < config('bonus.levelBonusPoint.'.User::LEVEL_SUPER_MUSIC_LOVER)
                 && User::LEVEL_CONNOISSEUR_OF_THE_GENRE !== $user->level
                 && $keyLevel < 2
-                && $this->checkGenresListeners($countListen, 1, 2500)
+                && $this->checkGenresListeners($countListen, 1, config('bonus.levelListenTrack.'.User::LEVEL_CONNOISSEUR_OF_THE_GENRE))
             ) {
                 $user->level = User::LEVEL_CONNOISSEUR_OF_THE_GENRE;
                 $user->save();
                 event(new ChangeLevelEvent($user, $user->level));
             } elseif (
-                $balance >= 5000
+                $balance >= config('bonus.levelBonusPoint.'.User::LEVEL_SUPER_MUSIC_LOVER)
                 && User::LEVEL_SUPER_MUSIC_LOVER !== $user->level
                 && $keyLevel < 3
-                && $user->listenedTracks()->count() >= 10000
+                && $this->checkGenresListeners($countListen, 1, config('bonus.levelListenTrack.'.User::LEVEL_SUPER_MUSIC_LOVER))
             ) {
                 $user->level = User::LEVEL_SUPER_MUSIC_LOVER;
                 $user->save();
@@ -56,7 +59,7 @@ class UserLevels
      *
      * @return array
      */
-    private function getCountListenedTracksOfGenres(User $user, $countGenres = 1)
+    public function getCountListenedTracksByGenres(User $user, $countGenres = 1)
     {
         $query = ListenedTrack::query()->selectRaw('count(*) as count, genres_bindings.genre_id')
             ->where('listened_tracks.user_id', $user->id)

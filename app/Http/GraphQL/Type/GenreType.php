@@ -2,8 +2,11 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\BuisnessLogic\BonusProgram\UserLevels;
+use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -60,6 +63,29 @@ class GenreType extends GraphQLType
 
                     return $result;
                 },
+            ],
+
+            'countListenedByUser' => [
+                'type' => Type::int(),
+                'description' => 'Количество прослушиваний жанра текущим пользователем(вернет NULL если не попадает в топ прослушивания)',
+                'resolve' => function ($model) {
+                    $user = Auth::user();
+                    $userLevels = new UserLevels();
+                    $keyCache = $user->id.'_getCountListenedTracksByGenres';
+                    $listenGenres = Cache::tags(['countListenedTracksByGenres'])->get($keyCache, null);
+                    if (null === $listenGenres) {
+                        $listenGenres = $userLevels->getCountListenedTracksByGenres($user, 5);
+                        Cache::tags(['countListenedTracksByGenres'])->put($keyCache, $listenGenres, now()->addHours(24));
+                    }
+
+                    if (array_key_exists($model->id, $listenGenres)) {
+                        return $listenGenres[$model->id];
+                    } else {
+                        return null;
+                    }
+                },
+                'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
         ];
     }
