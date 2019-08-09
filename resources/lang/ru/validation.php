@@ -15,6 +15,7 @@ return [
     'album_delete_validate' => 'У вас нет прав на удаление альбома',
     'remove_track_from_album_validate' => 'У вас нет прав на удаление трека из альбома',
     'remove_track_from_collection_validate' => 'Вы неможете удалить этот трек',
+    'music_group_delete_validate' => 'У вас нет прав на удаление группы',
     'collection_delete_validate' => 'У вас нет прав на удаление плейлиста',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',

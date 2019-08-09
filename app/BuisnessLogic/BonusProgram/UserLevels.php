@@ -78,6 +78,7 @@ class UserLevels
      * @param $countArray
      * @param int $countGenres кол-во жанров, необходимое для проходение условия
      * @param int $countListen кол-во прослушиваний необходимое для прохождения условия
+     *
      * @return bool
      */
     private function checkGenresListeners(array $countArray, $countGenres = 1, $countListen = 100)

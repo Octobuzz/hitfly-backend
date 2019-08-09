@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\MusicGroup;
 use App\Models\Track;
+use App\Policies\MusicGroupPolicy;
 use App\Policies\TrackPolicy;
 use App\Services\Auth\JsonGuard;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Track::class => TrackPolicy::class,
+        MusicGroup::class => MusicGroupPolicy::class,
     ];
 
     /**

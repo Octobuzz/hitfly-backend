@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('follow_delete_validate', 'App\Validation\FollowValidator@validateDelete');
         Validator::extend('mutually_exclusive_args', 'App\Validation\ManuallyExclusiveArgs@validate');
         Validator::extend('album_delete_validate', 'App\Validation\AlbumValidator@validateDelete');
+        Validator::extend('music_group_delete_validate', 'App\Validation\MusicGroupValidator@validateDelete');
         Validator::extend('collection_delete_validate', 'App\Validation\CollectionValidator@validateDelete');
         Validator::extend('remove_track_from_album_validate', 'App\Validation\AlbumValidator@removeTrackFromAlbum');
         Validator::extend('remove_track_from_collection_validate', 'App\Validation\CollectionValidator@removeTrackFromCollection');
