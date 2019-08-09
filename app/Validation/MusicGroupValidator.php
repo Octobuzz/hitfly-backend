@@ -8,9 +8,9 @@
 
 namespace App\Validation;
 
-use App\Models\Album;
 use App\Models\MusicGroup;
-use App\Models\Track;
+use App\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class MusicGroupValidator extends Validator
@@ -19,18 +19,12 @@ class MusicGroupValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = \Auth::guard('json')->user();
         $musicGroup = MusicGroup::query()->find($data['id']);
 
         if (null === $musicGroup) {
             throw new \Exception('Такой группы не существует.');
         }
 
-        if ($user->id === $musicGroup->creator_group_id) {
-            return true;
-        }
-
-        return false;
+        return Gate::allows('delete', $musicGroup);
     }
-
 }
