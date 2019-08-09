@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Models\MusicGroup;
+use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -24,23 +25,18 @@ class DeleteMusicGroupMutation extends Mutation
             'id' => [
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the human.',
+                'rules' => 'music_group_delete_validate',
             ],
         ];
     }
 
     public function resolve($root, $args)
     {
+        /** @var User $user */
         $user = \Auth::guard('json')->user();
 
         $musicGroup = MusicGroup::query()->find($args['id']);
-
-        if (null === $musicGroup) {
-            throw new \Exception('inncorect');
-        }
-
-        if ($user->can('deleted', $musicGroup)) {
-            $musicGroup->delete();
-        }
+        $musicGroup->delete();
 
         return null;
     }

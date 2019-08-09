@@ -63,7 +63,7 @@ class PictureField extends Field
                 $defaultImage = 'default_playlist.png';
                 break;
             case MusicGroup::class:
-                $defaultImage = 'default_musicgroup.jpg';
+                $defaultImage = 'default_musicgroup.png';
                 break;
             default:
                 $defaultImage = 'default_track.png';
