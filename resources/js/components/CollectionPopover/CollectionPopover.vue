@@ -97,8 +97,8 @@
           <span class="collection-popover__menu-item-icon">
             <ListPlusIcon />
           </span>
-          Добавить в список воспроизведения
-        </span>
+            Добавить в список воспроизведения
+          </span>
 
 <!--        <span class="collection-popover__menu-item">-->
 <!--          <span class="collection-popover__menu-item-icon">-->
@@ -108,7 +108,7 @@
 <!--        </span>-->
 
         <span
-          v-if="isAuthenticated && isRemovable"
+          v-if="isAuthenticated && !isFavouriteRemoveOptionHidden && isRemovable"
           class="collection-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -184,7 +184,7 @@ export default {
       return this.collection.my;
     },
 
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
+    ...mapGetters(['isAuthenticated', 'apolloClient', 'isFavouriteRemoveOptionHidden'])
   },
 
   methods: {
