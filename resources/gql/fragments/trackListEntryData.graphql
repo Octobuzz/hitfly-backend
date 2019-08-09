@@ -12,4 +12,7 @@ fragment trackListEntryData on Track {
         id
         title
     }
+    user {
+        id
+    }
 }

@@ -2,7 +2,7 @@
   <div :class="['user-track-list', containerPaddingClass]">
     <ReturnHeader class="user-track-list__return-button" />
 
-    <template v-if="tracksDataFetched && shownTrack">
+    <template v-if="shownTrack">
       <span class="user-track-list__singer">
         {{ shownTrack.singer }}
       </span>
@@ -81,7 +81,7 @@
         <span class="user-track-list__button user-track-list__button_more">
           <TrackActionsPopover
             :track-id="shownTrack.id"
-            :show-remove-option="userId === 'me'"
+            :show-remove-option="userId === myId"
             @press-favourite="onPressFavourite"
           >
             <IconButton
@@ -154,7 +154,6 @@ export default {
       playingTrack: null,
       firstTrack: null,
       firstTrackId: null,
-      tracksDataFetched: true,
       tooltip: {
         more: {
           content: 'Еще'
@@ -165,7 +164,9 @@ export default {
 
   computed: {
     currentPlaying() {
-      return this.currentType.type === 'tracks' && this.currentType.id === this.currentId && this.$store.getters['player/isPlaying'];
+      return this.currentType.type === 'tracks'
+        && this.currentType.id === this.currentId
+        && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {
@@ -182,6 +183,10 @@ export default {
       return +this.$route.params.userId;
     },
 
+    myId() {
+      return this.$store.getters['profile/myId'];
+    },
+
     currentId() {
       const pathPrefix = this.currentPath.split('/')[1];
 
@@ -194,6 +199,7 @@ export default {
 
     shownTrack() {
       const {
+        currentId,
         playingTrack,
         firstTrack
       } = this;
@@ -202,7 +208,7 @@ export default {
         return null;
       }
 
-      if (playingTrack && playingTrack.my === true) {
+      if (playingTrack && playingTrack.user.id === currentId) {
         return playingTrack;
       }
 

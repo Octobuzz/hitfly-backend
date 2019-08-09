@@ -389,9 +389,11 @@ export default {
       return {
         client: this.apolloClient,
         query: gql.query.TRACK,
-        variables: {
-          isAuthenticated: this.isAuthenticated,
-          id: this.trackId,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.trackId,
+          };
         },
         update: ({ track }) => track,
         error(error) {
