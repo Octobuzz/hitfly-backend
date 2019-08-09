@@ -204,6 +204,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
+
         this.getTrack(trackId);
       }
     },
@@ -213,7 +214,7 @@ export default {
         variables: {
           id: id
         },
-        query: gql`query tracks {
+        query: gql`query tracks($id: Int!) {
           track(id: $id) {
             id
             filename
@@ -238,6 +239,8 @@ export default {
         };
         this.$store.commit('player/changeCurrentType', data);
         this.$store.commit('player/pickTrack', response.data.track);
+
+        console.log(response.data.track);
       })
     },
     update(e) {

@@ -32,13 +32,13 @@
 
       <div class="favourite-track-list__button-section">
         <button
-          @click="playTracks"
+          @click="playFavTracks"
           :class="[
             'favourite-track-list__button',
             'favourite-track-list__button_listen'
           ]"
         >
-          <template v-if="currentPlaying">
+          <template v-if="isFavTrackListPlaying && playerIsPlaying">
             <CirclePauseIcon />
             Пауза
           </template>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import elHasSpaceBelow from 'modules/elHasSpaceBelow';
 import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
@@ -173,15 +174,16 @@ export default {
       return firstTrack;
     },
 
-    currentPlaying() {
-      return this.currentType.type === 'tracks'
-        && this.currentType.id === this.currentId
-        && this.$store.getters['player/isPlaying'];
+    isFavTrackListPlaying() {
+      return this.playerCurrentType.type === 'favourite-tracks';
     },
 
-    currentType() {
-      return this.$store.getters['player/getCurrentType'];
-    },
+    ...mapGetters(['profile/myId']),
+
+    ...mapGetters('player', {
+      playerCurrentType: 'getCurrentType',
+      playerIsPlaying: 'isPlaying'
+    })
   },
 
   methods: {
@@ -235,9 +237,63 @@ export default {
       this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
     },
 
-    playTracks() {
-      // TODO: implement play method
-    }
+    playFavTracks() {
+      const {
+        playerIsPlaying,
+        isFavTrackListPlaying
+      } = this;
+
+      if (playerIsPlaying && isFavTrackListPlaying) {
+        this.playerPausePlaying();
+
+        return;
+      }
+
+      if (isFavTrackListPlaying) {
+        this.playerStartPlaying();
+
+        return;
+      }
+
+      this.$apollo.query({
+        client: this.apolloClient,
+        query: gql.query.QUEUE_FAVOURITE_TRACKS,
+        variables: {
+          pageLimit: 30,
+          pageNumber: 1
+        },
+        error(err) {
+          console.dir(err);
+        }
+      })
+        .then((res) => {
+          const favTracks = res.data.favouriteTrack.data.map(
+            dataEntry => dataEntry.track
+          );
+          const nextPlayerType = {
+            type: 'favourite-tracks',
+            id: null
+          };
+
+          this.playerPausePlaying();
+          this.playerChangeCurrentType(nextPlayerType);
+          this.playerPickTrack(favTracks[0]);
+
+          const favTrackIdList = favTracks.map(track => track.id);
+          this.playerPickPlaylist(favTrackIdList);
+        })
+        .catch((err) => {
+          console.dir(err);
+        });
+    },
+
+    ...mapMutations('player', {
+      playerStartPlaying: 'startPlaying',
+      playerPausePlaying: 'pausePlaying',
+      playerPickTrack: 'pickTrack',
+      playerPickPlaylist: 'pickPlaylist',
+      playerChangeCurrentType: 'changeCurrentType'
+    })
   },
 
   apollo: {
