@@ -239,8 +239,6 @@ export default {
         };
         this.$store.commit('player/changeCurrentType', data);
         this.$store.commit('player/pickTrack', response.data.track);
-
-        console.log(response.data.track);
       })
     },
     update(e) {
