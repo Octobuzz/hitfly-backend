@@ -8,5 +8,6 @@ query QueueTrack(
         id
         ...queueTrack
         userFavourite @include(if: $isAuthenticated)
+        favouritesCount @include(if: $isAuthenticated)
     }
 }

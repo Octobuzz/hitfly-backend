@@ -1,0 +1,27 @@
+#import "gql/fragments/queueTrack.graphql"
+
+query FavouriteTrackList_favouriteTrack(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+) {
+    favouriteTrack(
+        limit: $pageLimit,
+        page: $pageNumber
+    ){
+        total
+        to
+        data {
+            id
+            track {
+                id
+                ...queueTrack
+                userFavourite
+                user {
+                    id
+                    username
+                }
+                favouritesCount
+            }
+        }
+    }
+}

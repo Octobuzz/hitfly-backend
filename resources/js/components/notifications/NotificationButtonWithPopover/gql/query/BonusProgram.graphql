@@ -3,6 +3,5 @@ query NotificationButtonWithPopover {
         bpDaysInProgram
         bpLevelBonusProgram
         bpPoints
-        bpProgressPercent
     }
 }

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import elHasSpaceBelow from 'modules/elHasSpaceBelow';
 import loadOnScroll from 'mixins/loadOnScroll';
 import WatchedUserList from '../WatchedUserList';
 import gql from './gql';
@@ -26,7 +27,7 @@ export default {
       hasMoreData: true,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 2
+        pageLimit: 15
       }
     };
   },
@@ -79,11 +80,12 @@ export default {
         });
     },
 
-    hasSpaceBelow(domEl, spacePx) {
-      const bodyHeight = document.body.offsetHeight;
-      const domElBottom = domEl.getBoundingClientRect().bottom;
-
-      return bodyHeight - domElBottom >= spacePx;
+    attemptToLoadMore() {
+      if (elHasSpaceBelow(this.$refs.root, 350)) {
+        this.loadMore();
+      } else {
+        this.loadOnScroll();
+      }
     }
   },
 
@@ -109,20 +111,12 @@ export default {
             const componentRoot = this.$refs.root;
             const mounted = componentRoot !== undefined;
 
-            const attemptLoadMore = () => {
-              if (this.hasSpaceBelow(this.$refs.root, 350)) {
-                this.loadMore();
-              } else {
-                this.loadOnScroll();
-              }
-            };
-
             if (!mounted) {
-              this.$once('hook:mounted', attemptLoadMore);
+              this.$once('hook:mounted', this.attemptToLoadMore.bind(this));
 
               return;
             }
-            attemptLoadMore();
+            this.attemptToLoadMore();
           });
 
           return data.map(watched => watched.user);

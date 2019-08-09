@@ -1,0 +1,11 @@
+#import "gql/fragments/trackListEntryData.graphql"
+
+query FavouriteTrackList_track($id: Int) {
+    track(id: $id) {
+        id
+        ...trackListEntryData
+
+        #TrackToPlaylistPopover #TrackActionsPopover
+        userFavourite
+    }
+}
