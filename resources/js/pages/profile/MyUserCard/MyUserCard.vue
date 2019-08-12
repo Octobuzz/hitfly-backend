@@ -9,7 +9,9 @@
 
       <div class="user-card__profile-info">
         <p class="user-card__profile-name">
-          {{ myProfile.name }}
+          <WordTrimmedWithTooltip
+            :word="myProfile.name"
+          />
         </p>
         <p class="user-card__followers-count">
           {{ myProfile.followersCount || '0' }}
@@ -355,6 +357,7 @@
 import { bonusProgramLvl } from 'modules/bonus-program';
 import endingFormatter from 'modules/plural-form-endings-formatter';
 import anonymousAvatar from 'images/anonymous-avatar.png';
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
@@ -366,6 +369,7 @@ import gql from './gql';
 
 export default {
   components: {
+    WordTrimmedWithTooltip,
     BpFollowers,
     BpDaysPassed,
     BpFavouriteTracks,

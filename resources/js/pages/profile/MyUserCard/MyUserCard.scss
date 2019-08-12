@@ -43,6 +43,9 @@ p {
   }
 
   &__profile-info {
+    flex-basis: 0;
+    flex-grow: 1;
+    overflow: hidden;
     margin: {
       top: 4px;
       right: 20px;
