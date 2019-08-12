@@ -111,7 +111,7 @@ return [
     ],
     'reachTop' => [
         'hello' => 'Поздравляем! Ваш трек попал в ТОП-:top',
-        'text' => ':Name занял :position место в ТОП<br>
+        'text' => ':Name занял :position место<br>
             Пройдите по <a href=":link" style="text-decoration: none; color: #b36fcb;">ссылке</a>, чтобы прослушать плейлист.',
         'empty' => 'пусто',
         'subject' => 'Ваш трек попал в ТОП',
