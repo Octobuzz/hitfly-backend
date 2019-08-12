@@ -3,7 +3,12 @@
     v-if="bonusProgram"
     class="header-profile-popover-bonus-program"
   >
-    <span class="header-profile-popover-bonus-program__status-section">
+    <span
+      :class="[
+        'header-profile-popover-bonus-program__status-section',
+        { 'header-profile-popover-bonus-program__status-section_fill': !hasNextLevel }
+      ]"
+    >
       <img
         :src="bonusProgram.currentImg"
         alt="Статус"
@@ -12,26 +17,41 @@
       {{ bonusProgram.currentStatus }}
     </span>
 
-    <span class="header-profile-popover-bonus-program__arrow-section">
-      <HeaderProfilePopoverArrow />
-    </span>
-
-    <span
-      v-if="bonusProgram && bonusProgram.nextLevel"
-      class="header-profile-popover-bonus-program__next-level-section"
-    >
-      до
-      <img
-        :src="bonusProgram.nextImg"
-        alt="Статус"
-        class="header-profile-popover-bonus-program__image"
-      >
-      {{ formatNextStatus(bonusProgram.nextStatus) }}
-      осталось
-      <span class="header-profile-popover-bonus-program__points">
-        {{ bonusProgram.pointsToNextLevel }} б
+    <template v-if="hasNextLevel">
+      <span class="header-profile-popover-bonus-program__arrow-section">
+        <HeaderProfilePopoverArrow />
       </span>
-    </span>
+
+      <span
+        v-if="bonusProgram.pointsToNextLevel"
+        class="header-profile-popover-bonus-program__next-level-section"
+      >
+        до
+        <img
+          :src="bonusProgram.nextImg"
+          alt="Статус"
+          class="header-profile-popover-bonus-program__image"
+        >
+        {{ formatNextStatus(bonusProgram.nextStatus) }}
+        осталось
+        <span class="header-profile-popover-bonus-program__points">
+          {{ bonusProgram.pointsToNextLevel }} б
+        </span>
+      </span>
+
+      <span
+        v-else
+        class="header-profile-popover-bonus-program__next-level-section"
+      >
+        Чтобы стать
+        <img
+          :src="bonusProgram.nextImg"
+          alt="Статус"
+          class="header-profile-popover-bonus-program__image"
+        >
+        {{ bonusProgram.nextStatusListenedTracksDesc }}
+      </span>
+    </template>
   </div>
 </template>
 
@@ -56,6 +76,9 @@ export default {
   },
 
   computed: {
+    hasNextLevel() {
+      return this.bonusProgram && this.bonusProgram.nextLevel;
+    },
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
@@ -97,7 +120,8 @@ export default {
       update({ myProfile }) {
         const {
           bpLevelBonusProgram: levelSlug,
-          bpPoints: points
+          bpPoints: points,
+          countListenedTracks: listenedTracks
         } = myProfile;
 
         const level = bonusProgramLvl[levelSlug];
@@ -107,15 +131,18 @@ export default {
 
         const currentImg = level.image;
         const currentStatus = level.title;
+        const nextStatusListenedTracksDesc = level.levelListenedTracksDesc;
 
         let nextImg = null;
         let nextStatus = null;
         let pointsToNextLevel = null;
+        let tracksToNextLevel = null;
 
         if (nextLevel) {
           nextImg = nextLevel.image;
           nextStatus = nextLevel.slug;
           pointsToNextLevel = Math.max(0, nextLevel.points - points);
+          tracksToNextLevel = Math.max(0, nextLevel.listenedTracks - listenedTracks);
         }
 
         return {
@@ -124,7 +151,9 @@ export default {
           nextLevel,
           nextImg,
           nextStatus,
-          pointsToNextLevel
+          nextStatusListenedTracksDesc,
+          pointsToNextLevel,
+          tracksToNextLevel
         };
       },
       error(err) {

@@ -156,6 +156,37 @@ p {
     }
   }
 
+  &__bonus-program-genres {
+    margin-top: 24px;
+  }
+
+  &__bonus-program-genres-header {
+    font-family: 'Gotham Pro Semibold', sans-serif;
+    margin-bottom: 12px;
+  }
+
+  &__bonus-program-genres-item {
+    display: flex;
+    margin: 12px 0;
+  }
+
+  &__bonus-program-genres-img {
+    font-size: 12px;
+    width: 32px;
+    height: 32px;
+    margin-right: 24px;
+    border-radius: 4px;
+  }
+
+  &__bonus-program-genres-title {
+    font-family: 'Gotham Pro Semibold', sans-serif;
+  }
+
+  &__bonus-program-genres-tracks {
+    font-size: 12px;
+    color: $text_color_secondary;
+  }
+
   &__edit-button {
     margin-left: auto;
 
