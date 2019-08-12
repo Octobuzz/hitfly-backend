@@ -50,6 +50,7 @@ const state = {
     album: [],
     collection: []
   },
+  isFavouriteRemoveOptionHidden: false,
   editGroupId: null
 };
 
@@ -67,6 +68,14 @@ const getters = {
       favInProcess[type]
         .some(idInProcess => idInProcess === id)
     );
+  },
+
+  isFavouriteRemoveOptionHidden(state, getters) {
+    const history = getters['history/history'];
+    const currentRoute = history[history.length - 1];
+
+    return currentRoute.split('/').slice(1, 3)
+      .join('-') === 'profile-favourite';
   }
 };
 

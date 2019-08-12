@@ -107,7 +107,7 @@
 <!--        </span>-->
 
         <span
-          v-if="isAuthenticated && isRemovable"
+          v-if="isAuthenticated && !isFavouriteRemoveOptionHidden && isRemovable"
           class="album-popover__menu-item"
           @click="goToRemoveMenu"
         >
@@ -194,7 +194,7 @@ export default {
       return this.album.my;
     },
 
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
+    ...mapGetters(['isAuthenticated', 'apolloClient', 'isFavouriteRemoveOptionHidden'])
   },
 
   methods: {
