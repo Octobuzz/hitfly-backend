@@ -84,11 +84,37 @@
           </div>
         </div>
 
-        <div class="bonus-program__level-nicks-container">
+        <div
+          :class="[
+            'bonus-program__level-nicks-container',
+            'bonus-program__level-nicks-container_top'
+          ]"
+        >
           <div class="bonus-program__progress-background" />
           <div
             class="bonus-program__progress"
-            :style="{ width: progressPct + '%' }"
+            :style="{ width: '75%' }"
+          />
+
+          <div
+            v-for="(_, idx) in 4"
+            :key="idx"
+            class="bonus-program__level-nick-container"
+          >
+            <div class="bonus-program__level-nick" />
+          </div>
+        </div>
+
+        <div
+          :class="[
+            'bonus-program__level-nicks-container',
+            'bonus-program__level-nicks-container_bottom'
+          ]"
+        >
+          <div class="bonus-program__progress-background" />
+          <div
+            class="bonus-program__progress"
+            :style="{ width: '58%' }"
           />
 
           <div

@@ -91,15 +91,15 @@
         :key="group.id"
         class="user-card__group"
       >
-        <img
-          class="user-card__group-cover"
-          :src="
-            group.avatarGroup.filter(
-              avatar => avatar.size === 'size_40x40'
-            )[0].url
-          "
-          alt="Group cover"
-        >
+<!--        <img-->
+<!--          class="user-card__group-cover"-->
+<!--          :src="-->
+<!--            group.avatarGroup.filter(-->
+<!--              avatar => avatar.size === 'size_40x40'-->
+<!--            )[0].url-->
+<!--          "-->
+<!--          alt="Group cover"-->
+<!--        >-->
 
         <div class="user-card__group-info">
           <div class="user-card__someone-info">
@@ -266,6 +266,21 @@
         </span>
       </p>
 
+      <p
+        v-else-if="myProfile.bonusProgram.tracksToNextLevel"
+        class="user-card__bonus-program-p"
+      >
+        <span>
+          Чтобы стать
+          <img
+            :src="myProfile.bonusProgram.nextLevelImage"
+            alt="Bonus program level"
+            class="user-card__bonus-program-image"
+          >
+          {{ myProfile.bonusProgram.nextStatusListenedTracksDesc }}
+        </span>
+      </p>
+
       <div class="user-card__bonus-program">
         <span class="user-card__bonus-program-followers">
           <BpFollowers />
@@ -288,6 +303,31 @@
           {{ myProfile.favouriteTracksCount }}
           {{ format('FAVOURITE_SONG', myProfile.favouriteTracksCount) }}
         </span>
+      </div>
+
+      <div
+        v-if="myProfile.bonusProgram.listenedTracksByGenre.length > 0"
+        class="user-card__bonus-program-genres"
+      >
+        <p class="h5 user-card__bonus-program-genres-header">
+          Прослушанные треки по жанрам
+        </p>
+        <div
+          v-for="genre in myProfile.bonusProgram.listenedTracksByGenre"
+          :key="genre.id"
+          class="user-card__bonus-program-genres-item"
+        >
+          <img :src="genre.image" alt="Жанр">
+          <div>
+            <p class="h5 user-card__bonus-program-genres-title">
+              {{ genre.name }}
+            </p>
+            <span class="user-card__bonus-program-genres-tracks">
+              {{ genre.countListenedByUser }}
+              {{ format('TRACK', genre.countListenedByUser) }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -464,7 +504,9 @@ export default {
           dateRegister,
           bpLevelBonusProgram: bpLevelSlug,
           bpDaysInProgram: bpDaysPassed,
-          bpPoints
+          bpPoints,
+          bpListenedTracksByGenres,
+          countListenedTracks: bpListenedTracks
         } = myProfile;
 
         // this is to prevent handling of other queries result
@@ -488,10 +530,15 @@ export default {
           nextLevelImage: bpNextLevel && bpNextLevel.image,
           nextLevelText: bpNextLevel && bpNextLevel.title,
           points: bpPoints,
+          nextStatusListenedTracksDesc: bpNextLevel && bpNextLevel.levelListenedTracksDesc,
           pointsToNextLevel: bpNextLevel
             ? Math.max(0, bpNextLevel.points - bpPoints)
             : 0,
-          daysPassed: bpDaysPassed
+          tracksToNextLevel: bpNextLevel
+            ? Math.max(0, bpNextLevel.listenedTracks - bpListenedTracks)
+            : 0,
+          daysPassed: bpDaysPassed,
+          listenedTracksByGenre: bpListenedTracksByGenres
         };
 
         if (location && location.title) {

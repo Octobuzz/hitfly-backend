@@ -3,5 +3,6 @@ query HeaderProfilePopoverBonusProgram_MyProfile {
         id
         bpLevelBonusProgram
         bpPoints
+        countListenedTracks
     }
 }

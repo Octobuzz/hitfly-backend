@@ -12,12 +12,12 @@ fragment musicGroup on MusicGroup {
         social_type
         link
     }
-    avatarGroup(
-        sizes: [size_40x40, size_235x235]
-    ) {
-        size
-        url
-    }
+#    avatarGroup(
+#        sizes: [size_40x40, size_235x235]
+#    ) {
+#        size
+#        url
+#    }
     creatorGroup {
         ...user
     }
