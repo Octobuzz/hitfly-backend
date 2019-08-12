@@ -91,15 +91,15 @@
         :key="group.id"
         class="user-card__group"
       >
-<!--        <img-->
-<!--          class="user-card__group-cover"-->
-<!--          :src="-->
-<!--            group.avatarGroup.filter(-->
-<!--              avatar => avatar.size === 'size_40x40'-->
-<!--            )[0].url-->
-<!--          "-->
-<!--          alt="Group cover"-->
-<!--        >-->
+        <img
+          class="user-card__group-cover"
+          :src="
+            group.avatarGroup.filter(
+              avatar => avatar.size === 'size_40x40'
+            )[0].url
+          "
+          alt="Group cover"
+        >
 
         <div class="user-card__group-info">
           <div class="user-card__someone-info">
