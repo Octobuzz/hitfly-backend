@@ -399,7 +399,7 @@ export default {
           level: '',
           points: '',
           daysPassed: '',
-          progressPct: 0
+          listenedTracksByGenre: []
         }
       },
       anonymousAvatar
