@@ -11,7 +11,7 @@
         :has-more-data="container.hasMoreData"
       >
         <template #title>
-          <router-link to="/">
+          <router-link to="/recommended">
             <span class="h2">
               Рекомендуем
             </span>

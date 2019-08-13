@@ -1,0 +1,11 @@
+query TrackBelongsToCollection(
+    $trackId: Int,
+    $collectionId: Int
+) {
+    trackBelongsCollection(
+        trackId: $trackId
+        collectionId: $collectionId
+    ) {
+        inCollection
+    }
+}

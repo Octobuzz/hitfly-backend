@@ -10,7 +10,7 @@
         :has-more-data="container.hasMoreData"
       >
         <template #title>
-          <router-link to="/">
+          <router-link to="/new-tracks">
             <span class="h2 other-user-music__albums-title">
               Новое
             </span>

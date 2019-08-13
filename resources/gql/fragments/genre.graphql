@@ -1,6 +1,7 @@
 fragment genre on Genre {
     id
     name
-#    image
+    image
     userFavourite
+    countTracks
 }

@@ -3,7 +3,7 @@
     <div class="asideBlock__header">
       <h2 class="h2">Сейчас слушают</h2>
       <p v-show="!isLoading">{{ currentlyListening }} человек слушают эти песни</p>
-      <button>Все</button>
+      <router-link to="currently-listening" class="asideBlock__button">Все</router-link>
     </div>
     <div class="asideBlock__body">
       <div
@@ -19,7 +19,6 @@
         :showRemoveButton="false"
         :showAddToPlayList="false"
         :columnLayout="true"
-        @remove-track="onRemoveTrack"
       >
       </TrackList>
     </div>
@@ -39,11 +38,6 @@ import gql from './gql';
     components: {
       SpinnerLoader,
       TrackList
-    },
-    methods: {
-      onRemoveTrack() {
-        console.log('onRemoveTrack');
-      }
     },
     apollo: {
       GetListenedNow() {
