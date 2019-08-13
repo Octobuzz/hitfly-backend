@@ -200,17 +200,16 @@ export default {
       return this.$route.fullPath;
     },
 
-    ableToPerform() {
-      return this.$store.getters['profile/ableToPerform'];
-    },
-
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      apolloClient: 'apolloClient',
+      ableToPerform: 'profile/ableToPerform',
+      ableToComment: 'profile/ableToComment'
+    })
   },
 
   methods: {
     goToProfilePage() {
-      const { getters } = this.$store;
-
       if (!this.isAuthenticated) return;
 
       if (this.ableToPerform) {
@@ -219,7 +218,7 @@ export default {
         return;
       }
 
-      if (getters['profile/ableToComment']) {
+      if (this.ableToComment) {
         this.$router.push('/profile/my-reviews');
       }
     }

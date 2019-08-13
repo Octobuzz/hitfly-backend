@@ -71,6 +71,19 @@
                 </router-link>
               </li>
             </template>
+
+            <template v-if="hasRole('prof_critic') || hasRole('star')">
+              <li
+                :class="[
+                  'profile__nav-endpoint',
+                  { 'profile__nav-endpoint_active': currentPath === '/profile/review-requests' }
+                ]"
+              >
+                <router-link to="/profile/review-requests">
+                  Запросы на отзывы
+                </router-link>
+              </li>
+            </template>
           </ul>
 
           <div class="profile__nav-scroll-cloak" />
@@ -218,15 +231,12 @@ export default {
       /* eslint-disable no-fallthrough */
     },
 
-    ableToPerform() {
-      return this.$store.getters['profile/ableToPerform'];
-    },
-
-    ableToComment() {
-      return this.$store.getters['profile/ableToComment'];
-    },
-
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      ableToPerform: 'profile/ableToPerform',
+      ableToComment: 'profile/ableToComment',
+      hasRole: 'profile/roles'
+    })
   },
 
   watch: {
@@ -234,18 +244,20 @@ export default {
       handler(val) {
         if (val !== true) return;
 
-        // TODO: add possibility to visit review requests page
-
-        const { ableToComment, $store: { getters } } = this;
+        const { hasRole } = this;
         const profilePathSection = this.currentPath.split('/')[2];
+        const isProfCriticOrStar = hasRole('prof_critic') || hasRole('star');
 
-        if (!ableToComment && profilePathSection === 'my-reviews') {
+        if (!isProfCriticOrStar && profilePathSection === 'my-reviews') {
           this.$router.push('/profile/my-music');
 
           return;
         }
 
-        if (getters['profile/roles']('star') && profilePathSection !== 'my-reviews') {
+        const notProfCriticOrStarEndpoint = ['my-music', 'favourite', 'reviews']
+          .some(endpointSection => endpointSection === profilePathSection);
+
+        if (isProfCriticOrStar && notProfCriticOrStarEndpoint) {
           this.$router.push('/profile/my-reviews');
         }
       },
