@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -95,5 +96,10 @@ class Purse extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }
