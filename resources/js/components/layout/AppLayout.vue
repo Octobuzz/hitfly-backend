@@ -3,7 +3,7 @@
     <portal-target name="root" />
     <IconGradientRadial />
     <FlashMessage />
-    <AppHeader :class="{ 'app-layout_blurred': blurred }" />
+    <AppHeader :class="{ 'app-layout_blurred': blurred }"/>
     <router-view :class="{ 'app-layout_blurred': blurred }" />
     <AppFooter :class="{ 'app-layout_blurred': blurred }" />
   </div>

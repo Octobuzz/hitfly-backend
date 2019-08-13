@@ -1,35 +1,20 @@
 <template>
-  <div :class="['album-preview', $attrs.class]">
+  <div :class="['genre-preview', $attrs.class]">
     <div
       v-if="isLoading"
-      class="album-preview__loader"
+      class="genre-preview__loader"
     >
-      loading track...
+      loading genres...
     </div>
-    <div
-      v-if="!isLoading"
-      class="album-preview__content"
-    >
-      <div class="album-preview__drape" />
 
-      <img
-        :key="genreId"
-        :src="genreimageUrl"
-        alt="Track image"
-        class="album-preview__image"
-      >
+    <div v-if="!isLoading" class="s-genre-item">
+      <div class="s-genre-item__label">
+        <img class="s-genre-item__img" :src="genre.image" :alt="genre.name">
+        <div class="s-genre-item__textBlock">
+          <span class="s-genre-item__text">{{ genre.name }}</span>
+          <span class="s-genre-item__quantity">{{ genre.countTracks + ' ' + num2str }}</span>
+        </div>
       </div>
-    </div>
-
-    <div
-      v-if="!isLoading"
-      class="album-preview__footer"
-    >
-      <router-link to="/">
-        <span class="album-preview__title">
-          {{ genre.name }}
-        </span>
-      </router-link>
     </div>
   </div>
 </template>
@@ -52,21 +37,29 @@ export default {
   },
 
   props: {
-    genreId: {
-      type: Number,
+    genre: {
+      type: Object,
       required: true
     }
   },
 
   data() {
     return {
-      isLoading: true,
-      genre: null
+      isLoading: false
     };
   },
 
   computed: {
-    genreimageUrl() {
+    num2str() {
+      let n = this.genre.countTracks;
+      const text_forms = ['трек', 'трека', 'треков'];
+      n = Math.abs(n) % 100; var n1 = n % 10;
+      if (n > 10 && n < 20) { return text_forms[2]; }
+      if (n1 > 1 && n1 < 5) { return text_forms[1]; }
+      if (n1 == 1) { return text_forms[0]; }
+      return text_forms[2];
+    },
+    genreImageUrl() {
       if (this.windowWidth <= MOBILE_WIDTH) {
         return this.genre.image
           .filter(image => image.size === 'size_104x104')[0].url;
@@ -75,32 +68,8 @@ export default {
       return this.genre.image
         .filter(image => image.size === 'size_120x120')[0].url;
     },
-  },
-
-  methods: {
-
-  },
-
-  apollo: {
-    track() {
-      return {
-        query: gql.query.TRACKS,
-        variables() {
-          // use function to allow rendering another album when the prop changes
-
-          return {
-            id: this.genreId
-          };
-        },
-        update: ({ track }) => {
-          this.isLoading = false;
-
-          return track;
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      };
+    genresId() {
+      return this.genre.id;
     }
   }
 };

@@ -213,7 +213,7 @@ export default {
         variables: {
           id: id
         },
-        query: gql`query tracks {
+        query: gql`query tracks($id: Int!) {
           track(id: $id) {
             id
             filename

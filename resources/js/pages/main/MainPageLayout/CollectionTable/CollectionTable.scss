@@ -1,0 +1,34 @@
+@import '~scss/_variables.scss';
+
+$space_between_desktop: 24px;
+$collection_width_desktop: 214px;
+
+$space_between_mobile: 16px;
+$collection_width_mobile: 150px;
+
+.collection-table {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: ($space_between_desktop + $collection_width_desktop) * 4
+    + $space_between_desktop;
+  margin-top: 16px;
+
+  & > * {
+    margin: {
+      top: 16px;
+      right: $space_between_desktop / 2;
+      left: $space_between_desktop / 2;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .collection-table {
+    max-width: ($space_between_mobile + $collection_width_mobile) * 4
+      + $space_between_mobile;
+
+    & > * {
+      margin-left: $space_between_mobile;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+query News($pageLimit: Int!, $pageNumber: Int!) {
+    news(limit: $pageLimit, page: $pageNumber) {
+        total
+        from
+        to
+        data{
+          id
+          title
+          content
+          createAt
+          image
+        }
+    }
+}

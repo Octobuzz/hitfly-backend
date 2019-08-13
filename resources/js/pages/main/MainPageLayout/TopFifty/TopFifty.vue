@@ -3,7 +3,7 @@
     <div class="asideBlock__header">
       <h2 class="h2">Топ 50</h2>
       <p>Рейтинг лучших музыкантов</p>
-      <button>Все</button>
+      <router-link to="top50" class="asideBlock__button">Все</router-link>
     </div>
     <div class="asideBlock__body">
       <div
@@ -19,7 +19,6 @@
         :showRemoveButton="false"
         :showAddToPlayList="false"
         :columnLayout="true"
-        @remove-track="onRemoveTrack"
       >
       </TrackList>
     </div>
@@ -39,14 +38,8 @@ import gql from './gql';
       SpinnerLoader,
       TrackList
     },
-    methods: {
-      onRemoveTrack() {
-        console.log('onRemoveTrack');
-      }
-    },
     computed: {
       dataInitialized() {
-        console.log(this.$store.getters['loading/music'].tracks.initialized);
         return this.$store.getters['loading/music'].tracks.initialized;
       }
     },

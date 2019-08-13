@@ -5,6 +5,7 @@ import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
+import Page404 from './pages/Page404.vue';
 
 const routes = [
   {
@@ -150,8 +151,43 @@ const routes = [
     component: UploadPage
   },
   {
+    path: '*',
+    component: Page404
+  },
+  {
     path: '/',
-    component: main.MainPageLayout
+    component: main.MainPageLayout,
+    children: [
+      {
+        path: '/',
+        component: main.MainPageDefault,
+        name: 'main'
+      },
+      {
+        path: 'recommended',
+        component: main.CollectionTableContainer,
+      },
+      {
+        path: 'super-melomaniac',
+        component: main.CollectionTableContainer,
+      },
+      {
+        path: 'top50',
+        component: main.MainPageTrackList,
+      },
+      {
+        path: 'playlist/:playlistId',
+        component: main.CollectionTrackList
+      },
+      {
+        path: 'news/:newsId',
+        component: main.mainPageNewsPreview
+      },
+      {
+        path: '',
+        redirect: { name: 'main' }
+      }
+    ]
   },
   {
     path: '/about',
