@@ -16,6 +16,9 @@ class UserLevels
 
     public function changeUserLevel(User $user)
     {
+        if (null === $user->purseBonus) {
+            $user->load('purseBonus');
+        }
         $balance = $user->purseBonus->balance;
         $keyLevel = array_search($user->level, $user->levels);
         if (false === $keyLevel) {
