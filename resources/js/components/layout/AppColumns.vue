@@ -30,7 +30,7 @@ export default {
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
-  margin: {
+  padding: {
     top: $header_height_desktop;
     bottom: $footer_height_desktop;
   }
@@ -68,7 +68,7 @@ export default {
   .app-columns {
     flex-wrap: wrap;
     height: auto;
-    margin-top: $header_height_mobile;
+    padding-top: $header_height_mobile;
 
     &__left-column,
     &__right-column {

@@ -3,7 +3,7 @@
     <div class="asideBlock__header">
       <h2 class="h2">Сейчас слушают</h2>
       <p v-show="!isLoading">{{ currentlyListening }} человек слушают эти песни</p>
-      <button>Все</button>
+      <router-link to="currently-listening" class="asideBlock__button">Все</router-link>
     </div>
     <div class="asideBlock__body">
       <div
@@ -19,7 +19,6 @@
         :showRemoveButton="false"
         :showAddToPlayList="false"
         :columnLayout="true"
-        @remove-track="onRemoveTrack"
       >
       </TrackList>
     </div>
@@ -29,6 +28,7 @@
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackList from 'components/trackList/TrackList/TrackList.vue';
 import gql from './gql';
+import { mapGetters } from 'vuex';
 
   export default {
     data: () => ({
@@ -40,16 +40,16 @@ import gql from './gql';
       SpinnerLoader,
       TrackList
     },
-    methods: {
-      onRemoveTrack() {
-        console.log('onRemoveTrack');
-      }
+    computed: {
+      ...mapGetters(['isAuthenticated', 'apolloClient'])
     },
     apollo: {
       GetListenedNow() {
         return {
+          client: this.apolloClient,
           query: gql.query.GET_LISTENED_NOW,
           variables: {
+            isAuthenticated: this.isAuthenticated,
             pageLimit: 50,
             pageNumber: 1
           },

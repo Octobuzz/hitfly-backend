@@ -11,7 +11,7 @@
 
             <span class="input-text-wrapper forgot-pass__input {{ $errors->has('email') ? 'error' : '' }}">
                 <span class="input-text email">
-                    <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}"  required autofocus>
+                    <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}" required>
                     <label for="email">{{__('passwords.email')}}</label>
                 </span>
                 @if ($errors->has('email'))

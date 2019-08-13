@@ -1,13 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import MY_ID_AND_ROLES from 'gql/query/MyIdAndRoles.graphql';
 import store from './store';
-import { cache } from './apolloProvider';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
-import FaqPage from './pages/FaqPage.vue';
+import Page404 from './pages/Page404.vue';
 
 const routes = [
   {
@@ -49,7 +47,7 @@ const routes = [
       },
       {
         path: 'favourite/tracks',
-        component: profile.FavouriteTrackList
+        component: profile.Tracks
       },
       {
         path: 'favourite/albums',
@@ -96,10 +94,6 @@ const routes = [
         component: profile.UserNotifications
       },
       {
-        path: 'watched-users',
-        component: profile.WatchedUsersContainer
-      },
-      {
         path: '',
         redirect: { name: 'profile-my-music' }
       }
@@ -108,26 +102,6 @@ const routes = [
   {
     path: '/user/:userId',
     component: profile.OtherUserProfileLayout,
-    beforeEnter({ params: { userId } }, from, next) {
-      const { isAuthenticated } = store.getters;
-
-      if (!isAuthenticated) {
-        next();
-
-        return;
-      }
-
-      const { myProfile: { id: myId } } = cache.readQuery({
-        query: MY_ID_AND_ROLES
-      });
-
-      if (+userId === myId) {
-        next({ name: 'profile-my-music' });
-
-        return;
-      }
-      next();
-    },
     children: [
       {
         path: 'music',
@@ -177,16 +151,48 @@ const routes = [
     component: UploadPage
   },
   {
+    path: '*',
+    component: Page404
+  },
+  {
     path: '/',
-    component: main.MainPageLayout
+    component: main.MainPageLayout,
+    children: [
+      {
+        path: '/',
+        component: main.MainPageDefault,
+        name: 'main'
+      },
+      {
+        path: 'recommended',
+        component: main.CollectionTableContainer,
+      },
+      {
+        path: 'super-melomaniac',
+        component: main.CollectionTableContainer,
+      },
+      {
+        path: 'top50',
+        component: main.MainPageTrackList,
+      },
+      {
+        path: 'playlist/:playlistId',
+        component: main.CollectionTrackList
+      },
+      {
+        path: 'news/:newsId',
+        component: main.MainPageNewsDetailed,
+        props: true
+      },
+      {
+        path: '',
+        redirect: { name: 'main' }
+      }
+    ]
   },
   {
     path: '/about',
     component: AboutPage
-  },
-  {
-    path: '/faq',
-    component: FaqPage
   }
 ];
 

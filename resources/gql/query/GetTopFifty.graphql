@@ -1,6 +1,7 @@
-#import "../fragments/track.graphql"
+#import "../fragments/trackListEntryData.graphql"
 
 query GetTopFifty(
+    $isAuthenticated: Boolean!,
     $pageLimit: Int,
     $pageNumber: Int
 ) {
@@ -8,8 +9,13 @@ query GetTopFifty(
         page: $pageNumber,
         limit: $pageLimit
     ) {
+        total
+        to
         data {
-            ...track
+            id
+            ...trackListEntryData
+            userFavourite @include(if: $isAuthenticated)
+            favouritesCount @include(if: $isAuthenticated)
         }
     }
 }

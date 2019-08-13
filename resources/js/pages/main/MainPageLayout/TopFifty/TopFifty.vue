@@ -3,11 +3,11 @@
     <div class="asideBlock__header">
       <h2 class="h2">Топ 50</h2>
       <p>Рейтинг лучших музыкантов</p>
-      <button>Все</button>
+      <router-link to="top50" class="asideBlock__button">Все</router-link>
     </div>
     <div class="asideBlock__body">
       <div
-        v-show="isLoading"
+        v-show="isLoading && !dataInitialized"
         class="profile__user-card-loader_first"
       >
         <SpinnerLoader />
@@ -19,7 +19,6 @@
         :showRemoveButton="false"
         :showAddToPlayList="false"
         :columnLayout="true"
-        @remove-track="onRemoveTrack"
       >
       </TrackList>
     </div>
@@ -28,6 +27,7 @@
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackList from 'components/trackList/TrackList/TrackList.vue';
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
   export default {
@@ -39,22 +39,19 @@ import gql from './gql';
       SpinnerLoader,
       TrackList
     },
-    methods: {
-      onRemoveTrack() {
-        console.log('onRemoveTrack');
-      }
-    },
     computed: {
       dataInitialized() {
-        console.log(this.$store.getters['loading/music'].tracks.initialized);
         return this.$store.getters['loading/music'].tracks.initialized;
-      }
+      },
+      ...mapGetters(['isAuthenticated', 'apolloClient'])
     },
     apollo: {
       topFifty() {
         return {
+          client: this.apolloClient,
           query: gql.query.GET_TOP_FIFTY,
           variables: {
+            isAuthenticated: this.isAuthenticated,
             pageLimit: 50,
             pageNumber: 1
           },

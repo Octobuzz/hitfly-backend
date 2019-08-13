@@ -115,13 +115,12 @@ export default {
   },
 
   methods: {
-    notifyInitialization(success) {
-      this.$store.commit('loading/setMainPage', {
-        recommended: {
-          initialized: true,
-          success
-        }
-      });
+    notifyInitialization(success, type) {
+      let storeItem = {[type]: {
+        initialized: true,
+        success
+      }};
+      this.$store.commit('loading/setMainPage', storeItem);
     },
 
     fetchMoreCollections(vars) {
@@ -211,7 +210,14 @@ export default {
 
         update({ collections: { total, to, data } }) {
           this.isLoading = false;
-          this.notifyInitialization(true);
+          let collectionType = Object.keys(this.queryVars.filters)[0];
+          let currentType = null;
+          if(collectionType === 'superMusicFan') {
+            currentType = 'superMelomaniac';
+          } else {
+            currentType = 'recommended';
+          };
+          this.notifyInitialization(true, currentType);
 
           if (to >= total) {
             this.hasMoreData = false;

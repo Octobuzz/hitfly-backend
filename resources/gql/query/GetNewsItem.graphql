@@ -1,0 +1,13 @@
+query newsOne(
+    $id: Int!
+) {
+    newsOne(
+        id: $id
+    ) {
+        id
+        title
+        content
+        createAt
+        image
+    }
+}
