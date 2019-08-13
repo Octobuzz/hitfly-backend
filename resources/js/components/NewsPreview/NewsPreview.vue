@@ -63,5 +63,5 @@ export default {
 <style
   scoped
   lang="scss"
-  src="./newsPreview.scss"
+  src="./NewsPreview.scss"
 />
