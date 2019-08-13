@@ -1,16 +1,78 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import MY_ID_AND_ROLES from 'gql/query/MyIdAndRoles.graphql';
 import store from './store';
+import { cache } from './apolloProvider';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
+import FaqPage from './pages/FaqPage.vue';
 import Page404 from './pages/Page404.vue';
+
+const PERFORMER = 'performer';
+const CRITIC = 'critic';
+const PROF_CRITIC = 'prof_critic';
+const STAR = 'star';
+
+const hasRoles = (roles) => {
+  const { hasRole } = store.getters['profile/roles'];
+
+  return roles.some(role => hasRole(role));
+};
+
+const isAuthenticated = () => store.getters.isAuthenticated;
+
+// beforeRouteEnterFactory arg:
+//
+// {
+//   shouldBeAuthenticated: {
+//     redirect
+//   },
+//   shouldHaveRoles: {
+//     rolesToHave,
+//     redirect
+//   },
+//   shouldNotHaveRoles: {
+//     rolesNotToHave,
+//     redirect
+//   }
+// }
+
+const beforeRouteEnterFactory = ({
+  shouldBeAuthenticated,
+  shouldHaveRoles,
+  shouldNotHaveRoles
+}) => ({
+  beforeRouteEnter(to, from, next) {
+    if (shouldBeAuthenticated && !isAuthenticated()) {
+      next(shouldBeAuthenticated.redirect);
+
+      return;
+    }
+    if (shouldHaveRoles && !hasRoles(shouldHaveRoles.rolesToHave)) {
+      next(shouldHaveRoles.redirect);
+
+      return;
+    }
+    if (shouldNotHaveRoles && hasRoles(shouldNotHaveRoles.rolesNotToHave)) {
+      next(shouldNotHaveRoles.redirect);
+
+      return;
+    }
+    next();
+  }
+});
 
 const routes = [
   {
     path: '/profile',
     component: profile.MyProfileLayout,
+    ...beforeRouteEnterFactory({
+      shouldBeAuthenticated: {
+        redirect: '/'
+      },
+    }),
     children: [
       {
         path: 'edit',
@@ -18,28 +80,64 @@ const routes = [
       },
       {
         path: 'create-group',
-        component: profile.CreateGroup
+        component: profile.CreateGroup,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'edit-group/:editGroupId',
-        component: profile.UpdateGroup
+        component: profile.UpdateGroup,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'my-music',
         component: profile.MyMusic,
-        name: 'profile-my-music'
+        name: 'profile-my-music',
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'my-music/tracks',
-        component: profile.UserTrackList
+        component: profile.UserTrackList,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'my-music/albums',
-        component: profile.AlbumTableContainer
+        component: profile.AlbumTableContainer,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'my-music/playlists',
-        component: profile.CollectionTableContainer
+        component: profile.CollectionTableContainer,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'favourite',
@@ -67,19 +165,44 @@ const routes = [
       },
       {
         path: 'my-reviews',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        name: 'profile-my-reviews',
+        ...beforeRouteEnterFactory({
+          shouldHaveRoles: {
+            rolesToHave: [CRITIC, PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'album/:albumId',
-        component: profile.AlbumTrackList
+        component: profile.AlbumTrackList,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'set/:setId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            redirect: '/profile/my-reviews'
+          }
+        })
       },
       {
         path: 'reviews/:trackId',
@@ -102,6 +225,24 @@ const routes = [
   {
     path: '/user/:userId',
     component: profile.OtherUserProfileLayout,
+    beforeEnter({ params: { userId } }, from, next) {
+      if (!isAuthenticated()) {
+        next();
+
+        return;
+      }
+
+      const { myProfile: { id: myId } } = cache.readQuery({
+        query: MY_ID_AND_ROLES
+      });
+
+      if (+userId === myId) {
+        next({ name: 'profile-my-music' });
+
+        return;
+      }
+      next();
+    },
     children: [
       {
         path: 'music',
@@ -193,6 +334,10 @@ const routes = [
   {
     path: '/about',
     component: AboutPage
+  },
+  {
+    path: '/faq',
+    component: FaqPage
   }
 ];
 

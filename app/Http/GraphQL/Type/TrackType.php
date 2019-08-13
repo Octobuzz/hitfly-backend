@@ -79,8 +79,9 @@ class TrackType extends GraphQLType
                 },
             ],
             'userFavourite' => [
-                'type' => Type::nonNull(Type::boolean()),
+                'type' => Type::boolean(),
                 'description' => 'флаг избранного трека',
+                'privacy' => IsAuthPrivacy::class,
                 'resolve' => function ($model) {
                     if ($model->userFavourite->count()) {
                         return true;

@@ -25,6 +25,10 @@ const getters = {
   },
 
   ableToPerform(state, { roles }) {
+    if (['prof_critic', 'star'].some(role => roles(role))) {
+      return false;
+    }
+
     return ['listener', 'performer', 'critic']
       .some(role => roles(role));
   }

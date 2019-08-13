@@ -399,9 +399,8 @@ export default {
 
       const mutationVars = { profile: profileUpdate };
 
-      if (this.isArtist) {
-        mutationVars.artistProfile = artistProfile;
-      }
+      mutationVars.artistProfile = artistProfile;
+
       if (avatar.new !== null) {
         mutationVars.avatar = avatar.new;
       }

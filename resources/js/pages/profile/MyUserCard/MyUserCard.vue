@@ -24,7 +24,7 @@
         </p>
 
         <p
-          v-if="playedGenres"
+          v-if="playedGenres && !hasRole('prof_critic') && !hasRole('star')"
           class="user-card__played-genres-container"
         >
           <span class="user-card__played-genres-icon">
@@ -45,83 +45,85 @@
       </IconButton>
     </div>
 
-    <div
-      v-if="musicGroupCount === 0"
-      :class="itemContainerClass"
-    >
-      <router-link
-        to="/profile/create-group"
-        :class="[
-          'user-card__create-group-link',
-          {
-            hover: $route.fullPath === '/profile/create-group'
-          }
-        ]"
+    <template v-if="!hasRole('prof_critic') && !hasRole('star')">
+      <div
+        v-if="musicGroupCount === 0"
+        :class="itemContainerClass"
       >
-        Создать свою группу
-        <span class="user-card__create-group-arrow">
-          <ArrowIcon />
-        </span>
-      </router-link>
-    </div>
-
-    <div
-      v-else
-      :class="[
-        itemContainerClass,
-        'user-card__item',
-        'user-card__groups'
-      ]"
-    >
-      <div class="user-card__item-header">
-        <span>
-          Мои группы
-        </span>
-        <button
-          v-if="ableToPerform && !isCreatingGroup"
-          class="user-card__button"
-          @click="goToCreateGroup"
+        <router-link
+          to="/profile/create-group"
+          :class="[
+            'user-card__create-group-link',
+            {
+              hover: $route.fullPath === '/profile/create-group'
+            }
+          ]"
         >
-          Создать группу
-        </button>
+          Создать свою группу
+          <span class="user-card__create-group-arrow">
+            <ArrowIcon />
+          </span>
+        </router-link>
       </div>
 
       <div
-        v-for="group in myProfile.musicGroups"
-        :key="group.id"
-        class="user-card__group"
+        v-else
+        :class="[
+          itemContainerClass,
+          'user-card__item',
+          'user-card__groups'
+        ]"
       >
-        <img
-          class="user-card__group-cover"
-          :src="
-            group.avatarGroup.filter(
-              avatar => avatar.size === 'size_40x40'
-            )[0].url
-          "
-          alt="Group cover"
-        >
-
-        <div class="user-card__group-info">
-          <div class="user-card__someone-info">
-            <p class="user-card__group-name">
-              {{ group.name }}
-            </p>
-            <p class="user-card__group-followers">
-              {{ group.followersCount || '0' }}
-              {{ format('FOLLOWER', group.followersCount) }}
-            </p>
-          </div>
+        <div class="user-card__item-header">
+          <span>
+            Мои группы
+          </span>
+          <button
+            v-if="ableToPerform && !isCreatingGroup"
+            class="user-card__button"
+            @click="goToCreateGroup"
+          >
+            Создать группу
+          </button>
         </div>
 
-        <IconButton
-          v-if="!isUpdatingGroup(group.id)"
-          class="user-card__edit-button"
-          @press="goToUpdateGroup(group.id)"
+        <div
+          v-for="group in myProfile.musicGroups"
+          :key="group.id"
+          class="user-card__group"
         >
-          <PencilIcon />
-        </IconButton>
+          <img
+            class="user-card__group-cover"
+            :src="
+              group.avatarGroup.filter(
+                avatar => avatar.size === 'size_40x40'
+              )[0].url
+            "
+            alt="Group cover"
+          >
+
+          <div class="user-card__group-info">
+            <div class="user-card__someone-info">
+              <p class="user-card__group-name">
+                {{ group.name }}
+              </p>
+              <p class="user-card__group-followers">
+                {{ group.followersCount || '0' }}
+                {{ format('FOLLOWER', group.followersCount) }}
+              </p>
+            </div>
+          </div>
+
+          <IconButton
+            v-if="!isUpdatingGroup(group.id)"
+            class="user-card__edit-button"
+            @press="goToUpdateGroup(group.id)"
+          >
+            <PencilIcon />
+          </IconButton>
+        </div>
       </div>
-    </div>
+    </template>
 
     <div
       v-if="
@@ -228,7 +230,10 @@
       </div>
     </div>
 
-    <div :class="itemContainerClass">
+    <div
+      v-if="!hasRole('prof_critic') && !hasRole('star')"
+      :class="itemContainerClass"
+    >
       <p class="user-card__bonus-program-p user-card__bonus-program-status">
         <img
           :src="myProfile.bonusProgram.image"
@@ -352,6 +357,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { bonusProgramLvl } from 'modules/bonus-program';
 import endingFormatter from 'modules/plural-form-endings-formatter';
 import anonymousAvatar from 'images/anonymous-avatar.png';
@@ -407,10 +413,6 @@ export default {
   },
 
   computed: {
-    ableToPerform() {
-      return this.$store.getters['profile/ableToPerform'];
-    },
-
     isCreatingGroup() {
       return this.$route.fullPath === '/profile/create-group';
     },
@@ -427,6 +429,13 @@ export default {
       return this.myProfile.musicGroups.length;
     },
 
+    showAboutMe() {
+      return this.hasRole('performer')
+        || this.hasRole('critic')
+        || this.hasRole('prof_critic')
+        || this.hasRole('star');
+    },
+
     playedGenres() {
       const { playedGenres } = this.myProfile;
 
@@ -437,7 +446,12 @@ export default {
       return playedGenres.map(genre => (
         genre.name[0].toUpperCase() + genre.name.slice(1)
       )).join(', ');
-    }
+    },
+
+    ...mapGetters({
+      ableToPerform: 'profile/ableToPerform',
+      hasRole: 'profile/roles'
+    })
   },
 
   beforeRouteLeave(to, from, next) {
@@ -498,7 +512,6 @@ export default {
           description,
           genresPlay,
           musicGroups,
-          roles,
           followersCount,
           favoriteSongsCount: favouriteSongsCount,
           dateRegister,
@@ -545,7 +558,10 @@ export default {
           this.myProfile.location = location;
         }
 
-        if (roles.some(role => role.slug === 'performer')) {
+        if (this.hasRole('performer')
+            || this.hasRole('critic')
+            || this.hasRole('prof_critic')
+            || this.hasRole('star')) {
           if (description) {
             this.myProfile.activity = description;
           }
