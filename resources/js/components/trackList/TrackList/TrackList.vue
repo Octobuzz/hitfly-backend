@@ -69,7 +69,7 @@ export default {
     },
     showAddToPlayList: {
       type: Boolean,
-      default: false
+      default: true
     },
     columnLayout: {
       type: Boolean,
