@@ -7,7 +7,7 @@
     </div>
     <div class="asideBlock__body">
       <div
-        v-show="isLoading"
+        v-show="isLoading && !dataInitialized"
         class="profile__user-card-loader_first"
       >
         <SpinnerLoader />
@@ -27,6 +27,7 @@
 <script>
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackList from 'components/trackList/TrackList/TrackList.vue';
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
   export default {
@@ -41,13 +42,16 @@ import gql from './gql';
     computed: {
       dataInitialized() {
         return this.$store.getters['loading/music'].tracks.initialized;
-      }
+      },
+      ...mapGetters(['isAuthenticated', 'apolloClient'])
     },
     apollo: {
       topFifty() {
         return {
+          client: this.apolloClient,
           query: gql.query.GET_TOP_FIFTY,
           variables: {
+            isAuthenticated: this.isAuthenticated,
             pageLimit: 50,
             pageNumber: 1
           },

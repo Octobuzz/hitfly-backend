@@ -44,20 +44,20 @@
       ref="scroller"
       class="news-scroll-horizontal__scroller"
       direction="horizontal"
-      :items="newsIdList"
+      :items="newsList"
       :buffer="3 * (newsWidth + spaceBetween)"
       :item-size="newsWidth + spaceBetween"
     >
-      <template #default="{ item: id }">
+      <template #default="{ item: item }">
         <NewsPreview
           class="news-scroll-horizontal__news-preview"
-          :news-id="id"
+          :news-obj="item"
         />
       </template>
 
       <template #after>
         <span
-          v-if="hasMoreData && newsIdListLength > 0"
+          v-if="hasMoreData && newsListLength > 0"
           class="news-scroll-horizontal__loader"
         >
           <BaseLoader :active="hasMoreData" />
@@ -94,7 +94,7 @@ export default {
   },
 
   props: {
-    newsIdList: {
+    newsList: {
       type: Array,
       required: true
     },
@@ -135,8 +135,8 @@ export default {
       return this.desktop ? NEWS_WIDTH_DESKTOP : NEWS_WIDTH_MOBILE;
     },
 
-    newsIdListLength() {
-      return this.newsIdList.length;
+    newsListLength() {
+      return this.newsList.length;
     }
   },
 
@@ -145,7 +145,7 @@ export default {
       this.$refs.scroller.$el.scrollLeft = num;
     },
 
-    newsIdList() {
+    newsList() {
       this.onScroll();
     }
   },
@@ -273,7 +273,7 @@ export default {
         if (this.scroller.clientWidth === 0) return;
 
         const {
-          newsIdList: { length: newsCount },
+          newsList: { length: newsCount },
           newsWidth,
           spaceBetween,
           scroller,

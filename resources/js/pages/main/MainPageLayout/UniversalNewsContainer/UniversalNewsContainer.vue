@@ -3,7 +3,7 @@
     <slot
       v-if="newsList.length > 0"
       name="default"
-      :news-id-list="newsIdList"
+      :news-list="newsList"
       :has-more-data="hasMoreData"
     />
     <p
@@ -39,10 +39,6 @@ export default {
   },
 
   computed: {
-    newsIdList() {
-      return this.newsList.map(news => news.id);
-    },
-
     initialFetchError() {
       const loading = this.$store.getters['loading/mainPage'].news;
 
@@ -156,7 +152,6 @@ export default {
 
   apollo: {
     newsList() {
-      console.log(this.queryVars);
       return {
         query: gql.query.NEWS,
         variables: this.queryVars,
@@ -166,7 +161,6 @@ export default {
           let to = Object.values(commonObject)[0].to;
           let total = Object.values(commonObject)[0].total;
           let data = Object.values(commonObject)[0].data;
-          console.log(data);
           this.isLoading = false;
           this.$emit('initialized', {
             data,

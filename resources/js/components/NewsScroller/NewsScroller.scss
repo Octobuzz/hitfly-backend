@@ -1,6 +1,6 @@
 @import '~scss/_variables.scss';
 
-$news-height-desktop: 320px;
+$news-height-desktop: 380px;
 $news-height-mobile: 300px;
 
 $news-cover-desktop: 272px;
@@ -17,6 +17,7 @@ $news-left-padding-mobile: 16px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    margin-top: 32px;
     margin-bottom: 32px;
   }
 

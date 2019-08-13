@@ -1,2 +1,1 @@
-export { default as ALBUM } from 'gql/query/Album.graphql';
-export { default as TRACKS } from 'gql/query/Tracks.graphql';
+export { default as NEWS } from 'gql/query/News.graphql';

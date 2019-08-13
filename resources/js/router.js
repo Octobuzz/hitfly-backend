@@ -181,7 +181,8 @@ const routes = [
       },
       {
         path: 'news/:newsId',
-        component: main.mainPageNewsPreview
+        component: main.MainPageNewsDetailed,
+        props: true
       },
       {
         path: '',
