@@ -1,0 +1,35 @@
+.detailedNews {
+  padding: 32px;
+
+  & .lds-spinner {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  & .return-header {
+    margin-bottom: 32px;
+  }
+
+  &__body::v-deep {
+
+    & h2 {
+      margin: 0;
+      margin-bottom: 32px;
+    }
+
+    & p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      color: #606060;
+      margin-bottom: 32px;
+    }
+
+    & img {
+      margin: 0;
+      width: 100%;
+      height: auto;
+      margin-bottom: 57px;
+    }
+  }
+}
