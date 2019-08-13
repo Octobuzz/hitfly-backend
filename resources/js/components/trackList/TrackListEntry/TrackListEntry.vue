@@ -1,5 +1,5 @@
 <template>
-  <div class="track-list-entry">
+  <div class="track-list-entry" v-if="trackLoaded">
     <span
       v-if="showTrackIndex"
       class="track-list-entry__index"
@@ -211,6 +211,7 @@ export default {
   data() {
     return {
       track: null,
+      trackLoaded: false,
       tooltip: {
         remove: {
           content: 'Удалить из текущего списка'

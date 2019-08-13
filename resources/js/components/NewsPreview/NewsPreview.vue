@@ -10,11 +10,9 @@
       v-if="!isLoading"
       class="news-preview__content"
     >
-      <div class="news-preview__drape" />
-
       <img
-        :key="newsId"
-        :src="newsCoverUrl"
+        :key="newsObj.id"
+        :src="newsObj.image"
         alt="news cover"
         class="news-preview__cover"
       >
@@ -24,15 +22,12 @@
       v-if="!isLoading"
       class="news-preview__footer"
     >
-      <router-link :to="titleLink">
-        <span class="news-preview__title">
-          {{ news.title }}
-        </span>
-      </router-link>
-      <span class="news-preview__author">
-        {{ news.author }}
+      <span class="news-preview__title" v-html="newsObj.title">
       </span>
     </div>
+    <router-link class="news-preview__link" :to="`news/${newsObj.id}`">
+      Подробнее
+    </router-link>
   </div>
 </template>
 
@@ -47,57 +42,20 @@ export default {
   },
 
   props: {
-    newsId: {
-      type: Number,
+    newsObj: {
+      type: Object,
       required: true
     }
   },
 
   data() {
     return {
-      isLoading: true,
-      news: null
-    };
-  },
-
-  computed: {
-    newsCoverUrl() {
-      if (this.windowWidth <= MOBILE_WIDTH) {
-        return this.news.cover
-          .filter(cover => cover.size === 'size_104x104')[0].url;
+      isLoading: false,
+      queryVars: {
+        pageNumber: 1,
+        pageLimit: 30
       }
-
-      return this.news.cover
-        .filter(cover => cover.size === 'size_120x120')[0].url;
-    },
-  },
-
-  methods: {
-
-  },
-
-  apollo: {
-    news() {
-      return {
-        query: gql.query.NEWS,
-        variables() {
-          // use function to allow rendering another news when the prop changes
-
-          return {
-            id: this.newsId
-          };
-        },
-        update: ({ news }) => {
-          console.log(news);
-          this.isLoading = false;
-
-          return news;
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      };
-    }
+    };
   }
 };
 </script>

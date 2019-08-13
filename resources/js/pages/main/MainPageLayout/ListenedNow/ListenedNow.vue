@@ -28,6 +28,7 @@
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import TrackList from 'components/trackList/TrackList/TrackList.vue';
 import gql from './gql';
+import { mapGetters } from 'vuex';
 
   export default {
     data: () => ({
@@ -39,11 +40,16 @@ import gql from './gql';
       SpinnerLoader,
       TrackList
     },
+    computed: {
+      ...mapGetters(['isAuthenticated', 'apolloClient'])
+    },
     apollo: {
       GetListenedNow() {
         return {
+          client: this.apolloClient,
           query: gql.query.GET_LISTENED_NOW,
           variables: {
+            isAuthenticated: this.isAuthenticated,
             pageLimit: 50,
             pageNumber: 1
           },
