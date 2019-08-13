@@ -25,6 +25,9 @@ class IsStar implements Rule
     public function passes($attribute, $value)
     {
         $user = User::find($value);
+        if (null === $user) {
+            return false;
+        }
 
         return ($user->can('comment.star')) ? true : false;
     }

@@ -65,9 +65,9 @@ class PictureHelpers
     public static function isBitmapImage($image): bool
     {
         if (true === Storage::disk('public')->exists($image)) {
-            $image = Storage::disk('public')->get($image);
+            $imageFile = new File(Storage::disk('public')->path($image));
             $validator = Validator::make(
-                ['image' => $image],
+                ['image' => $imageFile],
                 ['image' => 'mimes:jpeg,png,webp']
             );
             if (false === $validator->fails()) {
