@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Type;
 
+use App\Http\GraphQL\Fields\PictureField;
 use App\Models\Product;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -38,6 +39,7 @@ class ProductType extends GraphQLType
                 'type' => Type::float(),
                 'description' => 'цена товара',
             ],
+            'image' => PictureField::class,
             'createdAt' => [
                 'type' => Type::string(),
                 'alias' => 'created_at',
