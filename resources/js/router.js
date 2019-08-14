@@ -5,7 +5,6 @@ import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
-import Page404 from './pages/Page404.vue';
 
 const routes = [
   {
@@ -152,7 +151,6 @@ const routes = [
   },
   {
     path: '*',
-    component: Page404,
     beforeEnter: (to, from, next) => {
       store.commit('appColumns/set404', true);
     },

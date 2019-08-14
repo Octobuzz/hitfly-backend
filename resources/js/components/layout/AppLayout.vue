@@ -6,7 +6,7 @@
       <FlashMessage />
       <Page404 v-if="if404" />
       <AppHeader :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
-      <router-view :class="{ 'app-layout_blurred': blurred }" />
+      <router-view :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
       <AppFooter :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
     </div>
   </ProfileDataProvider>
