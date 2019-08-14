@@ -6,6 +6,7 @@ import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
 import FaqPage from './pages/FaqPage.vue';
+import Page404 from './pages/Page404.vue';
 
 const routes = [
   {
