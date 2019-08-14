@@ -4,9 +4,9 @@
       <portal-target name="root" />
       <IconGradientRadial />
       <FlashMessage />
-      <AppHeader :class="{ 'app-layout_blurred': blurred }" />
+      <AppHeader :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
       <router-view :class="{ 'app-layout_blurred': blurred }" />
-      <AppFooter :class="{ 'app-layout_blurred': blurred }" />
+      <AppFooter :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
     </div>
   </ProfileDataProvider>
 </template>
@@ -27,6 +27,9 @@ export default {
     AppFooter
   },
   computed: {
+    if404() {
+      return this.$store.getters['appColumns/is404'];
+    },
     blurred() {
       return this.$store.getters['layout/blurred'];
     }
