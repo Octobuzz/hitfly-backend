@@ -87,20 +87,19 @@ export default {
 
           periods.forEach((period) => {
             try {
+              const vars = {
+                id: this.trackId,
+                commentedInPeriod: period
+              };
+
               const { track: trackWithComments } = store.readQuery({
                 query: gql.query.TRACK_WITH_COMMENTS,
-                variables: {
-                  id: this.trackId,
-                  commentedInPeriod: period
-                }
+                variables: vars
               });
 
               store.writeQuery({
                 query: gql.query.TRACK_WITH_COMMENTS,
-                variables: {
-                  id: this.trackId,
-                  commentedInPeriod: period
-                },
+                variables: vars,
                 data: {
                   track: {
                     ...trackWithComments,
