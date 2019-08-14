@@ -95,7 +95,7 @@
           Добавить в плейлист
         </span>
         <span
-          v-if="isAuthenticated"
+          v-if="isAuthenticated && track"
           class="track-actions-popover__menu-item"
           @click="onFavouritePress"
         >
