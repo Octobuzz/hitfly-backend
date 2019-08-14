@@ -68,7 +68,6 @@ class PictureField extends Field
                 break;
             default:
                 $defaultImage = 'default_track.svg';
-                //$defaultImage = 'default_track.png';
                 break;
         }
 
@@ -79,37 +78,7 @@ class PictureField extends Field
             return $cacheValue;
         }
 
-        $picturePath = $this->model::find($this->model->id)->getImage();
-        if (false === PictureHelpers::isBitmapImage($picturePath)) {
-            $picturePath = $defaultImage;
-        }
-        $path = Storage::disk('public')->path($this->model->getPath());
-
-        $return = [];
-
-        foreach ($args['sizes'] as $size) {
-            if (false === PictureHelpers::isBitmapImage($picturePath)) {//$defaultImage может оказаться не растровым изображением
-                $url = Storage::disk('public')->url($defaultImage);
-            } else {
-                $image = new File(Storage::disk('public')->path($picturePath));
-
-                $baseNameFile = pathinfo($image, PATHINFO_FILENAME);
-                $saveName = "${baseNameFile}_${size}.".$image->getExtension();
-
-                $savePicturePath = $this->model->getPath().$saveName;
-                $url = Storage::disk('public')->url($savePicturePath);
-
-                if (false === Storage::disk('public')->exists($savePicturePath)) {
-                    list($width, $height) = $this->model->getSizePicture($size);
-                    $this->resize($width, $height, $picturePath, $path, $saveName);
-                }
-            }
-
-            $return[] = [
-                'size' => $size,
-                'url' => $url,
-            ];
-        }
+        $return = $this->getArrayResizedImage($args, $defaultImage);
 
         Cache::tags([$class.$root->id])->add($keyCache, $return, now()->addHour(6));
 
@@ -134,5 +103,58 @@ class PictureField extends Field
         $image_resize->save($savePath.$nameFile, 100);
 
         return true;
+    }
+
+    /**
+     * @param string $picturePath
+     * @param $size
+     * @param $path
+     * @return mixed
+     */
+    private function resizeImage(string $picturePath, $size, $path)
+    {
+        $image = new File(Storage::disk('public')->path($picturePath));
+
+        $baseNameFile = pathinfo($image, PATHINFO_FILENAME);
+        $saveName = "${baseNameFile}_${size}." . $image->getExtension();
+
+        $savePicturePath = $this->model->getPath() . $saveName;
+        $url = Storage::disk('public')->url($savePicturePath);
+
+        if (false === Storage::disk('public')->exists($savePicturePath)) {
+            list($width, $height) = $this->model->getSizePicture($size);
+            $this->resize($width, $height, $picturePath, $path, $saveName);
+        }
+        return $url;
+    }
+
+    /**
+     * @param $args
+     * @param string $defaultImage
+     * @return array
+     */
+    private function getArrayResizedImage($args, string $defaultImage): array
+    {
+        $picturePath = $this->model::find($this->model->id)->getImage();
+        if (false === PictureHelpers::isBitmapImage($picturePath)) {
+            $picturePath = $defaultImage;
+        }
+        $path = Storage::disk('public')->path($this->model->getPath());
+
+        $return = [];
+
+        foreach ($args['sizes'] as $size) {
+            if (false === PictureHelpers::isBitmapImage($picturePath)) {//$defaultImage может оказаться не растровым изображением
+                $url = Storage::disk('public')->url($defaultImage);
+            } else {
+                $url = $this->resizeImage($picturePath, $size, $path);
+            }
+
+            $return[] = [
+                'size' => $size,
+                'url' => $url,
+            ];
+        }
+        return $return;
     }
 }

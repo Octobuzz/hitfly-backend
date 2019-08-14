@@ -13,7 +13,7 @@ class PictureHelpers
     {
         $size = $width.'_'.$height;
         $defaultImage = 'default.jpg';
-        $picturePath = $model->getImage(); //todo
+        $picturePath = $model->getImage();
         $path = Storage::disk('public')->path($model->getPath());
 
         if (false === Storage::disk('public')->exists($picturePath)) {

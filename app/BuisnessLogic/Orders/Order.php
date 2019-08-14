@@ -69,7 +69,6 @@ class Order
             }
         }
 
-
         return $operation;
     }
 
