@@ -19,12 +19,7 @@
 </template>
 <script>
   export default {
-    created() {
-      this.$store.commit('appColumns/set404', true);
-    },
-    destroyed() {
-      this.$store.commit('appColumns/set404', false);
-    }
+    
   }
 </script>
 <style scoped lang="scss">
