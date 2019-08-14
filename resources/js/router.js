@@ -8,7 +8,6 @@ import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
 import AboutPage from './pages/AboutPage.vue';
 import FaqPage from './pages/FaqPage.vue';
-import Page404 from './pages/Page404.vue';
 
 const PERFORMER = 'performer';
 const CRITIC = 'critic';
@@ -292,15 +291,6 @@ const routes = [
     component: UploadPage
   },
   {
-    path: '*',
-    beforeEnter: (to, from, next) => {
-      store.commit('appColumns/set404', true);
-    },
-    afterLeave: (to, from, next) => {
-      store.commit('appColumns/set404', false);
-    },
-  },
-  {
     path: '/',
     component: main.MainPageLayout,
     children: [
@@ -343,7 +333,11 @@ const routes = [
   {
     path: '/faq',
     component: FaqPage
-  }
+  },
+  {
+    path: '*',
+    name: 'asterisk'
+  },
 ];
 
 const router = new VueRouter({
@@ -351,9 +345,16 @@ const router = new VueRouter({
   mode: 'history'
 });
 
-// TODO: consider using after hook
 router.beforeEach((to, from, next) => {
+  // TODO: consider using after hook
   store.commit('history/push', to);
+
+  if (to.name === 'asterisk') {
+    store.commit('appColumns/set404', true);
+  } else {
+    store.commit('appColumns/set404', false);
+  }
+
   next();
 });
 
