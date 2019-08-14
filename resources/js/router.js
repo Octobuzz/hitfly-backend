@@ -145,7 +145,7 @@ const routes = [
       },
       {
         path: 'favourite/tracks',
-        component: profile.Tracks
+        component: profile.FavouriteTrackList
       },
       {
         path: 'favourite/albums',

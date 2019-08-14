@@ -24,40 +24,40 @@
           :class="['profile__nav-wrapper', paddingClass]"
         >
           <ul class="profile__nav">
-            <template v-if="ableToPerform">
-              <li
-                :class="[
-                  'profile__nav-endpoint',
-                  { 'profile__nav-endpoint_active': currentPath === '/profile/my-music' }
-                ]"
-              >
-                <router-link to="/profile/my-music">
-                  Моя музыка
-                </router-link>
-              </li>
+            <li
+              v-if="ableToPerform"
+              :class="[
+                'profile__nav-endpoint',
+                { 'profile__nav-endpoint_active': currentPath === '/profile/my-music' }
+              ]"
+            >
+              <router-link to="/profile/my-music">
+                Моя музыка
+              </router-link>
+            </li>
 
-              <li
-                :class="[
-                  'profile__nav-endpoint',
-                  { 'profile__nav-endpoint_active': currentPath === '/profile/favourite' }
-                ]"
-              >
-                <router-link to="/profile/favourite">
-                  Мне нравится
-                </router-link>
-              </li>
+            <li
+              :class="[
+                'profile__nav-endpoint',
+                { 'profile__nav-endpoint_active': currentPath === '/profile/favourite' }
+              ]"
+            >
+              <router-link to="/profile/favourite">
+                Мне нравится
+              </router-link>
+            </li>
 
-              <li
-                :class="[
-                  'profile__nav-endpoint',
-                  { 'profile__nav-endpoint_active': currentPath === '/profile/reviews' }
-                ]"
-              >
-                <router-link to="/profile/reviews">
-                  Отзывы
-                </router-link>
-              </li>
-            </template>
+            <li
+              v-if="ableToPerform"
+              :class="[
+                'profile__nav-endpoint',
+                { 'profile__nav-endpoint_active': currentPath === '/profile/reviews' }
+              ]"
+            >
+              <router-link to="/profile/reviews">
+                Отзывы
+              </router-link>
+            </li>
 
             <template v-if="ableToComment">
               <li
@@ -254,7 +254,7 @@ export default {
           return;
         }
 
-        const notProfCriticOrStarEndpoint = ['my-music', 'favourite', 'reviews']
+        const notProfCriticOrStarEndpoint = ['my-music', 'reviews']
           .some(endpointSection => endpointSection === profilePathSection);
 
         if (isProfCriticOrStar && notProfCriticOrStarEndpoint) {
