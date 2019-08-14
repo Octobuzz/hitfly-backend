@@ -8,7 +8,7 @@
       <p>404</p>
       <span>К сожалению, нам не удалось найти запрашиваемую вами страницу</span>
       <div class="buttons404">
-        <a href="javascript: void(0)" class="form-button form-button_secondary">Главная</a>
+        <a href="/" class="form-button form-button_secondary">Главная</a>
         <a href="javascript: void(0)" class="form-button form-button_secondary">Карта сайта</a>
       </div>
     </div>
@@ -19,7 +19,7 @@
 </template>
 <script>
   export default {
-
+    
   }
 </script>
 <style scoped lang="scss">

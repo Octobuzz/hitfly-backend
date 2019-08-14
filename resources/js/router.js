@@ -293,7 +293,12 @@ const routes = [
   },
   {
     path: '*',
-    component: Page404
+    beforeEnter: (to, from, next) => {
+      store.commit('appColumns/set404', true);
+    },
+    afterLeave: (to, from, next) => {
+      store.commit('appColumns/set404', false);
+    },
   },
   {
     path: '/',

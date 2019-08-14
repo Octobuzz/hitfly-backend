@@ -101,6 +101,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const ROLE_PROF_CRITIC = 'prof_critic';
     const ROLE_PERFORMER = 'performer';
 
+    protected $attributes = [
+        'level' => self::LEVEL_NOVICE,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -242,7 +246,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function purseBonus(): HasOne
     {
-        return $this->hasOne(Purse::class)->where('name', '=', Purse::NAME_BONUS);
+        return $this->hasOne(Purse::class, 'user_id')->where('name', '=', Purse::NAME_BONUS);
     }
 
     public function userNotification()
