@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Track;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Rebing\GraphQL\Error\ValidationError;
 
 class Order
@@ -34,22 +35,40 @@ class Order
         ]);
         /** @var User $user */
         $user = Auth::user();
-        $operationResult = $user->purseBonus->processOperation($operation);
-        if (false === $operationResult) {
-            throw new ValidationError('На вашем счете недостаточно бонусов');
+
+        $errorMessage = null;
+        \DB::beginTransaction();
+        try {
+            $operationResult = $user->purseBonus->processOperation($operation);
+            if (false === $operationResult) {
+                throw new ValidationError('На вашем счете недостаточно бонусов');
+            }
+            $order = new \App\Models\Order([
+                'name' => $product->name,
+                'user_id' => Auth::user()->id,
+                'description' => $product->description,
+                'product_id' => $product->id,
+            ]);
+            $order->save();
+            switch ($product->alias) {
+                case 'COMMENT_FROM_STAR'://покупка комментария от звезды
+                    $this->commentStar($product, $attributes, $order);
+            }
+            \DB::commit();
+        } catch (ValidationError $error) {
+            $errorMessage = $error->getMessage();
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), $e->getTrace());
+            $errorMessage = 'Ошибка проведения операции';
+        } finally {
+            if (null === $errorMessage) {
+                event(new CreateOrder($order));
+            } else {
+                \DB::rollback();
+                throw new ValidationError($errorMessage);
+            }
         }
-        $order = new \App\Models\Order([
-            'name' => $product->name,
-            'user_id' => Auth::user()->id,
-            'description' => $product->description,
-            'product_id' => $product->id,
-        ]);
-        $order->save();
-        switch ($product->alias) {
-            case 'COMMENT_FROM_STAR':
-                $this->commentStar($product, $attributes, $order);
-        }
-        event(new CreateOrder($order));
+
 
         return $operation;
     }

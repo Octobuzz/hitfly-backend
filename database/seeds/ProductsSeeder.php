@@ -14,7 +14,7 @@ class ProductsSeeder extends Seeder
      */
     public function run()
     {
-        $this->createCommentFromStar();
+        //$this->createCommentFromStar();
         $this->createStudiosProducts();
     }
 
@@ -51,128 +51,67 @@ class ProductsSeeder extends Seeder
      */
     private function createStudiosProducts()
     {
+        $productsArr = [
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Запись вокала',
+                'alias' => 'STUDIO_VOCAL',
+                'price' => 10000,
+            ],
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Тональная коррекция (тюнинг вокала)',
+                'alias' => 'STUDIO_TONE_CORRECTION',
+                'price' => 10500,
+            ],
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Запись музыкальных инструментов',
+                'alias' => 'STUDIO_INSTRUMENTAL',
+                'price' => 11500,
+            ],
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Мастеринг трека',
+                'alias' => 'STUDIO_MASTERING',
+                'price' => 12000,
+            ],
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Стэм-мастеринг трека',
+                'alias' => 'STUDIO_STEM_MASTERING',
+                'price' => 12500,
+            ],
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Сведение вокала с готовым минусом',
+                'alias' => 'STUDIO_VOCAL_MINUS',
+                'price' => 13000,
+            ],
+            [
+                'name' => 'Услуги в студии',
+                'description' => 'Сведение + Мастеринг трека',
+                'alias' => 'STUDIO_MIXING_AND_MASTERING',
+                'price' => 20000,
+            ],
+        ];
         $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
         if (!file_exists($publicPath.self::PRODUCTS_DIR)) {
             Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR);
         }
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Запись вокала',
-            'alias' => 'STUDIO_VOCAL',
-            'price' => 10000,
-        ]);
-        $product->save();
 
-        $file = Storage::disk('local')->get('products/STUDIO_VOCAL.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_VOCAL.png';
+        foreach ($productsArr as $value) {
+            $product = new Product($value);
+            $product->save();
+            $file = Storage::disk('local')->get('products/STUDIO_INSTRUMENTAL.png');
+            $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_INSTRUMENTAL.png';
 
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
+            if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
+                Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
+            }
+            Storage::disk('public')->put($imgNamePublic, $file);
+            $product->image = $imgNamePublic;
+            $product->save();
         }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
-
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Тональная коррекция (тюнинг вокала)',
-            'alias' => 'STUDIO_TONE_CORRECTION',
-            'price' => 10500,
-        ]);
-        $product->save();
-        $file = Storage::disk('local')->get('products/STUDIO_TONE_CORRECTION.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_TONE_CORRECTION.png';
-
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
-        }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
-
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Запись музыкальных инструментов',
-            'alias' => 'STUDIO_INSTRUMENTAL',
-            'price' => 11500,
-        ]);
-        $product->save();
-        $file = Storage::disk('local')->get('products/STUDIO_INSTRUMENTAL.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_INSTRUMENTAL.png';
-
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
-        }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
-
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Мастеринг трека',
-            'alias' => 'STUDIO_MASTERING',
-            'price' => 12000,
-        ]);
-        $product->save();
-        $file = Storage::disk('local')->get('products/STUDIO_MASTERING.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_MASTERING.png';
-
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
-        }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
-
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Стэм-мастеринг трека',
-            'alias' => 'STUDIO_STEM_MASTERING',
-            'price' => 12500,
-        ]);
-        $product->save();
-        $file = Storage::disk('local')->get('products/STUDIO_STEM_MASTERING.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_STEM_MASTERING.png';
-
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
-        }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
-
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Сведение вокала с готовым минусом',
-            'alias' => 'STUDIO_VOCAL_MINUS',
-            'price' => 13000,
-        ]);
-        $product->save();
-        $file = Storage::disk('local')->get('products/STUDIO_VOCAL_MINUS.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_VOCAL_MINUS.png';
-
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
-        }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
-
-        $product = new Product([
-            'name' => 'Услуги в студии',
-            'description' => 'Сведение + Мастеринг трека',
-            'alias' => 'STUDIO_MIXING_AND_MASTERING',
-            'price' => 20000,
-        ]);
-        $product->save();
-        $file = Storage::disk('local')->get('products/STUDIO_MIXING_AND_MASTERING.png');
-        $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_MIXING_AND_MASTERING.png';
-
-        if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
-            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
-        }
-        Storage::disk('public')->put($imgNamePublic, $file);
-        $product->image = $imgNamePublic;
-        $product->save();
     }
 }
