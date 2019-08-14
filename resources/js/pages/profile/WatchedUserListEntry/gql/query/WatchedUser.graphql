@@ -18,5 +18,8 @@ query WatchedUserEntry_user($id: Int!) {
             id
             name
         }
+        roles {
+            slug
+        }
     }
 }

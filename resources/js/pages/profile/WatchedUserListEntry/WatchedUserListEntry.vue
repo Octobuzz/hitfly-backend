@@ -9,9 +9,12 @@
     </router-link>
 
     <div class="watched-user-list-entry__user-info">
-      <span class="h2 watched-user-list-entry__user-info-name">
+      <router-link
+        :to="userLink"
+        class="h2 watched-user-list-entry__user-info-name"
+      >
         {{ user.username }}
-      </span>
+      </router-link>
       <span class="watched-user-list-entry__user-info-followers">
         {{ user.followersCount }}
         {{ formatFollowers(user.followersCount) }}
@@ -120,6 +123,20 @@ export default {
       return this.user.genresPlay
         .map(genre => genre.name.charAt(0).toUpperCase() + genre.name.slice(1))
         .join(', ');
+    },
+
+    userLink() {
+      if (!this.user.roles) {
+        return '#';
+      }
+
+      if (this.user.roles.some(
+        role => role.slug === 'performer'
+      )) {
+        return `/user/${this.userId}/music`;
+      }
+
+      return `/user/${this.userId}/user-reviews`;
     }
   },
 
