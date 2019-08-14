@@ -192,6 +192,24 @@ export default {
         },
         data: updatedCollections
       });
+
+      const { collections: myCollections } = store.readQuery({
+        query: gql.query.MY_COLLECTIONS
+      });
+
+      const updatedMyCollections = {
+        collections: {
+          ...myCollections,
+          data: [
+            ...myCollections.data.filter(col => col.id !== id)
+          ]
+        }
+      };
+
+      store.writeQuery({
+        query: gql.query.MY_COLLECTIONS,
+        data: updatedMyCollections
+      });
     }
   },
 
