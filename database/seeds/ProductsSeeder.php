@@ -14,7 +14,7 @@ class ProductsSeeder extends Seeder
      */
     public function run()
     {
-        //$this->createCommentFromStar();
+        $this->createCommentFromStar();
         $this->createStudiosProducts();
     }
 
