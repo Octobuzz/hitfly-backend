@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class PictureHelpers
@@ -12,7 +13,7 @@ class PictureHelpers
     {
         $size = $width.'_'.$height;
         $defaultImage = 'default.jpg';
-        $picturePath = $model->getImage(); //todo
+        $picturePath = $model->getImage();
         $path = Storage::disk('public')->path($model->getPath());
 
         if (false === Storage::disk('public')->exists($picturePath)) {
@@ -52,5 +53,29 @@ class PictureHelpers
         $image_resize->save($savePath.$nameFile, 100);
 
         return true;
+    }
+
+    /**
+     * растровое изображение?
+     *
+     * @param $image
+     *
+     * @return bool
+     */
+    public static function isBitmapImage($image): bool
+    {
+        if (false === Storage::disk('public')->exists($image)) {
+            return false;
+        }
+        $imageFile = new File(Storage::disk('public')->path($image));
+        $validator = Validator::make(
+                ['image' => $imageFile],
+                ['image' => 'mimes:jpeg,png,webp']
+            );
+        if (false === $validator->fails()) {
+            return true;
+        }
+
+        return false;
     }
 }

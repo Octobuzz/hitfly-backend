@@ -160,6 +160,8 @@ return [
                 'TopWeeklyQuery' => \App\Http\GraphQL\Query\TopWeeklyQuery::class,
                 'myTracksSearch' => \App\Http\GraphQL\Query\MyTracksSearch::class,
                 'requestsForComments' => \App\Http\GraphQL\Query\RequestsForCommentsQuery::class,
+                'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
+                'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -204,6 +206,8 @@ return [
                 'UseBonusesMutation' => \App\Http\GraphQL\Mutations\UseBonusesMutation::class,
 
                 'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
+
+                'buyStudioService' => \App\Http\GraphQL\Mutations\Store\BuyStudioServiceMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -281,6 +285,7 @@ return [
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
+        'ProductStudioTypeEnum' => \App\Http\GraphQL\Enums\ProductStudioTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

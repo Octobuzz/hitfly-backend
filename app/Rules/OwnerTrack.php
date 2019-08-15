@@ -26,6 +26,9 @@ class OwnerTrack implements Rule
     public function passes($attribute, $value)
     {
         $track = Track::query()->find($value);
+        if (null === $track) {
+            return false;
+        }
 
         return Auth::user()->id === $track->user_id;
     }
