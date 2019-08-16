@@ -68,6 +68,7 @@
         :show-remove-option="false"
         :position-change-breakpoint="1024"
         @press-favourite="onPressFavourite"
+        @review-added="onReviewAdded"
       >
         <IconButton
           passive="standard-passive"
@@ -138,6 +139,9 @@ export default {
   methods: {
     onPressFavourite() {
       this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
+    },
+    onReviewAdded() {
+      this.$emit('review-added');
     }
   },
 

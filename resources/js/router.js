@@ -14,11 +14,15 @@ const CRITIC = 'critic';
 const PROF_CRITIC = 'prof_critic';
 const STAR = 'star';
 
-const hasRoles = (roles) => {
-  const { hasRole } = store.getters['profile/roles'];
-
-  return roles.some(role => hasRole(role));
+const renderNotFoundPage = () => {
+  store.commit('appColumns/set404', true);
 };
+
+const hasRoles = roles => (
+  roles.some(role => (
+    store.getters['profile/roles'](role)
+  ))
+);
 
 const isAuthenticated = () => store.getters.isAuthenticated;
 
@@ -27,14 +31,17 @@ const isAuthenticated = () => store.getters.isAuthenticated;
 // {
 //   shouldBeAuthenticated: {
 //     redirect
+//     renderNotFound
 //   },
 //   shouldHaveRoles: {
 //     rolesToHave,
 //     redirect
+//     renderNotFound
 //   },
 //   shouldNotHaveRoles: {
 //     rolesNotToHave,
 //     redirect
+//     renderNotFound
 //   }
 // }
 
@@ -43,22 +50,43 @@ const beforeRouteEnterFactory = ({
   shouldHaveRoles,
   shouldNotHaveRoles
 }) => ({
-  beforeRouteEnter(to, from, next) {
+  beforeEnter(to, from, next) {
     if (shouldBeAuthenticated && !isAuthenticated()) {
-      next(shouldBeAuthenticated.redirect);
+      const { redirect, renderNotFound } = shouldBeAuthenticated;
 
+      if (redirect) {
+        next(redirect);
+      }
+      if (renderNotFound) {
+        renderNotFoundPage();
+      }
       return;
     }
+
     if (shouldHaveRoles && !hasRoles(shouldHaveRoles.rolesToHave)) {
-      next(shouldHaveRoles.redirect);
+      const { redirect, renderNotFound } = shouldHaveRoles;
 
+      if (redirect) {
+        next(shouldHaveRoles.redirect);
+      }
+      if (renderNotFound) {
+        renderNotFoundPage();
+      }
       return;
     }
+
     if (shouldNotHaveRoles && hasRoles(shouldNotHaveRoles.rolesNotToHave)) {
-      next(shouldNotHaveRoles.redirect);
+      const { redirect, renderNotFound } = shouldNotHaveRoles;
 
+      if (redirect) {
+        next(shouldNotHaveRoles.redirect);
+      }
+      if (renderNotFound) {
+        renderNotFoundPage();
+      }
       return;
     }
+
     next();
   }
 });
@@ -69,7 +97,7 @@ const routes = [
     component: profile.MyProfileLayout,
     ...beforeRouteEnterFactory({
       shouldBeAuthenticated: {
-        redirect: '/'
+        renderNotFound: true
       },
     }),
     children: [
@@ -83,7 +111,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -93,7 +121,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -104,7 +132,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -114,7 +142,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -124,7 +152,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -134,7 +162,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -169,7 +197,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldHaveRoles: {
             rolesToHave: [CRITIC, PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -179,7 +207,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -189,7 +217,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -199,13 +227,27 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
       {
         path: 'reviews/:trackId',
         component: profile.UniversalReviews
+      },
+      {
+        path: 'watched-users',
+        component: profile.WatchedUsersContainer
+      },
+      {
+        path: 'review-requests',
+        component: profile.ReviewRequestsContainer,
+        ...beforeRouteEnterFactory({
+          shouldHaveRoles: {
+            rolesToHave: [STAR],
+            renderNotFound: true
+          }
+        })
       },
       {
         path: 'bonus-program',

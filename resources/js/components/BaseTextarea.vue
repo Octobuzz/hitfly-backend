@@ -106,10 +106,11 @@ export default {
 
   &__label-backdrop {
     position: absolute;
-    width: calc(100% - 16px);
+    width: calc(100% - 18px);
     height: 25px;
     top: 1px;
-    right: 1px;
+    left: 1px;
+    border-top-left-radius: 4px;
     background: linear-gradient(to bottom, white 85%, transparent 100%);
   }
 

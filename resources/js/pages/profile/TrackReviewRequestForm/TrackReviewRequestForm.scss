@@ -1,0 +1,18 @@
+.track-review-request-form {
+  &__textarea {
+    margin-bottom: 24px;
+  }
+
+  &__send-button {
+    box-sizing: border-box;
+    display: block;
+    width: 208px;
+    min-height: 42px;
+    padding: 12px 0;
+    margin-left: auto;
+
+    &:hover {
+      padding: 13px 0;
+    }
+  }
+}

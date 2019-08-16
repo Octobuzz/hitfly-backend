@@ -237,32 +237,6 @@ export default {
       ableToComment: 'profile/ableToComment',
       hasRole: 'profile/roles'
     })
-  },
-
-  watch: {
-    isAuthenticated: {
-      handler(val) {
-        if (val !== true) return;
-
-        const { hasRole } = this;
-        const profilePathSection = this.currentPath.split('/')[2];
-        const isProfCriticOrStar = hasRole('prof_critic') || hasRole('star');
-
-        if (!isProfCriticOrStar && profilePathSection === 'my-reviews') {
-          this.$router.push('/profile/my-music');
-
-          return;
-        }
-
-        const notProfCriticOrStarEndpoint = ['my-music', 'reviews']
-          .some(endpointSection => endpointSection === profilePathSection);
-
-        if (isProfCriticOrStar && notProfCriticOrStarEndpoint) {
-          this.$router.push('/profile/my-reviews');
-        }
-      },
-      immediate: true
-    }
   }
 };
 </script>

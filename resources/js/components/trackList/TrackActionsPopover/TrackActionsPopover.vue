@@ -361,6 +361,8 @@ export default {
     },
 
     onReviewAdded() {
+      this.$emit('review-added');
+
       setTimeout(() => {
         this.$refs.closeButton.click();
         this.leaveReviewMenu(300);
