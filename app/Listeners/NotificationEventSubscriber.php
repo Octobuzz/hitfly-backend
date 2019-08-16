@@ -198,7 +198,7 @@ class NotificationEventSubscriber
     {
         /** @var User $user */
         $user = $collection->user;
-        if($user === null){
+        if (null === $user) {
             $user = $collection->load('user');
         }
         $exclude_client_id = [];

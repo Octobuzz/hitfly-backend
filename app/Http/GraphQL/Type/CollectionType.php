@@ -9,6 +9,7 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
+use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -58,6 +59,7 @@ class CollectionType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'countTracks' => [
                 'type' => Type::int(),
@@ -90,6 +92,7 @@ class CollectionType extends GraphQLType
                     return $model->user_id === Auth::user()->id ? true : false;
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'tracksTime' => [
                 'type' => Type::float(),

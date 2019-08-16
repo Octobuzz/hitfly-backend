@@ -90,6 +90,7 @@ class TrackType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'favouritesCount' => [
                 'type' => Type::int(),
@@ -126,6 +127,7 @@ class TrackType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'commentedByMe' => [
                 'type' => Type::boolean(),
@@ -138,6 +140,7 @@ class TrackType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
         ];
     }

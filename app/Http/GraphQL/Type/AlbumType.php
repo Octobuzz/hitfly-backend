@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
+use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 use App\Models\Album;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,7 @@ class AlbumType extends GraphQLType
                         return false;
                     }
                 },
+                'privacy' => IsAuthPrivacy::class,
             ],
             'favouritesCount' => [
                 'type' => Type::int(),
@@ -77,6 +79,7 @@ class AlbumType extends GraphQLType
                     return $model->user_id === Auth::user()->id ? true : false;
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'tracksCount' => [
                 'type' => Type::int(),

@@ -44,9 +44,7 @@ class GenreType extends GraphQLType
                     }
                 },
                 'selectable' => false,
-                'privacy' => function (array $args) {
-                    return \Auth::check();
-                },
+                'privacy' => IsAuthPrivacy::class,
             ],
             'countTracks' => [
                 'type' => Type::nonNull(Type::int()),

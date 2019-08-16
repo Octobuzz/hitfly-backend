@@ -35,6 +35,9 @@ class SocialConnectQuery extends Query
     {
         /** @var User $User */
         $User = Auth::user();
+        if (null === $User) {
+            return null;
+        }
         /** @var Collection $socialsLink */
         $socialsLink = $User->socialsConnect;
         $response = [];
