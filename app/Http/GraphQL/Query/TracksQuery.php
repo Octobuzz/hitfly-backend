@@ -50,12 +50,14 @@ class TracksQuery extends Query
 //        if (false === empty($response)) {
 //            return $response;
 //        }
-
         $query = Track::with($fields->getRelations());
 
         $query->select('tracks.*');
 
-        if (false === empty($args['filters']['my']) && true === $args['filters']['my'] && null !== \Auth::user()) {
+        if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
+            if (null === \Auth::user()) {
+                return null;
+            }
             $query->where('tracks.user_id', '=', \Auth::user()->id);
         }
         if (false === empty($args['filters']['userId'])) {
@@ -83,6 +85,7 @@ class TracksQuery extends Query
 
         if (false === empty($args['commentPeriod'])) {
             $date = DBHelpers::getPeriod($args['commentPeriod']);
+
             $query->leftJoin('comments', function ($join) {
                 $join->on('tracks.id', '=', 'comments.commentable_id');
             })
@@ -98,6 +101,9 @@ class TracksQuery extends Query
                 false === empty($args['filters']['iCommented'])
                 && true === (bool) $args['filters']['iCommented']
             ) {
+                if (null === $user) {
+                    return null;
+                }
                 $query->where('comments.user_id', '=', $user->id);
             }
             if (
@@ -131,7 +137,6 @@ class TracksQuery extends Query
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-
 //        Cache::add($keyCache, $response, now()->addMinute(10));
 
         return $response;

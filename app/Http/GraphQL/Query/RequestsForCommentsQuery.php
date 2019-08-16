@@ -35,6 +35,10 @@ class RequestsForCommentsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
         $product = Product::query()->where('products.alias', 'COMMENT_FROM_STAR')->first();
 
         //получение атрибутов продукта(id атрибута продукта нужен будет для получения заказов отзывов заказаных у определенной звезды)

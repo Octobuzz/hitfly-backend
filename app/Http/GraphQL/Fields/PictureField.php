@@ -109,6 +109,7 @@ class PictureField extends Field
      * @param string $picturePath
      * @param $size
      * @param $path
+     *
      * @return mixed
      */
     private function resizeImage(string $picturePath, $size, $path)
@@ -116,21 +117,23 @@ class PictureField extends Field
         $image = new File(Storage::disk('public')->path($picturePath));
 
         $baseNameFile = pathinfo($image, PATHINFO_FILENAME);
-        $saveName = "${baseNameFile}_${size}." . $image->getExtension();
+        $saveName = "${baseNameFile}_${size}.".$image->getExtension();
 
-        $savePicturePath = $this->model->getPath() . $saveName;
+        $savePicturePath = $this->model->getPath().$saveName;
         $url = Storage::disk('public')->url($savePicturePath);
 
         if (false === Storage::disk('public')->exists($savePicturePath)) {
             list($width, $height) = $this->model->getSizePicture($size);
             $this->resize($width, $height, $picturePath, $path, $saveName);
         }
+
         return $url;
     }
 
     /**
      * @param $args
      * @param string $defaultImage
+     *
      * @return array
      */
     private function getArrayResizedImage($args, string $defaultImage): array
@@ -155,6 +158,7 @@ class PictureField extends Field
                 'url' => $url,
             ];
         }
+
         return $return;
     }
 }

@@ -33,10 +33,14 @@ class FavouriteCollectionQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
         $query = Favourite::with($fields->getRelations());
         $query->select($fields->getSelect());
         $query->where('favourites.favouriteable_type', '=', Collection::class);
-        $query->where('favourites.user_id', Auth::user()->id);
+        $query->where('favourites.user_id', $user->id);
         if (isset($args['collectionId'])) {
             $query->where('favourites.favouriteable_id', $args['collectionId']);
         }
@@ -47,6 +51,7 @@ class FavouriteCollectionQuery extends Query
 
         //$query->orderBy('created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+
         return $response;
     }
 }
