@@ -106,6 +106,7 @@ import UniversalTrackList from '../UniversalTrackList';
 import TrackActionsPopover from 'components/trackList/TrackActionsPopover';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
+import { mapGetters } from 'vuex';
 
 const ofNumber = arg => typeof arg === 'number';
 
@@ -138,6 +139,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient']),
+
     currentPlaying() {
       return this.currentType.type === 'tracks' && this.currentType.id === this.currentId && this.$store.getters['player/isPlaying'];
     },
@@ -168,8 +171,6 @@ export default {
       if (playingTrack && playingTrack.my === true) {
         return playingTrack;
       }
-
-      console.log(firstTrack);
 
       return firstTrack;
     }
@@ -229,11 +230,13 @@ export default {
     // TODO: user/my tracks data
 
     playingTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return { id: this.playingTrackId };
+      query: gql.query.QUEUE_TRACKS,
+      variables: {
+        isAuthenticated: this.isAuthenticated,
+        id: this.playingTrackId
       },
       update({ track }) {
+        console.log(track);
         return track;
       },
       error(err) {
@@ -245,9 +248,10 @@ export default {
     },
 
     firstTrack: {
-      query: gql.query.TRACK,
-      variables() {
-        return { id: this.firstTrackId };
+      query: gql.query.QUEUE_TRACKS,
+      variables: {
+        isAuthenticated: this.isAuthenticated,
+        id: this.playingTrackId
       },
       update({ track }) {
         return track;
