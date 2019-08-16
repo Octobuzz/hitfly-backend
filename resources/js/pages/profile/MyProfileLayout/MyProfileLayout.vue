@@ -75,7 +75,7 @@
             <template v-if="hasRole('prof_critic') || hasRole('star')">
               <li
                 :class="[
-                  'profile__nav-endpoint',
+                  'profile__nav-endpoint profile__nav-endpoint_long',
                   { 'profile__nav-endpoint_active': currentPath === '/profile/review-requests' }
                 ]"
               >
@@ -139,7 +139,8 @@ export default {
         '/profile/my-music',
         '/profile/favourite',
         '/profile/reviews',
-        '/profile/my-reviews'
+        '/profile/my-reviews',
+        '/profile/review-requests'
       ].some(mask => mask === this.currentPath);
     },
 
