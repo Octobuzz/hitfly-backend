@@ -8,9 +8,12 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "gen-graphql-fragment-types": "gql-gen",
         "eslint-fix": "eslint --ext .js,.vue resources --fix"
     },
     "devDependencies": {
+        "@graphql-codegen/cli": "^1.5.0",
+        "@graphql-codegen/fragment-matcher": "^1.5.0",
         "@vue/cli-service": "^3.7.0",
         "@vue/eslint-config-airbnb": "^4.0.0",
         "axios": "^0.18",

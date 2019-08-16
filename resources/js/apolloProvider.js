@@ -1,6 +1,7 @@
 import { ApolloClient } from 'apollo-client';
 import { createUploadLink as HttpLink } from 'apollo-upload-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import introspectionQueryResultData from 'project/graphql-fragment-types.json';
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 
@@ -27,7 +28,12 @@ const regularCacheRedirect = type => (_, args, { getCacheKey }) => (
   getCacheKey({ __typename: type, id: args.id })
 );
 
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData
+});
+
 export const cache = new InMemoryCache({
+  fragmentMatcher,
   freezeResults: true,
   cacheRedirects: {
     Query: {

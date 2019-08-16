@@ -236,6 +236,20 @@ const routes = [
         component: profile.UniversalReviews
       },
       {
+        path: 'watched-users',
+        component: profile.WatchedUsersContainer
+      },
+      {
+        path: 'review-requests',
+        component: profile.ReviewRequestsContainer,
+        ...beforeRouteEnterFactory({
+          shouldHaveRoles: {
+            rolesToHave: [STAR],
+            renderNotFound: true
+          }
+        })
+      },
+      {
         path: 'bonus-program',
         component: profile.BonusProgram
       },

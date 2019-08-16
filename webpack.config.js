@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   resolve: {
     alias: {
+      project: __dirname,
       images: path.resolve('resources', 'images'),
       scss: path.resolve('resources', 'scss'),
       gql: path.resolve('resources', 'gql'),

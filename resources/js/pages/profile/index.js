@@ -5,6 +5,7 @@ export { default as UpdateGroup } from './UpdateGroup';
 export { default as MyMusic } from './MyMusic';
 export { default as Favourite } from './Favourite';
 export { default as UniversalReviews } from './UniversalReviews';
+export { default as ReviewRequestsContainer } from './ReviewRequestsContainer';
 export { default as BonusProgram } from './BonusProgram';
 export { default as AlbumTableContainer } from './AlbumTableContainer';
 export { default as CollectionTableContainer } from './CollectionTableContainer';

@@ -1,0 +1,41 @@
+query ReviewRequestsContainer_requestsForComments(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+) {
+    requestsForComments(
+        limit: $pageLimit,
+        page: $pageNumber
+    ) {
+        total
+        to
+        data {
+            productId: id
+            productAttribute {
+                ... on Track {
+                    id
+                    trackName
+                    singer
+
+                    #TrackReviewHeader #TrackActionsPopover #TrackToPlaylist
+                    cover(
+                        sizes: [size_48x48, size_150x150]
+                    ) {
+                        size
+                        url
+                    }
+
+                    #TrackToPlaylistPopover #TrackActionsPopover
+                    userFavourite
+                    user {
+                        id
+                        iWatch
+                    }
+                    my
+
+                    #AddToFavouriteButton
+                    favouritesCount
+                }
+            }
+        }
+    }
+}
