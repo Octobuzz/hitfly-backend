@@ -66,6 +66,9 @@
     color: #231f20;
     flex-grow: 1;
     transition: .2s;
+  }
+
+  &__track-author {
     cursor: pointer;
 
     &:hover {
