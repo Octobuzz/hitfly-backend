@@ -58,7 +58,7 @@
       WeeklyTop,
       MainPageGenres,
       MainColumnFooter,
-      MainPageNews
+      MainPageNews,
     },
     computed: {
       showLoader() {
