@@ -229,38 +229,45 @@ export default {
   apollo: {
     // TODO: user/my tracks data
 
-    playingTrack: {
-      query: gql.query.QUEUE_TRACKS,
-      variables: {
-        isAuthenticated: this.isAuthenticated,
-        id: this.playingTrackId
-      },
-      update({ track }) {
-        console.log(track);
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.playingTrackId);
-      }
+    playingTrack() {
+      return{
+        query: gql.query.QUEUE_TRACKS,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.playingTrackId
+          }
+        },
+        update({ track }) {
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.playingTrackId);
+        }
+      };
     },
 
-    firstTrack: {
-      query: gql.query.QUEUE_TRACKS,
-      variables: {
-        isAuthenticated: this.isAuthenticated,
-        id: this.playingTrackId
-      },
-      update({ track }) {
-        return track;
-      },
-      error(err) {
-        console.dir(err);
-      },
-      skip() {
-        return !ofNumber(this.firstTrackId);
+    firstTrack() {
+      return{
+        query: gql.query.QUEUE_TRACKS,
+        variables() {
+          return{
+            isAuthenticated: this.isAuthenticated,
+            id: this.playingTrackId
+          }
+        },
+        update({ track }) {
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        },
+        skip() {
+          return !ofNumber(this.firstTrackId);
+        }
       }
     }
   }
