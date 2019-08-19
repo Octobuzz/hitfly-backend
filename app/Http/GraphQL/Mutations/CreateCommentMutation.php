@@ -52,7 +52,7 @@ class CreateCommentMutation extends Mutation
         $comment->save();
         if ($args['Comment']['orderId']) {
             $order = Order::with(['attributes' => function ($query) {
-                $query->wherePivot('value', 452);
+                $query->wherePivot('value', Auth::user()->id);
             }])->find($args['Comment']['orderId']);
             if ($order->attributes->isNotEmpty()) {
                 event(new DoneOrder($order));
