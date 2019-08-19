@@ -140,7 +140,124 @@
             </span>
           </div>
         </div>
+
+        <p class="bonus-program__level-description-text">
+          При получении уровня мы не списываем заработанные Вами баллы.
+        </p>
       </div>
+    </div>
+
+    <div :class="['bonus-program__task-section', containerPaddingClass]">
+      <span class="h2 bonus-program__task-section-title">
+        Выполнение заданий
+      </span>
+      <span class="h3 bonus-program__task-section-subtitle">
+        Разовые
+      </span>
+
+      <div class="bonus-program__task-oneoff-section-top">
+        <span class="bonus-program__task-index">
+          1
+        </span>
+        <span class="h4 bonus-program__task-title">
+          Заполнение профиля
+        </span>
+        <p class="bonus-program__task-p">
+          Баллы начисляются за каждый заполненный пункт:
+        </p>
+        <ul class="bonus-program__task-ul">
+          <li
+            v-for="item in taskLists.oneoff[1]"
+            :key="item"
+            class="bonus-program__task-li"
+          >
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="bonus-program__task-oneoff-section-bottom">
+        <div>
+          <span class="bonus-program__task-title-wrapper">
+            <span class="bonus-program__task-index">
+              2
+            </span>
+            <span class="h4 bonus-program__task-title">
+              Загрузка первого трека
+            </span>
+          </span>
+          <p class="bonus-program__task-p">
+            Начисляется один раз - 30 баллов
+          </p>
+        </div>
+
+        <div class="bonus-program__task-oneoff-3">
+          <span class="bonus-program__task-title-wrapper">
+            <span class="bonus-program__task-index">
+              3
+            </span>
+            <span class="h4 bonus-program__task-title">
+              Создание первого альбома
+            </span>
+          </span>
+          <p class="bonus-program__task-p">
+            Начисляется один раз - 50 баллов
+          </p>
+        </div>
+
+        <div>
+          <span class="bonus-program__task-title-wrapper">
+            <span class="bonus-program__task-index">
+              4
+            </span>
+            <span class="h4 bonus-program__task-title">
+              Создание первого плейлиста
+            </span>
+          </span>
+          <p class="bonus-program__task-p">
+            Начисляется один раз - 50 баллов
+          </p>
+        </div>
+      </div>
+
+      <hr class="bonus-program__task-section-delimiter">
+    </div>
+
+    <div class="bonus-program__task-daily-section">
+      <UniversalScrollHorizontal
+        :header-class="containerPaddingClass"
+        :item-list="dailyTasks"
+        :desktop-item-width="272"
+        :mobile-item-width="272"
+        :desktop-space-between="42"
+        :mobile-space-between="42"
+      >
+        <template #default="{ item: task }">
+          <div class="bonus-program__task-daily">
+            <span class="bonus-program__task-title-wrapper">
+              <span class="bonus-program__task-index">
+                {{ task.id }}
+              </span>
+              <span class="h4 bonus-program__task-title">
+                {{ task.title }}
+              </span>
+            </span>
+            <component :is="task.body"/>
+          </div>
+        </template>
+
+        <template #title>
+          <span
+            :class="[
+              'h3',
+              'bonus-program__task-section-subtitle',
+              'bonus-program__task-section-subtitle_daily'
+            ]"
+          >
+            Ежедневные
+          </span>
+        </template>
+      </UniversalScrollHorizontal>
     </div>
 
     <div class="bonus-program__paid-options">
@@ -186,7 +303,7 @@
         Понижение уровня и бан
       </span>
 
-      <p class="bonus-program__paragraph">
+      <p class="bonus-program__p">
         Статус пользователя может меняться как на более высокий, так и на более низкий.
       </p>
       <ul>
@@ -211,7 +328,7 @@
         </li>
       </ul>
 
-      <p class="bonus-program__paragraph">
+      <p class="bonus-program__p">
         Независимо от статуса пользователь может быть полностью заблокирован в случае
         некорректного поведения в рамках сервиса: накрутки баллов, нарушения правил
         использования сервиса и т. д.
@@ -221,6 +338,7 @@
 </template>
 
 <script>
+import containerPaddingClass from 'mixins/containerPaddingClass';
 import listenerImage from 'images/listener-image.svg';
 import rockImage from 'images/rock.svg';
 import expertImage from 'images/copyright.svg';
@@ -232,12 +350,16 @@ import levelConnoisseurImg from 'images/level-connoisseur.svg';
 import levelMusicLoverImg from 'images/level-music-lover.svg';
 import UniversalScrollHorizontal from 'components/UniversalScrollHorizontal';
 import ReturnHeader from '../ReturnHeader.vue';
+import * as bonusProgramDailyTaskBodies from '../bonusProgramDailyTaskBodies';
 
 export default {
   components: {
     ReturnHeader,
-    UniversalScrollHorizontal
+    UniversalScrollHorizontal,
+    ...bonusProgramDailyTaskBodies
   },
+
+  mixins: [containerPaddingClass],
 
   data() {
     return {
@@ -275,7 +397,7 @@ export default {
           description: 'Знаменитая личность, которая оценивает творчество других пользователей с '
             + 'точки зрения профессионала и делится ценными советами. Профессиональный критик и '
             + 'Звезда могут ставить лайки и писать отзывы, оставлять свое мнение и находить '
-            + 'талантливых исполнителей. Статус присваивает администратор DIGICO.',
+            + 'талантливых исполнителей. Статус присваивает администратор HITFLY.',
           image: expertPlusImage
         },
         {
@@ -284,7 +406,7 @@ export default {
           description: 'Знаменитая личность, которая оценивает творчество других пользователей '
             + 'с точки зрения профессионала и делится ценными советами. Профессиональный критик '
             + 'и Звезда могут ставить лайки и писать отзывы, оставлять свое мнение и находить '
-            + 'талантливых исполнителей. Статус присваивает администратор DIGICO.',
+            + 'талантливых исполнителей. Статус присваивает администратор HITFLY.',
           image: starImage
         }
       ],
@@ -369,14 +491,79 @@ export default {
           cost: '11500 бонусов',
           button: 'Купить'
         }
+      ],
+      taskLists: {
+        oneoff: {
+          1: [
+            'обложка профиля и аватар',
+            'имя пользователя',
+            'никнейм',
+            'город',
+            'описание - год начала карьеры',
+            'описание - жанры',
+            'описание - деятельность',
+            'соц. сети (за первую соц. сеть)'
+          ]
+        }
+      },
+      dailyTasks: [
+        {
+          id: 1,
+          title: 'Прослушивние 10 песен',
+          body: 'TaskBody1'
+        },
+        {
+          id: 2,
+          title: 'Оценка 5 новых треков ',
+          body: 'TaskBody2'
+        },
+        {
+          id: 3,
+          title: 'Ежедневный вход в приложение',
+          body: 'TaskBody3'
+        },
+        {
+          id: 4,
+          title: 'Получение 10 лайков от других пользователей на трек',
+          body: 'TaskBody4'
+        },
+        {
+          id: 5,
+          title: 'Получение 10 лайков от других пользователей на альбом',
+          body: 'TaskBody5'
+        },
+        {
+          id: 6,
+          title: 'Популярный плейлист',
+          body: 'TaskBody6'
+        },
+        {
+          id: 7,
+          title: 'Получение баллов за подписчика',
+          body: 'TaskBody7'
+        },
+        {
+          id: 8,
+          title: 'Победа в музыкальном батле',
+          body: 'TaskBody8'
+        },
+        {
+          id: 9,
+          title: 'Попадание в плейлист ТОП-20 (обновление ежед       невно)',
+          body: 'TaskBody9'
+        },
+        {
+          id: 10,
+          title: 'Непрерывное нахождение в ТОП-5',
+          body: 'TaskBody10'
+        },
+        {
+          id: 11,
+          title: 'Рецензия от критика      ',
+          body: 'TaskBody11'
+        }
       ]
     };
-  },
-
-  computed: {
-    containerPaddingClass() {
-      return this.$store.getters['appColumns/paddingClass'];
-    }
   }
 };
 </script>
