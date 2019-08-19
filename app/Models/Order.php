@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -26,5 +27,10 @@ class Order extends Model
     public function attributes()
     {
         return $this->belongsToMany(Attribute::class, 'order_attribute_value')->withPivot('value')->withTimestamps();
+    }
+
+    public function wherePivotUser()
+    {//для фильтрации заказов по пользователю
+        return $this->attributes()->wherePivot('value', Auth::user()->id);
     }
 }
