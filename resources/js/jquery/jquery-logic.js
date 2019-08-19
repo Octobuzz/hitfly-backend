@@ -165,7 +165,6 @@ $(document).ready(function () {
           passwordLength.parent().parent().addClass('error');
         }
       }else{
-        console.log('error');
         password.parent().parent().addClass('error');
       };
 
@@ -178,7 +177,6 @@ $(document).ready(function () {
           passwordRestore.parent().parent().addClass('error');
         }
       }else{
-        console.log('error');
         password.parent().parent().addClass('error');
       };
 
