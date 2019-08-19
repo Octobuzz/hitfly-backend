@@ -155,7 +155,7 @@ $(document).ready(function () {
         };
       }
 
-      //проверка почты
+      //проверка пароля
       const passwordPattern = /(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i;
       const passwordLength = $('.reg-page__line-input input[name="password"]');
       if(passwordLength.val().length >= 8){
@@ -163,6 +163,19 @@ $(document).ready(function () {
           passwordLength.parent().parent().removeClass('error');
         }else{
           passwordLength.parent().parent().addClass('error');
+        }
+      }else{
+        console.log('error');
+        password.parent().parent().addClass('error');
+      };
+
+      //проверка восстановления пароля
+      const passwordRestore = $('.forgot-pass__input input[name="password"]');
+      if(passwordRestore.val().length >= 8){
+        if(passwordRestore.val().search(passwordPattern) == 0){
+          passwordRestore.parent().parent().removeClass('error');
+        }else{
+          passwordRestore.parent().parent().addClass('error');
         }
       }else{
         console.log('error');
