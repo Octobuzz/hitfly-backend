@@ -64,6 +64,7 @@
       </UnauthenticatedPopoverWrapper>
 
       <TrackActionsPopover
+        :product-id="productId"
         :track-id="trackId"
         :show-remove-option="false"
         :position-change-breakpoint="1024"
@@ -105,6 +106,10 @@ export default {
   },
 
   props: {
+    productId: {
+      type: Number,
+      default: null
+    },
     trackId: {
       type: Number,
       required: true

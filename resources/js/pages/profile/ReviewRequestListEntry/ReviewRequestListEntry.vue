@@ -1,6 +1,7 @@
 <template>
   <div class="review-request-list-entry">
     <TrackReviewHeader
+      :product-id="productId"
       :track-id="trackId"
       @review-added="emitTrackReviewed"
     />
@@ -19,6 +20,7 @@
       </div>
 
       <TrackReviewRequestForm
+        :product-id="productId"
         :track-id="trackId"
         @review-added="emitTrackReviewed"
       />
@@ -37,6 +39,10 @@ export default {
     TrackReviewRequestForm
   },
   props: {
+    productId: {
+      type: Number,
+      required: true
+    },
     trackId: {
       type: Number,
       required: true
