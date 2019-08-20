@@ -141,44 +141,47 @@ $(document).ready(function () {
     $('.reg-page button[type="submit"]').click(function(event){
       event.preventDefault();
 
-      //проверка подтверждения пароля
-      const password = $('.reg-page__line-input input[name="password"]');
-      const passwordConfirm = $('.reg-page__line-input input[name="password_confirmation"]');
-      if(password.val() == ''){
-        password.parent().parent().addClass('error');
-      }else{
-        password.parent().parent().removeClass('error');
-        if(password.val() !== passwordConfirm.val()){
-          passwordConfirm.parent().parent().addClass('error');
-        }else{
-          passwordConfirm.parent().parent().removeClass('error');
-        };
-      }
+      // TODO: fix bugs
+
+      // //проверка подтверждения пароля
+      // const password = $('.reg-page__line-input input[name="password"]');
+      // const passwordConfirm = $('.reg-page__line-input input[name="password_confirmation"]');
+      // if(password.val() == ''){
+      //   password.parent().parent().addClass('error');
+      // }else{
+      //   password.parent().parent().removeClass('error');
+      //   if(password.val() !== passwordConfirm.val()){
+      //     passwordConfirm.parent().parent().addClass('error');
+      //   }else{
+      //     passwordConfirm.parent().parent().removeClass('error');
+      //   };
+      // }
 
       //проверка пароля
-      const passwordPattern = /(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i;
-      const passwordLength = $('.reg-page__line-input input[name="password"]');
-      if(passwordLength.val().length >= 8){
-        if(passwordLength.val().search(passwordPattern) == 0){
-          passwordLength.parent().parent().removeClass('error');
-        }else{
-          passwordLength.parent().parent().addClass('error');
-        }
-      }else{
-        password.parent().parent().addClass('error');
-      };
+      const passwordInput = $('.reg-page__line-input input[name="password"]');
+      const passwordContainer = passwordInput.parent().parent();
 
-      //проверка восстановления пароля
-      const passwordRestore = $('.forgot-pass__input input[name="password"]');
-      if(passwordRestore.val().length >= 8){
-        if(passwordRestore.val().search(passwordPattern) == 0){
-          passwordRestore.parent().parent().removeClass('error');
-        }else{
-          passwordRestore.parent().parent().addClass('error');
-        }
-      }else{
-        password.parent().parent().addClass('error');
-      };
+      const passwordPattern = /(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i;
+      const passwordPatternSatisfied = passwordPattern.test(passwordInput.val());
+
+      if (passwordPatternSatisfied) {
+        passwordContainer.removeClass('error');
+      } else {
+        passwordContainer.addClass('error');
+      }
+
+      // //проверка восстановления пароля
+      // const passwordRestore = $('.forgot-pass__input input[name="password"]');
+      //
+      // if(passwordRestore.val() !== undefined && passwordRestore.val().length >= 8){
+      //   if(passwordRestore.val().search(passwordPattern) == 0){
+      //     passwordRestore.parent().parent().removeClass('error');
+      //   }else{
+      //     passwordRestore.parent().parent().addClass('error');
+      //   }
+      // }else{
+      //   password.parent().parent().addClass('error');
+      // };
 
       //проверка почты
       const pattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|team|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
