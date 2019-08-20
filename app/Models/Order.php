@@ -29,8 +29,4 @@ class Order extends Model
         return $this->belongsToMany(Attribute::class, 'order_attribute_value')->withPivot('value')->withTimestamps();
     }
 
-    public function wherePivotUser()
-    {//для фильтрации заказов по пользователю
-        return $this->attributes()->wherePivot('value', Auth::user()->id);
-    }
 }
