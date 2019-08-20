@@ -16,22 +16,28 @@ use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\Recommendation\Recommendation;
 
 Route::redirect('/', 'login', 301);
-Route::get('/s', function () {
-$track = \App\Models\Track::query()->where("id",182)->first();
-    $data = [
-        'body' => [
-            'track_name' => $track->track_name,
-            'singer' => $track->singer,
-            'song_text' => $track->song_text,
-        ],
-        'index' => 'music',
-        'type' => 'tracks',
-        'id' => $track->id,
-    ];
+//Route::get('/mail-preview', function (\App\BuisnessLogic\Emails\Notification $notification) {
+//    $params = [
+//        'value' => 'Значение',
+//    ];
+//    $topPlayList = new Tracks();
+//    $recommend = new Recommendation();
+//    $events = new Event();
+//
+//    return View::make('emails.register.completed',
+//        [
+//            'topList' => $topPlayList->getTopTrack(5),
+//            'playLists' => $recommend->getNewUserPlayList(2),
+//            'linkToProfile' => '/fake_link',
+//            'importantEvents' => $events->getImportantEvents(1),
+//            'star' => true,
+//        ]
+//    );
 
-    $return = \Cviebrock\LaravelElasticsearch\Facade::index($data);
-    dd($return);
-});
+//    return $notification->everyMonthDispatchNotVisited();
+    //$this->notify(new ResetPasswordNotification($token));
+//return new \App\Mail\RegistrationCompleted(\App\User::find(215));
+//});
 Auth::routes(['verify' => true]);
 
 Route::get('/', 'HomeController@index')->name('home');
