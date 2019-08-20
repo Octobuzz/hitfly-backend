@@ -230,27 +230,6 @@ export default {
     // TODO: user/my tracks data
 
     playingTrack() {
-      return{
-        query: gql.query.QUEUE_TRACKS,
-        variables() {
-          return {
-            isAuthenticated: this.isAuthenticated,
-            id: this.playingTrackId
-          }
-        },
-        update({ track }) {
-          return track;
-        },
-        error(err) {
-          console.dir(err);
-        },
-        skip() {
-          return !ofNumber(this.playingTrackId);
-        }
-      };
-    },
-
-    firstTrack() {
       return {
         query: gql.query.QUEUE_TRACKS,
         variables: {
@@ -264,9 +243,26 @@ export default {
           console.dir(err);
         },
         skip() {
-          return !ofNumber(this.firstTrackId);
+          return !ofNumber(this.playingTrackId);
         }
       };
+    },
+
+    firstTrack: {
+      query: gql.query.QUEUE_TRACKS,
+      variables: {
+        isAuthenticated: this.isAuthenticated,
+        id: this.playingTrackId
+      },
+      update({ track }) {
+        return track;
+      },
+      error(err) {
+        console.dir(err);
+      },
+      skip() {
+        return !ofNumber(this.firstTrackId);
+      }
     }
   }
 };
