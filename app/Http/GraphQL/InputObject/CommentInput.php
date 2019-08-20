@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\InputObject;
 
 use App\Rules\CriticOrStarComment;
+use App\Rules\StarComment;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
@@ -35,6 +36,12 @@ class CommentInput extends GraphQLType
                 'description' => 'Отзыв',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['max:250', new CriticOrStarComment(), 'required'],
+            ],
+            'orderId' => [
+                'name' => 'orderId',
+                'description' => 'id Заказа',
+                'type' => Type::int(),
+                'rules' => [new StarComment()],
             ],
         ];
     }

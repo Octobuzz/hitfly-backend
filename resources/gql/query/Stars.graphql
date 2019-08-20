@@ -1,0 +1,17 @@
+query Stars($pageLimit: Int!, $pageNumber: Int!) {
+    users(limit: $pageLimit, page: $pageNumber, role: star) {
+        total
+        from
+        to
+        data{
+          id
+          username
+          avatar(
+              sizes: [size_56x56, size_235x235]
+          ) {
+              size
+              url
+          }
+        }
+    }
+}

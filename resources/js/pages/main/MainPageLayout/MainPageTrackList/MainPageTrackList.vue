@@ -230,14 +230,15 @@ export default {
     // TODO: user/my tracks data
 
     playingTrack() {
-      return {
+      return{
         query: gql.query.QUEUE_TRACKS,
-        variables: {
-          isAuthenticated: this.isAuthenticated,
-          id: this.playingTrackId
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.playingTrackId
+          }
         },
-        update({track}) {
-          console.log(track);
+        update({ track }) {
           return track;
         },
         error(err) {

@@ -11,6 +11,7 @@ npm-debug.log
 yarn-error.log
 /docker_server.env
 /docker/dbdata/
+/docker/elasticsearch/data/
 .idea
 .env.example
 /public/mix-manifest.json
