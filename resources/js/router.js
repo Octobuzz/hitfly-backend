@@ -330,7 +330,16 @@ const routes = [
   },
   {
     path: '/upload',
-    component: UploadPage
+    component: UploadPage,
+    ...beforeRouteEnterFactory({
+      shouldBeAuthenticated: {
+        renderNotFound: true
+      },
+      shouldNotHaveRoles: {
+        rolesNotToHave: [PROF_CRITIC, STAR],
+        renderNotFound: true
+      }
+    })
   },
   {
     path: '/',
