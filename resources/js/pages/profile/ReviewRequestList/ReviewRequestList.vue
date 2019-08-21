@@ -3,6 +3,7 @@
     <ReviewRequestListEntry
       v-for="{ productId, trackId } in productIdList"
       :key="productId"
+      :product-id="productId"
       :track-id="trackId"
       class="review-request-list__entry"
       @track-reviewed="emitRemoveTrackFromRequests({ productId, trackId })"

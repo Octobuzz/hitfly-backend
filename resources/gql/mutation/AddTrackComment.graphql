@@ -1,10 +1,12 @@
 mutation AddTrackComment(
-    $trackId: Int!
+    $trackId: Int!,
+    $productId: Int,
     $comment: String!
 ) {
     createComment(Comment: {
         commentableType: track,
         commentableId: $trackId,
+        orderId: $productId,
         comment: $comment
     }) {
         ... on CommentTrack {

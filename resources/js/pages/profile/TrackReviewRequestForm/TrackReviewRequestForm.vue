@@ -36,6 +36,10 @@ export default {
     trackId: {
       type: Number,
       required: true
+    },
+    productId: {
+      type: Number,
+      required: true
     }
   },
 
@@ -56,6 +60,7 @@ export default {
         isSending,
         reviewText,
         trackId,
+        productId,
         $apollo
       } = this;
 
@@ -80,6 +85,7 @@ export default {
         mutation: gql.mutation.ADD_TRACK_COMMENT,
         variables: {
           trackId,
+          productId,
           comment: reviewText
         }
       })
