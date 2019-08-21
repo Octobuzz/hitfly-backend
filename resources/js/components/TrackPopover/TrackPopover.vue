@@ -188,11 +188,11 @@ export default {
       // microtask problem: popover gets handled before click
       // so that the click could miss popover and collapse it
 
-      setTimeout(() => { this.inRemoveMenu = true; });
+      setTimeout(() => { this.inRemoveMenu = true; }, 100);
     },
 
     leaveRemoveMenu() {
-      setTimeout(() => { this.inRemoveMenu = false; });
+      setTimeout(() => { this.inRemoveMenu = false; }, 100);
     },
 
     ontrackRemoved() {

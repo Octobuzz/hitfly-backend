@@ -5,6 +5,9 @@
       :key="id"
       :collection-id="id"
     />
+    <p v-if="!collectionIdList.length" class="h3">
+      В данном списке нет плейлистов или подборок.
+    </p>
   </div>
 </template>
 

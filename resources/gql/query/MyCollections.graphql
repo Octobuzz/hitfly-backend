@@ -11,7 +11,8 @@ query MyCollections {
         }
     ){
         data {
-            ...collection
+            id
+            title
         }
     }
 }
