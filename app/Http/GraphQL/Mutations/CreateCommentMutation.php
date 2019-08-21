@@ -50,7 +50,7 @@ class CreateCommentMutation extends Mutation
         $comment->commentable_id = $args['Comment']['commentableId'];
         $comment->user_id = Auth::user()->id;
         $comment->save();
-        if ($args['Comment']['orderId']) {
+        if (!empty($args['Comment']['orderId'])) {
             $order = Order::with(['attributes' => function ($query) {
                 $query->wherePivot('value', Auth::user()->id);
             }])->find($args['Comment']['orderId']);
