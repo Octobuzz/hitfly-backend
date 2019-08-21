@@ -26,7 +26,9 @@
             Любимые песни
           </span>
 
-          <div class="favourite-track-list__player" />
+          <div class="favourite-track-list__player">
+            <WavePlayer />
+          </div>
         </div>
       </div>
 
@@ -100,6 +102,7 @@ import containerPaddingClass from 'mixins/containerPaddingClass';
 import playingTrackId from 'mixins/playingTrackId';
 import loadOnScroll from 'mixins/loadOnScroll';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
+import WavePlayer from 'components/WavePlayer';
 import TrackList from 'components/trackList/TrackList';
 import IconButton from 'components/IconButton.vue';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
@@ -115,6 +118,7 @@ const ofNumber = arg => typeof arg === 'number';
 export default {
   components: {
     SpinnerLoader,
+    WavePlayer,
     TrackList,
     IconButton,
     CirclePlayIcon,

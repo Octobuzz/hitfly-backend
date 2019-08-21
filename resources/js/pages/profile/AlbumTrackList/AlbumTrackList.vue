@@ -33,7 +33,9 @@
             {{ totalDurationInfo('mins', album.tracksTime) }}
           </span>
 
-          <div class="album-track-list__player" />
+          <div class="album-track-list__player">
+            <WavePlayer />
+          </div>
         </div>
       </div>
 
@@ -145,6 +147,7 @@ import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
 import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
+import WavePlayer from 'components/WavePlayer';
 import UniversalTrackList from 'components/UniversalTrackList';
 import AlbumPopover from 'components/AlbumPopover';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
@@ -155,6 +158,7 @@ const ofNumber = arg => typeof arg === 'number';
 
 export default {
   components: {
+    WavePlayer,
     UniversalTrackList,
     ReturnHeader,
     AlbumPopover,
