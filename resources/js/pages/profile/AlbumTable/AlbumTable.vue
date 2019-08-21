@@ -5,9 +5,6 @@
       :key="id"
       :album-id="id"
     />
-    <p v-if="!albumIdList.length" class="h3">
-      В данном списке нет альбомов.
-    </p>
   </div>
 </template>
 
