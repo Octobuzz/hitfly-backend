@@ -17,6 +17,11 @@
           :has-more-data="container.hasMoreData"
         />
       </template>
+      <template #no-data>
+        <p>
+          В списке нет ни одного альбома.
+        </p>
+      </template>
     </UniversalAlbumsContainer>
 
     <FavouriteAlbumsContainer
@@ -27,6 +32,11 @@
           :album-id-list="container.albumIdList"
           :has-more-data="container.hasMoreData"
         />
+      </template>
+      <template #no-data>
+        <p>
+          В списке нет ни одного альбома.
+        </p>
       </template>
     </FavouriteAlbumsContainer>
   </div>
