@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations\Store;
 
 use App\Models\Product;
+use App\Rules\CanBuyProduct;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
@@ -33,7 +34,7 @@ class BuyStudioServiceMutation extends Mutation
             'studioProduct' => [
                 'type' => Type::nonNull(\GraphQL::type('ProductStudioTypeEnum')),
                 'description' => 'Товар Услуга на студии',
-                'rules' => 'required',
+                'rules' => ['required', new CanBuyProduct()],
             ],
         ];
     }

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -28,5 +27,4 @@ class Order extends Model
     {
         return $this->belongsToMany(Attribute::class, 'order_attribute_value')->withPivot('value')->withTimestamps();
     }
-
 }
