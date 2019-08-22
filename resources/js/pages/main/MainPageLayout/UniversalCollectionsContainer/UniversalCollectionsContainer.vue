@@ -6,6 +6,7 @@
       :collection-id-list="collectionIdList"
       :has-more-data="hasMoreData"
     />
+    <slot v-else-if="!isLoading" name="no-data" />
     <p
       v-if="initialFetchError"
       class="universal-collections-container__error"
