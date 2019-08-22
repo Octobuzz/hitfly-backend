@@ -12,7 +12,7 @@ try {
   window.$ = window.jQuery = require('jquery');
 
   require('bootstrap');
-  require('./jquery/jquery-logic');
+  require('./jquery/auth-page');
 } catch (e) {console.log('error')}
 
 /**
