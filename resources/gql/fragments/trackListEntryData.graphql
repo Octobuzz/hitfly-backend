@@ -15,4 +15,7 @@ fragment trackListEntryData on Track {
     user {
         id
     }
+    musicGroup {
+        id
+    }
 }

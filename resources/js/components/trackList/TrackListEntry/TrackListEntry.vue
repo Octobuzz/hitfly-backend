@@ -61,6 +61,7 @@
       v-show="!columnLayout"
       class="track-list-entry__track-author"
       :word="track.singer"
+      @click.native="goToTrackSinger"
     />
     <span
       v-show="showAlbumSection"
@@ -240,7 +241,29 @@ export default {
       return this.trackId === this.$store.getters['player/currentTrack'].id;
     },
 
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
+    singerLink() {
+      const { track, myId } = this;
+
+      if (!track) return '#';
+
+      // if user exists the musicGroup.id could be presented or not
+      // depending on who is author of the track
+
+      if (track.musicGroup !== null) {
+        return '#';
+      }
+      if (track.user.id === myId) {
+        return '#';
+      }
+
+      return `/user/${track.user.id}/music`;
+    },
+
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      apolloClient: 'apolloClient',
+      myId: 'profile/myId'
+    })
   },
 
   methods: {
@@ -267,6 +290,10 @@ export default {
       const seconds = Math.floor(sec % 60);
 
       return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    },
+
+    goToTrackSinger() {
+      this.$router.push(this.singerLink);
     }
   },
 
