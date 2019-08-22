@@ -16,7 +16,7 @@
       </span>
 
       <div class="review-request-list-entry__player">
-        <!--TODO: player component goes here-->
+        <WavePlayer />
       </div>
 
       <TrackReviewRequestForm
@@ -29,12 +29,14 @@
 </template>
 
 <script>
+import WavePlayer from 'components/WavePlayer';
 import TrackReviewHeader from 'components/trackReviewsInterface/TrackReviewHeader';
 import TrackReviewRequestForm from '../TrackReviewRequestForm';
 import gql from './gql';
 
 export default {
   components: {
+    WavePlayer,
     TrackReviewHeader,
     TrackReviewRequestForm
   },
