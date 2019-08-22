@@ -428,6 +428,12 @@ export default {
       },
 
       update({ musicGroup }) {
+        if (musicGroup === null || musicGroup.creatorGroup.id !== this.myId) {
+          this.goToNotFound();
+
+          return;
+        }
+
         const {
           name,
           careerStartYear,
@@ -435,15 +441,8 @@ export default {
           genres,
           avatarGroup,
           socialLinks,
-          activeMembers,
-          creatorGroup
+          activeMembers
         } = musicGroup;
-
-        if (creatorGroup.id !== this.myId) {
-          this.goToNotFound();
-
-          return;
-        }
 
         this.group.genres.list = genres;
         this.group.cover.current = avatarGroup
