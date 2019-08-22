@@ -13,7 +13,6 @@
   }
 
   &__checker {
-    color: red;
     position: absolute;
     left: 0;
     white-space: nowrap;
@@ -25,7 +24,8 @@
   &__tooltip {
     word-break: break-word;
     display: block !important;
-    width: 90%;
+    text-align: center;
+    min-width: 200px;
     max-width: 600px;
     z-index: 10000;
 
@@ -47,12 +47,11 @@
 
     &[aria-hidden='true'] {
       opacity: 0;
-      transition: opacity .15s, visibility .15s;
+      z-index: -10000;
     }
 
     &[aria-hidden='false'] {
       opacity: 1;
-      transition: opacity .15s;
     }
   }
 
