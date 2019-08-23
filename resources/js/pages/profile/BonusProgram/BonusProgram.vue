@@ -24,8 +24,8 @@
         :item-list="statusList"
         :desktop-item-width="320"
         :mobile-item-width="272"
-        :desktop-space-between="24"
-        :mobile-space-between="24"
+        :desktop-space-between="32"
+        :mobile-space-between="32"
       >
         <template #default="{ item: user }">
           <div class="bonus-program__status-card">
@@ -185,7 +185,7 @@
       </div>
 
       <div class="bonus-program__task-oneoff-section-bottom">
-        <div>
+        <div class="bonus-program__task-oneoff-bottom">
           <span class="bonus-program__task-title-wrapper">
             <span class="bonus-program__task-index">
               2
@@ -199,7 +199,7 @@
           </p>
         </div>
 
-        <div class="bonus-program__task-oneoff-3">
+        <div class="bonus-program__task-oneoff-bottom">
           <span class="bonus-program__task-title-wrapper">
             <span class="bonus-program__task-index">
               3
@@ -213,7 +213,7 @@
           </p>
         </div>
 
-        <div>
+        <div class="bonus-program__task-oneoff-bottom">
           <span class="bonus-program__task-title-wrapper">
             <span class="bonus-program__task-index">
               4
@@ -237,8 +237,8 @@
         :item-list="dailyTasks"
         :desktop-item-width="272"
         :mobile-item-width="272"
-        :desktop-space-between="42"
-        :mobile-space-between="42"
+        :desktop-space-between="32"
+        :mobile-space-between="32"
       >
         <template #default="{ item: task }">
           <div class="bonus-program__task-daily">
@@ -274,8 +274,8 @@
         :item-list="paidOptions"
         :desktop-item-width="290"
         :mobile-item-width="272"
-        :desktop-space-between="24"
-        :mobile-space-between="24"
+        :desktop-space-between="32"
+        :mobile-space-between="32"
       >
         <template #default="{ item: option }">
           <!--TODO: use url for image-->
