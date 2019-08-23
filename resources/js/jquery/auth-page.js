@@ -12,7 +12,7 @@ import datapickerDefaults from './datapicker-defaults';
 
 // css classes
 const INPUT_FULL = 'input-full';
-const REG_PAGE_LINE_INPUT = 'reg-page__line-input';
+const INPUT_TEXT_WRAPPER = 'input-text-wrapper';
 const ERROR = 'error';
 
 $.datepicker.setDefaults(datapickerDefaults);
@@ -49,11 +49,11 @@ $input.on('change', handleInputClassOnChange);
 $input.on('focus', handleInputClassOnFocus);
 $input.on('focusout', handleInputClassOnFocusOut);
 
-const $regForm = $('#form-auth');
+const $authForm = $('#form-auth, .forgot-pass__form');
 
 const emailRegex = /^[-a-z0-9~!$%^&*_=+}{'?]+(\.[-a-z0-9~!$%^&*_=+}{'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|team|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-const $emailInput = $regForm.find('input[name="email"]');
-const $emailContainer = $emailInput.closest(`.${REG_PAGE_LINE_INPUT}`);
+const $emailInput = $authForm.find('input[name="email"]');
+const $emailContainer = $emailInput.closest(`.${INPUT_TEXT_WRAPPER}`);
 
 const validateEmail = () => {
   const regexSatisfied = emailRegex.test($emailInput.val());
@@ -67,8 +67,8 @@ const validateEmail = () => {
 };
 
 const pwdRegex = /(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i;
-const $pwdInput = $regForm.find('input[name="password"]');
-const $pwdContainer = $pwdInput.closest(`.${REG_PAGE_LINE_INPUT}`);
+const $pwdInput = $authForm.find('input[name="password"]');
+const $pwdContainer = $pwdInput.closest(`.${INPUT_TEXT_WRAPPER}`);
 
 const validatePwd = () => {
   const regexSatisfied = pwdRegex.test($pwdInput.val());
@@ -81,8 +81,8 @@ const validatePwd = () => {
   return regexSatisfied;
 };
 
-const $pwdConfInput = $regForm.find('input[name="password_confirmation"]');
-const $pwdConfContainer = $pwdConfInput.closest(`.${REG_PAGE_LINE_INPUT}`);
+const $pwdConfInput = $authForm.find('input[name="password_confirmation"]');
+const $pwdConfContainer = $pwdConfInput.closest(`.${INPUT_TEXT_WRAPPER}`);
 
 const validatePwdConf = () => {
   const pwdMatch = $pwdInput.val() === $pwdConfInput.val();
@@ -95,7 +95,7 @@ const validatePwdConf = () => {
   return pwdMatch;
 };
 
-const $checkbox = $regForm.find('input[name="agreement"]');
+const $checkbox = $authForm.find('input[name="agreement"]');
 const $checkboxContainer = $checkbox.closest('.reg-page__agreement');
 
 const validateAgreement = () => {
@@ -109,7 +109,7 @@ const validateAgreement = () => {
   return checked;
 };
 
-$regForm.on('submit', (e) => {
+$authForm.on('submit', (e) => {
   const validationPassed = [
     validateEmail,
     validatePwd,
@@ -124,7 +124,7 @@ $regForm.on('submit', (e) => {
     e.preventDefault();
 
     $('html, body').animate({
-      scrollTop: $regForm.offset().top
+      scrollTop: $authForm.offset().top
     }, 500);
   }
 });
