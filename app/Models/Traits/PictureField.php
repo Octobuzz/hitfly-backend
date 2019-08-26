@@ -8,8 +8,6 @@ trait PictureField
 {
     abstract public function getImage(): ?string;
 
-    abstract public function user();
-
     public function getSizePicture($size): array
     {
         return [config('image.size.allSizes.'.$size.'.width'), config('image.size.allSizes.'.$size.'.height')];

@@ -3,6 +3,7 @@
 .watched-user-list-entry {
   display: flex;
   padding: 16px;
+  border-bottom: 1px solid $layout_border_color;
 
   &:hover {
     background-color: #f0f0f0;

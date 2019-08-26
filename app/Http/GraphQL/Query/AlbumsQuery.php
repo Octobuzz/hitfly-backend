@@ -4,6 +4,7 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Album;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -37,8 +38,12 @@ class AlbumsQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $query = Album::with($fields->getRelations());
-        if (false === empty($args['filters']['my']) && true === $args['filters']['my'] && null !== \Auth::user()) {
-            $query->where('user_id', '=', \Auth::user()->id);
+        if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
+            $user = Auth::user();
+            if (null === $user) {
+                return null;
+            }
+            $query->where('user_id', '=', $user->id);
         }
         if (false === empty($args['filters']['musicGroupId'])) {
             $query->where('music_group_id', '=', $args['filters']['musicGroupId']);

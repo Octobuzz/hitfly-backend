@@ -14,7 +14,7 @@
       </span>
 
       <div class="track-list-reviews-entry__player">
-        <!--TODO: player component goes here-->
+        <WavePlayer />
       </div>
 
       <TrackReview
@@ -46,6 +46,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import anonymousAvatar from 'images/anonymous-avatar.png';
+import WavePlayer from 'components/WavePlayer';
 import TrackReview from '../TrackReview';
 import TrackReviewHeader from '../TrackReviewHeader';
 import gql from './gql';
@@ -53,7 +54,8 @@ import gql from './gql';
 export default {
   components: {
     TrackReview,
-    TrackReviewHeader
+    TrackReviewHeader,
+    WavePlayer
   },
 
   props: {

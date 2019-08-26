@@ -37,9 +37,12 @@ class MyTracksSearch extends Query
 
     public function resolve($root, $args)
     {
+        /** @var User $user */
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
         if (isset($args['q'])) {
-            /** @var User $user */
-            $user = Auth::user();
             $keyCache = md5(json_encode($args).json_encode($user));
 
             $response = Cache::get($keyCache, null);

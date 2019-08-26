@@ -1,0 +1,145 @@
+@import '~scss/_variables.scss';
+
+$cover-side-desktop-width: 582px;
+$cover-side-desktop-height: 272px;
+$cover-side-mobile-width: 252px;
+$cover-side-mobile-height: 120px;
+
+.news-preview {
+  box-sizing: border-box;
+  position: relative;
+  width: $cover-side-desktop-width;
+
+  &__loader {
+
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    height: $cover-side-desktop-height;
+    border-radius: 4px;
+    overflow: hidden;
+    user-select: none;
+    background: #aaa;
+
+    &:hover > .news-preview {
+      &__drape {
+        opacity: .5;
+      }
+
+      &__button-section {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__drape,
+  &__cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+  }
+
+  &__drape {
+    z-index: 200;
+    opacity: 0;
+    transition: .2s;
+    background: black;
+  }
+
+  &__cover {
+    z-index: 100;
+  }
+
+  &__button-section {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    opacity: 0;
+    z-index: 300;
+    transition: .2s;
+  }
+
+  &__play-button::v-deep {
+    svg {
+      transform: translate(-33%, -50%);
+    }
+  }
+
+  &__icon-button::v-deep {
+    svg {
+      fill: #fff;
+    }
+  }
+
+  &__footer {
+    position: absolute;
+    font-size: 24px;
+    line-height: 28px;
+    padding-top: 6px;
+    user-select: none;
+    z-index: 100;
+    top: 24px;
+    left: 32px;
+  }
+
+  &__title,
+  &__link {
+    color: #fff;
+    display: block;
+    transition: .2s;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color:#b36fcb;
+    }
+  }
+
+  &__link {
+    position: absolute;
+    bottom: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 14px;
+    line-height: 16px;
+    width: 160px;
+    height: 40px;
+    left: 0;
+    right: 0;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  &__title {
+    font-family: 'Gotham Pro Bold', sans-serif;
+    margin-bottom: 4px;
+  }
+
+  &__author {
+    font-family: 'Gotham Pro', sans-serif;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .news-preview {
+    width: $cover-side-mobile-width;
+
+    &__content {
+      height: $cover-side-mobile-height;
+    }
+
+    &__title,
+    &__author {
+      font-size: 12px;
+    }
+  }
+}

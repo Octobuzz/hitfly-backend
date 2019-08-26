@@ -31,6 +31,7 @@ export default {
       trackList: [],
       isLoading: true,
       hasMoreData: true,
+      currentType: null,
       queryVars: {
         pageNumber: 1,
         pageLimit: 30
@@ -69,13 +70,12 @@ export default {
   },
 
   methods: {
-    notifyInitialization(success) {
-      this.$store.commit('loading/setMainPage', {
-        newTracks: {
-          initialized: true,
-          success
-        }
-      });
+    notifyInitialization(success, type) {
+      let storeItem = {[type]: {
+        initialized: true,
+        success
+      }};
+      this.$store.commit('loading/setMainPage', storeItem);
     },
 
     fetchMoreTracks(vars) {
@@ -163,6 +163,8 @@ export default {
         query = gql.query.TRACKS
       } else if(this.query === 'TopWeeklyQuery') {
         query = gql.query.WEEKLY_TOP
+      } else if(this.query === 'top50') {
+        query = gql.query.GET_TOP_FIFTY
       };
       return {
         query: query,
@@ -174,7 +176,20 @@ export default {
           let total = Object.values(commonObject)[0].total;
           let data = Object.values(commonObject)[0].data;
           this.isLoading = false;
-          this.notifyInitialization(true);
+          this.$emit('initialized', {
+            data,
+            success: true,
+            error: null
+          });
+          let currentType = null;
+          if(this.query === 'tracks') {
+            currentType = 'newTracks';
+          } else if (this.query === 'TopWeeklyQuery'){
+            currentType = 'weeklyTop';
+          } else if (this.query === 'top50'){
+            currentType = 'top50';
+          };
+          this.notifyInitialization(true, currentType);
 
           if (to >= total) {
             this.hasMoreData = false;

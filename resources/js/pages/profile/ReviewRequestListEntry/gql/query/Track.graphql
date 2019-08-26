@@ -1,0 +1,28 @@
+query ReviewRequestListEntry_track(
+    $id: Int!
+) {
+    track(id: $id) {
+        id
+        trackName
+        singer
+
+        #TrackReviewHeader #TrackActionsPopover #TrackToPlaylist
+        cover(
+            sizes: [size_48x48, size_150x150]
+        ) {
+            size
+            url
+        }
+
+        #TrackToPlaylistPopover #TrackActionsPopover
+        userFavourite
+        user {
+            id
+            iWatch
+        }
+        my
+
+        #AddToFavouriteButton
+        favouritesCount
+    }
+}

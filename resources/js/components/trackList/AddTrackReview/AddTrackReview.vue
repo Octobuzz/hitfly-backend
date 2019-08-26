@@ -33,6 +33,10 @@ export default {
   },
 
   props: {
+    productId: {
+      type: Number,
+      default: null
+    },
     trackId: {
       type: Number,
       required: true
@@ -55,6 +59,7 @@ export default {
       const {
         isSending,
         reviewText,
+        productId,
         trackId,
         $apollo
       } = this;
@@ -76,31 +81,36 @@ export default {
 
       this.isSending = true;
 
+      const variables = {
+        trackId,
+        comment: reviewText
+      };
+
+      if (this.productId !== null) {
+        variables.productId = productId;
+      }
+
       $apollo.mutate({
         mutation: gql.mutation.ADD_TRACK_COMMENT,
-        variables: {
-          trackId,
-          comment: reviewText
-        },
+        variables,
         update: (store, { data: { createComment } }) => {
           const periods = ['week', 'month', 'year'];
 
           periods.forEach((period) => {
             try {
+              const vars = {
+                id: this.trackId,
+                commentedInPeriod: period
+              };
+
               const { track: trackWithComments } = store.readQuery({
                 query: gql.query.TRACK_WITH_COMMENTS,
-                variables: {
-                  id: this.trackId,
-                  commentedInPeriod: period
-                }
+                variables: vars
               });
 
               store.writeQuery({
                 query: gql.query.TRACK_WITH_COMMENTS,
-                variables: {
-                  id: this.trackId,
-                  commentedInPeriod: period
-                },
+                variables: vars,
                 data: {
                   track: {
                     ...trackWithComments,

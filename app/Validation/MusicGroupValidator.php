@@ -9,7 +9,6 @@
 namespace App\Validation;
 
 use App\Models\MusicGroup;
-use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 

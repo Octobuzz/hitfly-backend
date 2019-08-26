@@ -3,7 +3,7 @@
 @section('content')
     <main class="main main-genre">
         <aside class="main__aside aside">
-            <div class="aside__content" data-scroll-speed="10">
+            <div class="aside__content">
                 <div class="s-genre-side">
                     <h1 class="s-genre-side__title">{{ __('auth.chooseGenre') }}</h1>
                     <p class="s-genre-side__desc">

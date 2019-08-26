@@ -6,6 +6,7 @@ use App\Models\Favourite;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -32,6 +33,10 @@ class FavouriteTrackQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
         $query = Favourite::with($fields->getRelations());
         $query->select($fields->getSelect());
         $query->where('favourites.favouriteable_type', '=', Track::class);
@@ -44,7 +49,7 @@ class FavouriteTrackQuery extends Query
         $query->where('tracks.deleted_at', '=', null);
         $query->where('tracks.id', '<>', null);
         $query->where('tracks.state', '=', 'published');
-        $query->where('favourites.user_id', \Auth::user()->id);
+        $query->where('favourites.user_id', $user->id);
 
         //$query->orderBy('created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);

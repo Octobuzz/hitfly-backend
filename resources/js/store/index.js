@@ -2,7 +2,6 @@
 
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
-import MY_ID_AND_ROLES from 'gql/query/MyId.graphql';
 import history from './history';
 import appColumns from './appColumns';
 import loading from './loading';
@@ -10,7 +9,6 @@ import player from './player';
 import profile from './profile';
 import links from './links';
 import layout from './layout';
-import { cache } from '../apolloProvider';
 
 Vue.use(Vuex);
 
@@ -22,26 +20,6 @@ const debug = process.env.NODE_ENV !== 'production';
 const authuserMeta = document.head.querySelector('meta[authuser]');
 const myId = parseInt(authuserMeta.getAttribute('authuser'), 10);
 const isAuthenticated = !Number.isNaN(myId);
-
-if (!Number.isNaN(myId)) {
-  const rolesMeta = document.head.querySelector('meta[roles]');
-  const roles = JSON.parse(rolesMeta.getAttribute('roles'));
-  const roleSlugs = roles.map(role => role.slug);
-
-  cache.writeData({
-    query: MY_ID_AND_ROLES,
-    data: {
-      myProfile: {
-        __typename: 'MyProfile',
-        id: myId,
-        roles: roleSlugs.map(slug => ({
-          __typename: 'Role',
-          slug
-        }))
-      }
-    }
-  });
-}
 
 const state = {
   isAuthenticated,

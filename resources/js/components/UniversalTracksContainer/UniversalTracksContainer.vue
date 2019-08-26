@@ -227,7 +227,7 @@ export default {
         }
       };
 
-      this.$apollo.provider.clients[this.apolloProvider].mutate({
+      this.$apollo.provider.clients[this.apolloClient].mutate({
         mutation,
         variables,
         optimisticResponse,

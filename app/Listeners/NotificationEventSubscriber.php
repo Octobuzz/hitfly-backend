@@ -59,7 +59,7 @@ class NotificationEventSubscriber
                 ],
             ]), null, $exclude_client_id);
         } catch (Exception $exception) {
-            Log::info($exception->getMessage(), $exception);
+            Log::alert($exception->getMessage(), $exception->getTrace());
         }
     }
 
@@ -198,6 +198,9 @@ class NotificationEventSubscriber
     {
         /** @var User $user */
         $user = $collection->user;
+        if (null === $user) {
+            $user = $collection->load('user');
+        }
         $exclude_client_id = [];
         if (null !== $user->userNotification) {
             $exclude_client_id[] = $user->userNotification->token_web_socket;

@@ -7,6 +7,8 @@ query OtherUserMusic_albums($id: Int!) {
         data {
             id
             title
+            tracksCount
+            tracksTime
         }
     }
 }

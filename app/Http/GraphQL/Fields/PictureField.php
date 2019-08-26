@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Fields;
 
+use App\Helpers\PictureHelpers;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\MusicGroup;
@@ -57,16 +58,16 @@ class PictureField extends Field
         $class = get_class($root);
         switch ($class) {
             case Album::class:
-                $defaultImage = 'default_album.png';
+                $defaultImage = 'default_album.svg';
                 break;
             case Collection::class:
-                $defaultImage = 'default_playlist.png';
+                $defaultImage = 'default_playlist.svg';
                 break;
             case MusicGroup::class:
-                $defaultImage = 'default_musicgroup.png';
+                $defaultImage = 'default_musicgroup.svg';
                 break;
             default:
-                $defaultImage = 'default_track.png';
+                $defaultImage = 'default_track.svg';
                 break;
         }
 
@@ -77,34 +78,7 @@ class PictureField extends Field
             return $cacheValue;
         }
 
-        $picturePath = $this->model::find($this->model->id)->getImage();
-        $path = Storage::disk('public')->path($this->model->getPath());
-
-        $return = [];
-
-        foreach ($args['sizes'] as $size) {
-            if (false === Storage::disk('public')->exists($picturePath)) {
-                $picturePath = $defaultImage;
-            }
-
-            $image = new File(Storage::disk('public')->path($picturePath));
-
-            $baseNameFile = pathinfo($image, PATHINFO_FILENAME);
-            $saveName = "${baseNameFile}_${size}.".$image->getExtension();
-
-            $savePicturePath = $this->model->getPath().$saveName;
-            $url = Storage::disk('public')->url($savePicturePath);
-
-            if (false === Storage::disk('public')->exists($savePicturePath)) {
-                list($width, $height) = $this->model->getSizePicture($size);
-                $this->resize($width, $height, $picturePath, $path, $saveName);
-            }
-
-            $return[] = [
-                'size' => $size,
-                'url' => $url,
-            ];
-        }
+        $return = $this->getArrayResizedImage($args, $defaultImage);
 
         Cache::tags([$class.$root->id])->add($keyCache, $return, now()->addHour(6));
 
@@ -129,5 +103,62 @@ class PictureField extends Field
         $image_resize->save($savePath.$nameFile, 100);
 
         return true;
+    }
+
+    /**
+     * @param string $picturePath
+     * @param $size
+     * @param $path
+     *
+     * @return mixed
+     */
+    private function resizeImage(string $picturePath, $size, $path)
+    {
+        $image = new File(Storage::disk('public')->path($picturePath));
+
+        $baseNameFile = pathinfo($image, PATHINFO_FILENAME);
+        $saveName = "${baseNameFile}_${size}.".$image->getExtension();
+
+        $savePicturePath = $this->model->getPath().$saveName;
+        $url = Storage::disk('public')->url($savePicturePath);
+
+        if (false === Storage::disk('public')->exists($savePicturePath)) {
+            list($width, $height) = $this->model->getSizePicture($size);
+            $this->resize($width, $height, $picturePath, $path, $saveName);
+        }
+
+        return $url;
+    }
+
+    /**
+     * @param $args
+     * @param string $defaultImage
+     *
+     * @return array
+     */
+    private function getArrayResizedImage($args, string $defaultImage): array
+    {
+        $picturePath = $this->model::find($this->model->id)->getImage();
+        if (false === PictureHelpers::isBitmapImage($picturePath)) {
+            $picturePath = $defaultImage;
+        }
+        $path = Storage::disk('public')->path($this->model->getPath());
+
+        $return = [];
+
+        foreach ($args['sizes'] as $size) {
+            if (false === PictureHelpers::isBitmapImage($picturePath)) {//$defaultImage может оказаться не растровым изображением
+                $url = Storage::disk('public')->url($defaultImage);
+            } else {
+                $url = $this->resizeImage($picturePath, $size, $path);
+            }
+
+            $return[] = [
+                'size' => $size,
+                'url' => $url,
+            ];
+        }
+
+        return $return;
     }
 }

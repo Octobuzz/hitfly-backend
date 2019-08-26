@@ -44,21 +44,20 @@
       ref="scroller"
       class="album-scroll-horizontal__scroller"
       direction="horizontal"
-      :items="genresIdList"
+      :items="genresList"
       :buffer="3 * (albumWidth + spaceBetween)"
       :item-size="albumWidth + spaceBetween"
     >
       <template #default="{ item: id }">
         <GenrePreview
           class="album-scroll-horizontal__album-preview"
-          :grenes-id="id"
-          :grenes-list="genresIdList"
+          :genre="id"
         />
       </template>
 
       <template #after>
         <span
-          v-if="hasMoreData && genresIdListLength > 0"
+          v-if="hasMoreData && genresListLength > 0"
           class="album-scroll-horizontal__loader"
         >
           <BaseLoader :active="hasMoreData" />
@@ -78,8 +77,8 @@ import BaseLoader from 'components/BaseLoader.vue';
 import GenrePreview from 'components/GenrePreview';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 
-const ALBUM_WIDTH_DESKTOP = 120;
-const ALBUM_WIDTH_MOBILE = 104;
+const ALBUM_WIDTH_DESKTOP = 213;
+const ALBUM_WIDTH_MOBILE = 200;
 
 const ALBUM_SPACE_BETWEEN_DESKTOP = 24;
 const ALBUM_SPACE_BETWEEN_MOBILE = 16;
@@ -96,7 +95,7 @@ export default {
   },
 
   props: {
-    genresIdList: {
+    genresList: {
       type: Array,
       required: true
     },
@@ -137,8 +136,8 @@ export default {
       return this.desktop ? ALBUM_WIDTH_DESKTOP : ALBUM_WIDTH_MOBILE;
     },
 
-    genresIdListLength() {
-      return this.genresIdList.length;
+    genresListLength() {
+      return this.genresList.length;
     }
   },
 
@@ -149,7 +148,7 @@ export default {
 
     // To check for arrow buttons when albums have being added manually.
 
-    genresIdList() {
+    genresList() {
       this.onScroll();
     }
   },
@@ -261,7 +260,7 @@ export default {
         if (this.scroller.clientWidth === 0) return;
 
         const {
-          genresIdList: { length: genresCount },
+          genresList: { length: genresCount },
           albumWidth,
           spaceBetween,
           scroller,

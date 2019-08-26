@@ -171,6 +171,14 @@ p {
   &__bonus-program-genres-item {
     display: flex;
     margin: 12px 0;
+
+    & > img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      margin-right: 24px;
+      border-radius: 4px;
+    }
   }
 
   &__bonus-program-genres-img {

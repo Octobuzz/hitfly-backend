@@ -40,9 +40,16 @@ class CollectionsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
         $query = Collection::with($fields->getRelations());
-        if (false === empty($args['filters']['my']) && true === $args['filters']['my'] && null !== \Auth::user()) {
-            $query->where('user_id', '=', Auth::user()->id);
+        if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
+            if (null === $user) {
+                return null;
+            }
+            $query->where('user_id', '=', $user->id);
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('user_id', '=', $args['filters']['userId']);

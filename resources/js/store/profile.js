@@ -1,7 +1,36 @@
 /* eslint-disable no-param-reassign, no-shadow */
+
+import MY_ID_AND_ROLES from 'gql/query/MyId.graphql';
+import { cache } from '../apolloProvider';
+
+const authuserMeta = document.head.querySelector('meta[authuser]');
+const myId = parseInt(authuserMeta.getAttribute('authuser'), 10);
+let roleSlugs = [];
+
+if (!Number.isNaN(myId)) {
+  const rolesMeta = document.head.querySelector('meta[roles]');
+  const roles = JSON.parse(rolesMeta.getAttribute('roles'));
+
+  roleSlugs = roles.map(role => role.slug);
+
+  cache.writeData({
+    query: MY_ID_AND_ROLES,
+    data: {
+      myProfile: {
+        __typename: 'MyProfile',
+        id: myId,
+        roles: roleSlugs.map(slug => ({
+          __typename: 'Role',
+          slug
+        }))
+      }
+    }
+  });
+}
+
 const state = {
-  myId: null,
-  roles: []
+  myId,
+  roles: roleSlugs
 };
 
 const getters = {
@@ -25,6 +54,10 @@ const getters = {
   },
 
   ableToPerform(state, { roles }) {
+    if (['prof_critic', 'star'].some(role => roles(role))) {
+      return false;
+    }
+
     return ['listener', 'performer', 'critic']
       .some(role => roles(role));
   }

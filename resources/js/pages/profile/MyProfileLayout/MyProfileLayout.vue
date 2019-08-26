@@ -24,40 +24,40 @@
           :class="['profile__nav-wrapper', paddingClass]"
         >
           <ul class="profile__nav">
-            <template v-if="ableToPerform">
-              <li
-                :class="[
-                  'profile__nav-endpoint',
-                  { 'profile__nav-endpoint_active': currentPath === '/profile/my-music' }
-                ]"
-              >
-                <router-link to="/profile/my-music">
-                  Моя музыка
-                </router-link>
-              </li>
+            <li
+              v-if="ableToPerform"
+              :class="[
+                'profile__nav-endpoint',
+                { 'profile__nav-endpoint_active': currentPath === '/profile/my-music' }
+              ]"
+            >
+              <router-link to="/profile/my-music">
+                Моя музыка
+              </router-link>
+            </li>
 
-              <li
-                :class="[
-                  'profile__nav-endpoint',
-                  { 'profile__nav-endpoint_active': currentPath === '/profile/favourite' }
-                ]"
-              >
-                <router-link to="/profile/favourite">
-                  Мне нравится
-                </router-link>
-              </li>
+            <li
+              :class="[
+                'profile__nav-endpoint',
+                { 'profile__nav-endpoint_active': currentPath === '/profile/favourite' }
+              ]"
+            >
+              <router-link to="/profile/favourite">
+                Мне нравится
+              </router-link>
+            </li>
 
-              <li
-                :class="[
-                  'profile__nav-endpoint',
-                  { 'profile__nav-endpoint_active': currentPath === '/profile/reviews' }
-                ]"
-              >
-                <router-link to="/profile/reviews">
-                  Отзывы
-                </router-link>
-              </li>
-            </template>
+            <li
+              v-if="ableToPerform"
+              :class="[
+                'profile__nav-endpoint',
+                { 'profile__nav-endpoint_active': currentPath === '/profile/reviews' }
+              ]"
+            >
+              <router-link to="/profile/reviews">
+                Отзывы
+              </router-link>
+            </li>
 
             <template v-if="ableToComment">
               <li
@@ -68,6 +68,19 @@
               >
                 <router-link to="/profile/my-reviews">
                   Мои отзывы
+                </router-link>
+              </li>
+            </template>
+
+            <template v-if="hasRole('prof_critic') || hasRole('star')">
+              <li
+                :class="[
+                  'profile__nav-endpoint profile__nav-endpoint_long',
+                  { 'profile__nav-endpoint_active': currentPath === '/profile/review-requests' }
+                ]"
+              >
+                <router-link to="/profile/review-requests">
+                  Запросы на отзывы
                 </router-link>
               </li>
             </template>
@@ -126,7 +139,8 @@ export default {
         '/profile/my-music',
         '/profile/favourite',
         '/profile/reviews',
-        '/profile/my-reviews'
+        '/profile/my-reviews',
+        '/profile/review-requests'
       ].some(mask => mask === this.currentPath);
     },
 
@@ -218,39 +232,12 @@ export default {
       /* eslint-disable no-fallthrough */
     },
 
-    ableToPerform() {
-      return this.$store.getters['profile/ableToPerform'];
-    },
-
-    ableToComment() {
-      return this.$store.getters['profile/ableToComment'];
-    },
-
-    ...mapGetters(['isAuthenticated'])
-  },
-
-  watch: {
-    isAuthenticated: {
-      handler(val) {
-        if (val !== true) return;
-
-        // TODO: add possibility to visit review requests page
-
-        const { ableToComment, $store: { getters } } = this;
-        const profilePathSection = this.currentPath.split('/')[2];
-
-        if (!ableToComment && profilePathSection === 'my-reviews') {
-          this.$router.push('/profile/my-music');
-
-          return;
-        }
-
-        if (getters['profile/roles']('star') && profilePathSection !== 'my-reviews') {
-          this.$router.push('/profile/my-reviews');
-        }
-      },
-      immediate: true
-    }
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      ableToPerform: 'profile/ableToPerform',
+      ableToComment: 'profile/ableToComment',
+      hasRole: 'profile/roles'
+    })
   }
 };
 </script>

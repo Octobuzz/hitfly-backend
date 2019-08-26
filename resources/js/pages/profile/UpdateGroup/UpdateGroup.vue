@@ -146,6 +146,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import containerPaddingClass from 'mixins/containerPaddingClass';
 import PageHeader from 'components/PageHeader.vue';
 import BaseInput from 'components/BaseInput.vue';
 import BaseTextarea from 'components/BaseTextarea.vue';
@@ -175,6 +177,8 @@ export default {
     FormButton,
     PencilIcon
   },
+
+  mixins: [containerPaddingClass],
 
   data() {
     return {
@@ -223,9 +227,9 @@ export default {
     editGroupId() {
       return +this.$route.params.editGroupId;
     },
-    containerPaddingClass() {
-      return this.$store.getters['appColumns/paddingClass'];
-    }
+    ...mapGetters({
+      myId: 'profile/myId'
+    })
   },
 
   watch: {
@@ -406,6 +410,10 @@ export default {
           );
         }
       });
+    },
+
+    goToNotFound() {
+      this.$store.commit('appColumns/set404', true);
     }
   },
 
@@ -420,6 +428,12 @@ export default {
       },
 
       update({ musicGroup }) {
+        if (musicGroup === null || musicGroup.creatorGroup.id !== this.myId) {
+          this.goToNotFound();
+
+          return;
+        }
+
         const {
           name,
           careerStartYear,

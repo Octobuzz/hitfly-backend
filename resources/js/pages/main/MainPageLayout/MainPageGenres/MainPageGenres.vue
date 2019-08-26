@@ -4,18 +4,16 @@
       <GenresScrollHorizontal
         class="other-user-music__albums-container"
         :header-class="containerPaddingClass"
-        :genres-id-list="container.genresIdList"
+        :genres-list="container.genresList"
         :has-more-data="container.hasMoreData"
       >
         <template #title>
-          <router-link to="/">
-            <span class="h2 other-user-music__albums-title">
-              Жанры
-            </span>
+          <span class="h2 other-user-music__albums-title">
+            Жанры<br>
             <span class="scrollSubheader">
               Музыка по жанрам и настроению
             </span>
-          </router-link>
+          </span>
         </template>
       </GenresScrollHorizontal>
     </template>
@@ -70,17 +68,6 @@
       });
 
       next();
-    },
-
-    methods: {
-      onGenresContainerInitialized({ success }) {
-        this.$store.commit('loading/setMainPage', {
-          genres: {
-            success,
-            initialized: true
-          }
-        });
-      },
     },
   }
 </script>

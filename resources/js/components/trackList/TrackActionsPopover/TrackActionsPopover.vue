@@ -95,7 +95,7 @@
           Добавить в плейлист
         </span>
         <span
-          v-if="isAuthenticated"
+          v-if="isAuthenticated && track"
           class="track-actions-popover__menu-item"
           @click="onFavouritePress"
         >
@@ -158,6 +158,7 @@
       <AddTrackReview
         v-show="inReviewMenu"
         ref="reviewMenu"
+        :product-id="productId"
         :track-id="trackId"
         @review-added="onReviewAdded"
       />
@@ -219,6 +220,10 @@ export default {
   mixins: [followMixin('track', 'track')],
 
   props: {
+    productId: {
+      type: Number,
+      default: null
+    },
     trackId: {
       type: Number,
       required: true
@@ -361,8 +366,14 @@ export default {
     },
 
     onReviewAdded() {
+      this.$emit('review-added');
+
       setTimeout(() => {
-        this.$refs.closeButton.click();
+        try {
+          this.$refs.closeButton.click();
+        } catch (e) {
+          // popover is closed
+        }
         this.leaveReviewMenu(300);
 
         setTimeout(() => {

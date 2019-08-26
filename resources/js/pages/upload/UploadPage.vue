@@ -143,9 +143,8 @@
         }).then((response) => {
           this.$router.push('/profile/my-music');
           this.$message(
-            'Ваша песня загружена',
-            'info',
-            {timeout: 3000}
+            'Ваша песня загружена и будет доступна через 10 минут',
+            'info'
           );
         }).catch((error) => {
           console.dir(error);

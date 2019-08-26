@@ -6,6 +6,7 @@ use App\Models\Collection;
 use App\Models\Favourite;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -32,11 +33,16 @@ class FavouriteSetQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
         $query = Favourite::with($fields->getRelations());
         $query->select($fields->getSelect());
         $query->where('favourites.favouriteable_type', '=', Collection::class);
+        $query->where('favourites.user_id', $user->id);
         if (isset($args['collectionId'])) {
-            $query->where('favourites.favouriteable_id', $args['collectionId']);
+            $query->where('favourites.favouriteable_id', $args['setId']);
         }
         $query->leftJoin('collections', function (JoinClause $join) {
             $join->on('favourites.favouriteable_id', '=', 'collections.id');

@@ -6,6 +6,7 @@ use App\Models\MusicGroup;
 use App\Models\Watcheables;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -31,13 +32,14 @@ class WatchingMusicGroupQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-//        $query = new User();
-//        $response = $query->watchingUser()->paginate($args['limit'], ['*'], 'page', $args['page']);
-//
-//        return $response;
+        $user = Auth::user();
+        if (null === $user) {
+            return null;
+        }
+
         return Watcheables::with('watcheable')
             ->where('watcheable_type', MusicGroup::class)
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', $user->id)
             ->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }

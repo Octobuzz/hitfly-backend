@@ -1,0 +1,9 @@
+query CollectionTotalInfo($id: Int!) {
+    collection(id: $id) {
+        id
+#        TODO: change when the api is ready
+        countTracks
+#        tracksCount
+#        tracksTime
+    }
+}

@@ -37,7 +37,7 @@
       :fake-fav-button="fakeFavButton"
       :show-remove-button="showRemoveButton"
       :show-track-index="showTrackIndex"
-      :show-add-to-play-list="showAddToPlayList"
+      :show-add-to-playlist="showAddToPlayList"
       :column-layout="columnLayout"
       @remove-track="onTrackRemove"
       @press-favourite="onFavouritePress"
@@ -69,7 +69,7 @@ export default {
     },
     showAddToPlayList: {
       type: Boolean,
-      default: false
+      default: true
     },
     columnLayout: {
       type: Boolean,

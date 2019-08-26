@@ -79,8 +79,9 @@ class TrackType extends GraphQLType
                 },
             ],
             'userFavourite' => [
-                'type' => Type::nonNull(Type::boolean()),
+                'type' => Type::boolean(),
                 'description' => 'флаг избранного трека',
+                'privacy' => IsAuthPrivacy::class,
                 'resolve' => function ($model) {
                     if ($model->userFavourite->count()) {
                         return true;
@@ -89,6 +90,7 @@ class TrackType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'favouritesCount' => [
                 'type' => Type::int(),
@@ -125,6 +127,7 @@ class TrackType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'commentedByMe' => [
                 'type' => Type::boolean(),
@@ -137,6 +140,7 @@ class TrackType extends GraphQLType
                     }
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
         ];
     }

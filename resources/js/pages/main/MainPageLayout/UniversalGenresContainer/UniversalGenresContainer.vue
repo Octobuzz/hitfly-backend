@@ -3,7 +3,7 @@
     <slot
       v-if="genresList.length > 0"
       name="default"
-      :genres-id-list="genresIdList"
+      :genres-list="genresList"
     />
     <p
       v-if="initialFetchError"
@@ -26,10 +26,6 @@ export default {
   },
 
   computed: {
-    genresIdList() {
-      return this.genresList.map(genre => genre.id);
-    },
-
     initialFetchError() {
       const loading = this.$store.getters['loading/mainPage'].genres;
 
