@@ -17,7 +17,7 @@
           :to="titleLink"
           class="collection-preview__title-link"
         >
-          {{ collection.title }}
+          {{ trimmedCollectionTitle }}
         </router-link>
       </span>
 
@@ -147,6 +147,14 @@ export default {
         this.$route,
         this.collectionId
       );
+    },
+
+    trimmedCollectionTitle() {
+      if (!this.collection) return '';
+
+      const { title } = this.collection;
+
+      return title.length > 95 ? `${title.slice(0, 95)}...` : title;
     },
 
     currentPlaying() {

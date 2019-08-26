@@ -28,21 +28,28 @@ p {
   &__profile-avatar {
     width: 72px;
     height: 72px;
+    margin-right: 24px;
     border-radius: 50%;
+    overflow: hidden;
+  }
+
+  &__profile-avatar-img {
+    width: 100%;
     object-fit: cover;
     object-position: center;
-    margin-right: 24px;
   }
 
   &__profile-name {
     font-family: 'Gotham Pro Bold', sans-serif;
     font-size: 24px;
-    word-break: break-word;
     color: $text_color_primary;
     margin-bottom: 4px;
   }
 
   &__profile-info {
+    flex-basis: 0;
+    flex-grow: 1;
+    overflow: hidden;
     margin: {
       top: 4px;
       right: 20px;
@@ -261,17 +268,21 @@ p {
 
   &__group-cover,
   &__user-avatar {
-    word-break: break-word;
+    margin-right: 24px;
+  }
+
+  &__group-cover-img,
+  &__user-avatar-img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
-    margin-right: 24px;
   }
 
   &__someone-info {
     align-self: center;
+    overflow: hidden;
   }
 
   &__group-info,
@@ -285,7 +296,6 @@ p {
   &__username {
     font-size: 14px;
     font-family: 'Gotham Pro Semibold', sans-serif;
-    word-break: break-word;
     display: block;
     width: 100%;
     margin-bottom: 3px;
