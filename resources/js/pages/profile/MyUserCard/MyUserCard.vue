@@ -1,11 +1,13 @@
 <template>
   <div class="user-card">
     <div :class="[itemContainerClass, 'user-card__item']">
-      <img
-        class="user-card__profile-avatar"
-        :src="myProfile.avatar || anonymousAvatar"
-        alt="User avatar"
-      >
+      <div class="user-card__profile-avatar">
+        <img
+          class="user-card__profile-avatar-img"
+          :src="myProfile.avatar || anonymousAvatar"
+          alt="User avatar"
+        >
+      </div>
 
       <div class="user-card__profile-info">
         <p class="user-card__profile-name">
@@ -94,20 +96,24 @@
           :key="group.id"
           class="user-card__group"
         >
-          <img
-            class="user-card__group-cover"
-            :src="
-              group.avatarGroup.filter(
-                avatar => avatar.size === 'size_40x40'
-              )[0].url
-            "
-            alt="Group cover"
-          >
+          <div class="user-card__group-cover">
+            <img
+              class="user-card__group-cover-img"
+              :src="
+                group.avatarGroup.filter(
+                  avatar => avatar.size === 'size_40x40'
+                )[0].url
+              "
+              alt="Group cover"
+            >
+          </div>
 
           <div class="user-card__group-info">
             <div class="user-card__someone-info">
               <p class="user-card__group-name">
-                {{ group.name }}
+                <WordTrimmedWithTooltip
+                  :word="group.name"
+                />
               </p>
               <p class="user-card__group-followers">
                 {{ group.followersCount || '0' }}
@@ -164,25 +170,26 @@
           class="user-card__user user-card__user-info"
         >
           <router-link :to="`/user/${user.id}/music`">
-            <img
-              class="user-card__user-avatar"
-              :src="
-                user.avatar.filter(
-                  image => image.size === 'size_56x56'
-                )[0].url
-              "
-              alt="User avatar"
-            >
+            <div class="user-card__user-avatar">
+              <img
+                class="user-card__user-avatar-img"
+                :src="
+                  user.avatar.filter(
+                    image => image.size === 'size_56x56'
+                  )[0].url
+                "
+                alt="User avatar"
+              >
+            </div>
           </router-link>
 
           <div class="user-card__someone-info">
             <p class="user-card__username">
-              <router-link
+              <WordTrimmedWithTooltip
                 class="user-card__username-link"
-                :to="`/user/${user.id}/music`"
-              >
-                {{ user.username }}
-              </router-link>
+                :word="user.username"
+                @click.native="goToUserProfile(user)"
+              />
             </p>
             <p
               v-if="user.location"
@@ -207,15 +214,17 @@
           :key="group.id"
           class="user-card__group user-card__group-info"
         >
-          <img
-            class="user-card__group-cover"
-            :src="
-              group.avatarGroup.filter(
-                image => image.size === 'size_40x40'
-              )[0].url
-            "
-            alt="Group cover"
-          >
+          <div class="user-card__group-cover">
+            <img
+              class="user-card__group-cover-img"
+              :src="
+                group.avatarGroup.filter(
+                  image => image.size === 'size_40x40'
+                )[0].url
+              "
+              alt="Group cover"
+            >
+          </div>
 
           <div class="user-card__someone-info">
             <p class="user-card__group-name">
@@ -498,6 +507,20 @@ export default {
       }
 
       this.$router.push('/profile/create-group');
+    },
+
+    goToUserProfile(user) {
+      const isProfCriticOrStar = user.roles.some(
+        role => role.slug === 'prof_critic' || role.slug === 'star'
+      );
+
+      if (isProfCriticOrStar) {
+        this.$router.push(`/user/${user}/user-reviews`);
+
+        return;
+      }
+
+      this.$router.push(`/user/${user}/music`);
     },
 
     format(word, count) {

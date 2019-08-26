@@ -29,7 +29,7 @@
         </span>
         <span
           v-if="collection.user && collection.user.username"
-          class="collection-popover__user"
+          class="collection-popover__owner"
         >
           {{ collection.user.username }}
         </span>

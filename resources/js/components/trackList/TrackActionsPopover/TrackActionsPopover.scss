@@ -51,6 +51,7 @@ $bg_color: #222;
       top: 8px;
       bottom: 6px;
     }
+    overflow: hidden;
   }
 
   &__album-cover {
@@ -63,6 +64,14 @@ $bg_color: #222;
     }
     border-radius: 4px;
     user-select: none;
+    object-fit: cover;
+    object-position: left;
+  }
+
+  &__album-song,
+  &__album-author {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__album-song {

@@ -50,25 +50,22 @@
         />
       </template>
     </UnauthenticatedPopoverWrapper>
-
-    <span
+    <WordTrimmedWithTooltip
       v-show="desktop && !columnLayout"
       class="track-list-entry__track-name"
-    >
-      {{ track.trackName }}
-    </span>
+      :word="track.trackName"
+    />
     <WordTrimmedWithTooltip
       v-show="!columnLayout"
       class="track-list-entry__track-author"
       :word="track.singer"
       @click.native="goToTrackSinger"
     />
-    <span
+    <WordTrimmedWithTooltip
       v-show="showAlbumSection"
       class="track-list-entry__album-title"
-    >
-      {{ track.album && track.album.title }}
-    </span>
+      :word="track.album && track.album.title"
+    />
 
     <div
       v-show="!desktop || columnLayout"

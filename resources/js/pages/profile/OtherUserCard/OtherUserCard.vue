@@ -2,15 +2,19 @@
   <div class="user-card">
     <div :class="[itemContainerClass]">
       <div class="user-card__item">
-        <img
-          class="user-card__profile-avatar"
-          :src="user.avatar || anonymousAvatar"
-          alt="User avatar"
-        >
+        <div class="user-card__profile-avatar">
+          <img
+            class="user-card__profile-avatar-img"
+            :src="user.avatar || anonymousAvatar"
+            alt="User avatar"
+          >
+        </div>
 
         <div class="user-card__profile-info">
           <p class="user-card__profile-name">
-            {{ user.username }}
+            <WordTrimmedWithTooltip
+              :word="user.username"
+            />
           </p>
           <p class="user-card__followers-count">
             {{ user.followersCount || '0' }}
@@ -128,6 +132,7 @@
 import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import anonymousAvatar from 'images/anonymous-avatar.png';
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import FormButton from 'components/FormButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -159,6 +164,7 @@ const formatting = {
 
 export default {
   components: {
+    WordTrimmedWithTooltip,
     FormButton,
     IconButton,
     DotsIcon,
