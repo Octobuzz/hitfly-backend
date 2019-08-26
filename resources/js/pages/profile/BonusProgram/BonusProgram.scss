@@ -276,8 +276,8 @@
 
   &__task-daily-section::v-deep {
     @include universal-scroll-height(
-      $item_height_desktop: 450px,
-      $item_height_mobile: 450px
+      $item_height_desktop: 470px,
+      $item_height_mobile: 470px
     );
   }
 
