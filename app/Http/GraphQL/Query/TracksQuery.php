@@ -44,13 +44,9 @@ class TracksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-//        $keyCache = md5(json_encode($args).json_encode($root).json_encode($fields));
-//
-//        $response = Cache::get($keyCache, null);
-//        if (false === empty($response)) {
-//            return $response;
-//        }
-        $query = Track::with($fields->getRelations());
+
+        $query = Track::with($fields->getRelations())
+            ->orderBy('created_at', 'DESC');
 
         $query->select('tracks.*');
 
@@ -137,7 +133,6 @@ class TracksQuery extends Query
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-//        Cache::add($keyCache, $response, now()->addMinute(10));
 
         return $response;
     }

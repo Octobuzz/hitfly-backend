@@ -44,7 +44,8 @@ class CollectionsQuery extends Query
         if (null === $user) {
             return null;
         }
-        $query = Collection::with($fields->getRelations());
+        $query = Collection::with($fields->getRelations())
+            ->orderBy('created_at', 'DESC');
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
             if (null === $user) {
                 return null;
