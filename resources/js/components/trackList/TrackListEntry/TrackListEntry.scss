@@ -70,7 +70,7 @@
 
   &__track-author {
     flex-grow: 1;
-    width: 0;
+    flex-basis: 0;
     cursor: pointer;
 
     &:hover {
