@@ -204,6 +204,7 @@
     flex-direction: column;
 
     &__error-msg{
+        text-align: left;
         color: $color_red;
         font-size: 12px;
         display: none;

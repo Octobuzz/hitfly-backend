@@ -11,6 +11,7 @@ try {
 
   require('bootstrap');
   require('./jquery/auth-page');
+  require('./jquery/side-menu');
 } catch (e) {console.log('error')}
 
 /**

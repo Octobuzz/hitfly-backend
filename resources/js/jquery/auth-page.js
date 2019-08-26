@@ -49,7 +49,8 @@ $input.on('change', handleInputClassOnChange);
 $input.on('focus', handleInputClassOnFocus);
 $input.on('focusout', handleInputClassOnFocusOut);
 
-const $authForm = $('#form-auth, .forgot-pass__form');
+// there could be only one form on a page
+const $authForm = $('#register-form, #reset-password-form');
 
 const emailRegex = /^[-a-z0-9~!$%^&*_=+}{'?]+(\.[-a-z0-9~!$%^&*_=+}{'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|team|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 const $emailInput = $authForm.find('input[name="email"]');
@@ -110,12 +111,30 @@ const validateAgreement = () => {
 };
 
 $authForm.on('submit', (e) => {
-  const validationPassed = [
-    validateEmail,
-    validatePwd,
-    validatePwdConf,
-    validateAgreement
-  ].reduce(
+  const getValidationChecks = (action) => {
+    switch (action) {
+      case 'register':
+        return [
+          validateEmail,
+          validatePwd,
+          validatePwdConf,
+          validateAgreement
+        ];
+      case 'reset':
+        return [
+          validateEmail,
+          validatePwd,
+          validatePwdConf
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const passwordAction = window.location.href.split('/')[5];
+  const validationChecks = getValidationChecks(passwordAction);
+
+  const validationPassed = validationChecks.reduce(
     (acc, validator) => validator() && acc,
     true
   );

@@ -13,11 +13,9 @@
         <form class="forgot-pass__form" method="POST" action="{{ route('password.email') }}">
             @csrf
             <span class="input-text email forgot-pass__input">
-        <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}" {{ $errors->has('email') ? ' class=error' : '' }} required autofocus>
-        <label for="email">{{__('passwords.email')}}</label>
-    </span>
-
-
+                <input id="email" type="email"  name="email" value="{{ $email ?? old('email') }}" {{ $errors->has('email') ? ' class=error' : '' }} required autofocus>
+                <label for="email">{{__('passwords.email')}}</label>
+            </span>
             <button type="submit" class="button big active forgot-pass__submit">{{__('passwords.next')}}</button>
         </form>
         <p class="forgot-pass__return">
