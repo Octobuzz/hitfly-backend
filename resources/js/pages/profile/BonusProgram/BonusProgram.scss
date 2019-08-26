@@ -43,6 +43,7 @@
   }
 
   &__status-name {
+    color: #231f20;
     display: block;
     margin: {
       top: 24px;
@@ -230,6 +231,14 @@
     border: 1px solid white;
   }
 
+  &__bottom-section {
+    .bonus-program__p,
+    .bonus-program__li,
+    .bonus-program__header {
+      line-height: 24px;
+    }
+  }
+
   &__bottom-section-ul {
     padding-left: 20px;
   }
@@ -299,8 +308,9 @@
 
   &__task-title {
     font-size: 16px;
+    line-height: 24px;
     display: inline;
-    margin: 2px 0 0 6px;
+    margin: 0 0 0 6px;
   }
 
   &__task-title-wrapper {
