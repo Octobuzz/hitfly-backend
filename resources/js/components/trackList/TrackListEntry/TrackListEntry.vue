@@ -298,8 +298,6 @@ export default {
     },
 
     goToTrackSinger() {
-      console.log('goto track-singer');
-
       this.$router.push(this.singerLink);
     }
   },
