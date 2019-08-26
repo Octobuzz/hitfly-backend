@@ -78,9 +78,14 @@
         {{ track.trackName }}
       </span>
       <br>
-      <span class="track-list-entry__track-author">
-        {{ track.singer }}
-      </span>
+      <WordTrimmedWithTooltip
+        :class="[
+          'track-list-entry__track-author',
+          'track-list-entry__track-author_underline'
+        ]"
+        :word="track.singer"
+        @click.native="goToTrackSinger"
+      />
     </div>
 
     <UnauthenticatedPopoverWrapper placement="left">
