@@ -8,7 +8,7 @@
             <div class="reg-page__alternative text-with-line">
                 <span>{{ __('auth.orRegisterWithEmail') }}</span>
             </div>
-            <form method="POST" id="form-auth" action="{{ route('register') }}" class="reg-page__form" novalidate>
+            <form method="POST" id="register-form" action="{{ route('register') }}" class="reg-page__form" novalidate>
                 @csrf
                 @isset($socialUser)
                     <div class="form-group row">

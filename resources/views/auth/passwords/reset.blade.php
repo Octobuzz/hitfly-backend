@@ -5,7 +5,7 @@
     <div class="forgot-pass">
         <h1 class="forgot-pass__title">{{__('passwords.forgotPassword')}}?</h1>
         <p class="forgot-pass__text">{{__('passwords.enterEmail')}}</p>
-        <form class="forgot-pass__form" method="POST" action="{{ route('password.update') }}">
+        <form id="reset-password-form" class="forgot-pass__form" method="POST" action="{{ route('password.update') }}">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
 
@@ -38,7 +38,7 @@
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                     <label for="password-confirm">{{__('passwords.passwordConfirm')}}</label>
                 </span>
-                <span class="input-text-wrapper__error-msg"></span>
+                <span class="input-text-wrapper__error-msg">Пароли не совпадают</span>
             </span>
 
             <button type="submit" class="button big active forgot-pass__submit">{{__('passwords.next')}}</button>
