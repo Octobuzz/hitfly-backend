@@ -4,8 +4,8 @@ import $ from 'jquery';
 const IS_SHOWN = 'is-show';
 const IS_HIDDEN = 'is-close';
 
-const trigger = $('.menu-call');
-const menu = $('.drop-menu');
+let trigger;
+let menu;
 
 const showMenu = () => {
   trigger.removeClass(IS_HIDDEN);
@@ -31,26 +31,21 @@ const handleMenu = ({ target }) => {
     hideMenu();
   }
 
-  // const menuIsHidden = !menu.hasClass(IS_SHOWN);
-  // const menuIsOrHasTarget = (menuIsTarget || menuHasTarget);
+  const triggerIsTarget = trigger.is(target);
+  const triggerHasTarget = trigger.has(target).length > 0;
+  const triggerIsOrHasTarget = triggerIsTarget || triggerHasTarget;
 
-  // debugger;
-
-  // if (menuIsHidden && !menuIsOrHasTarget) {
-  //   showMenu();
-  // }
-
-  if (!menuIsShown) {
+  if (!menuIsShown && triggerIsOrHasTarget) {
     showMenu();
   }
 };
 
 $(document).mouseup(handleMenu);
+$(document).ready(() => {
+  trigger = $('.menu-call');
+  menu = $('.drop-menu');
+});
 
-$('.drop-menu-list__item').each(function (i, item) {
-  let row = $(item);
-  let span = row.find('span');
-  let time = 500 + Number(`${i}00`);
-
-  span.css('animation-delay', `${time}ms`);
+$('.drop-menu-list__item').each((i, item) => {
+  $(item).find('span').css('animation-delay', '.5s');
 });
