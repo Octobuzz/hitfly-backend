@@ -364,7 +364,7 @@ class BonusProgramEventSubscriber
     public function listeningTenTrack(ListeningTenTrackEvent $listeningTenTrackEvent)
     {
         $user = $listeningTenTrackEvent->getUser();
-        if ($this->participatesInBonusProgram($user)) {
+        if (null !== $user && $this->participatesInBonusProgram($user)) {
             $bonusType = BonusType::query()
                 ->where('constant_name', '=', BonusProgramTypesInterfaces::LISTENING_TEN_TRACKS)
                 ->first();
@@ -393,7 +393,7 @@ class BonusProgramEventSubscriber
     public function uploadAvatar(User $user)
     {
         /** @var User $user */
-        if ($this->participatesInBonusProgram($user) && false !== $user->isDirty('avatar')) {
+        if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('avatar')) {
             $this->accureBonus(BonusProgramTypesInterfaces::AVATAR, $user);
         }
     }
@@ -408,7 +408,7 @@ class BonusProgramEventSubscriber
     public function fillUsername(User $user)
     {
         /** @var User $user */
-        if ($this->participatesInBonusProgram($user) && false !== $user->isDirty('username')) {
+        if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('username')) {
             $this->accureBonus(BonusProgramTypesInterfaces::USER_NAME, $user);
         }
     }
@@ -423,7 +423,7 @@ class BonusProgramEventSubscriber
     public function fillCity(User $user)
     {
         /** @var User $user */
-        if ($this->participatesInBonusProgram($user) && false !== $user->isDirty('city_id')) {
+        if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('city_id')) {
             $this->accureBonus(BonusProgramTypesInterfaces::CITY, $user);
         }
     }
@@ -439,7 +439,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = Auth::user();
-        if ($this->participatesInBonusProgram($user) && false !== $artist->isDirty('career_start')) {
+        if (null !== $user && $this->participatesInBonusProgram($user) && false !== $artist->isDirty('career_start')) {
             $this->accureBonus(BonusProgramTypesInterfaces::CAREER_START, $user);
         }
     }
@@ -455,7 +455,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = Auth::user();
-        if ($this->participatesInBonusProgram($user) && false !== $artist->isDirty('description')) {
+        if (null !== $user && $this->participatesInBonusProgram($user) && false !== $artist->isDirty('description')) {
             $this->accureBonus(BonusProgramTypesInterfaces::ARTIST_DESCRIPTION, $user);
         }
     }
@@ -471,7 +471,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = Auth::user();
-        if ($this->participatesInBonusProgram($user) && 0 !== $artist->genres->count()) {
+        if (null !== $user && $this->participatesInBonusProgram($user) && 0 !== $artist->genres->count()) {
             $this->accureBonus(BonusProgramTypesInterfaces::ARTIST_GENRES, $user);
         }
     }
@@ -487,7 +487,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = $social->user;
-        if ($this->participatesInBonusProgram($user) && null !== $user) {
+        if (null !== $user && $this->participatesInBonusProgram($user)) {
             $this->accureBonus(BonusProgramTypesInterfaces::SOCIALS, $user);
         }
     }
