@@ -24,7 +24,7 @@ class UserLevels
         if (false === $keyLevel) {
             throw  new \Exception('Нет такого уровня в иерархии уровней.');
         }
-        if ($balance >= config('bonus.levelBonusPoint.'.User::LEVEL_NOVICE)
+        if ($balance >= config('bonus.levelBonusPoint.'.User::LEVEL_AMATEUR)
             && $balance < config('bonus.levelBonusPoint.'.User::LEVEL_CONNOISSEUR_OF_THE_GENRE)
             && User::LEVEL_AMATEUR !== $user->level && $keyLevel < 1) {
             $user->level = User::LEVEL_AMATEUR;
