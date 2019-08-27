@@ -20,6 +20,8 @@ const hideMenu = () => {
 };
 
 const handleMenu = ({ target }) => {
+  if (!trigger || !menu) return;
+
   const menuIsShown = menu.hasClass(IS_SHOWN);
   const menuIsTarget = menu.is(target);
   const menuHasTarget = menu.has(target).length > 0;

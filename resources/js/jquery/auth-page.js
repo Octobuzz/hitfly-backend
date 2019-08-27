@@ -131,9 +131,16 @@ $authForm.on('submit', (e) => {
     }
   };
 
-  const passwordAction = window.location.href.split('/')[5];
-  const validationChecks = getValidationChecks(passwordAction);
+  let validationAction = window.location.pathname.slice(1);
 
+  if (validationAction.slice(0, 8) === 'register') {
+    validationAction = 'reset';
+  }
+  if (validationAction.slice(0, 14) === 'password/reset') {
+    validationAction = 'reset';
+  }
+
+  const validationChecks = getValidationChecks(validationAction);
   const validationPassed = validationChecks.reduce(
     (acc, validator) => validator() && acc,
     true
