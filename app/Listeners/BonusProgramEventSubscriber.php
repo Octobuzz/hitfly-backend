@@ -48,7 +48,7 @@ class BonusProgramEventSubscriber
         $events->listen('eloquent.updated: '.ArtistProfile::class, self::class.'@fillCareerStart');
         $events->listen('eloquent.updated: '.ArtistProfile::class, self::class.'@fillArtistDescription');
         $events->listen('eloquent.saved: '.ArtistProfile::class, self::class.'@fillArtistGenres');
-        $events->listen('eloquent.saved: '.Social::class, self::class.'@fillSocials');
+        $events->listen('eloquent.updated: '.Social::class, self::class.'@fillSocials');
         $events->listen(CompletedTaskEvent::class, self::class.'@changeLevel');
     }
 

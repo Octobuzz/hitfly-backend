@@ -29,12 +29,15 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
-        $purse = new Purse();
-        $purse->balance = 0;
-        $purse->name = Purse::NAME_BONUS;
-        $purse->user_id = $user->id;
-        $user->purse()->save($purse);
-        $purse->save();
+        $purse = $user->purseBonus;
+        if (null === $purse) {
+            $purse = new Purse();
+            $purse->balance = 0;
+            $purse->name = Purse::NAME_BONUS;
+            $purse->user_id = $user->id;
+            $user->purse()->save($purse);
+            $purse->save();
+        }
 //        //отправка письма о завершении регистрации
 //        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
 //            dispatch(new UserRegisterJob($user))->onQueue('low');
