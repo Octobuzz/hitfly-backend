@@ -134,7 +134,7 @@ $authForm.on('submit', (e) => {
   let validationAction = window.location.pathname.slice(1);
 
   if (validationAction.slice(0, 8) === 'register') {
-    validationAction = 'reset';
+    validationAction = 'register';
   }
   if (validationAction.slice(0, 14) === 'password/reset') {
     validationAction = 'reset';
