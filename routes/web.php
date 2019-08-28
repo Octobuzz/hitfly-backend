@@ -11,25 +11,98 @@
 |
 */
 
-use App\BuisnessLogic\Events\Event;
 use App\BuisnessLogic\Playlist\Tracks;
-use App\BuisnessLogic\Recommendation\Recommendation;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Illuminate\Support\Facades\Log;
 
 Route::redirect('/', 'login', 301);
 Route::get('/s', function () {
-$track = \App\Models\Track::query()->where("id",182)->first();
-    $data = [
+
+    //алиас
+//    $params['body']['actions'] = [
+//        'add' => ['index' => 'track','alias' => 'track_new4'],
+//        //'dest' => ['index' => 'new_track'],
+//    ];
+//    $return = null;
+//
+//    $return = \Elasticsearch::indices()->updateAliases($params);
+//    dd($return);
+    //новый индекс
+//    $params = [
+//        'index' => 'track_new2',
+//        'body' => [
+//
+//        ]
+//    ];
+//
+//    $response =  $return = \Elasticsearch::indices()->create($params);
+//
+//dd($response);
+
+
+
+        $aliasName = 'track_new';
+        //$aliases = \Elasticsearch::indices()->getAliases();
+        $aliases = \Elasticsearch::cat()->indices(array('index' => 'track*'));
+    dd($aliases);
+        foreach ($aliases as $index => $aliasMapping) {
+            if (array_key_exists($aliasName, $aliasMapping['aliases'])) {
+                dd($index);
+            }
+        }
+
+       dd('end');
+
+//    $track = \App\Models\Track::query()->where("id",182)->first();
+//    $data = [
+//        'body' => [
+//            'track_name' => $track->track_name,
+//            'singer' => $track->singer,
+//            'song_text' => $track->song_text,
+//        ],
+//        'index' => 'tracks',
+//        'type' => \App\Models\Track::class ,
+//        'id' => $track->id,
+//    ];
+//
+//    $return = Elasticsearch::index($data);
+//    dd($return);
+    // $track = \App\Models\Track::query()->where('id', 182)->get();
+    //dd($track->only(['track_name', 'singer', 'song_text']));
+//    $r = new \App\BuisnessLogic\SearchIndexing\AttributeFiltering();
+//    dd($r->trackFilter($track)->toArray());
+//    $track = \App\Models\Track::all();
+//    $indexer = new \App\BuisnessLogic\SearchIndexing\SearchIndexer();
+//    $indexer->index($track, 'track');
+//    $params = [
+//        'source' => ['index' => 'track'],
+//        'dest' => ['index' => 'new_track'],
+//    ];
+//    $return = null;
+//    // Get doc at /my_index/_doc/my_id
+//    //try {
+//    $return = \Elasticsearch::aliases($params);
+//    dd($return);
+    // }catch (Missing404Exception $e){
+    //     Log::notice($e->getMessage(), $e->getTrace());
+    // }
+//    //$return = Elasticsearch::get($params);
+//    dd($return);
+    $params = [
+        'index' => ['track'],
+        //'type' => 'App\Models\Track',
         'body' => [
-            'track_name' => $track->track_name,
-            'singer' => $track->singer,
-            'song_text' => $track->song_text,
+            'query' => [
+                'match' => [
+                    'singer' => 'seodi3',
+                    //'title' => 'seodi3',
+                ],
+            ],
         ],
-        'index' => 'music',
-        'type' => 'tracks',
-        'id' => $track->id,
     ];
 
-    $return = Elasticsearch::index($data);
+    // Get doc at /my_index/_doc/my_id
+    $return = Elasticsearch::search($params);
     dd($return);
 });
 Auth::routes(['verify' => true]);

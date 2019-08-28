@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Models\Album;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class AlbumObserver
@@ -12,6 +14,8 @@ class AlbumObserver
      */
     public function created(Album $album)
     {
+        $indexer = new SearchIndexer();
+        $indexer->index(Collection::make([$album]), 'album');
     }
 
     /**
@@ -22,6 +26,8 @@ class AlbumObserver
         if ($album->isDirty('cover')) {
             Cache::tags(Album::class.$album->id)->flush();
         }
+        $indexer = new SearchIndexer();
+        $indexer->index(Collection::make([$album]), 'album');
     }
 
     /**
@@ -29,6 +35,8 @@ class AlbumObserver
      */
     public function deleted(Album $album)
     {
+        $indexer = new SearchIndexer();
+        $indexer->deleteFromIndex(Collection::make([$album]), 'album');
     }
 
     /**
@@ -36,6 +44,8 @@ class AlbumObserver
      */
     public function restored(Album $album)
     {
+        $indexer = new SearchIndexer();
+        $indexer->index(Collection::make([$album]), 'album');
     }
 
     /**
@@ -43,5 +53,7 @@ class AlbumObserver
      */
     public function forceDeleted(Album $album)
     {
+        $indexer = new SearchIndexer();
+        $indexer->deleteFromIndex(Collection::make([$album]), 'album');
     }
 }
