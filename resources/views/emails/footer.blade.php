@@ -80,7 +80,7 @@
             </tr>
             <tr>
                 <td>
-                    <p style="font-size: 12px; line-height: 19px; text-align: center; color: #a6a6a6; margin: 0 0 15px;">HitFly music concept<br> Krasnoarmeiskaya street 13v<br> Uliyanovsk</p>
+                    <p style="font-size: 12px; line-height: 19px; text-align: center; color: #a6a6a6; margin: 0 0 15px;">HitFly music concept<br> www.myhitfly.ru</p>
                 </td>
             </tr>
             </tbody>
