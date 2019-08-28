@@ -44,6 +44,15 @@ class ProductsSeeder extends Seeder
         ]);
         $commentFromStarProduct->save();
         $commentFromStarProduct->attributes()->attach([$trackAttribute->id, $starAttribute->id]);
+        $publicPath = Storage::disk('public')->getAdapter()->getPathPrefix();
+        $file = Storage::disk('local')->get('products/COMMENT_FROM_STAR.png');
+        $imgNamePublic = self::PRODUCTS_DIR.$commentFromStarProduct->id.'/COMMENT_FROM_STAR.png';
+        if (!file_exists($publicPath.self::PRODUCTS_DIR.$commentFromStarProduct->id)) {
+            Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$commentFromStarProduct->id);
+        }
+        Storage::disk('public')->put($imgNamePublic, $file);
+        $commentFromStarProduct->image = $imgNamePublic;
+        $commentFromStarProduct->save();
     }
 
     /*
@@ -103,8 +112,8 @@ class ProductsSeeder extends Seeder
         foreach ($productsArr as $value) {
             $product = new Product($value);
             $product->save();
-            $file = Storage::disk('local')->get('products/STUDIO_INSTRUMENTAL.png');
-            $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/STUDIO_INSTRUMENTAL.png';
+            $file = Storage::disk('local')->get('products/'.$value['alias'].'.png');
+            $imgNamePublic = self::PRODUCTS_DIR.$product->id.'/'.$value['alias'].'.png';
 
             if (!file_exists($publicPath.self::PRODUCTS_DIR.$product->id)) {
                 Storage::disk('public')->makeDirectory(self::PRODUCTS_DIR.$product->id);
