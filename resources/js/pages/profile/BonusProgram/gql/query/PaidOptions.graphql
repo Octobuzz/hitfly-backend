@@ -1,0 +1,17 @@
+query BonusProgram_products {
+    products(limit: 30, page: 1) {
+        data {
+            id
+            name
+            description
+            price
+            alias
+            image(
+                sizes: [size_235x235]
+            ) {
+                size,
+                url
+            }
+        }
+    }
+}
