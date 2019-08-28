@@ -590,7 +590,7 @@ export default {
           } = product;
 
           const image = productImage.find(
-            img => img.size === 'size_235x235'
+            img => img.size === 'size_290x290'
           ).url;
 
           const cost = `${price} бонусов`;
