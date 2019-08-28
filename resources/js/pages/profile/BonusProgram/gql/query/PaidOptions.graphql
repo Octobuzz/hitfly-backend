@@ -7,7 +7,7 @@ query BonusProgram_products {
             price
             alias
             image(
-                sizes: [size_235x235]
+                sizes: size_290x290
             ) {
                 size,
                 url
