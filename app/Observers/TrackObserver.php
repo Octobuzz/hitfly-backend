@@ -35,6 +35,7 @@ class TrackObserver
         dispatch(new CreatePlayTimeJob($track));
         $indexer = new SearchIndexer();
         $indexer->index(Collection::make([$track]), 'track');
+
         return true;
     }
 

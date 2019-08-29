@@ -30,6 +30,7 @@ class SearchReindex extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->indexer = new SearchIndexer();
     }
 
     /**
@@ -42,38 +43,48 @@ class SearchReindex extends Command
         $argumentModel = Str::snake(trim($this->argument('model')));
         $config = config('search.models');
         if (array_key_exists($argumentModel, $config)) {
-            $this->indexer = new SearchIndexer();
-//            $alias = $this->indexer->createAlias($argumentModel,'new2');
-//            dd($alias);
+            //блок создания первоначальных индексов(если нет ни одног индекса, алиаса и т.п.)
             // получим имя индекса по алиасу
-            $oldIndexName = self::getIndexNameByAlias($argumentModel);
-            if(null === $oldIndexName){//создадим алиас, если его нет
-                if(false === $this->indexer->createAlias($oldIndexName, $argumentModel, 'read')){
+            //$oldIndexName = self::getIndexNameByAlias($argumentModel);
+            $oldIndexName = $this->indexer->findIndexNameByAlias($argumentModel.SearchIndexer::POSTFIX_READ);
+            if (null === $oldIndexName) {//у индекса может не быть алиаса
+                $oldIndexName = $this->getLastIndexName($argumentModel); //получим имя самого последнего индекса
+                if (null === $oldIndexName) {//если индекса не существует
+                    $this->info('Нет старого индекса. '.$argumentModel.'_***');
+                } elseif (false === $this->indexer->createAlias($oldIndexName, $argumentModel, SearchIndexer::POSTFIX_READ)) {
                     $this->error('Невозможно создать алиас '.$argumentModel.'_read');
                     die();
                 }
-                $indexName = $alias;
             }
-            //создадим новый индекс
-            $newIndexName = $this->indexer->createIndex($oldIndexName);
-            if(false === $newIndexName){
+            //создадим новый индекс(сюда будет вестись переиндексация)
+            $newIndexName = $this->indexer->createIndex($argumentModel);
+            if (null === $newIndexName) {
                 $this->error('Ошибка создания нового индекса');
                 die();
             }
             //создадим алиас для нового индекса с отвязкой алиаса для записи со старого индекса
-            if(false === $this->indexer->createAlias($newIndexName, 'write', $oldIndexName)){
+            if (false === $this->indexer->createAlias($newIndexName, $argumentModel, SearchIndexer::POSTFIX_WRITE, $oldIndexName)) {
                 $this->error('Ошибка создания алиаса для записи в новый индекс');
                 die();
             }
-            dd('стапэ');
             $config[$argumentModel]['model']::chunk(self::CHUNK_SIZE, function ($collectionModel) use ($argumentModel) {
                 $this->indexer->index($collectionModel, $argumentModel);
             }
-                );
+            );
+            //установка алиаса на чтение на новый индекс
+            if (false === $this->indexer->createAlias($newIndexName, $argumentModel, SearchIndexer::POSTFIX_READ, $oldIndexName)) {
+                $this->error('Ошибка создания алиаса чтения в новый индекс(переиндексированый)');
+                die();
+            }
+
+            //удаление старого индекса
+            if (null !== $oldIndexName && null === $this->indexer->deleteIndex($oldIndexName)) {
+                $this->error('Ошибка создания алиаса чтения в новый индекс(переиндексированый)');
+                die();
+            }
             $this->line("<info>Переиндексирована модель:</info> {$argumentModel}");
         } elseif ('all' === $argumentModel) {
             foreach ($config as $indexName => $modelClass) {
-                $this->indexer = new SearchIndexer();
                 $config[$indexName]['model']::chunk(self::CHUNK_SIZE, function ($collectionModel) use ($indexName) {
                     $this->indexer->index($collectionModel, $indexName);
                 }
@@ -85,35 +96,20 @@ class SearchReindex extends Command
         }
     }
 
-    private function getIndexNameByAlias($alias, $postfix = 'read')
+//    private function getIndexNameByAlias($alias, $postfix = SearchIndexer::POSTFIX_READ): ?string
+//    {
+//        $indexName = $this->indexer->findIndexNameByAlias($alias.'_'.$postfix);
+//
+//        return $indexName;
+//    }
+
+    private function getLastIndexName($model): ?string
     {
-        $indexName = $this->indexer->findIndexNameByAlias($alias.'_'.$postfix);
-        if(null === $indexName){//создадим алиас, если его нет
-            if(false === $this->indexer->createAlias($alias, $postfix)){
-                $this->error('Невозможно создать алиас '.$alias.'_'.$postfix);
-                die();
-            }
-            $indexName = $alias;
+        $namesOfindexes = $this->indexer->filterIndexesByName($model);
+        if ($namesOfindexes->isEmpty()) {
+            return null;
         }
-        return $indexName;
+
+        return $namesOfindexes->pop();
     }
-
-    private function getlastIndexName($model)
-    {
-        $indexName = $this->indexer->findIndexNameByAlias($alias.'_'.$postfix);
-        if(null === $indexName){//создадим алиас, если его нет
-            if(false === $this->indexer->createAlias($alias, $postfix)){
-                $this->error('Невозможно создать алиас '.$alias.'_'.$postfix);
-                die();
-            }
-            $indexName = $alias;
-        }
-        return $indexName;
-    }
-
-
-
-
-
-
 }
