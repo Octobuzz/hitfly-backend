@@ -13,5 +13,11 @@ return [
         'album' => [
             'model' => 'App\Models\Album',
         ],
+        'user' => [
+            'model' => 'App\User',
+        ],
+        'collection' => [
+            'model' => 'App\Models\Collection',
+        ],
     ],
 ];

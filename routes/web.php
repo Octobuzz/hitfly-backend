@@ -99,13 +99,14 @@ Route::get('/s', function () {
 //    //$return = Elasticsearch::get($params);
 //    dd($return);
     $params = [
-        'index' => ['track_read'],
+        'index' => ['user_read'],
         //'type' => 'App\Models\Track',
         'body' => [
             'query' => [
                 'match' => [
-                    'singer' => 'seodi3',
+                    //'singer' => 'seodi3',
                     //'title' => 'seodi3',
+                    'username' => 'Kaleb Bergnaum',
                 ],
             ],
         ],
