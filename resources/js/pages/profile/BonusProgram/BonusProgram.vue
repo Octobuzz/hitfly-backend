@@ -281,7 +281,10 @@
           <!--TODO: use url for image-->
           <div
             class="bonus-program__paid-card"
-            :style="{ background: '#28c18c' || `url(${option.image})` }"
+            :style="{
+              backgroundImage: `url(${option.image})`,
+              backgroundSize: 'cover'
+            }"
           >
             <span class="h2 bonus-program__paid-card-title">
               {{ option.title }}
@@ -359,6 +362,7 @@ import levelMusicLoverImg from 'images/level-music-lover.svg';
 import UniversalScrollHorizontal from 'components/UniversalScrollHorizontal';
 import ReturnHeader from '../ReturnHeader.vue';
 import * as bonusProgramDailyTaskBodies from '../bonusProgramDailyTaskBodies';
+import gql from './gql';
 
 export default {
   components: {
@@ -564,11 +568,49 @@ export default {
         },
         {
           id: 11,
-          title: 'Рецензия от критика      ',
+          title: 'Рецензия от критика',
           body: 'TaskBody11'
         }
       ]
     };
+  },
+
+  apollo: {
+    paidOptions: {
+      client: 'public',
+      query: gql.query.PAID_OPTIONS,
+      update({ products: { data } }) {
+        const productMapper = (product) => {
+          const {
+            id,
+            description,
+            price,
+            name: title,
+            image: productImage
+          } = product;
+
+          const image = productImage.find(
+            img => img.size === 'size_290x290'
+          ).url;
+
+          const cost = `${price} бонусов`;
+
+          return {
+            id,
+            title,
+            description,
+            cost,
+            image,
+            button: 'Купить'
+          };
+        };
+
+        return data.map(productMapper);
+      },
+      error(err) {
+        console.dir(err);
+      }
+    }
   }
 };
 </script>
