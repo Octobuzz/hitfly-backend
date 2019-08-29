@@ -33,8 +33,6 @@ class TrackObserver
     public function created(Track $track)
     {
         dispatch(new CreatePlayTimeJob($track));
-        $indexer = new SearchIndexer();
-        $indexer->index(Collection::make([$track]), 'track');
 
         return true;
     }
@@ -49,8 +47,10 @@ class TrackObserver
         if ($track->isDirty('cover')) {
             Cache::tags(Track::class.$track->id)->flush();
         }
-        $indexer = new SearchIndexer();
-        $indexer->index(Collection::make([$track]), 'track');
+        if (Track::PUBLISHED === $track->state) {
+            $indexer = new SearchIndexer();
+            $indexer->index(Collection::make([$track]), 'track');
+        }
     }
 
     /**
@@ -73,7 +73,9 @@ class TrackObserver
     public function restored(Track $track)
     {
         $indexer = new SearchIndexer();
-        $indexer->index(Collection::make([$track]), 'track');
+        if (Track::PUBLISHED === $track->state) {
+            $indexer->index(Collection::make([$track]), 'track');
+        }
     }
 
     /**

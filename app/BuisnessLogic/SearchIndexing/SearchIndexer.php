@@ -14,15 +14,18 @@ class SearchIndexer
     /**
      * Индексация сущности.
      *
-     * @param $models
+     * @param Collection $models
+     * @param string     $indexName
      *
      * @return mixed
      */
     public function index(Collection $models, string $indexName)
     {
-        if (false === empty($model)) {
+        if (true === $models->isEmpty()) {
             return false;
         }
+        $this->checkAndCreateAlias($indexName, self::POSTFIX_WRITE);
+        $this->checkAndCreateAlias($indexName, self::POSTFIX_READ);
         $params = ['body' => []];
         $attribiteFiltering = new AttributeFiltering();
         foreach ($models as $model) {
@@ -41,25 +44,55 @@ class SearchIndexer
         \Elasticsearch::bulk($params);
     }
 
+    /**
+     * удаление коллекции.
+     *
+     * @param Collection $models
+     * @param string     $indexName
+     *
+     * @throws \ReflectionException
+     */
     public function deleteFromIndex(Collection $models, string $indexName)
     {
         foreach ($models as $model) {
             $filterName = 'filter'.(new \ReflectionClass($model))->getShortName();
 
             $params = [
-                    'index' => $indexName,
+                    'index' => $indexName.self::POSTFIX_READ,
                     'type' => get_class($model),
                     'id' => $model->id,
             ];
-            try {
-                \Elasticsearch::delete($params);
-            } catch (Missing404Exception $e) {
-                Log::notice($e->getMessage(), $e->getTrace());
+            if (true === \Elasticsearch::exists($params)) {
+                try {
+                    \Elasticsearch::delete($params);
+                } catch (Missing404Exception $e) {
+                    Log::notice($e->getMessage(), $e->getTrace());
+                }
+            }
+            //удалим из из индекса WRITE
+            $params = [
+                'index' => $indexName.self::POSTFIX_WRITE,
+                'type' => get_class($model),
+                'id' => $model->id,
+            ];
+            if (true === \Elasticsearch::exists($params)) {
+                try {
+                    \Elasticsearch::delete($params);
+                } catch (Missing404Exception $e) {
+                    Log::notice($e->getMessage(), $e->getTrace());
+                }
             }
         }
     }
 
-    public function findIndexNameByAlias($aliasName): ?string
+    /**
+     * поиск имени индекса по алиасу.
+     *
+     * @param string $aliasName
+     *
+     * @return string|null
+     */
+    public function findIndexNameByAlias(string $aliasName): ?string
     {
         $aliases = \Elasticsearch::indices()->getAliases();
         foreach ($aliases as $index => $aliasMapping) {
@@ -71,18 +104,16 @@ class SearchIndexer
         return null;
     }
 
-//    public function getAllIndexesNames()
-//    {
-//        $aliases = \Elasticsearch::indices()->getAliases();
-//        foreach ($aliases as $index => $aliasMapping) {
-//            if (array_key_exists($aliasName, $aliasMapping['aliases'])) {
-//                return $index;
-//            }
-//        }
-//
-//        return null;
-//    }
-
+    /**
+     * создание псевдонима.
+     *
+     * @param $nameIndex
+     * @param $alias
+     * @param $postfix
+     * @param null $removeOldAlias
+     *
+     * @return bool
+     */
     public function createAlias($nameIndex, $alias, $postfix, $removeOldAlias = null): bool
     {
         $params['body']['actions'] = [];
@@ -111,6 +142,14 @@ class SearchIndexer
         return false;
     }
 
+    /**
+     * создание индекса.
+     *
+     * @param $nameIndex
+     * @param bool $postfix
+     *
+     * @return string|null
+     */
     public function createIndex($nameIndex, $postfix = false): ?string
     {
         if (false === $postfix) {
@@ -119,38 +158,48 @@ class SearchIndexer
         $params = [
             'index' => $nameIndex.$postfix,
         ];
-        try {
-            $response = \Elasticsearch::indices()->create($params);
-        } catch (\Exception $e) {
-            Log::notice($e->getMessage(), $e->getTrace());
+        if (false === \Elasticsearch::indices()->exists($params)) {
+            try {
+                $response = \Elasticsearch::indices()->create($params);
+            } catch (\Exception $e) {
+                Log::notice($e->getMessage(), $e->getTrace());
 
-            return null;
-        }
-        if (true === $response['acknowledged']) {
-            return $response['index'];
+                return null;
+            }
+            if (true === $response['acknowledged']) {
+                return $response['index'];
+            }
         }
 
         return null;
     }
 
-    public function deleteIndex($nameIndex): ?string
+    /**
+     * удаление индекса.
+     *
+     * @param $nameIndex
+     *
+     * @return bool|null
+     */
+    public function deleteIndex($nameIndex): ?bool
     {
         $params = [
             'index' => $nameIndex,
         ];
-        try {
-            $response = \Elasticsearch::indices()->delete($params);
-            dd($response);
-        } catch (\Exception $e) {
-            Log::notice($e->getMessage(), $e->getTrace());
+        if (true === \Elasticsearch::indices()->exists($params)) {
+            try {
+                $response = \Elasticsearch::indices()->delete($params);
+            } catch (\Exception $e) {
+                Log::notice($e->getMessage(), $e->getTrace());
 
-            return null;
-        }
-        if (true === $response['acknowledged']) {
-            return $response['index'];
+                return false;
+            }
+            if (true === $response['acknowledged']) {
+                return true;
+            }
         }
 
-        return null;
+        return false;
     }
 
     public function filterIndexesByName($model): Collection
@@ -161,5 +210,31 @@ class SearchIndexer
         }
 
         return collect($indexArr)->pluck('index')->sort();
+    }
+
+    public function checkAndCreateAlias($modelName, $postfix): ?string
+    {
+        $oldIndexName = $this->findIndexNameByAlias($modelName.$postfix);
+
+        if (null !== $oldIndexName) {
+            return $modelName.$postfix;
+        }
+
+        $namesOfindexes = $this->filterIndexesByName($modelName);
+        if ($namesOfindexes->isNotEmpty()) {
+            $newIndexName = $namesOfindexes->pop();
+        } else {
+            $newIndexName = $this->createIndex($modelName);
+        }
+
+        if (null !== $newIndexName) {
+            if (false === $this->createAlias($newIndexName, $modelName, $postfix)) {
+                return null;
+            }
+
+            return $modelName.$postfix;
+        }
+
+        return null;
     }
 }

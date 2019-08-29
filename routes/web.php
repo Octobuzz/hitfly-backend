@@ -12,12 +12,12 @@
 */
 
 use App\BuisnessLogic\Playlist\Tracks;
+use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Support\Facades\Log;
 
 Route::redirect('/', 'login', 301);
 Route::get('/s', function () {
-
     //алиас
 //    $params['body']['actions'] = [
 //        'add' => ['index' => 'track','alias' => 'track_new4'],
@@ -37,21 +37,31 @@ Route::get('/s', function () {
 //
 //    $response =  $return = \Elasticsearch::indices()->create($params);
 //
-//dd($response);
+    //dd($response);
+    //$indexer = new SearchIndexer();
+//    $params = [
+//        'index' => 'track_read',
+//        'type' => 'App\Models\Track',
+//        'id' => 188,
+//    ];
+//    $aliases = \Elasticsearch::exists($params);
+//    dd($aliases);
+//    \Elasticsearch::delete($params);
+//    $s = $indexer->checkAndCreateAlias('track', SearchIndexer::POSTFIX_WRITE);
+//    $s = $indexer->checkAndCreateAlias('track', SearchIndexer::POSTFIX_READ);
 
-
-
-        $aliasName = 'track_new';
-        //$aliases = \Elasticsearch::indices()->getAliases();
-        $aliases = \Elasticsearch::cat()->indices(array('index' => 'track*'));
-    dd($aliases);
-        foreach ($aliases as $index => $aliasMapping) {
-            if (array_key_exists($aliasName, $aliasMapping['aliases'])) {
-                dd($index);
-            }
-        }
-
-       dd('end');
+    $aliasName = 'track_new';
+    //$aliases = \Elasticsearch::indices()->existsAlias(['name' => 'track_1566991682_write','index' => 'track_1566991682']);
+    //$aliases = \Elasticsearch::indices()->getAliases();
+    //$aliases = \Elasticsearch::cat()->indices(['index' => 'track*']);
+    //dd($aliases);
+//    foreach ($aliases as $index => $aliasMapping) {
+//        if (array_key_exists($aliasName, $aliasMapping['aliases'])) {
+//            dd($index);
+//        }
+//    }
+//
+//    dd('end');
 
 //    $track = \App\Models\Track::query()->where("id",182)->first();
 //    $data = [
@@ -89,7 +99,7 @@ Route::get('/s', function () {
 //    //$return = Elasticsearch::get($params);
 //    dd($return);
     $params = [
-        'index' => ['track'],
+        'index' => ['track_read'],
         //'type' => 'App\Models\Track',
         'body' => [
             'query' => [
