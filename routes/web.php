@@ -13,11 +13,21 @@
 
 use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\Models\Track;
+use App\User;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Support\Facades\Log;
 
 Route::redirect('/', 'login', 301);
 Route::get('/s', function () {
+//    $q = User::query();
+//    $q->whereHas('roles', function ($query) {
+//        $query->whereIn('slug', ['critic']);
+//    })->chunk(1, function ($collectionModel) {
+//        dump($collectionModel);
+//    });
+//    die();
+
     //алиас
 //    $params['body']['actions'] = [
 //        'add' => ['index' => 'track','alias' => 'track_new4'],
@@ -53,8 +63,8 @@ Route::get('/s', function () {
     $aliasName = 'track_new';
     //$aliases = \Elasticsearch::indices()->existsAlias(['name' => 'track_1566991682_write','index' => 'track_1566991682']);
     //$aliases = \Elasticsearch::indices()->getAliases();
-    //$aliases = \Elasticsearch::cat()->indices(['index' => 'track*']);
-    //dd($aliases);
+    $aliases = \Elasticsearch::cat()->indices(['index' => 'track*']);
+    dd($aliases);
 //    foreach ($aliases as $index => $aliasMapping) {
 //        if (array_key_exists($aliasName, $aliasMapping['aliases'])) {
 //            dd($index);

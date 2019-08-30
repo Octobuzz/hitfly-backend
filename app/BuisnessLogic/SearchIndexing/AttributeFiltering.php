@@ -18,10 +18,12 @@ class AttributeFiltering
     {
         return collect($collection)->only(['title'])->all();
     }
+
     public function filterUser(User $collection): array
     {
         return collect($collection)->only(['username'])->all();
     }
+
     public function filterCollection(Collection $collection): array
     {
         return collect($collection)->only(['title'])->all();

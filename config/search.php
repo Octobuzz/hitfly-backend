@@ -15,6 +15,9 @@ return [
         ],
         'user' => [
             'model' => 'App\User',
+            'scopes' => [
+                'filterRoles' => ['critic', 'prof_critic', 'star', 'performer'],
+            ],
         ],
         'collection' => [
             'model' => 'App\Models\Collection',

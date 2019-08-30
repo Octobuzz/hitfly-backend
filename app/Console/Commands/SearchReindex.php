@@ -90,7 +90,18 @@ class SearchReindex extends Command
             $this->error('Ошибка создания алиаса для записи в новый индекс');
             die();
         }
-        $config[$modelName]['model']::chunk(self::CHUNK_SIZE, function ($collectionModel) use ($modelName) {
+        $query = $config[$modelName]['model']::query();
+        //добавление scope если заданы в конфиге
+        if (isset($config[$modelName]['scopes']) && !empty($config[$modelName]['scopes'])) {
+            foreach ($config[$modelName]['scopes'] as $scope => $param) {
+                if (!empty($param)) {
+                    $query->$scope($param);
+                } else {
+                    $query->$scope();
+                }
+            }
+        }
+        $query->chunk(self::CHUNK_SIZE, function ($collectionModel) use ($modelName) {
             $this->indexer->index($collectionModel, $modelName);
         }
         );

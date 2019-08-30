@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\Storage;
 
 class UserObserver
 {
-    private $rolesToSearchIndex = ['critic','prof_critic','star','performer'];
+    private $rolesToSearchIndex = ['critic', 'prof_critic', 'star', 'performer'];
+
     /**
      * Handle the user "created" event.
      *

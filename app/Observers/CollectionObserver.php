@@ -16,7 +16,7 @@ class CollectionObserver
      */
     public function creating(Collection $collection)
     {
-        if (!empty($collection->title) ) {
+        if (!empty($collection->title)) {
             $indexer = new SearchIndexer();
             $indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
         }
