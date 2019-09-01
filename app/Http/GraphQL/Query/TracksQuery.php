@@ -7,7 +7,6 @@ use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -44,7 +43,6 @@ class TracksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-
         $query = Track::with($fields->getRelations())
             ->orderBy('created_at', 'DESC');
 

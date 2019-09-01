@@ -36,16 +36,18 @@ class SocialConnectQuery extends Query
         /** @var User $User */
         $User = Auth::user();
         if (null === $User) {
-            return null;
+            $socialsLink = null;
+        } else {
+            /** @var Collection $socialsLink */
+            $socialsLink = $User->socialsConnect;
         }
-        /** @var Collection $socialsLink */
-        $socialsLink = $User->socialsConnect;
+
         $response = [];
         foreach ($this->socialsTypes() as $socialsType) {
             $response[] = [
                 'social_type' => $socialsType,
                 'link' => route('social_auth', ['provider' => $socialsType]),
-                'connected' => $socialsLink->contains('social_driver', $socialsType),
+                'connected' => null === $socialsLink ? null : $socialsLink->contains('social_driver', $socialsType),
             ];
         }
 
