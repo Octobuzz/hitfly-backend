@@ -135,6 +135,7 @@ export default {
     fixedTime: null,
     toggleLoop: false,
     volumeToggle: false,
+    trackingTrigger: true,
     tooltip: {
       add: {
         content: 'Добавить в плейлист'
@@ -190,21 +191,6 @@ export default {
         }else{
           trackId = this.currentPlaylist[currentIndex - 1];
         };
-        this.$apollo.provider.defaultClient.mutate({
-          variables: {
-            id: this.currentTrack.id,
-            listening: this.percentage
-          },
-          mutation: gql`mutation($id: Int!, $listening: Int!){
-            listeningTrack(id: $id, listening: $listening){
-              trackName
-            }
-          }`
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
         this.getTrack(trackId);
       }
     },
@@ -243,7 +229,36 @@ export default {
     },
     update(e) {
       if(this.audio.duration){
-        this.percentage =  Math.floor(this.audio.played.end(0) / this.audio.duration * 100);
+        let ranges = this.audio.played.length;
+        let totalRange = 0;
+        for(let i = 0; i < ranges; i++){
+          totalRange = totalRange + (this.audio.played.end(i) - this.audio.played.start(i));
+        }
+        this.percentage =  Math.floor(totalRange / this.audio.duration * 100);
+        if((totalRange / this.audio.duration * 100) >= 30 && this.trackingTrigger == true){
+          this.trackingTrigger = false;
+          switch(this.percentage){
+            case 30:
+              this.$apollo.provider.defaultClient.mutate({
+                variables: {
+                  id: this.currentTrack.id,
+                  listening: this.percentage
+                },
+                mutation: gql`mutation($id: Int!, $listening: Int!){
+                  listeningTrack(id: $id, listening: $listening){
+                    trackName
+                  }
+                }`
+              })
+              .then(response => {
+                
+              })
+              .catch(error => {
+                console.log('error');
+              });
+              break;
+          }
+        }
       };
 			this.currentTime = parseInt(this.audio.currentTime);
 	    let hhmmss = new Date(this.currentTime * 1000).toISOString().substr(11, 8);
@@ -271,6 +286,10 @@ export default {
         return this.audio.pause();
       }
 		},
+    currentTrackId: function(){
+      this.trackingTrigger = true;
+      console.log(this.trackingTrigger);
+    }
   },
   computed: {
     desktop() {
@@ -291,6 +310,9 @@ export default {
       currentTrack: state => state.currentTrack
     }),
     ...mapState('player', {
+      currentTrackId: state => state.currentTrack.id
+    }),
+    ...mapState('player', {
       currentPlaylist: state => state.currentPlaylist
     }),
     emptyTrack() {
@@ -304,7 +326,6 @@ export default {
   mounted: function(){
     this.audio = this.$el.querySelectorAll('audio')[0];
 		this.audio.addEventListener('timeupdate', this.update);
-		// this.audio.addEventListener('loadeddata', this.load);
   }
 };
 </script>
