@@ -134,6 +134,7 @@ return [
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
+                'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
             ],
             'middleware' => [],
             'method' => ['get', 'post'],
@@ -201,6 +202,7 @@ return [
                 'updatePassword' => \App\Http\GraphQL\Mutations\User\UpdatePasswordMutation::class,
                 'updateEmail' => \App\Http\GraphQL\Mutations\User\UpdateEmailMutation::class,
                 'removeMeMutation' => \App\Http\GraphQL\Mutations\User\RemoveMeMutation::class,
+                'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
 
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
                 'deleteCollection' => \App\Http\GraphQL\Mutations\Collection\DeleteCollectionMutation::class,
