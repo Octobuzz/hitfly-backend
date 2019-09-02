@@ -61,6 +61,7 @@ import { mapGetters } from 'vuex';
       },
       quantityListening() {
         return {
+          client: this.apolloClient,
           query: gql.query.CURRENTLY_LISTENING,
           update(data) {
             this.currentlyListening = data.GetListenedNowUser;
