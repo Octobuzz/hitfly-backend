@@ -110,6 +110,7 @@
     </UnauthenticatedPopoverWrapper>
 
     <TrackActionsPopover
+      v-if="isAuthenticated"
       :track-id="trackId"
       :show-remove-option="showRemoveButton"
       @press-favourite="pressFavourite"
