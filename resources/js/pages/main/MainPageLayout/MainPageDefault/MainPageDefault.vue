@@ -7,7 +7,7 @@
       <SpinnerLoader />
     </div>
 
-    <MainPageNews v-show="showLoader">
+    <!-- <MainPageNews v-show="showLoader">
 
     </MainPageNews>
 
@@ -25,7 +25,7 @@
 
     <SuperMelomaniac v-show="showLoader">
 
-    </SuperMelomaniac>
+    </SuperMelomaniac> -->
 
     <WeeklyTop v-show="showLoader">
 
@@ -65,7 +65,7 @@
         let loadingObjects = Object.keys(this.$store.getters['loading/mainPage']);
         let storageObj = this.$store.getters['loading/mainPage'];
         let initCount = loadingObjects.filter(object => storageObj[object].initialized);
-        return initCount.length >= 6;
+        return initCount.length >= 1;
       }
     }
   }

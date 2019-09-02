@@ -1,17 +1,20 @@
-#import "../fragments/track.graphql"
+#import "../fragments/queueTrack.graphql"
 
 query TopWeeklyQuery(
+    $isAuthenticated: Boolean!,
     $pageLimit: Int,
-    $pageNumber: Int
+    $pageNumber: Int,
 ) {
     TopWeeklyQuery(
         page: $pageNumber,
-        limit: $pageLimit
+        limit: $pageLimit,
     ) {
         total
         to
         data {
-            ...track
+            id
+            ...queueTrack
+            userFavourite @include(if: $isAuthenticated)
         }
     }
 }

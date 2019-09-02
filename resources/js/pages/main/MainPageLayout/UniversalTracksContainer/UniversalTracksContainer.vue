@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -34,12 +35,14 @@ export default {
       currentType: null,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 30
+        pageLimit: 30,
       }
     };
   },
 
   computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient']),
+
     trackIdList() {
       return this.trackList.map(track => track.id);
     },
@@ -160,7 +163,7 @@ export default {
     trackList() {
       let query = null;
       if(this.query === 'tracks') {
-        query = gql.query.TRACKS
+        query = gql.query.QUEUE_TRACKS
       } else if(this.query === 'TopWeeklyQuery') {
         query = gql.query.WEEKLY_TOP
       } else if(this.query === 'top50') {
@@ -168,7 +171,11 @@ export default {
       };
       return {
         query: query,
-        variables: this.queryVars,
+        client: this.apolloClient,
+        variables: {
+          ...this.queryVars,
+          isAuthenticated: this.isAuthenticated
+        },
         fetchPolicy: 'network-only',
 
         update(commonObject) {
