@@ -235,10 +235,10 @@ export default {
           totalRange = totalRange + (this.audio.played.end(i) - this.audio.played.start(i));
         }
         this.percentage =  Math.floor(totalRange / this.audio.duration * 100);
-        if((totalRange / this.audio.duration * 100) >= 30 && this.trackingTrigger == true){
+        if((totalRange / this.audio.duration * 100) >= 50 && this.trackingTrigger == true){
           this.trackingTrigger = false;
           switch(this.percentage){
-            case 30:
+            case 50:
               this.$apollo.provider.defaultClient.mutate({
                 variables: {
                   id: this.currentTrack.id,
@@ -251,7 +251,7 @@ export default {
                 }`
               })
               .then(response => {
-                
+
               })
               .catch(error => {
                 console.log('error');
