@@ -135,9 +135,9 @@ return [
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
                 'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
-                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
+                'resetPasswordMutation' => \App\Http\GraphQL\Mutations\User\ResetPasswordMutation::class,
             ],
-            'middleware' => ['guest', 'auth:json'],
+            'middleware' => ['guest'],
             'method' => ['get', 'post'],
         ],
         'auth' => [

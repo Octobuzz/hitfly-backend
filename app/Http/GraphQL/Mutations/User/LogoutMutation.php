@@ -17,7 +17,7 @@ class LogoutMutation extends Mutation
 
     public function type()
     {
-        return \GraphQL::type('User');
+        return Type::boolean();
     }
 
     public function resolve($root, $args)
@@ -25,6 +25,8 @@ class LogoutMutation extends Mutation
         $login = new LoginController();
 
         //return $login->logout(new Request($args));
-        return Auth::guard('json')->logout();
+        Auth::guard('json')->logout();
+
+        return true;
     }
 }
