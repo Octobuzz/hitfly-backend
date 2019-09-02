@@ -46,7 +46,7 @@ return [
         ],
         'json' => [
             'driver' => 'json',
-            'provider' => 'json',
+            'provider' => 'users',
         ],
     ],
 
