@@ -22,7 +22,11 @@
       v-if="!isLoading"
       class="stars-preview__footer"
     >
-      <span class="stars-preview__title" v-html="star.username"></span>
+      <router-link
+      :to="`/user/${starId}/user-reviews`"
+      class="stars-preview__title"
+      v-html="star.username"
+      ></router-link>
       <!-- <span class="stars-preview__footer-description" v-html="star.description"></span> -->
     </div>
   </div>

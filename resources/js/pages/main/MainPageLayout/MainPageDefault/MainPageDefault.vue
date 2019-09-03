@@ -71,7 +71,7 @@
         let loadingObjects = Object.keys(this.$store.getters['loading/mainPage']);
         let storageObj = this.$store.getters['loading/mainPage'];
         let initCount = loadingObjects.filter(object => storageObj[object].initialized);
-        return initCount.length >= 7;
+        return initCount.length >= 3;
       }
     }
   }

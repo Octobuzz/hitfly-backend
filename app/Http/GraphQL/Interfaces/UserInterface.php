@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
+use App\Http\GraphQL\Privacy\IsAuthPrivacy;
 
 class UserInterface extends InterfaceType
 {
@@ -134,6 +135,7 @@ class UserInterface extends InterfaceType
                 'resolve' => function (User $model) {
                     return $model->iWatch();
                 },
+                'privacy' => IsAuthPrivacy::class,
             ],
             'favouritesTrackCount' => [
                 'type' => Type::int(),

@@ -66,8 +66,8 @@
           hover="mobile-hover"
           @press="playTrack"
         >
-            <PauseIcon />
-          </IconButton>
+          <PauseIcon />
+        </IconButton>
 
         <TrackPopover
           :track-id="trackId"
@@ -170,32 +170,58 @@ export default {
     },
 
     playTrack(){
-      if(this.currentPlaying){
+      // if(this.currentPlaying){
+      //   this.$store.commit('player/togglePlaying');
+      // }else{
+      //   if(this.currentType.type === 'track' && this.currentType.id === this.trackId) {
+      //     this.$store.commit('player/pausePlaying');
+      //   }else{
+      //     console.log(this.$store.getters['player/isPlaying']);
+      //     this.$apollo.provider.clients[this.apolloClient].query({
+      //       query: gql.query.QUEUE_TRACK,
+      //       variables: {
+      //         id: this.trackId,
+      //         isAuthenticated: this.isAuthenticated
+      //       },
+      //     })
+      //     .then(response => {
+            // let data = {
+            //   'type': 'track',
+            //   'id': this.trackId
+            // };
+      //       this.$store.commit('player/changeCurrentType', data);
+      //       this.$store.commit('player/pickTrack', response.data.track);
+      //       this.$store.commit('player/pickPlaylist', this.trackList);
+      //       console.log(this.$store.getters['player/currentTrack']);
+      //     })
+      //     .catch(error => {
+      //       console.log(error);
+      //     })
+      //   }
+      // }
+      if(this.$store.getters['player/currentTrack'].id !== this.trackId){
         this.$store.commit('player/pausePlaying');
+        this.$apollo.provider.clients[this.apolloClient].query({
+          variables: {
+            isAuthenticated: this.isAuthenticated,
+            id: this.trackId
+          },
+          query: gql.query.QUEUE_TRACK
+        })
+        .then(response => {
+          let data = {
+            'type': 'track',
+            'id': this.trackId
+          };
+          this.$store.commit('player/changeCurrentType', data);
+          this.$store.commit('player/pickTrack', response.data.track);
+          this.$store.commit('player/pickPlaylist', this.trackList);
+        })
+        .catch(error => {
+          console.dir(error)
+        })
       }else{
-        if(this.currentType.type === 'track' && this.currentType.id === this.trackId) {
-          this.$store.commit('player/startPlaying');
-        }else{
-          this.$apollo.provider.defaultClient.query({
-            query: gql.query.TRACK,
-            variables: {
-              id: this.trackId
-            },
-          })
-          .then(response => {
-            let data = {
-              'type': 'track',
-              'id': this.trackId
-            };
-            this.$store.commit('player/pausePlaying');
-            this.$store.commit('player/changeCurrentType', data);
-            this.$store.commit('player/pickTrack', response.data.track);
-            this.$store.commit('player/pickPlaylist', this.trackList);
-          })
-          .catch(error => {
-            console.log(error);
-          })
-        }
+        this.$store.commit('player/togglePlaying');
       }
     }
   },
