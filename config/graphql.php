@@ -135,8 +135,19 @@ return [
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
                 'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'resetPasswordMutation' => \App\Http\GraphQL\Mutations\User\ResetPasswordMutation::class,
             ],
-            'middleware' => [],
+            'middleware' => ['guest'],
+            'method' => ['get', 'post'],
+        ],
+        'auth' => [
+            'mutation' => [
+//                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
+                //'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
+                'logoutMutation' => \App\Http\GraphQL\Mutations\User\LogoutMutation::class,
+            ],
+            'middleware' => ['api', 'guest'],
             'method' => ['get', 'post'],
         ],
         'user' => [
@@ -203,6 +214,7 @@ return [
                 'updateEmail' => \App\Http\GraphQL\Mutations\User\UpdateEmailMutation::class,
                 'removeMeMutation' => \App\Http\GraphQL\Mutations\User\RemoveMeMutation::class,
                 'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
 
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
                 'deleteCollection' => \App\Http\GraphQL\Mutations\Collection\DeleteCollectionMutation::class,

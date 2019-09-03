@@ -136,6 +136,13 @@ class JsonGuard implements Guard
 
     public function logout()
     {
-        $this->request->cookies->remove(self::HEADER_NAME_TOKEN);
+        $user = $this->user();
+        if (null !== $user) {
+            $this->request->cookies->remove(self::HEADER_NAME_TOKEN);
+
+            $user->access_token = null;
+            $user->save();
+            $this->request->session()->invalidate();
+        }
     }
 }
