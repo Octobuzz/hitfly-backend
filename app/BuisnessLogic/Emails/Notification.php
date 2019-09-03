@@ -59,12 +59,12 @@ class Notification
     public function birthdayCongratulation()
     {
         $this->listOfUsers = $this->getUsersBirthdayToday();
-        $this->listOfUsers = User::query()->where('id', 115)->get();
+        //$this->listOfUsers = User::query()->where('id', 115)->get();
         //$recommend = $this->recommendation;
         $discount = new PromoCode();
         foreach ($this->listOfUsers as $user) {
-            return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo());
-            //dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
+            //return new BirthdayCongratulation($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo());
+            dispatch(new BirthdayCongratulationsEmailJob($user, $discount->getYearSubscribeDiscount(), $discount->getYearSubscribePromoCode(), $this->getBirthdayVideo()))->onQueue('low');
         }
     }
 
@@ -110,7 +110,7 @@ class Notification
             $query->select('user_id')->from('admin_role_users')->whereIn('role_id', function ($query2) {
                 $query2->select('id')
                         ->from('admin_roles')
-                        ->whereIn('slug', ['critic', 'star', 'prof_critic']);
+                        ->whereIn('slug', ['critic', 'star'/*, 'prof_critic'*/]);
             }
                 )->whereNotIn('user_id', function ($query2) {
                     $query2->select('user_id')
@@ -150,9 +150,13 @@ class Notification
     private function getUsersLongAgoNotVisited()
     {
         $return = [];
-
-        $return['days7'] = User::query()->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->subDays(7)->endOfDay()])->get();
-        $return['days30'] = User::query()->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->subDays(30)->endOfDay()])->get();
+        $stars = User::query()->select('users.id')->leftJoin('admin_role_users', 'users.id', '=', 'admin_role_users.user_id')
+            ->leftJoin('admin_roles', 'admin_role_users.role_id', '=', 'admin_roles.id')
+            ->where('admin_roles.slug', '=', 'star');
+        $query = User::query()->whereNotIn('users.id', $stars);
+        $query2 = clone $query;
+        $return['days7'] = $query->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->get();
+        $return['days30'] = $query2->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->get();
 
         return $return;
     }
@@ -173,7 +177,12 @@ class Notification
 
     private function getMonthDispatchNotVisited()
     {
-        return User::query()->where('last_login', '<', Carbon::now()->subDays(30)->startOfDay())->get();
+        $stars = User::query()->select('users.id')->leftJoin('admin_role_users', 'users.id', '=', 'admin_role_users.user_id')
+            ->leftJoin('admin_roles', 'admin_role_users.role_id', '=', 'admin_roles.id')
+            ->where('admin_roles.slug', '=', 'star');
+        $query = User::query()->whereNotIn('users.id', $stars);
+
+        return $query->where('last_login', '<', Carbon::now()->subDays(30)->startOfDay())->get();
     }
 
     /**
@@ -211,12 +220,12 @@ class Notification
      * попадение в топ 20.
      * получает топ, и рассылает письма авторам треков.
      */
-    public function reachTop($topCount = 20)
+    public function reachTop($topCount = 50)
     {
         $tracks = $this->tracks->getTopTrack($topCount);
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
-            $topUrl = '/url';
+            $topUrl = env('APP_URL').'/top50';
             //return new ReachTopMail($track, $topUrl, $topCount);
             dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }
