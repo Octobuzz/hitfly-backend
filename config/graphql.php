@@ -303,6 +303,7 @@ return [
         'AlbumFilterInput' => \App\Http\GraphQL\InputObject\AlbumFilterInput::class,
         'CollectionFilterInput' => \App\Http\GraphQL\InputObject\CollectionFilterInput::class,
         'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
+        'SocialLinkFilterInput' => \App\Http\GraphQL\InputObject\Filter\SocialLinkFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
