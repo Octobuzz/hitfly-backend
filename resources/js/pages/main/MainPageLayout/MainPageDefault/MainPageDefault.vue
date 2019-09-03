@@ -7,9 +7,13 @@
       <SpinnerLoader />
     </div>
 
-    <!-- <MainPageNews v-show="showLoader">
+    <MainPageNews v-show="showLoader">
 
     </MainPageNews>
+
+    <MainPageStars v-show="showLoader">
+
+    </MainPageStars>
 
     <RecommendedTracks v-show="showLoader">
 
@@ -25,7 +29,7 @@
 
     <SuperMelomaniac v-show="showLoader">
 
-    </SuperMelomaniac> -->
+    </SuperMelomaniac>
 
     <WeeklyTop v-show="showLoader">
 
@@ -44,6 +48,7 @@
   import WeeklyTop from '../WeeklyTop/WeeklyTop.vue';
   import MainPageGenres from '../MainPageGenres/MainPageGenres.vue';
   import MainPageNews from '../MainPageNews/MainPageNews.vue';
+  import MainPageStars from '../MainPageStars/MainPageStars.vue';
   import MainColumnFooter from 'components/MainColumnFooter.vue';
 
   export default {
@@ -59,13 +64,14 @@
       MainPageGenres,
       MainColumnFooter,
       MainPageNews,
+      MainPageStars,
     },
     computed: {
       showLoader() {
         let loadingObjects = Object.keys(this.$store.getters['loading/mainPage']);
         let storageObj = this.$store.getters['loading/mainPage'];
         let initCount = loadingObjects.filter(object => storageObj[object].initialized);
-        return initCount.length >= 1;
+        return initCount.length >= 7;
       }
     }
   }

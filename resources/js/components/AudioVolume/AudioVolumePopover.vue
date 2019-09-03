@@ -45,7 +45,6 @@
   			let el = e.target.getBoundingClientRect();
         let targetEl = document.getElementsByClassName('volume__bar')[0];
   			let seekPos = -((e.clientY - el.bottom) / targetEl.offsetHeight);
-        console.log(seekPos);
         if(seekPos >= 1){
     			this.volume = 1;
         } else if(seekPos <= 0) {

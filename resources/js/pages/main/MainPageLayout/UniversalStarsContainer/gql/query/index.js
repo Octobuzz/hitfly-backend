@@ -1,1 +1,1 @@
-export { default as STARS } from 'gql/query/Stars.graphql';
+export { default as USERS } from 'gql/query/Users.graphql';

@@ -29,7 +29,6 @@
         if(this.newsItem === null){
           return true;
         } else {
-          console.log(this.newsItem);
           return false;
         }
       }

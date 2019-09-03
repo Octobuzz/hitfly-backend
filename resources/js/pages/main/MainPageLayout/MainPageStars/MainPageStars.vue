@@ -4,7 +4,7 @@
       <StarsScroller
         class="other-user-music__albums-container"
         :header-class="containerPaddingClass"
-        :stars-list="container.starsList"
+        :stars-id-list="container.starsIdList"
         :has-more-data="container.hasMoreData"
       >
         <template #title>

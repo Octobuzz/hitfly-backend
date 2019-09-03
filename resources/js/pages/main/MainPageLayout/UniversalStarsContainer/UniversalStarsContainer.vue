@@ -3,7 +3,7 @@
     <slot
       v-if="starsList.length > 0"
       name="default"
-      :stars-list="starsList"
+      :stars-id-list="starsIdList"
       :has-more-data="hasMoreData"
     />
     <p
@@ -37,7 +37,11 @@ export default {
       const loading = this.$store.getters['loading/mainPage'].stars;
 
       return loading.initialized && !loading.success;
-    }
+    },
+
+    starsIdList() {
+      return this.starsList.map(star => star.id);
+    },
   },
 
   mounted() {
@@ -147,12 +151,11 @@ export default {
   apollo: {
     starsList() {
       return {
-        query: gql.query.STARS,
+        query: gql.query.USERS,
         variables: this.queryVars,
         fetchPolicy: 'network-only',
 
         update(commonObject) {
-          console.log(commonObject);
           let to = Object.values(commonObject)[0].to;
           let total = Object.values(commonObject)[0].total;
           let data = Object.values(commonObject)[0].data;
@@ -167,7 +170,6 @@ export default {
           if (to >= total) {
             this.hasMoreData = false;
           }
-
           return data;
         },
 

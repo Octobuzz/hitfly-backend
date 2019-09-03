@@ -1,16 +1,16 @@
 @import '~scss/_variables.scss';
 
-$news-height-desktop: 136px;
-$news-height-mobile: 100px;
+$stars-height-desktop: 250px;
+$stars-height-mobile: 200px;
 
-$news-cover-desktop: 136px;
-$news-cover-mobile: 100px;
+$stars-cover-desktop: 142px;
+$stars-cover-mobile: 100px;
 
-$news-left-padding-desktop: 24px;
-$news-left-padding-mobile: 16px;
+$stars-left-padding-desktop: 24px;
+$stars-left-padding-mobile: 16px;
 
-.news-scroll-horizontal {
-  height: $news-height-desktop;
+.stars-scroll-horizontal {
+  height: calc($stars-height-desktop + 50px);
   overflow-y: hidden;
 
   &__header {
@@ -51,29 +51,29 @@ $news-left-padding-mobile: 16px;
     display: flex;
     align-items: center;
     width: 224px;
-    height: $news-cover-desktop;
+    height: $stars-cover-desktop;
   }
 
-  &__news-preview {
+  &__stars-preview {
     box-sizing: content-box;
-    padding-left: $news-left-padding-desktop;
+    padding-left: $stars-left-padding-desktop;
   }
 
   &::v-deep .vue-recycle-scroller__item-wrapper {
-    height: $news-height-desktop;
+    height: $stars-height-desktop;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .news-scroll-horizontal {
-    height: $news-height-mobile;
+  .stars-scroll-horizontal {
+    height: $stars-height-mobile;
 
-    &__news-preview {
-      padding-left: $news-left-padding-mobile;
+    &__stars-preview {
+      padding-left: $stars-left-padding-mobile;
     }
 
     &::v-deep .vue-recycle-scroller__item-wrapper {
-      height: $news-height-mobile;
+      height: $stars-height-mobile;
     }
 
     &__header {
@@ -91,7 +91,7 @@ $news-left-padding-mobile: 16px;
     }
 
     &__loader {
-      height: $news-cover-mobile;
+      height: $stars-cover-mobile;
     }
   }
 }

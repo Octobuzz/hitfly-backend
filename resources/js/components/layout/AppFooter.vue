@@ -288,7 +288,6 @@ export default {
 		},
     currentTrackId: function(){
       this.trackingTrigger = true;
-      console.log(this.trackingTrigger);
     }
   },
   computed: {

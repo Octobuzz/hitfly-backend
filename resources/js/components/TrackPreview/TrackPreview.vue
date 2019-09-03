@@ -21,6 +21,7 @@
 
       <div class="album-preview__button-section">
         <AddToFavouriteButton
+          v-if="isAuthenticated"
           ref="addToFavouriteButton"
           class="album-preview__icon-button"
           passive="mobile-passive"
@@ -28,6 +29,30 @@
           item-type="track"
           :item-id="track.id"
         />
+
+        <UnauthenticatedPopoverWrapper placement="right">
+          <template #auth-content>
+            <AddToFavouriteButton
+              ref="addToFavouriteButton"
+              class="album-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="track"
+              :item-id="track.id"
+            />
+          </template>
+
+          <template #unauth-popover-trigger>
+            <AddToFavouriteButton
+              class="album-preview__icon-button"
+              passive="mobile-passive"
+              hover="mobile-hover"
+              item-type="track"
+              :item-id="track.id"
+              :fake="true"
+            />
+          </template>
+        </UnauthenticatedPopoverWrapper>
 
         <IconButton
           v-if="!currentPlaying"
@@ -72,11 +97,11 @@
       v-if="!isLoading"
       class="album-preview__footer"
     >
-      <router-link to="/">
+      <span>
         <span class="album-preview__title">
           {{ track.trackName }}
         </span>
-      </router-link>
+      </span>
       <span class="album-preview__author">
         {{ track.singer }}
       </span>
@@ -85,10 +110,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TrackPopover from 'components/TrackPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import PauseIcon from 'components/icons/PauseIcon.vue';
 import gql from './gql';
@@ -102,7 +129,8 @@ export default {
     IconButton,
     DotsIcon,
     PlayIcon,
-    PauseIcon
+    PauseIcon,
+    UnauthenticatedPopoverWrapper
   },
 
   props: {
@@ -124,14 +152,16 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient']),
+
     trackCoverUrl() {
       if (this.windowWidth <= MOBILE_WIDTH) {
         return this.track.cover
-          .filter(cover => cover.size === 'size_104x104')[0].url;
+          .filter(cover => cover.size === 'size_48x48')[0].url;
       }
 
       return this.track.cover
-        .filter(cover => cover.size === 'size_120x120')[0].url;
+        .filter(cover => cover.size === 'size_150x150')[0].url;
     },
 
     currentPlaying() {
@@ -182,12 +212,13 @@ export default {
   apollo: {
     track() {
       return {
-        query: gql.query.TRACK,
+        query: gql.query.QUEUE_TRACK,
         variables() {
           // use function to allow rendering another album when the prop changes
 
           return {
-            id: this.trackId
+            id: this.trackId,
+            isAuthenticated: this.isAuthenticated
           };
         },
         update: ({ track }) => {
