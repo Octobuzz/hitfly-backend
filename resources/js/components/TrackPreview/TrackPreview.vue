@@ -20,15 +20,6 @@
       >
 
       <div class="album-preview__button-section">
-        <AddToFavouriteButton
-          v-if="isAuthenticated"
-          ref="addToFavouriteButton"
-          class="album-preview__icon-button"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          item-type="track"
-          :item-id="track.id"
-        />
 
         <UnauthenticatedPopoverWrapper placement="right">
           <template #auth-content>

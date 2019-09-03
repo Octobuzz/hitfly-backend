@@ -229,7 +229,6 @@ export default {
           };
         },
         update({ track }) {
-          console.log(track);
           return track;
         },
         error(err) {
