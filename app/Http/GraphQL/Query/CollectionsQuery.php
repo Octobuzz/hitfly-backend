@@ -41,9 +41,9 @@ class CollectionsQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $user = Auth::user();
-        if (null === $user) {
-            return null;
-        }
+        // if (null === $user) {
+        //     return null;
+        // }
         $query = Collection::with($fields->getRelations())
             ->orderBy('created_at', 'DESC');
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {

@@ -157,7 +157,6 @@
             this.validation.trackName.message = errors['infoTrack.trackName'][0];
             this.validation.trackName.error = true;
           };
-          console.log(this.validation);
         })
       },
       uploadTrack(track){
@@ -176,7 +175,6 @@
           this.loading = false;
           this.filename = response.data.uploadTrack.filename;
           this.trackID = response.data.uploadTrack.id;
-          console.log(this.trackID);
         }).catch((error) => {
           console.dir(error);
           this.loading = false;

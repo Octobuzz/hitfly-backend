@@ -206,7 +206,9 @@ export default {
     collectionList() {
       return {
         query: gql.query.COLLECTIONS,
-        variables: this.queryVars,
+        variables: {
+          ...this.queryVars
+        },
         fetchPolicy: 'network-only',
 
         update({ collections: { total, to, data } }) {

@@ -1,33 +1,30 @@
 <template>
-  <div class="news-preview">
+  <div class="stars-preview">
     <div
       v-if="isLoading"
-      class="news-preview__loader"
+      class="stars-preview__loader"
     >
-      loading news...
+      loading expert...
     </div>
     <div
       v-if="!isLoading"
-      class="news-preview__content"
+      class="stars-preview__content"
     >
       <img
-        :key="starsObj.id"
-        :src="starsObj.avatar[2].url"
-        alt="news cover"
-        class="news-preview__cover"
+        :key="star.id"
+        :src="star.avatar[1].url"
+        alt="stars cover"
+        class="stars-preview__cover"
       >
     </div>
 
     <div
       v-if="!isLoading"
-      class="news-preview__footer"
+      class="stars-preview__footer"
     >
-      <span class="news-preview__title" v-html="starsObj.username">
-      </span>
+      <span class="stars-preview__title" v-html="star.username"></span>
+      <!-- <span class="stars-preview__footer-description" v-html="star.description"></span> -->
     </div>
-    <router-link class="news-preview__link" :to="`stars/${starsObj.id}`">
-      Подробнее
-    </router-link>
   </div>
 </template>
 
@@ -37,23 +34,37 @@ import gql from './gql';
 const MOBILE_WIDTH = 767;
 
 export default {
-  components: {
-
-  },
 
   props: {
-    star: {
+    starId: {
       type: Number,
       required: true
     }
   },
 
-  data() {
-    isLoading: false
-  },
+  data: () => ({
+    isLoading: true
+  }),
 
-  mounted(){
-    console.log(this.star);
+  apollo: {
+    star() {
+      return {
+        query: gql.query.USER,
+        variables() {
+          return {
+            id: this.starId
+          };
+        },
+        update: ({ user }) => {
+          this.isLoading = false;
+
+          return user;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      };
+    }
   }
 };
 </script>

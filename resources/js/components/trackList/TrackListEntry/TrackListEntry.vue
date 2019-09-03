@@ -62,7 +62,7 @@
       @click.native="goToTrackSinger"
     />
     <WordTrimmedWithTooltip
-      v-show="showAlbumSection"
+      v-if="showAlbumSection && !columnLayout"
       class="track-list-entry__album-title"
       :word="track.album && track.album.title"
     />
@@ -103,6 +103,7 @@
 
       <template #unauth-popover-trigger>
         <IconButton
+          v-if="desktop && showAddToPlaylist"
           passive="secondary-passive"
           hover="secondary-hover"
           :tooltip="tooltip.add"
@@ -113,7 +114,6 @@
     </UnauthenticatedPopoverWrapper>
 
     <TrackActionsPopover
-      v-if="isAuthenticated"
       :track-id="trackId"
       :show-remove-option="showRemoveButton"
       @press-favourite="pressFavourite"

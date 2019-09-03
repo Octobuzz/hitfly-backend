@@ -1,0 +1,12 @@
+#import "../fragments/user.graphql"
+
+query Users($pageLimit: Int!, $pageNumber: Int!) {
+    users(limit: $pageLimit, page: $pageNumber, role: star) {
+        total
+        from
+        to
+        data{
+          ...user
+        }
+    }
+}

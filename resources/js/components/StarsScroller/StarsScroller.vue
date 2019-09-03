@@ -1,13 +1,13 @@
 <template>
   <div
     :class="[
-      'news-scroll-horizontal',
+      'stars-scroll-horizontal',
       $attrs.class
     ]"
   >
     <div
       :class="[
-        'news-scroll-horizontal__header',
+        'stars-scroll-horizontal__header',
         headerClass
       ]"
     >
@@ -16,9 +16,9 @@
       <button
         v-if="!cantGoBack || !cantGoForward"
         :class="[
-          'news-scroll-horizontal__button-prev',
+          'stars-scroll-horizontal__button-prev',
           {
-            'news-scroll-horizontal__button-prev_disabled': cantGoBack
+            'stars-scroll-horizontal__button-prev_disabled': cantGoBack
           }
         ]"
         @click="goBack"
@@ -29,9 +29,9 @@
       <button
         v-if="!cantGoBack || !cantGoForward"
         :class="[
-          'news-scroll-horizontal__button-next',
+          'stars-scroll-horizontal__button-next',
           {
-            'news-scroll-horizontal__button-next_disabled': cantGoForward
+            'stars-scroll-horizontal__button-next_disabled': cantGoForward
           }
         ]"
         @click="goForward"
@@ -42,23 +42,23 @@
 
     <recycle-scroller
       ref="scroller"
-      class="news-scroll-horizontal__scroller"
+      class="stars-scroll-horizontal__scroller"
       direction="horizontal"
-      :items="starsList"
+      :items="starsIdList"
       :buffer="3 * (starsWidth + spaceBetween)"
       :item-size="starsWidth + spaceBetween"
     >
       <template #default="{ item: id }">
         <StarsPreview
-          class="news-scroll-horizontal__news-preview"
-          :star="id"
+          class="stars-scroll-horizontal__stars-preview"
+          :starId="id"
         />
       </template>
 
       <template #after>
         <span
           v-if="hasMoreData && starsListLength > 0"
-          class="news-scroll-horizontal__loader"
+          class="stars-scroll-horizontal__loader"
         >
           <BaseLoader :active="hasMoreData" />
         </span>
@@ -77,8 +77,8 @@ import BaseLoader from 'components/BaseLoader.vue';
 import StarsPreview from 'components/StarsPreview';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 
-const STARS_WIDTH_DESKTOP = 136;
-const STARS_WIDTH_MOBILE = 100;
+const STARS_WIDTH_DESKTOP = 200;
+const STARS_WIDTH_MOBILE = 150;
 
 const STARS_SPACE_BETWEEN_DESKTOP = 24;
 const STARS_SPACE_BETWEEN_MOBILE = 16;
@@ -94,7 +94,7 @@ export default {
   },
 
   props: {
-    starsList: {
+    starsIdList: {
       type: Array,
       required: true
     },
@@ -136,7 +136,7 @@ export default {
     },
 
     starsListLength() {
-      return this.starsList.length;
+      return this.starsIdList.length;
     }
   },
 
@@ -233,7 +233,7 @@ export default {
         currentOffset + spaceBetween
       ) / spacedStarsWidth;
 
-      const wholeStarsOffsetBLE = spacedStarsWidth * Math.floor(StarsTimesIncludedBLE);
+      const wholeStarsOffsetBLE = spacedStarsWidth * Math.floor(starsTimesIncludedBLE);
 
       let edgeCase = true;
 
@@ -273,7 +273,7 @@ export default {
         if (this.scroller.clientWidth === 0) return;
 
         const {
-          starsList: { length: starsCount },
+          starsIdList: { length: starsCount },
           starsWidth,
           spaceBetween,
           scroller,
