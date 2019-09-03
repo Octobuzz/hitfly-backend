@@ -49,7 +49,7 @@ class CollectionType extends GraphQLType
                 'description' => 'Треки',
             ],
             'userFavourite' => [
-                'type' => Type::nonNull(Type::boolean()),
+                'type' => Type::boolean(),
                 'description' => 'флаг избранного коллекции',
                 'resolve' => function ($model) {
                     if ($model->userFavourite->count()) {
@@ -76,6 +76,7 @@ class CollectionType extends GraphQLType
                     return $model->favourites->count();
                 },
                 'selectable' => false,
+                'privacy' => IsAuthPrivacy::class,
             ],
             'isSet' => [
                 'type' => Type::boolean(),

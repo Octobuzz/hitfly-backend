@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -33,6 +34,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient']),
+
     initialFetchError() {
       const loading = this.$store.getters['loading/mainPage'].stars;
 
@@ -117,7 +120,7 @@ export default {
       const store = this.$apollo.provider.defaultClient;
 
       const { stars } = store.readQuery({
-        query: gql.query.STARS,
+        query: gql.query.USERS,
 
         // cause updateQuery does not update variables in cache entry
         // we always refer to the first page
@@ -138,7 +141,7 @@ export default {
       };
 
       store.writeQuery({
-        query: gql.query.STARS,
+        query: gql.query.USERS,
         variables: {
           ...this.queryVars,
           pageNumber: 1
@@ -151,6 +154,7 @@ export default {
   apollo: {
     starsList() {
       return {
+        client: this.apolloClient,
         query: gql.query.USERS,
         variables: this.queryVars,
         fetchPolicy: 'network-only',

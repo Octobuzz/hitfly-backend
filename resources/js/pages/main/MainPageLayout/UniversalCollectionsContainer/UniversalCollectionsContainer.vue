@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -94,7 +95,9 @@ export default {
       const loading = this.$store.getters['loading/mainPage'].superMelomaniac;
 
       return loading.initialized && !loading.success;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   mounted() {
@@ -168,7 +171,7 @@ export default {
     },
 
     removeCollectionFromStore(id) {
-      const store = this.$apollo.provider.defaultClient;
+      const store = this.$apollo.provider.clients[this.apolloClient];
 
       const { collections } = store.readQuery({
         query: gql.query.COLLECTIONS,
@@ -192,6 +195,7 @@ export default {
       };
 
       store.writeQuery({
+        client: this.apolloClient,
         query: gql.query.COLLECTIONS,
         variables: {
           ...this.queryVars,
@@ -205,6 +209,7 @@ export default {
   apollo: {
     collectionList() {
       return {
+        client: this.apolloClient,
         query: gql.query.COLLECTIONS,
         variables: {
           ...this.queryVars

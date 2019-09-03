@@ -178,8 +178,10 @@ export default {
         this.$store.commit('player/pausePlaying');
       } else {
         if (this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
+          console.log('exact track');
           this.$store.commit('player/startPlaying');
         } else {
+          console.log('another track');
           this.$apollo.provider.clients[this.apolloClient].query({
             query: gql.query.QUEUE_TRACKS,
             variables: {
@@ -191,22 +193,21 @@ export default {
               }
             },
           })
-            .then(response => {
-              let data = {
-                'type': 'collection',
-                'id': this.collectionId
-              };
-              this.$store.commit('player/pausePlaying');
-              this.$store.commit('player/changeCurrentType', data);
-              this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-              let arrayTr = response.data.tracks.data.map(data => {
-                return data.id;
-              });
-              this.$store.commit('player/pickPlaylist', arrayTr);
-            })
-            .catch(error => {
-              console.log(error);
-            })
+          .then(response => {
+            let data = {
+              'type': 'collection',
+              'id': this.collectionId
+            };
+            this.$store.commit('player/changeCurrentType', data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
         }
       }
     }

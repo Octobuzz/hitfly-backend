@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -43,7 +44,9 @@ export default {
       const loading = this.$store.getters['loading/mainPage'].news;
 
       return loading.initialized && !loading.success;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   mounted() {
@@ -153,6 +156,7 @@ export default {
   apollo: {
     newsList() {
       return {
+        client: this.apolloClient,
         query: gql.query.NEWS,
         variables: this.queryVars,
         fetchPolicy: 'network-only',
