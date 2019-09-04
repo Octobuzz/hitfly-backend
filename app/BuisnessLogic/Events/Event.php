@@ -23,18 +23,18 @@ class Event implements EventsContract
     {
         // TODO: Implement getUpcomingEvents() method.
         return [
-            [
-                'name' => 'Название',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/event/url',
-                'participant' => 'The Beatles',
-            ],
-            [
-                'name' => 'Название',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/event/url',
-                'participant' => 'The Beatles',
-            ],
+//            [
+//                'name' => 'Название',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/event/url',
+//                'participant' => 'The Beatles',
+//            ],
+//            [
+//                'name' => 'Название',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/event/url',
+//                'participant' => 'The Beatles',
+//            ],
         ];
     }
 
@@ -49,21 +49,21 @@ class Event implements EventsContract
     {
         // TODO: Implement getThisMonthEvents() method.
         return [
-            [
-                'name' => 'Название',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/fake_url',
-            ],
-            [
-                'name' => 'Название2',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/fake_url',
-            ],
-            [
-                'name' => 'Название3',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/fake_url',
-            ],
+//            [
+//                'name' => 'Название',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/fake_url',
+//            ],
+//            [
+//                'name' => 'Название2',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/fake_url',
+//            ],
+//            [
+//                'name' => 'Название3',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/fake_url',
+//            ],
         ];
     }
 
@@ -79,14 +79,14 @@ class Event implements EventsContract
         // TODO: Implement getUpcomingEventsForUser() method.
 
         return [
-            [
-                'name' => 'Название',
-                'date' => Date::parse('2019-01-03')->format('d F'),
-            ],
-            [
-                'name' => 'Название2',
-                'date' => Date::parse('2019-01-05')->format('d F'),
-            ],
+//            [
+//                'name' => 'Название',
+//                'date' => Date::parse('2019-01-03')->format('d F'),
+//            ],
+//            [
+//                'name' => 'Название2',
+//                'date' => Date::parse('2019-01-05')->format('d F'),
+//            ],
         ];
     }
 
@@ -109,21 +109,21 @@ class Event implements EventsContract
     {
         // TODO: реальные мероприятия
         return [
-            [
-                'name' => 'Название',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/fake_url',
-            ],
-            [
-                'name' => 'Название2',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/fake_url',
-            ],
-            [
-                'name' => 'Название3',
-                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
-                'url' => '/fake_url',
-            ],
+//            [
+//                'name' => 'Название',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/fake_url',
+//            ],
+//            [
+//                'name' => 'Название2',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/fake_url',
+//            ],
+//            [
+//                'name' => 'Название3',
+//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'url' => '/fake_url',
+//            ],
         ];
     }
 
@@ -138,11 +138,11 @@ class Event implements EventsContract
     {
         // TODO: Реальные важные новости
         return [
-            [
-                'name' => 'Битва музыкантов',
-                'img' => env('APP_URL').'/images/emails/img/music-battle.png',
-                'url' => '/fake_url',
-            ],
+//            [
+//                'name' => 'Битва музыкантов',
+//                'img' => env('APP_URL').'/images/emails/img/music-battle.png',
+//                'url' => '/fake_url',
+//            ],
         ];
     }
 }
