@@ -45,7 +45,9 @@ class Collection extends Model
 
     public function userFavourite()
     {
-        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
+        $user = \Auth::user();
+
+        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', null === $user ? null : $user->id);
     }
 
     public function favourites()
