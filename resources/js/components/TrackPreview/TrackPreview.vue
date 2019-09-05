@@ -93,9 +93,9 @@
           {{ track.trackName }}
         </span>
       </span>
-      <span class="album-preview__author">
+      <router-link :to="`/user/${track.user.id}/music`" class="album-preview__author">
         {{ track.singer }}
-      </span>
+      </router-link>
     </div>
   </div>
 </template>
@@ -143,7 +143,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isAuthenticated', 'apolloClient']),
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      apolloClient: 'apolloClient',
+    }),
 
     trackCoverUrl() {
       if (this.windowWidth <= MOBILE_WIDTH) {
@@ -165,57 +168,32 @@ export default {
   },
 
   methods: {
+    goToTrackSinger() {
+      this.$router.push(this.singerLink);
+    },
+
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
 
-    playTrack(){
-      // if(this.currentPlaying){
-      //   this.$store.commit('player/togglePlaying');
-      // }else{
-      //   if(this.currentType.type === 'track' && this.currentType.id === this.trackId) {
-      //     this.$store.commit('player/pausePlaying');
-      //   }else{
-      //     console.log(this.$store.getters['player/isPlaying']);
-      //     this.$apollo.provider.clients[this.apolloClient].query({
-      //       query: gql.query.QUEUE_TRACK,
-      //       variables: {
-      //         id: this.trackId,
-      //         isAuthenticated: this.isAuthenticated
-      //       },
-      //     })
-      //     .then(response => {
-            // let data = {
-            //   'type': 'track',
-            //   'id': this.trackId
-            // };
-      //       this.$store.commit('player/changeCurrentType', data);
-      //       this.$store.commit('player/pickTrack', response.data.track);
-      //       this.$store.commit('player/pickPlaylist', this.trackList);
-      //       console.log(this.$store.getters['player/currentTrack']);
-      //     })
-      //     .catch(error => {
-      //       console.log(error);
-      //     })
-      //   }
-      // }
-      if(this.$store.getters['player/currentTrack'].id !== this.trackId){
+    playTrack() {
+      if(this.$store.getters['player/currentTrack'].id !== this.track.id){
         this.$store.commit('player/pausePlaying');
         this.$apollo.provider.clients[this.apolloClient].query({
           variables: {
             isAuthenticated: this.isAuthenticated,
-            id: this.trackId
+            id: this.track.id
           },
           query: gql.query.QUEUE_TRACK
         })
         .then(response => {
           let data = {
             'type': 'track',
-            'id': this.trackId
+            'id': this.track.id
           };
           this.$store.commit('player/changeCurrentType', data);
           this.$store.commit('player/pickTrack', response.data.track);
-          this.$store.commit('player/pickPlaylist', this.trackList);
+          this.$store.commit('player/pickPlaylist', this.trackList.map(track => track.id));
         })
         .catch(error => {
           console.dir(error)
@@ -229,14 +207,11 @@ export default {
   apollo: {
     track() {
       return {
-        query: gql.query.QUEUE_TRACK,
-        variables() {
-          // use function to allow rendering another album when the prop changes
-
-          return {
-            id: this.trackId,
-            isAuthenticated: this.isAuthenticated
-          };
+        client: this.apolloClient,
+        query: gql.query.TRACK,
+        variables: {
+          isAuthenticated: this.isAuthenticated,
+          id: this.trackId,
         },
         update: ({ track }) => {
           this.isLoading = false;

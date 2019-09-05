@@ -145,7 +145,7 @@ export default {
   },
   methods: {
     onRegisterClick() {
-      window.location.href = '/login';
+      window.location.href = '/register';
     }
   }
 };

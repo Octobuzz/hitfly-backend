@@ -5,7 +5,7 @@
       <p>Рейтинг лучших музыкантов</p>
       <router-link to="top50" class="asideBlock__button">Все</router-link>
     </div>
-    <div class="asideBlock__body">
+    <div class="asideBlock__body" style="max-height: 168px;">
       <div
         v-show="isLoading && !dataInitialized"
         class="profile__user-card-loader_first"
@@ -58,7 +58,6 @@ import gql from './gql';
           update(data) {
             this.tracks = data.GetTopFifty.data;
             this.isLoading = false;
-            this.visibleTracks = this.tracks.slice(0, 1);
           }
         }
       }

@@ -27,7 +27,8 @@ const state = {
     newTracks: '',
     superMelomaniac: '',
     weeklyTop: '',
-    stars: ''
+    stars: '',
+    sidebarStars: ''
   },
   favourite: {
     tracks: '',
