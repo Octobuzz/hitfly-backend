@@ -178,10 +178,8 @@ export default {
         this.$store.commit('player/pausePlaying');
       } else {
         if (this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
-          console.log('exact track');
           this.$store.commit('player/startPlaying');
         } else {
-          console.log('another track');
           this.$apollo.provider.clients[this.apolloClient].query({
             query: gql.query.QUEUE_TRACKS,
             variables: {

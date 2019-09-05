@@ -10,6 +10,10 @@
 
       </TopFifty>
 
+      <SidebarStars>
+
+      </SidebarStars>
+
     </template>
 
     <template #right-column="{ itemContainerClass }">
@@ -21,6 +25,7 @@
 <script>
 import TopFifty from './TopFifty';
 import ListenedNow from './ListenedNow';
+import SidebarStars from './SidebarStars';
 import AppColumns from 'components/layout/AppColumns.vue';
 
 export default {
@@ -28,6 +33,7 @@ export default {
     AppColumns,
     TopFifty,
     ListenedNow,
+    SidebarStars
   },
   data: () => ({
 
