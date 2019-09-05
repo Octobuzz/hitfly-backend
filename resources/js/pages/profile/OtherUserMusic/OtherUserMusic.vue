@@ -265,9 +265,6 @@ export default {
     },
 
     playAlbum(){
-      // prevent attempt to listen nonexistent track
-      if (!this.shownTrack) return;
-
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
