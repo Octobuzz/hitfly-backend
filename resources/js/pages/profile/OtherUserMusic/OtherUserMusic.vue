@@ -137,6 +137,7 @@ import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
 import TrackReviewHeader from 'components/trackReviewsInterface/TrackReviewHeader';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
+import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import UniversalAlbumsContainer from '../UniversalAlbumsContainer';
 import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
 import gql from './gql';
@@ -148,6 +149,7 @@ export default {
     CollectionScrollHorizontal,
     TrackReviewHeader,
     CirclePlayIcon,
+    CirclePauseIcon,
     UniversalAlbumsContainer,
     UniversalCollectionsContainer
   },
