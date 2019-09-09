@@ -280,13 +280,24 @@ class BonusProgramEventSubscriber
             if (null === $bonusType) {
                 return;
             }
+            $user->save();
+            $purse = $user->purseBonus;
+            if (null === $purse) {
+                $purse = new Purse();
+                $purse->balance = 0;
+                $purse->name = Purse::NAME_BONUS;
+                $purse->user_id = $user->id;
+                $user->purse()->save($purse);
+                $purse->save();
+            }
+
             $operation = new Operation([
                 'direction' => Operation::DIRECTION_INCREASE,
                 'amount' => $bonusType->bonus,
                 'description' => $bonusType->name,
                 'type_id' => $bonusType->id,
             ]);
-            $user->purseBonus->processOperation($operation);
+            $purse->processOperation($operation);
             event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
         }
     }
