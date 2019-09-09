@@ -168,10 +168,6 @@ export default {
   },
 
   methods: {
-    dblclickEvent() {
-      console.log('triggered');
-    },
-
     goToTrackSinger() {
       this.$router.push(this.singerLink);
     },
