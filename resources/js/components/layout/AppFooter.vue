@@ -169,7 +169,7 @@ export default {
 		},
     startPause(){
       if(!this.emptyTrack){
-        if(this.playing === true){
+        if(this.playing === true && this.audio.currentTime > 0){
           this.audio.pause();
           this.$store.commit('player/pausePlaying');
         }else{
