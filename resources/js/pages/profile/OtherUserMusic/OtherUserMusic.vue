@@ -170,8 +170,7 @@ export default {
 
   computed: {
     currentPlaying() {
-      console.log(this.currentType.type + ' ' + this.currentType.id + ' ' + this.albumId);
-      return this.currentType.type === 'album' && this.currentType.id === this.albumId && this.$store.getters['player/isPlaying'];
+      return this.currentType.type === 'album' && this.currentType.id === this.newAlbum.id && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {
