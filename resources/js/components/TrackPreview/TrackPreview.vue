@@ -178,32 +178,28 @@ export default {
 
     playTrack() {
       if(this.$store.getters['player/currentTrack'].id !== this.track.id){
-        setTimeout(() => {
-          this.$store.commit('player/pausePlaying');
-          this.$apollo.provider.clients[this.apolloClient].query({
-            variables: {
-              isAuthenticated: this.isAuthenticated,
-              id: this.track.id
-            },
-            query: gql.query.QUEUE_TRACK
-          })
-          .then(response => {
-            let data = {
-              'type': 'track',
-              'id': this.track.id
-            };
-            this.$store.commit('player/changeCurrentType', data);
-            this.$store.commit('player/pickTrack', response.data.track);
-            this.$store.commit('player/pickPlaylist', this.trackList.map(track => track.id));
-          })
-          .catch(error => {
-            console.dir(error)
-          })
-        }, 150);
+        this.$store.commit('player/pausePlaying');
+        this.$apollo.provider.clients[this.apolloClient].query({
+          variables: {
+            isAuthenticated: this.isAuthenticated,
+            id: this.track.id
+          },
+          query: gql.query.QUEUE_TRACK
+        })
+        .then(response => {
+          let data = {
+            'type': 'track',
+            'id': this.track.id
+          };
+          this.$store.commit('player/changeCurrentType', data);
+          this.$store.commit('player/pickTrack', response.data.track);
+          this.$store.commit('player/pickPlaylist', this.trackList.map(track => track.id));
+        })
+        .catch(error => {
+          console.dir(error)
+        })
       }else{
-        setTimeout(() => {
-          this.$store.commit('player/togglePlaying');
-        }, 150)
+        this.$store.commit('player/togglePlaying');
       }
     }
   },
