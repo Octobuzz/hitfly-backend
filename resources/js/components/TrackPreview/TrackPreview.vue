@@ -53,6 +53,7 @@
           ]"
           passive="mobile-passive"
           hover="mobile-hover"
+          @dblclick.prevent
           @press="playTrack"
         >
           <PlayIcon />
