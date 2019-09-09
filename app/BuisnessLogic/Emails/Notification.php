@@ -91,10 +91,10 @@ class Notification
 
     public function fewComments($period = 'month')
     {
-        if($period === 'month'){
+        if ('month' === $period) {
             $startPeriod = Carbon::now()->startOfMonth();
             $commentCount = 1;
-        }else{
+        } else {
             $startPeriod = Carbon::now()->startOfWeek();
             $commentCount = env('FEW_FEEDBACK_PERIOD');
         }
@@ -103,9 +103,9 @@ class Notification
         $tracks = new Tracks();
         foreach ($users as $user) {
             //return new FewComments($user, $tracks->getNewTracks(4));
-            if($period === 'month'){
+            if ('month' === $period) {
                 dispatch(new FewCommentsMonthJob($user, $tracks->getNewTracks(4)))->onQueue('low');
-            }else {
+            } else {
                 dispatch(new FewCommentsJob($user, $tracks->getNewTracks(4)))->onQueue('low');
             }
         }
@@ -118,13 +118,13 @@ class Notification
      */
     private function getUsersWithFewComments($startPeriod, $commentCount)
     {
-        $users = User::query()->whereIn('id', function ($query) use($startPeriod, $commentCount) {
-            $query->select('user_id')->from('admin_role_users')->whereIn('role_id', function ($query2) use($startPeriod, $commentCount) {
+        $users = User::query()->whereIn('id', function ($query) use ($startPeriod, $commentCount) {
+            $query->select('user_id')->from('admin_role_users')->whereIn('role_id', function ($query2) use ($startPeriod, $commentCount) {
                 $query2->select('id')
                         ->from('admin_roles')
                         ->whereIn('slug', ['critic', 'star'/*, 'prof_critic'*/]);
             }
-                )->whereNotIn('user_id', function ($query2) use($startPeriod, $commentCount)  {
+                )->whereNotIn('user_id', function ($query2) use ($startPeriod, $commentCount) {
                     $query2->select('user_id')
                     ->from('comments')
                     ->whereBetween('created_at', [$startPeriod, Carbon::now()->endOfDay()])

@@ -13,13 +13,16 @@ use App\Models\City;
 use App\Models\Genre;
 use App\User;
 use Carbon\Carbon;
+use Doctrine\DBAL\Driver\PDOException;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends \Encore\Admin\Controllers\UserController
 {
@@ -68,14 +71,18 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
     public function create(Content $content)
     {
-        return $content
+        $form = $this->form();
+        $form->setAction('add-user');
+        $content
             ->header(trans('admin.administrator'))
             ->description(trans('admin.create'))
-            ->body($this->form())
+            ->body($form)
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
+
+        return $content;
     }
 
     public function users(Request $request)
@@ -237,25 +244,25 @@ class UserController extends \Encore\Admin\Controllers\UserController
             /** @var User $savingUser */
             $savingUser = $form->model();
 
-            if (null !== $savingUser->id) {
-                $savingUser->roles()->sync(array_filter($form->roles));
-                if (
+//            if (null !== $savingUser->id) {
+            $savingUser->roles()->sync(array_filter($form->roles));
+            if (
                     (
                         true === $savingUser->isRole('star')
                         || $savingUser->isRole('performer')
                     )
                 ) {
-                    $profile = $form->artist_profile;
-                    if (null == $profile) {
-                        $ap = new ArtistProfile([
+                $profile = $form->artist_profile;
+                if (null == $profile) {
+                    $ap = new ArtistProfile([
                             'user_id' => $savingUser->id,
                         ]);
-                        $ap->save();
-                    } else {
-                        ArtistProfile::updateOrCreate(['user_id' => $savingUser->id], $profile);
-                    }
+                    $ap->save();
+                } else {
+                    ArtistProfile::updateOrCreate(['user_id' => $savingUser->id], $profile);
                 }
             }
+//            }
         });
         $form->builder()->getFooter()->disableReset(true);
         $form->tools(function (Form\Tools $tools) {
@@ -264,5 +271,29 @@ class UserController extends \Encore\Admin\Controllers\UserController
         });
 
         return $form;
+    }
+
+    public function addUser(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = new User();
+            $user->username = $request->get('name');
+            $user->email = $request->get('email');
+            $user->password = bcrypt($request->get('password'));
+            $user->roles()->sync(array_filter($request->get('roles')));
+
+            if (true === $user->isRole('star') || $user->isRole('performer')) {
+                $artistProfile = new ArtistProfile(['user_id' => $user->id]);
+                $artistProfile->save();
+            }
+
+            DB::commit();
+        } catch (PDOException $e) {
+            Log::error($e->getMessage(), $e->getTrace());
+            DB::rollBack();
+        } catch (\Exception $e) {
+            Log::alert($e->getMessage(), $e->getTrace());
+        }
     }
 }
