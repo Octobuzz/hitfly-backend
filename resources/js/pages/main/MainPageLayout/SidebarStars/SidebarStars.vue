@@ -78,7 +78,7 @@ import gql from './gql';
       parsedDate(id){
         let parsedDate = new Date(this.tracks[id].comments[0].createdAt);
         const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-        return parsedDate.getDate() + ' ' + months[(parsedDate.getMonth() + 1)] + ' ' + parsedDate.getFullYear();
+        return parsedDate.getDate() + ' ' + months[parsedDate.getMonth()] + ' ' + parsedDate.getFullYear();
       },
       playTrack(id) {
         if(this.$store.getters['player/currentTrack'].id !== id){
