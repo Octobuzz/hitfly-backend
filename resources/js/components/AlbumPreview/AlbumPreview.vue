@@ -45,29 +45,31 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <IconButton
-          v-if="tracksCount > 0 && !currentPlaying"
-          :class="[
-            'album-preview__icon-button',
-            'album-preview__play-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playAlbum"
-        >
-          <PlayIcon />
-        </IconButton>
-        <IconButton
-          v-else
-          :class="[
-            'album-preview__icon-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playAlbum"
-        >
-          <PauseIcon />
-        </IconButton>
+        <template v-if="album.length > 0">
+          <IconButton
+            v-if="tracksCount > 0 && !currentPlaying"
+            :class="[
+              'album-preview__icon-button',
+              'album-preview__play-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playAlbum"
+          >
+            <PlayIcon />
+          </IconButton>
+          <IconButton
+            v-else
+            :class="[
+              'album-preview__icon-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playAlbum"
+          >
+            <PauseIcon />
+          </IconButton>
+        </template>
 
         <AlbumPopover
           :album-id="albumId"
