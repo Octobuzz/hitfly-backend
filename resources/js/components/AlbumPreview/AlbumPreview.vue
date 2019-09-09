@@ -45,7 +45,7 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <template v-if="album.length > 0">
+        <template v-if="album.tracksCount > 0">
           <IconButton
             v-if="tracksCount > 0 && !currentPlaying"
             :class="[
@@ -185,7 +185,7 @@ export default {
               pageLimit: 30,
               pageNumber: 1,
               filters: {
-                albumId: this.newAlbum.id
+                albumId: this.album.id
               }
             },
           })
