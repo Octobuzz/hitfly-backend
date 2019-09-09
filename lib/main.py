@@ -33,7 +33,7 @@ channel = abs(channel[0::k])
 my_list = []
 for i in channel:
     if(i != 0):
-        my_list.append(int(abs(20 * math.log10(abs(i) / float(peak)))))
+        my_list.append(int(abs(20 * math.log10(abs(int(i)) / float(peak)))))
     else:
         my_list.append(0)
 print(json.dumps(my_list))
