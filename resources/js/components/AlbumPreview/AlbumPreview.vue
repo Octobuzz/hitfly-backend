@@ -177,12 +177,13 @@ export default {
           this.$store.commit('player/startPlaying');
         }else{
           this.$apollo.provider.clients[this.apolloClient].query({
-            query: gql.query.TRACKS,
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
-                albumId: this.albumId
+                albumId: this.newAlbum.id
               }
             },
           })
