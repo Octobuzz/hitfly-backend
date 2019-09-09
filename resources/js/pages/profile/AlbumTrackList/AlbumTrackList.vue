@@ -311,7 +311,7 @@ export default {
         if(this.currentType.type === 'album' && this.currentType.id === this.albumId) {
           this.$store.commit('player/startPlaying');
         }else{
-          this.$apollo.provider.clients[this.apolloProvider].query({
+          this.$apollo.provider.clients[this.apolloClient].query({
             query: gql.query.QUEUE_TRACKS,
             variables: {
               isAuthenticated: this.isAuthenticated,
