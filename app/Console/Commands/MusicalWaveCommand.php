@@ -78,7 +78,7 @@ class MusicalWaveCommand extends Command
 
     private function convertTrack($trackFile): string
     {
-        $newNameWav = uniqid().'.wav';
+        $newNameWav = uniqid('', true).'.wav';
         $tmpFile = self::TMP_DIR.$newNameWav;
 
         $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
@@ -102,7 +102,6 @@ class MusicalWaveCommand extends Command
             throw new ProcessFailedException($process);
         }
         $response = json_decode($process->getOutput());
-
         if (null === $response) {
             return [];
         }
