@@ -53,29 +53,31 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <IconButton
-          v-if="collection.countTracks > 0 && !currentPlaying"
-          :class="[
-            'collection-preview__icon-button',
-            'collection-preview__play-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playCollection"
-        >
-          <PlayIcon />
-        </IconButton>
-        <IconButton
-          v-else
-          :class="[
-            'collection-preview__icon-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playCollection"
-        >
+        <template v-if="collection.countTracks > 0">
+          <IconButton
+            v-if="!currentPlaying"
+            :class="[
+              'collection-preview__icon-button',
+              'collection-preview__play-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playCollection"
+          >
+            <PlayIcon />
+          </IconButton>
+          <IconButton
+            v-else
+            :class="[
+              'collection-preview__icon-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playCollection"
+          >
             <PauseIcon />
           </IconButton>
+        </template>
 
         <CollectionPopover
           :collection-id="collectionId"
