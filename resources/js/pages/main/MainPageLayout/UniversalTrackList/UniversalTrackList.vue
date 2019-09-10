@@ -45,7 +45,10 @@ export default {
         'music-group',
         'album',
         'collection',
-        'top50'
+        'top50',
+        'listening_now',
+        'weekly_top',
+        'new_songs',
       ].includes(val),
       required: true
     },
