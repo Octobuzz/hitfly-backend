@@ -233,7 +233,7 @@ export default {
         currentOffset + spaceBetween
       ) / spacedNewsWidth;
 
-      const wholeNewsOffsetBLE = spacedNewsWidth * Math.floor(NewsTimesIncludedBLE);
+      const wholeNewsOffsetBLE = spacedNewsWidth * Math.floor(newsTimesIncludedBLE);
 
       let edgeCase = true;
 
