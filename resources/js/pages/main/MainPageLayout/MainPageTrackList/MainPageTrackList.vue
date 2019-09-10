@@ -111,7 +111,7 @@
     </template>
 
     <UniversalTrackList
-      for-type="top50"
+      :for-type="currentCollectionPath"
       :for-id="collectionId"
       :show-table-header="false"
       :show-remove-button="showRemoveButton"
@@ -194,12 +194,28 @@ export default {
   },
 
   computed: {
+    currentCollectionPath() {
+      const pathPrefix = this.currentPath.split('/')[1];
+      return pathPrefix;
+    },
     currentPlaylistName() {
       let tracklistName = '';
       const pathPrefix = this.currentPath.split('/')[1];
       switch(pathPrefix){
         case 'top50':
           tracklistName = "Топ 50";
+          break;
+        case 'listening_now':
+          tracklistName = "Сейчас слушают";
+          break;
+        case 'weekly_top':
+          tracklistName = "Открытие недели";
+          break;
+        case 'new_songs':
+          tracklistName = "Новое";
+          break;
+        case 'genre':
+          tracklistName = "Новое";
           break;
       };
       return tracklistName;
@@ -210,6 +226,15 @@ export default {
       switch(pathPrefix){
         case 'top50':
           pathToImage = '/images/top-50.png';
+          break;
+        case 'listening_now':
+          pathToImage = '/images/everyone_listening.png';
+          break;
+        case 'weekly_top':
+          pathToImage = '/images/open_week.png';
+          break;
+        case 'new_songs':
+          pathToImage = '/images/new.png';
           break;
       };
       return pathToImage;

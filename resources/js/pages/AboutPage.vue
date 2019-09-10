@@ -104,9 +104,9 @@
         </span>
 
         <div class="about__footer">
-          <span class="about__footer-left-option about__link">
+          <a href="/policy" class="about__footer-left-option about__link">
             Пользовательское соглашение
-          </span>
+          </a>
           <span class="about__footer-left-option about__link">
             Авторам
           </span>

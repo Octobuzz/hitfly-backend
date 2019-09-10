@@ -162,12 +162,14 @@ export default {
   apollo: {
     trackList() {
       let query = null;
-      if(this.query === 'tracks') {
+      if(this.query === 'tracks' || this.query === 'new_songs') {
         query = gql.query.QUEUE_TRACKS
-      } else if(this.query === 'TopWeeklyQuery') {
+      } else if(this.query === 'TopWeeklyQuery' || this.query === 'weekly_top') {
         query = gql.query.WEEKLY_TOP
       } else if(this.query === 'top50') {
         query = gql.query.GET_TOP_FIFTY
+      }else if(this.query === 'listening_now') {
+        query = gql.query.GET_LISTENED_NOW
       };
       return {
         query: query,
