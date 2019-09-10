@@ -67,7 +67,7 @@ const validateEmail = () => {
   return regexSatisfied;
 };
 
-const pwdRegex = /(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i;
+const pwdRegex = /(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/i;
 const $pwdInput = $authForm.find('input[name="password"]');
 const $pwdContainer = $pwdInput.closest(`.${INPUT_TEXT_WRAPPER}`);
 
