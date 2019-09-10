@@ -5,7 +5,7 @@
       <p>Рейтинг лучших музыкантов</p>
       <router-link to="top50" class="asideBlock__button">Все</router-link>
     </div>
-    <div class="asideBlock__body" style="max-height: 168px;">
+    <div class="asideBlock__body" style="max-height: 168px; overflow: hidden;">
       <div
         v-show="isLoading && !dataInitialized"
         class="profile__user-card-loader_first"
