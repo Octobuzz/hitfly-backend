@@ -1,7 +1,7 @@
 <template>
   <section class="footerSection">
     <div class="footerSection__links">
-      <a href="/policy">Пользовательское соглашение</a>
+      <a href="/policy" target="_blank">Пользовательское соглашение</a>
       <a href="javascript: void(0)">Авторам</a>
       <a href="javascript: void(0)">Помощь</a>
     </div>
