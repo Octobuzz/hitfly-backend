@@ -263,7 +263,7 @@ export default {
           .then(response => {
             let data = {
               'type': 'tracks',
-              'id': userId
+              'id': this.currentId
             };
             this.$store.commit('player/pausePlaying');
             this.$store.commit('player/changeCurrentType', data);
