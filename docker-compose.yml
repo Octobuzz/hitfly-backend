@@ -52,11 +52,12 @@ services:
     volumes:
       - './docker/redis/redis.conf:/usr/local/etc/redis/redis.conf'
   node:
+#    do not specify any env variables for the server cause it is already configured
     image: node:10.16.3-jessie
     user: "node"
     working_dir: /home/node/app
-    environment:
-      - NODE_ENV=production
+    ports:
+      - '3031:3030'
     volumes:
       - ./ssr:/home/node/app
-    command: "npm run server:run:prod"
+    command: "npm run container:server:run:watch"
