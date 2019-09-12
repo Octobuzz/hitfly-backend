@@ -30,7 +30,7 @@ class RegistrationMutation extends Mutation
             'password' => [
                 'description' => 'Пароль',
                 'type' => Type::string(),
-                'rules' => ['required', 'min:8', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i'],
+                'rules' => ['required', 'min:8', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/i'],
             ],
 //            'password_confirmation' => [
 //                'description' => 'Подтверждение пароля',

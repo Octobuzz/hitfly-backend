@@ -9,7 +9,10 @@
 
       <div class="collection-track-list__track-section">
         <img
-          :src="pathToImage"
+          :src="shownTrack.cover.filter(
+            cover => cover.size === 'size_150x150'
+          )[0].url
+          "
           alt="Track cover"
           class="collection-track-list__track-cover"
         >
@@ -17,14 +20,6 @@
         <div class="collection-track-list__player-section">
           <span class="h3 collection-track-list__collection-title">
             {{ shownTrack.trackName }}
-          </span>
-          <span class="collection-track-list__collection-data">
-            <span class="collection-track-list__total-tracks-info">
-              <!--TODO: change when the api is ready-->
-              <!-- {{ totalTracksInfo(collection.countTracks) }} -->
-            </span>
-            <!--{{ totalDurationInfo('hours', collection.tracksTime) }}-->
-            <!--{{ totalDurationInfo('mins', collection.tracksTime) }}-->
           </span>
 
           <div class="collection-track-list__player">
@@ -63,35 +58,7 @@
           </template>
         </button>
 
-        <UnauthenticatedPopoverWrapper
-          class="collection-track-list__button"
-          placement="right"
-        >
-          <template #auth-content>
-            <AddToFavButton
-              ref="addToFavButton"
-              passive="standard-passive"
-              hover="standard-hover"
-              modifier="squared bordered"
-              item-type="collection"
-              :item-id="collectionId"
-            />
-          </template>
-
-          <template #unauth-popover-trigger>
-            <AddToFavButton
-              ref="addToFavButton"
-              passive="standard-passive"
-              hover="standard-hover"
-              modifier="squared bordered"
-              item-type="collection"
-              :item-id="collectionId"
-              :fake="true"
-            />
-          </template>
-        </UnauthenticatedPopoverWrapper>
-
-        <CollectionPopover
+        <!-- <CollectionPopover
           :collection-id="collectionId"
           :hide-player-actions="!trackListDataExists"
           @press-favourite="onPressFavourite"
@@ -106,17 +73,16 @@
           >
             <DotsIcon />
           </IconButton>
-        </CollectionPopover>
+        </CollectionPopover> -->
       </div>
     </template>
 
     <UniversalTrackList
-      for-type="top50"
-      :for-id="collectionId"
+      :for-type="currentCollectionPath"
+      :for-id="currentCollectionPath"
       :show-table-header="false"
-      :show-remove-button="showRemoveButton"
+      :show-remove-button="false"
       @initialized="onTrackListInitialized"
-      @tracks-removed="refetchTotalInfo"
     />
   </div>
 </template>
@@ -194,6 +160,10 @@ export default {
   },
 
   computed: {
+    currentCollectionPath() {
+      const pathPrefix = this.currentPath.split('/')[1];
+      return pathPrefix;
+    },
     currentPlaylistName() {
       let tracklistName = '';
       const pathPrefix = this.currentPath.split('/')[1];
@@ -201,50 +171,25 @@ export default {
         case 'top50':
           tracklistName = "Топ 50";
           break;
+        case 'listening_now':
+          tracklistName = "Сейчас слушают";
+          break;
+        case 'weekly_top':
+          tracklistName = "Открытие недели";
+          break;
+        case 'new_songs':
+          tracklistName = "Новое";
+          break;
       };
       return tracklistName;
     },
-    pathToImage() {
-      let pathToImage = '';
-      const pathPrefix = this.currentPath.split('/')[1];
-      switch(pathPrefix){
-        case 'top50':
-          pathToImage = '/images/top-50.png';
-          break;
-      };
-      return pathToImage;
-    },
+
     currentPlaying() {
-      return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
+      return this.currentType.type === 'collection' && this.currentType.id === this.currentCollectionPath && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {
       return this.$store.getters['player/getCurrentType'];
-    },
-
-    collectionId() {
-      const { playlistId, setId } = this.$route.params;
-
-      return +(playlistId || setId);
-    },
-
-    showRemoveButton() {
-      const pathPrefix = this.currentPath.split('/')[1];
-
-      switch (pathPrefix) {
-        case 'profile':
-          return true;
-
-        case 'user':
-          return false;
-
-        case 'music-group':
-          // TODO: check if the group belongs to current user
-          return false;
-
-        default:
-          return false;
-      }
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])
@@ -266,21 +211,22 @@ export default {
             id
           }
         });
-        const playingTrackBelongsToCollectionQuery = this.$apollo.query({
-          query: gql.query.TRACK_BELONGS_TO_COLLECTION,
-          variables: {
-            trackId: id,
-            collectionId: this.collectionId
-          }
-        });
+        // const playingTrackBelongsToCollectionQuery = this.$apollo.query({
+        //   query: gql.query.TRACK_BELONGS_TO_COLLECTION,
+        //   variables: {
+        //     trackId: id,
+        //     collectionId: this.collectionId
+        //   }
+        // });
 
-        Promise.all([playingTrackQuery, playingTrackBelongsToCollectionQuery])
+        // Promise.all([playingTrackQuery, playingTrackBelongsToCollectionQuery])
+        Promise.all([playingTrackQuery])
           .then(([
             { data: { track: playingTrack } },
-            { data: { trackBelongsCollection: { inCollection } } }
+            // { data: { trackBelongsCollection: { inCollection } } }
           ]) => {
             this.playingTrack = playingTrack;
-            this.playingTrackBelongsToCollection = inCollection;
+            // this.playingTrackBelongsToCollection = inCollection;
 
             this.$nextTick(() => {
               this.updateShownTrack();
@@ -310,10 +256,6 @@ export default {
       this.firstCollectionTrackId = data[0].id;
     },
 
-    onPressFavourite() {
-      this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
-    },
-
     goBack() {
       this.$router.go(-1);
     },
@@ -322,16 +264,19 @@ export default {
       const getShownTrack = () => {
         const {
           playingTrack,
-          playingTrackBelongsToCollection,
-          firstCollectionTrack
+          // playingTrackBelongsToCollection,
+          firstCollectionTrack,
+          collection
         } = this;
+
+        let idCollection = collection.map(item => item.id);
 
         // collection and its first track aren't fetched yet
         if (!firstCollectionTrack) {
           return null;
         }
 
-        if (playingTrackBelongsToCollection) {
+        if (playingTrack !== null && idCollection.indexOf(playingTrack.id) != -1) {
           return playingTrack;
         }
 
@@ -341,17 +286,6 @@ export default {
       this.shownTrack = getShownTrack();
     },
 
-    refetchTotalInfo() {
-      this.$apollo.query({
-        query: gql.query.COLLECTION_TOTAL_INFO,
-        fetchPolicy: 'network-only',
-        variables: { id: this.collectionId },
-        error(err) {
-          console.dir(err);
-        }
-      });
-    },
-
     playCollection(){
       // prevent attempt to listen nonexistent track
       if (!this.shownTrack) return;
@@ -359,29 +293,53 @@ export default {
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
-        if(this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
+        if(this.currentType.type === 'collection' && this.currentType.id === this.currentCollectionPath) {
           this.$store.commit('player/startPlaying');
         }else{
+          let query = null;
+          let filters = null;
+          if(this.currentCollectionPath === 'top50'){
+            query = gql.query.GET_TOP_FIFTY;
+          } else if (this.currentCollectionPath === 'listening_now') {
+            query = gql.query.GET_LISTENED_NOW
+          } else if (this.currentCollectionPath === 'weekly_top') {
+            query = gql.query.WEEKLY_TOP
+          } else if (this.currentCollectionPath === 'new_songs') {
+            query = gql.query.QUEUE_TRACKS
+          };
           this.$apollo.provider.clients[this.apolloClient].query({
-            query: gql.query.QUEUE_TRACKS,
+            query: query,
             variables: {
               isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
-              filters: {
-                collectionId: this.collectionId
-              }
+              filters: filters
             },
           })
           .then(response => {
+            let collectionId = null;
+            let collectionResponse = null;
+            if(this.currentCollectionPath === 'top50'){
+              collectionId = 'top50';
+              collectionResponse = response.data.GetTopFifty;
+            }else if (this.currentCollectionPath === 'listening_now'){
+              collectionId = 'listening_now';
+              collectionResponse = response.data.GetListenedNow;
+            }else if (this.currentCollectionPath === 'weekly_top'){
+              collectionId = 'weekly_top';
+              collectionResponse = response.data.TopWeeklyQuery;
+            }else if (this.currentCollectionPath === 'new_songs'){
+              collectionId = 'new_songs';
+              collectionResponse = response.data.tracks;
+            };
             let data = {
               'type': 'collection',
-              'id': this.collectionId
+              'id': collectionId
             };
             this.$store.commit('player/pausePlaying');
             this.$store.commit('player/changeCurrentType', data);
-            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-            let arrayTr = response.data.tracks.data.map(data => {
+            this.$store.commit('player/pickTrack', collectionResponse.data[0]);
+            let arrayTr = collectionResponse.data.map(data => {
               return data.id;
             });
             this.$store.commit('player/pickPlaylist', arrayTr);
@@ -396,17 +354,38 @@ export default {
 
   apollo: {
     collection() {
+      let query = null;
+      if(this.currentCollectionPath === 'top50') {
+        query = gql.query.GET_TOP_FIFTY
+      } else if (this.currentCollectionPath === 'listening_now') {
+        query = gql.query.GET_LISTENED_NOW
+      } else if (this.currentCollectionPath === 'weekly_top') {
+        query = gql.query.WEEKLY_TOP
+      } else if (this.currentCollectionPath === 'new_songs') {
+        query = gql.query.QUEUE_TRACKS
+      };
       return {
         client: this.apolloClient,
-        query: gql.query.GET_TOP_FIFTY,
+        query: query,
         variables: {
           isAuthenticated: this.isAuthenticated,
           pageLimit: 50,
           pageNumber: 1
         },
         update(data) {
-          this.tracks = data.GetTopFifty.data;
+          let collectionResponse = null;
+          if(this.currentCollectionPath === 'top50'){
+            collectionResponse = data.GetTopFifty.data;
+          }else if (this.currentCollectionPath === 'listening_now'){
+            collectionResponse = data.GetListenedNow.data;
+          }else if (this.currentCollectionPath === 'weekly_top'){
+            collectionResponse = data.TopWeeklyQuery.data;
+          }else if (this.currentCollectionPath === 'new_songs'){
+            collectionResponse = data.tracks.data;
+          };
+          this.tracks = collectionResponse;
           this.collectionFetched = true;
+          return collectionResponse;
         }
       }
     },

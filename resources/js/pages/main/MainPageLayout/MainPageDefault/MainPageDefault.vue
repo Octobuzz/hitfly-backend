@@ -15,6 +15,10 @@
 
     </MainPageStars>
 
+    <NewTracks v-show="showLoader">
+
+    </NewTracks>
+
     <RecommendedTracks v-show="showLoader">
 
     </RecommendedTracks>
@@ -22,10 +26,6 @@
     <MainPageGenres v-show="showLoader">
 
     </MainPageGenres>
-
-    <NewTracks v-show="showLoader">
-
-    </NewTracks>
 
     <SuperMelomaniac v-show="showLoader">
 

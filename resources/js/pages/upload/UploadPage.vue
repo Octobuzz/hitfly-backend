@@ -34,7 +34,7 @@
           </p>
           <div class="up-b-info">
             <div class="up-b-info__left">
-              <a href="/" class="up-b-info__link">Пользовательское соглашение</a>
+              <a href="/policy" target="_blank" class="up-b-info__link">Пользовательское соглашение</a>
               <a href="/" class="up-b-info__link">Авторам</a>
               <a href="/" class="up-b-info__link">Помощь</a>
             </div>
