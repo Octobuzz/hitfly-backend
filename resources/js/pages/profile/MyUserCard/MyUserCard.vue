@@ -274,7 +274,9 @@
             alt="Bonus program level"
             class="user-card__bonus-program-image"
           >
-          {{ myProfile.bonusProgram.nextLevelText }}
+          <span class="user-card__bonus-program-next-status">
+            {{ myProfile.bonusProgram.nextLevelText }}
+          </span>
           осталось
           <span class="h5 user-card__bonus-program-h">
             {{ myProfile.bonusProgram.pointsToNextLevel }} б
