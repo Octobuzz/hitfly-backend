@@ -40,19 +40,10 @@ class TopWeeklyQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $keyCache = md5(json_encode($args).json_encode($fields));
-
-        $response = Cache::get($keyCache, null);
-        if (null !== $response) {
-            return $response;
-        }
-
         $query = Track::with($fields->getRelations());
         $query->whereIn('id', $this->topWeekly->get());
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-
-        Cache::add($keyCache, $response, Carbon::parse('next monday'));
 
         return $response;
     }

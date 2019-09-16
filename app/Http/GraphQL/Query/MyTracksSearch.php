@@ -38,7 +38,7 @@ class MyTracksSearch extends Query
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
         if (null === $user) {
             return null;
         }

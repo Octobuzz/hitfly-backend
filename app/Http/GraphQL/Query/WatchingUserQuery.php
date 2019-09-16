@@ -36,7 +36,7 @@ class WatchingUserQuery extends Query
 //        return $response;
         return Watcheables::with('watcheable')
             ->where('watcheable_type', User::class)
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', \Auth::guard('json')->user()->id)
             ->leftJoin('users', function ($join) {
                 $join->on('watcheables.watcheable_id', '=', 'users.id');
             })
