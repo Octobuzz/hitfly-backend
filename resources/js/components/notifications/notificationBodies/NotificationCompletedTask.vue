@@ -18,7 +18,7 @@
           {{ taskTitle }}
         </router-link>
 
-        и получили {{ taskBonus }} бонусов
+        и получили {{ taskBonus }} баллов
       </span>
 
       <span class="notification-body__date">

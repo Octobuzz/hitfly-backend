@@ -52,7 +52,7 @@ export default {
   computed: {
     num2str() {
       let n = this.genre.countTracks;
-      const text_forms = ['трек', 'трека', 'треков'];
+      const text_forms = ['песня', 'песни', 'песен'];
       n = Math.abs(n) % 100; var n1 = n % 10;
       if (n > 10 && n < 20) { return text_forms[2]; }
       if (n1 > 1 && n1 < 5) { return text_forms[1]; }

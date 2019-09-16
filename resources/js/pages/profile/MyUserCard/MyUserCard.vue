@@ -277,7 +277,8 @@
           {{ myProfile.bonusProgram.nextLevelText }}
           осталось
           <span class="h5 user-card__bonus-program-h">
-            {{ myProfile.bonusProgram.pointsToNextLevel }} б
+            {{ myProfile.bonusProgram.pointsToNextLevel }}
+            {{ format('BONUS', myProfile.bonusProgram.pointsToNextLevel) }}
           </span>
         </span>
       </p>
@@ -326,7 +327,7 @@
         class="user-card__bonus-program-genres"
       >
         <p class="h5 user-card__bonus-program-genres-header">
-          Прослушанные треки по жанрам
+          Прослушанные песни по жанрам
         </p>
         <div
           v-for="genre in myProfile.bonusProgram.listenedTracksByGenre"
