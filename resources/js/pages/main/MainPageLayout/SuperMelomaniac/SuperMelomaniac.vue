@@ -16,7 +16,7 @@
               Супер меломан
             </span>
             <span class="universal-collections-container__subtitle">
-              «Русская рулетка» треков
+              «Русская рулетка» песен
             </span>
           </router-link>
         </template>

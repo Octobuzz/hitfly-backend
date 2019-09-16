@@ -103,10 +103,10 @@
             <HeartIcon />
           </span>
           <span v-if="!track.userFavourite">
-            Добавить в любимые треки
+            Добавить в любимые песни
           </span>
           <span v-if="track.userFavourite">
-            Убрать из любимых треков
+            Убрать из любимых песен
           </span>
         </span>
         <span
@@ -357,7 +357,7 @@ export default {
 
         setTimeout(() => {
           this.$message(
-            `Трек добавлен в "${toPlaylist.title}"`,
+            `Песня добавлена в "${toPlaylist.title}"`,
             'info',
             { timeout: 2000 }
           );

@@ -1,7 +1,7 @@
 <template>
   <div class="bonus-program-task-body">
     <p class="bonus-program-task-body__p">
-      Начисление 50 баллов за каждый трек, который набрал 10 лайков.
+      Начисление 50 баллов за каждую песню, которая набрала 10 лайков.
     </p>
   </div>
 </template>
