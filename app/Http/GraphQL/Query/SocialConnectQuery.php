@@ -44,7 +44,7 @@ class SocialConnectQuery extends Query
     public function resolve($root, $args)
     {
         /** @var User $User */
-        $User = Auth::user();
+        $User = Auth::guard('json')->user();
         if (null === $User) {
             $socialsLink = null;
         } else {
