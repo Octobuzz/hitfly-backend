@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Mail\FewComments;
 use App\Mail\FewCommentsMonthMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;

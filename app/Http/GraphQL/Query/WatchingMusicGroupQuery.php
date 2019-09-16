@@ -4,7 +4,6 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\MusicGroup;
 use App\Models\Watcheables;
-use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
