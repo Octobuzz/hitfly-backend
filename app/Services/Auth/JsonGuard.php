@@ -12,6 +12,7 @@ use App\User;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Traits\Macroable;
@@ -20,8 +21,8 @@ class JsonGuard implements Guard
 {
     use GuardHelpers, Macroable;
 
-    const HEADER_NAME_TOKEN = 'X-TOKEN-AUTH';
-    const COLUMN_NAME = 'access_token';
+    public const HEADER_NAME_TOKEN = 'X-TOKEN-AUTH';
+    public const COLUMN_NAME = 'access_token';
 
     /**
      * The name of the Guard. Typically "session".
@@ -47,9 +48,9 @@ class JsonGuard implements Guard
     /**
      * Create a new authentication guard.
      *
-     * @param string                                         $name
-     * @param \Illuminate\Contracts\Auth\UserProvider        $provider
-     * @param \Symfony\Component\HttpFoundation\Request|null $request
+     * @param string       $name
+     * @param UserProvider $provider
+     * @param Request      $request
      */
     public function __construct($name, $provider, Request $request = null)
     {
