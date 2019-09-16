@@ -13,7 +13,7 @@
         <div class="user-card__profile-info">
           <p class="user-card__profile-name">
             <WordTrimmedWithTooltip
-              :word="user.username"
+              :word="user.username || ''"
             />
           </p>
           <p class="user-card__followers-count">
@@ -118,7 +118,7 @@
     >
       <div class="user-card__item-header">
         <span>
-          Обо мне
+          {{ user.roles.includes('star') ? 'Биография' : 'Обо мне' }}
         </span>
       </div>
       <p class="user-card__about-text">
@@ -275,6 +275,7 @@ export default {
 
           return {
             ...user,
+            roles: roles.map(role => role.slug),
             avatar: userAvatar,
             description: activity
           };

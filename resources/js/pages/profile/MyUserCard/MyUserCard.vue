@@ -357,7 +357,7 @@
     >
       <div class="user-card__item-header">
         <span>
-          Обо мне
+          {{ isStar ? 'Биография' : 'Обо мне' }}
         </span>
       </div>
       <p class="user-card__about-text">
@@ -459,6 +459,10 @@ export default {
       return playedGenres.map(genre => (
         genre.name[0].toUpperCase() + genre.name.slice(1)
       )).join(', ');
+    },
+
+    isStar() {
+      return this.hasRole('star');
     },
 
     ...mapGetters({
