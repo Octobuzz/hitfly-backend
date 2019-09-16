@@ -139,7 +139,7 @@
 
         <router-link to="/" class="drop-menu-list__item">
           <span>
-            Звезды
+            Звездные эксперты
           </span>
         </router-link>
         <router-link
