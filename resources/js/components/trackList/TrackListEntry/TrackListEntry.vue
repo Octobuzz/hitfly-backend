@@ -53,18 +53,18 @@
     <WordTrimmedWithTooltip
       v-show="desktop && !columnLayout"
       class="track-list-entry__track-name"
-      :word="track.trackName"
+      :word="track.trackName || ''"
     />
     <WordTrimmedWithTooltip
       v-show="!columnLayout"
       class="track-list-entry__track-author"
-      :word="track.singer"
+      :word="track.singer || ''"
       @click.native="goToTrackSinger"
     />
     <WordTrimmedWithTooltip
       v-if="showAlbumSection && !columnLayout"
       class="track-list-entry__album-title"
-      :word="track.album && track.album.title"
+      :word="track.album && track.album.title || ''"
     />
 
     <div
@@ -132,16 +132,29 @@
       {{ formatTrackDuration(track.length) }}
     </span>
 
-    <IconButton
-      v-if="desktop && isAuthenticated && showRemoveButton"
-      class="track-list-entry__icon-button"
-      passive="secondary-passive"
-      hover="secondary-hover"
-      :tooltip="tooltip.remove"
-      @press="onRemovePress"
-    >
-      <CrossIcon />
-    </IconButton>
+    <template v-if="isAuthenticated && showRemoveButton">
+      <IconButton
+        v-if="!isMyTrack"
+        class="track-list-entry__icon-button"
+        passive="secondary-passive"
+        hover="secondary-hover"
+        :tooltip="tooltip.remove"
+        @press="onRemovePress"
+      >
+        <CrossIcon />
+      </IconButton>
+
+      <IconButton
+        v-else
+        class="track-list-entry__icon-button"
+        passive="secondary-passive"
+        hover="secondary-hover"
+        :tooltip="tooltip.edit"
+        @press="onEditPress"
+      >
+        <PencilIcon />
+      </IconButton>
+    </template>
   </div>
 </template>
 
@@ -156,6 +169,7 @@ import PlusIcon from 'components/icons/PlusIcon.vue';
 import CrossIcon from 'components/icons/CrossIcon.vue';
 import PauseIcon from 'components/icons/PauseIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
+import PencilIcon from 'components/icons/PencilIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from '../TrackToPlaylistPopover';
 import TrackActionsPopover from '../TrackActionsPopover';
@@ -174,7 +188,8 @@ export default {
     PlusIcon,
     CrossIcon,
     PauseIcon,
-    PlayIcon
+    PlayIcon,
+    PencilIcon
   },
 
   props: {
@@ -220,6 +235,9 @@ export default {
         remove: {
           content: 'Удалить из текущего списка'
         },
+        edit: {
+          content: 'Редактировать песню'
+        },
         add: {
           content: 'Добавить в плейлист'
         },
@@ -262,6 +280,13 @@ export default {
       return `/user/${track.user.id}/music`;
     },
 
+    isMyTrack() {
+      if (!this.track || !this.track.user) {
+        return false;
+      }
+      return this.track.user.id === this.myId;
+    },
+
     ...mapGetters({
       isAuthenticated: 'isAuthenticated',
       apolloClient: 'apolloClient',
@@ -280,6 +305,10 @@ export default {
 
     onRemovePress() {
       this.$emit('remove-track', this.trackId);
+    },
+
+    onEditPress() {
+      this.$router.push(`/profile/edit/track/${this.trackId}`);
     },
 
     pressFavourite() {
