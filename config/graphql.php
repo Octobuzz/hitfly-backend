@@ -131,6 +131,7 @@ return [
                 'requestsForComments' => \App\Http\GraphQL\Query\RequestsForCommentsQuery::class,
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
+                'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -190,6 +191,7 @@ return [
                 'requestsForComments' => \App\Http\GraphQL\Query\RequestsForCommentsQuery::class,
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
+                'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
