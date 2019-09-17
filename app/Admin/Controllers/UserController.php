@@ -23,6 +23,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UserController extends \Encore\Admin\Controllers\UserController
 {
@@ -72,7 +74,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
     public function create(Content $content)
     {
         $form = $this->form();
-        $form->setAction('add-user');
+        $form->setAction(route('add_user'));
         $content
             ->header(trans('admin.administrator'))
             ->description(trans('admin.create'))
@@ -106,10 +108,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->updated_at(trans('admin.updated_at'));
         $grid->deleted_at(trans('admin.deleted_at'));
         $grid->model()->withTrashed();
-
-//        $grid->actions(function (Grid\Displayers\Actions $actions) {
-//            $actions->disableDelete();
-//        });
 
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function (Grid\Tools\BatchActions $actions) {
@@ -161,14 +159,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
                 return '';
             }
         });
-        //}
-//        $show->model()->load('artistProfile');
-//        $savingUser = $show->model();
-//        if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-//            $show->getRelations();
-//            $show->date('artist_profile.career_start', 'Дата начала карьеры')->format("YYYY");
-//            $show->textarea('artist_profile.description', 'Описание деятельности');
-//        }
+
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
 
@@ -244,13 +235,10 @@ class UserController extends \Encore\Admin\Controllers\UserController
             /** @var User $savingUser */
             $savingUser = $form->model();
 
-//            if (null !== $savingUser->id) {
             $savingUser->roles()->sync(array_filter($form->roles));
             if (
-                    (
-                        true === $savingUser->isRole('star')
-                        || $savingUser->isRole('performer')
-                    )
+                true === $savingUser->isRole(User::ROLE_STAR)
+                || $savingUser->isRole(User::ROLE_PERFORMER)
                 ) {
                 $profile = $form->artist_profile;
                 if (null == $profile) {
@@ -262,7 +250,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
                     ArtistProfile::updateOrCreate(['user_id' => $savingUser->id], $profile);
                 }
             }
-//            }
         });
         $form->builder()->getFooter()->disableReset(true);
         $form->tools(function (Form\Tools $tools) {
@@ -278,16 +265,37 @@ class UserController extends \Encore\Admin\Controllers\UserController
         try {
             DB::beginTransaction();
             $user = new User();
-            $user->username = $request->get('name');
+            $user->username = $request->get('username');
             $user->email = $request->get('email');
             $user->password = bcrypt($request->get('password'));
-            $user->roles()->sync(array_filter($request->get('roles')));
+            $user->save();
 
-            if (true === $user->isRole('star') || $user->isRole('performer')) {
+            $user->roles()->sync(array_filter($request->get('roles')));
+            $user->favouriteGenres()->sync(array_filter($request->get('favouritegenre')));
+
+            $user->save();
+
+            $user->load('roles');
+            if (true === $user->isRole(User::ROLE_STAR) || $user->isRole(User::ROLE_PERFORMER)) {
                 $artistProfile = new ArtistProfile(['user_id' => $user->id]);
                 $artistProfile->save();
             }
 
+            if ($request->has('avatar')) {
+                $image = $request->file('avatar');
+                $nameFile = md5(microtime());
+                $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
+                $image_resize = Image::make($image->getRealPath());
+                $image_resize->fit(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'));
+                $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+                //создадим папку, если несуществует
+                if (!file_exists($path.'avatars/'.$user->id)) {
+                    Storage::disk('public')->makeDirectory('avatars/'.$user->id);
+                }
+                $image_resize->save($path.$imagePath, 100);
+                $user->avatar = $imagePath;
+            }
+            $user->save();
             DB::commit();
         } catch (PDOException $e) {
             Log::error($e->getMessage(), $e->getTrace());
@@ -295,5 +303,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
         } catch (\Exception $e) {
             Log::alert($e->getMessage(), $e->getTrace());
         }
+        return redirect(route(self::ROUTE_NAME.'.index'));
     }
 }
