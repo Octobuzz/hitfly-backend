@@ -10,7 +10,10 @@
       v-if="!isLoading"
       class="album-preview__content"
     >
-      <div class="album-preview__drape" />
+      <div
+        class="album-preview__drape"
+        @click="followTitleLink"
+      />
 
       <img
         :key="albumId"
@@ -167,6 +170,10 @@ export default {
   },
 
   methods: {
+    followTitleLink() {
+      this.$router.push(this.titleLink);
+    },
+
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },

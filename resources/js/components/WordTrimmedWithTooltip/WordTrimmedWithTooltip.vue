@@ -8,6 +8,7 @@
     v-tooltip="tooltipOptions"
     @mouseenter="calcWidthAndSetShown"
     @mouseleave="unsetShown"
+    @click="emitOnClick"
   >
     {{ word }}
     <span
@@ -24,7 +25,7 @@
 export default {
   props: {
     word: {
-      type: String,
+      type: null,
       required: true
     }
   },
@@ -53,7 +54,7 @@ export default {
       return {
         trigger: 'manual',
         autoHide: false,
-        content: this.word,
+        content: this.word || '',
         template: `
           <div class="word-trimmer-with-tooltip__tooltip" role="tooltip">
             <div class="word-trimmer-with-tooltip__arrow"></div>
@@ -99,6 +100,10 @@ export default {
   },
 
   methods: {
+    emitOnClick() {
+      this.$emit('click');
+    },
+
     setShown() {
       if (this.shown || this.shownScheduled) {
         return;

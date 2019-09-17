@@ -68,6 +68,10 @@
     transition: .2s;
   }
 
+  &__track-name {
+    cursor: pointer;
+  }
+
   &__track-author {
     flex-grow: 1;
     flex-basis: 0;
