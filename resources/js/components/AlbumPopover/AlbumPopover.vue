@@ -107,6 +107,17 @@
 <!--        </span>-->
 
         <span
+          v-if="isAuthenticated && isMyAlbum"
+          class="album-popover__menu-item"
+          @click="goToEditAlbum"
+        >
+          <span class="album-popover__menu-item-icon">
+            <PencilIcon />
+          </span>
+          Редактировать альбом
+        </span>
+
+        <span
           v-if="isAuthenticated && !isFavouriteRemoveOptionHidden && isRemovable"
           class="album-popover__menu-item"
           @click="goToRemoveMenu"
@@ -130,7 +141,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
@@ -138,6 +149,7 @@ import HeartIcon from 'components/icons/popover/HeartIcon.vue';
 import UserPlusIcon from 'components/icons/popover/UserPlusIcon.vue';
 import CrossIcon from 'components/icons/popover/CrossIcon.vue';
 import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
+import PencilIcon from 'components/icons/popover/PencilIcon.vue';
 import AlbumPopoverRemoveMenu from '../AlbumPopoverRemoveMenu';
 import gql from './gql';
 
@@ -149,6 +161,7 @@ export default {
     UserPlusIcon,
     BendedArrowIcon,
     CrossIcon,
+    PencilIcon,
     AlbumPopoverRemoveMenu
   },
 
@@ -194,6 +207,14 @@ export default {
       return this.album.my;
     },
 
+    isMyAlbum() {
+      if (!this.album || !this.album.user) {
+        return false;
+      }
+      return this.album.user.id === this.myId;
+    },
+
+    ...mapState('profile', ['myId']),
     ...mapGetters(['isAuthenticated', 'apolloClient', 'isFavouriteRemoveOptionHidden'])
   },
 
@@ -203,6 +224,10 @@ export default {
       setTimeout(() => {
         this.$emit('press-favourite', this.albumId);
       }, 200);
+    },
+
+    goToEditAlbum() {
+      this.$router.push(`/profile/edit/album/${this.albumId}`);
     },
 
     goToRemoveMenu() {
