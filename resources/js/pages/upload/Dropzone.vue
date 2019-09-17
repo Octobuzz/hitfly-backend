@@ -26,7 +26,7 @@
       </div> -->
     </div>
     <p class="up-page__info">
-      Для наилучшего качества звука мы принимаем следующие форматы: FLAC, WAV, AIFF, ALAC.
+      Для наилучшего качества звука мы принимаем следующие форматы: FLAC, WAV, AIFF, ALAC, MP3.
       <a href="/">Узнать больше об аудиоформатах.</a>
     </p>
   </div>
@@ -43,7 +43,7 @@
       onDrop(e){
         e.preventDefault();
         e.stopPropagation();
-        if(e.dataTransfer.files[0].type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
+        if(e.dataTransfer.files[0].type.match('audio/x-flac|audio/flac|audio/mp3|audio/mpeg|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
           const track = e.dataTransfer.files;
           this.$emit('droppedTrack', track);
         } else {
@@ -55,7 +55,7 @@
       },
       fileInput(track){
         if(track !== undefined){
-          if(track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
+          if(track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/mp3|audio/mpeg|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
             this.$emit('trackInput', track);
           }else{
             this.$message(

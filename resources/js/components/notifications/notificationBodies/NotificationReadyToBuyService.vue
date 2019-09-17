@@ -9,7 +9,7 @@
     >
     <div class="notification-body__content">
       <span class="notification-body__text">
-        Вы накопили {{ serviceCost }} бонусов для покупки
+        Вы накопили {{ serviceCost }} баллов для покупки
 
         <router-link
           :to="bonusProgramLink"

@@ -52,7 +52,7 @@ class AlbumType extends GraphQLType
                 'description' => 'Музыкальная группа',
             ],
             'userFavourite' => [
-                'type' => Type::nonNull(Type::boolean()),
+                'type' => Type::boolean(),
                 'description' => 'флаг избранного альбома',
                 'selectable' => false,
                 'resolve' => function ($model) {

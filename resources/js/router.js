@@ -345,6 +345,18 @@ const routes = [
         component: main.MainPageTrackList,
       },
       {
+        path: 'listening_now',
+        component: main.MainPageTrackList,
+      },
+      {
+        path: 'weekly_top',
+        component: main.MainPageTrackList,
+      },
+      {
+        path: 'new_songs',
+        component: main.MainPageTrackList,
+      },
+      {
         path: 'playlist/:playlistId',
         component: main.CollectionTrackList
       },

@@ -138,7 +138,12 @@ class PictureField extends Field
      */
     private function getArrayResizedImage($args, string $defaultImage): array
     {
-        $picturePath = $this->model::find($this->model->id)->getImage();
+        $model = $this->model::find($this->model->id);
+        if (null === $model) {
+            $picturePath = $defaultImage;
+        } else {
+            $picturePath = $model->getImage();
+        }
         if (false === PictureHelpers::isBitmapImage($picturePath)) {
             $picturePath = $defaultImage;
         }

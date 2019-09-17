@@ -53,29 +53,31 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <IconButton
-          v-if="collection.countTracks > 0 && !currentPlaying"
-          :class="[
-            'collection-preview__icon-button',
-            'collection-preview__play-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playCollection"
-        >
-          <PlayIcon />
-        </IconButton>
-        <IconButton
-          v-else
-          :class="[
-            'collection-preview__icon-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playCollection"
-        >
+        <template v-if="collection.countTracks > 0">
+          <IconButton
+            v-if="!currentPlaying"
+            :class="[
+              'collection-preview__icon-button',
+              'collection-preview__play-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playCollection"
+          >
+            <PlayIcon />
+          </IconButton>
+          <IconButton
+            v-else
+            :class="[
+              'collection-preview__icon-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playCollection"
+          >
             <PauseIcon />
           </IconButton>
+        </template>
 
         <CollectionPopover
           :collection-id="collectionId"
@@ -178,10 +180,8 @@ export default {
         this.$store.commit('player/pausePlaying');
       } else {
         if (this.currentType.type === 'collection' && this.currentType.id === this.collectionId) {
-          console.log('exact track');
           this.$store.commit('player/startPlaying');
         } else {
-          console.log('another track');
           this.$apollo.provider.clients[this.apolloClient].query({
             query: gql.query.QUEUE_TRACKS,
             variables: {

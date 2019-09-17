@@ -45,29 +45,31 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <IconButton
-          v-if="tracksCount > 0 && !currentPlaying"
-          :class="[
-            'album-preview__icon-button',
-            'album-preview__play-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playAlbum"
-        >
-          <PlayIcon />
-        </IconButton>
-        <IconButton
-          v-else
-          :class="[
-            'album-preview__icon-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playAlbum"
-        >
-          <PauseIcon />
-        </IconButton>
+        <template v-if="album.tracksCount > 0">
+          <IconButton
+            v-if="tracksCount > 0 && !currentPlaying"
+            :class="[
+              'album-preview__icon-button',
+              'album-preview__play-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playAlbum"
+          >
+            <PlayIcon />
+          </IconButton>
+          <IconButton
+            v-else
+            :class="[
+              'album-preview__icon-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playAlbum"
+          >
+            <PauseIcon />
+          </IconButton>
+        </template>
 
         <AlbumPopover
           :album-id="albumId"
@@ -177,12 +179,13 @@ export default {
           this.$store.commit('player/startPlaying');
         }else{
           this.$apollo.provider.clients[this.apolloClient].query({
-            query: gql.query.TRACKS,
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
-                albumId: this.albumId
+                albumId: this.album.id
               }
             },
           })

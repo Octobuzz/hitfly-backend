@@ -34,6 +34,10 @@ class TopWeekly implements TopWeeklyInterface
         $topWeeklyCalculated = [];
         foreach ($topWeekly as $idTrack => $users) {
             $countUser = 0;
+            if (null === Track::query()->find($idTrack)) {
+                unset($topWeekly[$idTrack]);
+                continue;
+            }
             foreach ($users as $keyId => $userDate) {
                 if ($carbon->diffInDays($userDate) >= 7) {
                     unset($topWeekly[$idTrack][$keyId]);

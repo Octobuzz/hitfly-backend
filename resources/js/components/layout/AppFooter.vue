@@ -169,7 +169,7 @@ export default {
 		},
     startPause(){
       if(!this.emptyTrack){
-        if(this.playing === true){
+        if(this.playing === true && this.audio.currentTime > 0){
           this.audio.pause();
           this.$store.commit('player/pausePlaying');
         }else{
@@ -303,15 +303,9 @@ export default {
     	return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
     ...mapState('player', {
-      playing: state => state.isPlaying
-    }),
-    ...mapState('player', {
-      currentTrack: state => state.currentTrack
-    }),
-    ...mapState('player', {
-      currentTrackId: state => state.currentTrack.id
-    }),
-    ...mapState('player', {
+      playing: state => state.isPlaying,
+      currentTrack: state => state.currentTrack,
+      currentTrackId: state => state.currentTrack.id,
       currentPlaylist: state => state.currentPlaylist
     }),
     emptyTrack() {

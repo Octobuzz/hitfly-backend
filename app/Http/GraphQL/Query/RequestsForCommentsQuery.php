@@ -35,7 +35,7 @@ class RequestsForCommentsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
         if (null === $user) {
             return null;
         }
@@ -68,7 +68,7 @@ class RequestsForCommentsQuery extends Query
             $join->on('orders.id', '=', 'value.order_id');
         });
         $query->where('value.attribute_id', $attrId);
-        $query->where('value.value', Auth::user()->id);
+        $query->where('value.value', Auth::guard('json')->user()->id);
         $query->orderBy('orders.created_at');
 
         return $query;
