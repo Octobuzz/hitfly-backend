@@ -4,6 +4,14 @@
 
     <span class="h2 album-table-container__header">
       {{ header }}
+      <router-link
+        v-if="inMyMusic"
+        class="album-table-container__button"
+        tag="button"
+        to="/profile/create/album"
+      >
+        Создать новый альбом
+      </router-link>
     </span>
 
     <UniversalAlbumsContainer
@@ -64,6 +72,10 @@ export default {
 
     containerPaddingClass() {
       return this.$store.getters['appColumns/paddingClass'];
+    },
+
+    inMyMusic() {
+      return this.$route.fullPath === '/profile/my-music/albums';
     },
 
     header() {
