@@ -123,7 +123,7 @@ export default {
         })
         .then(response => {
           let data = {};
-          if(this.forType.length > 0){
+          if(this.forType && this.forType.length > 0){
             data = {
               'type': this.forType,
               'id': this.forId
