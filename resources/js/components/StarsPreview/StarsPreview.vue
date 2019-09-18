@@ -6,7 +6,8 @@
     >
       loading expert...
     </div>
-    <div
+    <router-link
+    :to="`/user/${starId}/user-reviews`"
       v-if="!isLoading"
       class="stars-preview__content"
     >
@@ -16,7 +17,7 @@
         alt="stars cover"
         class="stars-preview__cover"
       >
-    </div>
+    </router-link>
 
     <div
       v-if="!isLoading"

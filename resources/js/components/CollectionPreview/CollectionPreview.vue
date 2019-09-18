@@ -10,7 +10,10 @@
       v-if="!isLoading"
       class="collection-preview__content"
     >
-      <div class="collection-preview__drape" />
+
+      <router-link
+        :to="titleLink" class="collection-preview__drape">
+      </router-link>
 
       <span class="collection-preview__title">
         <router-link
