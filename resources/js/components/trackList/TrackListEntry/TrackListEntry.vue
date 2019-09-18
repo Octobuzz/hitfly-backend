@@ -58,7 +58,10 @@
     />
     <WordTrimmedWithTooltip
       v-show="!columnLayout"
-      class="track-list-entry__track-author"
+      :class="[
+        'track-list-entry__track-author',
+        { 'track-list-entry__track-author_no-highlight': isUserTrack }
+      ]"
       :word="track.singer"
       @click.native="goToTrackSinger"
     />
@@ -286,6 +289,22 @@ export default {
         return false;
       }
       return this.track.user.id === this.myId;
+    },
+
+    isUserTrack() {
+      if (!this.track || !this.track.user) {
+        return true;
+      }
+
+      if (this.$route.fullPath.startsWith('/profile/')) {
+        return this.isMyTrack;
+      }
+
+      if (this.$route.fullPath.startsWith('/user/')) {
+        return +this.$route.params.userId === this.track.user.id;
+      }
+
+      return true;
     },
 
     ...mapGetters({

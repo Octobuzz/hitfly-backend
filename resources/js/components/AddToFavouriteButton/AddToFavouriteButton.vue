@@ -291,7 +291,7 @@ export default {
           };
         },
         update: data => (
-          data[this.itemType].favouritesCount
+          +data[this.itemType].favouritesCount
         ),
         error(error) {
           console.dir(error);
