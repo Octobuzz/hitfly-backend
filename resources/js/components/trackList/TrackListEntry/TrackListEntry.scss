@@ -85,6 +85,10 @@
       width: 100%;
       margin-bottom: -5px;
     }
+
+    &_no-highlight:hover {
+      color: initial;
+    }
   }
 
   &__track-name {
