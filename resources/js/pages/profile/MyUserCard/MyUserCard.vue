@@ -186,9 +186,12 @@
           <div class="user-card__someone-info">
             <p class="user-card__username">
               <WordTrimmedWithTooltip
-                class="user-card__username-link"
+                :class="[
+                  'user-card__username-link',
+                  'user-card__watched-user-link'
+                ]"
                 :word="user.username"
-                @click.native="goToUserProfile(user)"
+                @click="goToUserProfile(user)"
               />
             </p>
             <p
@@ -516,12 +519,12 @@ export default {
       );
 
       if (isProfCriticOrStar) {
-        this.$router.push(`/user/${user}/user-reviews`);
+        this.$router.push(`/user/${user.id}/user-reviews`);
 
         return;
       }
 
-      this.$router.push(`/user/${user}/music`);
+      this.$router.push(`/user/${user.id}/music`);
     },
 
     format(word, count) {

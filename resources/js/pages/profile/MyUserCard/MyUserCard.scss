@@ -308,6 +308,15 @@ p {
     color: $text_color_primary;
   }
 
+  &__watched-user-link {
+    cursor: pointer;
+    transition: .2s;
+
+    &:hover {
+      color: $link_color_active;
+    }
+  }
+
   &__group-followers {
     font-size: 12px;
     color: $text_color_secondary;

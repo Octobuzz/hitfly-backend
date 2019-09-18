@@ -25,6 +25,7 @@ $image-side-mobile: 150px;
 
     &:hover > .collection-preview {
       &__drape {
+        cursor: pointer;
         opacity: .5;
       }
 

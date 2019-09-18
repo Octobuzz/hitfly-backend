@@ -10,10 +10,10 @@
       v-if="!isLoading"
       class="collection-preview__content"
     >
-
-      <router-link
-        :to="titleLink" class="collection-preview__drape">
-      </router-link>
+      <div
+        class="collection-preview__drape"
+        @click="followTitleLink"
+      />
 
       <span class="collection-preview__title">
         <router-link

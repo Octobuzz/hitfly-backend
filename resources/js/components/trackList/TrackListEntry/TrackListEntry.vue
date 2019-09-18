@@ -9,7 +9,7 @@
 
     <button
       class="track-list-entry__album"
-      @click="onAlbumPress"
+      @click="playTrack"
     >
       <img
         v-if="!activeTrack"
@@ -53,18 +53,19 @@
     <WordTrimmedWithTooltip
       v-show="desktop && !columnLayout"
       class="track-list-entry__track-name"
-      :word="track.trackName || ''"
+      :word="track.trackName"
+      @click="playTrack"
     />
     <WordTrimmedWithTooltip
       v-show="!columnLayout"
       class="track-list-entry__track-author"
-      :word="track.singer || ''"
+      :word="track.singer"
       @click.native="goToTrackSinger"
     />
     <WordTrimmedWithTooltip
       v-if="showAlbumSection && !columnLayout"
       class="track-list-entry__album-title"
-      :word="track.album && track.album.title || ''"
+      :word="track.album && track.album.title"
     />
 
     <div
@@ -295,7 +296,7 @@ export default {
   },
 
   methods: {
-    onAlbumPress() {
+    playTrack() {
       this.$emit('play-track', this.trackId);
     },
 

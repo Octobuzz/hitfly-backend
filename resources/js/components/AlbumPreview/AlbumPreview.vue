@@ -10,8 +10,10 @@
       v-if="!isLoading"
       class="album-preview__content"
     >
-      <router-link :to="titleLink" class="album-preview__drape">
-      </router-link>
+      <div
+        class="album-preview__drape"
+        @click="followTitleLink"
+      />
 
       <img
         :key="albumId"
