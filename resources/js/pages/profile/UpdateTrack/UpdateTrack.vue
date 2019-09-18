@@ -225,8 +225,7 @@
             'songText': this.trackInfo.text,
             'musicGroup': bandId,
             'genres': genres,
-            'trackName': this.trackInfo.name.input,
-            'album': this.trackInfo.selectedAlbum.id
+            'trackName': this.trackInfo.name.input
           };
           if(this.trackInfo.cover !== null) {
             info = {
@@ -240,6 +239,13 @@
               songText: this.trackInfo.text
             }
           };
+          if(this.trackInfo.selectedAlbum.id !== null) {
+            info = {
+              ...info,
+              album: this.trackInfo.selectedAlbum.id
+            }
+          };
+          console.log(info);
           this.$apollo.mutate({
             variables: {
               id: this.trackId,
@@ -255,7 +261,8 @@
             this.$router.push('/profile/my-music');
             this.$message(
               'Информация о Вашей песне обновлена',
-              'info'
+              'info',
+              { timeout: 5000 }
             );
           }).catch((error) => {
             console.dir(error);
@@ -390,7 +397,9 @@
             if(data.track.album !== null) {
               this.addToAlbum = true;
               this.trackInfo.displayAlbum = data.track.album.title;
-            }
+            };
+            this.trackInfo.selectedAlbum.id = data.track.album.id;
+            console.log('if data received' + this.trackInfo.selectedAlbum.id);
             return data.track;
           }
         }
