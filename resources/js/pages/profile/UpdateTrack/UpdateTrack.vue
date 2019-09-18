@@ -245,7 +245,6 @@
               album: this.trackInfo.selectedAlbum.id
             }
           };
-          console.log(info);
           this.$apollo.mutate({
             variables: {
               id: this.trackId,
@@ -399,7 +398,6 @@
               this.trackInfo.displayAlbum = data.track.album.title;
             };
             this.trackInfo.selectedAlbum.id = data.track.album.id;
-            console.log('if data received' + this.trackInfo.selectedAlbum.id);
             return data.track;
           }
         }
