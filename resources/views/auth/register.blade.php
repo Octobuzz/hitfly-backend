@@ -76,7 +76,7 @@
                 <div class="reg-page__agreement input-text-wrapper">
                     <span class="input-checkbox">
                         <input id="tt" type="checkbox" name="agreement" required>
-                        <label for="tt">Я согласен с <a href="javascript: void(0)">условиями использования</a> и <a href="javascript: void(0)">политикой конфиденциальности</a></label>
+                        <label for="tt">Я согласен с <a href="javascript: void(0)">условиями использования</a> и <a href="/policy">политикой конфиденциальности</a></label>
                     </span>
                 </div>
                 <button type="submit" class="button active reg-page__submit">{{ __('auth.register') }}</button>
