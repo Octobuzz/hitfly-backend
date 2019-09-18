@@ -174,11 +174,15 @@ export default {
   },
 
   methods: {
+    followTitleLink() {
+      this.$router.push(this.titleLink);
+    },
+
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    playCollection()
-    {
+
+    playCollection() {
       if (this.currentPlaying) {
         this.$store.commit('player/pausePlaying');
       } else {
