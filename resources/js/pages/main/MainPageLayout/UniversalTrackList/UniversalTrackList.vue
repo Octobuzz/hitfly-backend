@@ -2,7 +2,7 @@
   <div>
     <UniversalTracksContainer
       ref="tracksContainer"
-      :query="forType"
+      :query="forId"
       :shown-tracks-count="shownTracksCount"
       @initialized="onTracksContainerInitialized"
       @tracks-removed="$emit('tracks-removed')"
@@ -10,6 +10,8 @@
       <template #default="container">
         <TrackList
           v-if="container.trackIdList.length > 0"
+          :for-type="forType"
+          :for-id="forId"
           :track-id-list="container.trackIdList"
           :show-remove-button="showRemoveButton"
           :show-table-header="showTableHeader"
@@ -51,6 +53,9 @@ export default {
         'new_songs',
       ].includes(val),
       required: true
+    },
+    forId: {
+      required: false
     },
     shownTracksCount: {
       type: Number,

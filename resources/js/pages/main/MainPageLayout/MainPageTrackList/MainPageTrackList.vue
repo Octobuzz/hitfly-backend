@@ -2,7 +2,7 @@
   <div :class="['collection-track-list', containerPaddingClass]">
     <ReturnHeader class="collection-track-list__return-button" />
 
-    <template v-if="collectionFetched && firstCollectionTrack !== null">
+    <template v-if="collectionFetched && trackListDataExists && firstCollectionTrack !== null">
       <span class="collection-track-list__singer">
         {{ currentPlaylistName }}
       </span>
@@ -78,7 +78,7 @@
     </template>
 
     <UniversalTrackList
-      :for-type="currentCollectionPath"
+      for-type="collection"
       :for-id="currentCollectionPath"
       :show-table-header="false"
       :show-remove-button="false"
@@ -147,6 +147,7 @@ export default {
       firstCollectionTrackId: null,
       collection: null,
       collectionFetched: false,
+      pathChanged: false,
       trackListDataExists: false,
       playingTrackBelongsToCollection: false,
       playingTrack: null,
@@ -159,6 +160,13 @@ export default {
     };
   },
 
+  props: {
+    path: {
+      type: String,
+      required: true
+    }
+  },
+
   computed: {
     currentCollectionPath() {
       const pathPrefix = this.currentPath.split('/')[1];
@@ -167,6 +175,7 @@ export default {
     currentPlaylistName() {
       let tracklistName = '';
       const pathPrefix = this.currentPath.split('/')[1];
+      this.pathChanged = !this.pathChanged;
       switch(pathPrefix){
         case 'top50':
           tracklistName = "Топ 50";
@@ -193,6 +202,11 @@ export default {
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    console.log('updated');
+    next();
   },
 
   watch: {
@@ -241,7 +255,7 @@ export default {
       if (count === 0) {
         this.trackListDataExists = false;
       }
-    }
+    },
   },
 
   methods: {
@@ -373,6 +387,7 @@ export default {
           pageNumber: 1
         },
         update(data) {
+          console.log(data);
           let collectionResponse = null;
           if(this.currentCollectionPath === 'top50'){
             collectionResponse = data.GetTopFifty.data;
@@ -415,6 +430,9 @@ export default {
         }
       };
     }
+  },
+  mounted(){
+    console.log(this.path);
   }
 };
 </script>
