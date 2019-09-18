@@ -29,6 +29,8 @@ Route::group([
     $router->resource('/news', NewsController::class)->names(\App\Admin\Controllers\NewsController::ROUTE_NAME);
     $router->resource('/bonus/operations', BonusOperationController::class)->names(\App\Admin\Controllers\BonusOperationController::ROUTE_NAME);
 
+    $router->post('/auth/users/add-user', UserController::class.'@addUser')->name('add_user');
+
     $router->get('/api/users', '\App\Admin\Controllers\UserController@users');
     $router->get('/api/genres', '\App\Admin\Controllers\GenreController@getGenres');
     $router->get('/api/music/group', '\App\Admin\Controllers\MusicGroupController@getMusicGroup');

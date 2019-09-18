@@ -121,7 +121,7 @@ export default {
 
         setTimeout(() => {
           this.$message(
-            `Трек добавлен в "${toPlaylist.title}"`,
+            `Песня добавлена в "${toPlaylist.title}"`,
             'info',
             { timeout: 2000 }
           );

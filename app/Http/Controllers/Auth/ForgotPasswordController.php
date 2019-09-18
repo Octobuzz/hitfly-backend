@@ -56,6 +56,16 @@ class ForgotPasswordController extends Controller
      */
     public function sendResetLinkEmail(Request $request)
     {
+        if (false === $request->isJson()) {
+            $response = $this->broker()->sendResetLink(
+                $request->only('email')
+            );
+
+            return Password::RESET_LINK_SENT == $response
+                ? $this->sendResetLinkResponse($request, $response)
+                : $this->sendResetLinkFailedResponse($request, $response);
+        }
+
         $this->validateEmail($request);
 
         // We will send the password reset link to this user. Once we have attempted

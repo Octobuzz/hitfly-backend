@@ -4,9 +4,7 @@ namespace App\Http\GraphQL\Query;
 
 use App\Interfaces\Top\TopWeeklyInterface;
 use App\Models\Track;
-use Carbon\Carbon;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
