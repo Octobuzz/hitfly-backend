@@ -219,7 +219,6 @@ export default {
         },
       })
       .then(response => {
-        console.log(response);
         let collectionResponse = null;
         if(this.currentCollectionPath === 'top50'){
           collectionResponse = response.data.GetTopFifty.data;
