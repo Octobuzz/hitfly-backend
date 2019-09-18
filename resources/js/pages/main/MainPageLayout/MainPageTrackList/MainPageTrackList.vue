@@ -160,13 +160,6 @@ export default {
     };
   },
 
-  props: {
-    path: {
-      type: String,
-      required: true
-    }
-  },
-
   computed: {
     currentCollectionPath() {
       const pathPrefix = this.currentPath.split('/')[1];
@@ -204,12 +197,48 @@ export default {
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
-  beforeRouteUpdate (to, from, next) {
-    console.log('updated');
-    next();
-  },
-
   watch: {
+    '$route': function fetchNewTracks() {
+      this.collectionFetched = false;
+      let query = null;
+      if(this.currentCollectionPath === 'top50') {
+        query = gql.query.GET_TOP_FIFTY
+      } else if (this.currentCollectionPath === 'listening_now') {
+        query = gql.query.GET_LISTENED_NOW
+      } else if (this.currentCollectionPath === 'weekly_top') {
+        query = gql.query.WEEKLY_TOP
+      } else if (this.currentCollectionPath === 'new_songs') {
+        query = gql.query.QUEUE_TRACKS
+      };
+      this.$apollo.provider.clients[this.apolloClient].query({
+        query: query,
+        variables: {
+          isAuthenticated: this.isAuthenticated,
+          pageLimit: 50,
+          pageNumber: 1,
+        },
+      })
+      .then(response => {
+        console.log(response);
+        let collectionResponse = null;
+        if(this.currentCollectionPath === 'top50'){
+          collectionResponse = response.data.GetTopFifty.data;
+        }else if (this.currentCollectionPath === 'listening_now'){
+          collectionResponse = response.data.GetListenedNow.data;
+        }else if (this.currentCollectionPath === 'weekly_top'){
+          collectionResponse = response.data.TopWeeklyQuery.data;
+        }else if (this.currentCollectionPath === 'new_songs'){
+          collectionResponse = response.data.tracks.data;
+        };
+        this.tracks = collectionResponse;
+        this.collectionFetched = true;
+        return collectionResponse;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+
     playingTrackId: {
       handler(id) {
         if (!ofNumber(id)) {
@@ -387,7 +416,6 @@ export default {
           pageNumber: 1
         },
         update(data) {
-          console.log(data);
           let collectionResponse = null;
           if(this.currentCollectionPath === 'top50'){
             collectionResponse = data.GetTopFifty.data;
@@ -431,9 +459,6 @@ export default {
       };
     }
   },
-  mounted(){
-    console.log(this.path);
-  }
 };
 </script>
 

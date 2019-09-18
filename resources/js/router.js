@@ -342,13 +342,11 @@ const routes = [
       },
       {
         path: 'top50',
-        component: main.MainPageTrackList,
-        props: { path: 'top50' }
+        component: main.MainPageTrackList
       },
       {
         path: 'listening_now',
-        component: main.MainPageTrackList,
-        props: { path: 'listening_now' }
+        component: main.MainPageTrackList
       },
       {
         path: 'weekly_top',
