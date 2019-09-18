@@ -14,6 +14,8 @@
       </div>
       <TrackList
         v-if="tracks.length > 0"
+        for-type="collection"
+        for-id="listening_now"
         :track-id-list="tracks.map(track => track.id)"
         :showTableHeader="false"
         :showRemoveButton="false"
