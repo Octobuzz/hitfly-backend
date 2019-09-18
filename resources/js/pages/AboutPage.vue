@@ -95,7 +95,7 @@
         <span class="about__consent">
           Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим
           <router-link
-            to="/terms-of-use"
+            to="/policy"
             class="about__link about__link_highlighted"
           >
             Условиям использования
