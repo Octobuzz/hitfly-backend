@@ -17,6 +17,7 @@ class GenreQuery extends Query
     protected $attributes = [
         'name' => 'Genre Query',
         'description' => 'Список жанров системы',
+        'deprecationReason' => 'Данный метод будет удален. Использовать Query genres',
     ];
 
     public function type()
