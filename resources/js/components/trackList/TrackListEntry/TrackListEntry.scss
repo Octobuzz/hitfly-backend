@@ -68,6 +68,10 @@
     transition: .2s;
   }
 
+  &__track-name {
+    cursor: pointer;
+  }
+
   &__track-author {
     flex-grow: 1;
     flex-basis: 0;
@@ -80,6 +84,10 @@
     &_underline {
       width: 100%;
       margin-bottom: -5px;
+    }
+
+    &_no-highlight:hover {
+      color: initial;
     }
   }
 

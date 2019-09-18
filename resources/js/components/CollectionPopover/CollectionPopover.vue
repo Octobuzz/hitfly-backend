@@ -108,6 +108,17 @@
 <!--        </span>-->
 
         <span
+          v-if="isAuthenticated && isMyCollection"
+          class="collection-popover__menu-item"
+          @click="goToEditCollection"
+        >
+          <span class="collection-popover__menu-item-icon">
+            <PencilIcon />
+          </span>
+          Редактировать плейлист
+        </span>
+
+        <span
           v-if="isAuthenticated && !isFavouriteRemoveOptionHidden && isRemovable"
           class="collection-popover__menu-item"
           @click="goToRemoveMenu"
@@ -131,12 +142,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
 import HeartIcon from 'components/icons/popover/HeartIcon.vue';
 import CrossIcon from 'components/icons/popover/CrossIcon.vue';
 import BendedArrowIcon from 'components/icons/popover/BendedArrowIcon.vue';
+import PencilIcon from 'components/icons/popover/PencilIcon.vue';
 import CollectionPopoverRemoveMenu from '../CollectionPopoverRemoveMenu';
 import gql from './gql';
 
@@ -147,6 +159,7 @@ export default {
     ListPlusIcon,
     BendedArrowIcon,
     CrossIcon,
+    PencilIcon,
     CollectionPopoverRemoveMenu
   },
 
@@ -184,6 +197,14 @@ export default {
       return this.collection.my;
     },
 
+    isMyCollection() {
+      if (!this.collection || !this.collection.user) {
+        return false;
+      }
+      return this.collection.user.id === this.myId;
+    },
+
+    ...mapState('profile', ['myId']),
     ...mapGetters(['isAuthenticated', 'apolloClient', 'isFavouriteRemoveOptionHidden'])
   },
 
@@ -200,6 +221,10 @@ export default {
       // so that the click could miss popover and collapse it
 
       setTimeout(() => { this.inRemoveMenu = true; }, 100);
+    },
+
+    goToEditCollection() {
+      this.$router.push(`/profile/edit/collection/${this.collectionId}`);
     },
 
     leaveRemoveMenu() {

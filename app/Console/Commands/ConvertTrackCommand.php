@@ -81,9 +81,9 @@ class ConvertTrackCommand extends Command
      *
      * @throws ProcessFailedException
      */
-    private function convertToStandartmp3(Track $track)
+    private function convertToStandartmp3(Track $track): void
     {
-        $newName192 = uniqid().'.mp3';
+        $newName192 = uniqid('', true).'.mp3';
         $tmpFile192 = Storage::disk('public')->path($track->getPathTrack().DIRECTORY_SEPARATOR.$newName192);
 
         $trackFile = Storage::disk('public')->path($track->filename);
@@ -105,7 +105,7 @@ class ConvertTrackCommand extends Command
      */
     private function convertToMp3(Track $track)
     {
-        $newName = uniqid().'.mp3';
+        $newName = uniqid('', true).'.mp3';
         $tmpFile320 = Storage::disk('public')->path($track->getPathTrack().DIRECTORY_SEPARATOR.$newName);
 
         $trackFile = Storage::disk('public')->path($track->filename);

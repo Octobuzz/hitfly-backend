@@ -15,6 +15,7 @@ query AlbumPopover_album(
         }
         user @include(if: $isAuthenticated) {
             id
+            username
             iWatch
         }
         userFavourite @include(if: $isAuthenticated)

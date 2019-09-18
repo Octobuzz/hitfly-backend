@@ -11,6 +11,7 @@ namespace App\Http\GraphQL\Interfaces;
 use App\Http\GraphQL\Fields\AvatarSizesField;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
@@ -159,6 +160,13 @@ class UserInterface extends InterfaceType
                     return $model->listenedTracks()->count();
                 },
                 'selectable' => false,
+            ],
+            'accessToken' => [
+                'type' => Type::string(),
+                'description' => 'Токен авторизации',
+                'resolve' => function () {
+                    return Auth::user()->access_token;
+                },
             ],
         ];
     }

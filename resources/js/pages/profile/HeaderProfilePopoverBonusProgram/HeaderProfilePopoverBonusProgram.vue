@@ -35,7 +35,8 @@
         {{ formatNextStatus(bonusProgram.nextStatus) }}
         осталось
         <span class="header-profile-popover-bonus-program__points">
-          {{ bonusProgram.pointsToNextLevel }} б
+          {{ bonusProgram.pointsToNextLevel }}
+          {{ pluralFormEndingsFormatter('BONUS', bonusProgram.pointsToNextLevel) }}
         </span>
       </span>
 

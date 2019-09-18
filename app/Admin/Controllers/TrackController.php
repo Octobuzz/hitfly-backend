@@ -210,7 +210,7 @@ class TrackController extends Controller
             }
         })->ajax('/admin/api/users')->rules(['required']);
         $form->file('filename', 'Файл')
-            ->rules('required|mimetypes:audio/ogg,audio/wave,audio/x-wav,audio/x-pn-wav,audio/aac,audio/mp4,audio/vnd.wave,audio/flac,audio/x-flac,audio/vnd.wave,audio/x-aiff,audio/aiff,audio/x-m4a')
+            ->rules('required|mimetypes:audio/ogg,audio/wave,audio/x-wav,audio/x-pn-wav,audio/aac,audio/mp4,audio/vnd.wave,audio/flac,audio/x-flac,audio/vnd.wave,audio/x-aiff,audio/aiff,audio/x-m4a,audio/mp3,audio/mpeg')
         ;
         $form->image('cover', 'Обложка')
         ;

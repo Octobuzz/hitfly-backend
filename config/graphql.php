@@ -131,12 +131,24 @@ return [
                 'requestsForComments' => \App\Http\GraphQL\Query\RequestsForCommentsQuery::class,
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
+                'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
                 'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'resetPasswordMutation' => \App\Http\GraphQL\Mutations\User\ResetPasswordMutation::class,
             ],
-            'middleware' => [],
+            'middleware' => ['guest'],
+            'method' => ['get', 'post'],
+        ],
+        'auth' => [
+            'mutation' => [
+//                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
+                //'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
+                'logoutMutation' => \App\Http\GraphQL\Mutations\User\LogoutMutation::class,
+            ],
+            'middleware' => ['api', 'guest'],
             'method' => ['get', 'post'],
         ],
         'user' => [
@@ -179,6 +191,7 @@ return [
                 'requestsForComments' => \App\Http\GraphQL\Query\RequestsForCommentsQuery::class,
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
+                'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -203,6 +216,7 @@ return [
                 'updateEmail' => \App\Http\GraphQL\Mutations\User\UpdateEmailMutation::class,
                 'removeMeMutation' => \App\Http\GraphQL\Mutations\User\RemoveMeMutation::class,
                 'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
 
                 'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
                 'deleteCollection' => \App\Http\GraphQL\Mutations\Collection\DeleteCollectionMutation::class,
@@ -291,6 +305,7 @@ return [
         'AlbumFilterInput' => \App\Http\GraphQL\InputObject\AlbumFilterInput::class,
         'CollectionFilterInput' => \App\Http\GraphQL\InputObject\CollectionFilterInput::class,
         'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
+        'SocialLinkFilterInput' => \App\Http\GraphQL\InputObject\Filter\SocialLinkFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,

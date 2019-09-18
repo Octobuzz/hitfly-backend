@@ -139,6 +139,11 @@ p {
     width: 100%;
   }
 
+  &__bonus-program-next-status {
+    font-family: 'Gotham Pro Semibold', serif;
+    font-size: 12px;
+  }
+
   &__bonus-program-followers,
   &__bonus-program-days,
   &__bonus-program-favourites {
@@ -306,6 +311,15 @@ p {
   &__group-name-link,
   &__username-link {
     color: $text_color_primary;
+  }
+
+  &__watched-user-link {
+    cursor: pointer;
+    transition: .2s;
+
+    &:hover {
+      color: $link_color_active;
+    }
   }
 
   &__group-followers {

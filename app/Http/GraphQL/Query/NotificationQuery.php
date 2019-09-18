@@ -33,7 +33,7 @@ class NotificationQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
         if (null === $user) {
             return null;
         }

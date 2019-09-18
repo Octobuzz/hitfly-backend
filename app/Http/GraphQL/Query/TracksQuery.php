@@ -49,10 +49,10 @@ class TracksQuery extends Query
         $query->select('tracks.*');
 
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
-            if (null === \Auth::user()) {
+            if (null === \Auth::guard('json')->user()) {
                 return null;
             }
-            $query->where('tracks.user_id', '=', \Auth::user()->id);
+            $query->where('tracks.user_id', '=', \Auth::guard('json')->user()->id);
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('tracks.user_id', '=', $args['filters']['userId']);
@@ -90,7 +90,7 @@ class TracksQuery extends Query
 
             /// Треки откоментированные мною
             /** @var User $user */
-            $user = Auth::user();
+            $user = Auth::guard('json')->user();
             if (
                 false === empty($args['filters']['iCommented'])
                 && true === (bool) $args['filters']['iCommented']

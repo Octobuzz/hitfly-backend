@@ -10,10 +10,10 @@
       v-if="!isLoading"
       class="collection-preview__content"
     >
-
-      <router-link
-        :to="titleLink" class="collection-preview__drape">
-      </router-link>
+      <div
+        class="collection-preview__drape"
+        @click="followTitleLink"
+      />
 
       <span class="collection-preview__title">
         <router-link
@@ -174,11 +174,15 @@ export default {
   },
 
   methods: {
+    followTitleLink() {
+      this.$router.push(this.titleLink);
+    },
+
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    playCollection()
-    {
+
+    playCollection() {
       if (this.currentPlaying) {
         this.$store.commit('player/pausePlaying');
       } else {

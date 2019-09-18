@@ -186,9 +186,12 @@
           <div class="user-card__someone-info">
             <p class="user-card__username">
               <WordTrimmedWithTooltip
-                class="user-card__username-link"
+                :class="[
+                  'user-card__username-link',
+                  'user-card__watched-user-link'
+                ]"
                 :word="user.username"
-                @click.native="goToUserProfile(user)"
+                @click="goToUserProfile(user)"
               />
             </p>
             <p
@@ -274,10 +277,13 @@
             alt="Bonus program level"
             class="user-card__bonus-program-image"
           >
-          {{ myProfile.bonusProgram.nextLevelText }}
+          <span class="user-card__bonus-program-next-status">
+            {{ myProfile.bonusProgram.nextLevelText }}
+          </span>
           осталось
           <span class="h5 user-card__bonus-program-h">
-            {{ myProfile.bonusProgram.pointsToNextLevel }} б
+            {{ myProfile.bonusProgram.pointsToNextLevel }}
+            {{ format('BONUS', myProfile.bonusProgram.pointsToNextLevel) }}
           </span>
         </span>
       </p>
@@ -326,7 +332,7 @@
         class="user-card__bonus-program-genres"
       >
         <p class="h5 user-card__bonus-program-genres-header">
-          Прослушанные треки по жанрам
+          Прослушанные песни по жанрам
         </p>
         <div
           v-for="genre in myProfile.bonusProgram.listenedTracksByGenre"
@@ -357,7 +363,7 @@
     >
       <div class="user-card__item-header">
         <span>
-          Обо мне
+          {{ isStar ? 'Биография' : 'Обо мне' }}
         </span>
       </div>
       <p class="user-card__about-text">
@@ -461,6 +467,10 @@ export default {
       )).join(', ');
     },
 
+    isStar() {
+      return this.hasRole('star');
+    },
+
     ...mapGetters({
       ableToPerform: 'profile/ableToPerform',
       hasRole: 'profile/roles'
@@ -515,12 +525,12 @@ export default {
       );
 
       if (isProfCriticOrStar) {
-        this.$router.push(`/user/${user}/user-reviews`);
+        this.$router.push(`/user/${user.id}/user-reviews`);
 
         return;
       }
 
-      this.$router.push(`/user/${user}/music`);
+      this.$router.push(`/user/${user.id}/music`);
     },
 
     format(word, count) {
