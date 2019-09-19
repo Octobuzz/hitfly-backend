@@ -21,7 +21,7 @@ class EmailChangedJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($user,$oldEmail)
+    public function __construct($user, $oldEmail)
     {
         $this->user = $user;
         $this->oldEmail = $oldEmail;

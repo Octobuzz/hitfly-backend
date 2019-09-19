@@ -20,7 +20,7 @@ class EmailChangeController extends Controller
             $user->email = $row->new_email;
             $user->save();
             $row->delete();
-            dispatch(new EmailChangedJob($user,$oldEmail))->onQueue('low');
+            dispatch(new EmailChangedJob($user, $oldEmail))->onQueue('low');
 
             return redirect('/email-change');
         }

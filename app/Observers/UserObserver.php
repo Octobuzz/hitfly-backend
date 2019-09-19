@@ -72,6 +72,7 @@ class UserObserver
             $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
 
             dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+
             return false;
         }
 
