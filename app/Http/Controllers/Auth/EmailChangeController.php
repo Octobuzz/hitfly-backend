@@ -16,10 +16,11 @@ class EmailChangeController extends Controller
 
         if (null !== $row && $row->token == $token && Carbon::now() < $row->updated_at->addMinute(60)) {
             $user = User::find($id);
+            $oldEmail = $user->email;
             $user->email = $row->new_email;
             $user->save();
             $row->delete();
-            dispatch(new EmailChangedJob($user))->onQueue('low');
+            dispatch(new EmailChangedJob($user, $oldEmail))->onQueue('low');
 
             return redirect('/email-change');
         }

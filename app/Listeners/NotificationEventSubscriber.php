@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\BuisnessLogic\Emails\Notification;
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
 use App\Events\CompletedTaskEvent;
 use App\Events\CreatedTopFiftyEvent;
@@ -21,6 +22,13 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationEventSubscriber
 {
+    private $notification;
+
+    public function __construct(Notification $notification)
+    {
+        $this->notification = $notification;
+    }
+
     /**
      * Register the listeners for the subscriber.
      *
@@ -168,6 +176,7 @@ class NotificationEventSubscriber
             ],
         ];
         $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
+        $this->notification->newFavouriteTrackNotification($track);
     }
 
     public function createAlbum(Album $album)
@@ -192,6 +201,7 @@ class NotificationEventSubscriber
             ],
         ];
         $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
+        $this->notification->newFavouriteTrackNotification($album);
     }
 
     public function createCollection(Collection $collection)

@@ -21,7 +21,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr>
+                {{--<tr>
                     <td>
                         <table width="504" cellpadding="0" cellspacing="0" border="0" align="center" style="padding: 0 0 35px;">
                             <tbody>
@@ -74,7 +74,7 @@
                             </tbody>
                         </table>
                     </td>
-                </tr>
+                </tr>--}}
                 </tbody>
             </table>
         </td>

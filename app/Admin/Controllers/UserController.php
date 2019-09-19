@@ -303,6 +303,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         } catch (\Exception $e) {
             Log::alert($e->getMessage(), $e->getTrace());
         }
+
         return redirect(route(self::ROUTE_NAME.'.index'));
     }
 }

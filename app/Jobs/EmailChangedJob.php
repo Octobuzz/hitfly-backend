@@ -16,13 +16,15 @@ class EmailChangedJob implements ShouldQueue
 
     public $status;
     public $user;
+    public $oldEmail;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($user)
+    public function __construct($user, $oldEmail)
     {
         $this->user = $user;
+        $this->oldEmail = $oldEmail;
     }
 
     /**
@@ -30,6 +32,6 @@ class EmailChangedJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new EmailChangedMail($this->user));
+        return Mail::to($this->oldEmail)->send(new EmailChangedMail($this->user));
     }
 }

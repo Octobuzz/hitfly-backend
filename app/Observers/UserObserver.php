@@ -70,7 +70,10 @@ class UserObserver
                 ]
             );
             $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
-            dispatch(new EmailChangeJob($user, $user->getOriginal('email'), $url))->onQueue('low');
+
+            dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+
+            return false;
         }
 
         if (true === $user->wasChanged('level')) {
