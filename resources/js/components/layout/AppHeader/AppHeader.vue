@@ -111,7 +111,7 @@
             <img :src="logo" alt="logo">
           </router-link>
         </div>
-        <router-link to="/profile/bonus-program" class="drop-menu-list__item">
+        <router-link to="/bonus-program" class="drop-menu-list__item">
           <span>
             Бонусная программа
           </span>
