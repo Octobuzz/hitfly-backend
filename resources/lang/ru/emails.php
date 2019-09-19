@@ -150,7 +150,7 @@ return [
     'commentCreated' => [
         'hello' => 'Приветствуем',
         'seeAllComments' => 'Посмотреть все отзывы',
-        'text' => 'На ваш :type появился новый отзыв.<br> :commentator оценил ваш :type – «:name».<br> Перейти к <a href=":link" style="text-decoration: none; color: #b36fcb;">отзыву</a>.',
+        'text' => 'На ваш :type появился новый отзыв.<br> :commentator оценил(а) ваш :type – «:name».<br> Перейти к <a href=":link" style="text-decoration: none; color: #b36fcb;">отзыву</a>.',
         'subject' => 'Новый отзыв',
     ],
     'newStatus' => [
