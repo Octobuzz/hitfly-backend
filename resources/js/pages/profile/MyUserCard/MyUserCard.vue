@@ -7,6 +7,24 @@
           :src="myProfile.avatar || anonymousAvatar"
           alt="User avatar"
         >
+        <div class="user-card__profile-avatar-icon-wrapper">
+          <PerformerIcon
+            v-if="avatarIcon === 'performer'"
+            class="user-card__profile-avatar-icon"
+          />
+          <CriticIcon
+            v-else-if="avatarIcon === 'critic'"
+            class="user-card__profile-avatar-icon"
+          />
+          <ProfCriticIcon
+            v-else-if="avatarIcon === 'prof_critic'"
+            class="user-card__profile-avatar-icon"
+          />
+          <StarIcon
+            v-else-if="avatarIcon === 'star'"
+            class="user-card__profile-avatar-icon"
+          />
+        </div>
       </div>
 
       <div class="user-card__profile-info">
@@ -383,6 +401,10 @@ import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 import NoteIcon from 'components/icons/NoteIconGrey.vue';
+import PerformerIcon from 'components/icons/PerformerAvatarIcon.vue';
+import CriticIcon from 'components/icons/CriticAvatarIcon.vue';
+import ProfCriticIcon from 'components/icons/ProfCriticAvatarIcon.vue';
+import StarIcon from 'components/icons/StarAvatarIcon.vue';
 import BpFollowers from 'components/icons/BpFollowers.vue';
 import BpDaysPassed from 'components/icons/BpDaysPassed.vue';
 import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
@@ -397,7 +419,11 @@ export default {
     IconButton,
     PencilIcon,
     ArrowIcon,
-    NoteIcon
+    NoteIcon,
+    PerformerIcon,
+    CriticIcon,
+    ProfCriticIcon,
+    StarIcon
   },
 
   props: {
@@ -469,6 +495,17 @@ export default {
 
     isStar() {
       return this.hasRole('star');
+    },
+
+    avatarIcon() {
+      return [
+        'star',
+        'prof_critic',
+        'critic',
+        'performer'
+      ].find(
+        role => this.hasRole(role)
+      );
     },
 
     ...mapGetters({
