@@ -21,7 +21,10 @@
       <span
         :class="[
           'track-list__header-duration',
-          { 'track-list__header-duration_padded': showRemoveButton }
+          {
+            'track-list__header-duration_padded-l': !isStar,
+            'track-list__header-duration_padded-r': showRemoveButton
+          }
         ]"
       >
         Время
@@ -101,6 +104,9 @@ export default {
   },
 
   computed: {
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
+    },
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 

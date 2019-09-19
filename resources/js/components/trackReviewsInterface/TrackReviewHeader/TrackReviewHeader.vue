@@ -15,7 +15,7 @@
     </span>
 
     <div class="track-review-header__cover-button-container">
-      <UnauthenticatedPopoverWrapper>
+      <UnauthenticatedPopoverWrapper v-if="!isStar">
         <template #auth-content>
           <TrackToPlaylistPopover
             :track-id="trackId"
@@ -137,6 +137,9 @@ export default {
     trackCoverUrl() {
       return this.track.cover
         .filter(cover => cover.size === 'size_150x150')[0].url;
+    },
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
     },
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },

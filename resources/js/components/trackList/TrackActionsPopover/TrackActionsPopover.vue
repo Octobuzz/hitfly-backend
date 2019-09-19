@@ -85,7 +85,7 @@
           Добавить в список воспроизведения
         </span>
         <span
-          v-if="isAuthenticated"
+          v-if="isAuthenticated && !isStar"
           class="track-actions-popover__menu-item"
           @click="enterPlaylistMenu"
         >
@@ -298,6 +298,10 @@ export default {
       const rolePermission = this.$store.getters['profile/ableToComment'];
 
       return rolePermission && this.track && !this.track.my;
+    },
+
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])
