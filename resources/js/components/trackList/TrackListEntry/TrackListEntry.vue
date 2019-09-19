@@ -92,7 +92,7 @@
     <UnauthenticatedPopoverWrapper placement="left">
       <template #auth-content>
         <TrackToPlaylistPopover
-          v-if="desktop && showAddToPlaylist"
+          v-if="desktop && !isStar && showAddToPlaylist"
           :track-id="trackId"
         >
           <IconButton
@@ -305,6 +305,10 @@ export default {
       }
 
       return true;
+    },
+
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
     },
 
     ...mapGetters({

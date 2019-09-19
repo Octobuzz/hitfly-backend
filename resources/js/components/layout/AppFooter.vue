@@ -49,7 +49,7 @@
       <span>
         <TrackToPlaylistPopover
           :isFooter="true"
-          v-if="!emptyTrack && desktop"
+          v-if="!emptyTrack && !isStar && desktop"
           :track-id="this.$store.getters['player/currentTrack'].id"
         >
           <IconButton
@@ -293,6 +293,9 @@ export default {
   computed: {
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
+    },
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
     },
     percentComplete() {
 		  return this.currentTime / Math.floor(this.currentTrack.length) * 100 + '%';

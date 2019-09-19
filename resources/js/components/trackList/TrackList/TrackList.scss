@@ -31,12 +31,15 @@
   }
 
   &__header-duration {
-    box-sizing: border-box;
     text-align: right;
-    width: 220px;
-    padding-right: 12px;
+    width: 116px;
+    padding-right: 8px;
 
-    &_padded {
+    &_padded-l {
+      padding-left: 52px;
+    }
+
+    &_padded-r {
       padding-right: 56px;
     }
   }
