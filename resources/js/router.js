@@ -376,6 +376,10 @@ const routes = [
         props: true
       },
       {
+        path: 'bonus-program',
+        component: profile.BonusProgram
+      },
+      {
         path: '',
         redirect: { name: 'main' }
       }
