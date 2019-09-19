@@ -499,11 +499,11 @@ export default {
 
     avatarIcon() {
       return [
-        'performer',
-        'critic',
+        'star',
         'prof_critic',
-        'star'
-      ].reverse().find(
+        'critic',
+        'performer'
+      ].find(
         role => this.hasRole(role)
       );
     },
