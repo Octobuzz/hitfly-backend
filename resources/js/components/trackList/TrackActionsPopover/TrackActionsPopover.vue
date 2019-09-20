@@ -130,6 +130,17 @@
 <!--          </span>-->
 <!--          Поделиться песней-->
 <!--        </span>-->
+
+        <span
+          v-if="inMyAlbumOrPlaylist"
+          class="track-actions-popover__menu-item"
+          @click="emitRemoveTrack"
+        >
+          <span class="track-actions-popover__menu-item-icon">
+            <CrossIcon />
+          </span>
+          Удалить песню из текущего альбома/плейлиста
+        </span>
       </div>
 
 <!--      Commented code should be present in future release-->
@@ -187,6 +198,7 @@
 </template>
 
 <script>
+import { routeNames } from 'router';
 import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import PopupIcon from 'components/icons/popover/PopupIcon.vue';
@@ -302,6 +314,11 @@ export default {
 
     isStar() {
       return this.$store.getters['profile/roles']('star');
+    },
+
+    inMyAlbumOrPlaylist() {
+      return this.$route.name === routeNames.profile.MY_MUSIC_ALBUM
+        || this.$route.name === routeNames.profile.MY_MUSIC_PLAYLIST;
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])

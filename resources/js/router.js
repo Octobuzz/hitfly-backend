@@ -14,6 +14,13 @@ const CRITIC = 'critic';
 const PROF_CRITIC = 'prof_critic';
 const STAR = 'star';
 
+export const routeNames = {
+  profile: {
+    MY_MUSIC_ALBUM: '/profile/my-music/album/:albumId',
+    MY_MUSIC_PLAYLIST: '/profile/my-music/playlist/:playlistId'
+  }
+};
+
 const renderNotFoundPage = () => {
   store.commit('appColumns/set404', true);
 };
@@ -177,6 +184,20 @@ const routes = [
         })
       },
       {
+        path: 'my-music/album/:albumId',
+        component: profile.AlbumTrackList,
+        name: routeNames.profile.MY_MUSIC_ALBUM
+      },
+      {
+        path: 'my-music/playlist/:playlistId',
+        component: profile.CollectionTrackList,
+        name: routeNames.profile.MY_MUSIC_PLAYLIST
+      },
+      {
+        path: 'my-music/set/:setId',
+        component: profile.CollectionTrackList
+      },
+      {
         path: 'favourite',
         component: profile.Favourite
       },
@@ -197,6 +218,18 @@ const routes = [
         component: profile.CollectionTableContainer
       },
       {
+        path: 'favourite/album/:albumId',
+        component: profile.AlbumTrackList
+      },
+      {
+        path: 'favourite/playlist/:playlistId',
+        component: profile.CollectionTrackList
+      },
+      {
+        path: 'favourite/set/:setId',
+        component: profile.CollectionTrackList
+      },
+      {
         path: 'reviews',
         component: profile.UniversalReviews
       },
@@ -210,18 +243,6 @@ const routes = [
             renderNotFound: true
           }
         })
-      },
-      {
-        path: 'album/:albumId',
-        component: profile.AlbumTrackList
-      },
-      {
-        path: 'playlist/:playlistId',
-        component: profile.CollectionTrackList
-      },
-      {
-        path: 'set/:setId',
-        component: profile.CollectionTrackList
       },
       {
         path: 'reviews/:trackId',
