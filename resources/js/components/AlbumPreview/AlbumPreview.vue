@@ -98,8 +98,8 @@
           {{ album.title }}
         </span>
       </router-link>
-      <span class="album-preview__author">
-        {{ album.author }}
+      <span class="album-preview__author album-preview__author_no-highlight">
+        author {{ album.author }}
       </span>
     </div>
   </div>
