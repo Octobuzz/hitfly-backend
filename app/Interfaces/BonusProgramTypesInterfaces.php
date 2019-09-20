@@ -42,7 +42,7 @@ interface BonusProgramTypesInterfaces
     // Победа в музыкальном баттле
     const VICTORY_IN_THE_MUSICAL_BATTLE = 'VICTORY_IN_THE_MUSICAL_BATTLE'; // Вручную
 
-    // Попадание в плейлист ТОП-20 (обновление ежедневно)
+    // Попадание в плейлист ТОП-50 (обновление ежедневно)
     const HIT_IN_PLAYLIST_TOP_TWENTY = 'HIT_IN_PLAYLIST_TOP_TWENTY';
 
     // Непрерывное нахождение в ТОП-5
