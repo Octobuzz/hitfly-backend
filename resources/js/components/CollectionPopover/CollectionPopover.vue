@@ -224,7 +224,7 @@ export default {
     },
 
     goToEditCollection() {
-      this.$router.push(`/profile/edit/collection/${this.collectionId}`);
+      this.$router.push(`/profile/edit/playlist/${this.collectionId}`);
     },
 
     leaveRemoveMenu() {
