@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Events\Track\CreatedMusicWaveEvent;
 use App\Models\Track;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -101,10 +102,13 @@ class MusicalWaveCommand extends Command
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
+
         $response = json_decode($process->getOutput());
         if (null === $response) {
             return [];
         }
+
+        File::delete($tmpFile);
 
         return $response;
     }
