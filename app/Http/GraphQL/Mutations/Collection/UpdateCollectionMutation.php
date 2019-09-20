@@ -9,6 +9,7 @@
 namespace App\Http\GraphQL\Mutations\Collection;
 
 use App\Models\Collection;
+use App\Rules\OwnerCollection;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
@@ -34,11 +35,12 @@ class UpdateCollectionMutation extends Mutation
             'image' => [
                 'name' => 'image',
                 'type' => UploadType::getInstance(),
-                'rules' => ['required', 'image', 'max:1500'],
+                'rules' => ['image', 'max:1500'],
             ],
             'id' => [
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'Наззвание коллекции',
+                'rules' => ['required', new OwnerCollection()],
             ],
             'name' => [
                 'type' => Type::string(),
@@ -56,7 +58,9 @@ class UpdateCollectionMutation extends Mutation
         }
 
         $collection = Collection::query()->find($args['id']);
-
+        if (null === $collection) {
+            return null;
+        }
         if (false === empty($args['image'])) {
             /* @var UploadedFile $file */
             $file = $args['image'];
@@ -67,5 +71,11 @@ class UpdateCollectionMutation extends Mutation
             $collection->image = $fileName;
             $collection->save();
         }
+        if (false === empty($args['name'])) {
+            $collection->title = $args['name'];
+            $collection->save();
+        }
+
+        return $collection;
     }
 }
