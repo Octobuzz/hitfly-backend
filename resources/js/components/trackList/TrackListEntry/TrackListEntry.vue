@@ -50,32 +50,38 @@
         />
       </template>
     </UnauthenticatedPopoverWrapper>
-    <WordTrimmedWithTooltip
-      v-show="desktop && !columnLayout"
-      class="track-list-entry__track-name"
-      :word="track.trackName"
-      @click="playTrack"
-    />
-    <WordTrimmedWithTooltip
-      v-show="!columnLayout"
-      :class="[
-        'track-list-entry__track-author',
-        { 'track-list-entry__track-author_no-highlight': isUserTrack }
-      ]"
-      :word="track.singer"
-      @click.native="goToTrackSinger"
-    />
-    <WordTrimmedWithTooltip
-      v-if="showAlbumSection && !columnLayout"
-      class="track-list-entry__album-title"
-      :word="track.album && track.album.title"
-    />
+
+    <template v-if="!columnLayout">
+      <WordTrimmedWithTooltip
+        class="track-list-entry__track-name"
+        :word="track.trackName"
+        @click="playTrack"
+      />
+
+      <WordTrimmedWithTooltip
+        :class="[
+          'track-list-entry__track-author',
+          { 'track-list-entry__track-author_no-highlight': isUserTrack }
+        ]"
+        :word="track.singer"
+        @click.native="goToTrackSinger"
+      />
+
+      <WordTrimmedWithTooltip
+        v-if="showAlbumSection"
+        class="track-list-entry__album-title"
+        :word="track.album && track.album.title"
+      />
+    </template>
 
     <div
       v-show="!desktop || columnLayout"
       class="track-list-entry__track-data"
     >
-      <span class="track-list-entry__track-name">
+      <span
+        class="track-list-entry__track-name"
+        @click="playTrack"
+      >
         {{ track.trackName }}
       </span>
       <br>
@@ -267,18 +273,23 @@ export default {
     },
 
     singerLink() {
-      const { track, myId } = this;
+      const { track, isMyTrack } = this;
 
-      if (!track) return '#';
+      if (!track) return '';
 
       // if user exists the musicGroup.id could be presented or not
       // depending on who is author of the track
 
+      const inProfile = this.$route.fullPath.startsWith('/profile/');
+
       if (track.musicGroup !== null) {
-        return '#';
+        return '';
       }
-      if (track.user.id === myId) {
-        return '#';
+      if (isMyTrack && inProfile) {
+        return '';
+      }
+      if (isMyTrack && !inProfile) {
+        return '/profile/my-music';
       }
 
       return `/user/${track.user.id}/music`;
@@ -304,7 +315,7 @@ export default {
         return +this.$route.params.userId === this.track.user.id;
       }
 
-      return true;
+      return false;
     },
 
     isStar() {
