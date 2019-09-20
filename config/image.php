@@ -69,6 +69,10 @@ return [
                 'width' => 56,
                 'height' => 56,
             ],
+            'size_72x72' => [
+                'width' => 72,
+                'height' => 72,
+            ],
             'size_235x235' => [
                 'width' => 235,
                 'height' => 235,

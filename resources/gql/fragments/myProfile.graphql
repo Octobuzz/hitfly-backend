@@ -17,7 +17,7 @@ fragment myProfile on MyProfile {
     favoriteSongsCount
     favoriteAlbumCount
     avatar(
-        sizes: [size_56x56, size_235x235]
+        sizes: [size_56x56, size_72x72, size_235x235]
     ) {
         size
         url
