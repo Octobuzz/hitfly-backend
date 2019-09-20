@@ -19,6 +19,10 @@ class GenresQuery extends Query
         return [
             'limit' => ['name' => 'limit', 'type' => Type::nonNull(Type::int())],
             'page' => ['name' => 'page', 'type' => Type::nonNull(Type::int())],
+            'rootGenreId' => [
+                'type' => Type::int(),
+                'description' => 'Корневой жанр(отдаст вложенные жанры)',
+            ],
         ];
     }
 
@@ -29,7 +33,11 @@ class GenresQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        return Genre::with($fields->getRelations())->select($fields->getSelect())
-            ->paginate($args['limit'], ['*'], 'page', $args['page']);
+        $query = Genre::with($fields->getRelations())->select($fields->getSelect());
+        if (false === empty($args['rootGenreId'])) {
+            $query->descendantsOf($args['rootGenreId']);
+        }
+
+        return $query->paginate($args['limit'], ['*'], 'page', $args['page']);
     }
 }
