@@ -2,13 +2,11 @@
   <div class="user-card">
     <div :class="[itemContainerClass]">
       <div class="user-card__item">
-        <div class="user-card__profile-avatar">
-          <img
-            class="user-card__profile-avatar-img"
-            :src="user.avatar || anonymousAvatar"
-            alt="User avatar"
-          >
-        </div>
+        <UserCardAvatar
+          class="user-card__profile-avatar"
+          :roles="user.roles || []"
+          :avatar-src="user.avatar"
+        />
 
         <div class="user-card__profile-info">
           <p class="user-card__profile-name">
@@ -132,6 +130,7 @@
 import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import anonymousAvatar from 'images/anonymous-avatar.png';
+import UserCardAvatar from 'pages/profile/UserCardAvatar';
 import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import FormButton from 'components/FormButton.vue';
 import IconButton from 'components/IconButton.vue';
@@ -164,6 +163,7 @@ const formatting = {
 
 export default {
   components: {
+    UserCardAvatar,
     WordTrimmedWithTooltip,
     FormButton,
     IconButton,
@@ -259,7 +259,7 @@ export default {
           } = user;
 
           const userAvatar = avatar
-            .filter(image => image.size === 'size_56x56')[0].url;
+            .filter(image => image.size === 'size_72x72')[0].url;
 
           const slugs = new Set(roles.map(role => role.slug));
           const hasDesc = ['performer', 'critic', 'star']

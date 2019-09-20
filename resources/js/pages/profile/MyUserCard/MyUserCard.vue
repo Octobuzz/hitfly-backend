@@ -1,31 +1,11 @@
 <template>
   <div class="user-card">
     <div :class="[itemContainerClass, 'user-card__item']">
-      <div class="user-card__profile-avatar">
-        <img
-          class="user-card__profile-avatar-img"
-          :src="myProfile.avatar || anonymousAvatar"
-          alt="User avatar"
-        >
-        <div class="user-card__profile-avatar-icon-wrapper">
-          <PerformerIcon
-            v-if="avatarIcon === 'performer'"
-            class="user-card__profile-avatar-icon"
-          />
-          <CriticIcon
-            v-else-if="avatarIcon === 'critic'"
-            class="user-card__profile-avatar-icon"
-          />
-          <ProfCriticIcon
-            v-else-if="avatarIcon === 'prof_critic'"
-            class="user-card__profile-avatar-icon"
-          />
-          <StarIcon
-            v-else-if="avatarIcon === 'star'"
-            class="user-card__profile-avatar-icon"
-          />
-        </div>
-      </div>
+      <UserCardAvatar
+        class="user-card__profile-avatar"
+        :roles="roles"
+        :avatar-src="myProfile.avatar"
+      />
 
       <div class="user-card__profile-info">
         <p class="user-card__profile-name">
@@ -193,7 +173,7 @@
                 class="user-card__user-avatar-img"
                 :src="
                   user.avatar.filter(
-                    image => image.size === 'size_56x56'
+                    image => image.size === 'size_72x72'
                   )[0].url
                 "
                 alt="User avatar"
@@ -392,19 +372,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { bonusProgramLvl } from 'modules/bonus-program';
 import endingFormatter from 'modules/plural-form-endings-formatter';
-import anonymousAvatar from 'images/anonymous-avatar.png';
+import UserCardAvatar from 'pages/profile/UserCardAvatar';
 import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 import NoteIcon from 'components/icons/NoteIconGrey.vue';
-import PerformerIcon from 'components/icons/PerformerAvatarIcon.vue';
-import CriticIcon from 'components/icons/CriticAvatarIcon.vue';
-import ProfCriticIcon from 'components/icons/ProfCriticAvatarIcon.vue';
-import StarIcon from 'components/icons/StarAvatarIcon.vue';
 import BpFollowers from 'components/icons/BpFollowers.vue';
 import BpDaysPassed from 'components/icons/BpDaysPassed.vue';
 import BpFavouriteTracks from 'components/icons/BpFavouriteTracks.vue';
@@ -413,17 +389,14 @@ import gql from './gql';
 export default {
   components: {
     WordTrimmedWithTooltip,
+    UserCardAvatar,
     BpFollowers,
     BpDaysPassed,
     BpFavouriteTracks,
     IconButton,
     PencilIcon,
     ArrowIcon,
-    NoteIcon,
-    PerformerIcon,
-    CriticIcon,
-    ProfCriticIcon,
-    StarIcon
+    NoteIcon
   },
 
   props: {
@@ -452,8 +425,7 @@ export default {
           daysPassed: '',
           listenedTracksByGenre: []
         }
-      },
-      anonymousAvatar
+      }
     };
   },
 
@@ -497,17 +469,7 @@ export default {
       return this.hasRole('star');
     },
 
-    avatarIcon() {
-      return [
-        'star',
-        'prof_critic',
-        'critic',
-        'performer'
-      ].find(
-        role => this.hasRole(role)
-      );
-    },
-
+    ...mapState('profile', ['roles']),
     ...mapGetters({
       ableToPerform: 'profile/ableToPerform',
       hasRole: 'profile/roles'
@@ -600,7 +562,7 @@ export default {
         if (!dateRegister) return;
 
         this.myProfile.avatar = avatar
-          .filter(image => image.size === 'size_56x56')[0].url;
+          .filter(image => image.size === 'size_72x72')[0].url;
 
         this.myProfile.name = username;
         this.myProfile.playedGenres = genresPlay;
