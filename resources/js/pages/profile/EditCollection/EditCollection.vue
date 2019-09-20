@@ -125,13 +125,18 @@ export default {
 
       this.isUpdating = true;
 
+      const variables = {
+        id: this.collection.id,
+        name: this.collection.title
+      };
+
+      if (this.imageFile) {
+        variables.image = this.imageFile;
+      }
+
       this.$apollo.provider.clients.private.mutate({
         mutation: gql.mutation.UPDATE_COLLECTION,
-        variables: {
-          id: this.collection.id,
-          name: this.collection.title,
-          image: this.imageFile
-        }
+        variables
       })
         .then(() => {
           this.$message(
