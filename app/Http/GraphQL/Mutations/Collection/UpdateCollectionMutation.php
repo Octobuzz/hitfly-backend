@@ -16,6 +16,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
+use Intervention\Image\Facades\Image;
 
 class UpdateCollectionMutation extends Mutation
 {
@@ -63,12 +64,8 @@ class UpdateCollectionMutation extends Mutation
         }
         if (false === empty($args['image'])) {
             /* @var UploadedFile $file */
-            $file = $args['image'];
-            $fileName = md5(microtime()).'.'.$file->getClientOriginalExtension();
 
-            Storage::putFileAs('public/collection/'.$user->id, $file, $fileName);
-
-            $collection->image = $fileName;
+            $collection->image = $this->setCover($collection, $args['image']);
             $collection->save();
         }
         if (false === empty($args['name'])) {
@@ -77,5 +74,35 @@ class UpdateCollectionMutation extends Mutation
         }
 
         return $collection;
+    }
+
+    /**
+     * добавление аватарки группы.
+     *
+     * @param $collect
+     * @param $avatar
+     *
+     * @return string
+     */
+    private function setCover($collect, $avatar)
+    {
+        if (null !== $collect->getOriginal('image')) {
+            Storage::disk('public')->delete($collect->getOriginal('image'));
+        }
+        $image = $avatar;
+        $nameFile = md5(microtime());
+        $imagePath = "collections/$collect->user_id/".$nameFile.'.'.$image->getClientOriginalExtension();
+        $image_resize = Image::make($image->getRealPath());
+        $image_resize->fit(config('image.size.collection.default.height'), config('image.size.collection.default.height')/*, function ($constraint) {
+            $constraint->aspectRatio();
+        }*/);
+        $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+        //создадим папку, если несуществует
+        if (!file_exists($path.'collections/'.$collect->user_id)) {
+            Storage::disk('public')->makeDirectory('collections/'.$collect->user_id);
+        }
+        $image_resize->save($path.$imagePath, 100);
+
+        return $imagePath;
     }
 }
