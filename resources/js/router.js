@@ -106,6 +106,10 @@ const routes = [
         component: profile.EditUser
       },
       {
+        path: 'edit/playlist/:collectionId',
+        component: profile.EditCollection
+      },
+      {
         path: 'create-group',
         component: profile.CreateGroup,
         ...beforeRouteEnterFactory({

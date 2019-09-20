@@ -1,5 +1,6 @@
 export { default as MyProfileLayout } from './MyProfileLayout';
 export { default as EditUser } from './EditProfile';
+export { default as EditCollection } from './EditCollection';
 export { default as CreateGroup } from './CreateGroup';
 export { default as UpdateGroup } from './UpdateGroup';
 export { default as UpdateTrack } from './UpdateTrack';
