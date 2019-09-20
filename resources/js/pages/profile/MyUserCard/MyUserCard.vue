@@ -173,7 +173,7 @@
                 class="user-card__user-avatar-img"
                 :src="
                   user.avatar.filter(
-                    image => image.size === 'size_72x72'
+                    image => image.size === 'size_56x56'
                   )[0].url
                 "
                 alt="User avatar"
