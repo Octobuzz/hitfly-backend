@@ -6,101 +6,44 @@
     <div class="add-track" v-else>
       <div class="add-track-cover">
         <ChooseAvatar
-          :imageUrl="track.cover[0].url"
+          :imageUrl="album.cover[0].url"
           caption="Загрузить обложку"
           @input="onCoverInput"
         />
       </div>
-
-      <div class="add-track-description">
+      <div class="createAlbumWrapper">
         <BaseInput
-          v-model="trackInfo.name.input"
-          label="Название песни"
+          v-model="albumInfo.name.input"
+          label="Название альбома"
           class="add-track-description__name-input"
-          :showError="validation.trackName.error"
-          :errorMessage="validation.trackName.message"
         >
           <template #icon>
             <PencilIcon/>
           </template>
         </BaseInput>
-
+        <BaseDropdown
+          v-model="albumInfo.format"
+          class="add-track-description__dropdown add-track-description__year-input"
+          title="Тип альбома"
+          :options="albumFormats.map((album) => album.name)"
+          :searchable="false"
+          :max-height="500"
+          @input="handleFormatChoice"
+        />
         <ChooseYear
-          v-model="trackInfo.year.input"
+          v-model="albumInfo.year.input"
           class="add-track-description__year-input"
-          title="Год создания песни"
+          label="Год создания альбома"
         >
           <template #icon>
             <CalendarIcon/>
           </template>
         </ChooseYear>
-
-        <FileInput
-          label="Загрузить текст песни"
-          class="add-track-description__text-input"
-          @change="handleTextfileInput"
-        >
-          <template #icon>
-            <NotepadIcon/>
-          </template>
-        </FileInput>
-
-        <h3 class="add-track-description__header_h3">
-          Выберите жанр
-        </h3>
         <ChooseGenres
-          v-model="trackInfo.genres"
+          v-model="albumInfo.genre"
           class="add-track-description__genre-tag-container"
           dropdown-class="add-track-description__dropdown"
-          :noneSelectedError="validation.genre.error"
         />
-
-        <h3 class="add-track-description__header_h3">
-          Музыкальная группа
-        </h3>
-        <p class="add-track-description__subheader">Выберите автора песни: вы или группа</p>
-        <BaseDropdown
-          v-model="trackInfo.selectedArtist"
-          class="add-track-description__dropdown"
-          title="Автор песни"
-          :options="bands.map(band => band.name)"
-          :multiple="false"
-          :close-on-select="true"
-          :searchable="false"
-          :max-height="500"
-        />
-        <span class="input-checkbox album-input-checkbox">
-            <input id="tt" type="checkbox" v-model="addToAlbum">
-            <label for="tt">Хочу добавить песню в альбом</label>
-        </span>
-        <div class="addAlbumWrapper" v-show="addToAlbum">
-          <div class="addAlbumWrapper__buttons">
-            <div class="buttonSwitcher" @click="createAlbum = true" :class="{active: createAlbum}">Создать альбом</div>
-            <div v-if="albums.albums.data.length > 0" class="buttonSwitcher" @click="createAlbum = false" :class="{active: !createAlbum}">Мои альбомы</div>
-          </div>
-          <CreateAlbum
-           v-show="createAlbum"
-           class="addAlbumWrapper__content"
-           :bands="bands"
-           @changeTab="changeTab"
-           @createAlbum="updateAlbums()"
-          />
-          <div class="addAlbumWrapper__content" v-show="!createAlbum">
-            <div class="add-track-chooseAlbum">
-              <BaseDropdown
-                v-model="trackInfo.displayAlbum"
-                class="add-track-description__dropdown"
-                title="Мои альбомы"
-                :options="albums.albums.data.map(album => album.title)"
-                :multiple="false"
-                :close-on-select="true"
-                :searchable="false"
-                :max-height="500"
-                @input="handleAlbumSelect"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <div class="trackInfoFooter">
@@ -110,7 +53,7 @@
         modifier="primary"
         @press="addInfo"
       >
-        Опубликовать
+        Сохранить изменения
       </FormButton>
     </div>
   </div>
@@ -134,6 +77,24 @@
   export default{
     mixins: [currentPath],
     data: () => ({
+      albumFormats: [
+        {
+          name: 'LP',
+          value: 'album'
+        },
+        {
+          name: 'EP',
+          value: 'EP'
+        },
+        {
+          name: 'Коллекция',
+          value: 'collection'
+        },
+        {
+          name: 'Сингл',
+          value: 'single'
+        }
+      ],
       validation:{
         trackName: {
           message: '',
@@ -145,10 +106,11 @@
         }
       },
       isLoading: true,
-      trackInfo:{
+      albumInfo:{
         year: {
           input: ''
         },
+        format: '',
         genres: [],
         name: {
           input: ''
@@ -182,84 +144,69 @@
     }),
 
     computed: {
-      trackId() {
-        const pathPrefix = +this.$route.params.editTrackId;
+      albumId() {
+        const pathPrefix = +this.$route.params.editAlbumId;
         return pathPrefix;
       }
     },
 
     methods: {
-      handleTextfileInput(file){
-        if(file !== null && file.type.match('application/vnd.openxmlformats-officedocument.wordprocessingml.document|text/plain')){
-          this.trackInfo.text = file;
-        }else{
-          this.trackInfo.text = null;
-          this.$message(
-            'Выберите текстовый файл в формате txt или docx',
-          );
-        }
-      },
-      changeTab() {
-        this.createAlbum = false
+      handleFormatChoice() {
+
       },
       addInfo(){
         if(!this.isLoading){
-          let genres = this.trackInfo.genres.map((genre) => {
+          let genres = this.albumInfo.genres.map((genre) => {
             return genre.id;
           });
           let singer = null;
           let band = null;
           let bandId = null;
-          if(this.bands[0].name === this.trackInfo.selectedArtist){
-            singer = this.trackInfo.selectedArtist;
+          if(this.bands[0].name === this.albumInfo.selectedArtist){
+            singer = this.albumInfo.selectedArtist;
           }else{
             band = this.bands.filter((band) => {
-              return band.name === this.trackInfo.selectedArtist;
+              return band.name === this.albumInfo.selectedArtist;
             });
             bandId = band[0].id;
             singer = band[0].name;
           };
           let info = {
-            'singer': singer,
-            'trackDate': this.trackInfo.year.input,
-            'songText': this.trackInfo.text,
+            'type': this.albumInfo.format,
+            'year': this.albumInfo.year.input,
             'musicGroup': bandId,
             'genres': genres,
-            'trackName': this.trackInfo.name.input
+            'author': this.selectedArtist,
+            'title': this.albumInfo.name.input
           };
-          if(this.trackInfo.cover !== null) {
+          if(this.albumInfo.text !== null) {
             info = {
               ...info,
-              cover: this.trackInfo.cover
+              songText: this.albumInfo.text
             }
           };
-          if(this.trackInfo.text !== null) {
+          if(this.albumInfo.selectedAlbum.id !== null) {
             info = {
               ...info,
-              songText: this.trackInfo.text
+              album: this.albumInfo.selectedAlbum.id
             }
           };
-          if(this.trackInfo.selectedAlbum.id !== null) {
-            info = {
-              ...info,
-              album: this.trackInfo.selectedAlbum.id
-            }
-          };
+          let cover = this.albumInfo.cover;
           this.$apollo.mutate({
             variables: {
-              id: this.trackId,
-              infoTrack: info
+              id: this.albumId,
+              album: info,
+              cover: cover
             },
-            mutation: gql`mutation($id: Int!, $infoTrack: TrackInput) {
-              updateTrack (id: $id, infoTrack: $infoTrack) {
+            mutation: gql`mutation($id: Int!, $album: AlbumInput, $cover: Upload) {
+              updateAlbum (id: $id, album: $album, cover: $cover) {
                 id
-                trackName
               }
             }`
           }).then((response) => {
             this.$router.push('/profile/my-music');
             this.$message(
-              'Информация о Вашей песне обновлена',
+              'Информация о Вашем альбоме обновлена',
               'info',
               { timeout: 5000 }
             );
@@ -277,16 +224,8 @@
           })
         }
       },
-      handleAlbumSelect(){
-        const selectedAlbum = this.albums.albums.data.filter((album) => {
-          if(album.title === this.trackInfo.displayAlbum){
-            return album;
-          }
-        });
-        this.trackInfo.selectedAlbum = selectedAlbum[0];
-      },
       onCoverInput(file) {
-        this.trackInfo.cover = file;
+        this.albumInfo.cover = file;
       },
       updateAlbums(){
         this.$apollo.query({
@@ -354,24 +293,20 @@
           update(data) {
             let myData = {id: 0, name: data.myProfile.username};
             this.bands = [myData, ...data.myProfile.musicGroups];
-            this.trackInfo.selectedArtist = myData.name;
+            this.albumInfo.selectedArtist = myData.name;
           }
         }
       },
 
-      track() {
+      album() {
         return {
           variables: {
-            id: this.trackId
+            id: this.albumId
           },
           fetchPolicy: 'network-only',
-          query: gql`query Track($id: Int!){
-            track(id: $id){
-              trackName
-              album{
-                id
-                title
-              }
+          query: gql`query Album($id: Int!){
+            album(id: $id){
+              title
               genres{
                 id
                 name
@@ -380,8 +315,7 @@
                 id
                 name
               }
-              singer
-              trackDate
+              year
               cover(sizes: size_235x235){
                 size,
                 url
@@ -390,15 +324,10 @@
           }`,
           update(data) {
             this.isLoading = false;
-            this.trackInfo.name.input = data.track.trackName;
-            this.trackInfo.year.input = (new Date(data.track.trackDate).getFullYear()).toString();
-            this.trackInfo.genres = data.track.genres;
-            if(data.track.album !== null) {
-              this.addToAlbum = true;
-              this.trackInfo.displayAlbum = data.track.album.title;
-              this.trackInfo.selectedAlbum.id = data.track.album.id;
-            };
-            return data.track;
+            this.albumInfo.name.input = data.album.title;
+            this.albumInfo.year.input = (new Date(data.album.year).getFullYear()).toString();
+            this.albumInfo.genres = data.album.genres;
+            return data.album;
           }
         }
       }
@@ -408,5 +337,5 @@
 <style
   scoped
   lang="scss"
-  src="./UpdateTrack.scss"
+  src="./UpdateAlbum.scss"
 />
