@@ -269,7 +269,7 @@
         class="user-card__bonus-program-p"
       >
         <span>
-          до
+          до статуса
           <img
             :src="myProfile.bonusProgram.nextLevelImage"
             alt="Bonus program level"
