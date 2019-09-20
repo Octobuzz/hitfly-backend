@@ -136,6 +136,16 @@ const routes = [
         })
       },
       {
+        path: 'edit/album/:editAlbumId',
+        component: profile.UpdateAlbum,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            renderNotFound: true
+          }
+        })
+      },
+      {
         path: 'my-music',
         component: profile.MyMusic,
         name: 'profile-my-music',

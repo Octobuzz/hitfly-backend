@@ -227,6 +227,7 @@ export default {
     },
 
     goToEditAlbum() {
+      console.log('redirect');
       this.$router.push(`/profile/edit/album/${this.albumId}`);
     },
 
