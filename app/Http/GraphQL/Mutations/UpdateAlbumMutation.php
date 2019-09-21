@@ -36,7 +36,6 @@ class UpdateAlbumMutation extends Mutation
             'cover' => [
                 'description' => 'обложка альбома',
                 'type' => UploadType::getInstance(),
-                'rules' => ['required'],
             ],
         ];
     }
