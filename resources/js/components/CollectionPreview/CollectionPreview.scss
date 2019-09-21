@@ -52,6 +52,7 @@ $image-side-mobile: 150px;
 
   &__image {
     z-index: 100;
+    object-fit: cover;
   }
 
   &__button-section {
