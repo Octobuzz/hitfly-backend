@@ -176,7 +176,7 @@
             'year': this.albumInfo.year.input,
             'musicGroup': bandId,
             'genres': genres,
-            'author': this.selectedArtist,
+            'author': this.albumInfo.selectedArtist,
             'title': this.albumInfo.name.input
           };
           if(this.albumInfo.text !== null) {

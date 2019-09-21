@@ -1,6 +1,6 @@
 @import '~scss/_variables.scss';
 
-$image-width-desktop: 214px;
+$image-width-desktop: 160px;
 $image-height-desktop: 160px;
 $image-side-mobile: 150px;
 
@@ -52,6 +52,7 @@ $image-side-mobile: 150px;
 
   &__image {
     z-index: 100;
+    object-fit: cover;
   }
 
   &__button-section {
