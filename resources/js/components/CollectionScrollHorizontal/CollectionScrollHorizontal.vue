@@ -81,7 +81,7 @@ import BaseLoader from 'components/BaseLoader.vue';
 import CollectionPreview from 'components/CollectionPreview';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
 
-const COLLECTION_WIDTH_DESKTOP = 214;
+const COLLECTION_WIDTH_DESKTOP = 160;
 const COLLECTION_WIDTH_MOBILE = 150;
 
 const COLLECTION_SPACE_BETWEEN_DESKTOP = 24;
