@@ -2,7 +2,7 @@
   <div>
     <UniversalTracksContainer
       ref="tracksContainer"
-      :query="forId"
+      :query="forType"
       :shown-tracks-count="shownTracksCount"
       @initialized="onTracksContainerInitialized"
       @tracks-removed="$emit('tracks-removed')"

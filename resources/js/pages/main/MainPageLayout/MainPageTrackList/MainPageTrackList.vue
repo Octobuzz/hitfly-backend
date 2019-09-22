@@ -78,8 +78,8 @@
     </template>
 
     <UniversalTrackList
-      for-type="collection"
-      :for-id="currentCollectionPath"
+      for-id="collection"
+      :for-type="currentCollectionPath"
       :show-table-header="false"
       :show-remove-button="false"
       @initialized="onTrackListInitialized"

@@ -14,10 +14,11 @@
   padding: 30px 0;
   border-top: 2px solid $layout_border_color;
   display: flex;
+  justify-content: flex-end;
 
   &__button{
     width: auto;
-    margin-left: auto;
+    margin-left: 20px;
 
     &.disabled {
       background: none;
@@ -35,6 +36,7 @@ $description_right_padding: 37px;
 .add-track {
   display: flex;
   flex-wrap: nowrap;
+  margin-top: 20px;
 
   &-loading {
     display: flex;

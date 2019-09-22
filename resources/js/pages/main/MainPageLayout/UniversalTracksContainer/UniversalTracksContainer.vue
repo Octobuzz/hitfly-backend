@@ -72,6 +72,46 @@ export default {
     );
   },
 
+  watch: {
+    'query': function(){
+      let query = null;
+      if(this.query === 'top50') {
+        query = gql.query.GET_TOP_FIFTY
+      } else if (this.query === 'listening_now') {
+        query = gql.query.GET_LISTENED_NOW
+      } else if (this.query === 'weekly_top') {
+        query = gql.query.WEEKLY_TOP
+      } else if (this.query === 'new_songs') {
+        query = gql.query.QUEUE_TRACKS
+      };
+      this.$apollo.provider.clients[this.apolloClient].query({
+        query: query,
+        variables: {
+          isAuthenticated: this.isAuthenticated,
+          pageLimit: 50,
+          pageNumber: 1,
+        },
+      })
+      .then(response => {
+        let collectionResponse = null;
+        if(this.query === 'top50'){
+          collectionResponse = response.data.GetTopFifty.data;
+        }else if (this.query === 'listening_now'){
+          collectionResponse = response.data.GetListenedNow.data;
+        }else if (this.query === 'weekly_top'){
+          collectionResponse = response.data.TopWeeklyQuery.data;
+        }else if (this.query === 'new_songs'){
+          collectionResponse = response.data.tracks.data;
+        };
+        this.trackList = collectionResponse;
+        return collectionResponse;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+  },
+
   methods: {
     notifyInitialization(success, type) {
       let storeItem = {[type]: {

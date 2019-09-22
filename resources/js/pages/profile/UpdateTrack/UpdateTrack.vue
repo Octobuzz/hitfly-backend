@@ -1,5 +1,6 @@
 <template>
   <div class="trackInfo">
+    <ReturnHeader />
     <div class="add-track-loading" v-if="isLoading">
       <SpinnerLoader />
     </div>
@@ -107,6 +108,14 @@
       <FormButton
         class="trackInfoFooter__button"
         :class="{disabled: isLoading}"
+        modifier="secondary"
+        @press="removeTrack"
+      >
+        Удалить
+      </FormButton>
+      <FormButton
+        class="trackInfoFooter__button"
+        :class="{disabled: isLoading}"
         modifier="primary"
         @press="addInfo"
       >
@@ -129,6 +138,7 @@
   import NotepadIcon from 'components/icons/NotepadIcon.vue';
   import CreateAlbum from '../../upload/CreateAlbum.vue';
   import ChooseYear from '../ChooseYear/ChooseYear.vue';
+  import ReturnHeader from '../ReturnHeader.vue';
   import gql from 'graphql-tag';
 
   export default{
@@ -189,6 +199,30 @@
     },
 
     methods: {
+      removeTrack() {
+        this.$apollo.mutate({
+          variables: {
+            id: this.trackId
+          },
+          mutation: gql`mutation($id: Int!) {
+            deleteTrackMutation (id: $id) {
+              id
+            }
+          }`
+        })
+        .then(response => {
+          this.$router.push('/profile/my-music');
+          this.$message(
+            'Ваша песня удалена',
+            'info',
+            { timeout: 5000 }
+          );
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      },
+
       handleTextfileInput(file){
         if(file !== null && file.type.match('application/vnd.openxmlformats-officedocument.wordprocessingml.document|text/plain')){
           this.trackInfo.text = file;
@@ -319,7 +353,8 @@
       NotepadIcon,
       CreateAlbum,
       ChooseYear,
-      SpinnerLoader
+      SpinnerLoader,
+      ReturnHeader
     },
 
     apollo: {
