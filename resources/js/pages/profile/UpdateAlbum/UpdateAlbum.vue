@@ -193,6 +193,9 @@
           let genres = this.albumInfo.genres.map((genre) => {
             return genre.id;
           });
+          let format = this.albumFormats.filter(album => {
+            return album.name === this.albumInfo.format;
+          });
           let singer = null;
           let band = null;
           let bandId = null;
@@ -206,7 +209,7 @@
             singer = band[0].name;
           };
           let info = {
-            'type': this.albumInfo.format.value,
+            'type': format[0].value,
             'year': this.albumInfo.year.input,
             'musicGroup': bandId,
             'genres': genres,
@@ -334,6 +337,7 @@
       },
 
       album() {
+        this.isLoading = true;
         return {
           variables: {
             id: this.albumId
@@ -341,6 +345,7 @@
           fetchPolicy: 'network-only',
           query: gql`query Album($id: Int!){
             album(id: $id){
+              id
               title
               genres{
                 id
@@ -358,11 +363,16 @@
             }
           }`,
           update(data) {
-            console.log(data);
             this.isLoading = false;
             this.albumInfo.name.input = data.album.title;
             this.albumInfo.year.input = (new Date(data.album.year).getFullYear()).toString();
             this.albumInfo.genres = data.album.genres;
+            if(data.album.type){
+              let format = this.albumFormats.filter(album => {
+                return album.value === data.album.type;
+              });
+              this.albumInfo.type = format[0].name;
+            }
             return data.album;
           }
         }

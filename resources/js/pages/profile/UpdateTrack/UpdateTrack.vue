@@ -399,8 +399,10 @@
           variables: {
             id: this.trackId
           },
+          fetchPolicy: 'network-only',
           query: gql`query Track($id: Int!){
             track(id: $id){
+              id
               trackName
               album{
                 id
