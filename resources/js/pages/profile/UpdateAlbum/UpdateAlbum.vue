@@ -1,5 +1,6 @@
 <template>
   <div class="trackInfo">
+    <ReturnHeader />
     <div class="add-track-loading" v-if="isLoading">
       <SpinnerLoader />
     </div>
@@ -50,6 +51,14 @@
       <FormButton
         class="trackInfoFooter__button"
         :class="{disabled: isLoading}"
+        modifier="secondary"
+        @press="removeAlbum"
+      >
+        Удалить
+      </FormButton>
+      <FormButton
+        class="trackInfoFooter__button"
+        :class="{disabled: isLoading}"
         modifier="primary"
         @press="addInfo"
       >
@@ -72,6 +81,7 @@
   import NotepadIcon from 'components/icons/NotepadIcon.vue';
   import CreateAlbum from '../../upload/CreateAlbum.vue';
   import ChooseYear from '../ChooseYear/ChooseYear.vue';
+  import ReturnHeader from '../ReturnHeader.vue';
   import gql from 'graphql-tag';
 
   export default{
@@ -151,6 +161,30 @@
     },
 
     methods: {
+      removeAlbum() {
+        this.$apollo.mutate({
+          variables: {
+            id: this.albumId
+          },
+          mutation: gql`mutation($id: Int!) {
+            deleteAlbum (albumId: $id) {
+              id
+            }
+          }`
+        })
+        .then(response => {
+          this.$router.push('/profile/my-music');
+          this.$message(
+            'Ваш альбом удалён',
+            'info',
+            { timeout: 5000 }
+          );
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      },
+
       handleFormatChoice() {
 
       },
@@ -258,7 +292,8 @@
       NotepadIcon,
       CreateAlbum,
       ChooseYear,
-      SpinnerLoader
+      SpinnerLoader,
+      ReturnHeader
     },
 
     apollo: {
