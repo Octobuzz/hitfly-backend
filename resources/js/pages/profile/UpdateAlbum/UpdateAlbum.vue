@@ -41,7 +41,7 @@
           </template>
         </ChooseYear>
         <ChooseGenres
-          v-model="albumInfo.genre"
+          v-model="albumInfo.genres"
           class="add-track-description__genre-tag-container"
           dropdown-class="add-track-description__dropdown"
         />
@@ -206,7 +206,7 @@
             singer = band[0].name;
           };
           let info = {
-            'type': this.albumInfo.format,
+            'type': this.albumInfo.format.value,
             'year': this.albumInfo.year.input,
             'musicGroup': bandId,
             'genres': genres,
@@ -358,6 +358,7 @@
             }
           }`,
           update(data) {
+            console.log(data);
             this.isLoading = false;
             this.albumInfo.name.input = data.album.title;
             this.albumInfo.year.input = (new Date(data.album.year).getFullYear()).toString();
