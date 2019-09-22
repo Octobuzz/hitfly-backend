@@ -29,6 +29,10 @@ class AlbumType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'Название',
             ],
+            'type' => [
+                'type' => Type::string(),
+                'description' => 'Тип альбома',
+            ],
             'genres' => [
                 'type' => Type::listOf(GraphQL::type('Genre')),
                 'description' => 'Жанры альбома',
