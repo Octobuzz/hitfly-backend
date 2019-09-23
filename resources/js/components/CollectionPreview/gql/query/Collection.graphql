@@ -6,7 +6,7 @@ query CollectionPreview_collection(
         title
         image(
             # the second size is needed to support caching (used in UniversalCollectionsContainer_collections)
-            sizes: [size_48x48, size_150x150, size_214x160]
+            sizes: [size_48x48, size_150x150, size_160x160]
         ) {
             size
             url

@@ -7,7 +7,7 @@ query CollectionPopover_collection(
         title
         image(
             # the sizes are needed to support caching
-            sizes: [size_48x48, size_150x150, size_214x160]
+            sizes: [size_48x48, size_150x150, size_160x160]
         ) {
             size
             url
