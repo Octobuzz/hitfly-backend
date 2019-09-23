@@ -142,7 +142,7 @@ export default {
       }
 
       return this.collection.image
-        .filter(image => image.size === 'size_214x160')[0].url;
+        .filter(image => image.size === 'size_160x160')[0].url;
     },
 
     titleLink() {

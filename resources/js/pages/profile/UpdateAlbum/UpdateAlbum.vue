@@ -364,6 +364,7 @@
             }
           }`,
           update(data) {
+            console.log(data);
             this.isLoading = false;
             this.albumInfo.name.input = data.album.title;
             this.albumInfo.year.input = (new Date(data.album.year).getFullYear()).toString();

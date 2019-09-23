@@ -16,7 +16,7 @@ query UniversalCollectionsContainer_collections(
             id
             title
             image(
-                sizes: [size_48x48, size_150x150, size_214x160]
+                sizes: [size_48x48, size_150x150, size_160x160]
             ) {
                 size
                 url
