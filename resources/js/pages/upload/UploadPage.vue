@@ -118,7 +118,6 @@
           variables: {
             id: this.trackID,
             infoTrack: {
-              singer: info.singer,
               musicGroup: info.musicGroup,
               genres: info.genre,
               trackDate: info.trackDate,
@@ -132,7 +131,6 @@
             updateTrack (id: $id, infoTrack: $infoTrack) {
               id
               trackName
-              singer
               trackDate
               musicGroup{
                 id
