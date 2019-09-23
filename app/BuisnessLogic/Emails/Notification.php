@@ -286,6 +286,7 @@ class Notification
     /**
      * новый трек у любимого исполнителя.
      * Ищет всех подписавшихся на автора трека и рассылает письма.
+     *
      * @throws Exception
      */
     public function newFavouriteTrackNotification($track)
