@@ -2,7 +2,10 @@
   <div :class="['collection-track-list', containerPaddingClass]">
     <ReturnHeader class="collection-track-list__return-button" />
 
-    <template v-if="collectionFetched && trackListDataExists && firstCollectionTrack !== null">
+    <template v-if="!collectionFetched || !trackListDataExists || firstCollectionTrack === null">
+      <SpinnerLoader />
+    </template>
+    <template v-else>
       <span class="collection-track-list__singer">
         {{ genre.name }}
       </span>
@@ -64,15 +67,15 @@
           </IconButton>
         </CollectionPopover> -->
       </div>
-    </template>
 
-    <UniversalTrackList
-      :for-id="genreId"
-      for-type="genre"
-      :show-table-header="false"
-      :show-remove-button="false"
-      @initialized="onTrackListInitialized"
-    />
+      </template>
+      <UniversalTrackList
+        :for-id="genreId"
+        for-type="genre"
+        :show-table-header="false"
+        :show-remove-button="false"
+        @initialized="onTrackListInitialized"
+      />
   </div>
 </template>
 
@@ -105,6 +108,7 @@ import UniversalTrackList from '../UniversalTrackList';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import CollectionPopover from 'components/CollectionPopover';
 import ReturnHeader from '../ReturnHeader.vue';
+import SpinnerLoader from 'components/SpinnerLoader.vue';
 import gql from './gql';
 
 const ofNumber = arg => typeof arg === 'number';
@@ -120,6 +124,7 @@ export default {
     CirclePauseIcon,
     DotsIcon,
     AddToFavButton,
+    SpinnerLoader,
     UnauthenticatedPopoverWrapper
   },
 
@@ -269,7 +274,7 @@ export default {
           this.$store.commit('player/startPlaying');
         }else{
           this.$apollo.provider.clients[this.apolloClient].query({
-            query: gql.query.TRACKS,
+            query: gql.query.QUEUE_TRACKS,
             variables: {
               isAuthenticated: this.isAuthenticated,
               pageLimit: 50,
@@ -286,8 +291,8 @@ export default {
             };
             this.$store.commit('player/pausePlaying');
             this.$store.commit('player/changeCurrentType', data);
-            this.$store.commit('player/pickTrack', data.tracks.data[0]);
-            let arrayTr = data.tracks.data.map(data => {
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
               return data.id;
             });
             this.$store.commit('player/pickPlaylist', arrayTr);
@@ -316,13 +321,17 @@ export default {
     },
 
     collection() {
+      this.collectionFetched = false;
       return {
         client: this.apolloClient,
-        query: gql.query.TRACKS,
+        query: gql.query.QUEUE_TRACKS,
         variables: {
           isAuthenticated: this.isAuthenticated,
           pageLimit: 50,
-          pageNumber: 1
+          pageNumber: 1,
+          filters: {
+            genre: this.genreId
+          }
         },
         update(data) {
           this.tracks = data.tracks.data;
@@ -336,6 +345,7 @@ export default {
       return {
         client: this.apolloClient,
         query: gql.query.TRACK,
+        fetchPolicy: 'network-only',
         variables() {
           return {
             isAuthenticated: this.isAuthenticated,

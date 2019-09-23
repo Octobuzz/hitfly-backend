@@ -1,6 +1,6 @@
 <template>
   <UniversalTracksContainer
-    query="tracks"
+    query="new_songs"
   >
     <template #default="container">
       <TrackScrollHorizontal

@@ -209,7 +209,7 @@ export default {
     trackList() {
       let query = null;
       if(this.query === 'tracks' || this.query === 'new_songs' || this.query === 'genre') {
-        query = gql.query.TRACKS
+        query = gql.query.QUEUE_TRACKS
       } else if(this.query === 'TopWeeklyQuery' || this.query === 'weekly_top') {
         query = gql.query.WEEKLY_TOP
       } else if(this.query === 'top50') {
@@ -218,7 +218,7 @@ export default {
         query = gql.query.GET_LISTENED_NOW
       };
       if(this.query === 'genre') {
-        this.queryVars.filter = {'genre': this.forId};
+        this.queryVars.filters = {'genre': this.forId};
       };
       return {
         query: query,
@@ -230,9 +230,9 @@ export default {
         fetchPolicy: 'network-only',
 
         update(commonObject) {
-          let to = Object.values(commonObject.tracks)[0].to;
-          let total = Object.values(commonObject.tracks)[0].total;
-          let data = Object.values(commonObject.tracks)[0].data;
+          let to = Object.values(commonObject)[0].to;
+          let total = Object.values(commonObject)[0].total;
+          let data = Object.values(commonObject)[0].data;
           this.isLoading = false;
           this.$emit('initialized', {
             data,
@@ -240,7 +240,7 @@ export default {
             error: null
           });
           let currentType = null;
-          if(this.query === 'tracks') {
+          if(this.query === 'new_songs') {
             currentType = 'newTracks';
           } else if (this.query === 'TopWeeklyQuery'){
             currentType = 'weeklyTop';
