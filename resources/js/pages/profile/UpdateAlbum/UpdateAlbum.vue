@@ -364,17 +364,14 @@
             }
           }`,
           update(data) {
-            console.log(data);
             this.isLoading = false;
             this.albumInfo.name.input = data.album.title;
             this.albumInfo.year.input = (new Date(data.album.year).getFullYear()).toString();
             this.albumInfo.genres = data.album.genres;
-            if(data.album.type){
-              let format = this.albumFormats.filter(album => {
-                return album.value === data.album.type;
-              });
-              this.albumInfo.format = format[0].name;
-            };
+            let format = this.albumFormats.filter(album => {
+              return album.value === data.album.type;
+            });
+            this.albumInfo.format = format[0].name;
             return data.album;
           }
         }
