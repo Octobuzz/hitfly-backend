@@ -377,6 +377,10 @@ const routes = [
         component: main.MainPageTrackList,
       },
       {
+        path: 'genre/:genreId',
+        component: main.MainPageGenreTrackList
+      },
+      {
         path: 'playlist/:playlistId',
         component: main.CollectionTrackList
       },
