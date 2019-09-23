@@ -3,6 +3,7 @@
     <UniversalTracksContainer
       ref="tracksContainer"
       :query="forType"
+      :for-id="forId"
       :shown-tracks-count="shownTracksCount"
       @initialized="onTracksContainerInitialized"
       @tracks-removed="$emit('tracks-removed')"
@@ -51,10 +52,12 @@ export default {
         'listening_now',
         'weekly_top',
         'new_songs',
+        'genre'
       ].includes(val),
       required: true
     },
     forId: {
+      type: Number,
       required: false
     },
     shownTracksCount: {
