@@ -347,6 +347,7 @@
             album(id: $id){
               id
               title
+              type
               genres{
                 id
                 name
@@ -363,6 +364,7 @@
             }
           }`,
           update(data) {
+            console.log(data);
             this.isLoading = false;
             this.albumInfo.name.input = data.album.title;
             this.albumInfo.year.input = (new Date(data.album.year).getFullYear()).toString();
@@ -371,8 +373,8 @@
               let format = this.albumFormats.filter(album => {
                 return album.value === data.album.type;
               });
-              this.albumInfo.type = format[0].name;
-            }
+              this.albumInfo.format = format[0].name;
+            };
             return data.album;
           }
         }
