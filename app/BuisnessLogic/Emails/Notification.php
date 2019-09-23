@@ -29,6 +29,7 @@ use App\Models\Watcheables;
 use  App\User;
 use Carbon\Carbon;
 use App\BuisnessLogic\Playlist\Tracks;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -285,10 +286,10 @@ class Notification
     /**
      * новый трек у любимого исполнителя.
      * Ищет всех подписавшихся на автора трека и рассылает письма.
+     * @throws Exception
      */
     public function newFavouriteTrackNotification($track)
     {
-        //$track = Track::query()->find(1);
         $users = $this->getWatchingUsersByTrack($track);
         switch (get_class($track)) {
             case Track::class:
@@ -298,7 +299,7 @@ class Notification
                 $essence = 'album';
                 break;
             default:
-                throw new \Exception('неизвестный тип');
+                throw new Exception('неизвестный тип');
         }
 
         foreach ($users as $user) {
@@ -325,7 +326,7 @@ class Notification
      *
      * @param $userId
      *
-     * @return array
+     * @return User[]
      */
     public function getWatchingUsers($userId)
     {

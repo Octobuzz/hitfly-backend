@@ -89,6 +89,7 @@ class ConvertTrackCommand extends Command
         $trackFile = Storage::disk('public')->path($track->filename);
 
         $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile", '-ab', '192k', '-map_metadata', '0', '-id3v2_version', '3', "$tmpFile192"]);
+        $processConvert->setTimeout(1200);
         $processConvert->run();
         // executes after the command finishes
         if (!$processConvert->isSuccessful()) {
@@ -111,6 +112,7 @@ class ConvertTrackCommand extends Command
         $trackFile = Storage::disk('public')->path($track->filename);
 
         $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile", '-ab', '320k', '-map_metadata', '0', '-id3v2_version', '3', "$tmpFile320"]);
+        $processConvert->setTimeout(1200);
         $processConvert->run();
         // executes after the command finishes
         if (!$processConvert->isSuccessful()) {
