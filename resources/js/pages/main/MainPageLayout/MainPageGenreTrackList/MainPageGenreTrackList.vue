@@ -2,71 +2,76 @@
   <div :class="['collection-track-list', containerPaddingClass]">
     <ReturnHeader class="collection-track-list__return-button" />
 
-    <template v-if="!collectionFetched || !trackListDataExists || firstCollectionTrack === null">
+    <template v-if="!collectionFetched">
       <SpinnerLoader />
     </template>
     <template v-else>
-      <span class="collection-track-list__singer">
-        {{ genre.name }}
-      </span>
+      <template v-if="trackListDataExists && firstCollectionTrack">
+        <span class="collection-track-list__singer">
+          {{ genre.name }}
+        </span>
 
-      <div class="collection-track-list__track-section">
-        <img
-          :src="shownTrack.cover.filter(
-            cover => cover.size === 'size_150x150'
-          )[0].url
-          "
-          alt="Track cover"
-          class="collection-track-list__track-cover"
-        >
+        <div class="collection-track-list__track-section">
+          <img
+            :src="shownTrack.cover.filter(
+              cover => cover.size === 'size_150x150'
+            )[0].url
+            "
+            alt="Track cover"
+            class="collection-track-list__track-cover"
+          >
 
-        <div class="collection-track-list__player-section">
-          <span class="h3 collection-track-list__collection-title">
-            {{ shownTrack.trackName }}
-          </span>
+          <div class="collection-track-list__player-section">
+            <span class="h3 collection-track-list__collection-title">
+              {{ shownTrack.trackName }}
+            </span>
 
-          <div class="collection-track-list__player">
-            <WavePlayer />
+            <div class="collection-track-list__player">
+              <WavePlayer />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="collection-track-list__button-section">
-        <button
-          @click="playCollection"
-          :class="[
-            'collection-track-list__button',
-            'collection-track-list__button_listen',
-            { 'collection-track-list__button_disabled': !trackListDataExists }
-          ]"
-        >
-          <template v-if="currentPlaying">
-            <CirclePauseIcon />
-            Пауза
-          </template>
-          <template v-else>
-            <CirclePlayIcon />
-            Слушать
-          </template>
-        </button>
-
-        <!-- <CollectionPopover
-          :collection-id="collectionId"
-          :hide-player-actions="!trackListDataExists"
-          @press-favourite="onPressFavourite"
-          @collection-removed="goBack"
-        >
-          <IconButton
-            class="collection-track-list__button collection-track-list__button_more"
-            passive="standard-passive"
-            hover="standard-hover"
-            modifier="squared bordered"
-            :tooltip="tooltip.more"
+        <div class="collection-track-list__button-section">
+          <button
+            @click="playCollection"
+            :class="[
+              'collection-track-list__button',
+              'collection-track-list__button_listen',
+              { 'collection-track-list__button_disabled': !trackListDataExists }
+            ]"
           >
-            <DotsIcon />
-          </IconButton>
-        </CollectionPopover> -->
-      </div>
+            <template v-if="currentPlaying">
+              <CirclePauseIcon />
+              Пауза
+            </template>
+            <template v-else>
+              <CirclePlayIcon />
+              Слушать
+            </template>
+          </button>
+
+          <!-- <CollectionPopover
+            :collection-id="collectionId"
+            :hide-player-actions="!trackListDataExists"
+            @press-favourite="onPressFavourite"
+            @collection-removed="goBack"
+          >
+            <IconButton
+              class="collection-track-list__button collection-track-list__button_more"
+              passive="standard-passive"
+              hover="standard-hover"
+              modifier="squared bordered"
+              :tooltip="tooltip.more"
+            >
+              <DotsIcon />
+            </IconButton>
+          </CollectionPopover> -->
+        </div>
+      </template>
+      <template v-else>
+        <p>Данный список пуст</p>
+      </template>
 
       </template>
       <UniversalTrackList
