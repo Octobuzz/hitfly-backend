@@ -25,7 +25,7 @@ class UserObserver
     /**
      * Handle the user "created" event.
      *
-     * @param \App\User $user
+     * @param User $user
      */
     public function created(User $user)
     {
@@ -33,16 +33,20 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
-        $purse = new Purse();
-        $purse->balance = 0;
-        $purse->name = Purse::NAME_BONUS;
-        $purse->user_id = $user->id;
-        $user->purse()->save($purse);
-        $purse->save();
+        $purse = $user->purseBonus;
+        if (null === $purse) {
+            $purse = new Purse();
+            $purse->balance = 0;
+            $purse->name = Purse::NAME_BONUS;
+            $purse->user_id = $user->id;
+            $user->purse()->save($purse);
+            $purse->save();
+        }
         if (!empty($user->username) && true === $user->inRoles($this->rolesToSearchIndex)) {
             $indexer = new SearchIndexer();
             $indexer->index(Collection::make([$user]), 'user');
         }
+
 //        //отправка письма о завершении регистрации
 //        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
 //            dispatch(new UserRegisterJob($user))->onQueue('low');
@@ -52,7 +56,9 @@ class UserObserver
     /**
      * Handle the user "updated" event.
      *
-     * @param \App\User $user
+     * @param User $user
+     *
+     * @return bool
      */
     public function updating(User $user)
     {
@@ -62,7 +68,7 @@ class UserObserver
             return true;
         }
         $requestParams = Route::current()->parameters();
-        if ($user->isDirty('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
+        if ($user->isDirty('email') && null !== $user->getOriginal('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
             $hash = md5($user->id.$user->email.microtime());
             $emailChange = EmailChange::updateOrCreate(
                 ['new_email' => $user->email],
@@ -73,7 +79,10 @@ class UserObserver
                 ]
             );
             $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
-            dispatch(new EmailChangeJob($user, $user->getOriginal('email'), $url))->onQueue('low');
+
+            dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+
+            return false;
         }
 
         if (true === $user->wasChanged('level')) {
@@ -102,7 +111,7 @@ class UserObserver
     /**
      * Handle the user "deleted" event.
      *
-     * @param \App\User $user
+     * @param User $user
      */
     public function deleted(User $user)
     {
@@ -113,7 +122,7 @@ class UserObserver
     /**
      * Handle the user "restored" event.
      *
-     * @param \App\User $user
+     * @param User $user
      */
     public function restored(User $user)
     {
@@ -126,7 +135,7 @@ class UserObserver
     /**
      * Handle the user "force deleted" event.
      *
-     * @param \App\User $user
+     * @param User $user
      */
     public function forceDeleted(User $user)
     {

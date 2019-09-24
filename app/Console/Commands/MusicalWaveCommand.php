@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Events\Track\CreatedMusicWaveEvent;
 use App\Models\Track;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -12,7 +13,6 @@ use Symfony\Component\Process\Process;
 
 class MusicalWaveCommand extends Command
 {
-    const TMP_DIR = '/tmp/';
     /**
      * The name and signature of the console command.
      *
@@ -78,11 +78,11 @@ class MusicalWaveCommand extends Command
 
     private function convertTrack($trackFile): string
     {
-        $newNameWav = uniqid().'.wav';
-        $tmpFile = self::TMP_DIR.$newNameWav;
+        $newNameWav = uniqid('', true).'.wav';
+        $tmpFile = Storage::disk('local')->path($newNameWav);
 
         $processConvert = new Process(['./ffmpeg',  '-i', "$trackFile",  "$tmpFile"]);
-
+        $processConvert->setTimeout(1200);
         $processConvert->run();
         // executes after the command finishes
         if (!$processConvert->isSuccessful()) {
@@ -94,17 +94,24 @@ class MusicalWaveCommand extends Command
 
     private function createMusicWaveTMP($tmpFile): array
     {
-        $process = new Process(['/usr/bin/python3.5', './lib/main.py',  "$tmpFile"]);
-        $process->run();
+        $response = [];
+        try {
+            $process = new Process(['/usr/bin/python3.5', './lib/main.py',  "$tmpFile"]);
+            $process->run();
 
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-        $response = json_decode($process->getOutput());
+            // executes after the command finishes
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
 
-        if (null === $response) {
-            return [];
+            $response = json_decode($process->getOutput());
+            if (null === $response) {
+                return [];
+            }
+        } catch (\Exception $exception) {
+            throw new ProcessFailedException($exception);
+        } finally {
+            File::delete($tmpFile);
         }
 
         return $response;

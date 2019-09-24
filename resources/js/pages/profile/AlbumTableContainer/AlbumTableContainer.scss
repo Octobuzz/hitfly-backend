@@ -1,3 +1,24 @@
-.album-table-container__header {
-  margin-top: 32px;
+@import '~scss/_variables.scss';
+
+.album-table-container {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+  }
+
+  &__button {
+    font-family: 'Gotham Pro', serif;
+    font-size: 14px;
+    color: #231F20;
+    padding: 14px 16px;
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius;
+    transition: .15s;
+
+    &:hover {
+      border-color: $red_violet;
+    }
+  }
 }

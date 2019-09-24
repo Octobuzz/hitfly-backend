@@ -1,15 +1,17 @@
 <template>
   <div class="user-card">
     <div :class="[itemContainerClass, 'user-card__item']">
-      <img
+      <UserCardAvatar
         class="user-card__profile-avatar"
-        :src="myProfile.avatar || anonymousAvatar"
-        alt="User avatar"
-      >
+        :roles="roles"
+        :avatar-src="myProfile.avatar"
+      />
 
       <div class="user-card__profile-info">
         <p class="user-card__profile-name">
-          {{ myProfile.name }}
+          <WordTrimmedWithTooltip
+            :word="myProfile.name"
+          />
         </p>
         <p class="user-card__followers-count">
           {{ myProfile.followersCount || '0' }}
@@ -92,20 +94,24 @@
           :key="group.id"
           class="user-card__group"
         >
-          <img
-            class="user-card__group-cover"
-            :src="
-              group.avatarGroup.filter(
-                avatar => avatar.size === 'size_40x40'
-              )[0].url
-            "
-            alt="Group cover"
-          >
+          <div class="user-card__group-cover">
+            <img
+              class="user-card__group-cover-img"
+              :src="
+                group.avatarGroup.filter(
+                  avatar => avatar.size === 'size_40x40'
+                )[0].url
+              "
+              alt="Group cover"
+            >
+          </div>
 
           <div class="user-card__group-info">
             <div class="user-card__someone-info">
               <p class="user-card__group-name">
-                {{ group.name }}
+                <WordTrimmedWithTooltip
+                  :word="group.name"
+                />
               </p>
               <p class="user-card__group-followers">
                 {{ group.followersCount || '0' }}
@@ -162,25 +168,29 @@
           class="user-card__user user-card__user-info"
         >
           <router-link :to="`/user/${user.id}/music`">
-            <img
-              class="user-card__user-avatar"
-              :src="
-                user.avatar.filter(
-                  image => image.size === 'size_56x56'
-                )[0].url
-              "
-              alt="User avatar"
-            >
+            <div class="user-card__user-avatar">
+              <img
+                class="user-card__user-avatar-img"
+                :src="
+                  user.avatar.filter(
+                    image => image.size === 'size_56x56'
+                  )[0].url
+                "
+                alt="User avatar"
+              >
+            </div>
           </router-link>
 
           <div class="user-card__someone-info">
             <p class="user-card__username">
-              <router-link
-                class="user-card__username-link"
-                :to="`/user/${user.id}/music`"
-              >
-                {{ user.username }}
-              </router-link>
+              <WordTrimmedWithTooltip
+                :class="[
+                  'user-card__username-link',
+                  'user-card__watched-user-link'
+                ]"
+                :word="user.username"
+                @click="goToUserProfile(user)"
+              />
             </p>
             <p
               v-if="user.location"
@@ -205,15 +215,17 @@
           :key="group.id"
           class="user-card__group user-card__group-info"
         >
-          <img
-            class="user-card__group-cover"
-            :src="
-              group.avatarGroup.filter(
-                image => image.size === 'size_40x40'
-              )[0].url
-            "
-            alt="Group cover"
-          >
+          <div class="user-card__group-cover">
+            <img
+              class="user-card__group-cover-img"
+              :src="
+                group.avatarGroup.filter(
+                  image => image.size === 'size_40x40'
+                )[0].url
+              "
+              alt="Group cover"
+            >
+          </div>
 
           <div class="user-card__someone-info">
             <p class="user-card__group-name">
@@ -257,16 +269,19 @@
         class="user-card__bonus-program-p"
       >
         <span>
-          до
+          до статуса
           <img
             :src="myProfile.bonusProgram.nextLevelImage"
             alt="Bonus program level"
             class="user-card__bonus-program-image"
           >
-          {{ myProfile.bonusProgram.nextLevelText }}
+          <span class="user-card__bonus-program-next-status">
+            {{ myProfile.bonusProgram.nextLevelText }}
+          </span>
           осталось
           <span class="h5 user-card__bonus-program-h">
-            {{ myProfile.bonusProgram.pointsToNextLevel }} б
+            {{ myProfile.bonusProgram.pointsToNextLevel }}
+            {{ format('BONUS', myProfile.bonusProgram.pointsToNextLevel) }}
           </span>
         </span>
       </p>
@@ -315,7 +330,7 @@
         class="user-card__bonus-program-genres"
       >
         <p class="h5 user-card__bonus-program-genres-header">
-          Прослушанные треки по жанрам
+          Прослушанные песни по жанрам
         </p>
         <div
           v-for="genre in myProfile.bonusProgram.listenedTracksByGenre"
@@ -346,7 +361,7 @@
     >
       <div class="user-card__item-header">
         <span>
-          Обо мне
+          {{ isStar ? 'Биография' : 'Обо мне' }}
         </span>
       </div>
       <p class="user-card__about-text">
@@ -357,10 +372,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { bonusProgramLvl } from 'modules/bonus-program';
 import endingFormatter from 'modules/plural-form-endings-formatter';
-import anonymousAvatar from 'images/anonymous-avatar.png';
+import UserCardAvatar from 'pages/profile/UserCardAvatar';
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import IconButton from 'components/IconButton.vue';
 import PencilIcon from 'components/icons/PencilIcon.vue';
 import ArrowIcon from 'components/icons/ArrowIcon.vue';
@@ -372,6 +388,8 @@ import gql from './gql';
 
 export default {
   components: {
+    WordTrimmedWithTooltip,
+    UserCardAvatar,
     BpFollowers,
     BpDaysPassed,
     BpFavouriteTracks,
@@ -407,8 +425,7 @@ export default {
           daysPassed: '',
           listenedTracksByGenre: []
         }
-      },
-      anonymousAvatar
+      }
     };
   },
 
@@ -448,6 +465,11 @@ export default {
       )).join(', ');
     },
 
+    isStar() {
+      return this.hasRole('star');
+    },
+
+    ...mapState('profile', ['roles']),
     ...mapGetters({
       ableToPerform: 'profile/ableToPerform',
       hasRole: 'profile/roles'
@@ -496,6 +518,20 @@ export default {
       this.$router.push('/profile/create-group');
     },
 
+    goToUserProfile(user) {
+      const isProfCriticOrStar = user.roles.some(
+        role => role.slug === 'prof_critic' || role.slug === 'star'
+      );
+
+      if (isProfCriticOrStar) {
+        this.$router.push(`/user/${user.id}/user-reviews`);
+
+        return;
+      }
+
+      this.$router.push(`/user/${user.id}/music`);
+    },
+
     format(word, count) {
       return endingFormatter(word, count);
     }
@@ -526,7 +562,7 @@ export default {
         if (!dateRegister) return;
 
         this.myProfile.avatar = avatar
-          .filter(image => image.size === 'size_56x56')[0].url;
+          .filter(image => image.size === 'size_72x72')[0].url;
 
         this.myProfile.name = username;
         this.myProfile.playedGenres = genresPlay;

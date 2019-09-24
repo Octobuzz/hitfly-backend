@@ -10,12 +10,12 @@
         :has-more-data="container.hasMoreData"
       >
         <template #title>
-          <router-link to="/weekly-top">
+          <router-link to="weekly_top">
             <span class="h2 other-user-music__albums-title">
               Открытие недели
             </span>
             <span class="scrollSubheader">
-              Треки, которые неожиданно поднялись в чарте
+              Песни, которые неожиданно поднялись в чарте
             </span>
           </router-link>
         </template>

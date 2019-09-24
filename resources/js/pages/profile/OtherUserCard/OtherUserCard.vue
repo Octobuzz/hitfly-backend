@@ -2,15 +2,17 @@
   <div class="user-card">
     <div :class="[itemContainerClass]">
       <div class="user-card__item">
-        <img
+        <UserCardAvatar
           class="user-card__profile-avatar"
-          :src="user.avatar || anonymousAvatar"
-          alt="User avatar"
-        >
+          :roles="user.roles || []"
+          :avatar-src="user.avatar"
+        />
 
         <div class="user-card__profile-info">
           <p class="user-card__profile-name">
-            {{ user.username }}
+            <WordTrimmedWithTooltip
+              :word="user.username || ''"
+            />
           </p>
           <p class="user-card__followers-count">
             {{ user.followersCount || '0' }}
@@ -114,7 +116,7 @@
     >
       <div class="user-card__item-header">
         <span>
-          Обо мне
+          {{ user.roles.includes('star') ? 'Биография' : 'Обо мне' }}
         </span>
       </div>
       <p class="user-card__about-text">
@@ -128,6 +130,8 @@
 import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import anonymousAvatar from 'images/anonymous-avatar.png';
+import UserCardAvatar from 'pages/profile/UserCardAvatar';
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import FormButton from 'components/FormButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
@@ -159,6 +163,8 @@ const formatting = {
 
 export default {
   components: {
+    UserCardAvatar,
+    WordTrimmedWithTooltip,
     FormButton,
     IconButton,
     DotsIcon,
@@ -253,7 +259,7 @@ export default {
           } = user;
 
           const userAvatar = avatar
-            .filter(image => image.size === 'size_56x56')[0].url;
+            .filter(image => image.size === 'size_72x72')[0].url;
 
           const slugs = new Set(roles.map(role => role.slug));
           const hasDesc = ['performer', 'critic', 'star']
@@ -269,6 +275,7 @@ export default {
 
           return {
             ...user,
+            roles: roles.map(role => role.slug),
             avatar: userAvatar,
             description: activity
           };

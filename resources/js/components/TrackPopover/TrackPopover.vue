@@ -53,6 +53,7 @@
         </span>
 
         <span
+          v-if="isAuthenticated"
           class="album-popover__menu-item"
           @click="onFavouritePress"
         >
@@ -81,7 +82,7 @@
         </span>
 
         <span
-          v-if="isWatchable"
+          v-if="isWatchable && isAuthenticated"
           class="album-popover__menu-item"
           @click="onWatchOwnerPress"
         >
@@ -114,6 +115,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import followMixin from 'mixins/followMixin';
 import PlayNextIcon from 'components/icons/popover/PlayNextIcon.vue';
 import ListPlusIcon from 'components/icons/popover/ListPlusIcon.vue';
@@ -174,6 +176,8 @@ export default {
 
       return this.track.my;
     },
+
+    ...mapGetters(['isAuthenticated', 'apolloClient', 'isFavouriteRemoveOptionHidden'])
   },
 
   methods: {
@@ -188,11 +192,11 @@ export default {
       // microtask problem: popover gets handled before click
       // so that the click could miss popover and collapse it
 
-      setTimeout(() => { this.inRemoveMenu = true; });
+      setTimeout(() => { this.inRemoveMenu = true; }, 100);
     },
 
     leaveRemoveMenu() {
-      setTimeout(() => { this.inRemoveMenu = false; });
+      setTimeout(() => { this.inRemoveMenu = false; }, 100);
     },
 
     ontrackRemoved() {
@@ -214,18 +218,22 @@ export default {
   },
 
   apollo: {
-    track: {
-      query: gql.query.TRACK,
-      variables() {
-        return {
-          id: this.trackId
-        };
-      },
-      update({ track }) {
-        return track;
-      },
-      error(err) {
-        console.dir(err);
+    track() {
+      return {
+        client: this.apolloClient,
+        query: gql.query.QUEUE_TRACK,
+        variables() {
+          return {
+            isAuthenticated: this.isAuthenticated,
+            id: this.trackId
+          };
+        },
+        update({ track }) {
+          return track;
+        },
+        error(err) {
+          console.dir(err);
+        }
       }
     }
   }

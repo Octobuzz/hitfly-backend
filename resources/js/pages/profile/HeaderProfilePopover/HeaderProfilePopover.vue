@@ -23,7 +23,7 @@
         </span>
 
         <HeaderProfilePopoverBonusProgram
-          v-if="isAuthenticated"
+          v-if="isAuthenticated && !isStarOrProfCritic"
           class="header-profile-popover__bonus-program"
         />
 
@@ -120,7 +120,15 @@ export default {
       return null;
     },
 
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
+    isStarOrProfCritic() {
+      return this.hasRole('star') || this.hasRole('prof_critic');
+    },
+
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      apolloClient: 'apolloClient',
+      hasRole: 'profile/roles'
+    })
   },
 
   methods: {

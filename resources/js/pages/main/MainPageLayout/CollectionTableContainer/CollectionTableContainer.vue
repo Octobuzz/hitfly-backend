@@ -17,6 +17,11 @@
           :has-more-data="container.hasMoreData"
         />
       </template>
+      <template #no-data>
+        <p>
+          В списке нет ни одного плейлиста/подборки.
+        </p>
+      </template>
     </UniversalCollectionsContainer>
   </div>
 </template>

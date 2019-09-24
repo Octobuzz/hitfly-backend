@@ -204,6 +204,7 @@
     flex-direction: column;
 
     &__error-msg{
+        text-align: left;
         color: $color_red;
         font-size: 12px;
         display: none;
@@ -379,31 +380,22 @@
       position: absolute;
       transition: all 0.2s;
     }
+
     &::before{
-      top: -4px;
+      transform: translateY(-4px);
     }
     &::after{
-      bottom: -4px;
+      transform: translateY(4px);
     }
 
     .menu-call.is-show &{
       background-color: transparent;
 
       &::before{
-        transform: translateY(4px) rotate(-45deg);
+        transform: translateY(0) rotate(-45deg);
       }
       &::after{
-        transform: translateY(-4px) rotate(45deg);
-      }
-    }
-  }
-  &:hover{
-    &.is-close .menu-call__rows{
-      &::before{
-        top: -6px;
-      }
-      &::after{
-        bottom: -6px;
+        transform: translateY(0) rotate(45deg);
       }
     }
   }
@@ -522,30 +514,30 @@
       }
 
       &::before{
-        top: -6px;
+        transform: translateY(-6px);
       }
       &::after{
-        bottom: -6px;
+        transform: translateY(6px);
       }
 
       .menu-call.is-show &{
         background-color: transparent;
 
         &::before{
-          transform: translateY(6px) rotate(-45deg);
+          transform: translateY(0) rotate(-45deg);
         }
         &::after{
-          transform: translateY(-6px) rotate(45deg);
+          transform: translateY(0) rotate(45deg);
         }
       }
     }
     &:hover{
       &.is-close .menu-call__rows{
         &::before{
-          top: -8px;
+          transform: translateY(-9px);
         }
         &::after{
-          bottom: -8px;
+          transform: translateY(9px);
         }
       }
     }

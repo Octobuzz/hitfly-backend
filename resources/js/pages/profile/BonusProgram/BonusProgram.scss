@@ -10,6 +10,7 @@
   }
 
   &__p {
+    color: $text_color_secondary;
     line-height: 24px;
     margin-bottom: 24px;
   }
@@ -42,6 +43,7 @@
   }
 
   &__status-name {
+    color: #231f20;
     display: block;
     margin: {
       top: 24px;
@@ -76,7 +78,7 @@
 
   &__level-images-container {
     display: flex;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
 
   &__level-image {
@@ -91,7 +93,7 @@
     height: 16px;
 
     &_top {
-      margin-bottom: 48px;
+      margin-bottom: 32px;
     }
 
     &_bottom {
@@ -110,6 +112,26 @@
     height: 100%;
     border-radius: 2px;
     background: $text_color_primary;
+  }
+
+  &__level-bonus-count,
+  &__level-track-count {
+    font-family: 'Gotham Pro Semibold', serif;
+    font-size: 12px;
+    color: #313131;
+    text-align: center;
+    position: relative;
+    width: 150px;
+    margin-bottom: 6px;
+    transform: translate(-50%);
+  }
+
+  &__level-bonus-count {
+    left: 75%;
+  }
+
+  &__level-track-count {
+    left: 54%;
   }
 
   &__progress-background {
@@ -142,6 +164,7 @@
   }
 
   &__level-description-title {
+    font-size: 20px;
     margin: {
       top: 28px;
       bottom: 28px;
@@ -208,8 +231,104 @@
     border: 1px solid white;
   }
 
+  &__bottom-section {
+    .bonus-program__p,
+    .bonus-program__li,
+    .bonus-program__header {
+      line-height: 24px;
+    }
+  }
+
+  &__bottom-section-ul {
+    padding-left: 20px;
+  }
+
   &__li {
+    color: $text_color_secondary;
     line-height: 18px;
     margin-bottom: 12px;
+  }
+
+  &__task-section {
+    margin-top: 36px;
+  }
+
+  &__task-daily {
+    box-sizing: border-box;
+    width: 272px;
+  }
+
+  &__task-oneoff-section-top {
+    display: inline-block;
+  }
+
+  &__task-oneoff-section-bottom {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    vertical-align: top;
+    padding-left: 82px;
+  }
+
+  &__task-oneoff-bottom {
+    margin-bottom: 40px;
+  }
+
+  &__task-daily-section::v-deep {
+    @include universal-scroll-height(
+      $item_height_desktop: 470px,
+      $item_height_mobile: 470px
+    );
+  }
+
+  &__task-section-title {
+    margin-bottom: 18px;
+  }
+
+  &__task-section-subtitle {
+    font-size: 20px;
+    margin-bottom: 26px;
+
+    &_daily {
+      margin-bottom: 0;
+    }
+  }
+
+  &__task-section-delimiter {
+    height: 1px;
+    border: none;
+    background-color: $layout_border_color;
+    margin-bottom: 14px;
+  }
+
+  &__task-index {
+    font-size: 22px;
+    color: #B36FCB;
+  }
+
+  &__task-title {
+    font-size: 16px;
+    line-height: 24px;
+    display: inline;
+    margin: 0 0 0 6px;
+  }
+
+  &__task-title-wrapper {
+    display: flex;
+  }
+
+  &__task-p {
+    font-size: 14px;
+    color: $text_color_secondary;
+  }
+
+  &__task-ul {
+    font-size: 14px;
+    color: $text_color_secondary;
+    padding-left: 18px;
+  }
+
+  &__task-li {
+    padding: 7px 0;
   }
 }

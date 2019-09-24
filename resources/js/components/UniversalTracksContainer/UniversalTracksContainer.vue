@@ -227,7 +227,7 @@ export default {
         }
       };
 
-      this.$apollo.provider.clients[this.apolloProvider].mutate({
+      this.$apollo.provider.clients[this.apolloClient].mutate({
         mutation,
         variables,
         optimisticResponse,
@@ -272,7 +272,7 @@ export default {
           this.removesInProcess -= 1;
 
           this.$message(
-            'Произошла ошибка. Трек не был удален',
+            'Произошла ошибка. Песня не была удалена',
             'info',
             { timeout: 2000 }
           );

@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -24,6 +25,10 @@ export default {
     query: {
       type: String,
       required: true
+    },
+    forId: {
+      type: Number,
+      required: false
     }
   },
   data() {
@@ -34,12 +39,14 @@ export default {
       currentType: null,
       queryVars: {
         pageNumber: 1,
-        pageLimit: 30
+        pageLimit: 30,
       }
     };
   },
 
   computed: {
+    ...mapGetters(['isAuthenticated', 'apolloClient']),
+
     trackIdList() {
       return this.trackList.map(track => track.id);
     },
@@ -67,6 +74,48 @@ export default {
       'track-removed',
       this.boundRemoveTrackFromStore
     );
+  },
+
+  watch: {
+    'query': function(){
+      let query = null;
+      if(this.query === 'top50') {
+        query = gql.query.GET_TOP_FIFTY
+      } else if (this.query === 'listening_now') {
+        query = gql.query.GET_LISTENED_NOW
+      } else if (this.query === 'weekly_top') {
+        query = gql.query.WEEKLY_TOP
+      } else if (this.query === 'new_songs' || this.query === 'genre') {
+        query = gql.query.TRACKS
+      };
+      this.$apollo.provider.clients[this.apolloClient].query({
+        query: query,
+        variables: {
+          isAuthenticated: this.isAuthenticated,
+          pageLimit: 50,
+          pageNumber: 1,
+        },
+      })
+      .then(response => {
+        let collectionResponse = null;
+        if(this.query === 'top50'){
+          collectionResponse = response.data.GetTopFifty.data;
+        } else if (this.query === 'listening_now'){
+          collectionResponse = response.data.GetListenedNow.data;
+        } else if (this.query === 'weekly_top'){
+          collectionResponse = response.data.TopWeeklyQuery.data;
+        } else if (this.query === 'new_songs'){
+          collectionResponse = response.data.tracks.data;
+        } else if (this.query === 'genre'){
+          collectionResponse = response.data.tracks.data;
+        };
+        this.trackList = collectionResponse;
+        return collectionResponse;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
   },
 
   methods: {
@@ -159,16 +208,25 @@ export default {
   apollo: {
     trackList() {
       let query = null;
-      if(this.query === 'tracks') {
-        query = gql.query.TRACKS
-      } else if(this.query === 'TopWeeklyQuery') {
+      if(this.query === 'tracks' || this.query === 'new_songs' || this.query === 'genre') {
+        query = gql.query.QUEUE_TRACKS
+      } else if(this.query === 'TopWeeklyQuery' || this.query === 'weekly_top') {
         query = gql.query.WEEKLY_TOP
       } else if(this.query === 'top50') {
         query = gql.query.GET_TOP_FIFTY
+      }else if(this.query === 'listening_now') {
+        query = gql.query.GET_LISTENED_NOW
+      };
+      if(this.query === 'genre') {
+        this.queryVars.filters = {'genre': this.forId};
       };
       return {
         query: query,
-        variables: this.queryVars,
+        client: this.apolloClient,
+        variables: {
+          ...this.queryVars,
+          isAuthenticated: this.isAuthenticated
+        },
         fetchPolicy: 'network-only',
 
         update(commonObject) {
@@ -182,12 +240,14 @@ export default {
             error: null
           });
           let currentType = null;
-          if(this.query === 'tracks') {
+          if(this.query === 'new_songs') {
             currentType = 'newTracks';
           } else if (this.query === 'TopWeeklyQuery'){
             currentType = 'weeklyTop';
           } else if (this.query === 'top50'){
             currentType = 'top50';
+          } else if (this.query === 'genre'){
+            currentType = 'genre';
           };
           this.notifyInitialization(true, currentType);
 

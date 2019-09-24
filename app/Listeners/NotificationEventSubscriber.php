@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\BuisnessLogic\Emails\Notification;
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
 use App\Events\CompletedTaskEvent;
 use App\Events\CreatedTopFiftyEvent;
@@ -21,6 +22,13 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationEventSubscriber
 {
+    private $notification;
+
+    public function __construct(Notification $notification)
+    {
+        $this->notification = $notification;
+    }
+
     /**
      * Register the listeners for the subscriber.
      *
@@ -153,21 +161,31 @@ class NotificationEventSubscriber
         if (null !== $user->userNotification) {
             $exclude_client_id[] = $user->userNotification->token_web_socket;
         }
+        try {
+            $user = $track->user;
+            $messageData = [
+                'user' => [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'avatar' => $user->avatar,
+                ],
+                'music' => [
+                    'type' => 'Track',
+                    'id' => $track->id,
+                    'title' => $track->track_name,
+                ],
+            ];
 
-        $user = $track->user;
-        $messageData = [
-            'user' => [
-                'id' => $user->id,
-                'username' => $user->username,
-                'avatar' => $user->avatar,
-            ],
-            'music' => [
-                'type' => 'Track',
-                'id' => $track->id,
-                'title' => $track->track_name,
-            ],
-        ];
-        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
+            $messageNotify = new BaseNotifyMessage('new-music', $messageData);
+            $users = $this->notification->getWatchingUsers($user->id);
+            foreach ($users as $user) {
+                $user->notify($messageNotify);
+            }
+
+            $this->notification->newFavouriteTrackNotification($track);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), $exception);
+        }
     }
 
     public function createAlbum(Album $album)
@@ -191,7 +209,12 @@ class NotificationEventSubscriber
                 'title' => $album->title,
             ],
         ];
-        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
+        $messageNotify = new BaseNotifyMessage('new-music', $messageData);
+        $users = $this->notification->getWatchingUsers($user->id);
+        foreach ($users as $user) {
+            $user->notify($messageNotify);
+        }
+        $this->notification->newFavouriteTrackNotification($album);
     }
 
     public function createCollection(Collection $collection)
@@ -200,10 +223,6 @@ class NotificationEventSubscriber
         $user = $collection->user;
         if (null === $user) {
             $user = $collection->load('user');
-        }
-        $exclude_client_id = [];
-        if (null !== $user->userNotification) {
-            $exclude_client_id[] = $user->userNotification->token_web_socket;
         }
         $messageData = [
             'user' => [
@@ -217,10 +236,11 @@ class NotificationEventSubscriber
                 'title' => $collection->title,
             ],
         ];
-        if (null !== $user->userNotification) {
-            $exclude_client_id[] = $user->userNotification->token_web_socket;
+        $messageNotify = new BaseNotifyMessage('new-music', $messageData);
+        $users = $this->notification->getWatchingUsers($user->id);
+        foreach ($users as $user) {
+            $user->notify($messageNotify);
         }
-        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
     }
 
     public function criticReview(Comment $comment)
@@ -290,8 +310,8 @@ class NotificationEventSubscriber
     public function createdTopFifty(CreatedTopFiftyEvent $createdTopFifty)
     {
         $idsTrack = $createdTopFifty->getIdsTrack();
-        if (count($idsTrack) > 20) {
-            $chunks = array_chunk($idsTrack, 20, true);
+        if (count($idsTrack) > 50) {
+            $chunks = array_chunk($idsTrack, 50, true);
             $topTwenty = $chunks[0];
         } else {
             $topTwenty = $idsTrack;

@@ -34,7 +34,7 @@
           </p>
           <div class="up-b-info">
             <div class="up-b-info__left">
-              <a href="/" class="up-b-info__link">Пользовательское соглашение</a>
+              <a href="/policy" target="_blank" class="up-b-info__link">Пользовательское соглашение</a>
               <a href="/" class="up-b-info__link">Авторам</a>
               <a href="/" class="up-b-info__link">Помощь</a>
             </div>
@@ -118,7 +118,6 @@
           variables: {
             id: this.trackID,
             infoTrack: {
-              singer: info.singer,
               musicGroup: info.musicGroup,
               genres: info.genre,
               trackDate: info.trackDate,
@@ -132,7 +131,6 @@
             updateTrack (id: $id, infoTrack: $infoTrack) {
               id
               trackName
-              singer
               trackDate
               musicGroup{
                 id
@@ -157,7 +155,6 @@
             this.validation.trackName.message = errors['infoTrack.trackName'][0];
             this.validation.trackName.error = true;
           };
-          console.log(this.validation);
         })
       },
       uploadTrack(track){
@@ -176,7 +173,6 @@
           this.loading = false;
           this.filename = response.data.uploadTrack.filename;
           this.trackID = response.data.uploadTrack.id;
-          console.log(this.trackID);
         }).catch((error) => {
           console.dir(error);
           this.loading = false;

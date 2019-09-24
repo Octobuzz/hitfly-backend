@@ -21,7 +21,10 @@
       <span
         :class="[
           'track-list__header-duration',
-          { 'track-list__header-duration_padded': showRemoveButton }
+          {
+            'track-list__header-duration_padded-l': !isStar,
+            'track-list__header-duration_padded-r': showRemoveButton
+          }
         ]"
       >
         Время
@@ -59,6 +62,13 @@ export default {
   },
 
   props: {
+    forType: {
+      type: String,
+      required: false
+    },
+    forId: {
+      required: false
+    },
     trackIdList: {
       type: Array,
       required: true
@@ -94,6 +104,9 @@ export default {
   },
 
   computed: {
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
+    },
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
@@ -115,6 +128,14 @@ export default {
           query: gql.query.QUEUE_TRACK
         })
         .then(response => {
+          let data = {};
+          if(this.forType && this.forType.length > 0){
+            data = {
+              'type': this.forType,
+              'id': this.forId
+            };
+          };
+          this.$store.commit('player/changeCurrentType', data);
           this.$store.commit('player/pickTrack', response.data.track);
           this.$store.commit('player/pickPlaylist', this.trackIdList);
         })

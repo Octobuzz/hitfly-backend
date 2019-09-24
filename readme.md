@@ -8,7 +8,14 @@
 Запуск проекта 
 
     docker-compose build --build-arg base_env=$UID
+    
+Запуск дев режима для локальной разработки
 
+    docker-compose -f "./docker-compose.dev.yml" up -d
+
+Запуск сср для локальной разработки
+
+    docker-compose -f "./docker-compose.ssr.watch.yml" up -d
 
 Далее вам будет доступен сервер со следующими параметрами 
 

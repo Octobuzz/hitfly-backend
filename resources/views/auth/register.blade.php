@@ -8,7 +8,7 @@
             <div class="reg-page__alternative text-with-line">
                 <span>{{ __('auth.orRegisterWithEmail') }}</span>
             </div>
-            <form method="POST" id="form-auth" action="{{ route('register') }}" class="reg-page__form" novalidate>
+            <form method="POST" id="register-form" action="{{ route('register') }}" class="reg-page__form" novalidate>
                 @csrf
                 @isset($socialUser)
                     <div class="form-group row">
@@ -39,7 +39,7 @@
                     @if ($errors->has('password'))
                         <span class="input-text-wrapper__error-msg">{{ $errors->first('password') }}</span>
                     @else
-                        <span class="input-text-wrapper__error-msg">Пароль должен включать буквы латинского алфавита в разных регистрах, цифры, спецсимволы и быть более 8 символов. Например, MyHitfly1!</span>
+                        <span class="input-text-wrapper__error-msg">Пароль должен включать:<br>- буквы латинского алфавита в разных регистрах<br>- цифры<br>- и быть более 8 символов. Например, MyHitfly1</span>
                     @endif
                 </span>
 
@@ -76,7 +76,7 @@
                 <div class="reg-page__agreement input-text-wrapper">
                     <span class="input-checkbox">
                         <input id="tt" type="checkbox" name="agreement" required>
-                        <label for="tt">Я согласен с <a href="javascript: void(0)">условиями использования</a> и <a href="javascript: void(0)">политикой конфиденциальности</a></label>
+                        <label for="tt">Я согласен с <a href="javascript: void(0)">условиями использования</a> и <a href="/policy">политикой конфиденциальности</a></label>
                     </span>
                 </div>
                 <button type="submit" class="button active reg-page__submit">{{ __('auth.register') }}</button>

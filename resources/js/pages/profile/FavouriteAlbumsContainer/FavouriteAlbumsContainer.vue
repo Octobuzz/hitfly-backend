@@ -6,6 +6,7 @@
       :album-id-list="albumIdList"
       :has-more-data="hasMoreData"
     />
+    <slot v-else-if="!isLoading" name="no-data" />
     <p
       v-if="initialFetchError"
       class="favourite-albums-container__error"

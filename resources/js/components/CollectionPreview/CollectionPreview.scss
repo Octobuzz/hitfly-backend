@@ -1,6 +1,6 @@
 @import '~scss/_variables.scss';
 
-$image-width-desktop: 214px;
+$image-width-desktop: 160px;
 $image-height-desktop: 160px;
 $image-side-mobile: 150px;
 
@@ -25,6 +25,7 @@ $image-side-mobile: 150px;
 
     &:hover > .collection-preview {
       &__drape {
+        cursor: pointer;
         opacity: .5;
       }
 
@@ -51,6 +52,7 @@ $image-side-mobile: 150px;
 
   &__image {
     z-index: 100;
+    object-fit: cover;
   }
 
   &__button-section {
@@ -76,8 +78,8 @@ $image-side-mobile: 150px;
     box-sizing: border-box;
     font-family: 'Gotham Pro Bold', sans-serif;
     font-size: 14px;
+    text-align: left;
     color: white;
-    text-align: right;
     display: block;
     margin-left: auto;
     z-index: 300;

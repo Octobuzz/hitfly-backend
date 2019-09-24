@@ -137,6 +137,7 @@ import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
 import TrackReviewHeader from 'components/trackReviewsInterface/TrackReviewHeader';
 import CirclePlayIcon from 'components/icons/CirclePlayIcon.vue';
+import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import UniversalAlbumsContainer from '../UniversalAlbumsContainer';
 import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
 import gql from './gql';
@@ -148,6 +149,7 @@ export default {
     CollectionScrollHorizontal,
     TrackReviewHeader,
     CirclePlayIcon,
+    CirclePauseIcon,
     UniversalAlbumsContainer,
     UniversalCollectionsContainer
   },
@@ -170,7 +172,7 @@ export default {
 
   computed: {
     currentPlaying() {
-      return this.currentType.type === 'album' && this.currentType.id === this.albumId && this.$store.getters['player/isPlaying'];
+      return this.currentType.type === 'album' && this.currentType.id === this.newAlbum.id && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {
@@ -265,9 +267,6 @@ export default {
     },
 
     playAlbum(){
-      // prevent attempt to listen nonexistent track
-      if (!this.shownTrack) return;
-
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{

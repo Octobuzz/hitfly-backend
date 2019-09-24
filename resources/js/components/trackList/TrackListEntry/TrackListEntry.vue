@@ -9,7 +9,7 @@
 
     <button
       class="track-list-entry__album"
-      @click="onAlbumPress"
+      @click="playTrack"
     >
       <img
         v-if="!activeTrack"
@@ -51,41 +51,54 @@
       </template>
     </UnauthenticatedPopoverWrapper>
 
-    <span
-      v-show="desktop && !columnLayout"
-      class="track-list-entry__track-name"
-    >
-      {{ track.trackName }}
-    </span>
-    <WordTrimmedWithTooltip
-      v-show="!columnLayout"
-      class="track-list-entry__track-author"
-      :word="track.singer"
-    />
-    <span
-      v-show="showAlbumSection"
-      class="track-list-entry__album-title"
-    >
-      {{ track.album && track.album.title }}
-    </span>
+    <template v-if="!columnLayout">
+      <WordTrimmedWithTooltip
+        class="track-list-entry__track-name"
+        :word="track.trackName"
+        @click="playTrack"
+      />
+
+      <WordTrimmedWithTooltip
+        :class="[
+          'track-list-entry__track-author',
+          { 'track-list-entry__track-author_no-highlight': isUserTrack }
+        ]"
+        :word="track.singer"
+        @click.native="goToTrackSinger"
+      />
+
+      <WordTrimmedWithTooltip
+        v-if="showAlbumSection"
+        class="track-list-entry__album-title"
+        :word="track.album && track.album.title"
+      />
+    </template>
 
     <div
       v-show="!desktop || columnLayout"
       class="track-list-entry__track-data"
     >
-      <span class="track-list-entry__track-name">
+      <span
+        class="track-list-entry__track-name"
+        @click="playTrack"
+      >
         {{ track.trackName }}
       </span>
       <br>
-      <span class="track-list-entry__track-author">
-        {{ track.singer }}
-      </span>
+      <WordTrimmedWithTooltip
+        :class="[
+          'track-list-entry__track-author',
+          'track-list-entry__track-author_underline'
+        ]"
+        :word="track.singer"
+        @click.native="goToTrackSinger"
+      />
     </div>
 
     <UnauthenticatedPopoverWrapper placement="left">
       <template #auth-content>
         <TrackToPlaylistPopover
-          v-if="desktop && showAddToPlaylist"
+          v-if="desktop && !isStar && showAddToPlaylist"
           :track-id="trackId"
         >
           <IconButton
@@ -100,6 +113,7 @@
 
       <template #unauth-popover-trigger>
         <IconButton
+          v-if="desktop && showAddToPlaylist"
           passive="secondary-passive"
           hover="secondary-hover"
           :tooltip="tooltip.add"
@@ -128,16 +142,29 @@
       {{ formatTrackDuration(track.length) }}
     </span>
 
-    <IconButton
-      v-if="desktop && isAuthenticated && showRemoveButton"
-      class="track-list-entry__icon-button"
-      passive="secondary-passive"
-      hover="secondary-hover"
-      :tooltip="tooltip.remove"
-      @press="onRemovePress"
-    >
-      <CrossIcon />
-    </IconButton>
+    <template v-if="isAuthenticated && showRemoveButton">
+      <IconButton
+        v-if="!isMyTrack"
+        class="track-list-entry__icon-button"
+        passive="secondary-passive"
+        hover="secondary-hover"
+        :tooltip="tooltip.remove"
+        @press="onRemovePress"
+      >
+        <CrossIcon />
+      </IconButton>
+
+      <IconButton
+        v-else
+        class="track-list-entry__icon-button"
+        passive="secondary-passive"
+        hover="secondary-hover"
+        :tooltip="tooltip.edit"
+        @press="onEditPress"
+      >
+        <PencilIcon />
+      </IconButton>
+    </template>
   </div>
 </template>
 
@@ -152,6 +179,7 @@ import PlusIcon from 'components/icons/PlusIcon.vue';
 import CrossIcon from 'components/icons/CrossIcon.vue';
 import PauseIcon from 'components/icons/PauseIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
+import PencilIcon from 'components/icons/PencilIcon.vue';
 import gql from './gql';
 import TrackToPlaylistPopover from '../TrackToPlaylistPopover';
 import TrackActionsPopover from '../TrackActionsPopover';
@@ -170,7 +198,8 @@ export default {
     PlusIcon,
     CrossIcon,
     PauseIcon,
-    PlayIcon
+    PlayIcon,
+    PencilIcon
   },
 
   props: {
@@ -216,6 +245,9 @@ export default {
         remove: {
           content: 'Удалить из текущего списка'
         },
+        edit: {
+          content: 'Редактировать песню'
+        },
         add: {
           content: 'Добавить в плейлист'
         },
@@ -240,11 +272,65 @@ export default {
       return this.trackId === this.$store.getters['player/currentTrack'].id;
     },
 
-    ...mapGetters(['isAuthenticated', 'apolloClient'])
+    singerLink() {
+      const { track, isMyTrack } = this;
+
+      if (!track) return '';
+
+      // if user exists the musicGroup.id could be presented or not
+      // depending on who is author of the track
+
+      const inProfile = this.$route.fullPath.startsWith('/profile/');
+
+      if (track.musicGroup !== null) {
+        return '';
+      }
+      if (isMyTrack && inProfile) {
+        return '';
+      }
+      if (isMyTrack && !inProfile) {
+        return '/profile/my-music';
+      }
+
+      return `/user/${track.user.id}/music`;
+    },
+
+    isMyTrack() {
+      if (!this.track || !this.track.user) {
+        return false;
+      }
+      return this.track.user.id === this.myId;
+    },
+
+    isUserTrack() {
+      if (!this.track || !this.track.user) {
+        return true;
+      }
+
+      if (this.$route.fullPath.startsWith('/profile/')) {
+        return this.isMyTrack;
+      }
+
+      if (this.$route.fullPath.startsWith('/user/')) {
+        return +this.$route.params.userId === this.track.user.id;
+      }
+
+      return false;
+    },
+
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
+    },
+
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      apolloClient: 'apolloClient',
+      myId: 'profile/myId'
+    })
   },
 
   methods: {
-    onAlbumPress() {
+    playTrack() {
       this.$emit('play-track', this.trackId);
     },
 
@@ -254,6 +340,10 @@ export default {
 
     onRemovePress() {
       this.$emit('remove-track', this.trackId);
+    },
+
+    onEditPress() {
+      this.$router.push(`/profile/edit/track/${this.trackId}`);
     },
 
     pressFavourite() {
@@ -267,6 +357,10 @@ export default {
       const seconds = Math.floor(sec % 60);
 
       return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    },
+
+    goToTrackSinger() {
+      this.$router.push(this.singerLink);
     }
   },
 

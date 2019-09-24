@@ -51,18 +51,20 @@ $text_color_highlighted: white;
     }
     border-radius: 4px;
     user-select: none;
+    object-fit: cover;
+    object-position: left;
   }
 
   &__header {
     font-family: 'Gotham Pro Semibold', sans-serif;
     font-size: 14px;
-    word-break: break-word;
     color: white;
     position: relative;
     padding: {
       top: 8px;
       bottom: 6px;
     }
+    overflow: hidden;
   }
 
   &__title,
@@ -70,6 +72,8 @@ $text_color_highlighted: white;
     color: white;
     display: block;
     cursor: default;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__delimiter {

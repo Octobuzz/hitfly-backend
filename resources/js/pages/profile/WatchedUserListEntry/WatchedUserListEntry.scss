@@ -24,6 +24,11 @@
   &__user-info-name {
     color: $text_color_primary;
     display: inline;
+    transition: .15s;
+
+    &:hover {
+      color: $link_color_active;
+    }
   }
 
   &__user-info-followers {

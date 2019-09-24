@@ -7,7 +7,6 @@ use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -44,21 +43,16 @@ class TracksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-//        $keyCache = md5(json_encode($args).json_encode($root).json_encode($fields));
-//
-//        $response = Cache::get($keyCache, null);
-//        if (false === empty($response)) {
-//            return $response;
-//        }
-        $query = Track::with($fields->getRelations());
+        $query = Track::with($fields->getRelations())
+            ->orderBy('created_at', 'DESC');
 
         $query->select('tracks.*');
 
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
-            if (null === \Auth::user()) {
+            if (null === \Auth::guard('json')->user()) {
                 return null;
             }
-            $query->where('tracks.user_id', '=', \Auth::user()->id);
+            $query->where('tracks.user_id', '=', \Auth::guard('json')->user()->id);
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('tracks.user_id', '=', $args['filters']['userId']);
@@ -96,7 +90,7 @@ class TracksQuery extends Query
 
             /// Треки откоментированные мною
             /** @var User $user */
-            $user = Auth::user();
+            $user = Auth::guard('json')->user();
             if (
                 false === empty($args['filters']['iCommented'])
                 && true === (bool) $args['filters']['iCommented']
@@ -137,7 +131,6 @@ class TracksQuery extends Query
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-//        Cache::add($keyCache, $response, now()->addMinute(10));
 
         return $response;
     }

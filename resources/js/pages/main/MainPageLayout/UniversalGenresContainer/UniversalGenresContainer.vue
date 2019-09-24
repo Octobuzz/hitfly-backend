@@ -1,4 +1,5 @@
-<template>
+
+import { mapGetters } from 'vuex';<template>
   <div>
     <slot
       v-if="genresList.length > 0"
@@ -15,6 +16,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 export default {
@@ -30,7 +32,9 @@ export default {
       const loading = this.$store.getters['loading/mainPage'].genres;
 
       return loading.initialized && !loading.success;
-    }
+    },
+
+    ...mapGetters(['apolloClient'])
   },
 
   methods: {
@@ -47,6 +51,7 @@ export default {
   apollo: {
     genresList() {
       return {
+        client: this.apolloClient,
         query: gql.query.GENRES,
         fetchPolicy: 'network-only',
 

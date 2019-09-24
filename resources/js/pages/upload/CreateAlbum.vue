@@ -158,7 +158,7 @@
         })
       },
       handleFormatChoice() {
-        console.log('changed');
+        
       }
     },
     components: {

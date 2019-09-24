@@ -1,6 +1,6 @@
 <template>
   <UniversalTracksContainer
-    query="tracks"
+    query="new_songs"
   >
     <template #default="container">
       <TrackScrollHorizontal
@@ -10,7 +10,7 @@
         :has-more-data="container.hasMoreData"
       >
         <template #title>
-          <router-link to="/new-tracks">
+          <router-link to="new_songs">
             <span class="h2 other-user-music__albums-title">
               Новое
             </span>

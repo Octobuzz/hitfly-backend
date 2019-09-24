@@ -17,13 +17,26 @@ const getters = {
 
   universal() {
     return type => ({ fullPath, params }, id) => {
-      const pathPrefix = fullPath.split('/')[1];
+      const routeSegments = fullPath.split('/').slice(1);
 
       // TODO: music-group route
 
-      switch (pathPrefix) {
+      const getProfileRoute = (segment) => {
+        switch (segment) {
+          case 'my-music':
+            return `/profile/my-music/${type}/${id}`;
+
+          case 'favourite':
+            return `/profile/favourite/${type}/${id}`;
+
+          default:
+            return '/__not_found__'; // some route that is guaranteed to be non existent
+        }
+      };
+
+      switch (routeSegments[0]) {
         case 'profile':
-          return `/profile/${type}/${id}`;
+          return getProfileRoute(routeSegments[1]);
 
         case 'user': {
           let actualType = type;

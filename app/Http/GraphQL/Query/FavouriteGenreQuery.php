@@ -4,7 +4,6 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Favourite;
 use App\Models\Genre;
-use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
@@ -33,7 +32,7 @@ class FavouriteGenreQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
         if (null === $user) {
             return null;
         }

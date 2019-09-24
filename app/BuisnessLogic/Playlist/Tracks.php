@@ -37,7 +37,7 @@ class Tracks implements TracksContract
                     'track_name' => $track->track_name,
                     'singer' => $track->singer,
                     'album_img' => env('APP_URL').$track->getImageUrl(),
-                    'link' => env('APP_URL').'url', //todo реальный урл(пока неизвестно куда должна идти ссылка)
+                    'link' => env('APP_URL').'/top50', //todo реальный урл(пока неизвестно куда должна идти ссылка)
                     'track_time' => '3:54', //todo получение времени трека
                     'user' => $track->user,
                 ];

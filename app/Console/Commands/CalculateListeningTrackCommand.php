@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\BuisnessLogic\TopFifty;
+use App\Models\Track;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -46,6 +47,10 @@ class CalculateListeningTrackCommand extends Command
         $carbon = Carbon::now();
 
         foreach ($lestenedTrack as $idTrack => $date) {
+            if (null === Track::query()->find($idTrack)) {
+                unset($lestenedTrack[$idTrack]);
+                continue;
+            }
             if ($carbon->diffInDays($date) > 0) {
                 unset($lestenedTrack[$idTrack]);
             }

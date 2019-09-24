@@ -11,6 +11,14 @@
 
     </MainPageNews>
 
+    <MainPageStars v-show="showLoader">
+
+    </MainPageStars>
+
+    <NewTracks v-show="showLoader">
+
+    </NewTracks>
+
     <RecommendedTracks v-show="showLoader">
 
     </RecommendedTracks>
@@ -18,10 +26,6 @@
     <MainPageGenres v-show="showLoader">
 
     </MainPageGenres>
-
-    <NewTracks v-show="showLoader">
-
-    </NewTracks>
 
     <SuperMelomaniac v-show="showLoader">
 
@@ -44,6 +48,7 @@
   import WeeklyTop from '../WeeklyTop/WeeklyTop.vue';
   import MainPageGenres from '../MainPageGenres/MainPageGenres.vue';
   import MainPageNews from '../MainPageNews/MainPageNews.vue';
+  import MainPageStars from '../MainPageStars/MainPageStars.vue';
   import MainColumnFooter from 'components/MainColumnFooter.vue';
 
   export default {
@@ -58,14 +63,15 @@
       WeeklyTop,
       MainPageGenres,
       MainColumnFooter,
-      MainPageNews
+      MainPageNews,
+      MainPageStars,
     },
     computed: {
       showLoader() {
         let loadingObjects = Object.keys(this.$store.getters['loading/mainPage']);
         let storageObj = this.$store.getters['loading/mainPage'];
         let initCount = loadingObjects.filter(object => storageObj[object].initialized);
-        return initCount.length >= 6;
+        return initCount.length >= 3;
       }
     }
   }

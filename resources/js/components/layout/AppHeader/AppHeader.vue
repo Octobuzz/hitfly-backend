@@ -20,16 +20,16 @@
       >
         Главная
       </router-link>
-      <router-link
-        to="/sets"
-        :class="[
-          'button',
-          'head-nav-item',
-          { active: path === '/sets' }
-        ]"
-      >
-        Подборки
-      </router-link>
+<!--      <router-link-->
+<!--        to="/sets"-->
+<!--        :class="[-->
+<!--          'button',-->
+<!--          'head-nav-item',-->
+<!--          { active: path === '/sets' }-->
+<!--        ]"-->
+<!--      >-->
+<!--        Подборки-->
+<!--      </router-link>-->
       <router-link
         to="/about"
         :class="[
@@ -61,11 +61,11 @@
         </template>
       </UnauthenticatedPopoverWrapper>
 
-      <span class="head-right-item app-header__loupe-icon">
-        <IconButton class="head-right-item__button">
-          <LoupeIcon />
-        </IconButton>
-      </span>
+<!--      <span class="head-right-item app-header__loupe-icon">-->
+<!--        <IconButton class="head-right-item__button">-->
+<!--          <LoupeIcon />-->
+<!--        </IconButton>-->
+<!--      </span>-->
 
       <span class="head-right-item">
         <UnauthenticatedPopoverWrapper>
@@ -111,7 +111,7 @@
             <img :src="logo" alt="logo">
           </router-link>
         </div>
-        <router-link to="/profile/bonus-program" class="drop-menu-list__item">
+        <router-link to="/bonus-program" class="drop-menu-list__item">
           <span>
             Бонусная программа
           </span>
@@ -139,7 +139,7 @@
 
         <router-link to="/" class="drop-menu-list__item">
           <span>
-            Звезды
+            Звездные эксперты
           </span>
         </router-link>
         <router-link

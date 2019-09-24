@@ -8,6 +8,7 @@
   </section>
 </template>
 <script>
+  import { mapGetters } from 'vuex';
   import SpinnerLoader from 'components/SpinnerLoader.vue';
   import ReturnHeader from '../ReturnHeader.vue';
   import gql from './gql';
@@ -21,6 +22,7 @@
       SpinnerLoader
     },
     computed: {
+      ...mapGetters(['isAuthenticated', 'apolloClient']),
       newsId() {
         const { newsId } = this.$route.params;
         return newsId;
@@ -29,7 +31,6 @@
         if(this.newsItem === null){
           return true;
         } else {
-          console.log(this.newsItem);
           return false;
         }
       }

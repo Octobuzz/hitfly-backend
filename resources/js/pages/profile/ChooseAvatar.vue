@@ -94,10 +94,10 @@ export default {
           return;
         }
 
-        // allow only files under 10mb
-        if (file.size > 10 * 1024 * 1024) {
+        // allow only files under 1500 kb
+        if (file.size > 1500 * 1024) {
           this.$message(
-            'Размер файла не может превышать 10 мегабайт',
+            'Размер файла не может превышать 1500 килобайт',
             'info',
             { timeout: 2000 }
           );

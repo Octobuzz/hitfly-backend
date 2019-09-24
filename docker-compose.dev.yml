@@ -1,0 +1,73 @@
+version: '3.2'
+services:
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - '9090:80'
+    volumes:
+      - './docker/nginx/nginx.dev.conf:/etc/nginx/nginx.conf'
+      - './:/var/www/html'
+      - './storage/logs/nginx:/var/log/nginx'
+    depends_on:
+      - php
+      - maria
+    env_file:
+      - docker_server.env
+  maria:
+    container_name: maria_db
+    restart: always
+    volumes:
+      - './docker/mariadb/my.cnf:/etc/mysql/my.cnf'
+      - './docker/dbdata/:/var/lib/mysql'
+    ports:
+      - '53306:3306'
+    build:
+      context: docker/mariadb
+      dockerfile: Dockerfile
+    env_file:
+      - docker_server.env
+  php:
+    container_name: php_docker
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - './:/var/www/html'
+      - './docker/php/config/php.ini:/usr/local/etc/php/php.ini'
+    ports:
+      - "2346:2346"
+    links:
+      - "maria:maria"
+      - "es01:es01"
+    env_file:
+      - docker_server.env
+  redis_host:
+    build:
+      context: ./docker/redis
+      dockerfile: Dockerfile
+    ports:
+      - "6379:6379"
+    volumes:
+      - './docker/redis/redis.conf:/usr/local/etc/redis/redis.conf'
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - './docker/elasticsearch/data:/usr/share/elasticsearch/data'
+      - './docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+    #      - './docker/elasticsearch/logs::/usr/share/elasticsearch/logs'
+    ports:
+      - 9200:9200
+
+

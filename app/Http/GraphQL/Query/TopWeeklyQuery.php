@@ -4,9 +4,7 @@ namespace App\Http\GraphQL\Query;
 
 use App\Interfaces\Top\TopWeeklyInterface;
 use App\Models\Track;
-use Carbon\Carbon;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -40,19 +38,10 @@ class TopWeeklyQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $keyCache = md5(json_encode($args).json_encode($fields));
-
-        $response = Cache::get($keyCache, null);
-        if (null !== $response) {
-            return $response;
-        }
-
         $query = Track::with($fields->getRelations());
         $query->whereIn('id', $this->topWeekly->get());
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
-
-        Cache::add($keyCache, $response, Carbon::parse('next monday'));
 
         return $response;
     }

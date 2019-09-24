@@ -40,16 +40,13 @@ class UserEventSubscriber
     {
         /** @var User $user */
         $user = $event->user;
-        if (!Cookie::has(JsonGuard::HEADER_NAME_TOKEN)) {
-            if (empty($user->access_token)) {
-                $user->generateAccessToken();
-                $user->save();
-            }
-        } else {
+
+        if (Cookie::has(JsonGuard::HEADER_NAME_TOKEN)) {
             Cookie::queue(Cookie::forget(JsonGuard::HEADER_NAME_TOKEN));
         }
 
-        //todo update avatar if null
+        $user->generateAccessToken();
+        $user->save();
 
         Cookie::queue(JsonGuard::HEADER_NAME_TOKEN, $user->access_token);
     }

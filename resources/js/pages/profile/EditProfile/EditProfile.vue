@@ -380,7 +380,7 @@ export default {
 
       const artistProfile = {};
 
-      if (this.isArtist || this.isStar) {
+      if (this.isArtist || this.isProfessionalCritic || this.isStar) {
         if (activity.input !== '') {
           artistProfile.description = activity.input;
         }
@@ -410,7 +410,13 @@ export default {
         variables: mutationVars,
         update: () => {
           this.isSaving = false;
-          this.$router.push('/profile/my-music');
+
+          if (this.isStar || this.isProfessionalCritic) {
+            this.$router.push('/profile/my-reviews');
+          } else {
+            this.$router.push('/profile/my-music');
+          }
+
           this.$message(
             'Данные профиля успешно обновлены',
             'info',
@@ -471,7 +477,7 @@ export default {
           this.myProfile.location = location;
         }
 
-        if (roles.some(role => role.name === 'Исполнитель')) {
+        if (this.isArtist || this.isProfessionalCritic || this.isStar) {
           if (careerStart) {
             this.myProfile.careerStartYear = new Date(careerStart)
               .getFullYear().toString();

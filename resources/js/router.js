@@ -14,11 +14,22 @@ const CRITIC = 'critic';
 const PROF_CRITIC = 'prof_critic';
 const STAR = 'star';
 
-const hasRoles = (roles) => {
-  const { hasRole } = store.getters['profile/roles'];
-
-  return roles.some(role => hasRole(role));
+export const routeNames = {
+  profile: {
+    MY_MUSIC_ALBUM: '/profile/my-music/album/:albumId',
+    MY_MUSIC_PLAYLIST: '/profile/my-music/playlist/:playlistId'
+  }
 };
+
+const renderNotFoundPage = () => {
+  store.commit('appColumns/set404', true);
+};
+
+const hasRoles = roles => (
+  roles.some(role => (
+    store.getters['profile/roles'](role)
+  ))
+);
 
 const isAuthenticated = () => store.getters.isAuthenticated;
 
@@ -27,14 +38,17 @@ const isAuthenticated = () => store.getters.isAuthenticated;
 // {
 //   shouldBeAuthenticated: {
 //     redirect
+//     renderNotFound
 //   },
 //   shouldHaveRoles: {
 //     rolesToHave,
 //     redirect
+//     renderNotFound
 //   },
 //   shouldNotHaveRoles: {
 //     rolesNotToHave,
 //     redirect
+//     renderNotFound
 //   }
 // }
 
@@ -43,22 +57,43 @@ const beforeRouteEnterFactory = ({
   shouldHaveRoles,
   shouldNotHaveRoles
 }) => ({
-  beforeRouteEnter(to, from, next) {
+  beforeEnter(to, from, next) {
     if (shouldBeAuthenticated && !isAuthenticated()) {
-      next(shouldBeAuthenticated.redirect);
+      const { redirect, renderNotFound } = shouldBeAuthenticated;
 
+      if (redirect) {
+        next(redirect);
+      }
+      if (renderNotFound) {
+        renderNotFoundPage();
+      }
       return;
     }
+
     if (shouldHaveRoles && !hasRoles(shouldHaveRoles.rolesToHave)) {
-      next(shouldHaveRoles.redirect);
+      const { redirect, renderNotFound } = shouldHaveRoles;
 
+      if (redirect) {
+        next(shouldHaveRoles.redirect);
+      }
+      if (renderNotFound) {
+        renderNotFoundPage();
+      }
       return;
     }
+
     if (shouldNotHaveRoles && hasRoles(shouldNotHaveRoles.rolesNotToHave)) {
-      next(shouldNotHaveRoles.redirect);
+      const { redirect, renderNotFound } = shouldNotHaveRoles;
 
+      if (redirect) {
+        next(shouldNotHaveRoles.redirect);
+      }
+      if (renderNotFound) {
+        renderNotFoundPage();
+      }
       return;
     }
+
     next();
   }
 });
@@ -69,7 +104,7 @@ const routes = [
     component: profile.MyProfileLayout,
     ...beforeRouteEnterFactory({
       shouldBeAuthenticated: {
-        redirect: '/'
+        renderNotFound: true
       },
     }),
     children: [
@@ -78,12 +113,16 @@ const routes = [
         component: profile.EditUser
       },
       {
+        path: 'edit/playlist/:collectionId',
+        component: profile.EditCollection
+      },
+      {
         path: 'create-group',
         component: profile.CreateGroup,
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -93,7 +132,27 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
+          }
+        })
+      },
+      {
+        path: 'edit/track/:editTrackId',
+        component: profile.UpdateTrack,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            renderNotFound: true
+          }
+        })
+      },
+      {
+        path: 'edit/album/:editAlbumId',
+        component: profile.UpdateAlbum,
+        ...beforeRouteEnterFactory({
+          shouldNotHaveRoles: {
+            rolesNotToHave: [PROF_CRITIC, STAR],
+            renderNotFound: true
           }
         })
       },
@@ -104,7 +163,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -114,7 +173,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -124,7 +183,7 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
@@ -134,9 +193,23 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldNotHaveRoles: {
             rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
+      },
+      {
+        path: 'my-music/album/:albumId',
+        component: profile.AlbumTrackList,
+        name: routeNames.profile.MY_MUSIC_ALBUM
+      },
+      {
+        path: 'my-music/playlist/:playlistId',
+        component: profile.CollectionTrackList,
+        name: routeNames.profile.MY_MUSIC_PLAYLIST
+      },
+      {
+        path: 'my-music/set/:setId',
+        component: profile.CollectionTrackList
       },
       {
         path: 'favourite',
@@ -159,6 +232,18 @@ const routes = [
         component: profile.CollectionTableContainer
       },
       {
+        path: 'favourite/album/:albumId',
+        component: profile.AlbumTrackList
+      },
+      {
+        path: 'favourite/playlist/:playlistId',
+        component: profile.CollectionTrackList
+      },
+      {
+        path: 'favourite/set/:setId',
+        component: profile.CollectionTrackList
+      },
+      {
         path: 'reviews',
         component: profile.UniversalReviews
       },
@@ -169,43 +254,27 @@ const routes = [
         ...beforeRouteEnterFactory({
           shouldHaveRoles: {
             rolesToHave: [CRITIC, PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
-          }
-        })
-      },
-      {
-        path: 'album/:albumId',
-        component: profile.AlbumTrackList,
-        ...beforeRouteEnterFactory({
-          shouldNotHaveRoles: {
-            rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
-          }
-        })
-      },
-      {
-        path: 'playlist/:playlistId',
-        component: profile.CollectionTrackList,
-        ...beforeRouteEnterFactory({
-          shouldNotHaveRoles: {
-            rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
-          }
-        })
-      },
-      {
-        path: 'set/:setId',
-        component: profile.CollectionTrackList,
-        ...beforeRouteEnterFactory({
-          shouldNotHaveRoles: {
-            rolesNotToHave: [PROF_CRITIC, STAR],
-            redirect: '/profile/my-reviews'
+            renderNotFound: true
           }
         })
       },
       {
         path: 'reviews/:trackId',
         component: profile.UniversalReviews
+      },
+      {
+        path: 'watched-users',
+        component: profile.WatchedUsersContainer
+      },
+      {
+        path: 'review-requests',
+        component: profile.ReviewRequestsContainer,
+        ...beforeRouteEnterFactory({
+          shouldHaveRoles: {
+            rolesToHave: [STAR],
+            renderNotFound: true
+          }
+        })
       },
       {
         path: 'bonus-program',
@@ -288,7 +357,16 @@ const routes = [
   },
   {
     path: '/upload',
-    component: UploadPage
+    component: UploadPage,
+    ...beforeRouteEnterFactory({
+      shouldBeAuthenticated: {
+        renderNotFound: true
+      },
+      shouldNotHaveRoles: {
+        rolesNotToHave: [PROF_CRITIC, STAR],
+        renderNotFound: true
+      }
+    })
   },
   {
     path: '/',
@@ -309,7 +387,23 @@ const routes = [
       },
       {
         path: 'top50',
+        component: main.MainPageTrackList
+      },
+      {
+        path: 'listening_now',
+        component: main.MainPageTrackList
+      },
+      {
+        path: 'weekly_top',
         component: main.MainPageTrackList,
+      },
+      {
+        path: 'new_songs',
+        component: main.MainPageTrackList,
+      },
+      {
+        path: 'genre/:genreId',
+        component: main.MainPageGenreTrackList
       },
       {
         path: 'playlist/:playlistId',
@@ -319,6 +413,10 @@ const routes = [
         path: 'news/:newsId',
         component: main.MainPageNewsDetailed,
         props: true
+      },
+      {
+        path: 'bonus-program',
+        component: profile.BonusProgram
       },
       {
         path: '',
@@ -356,6 +454,11 @@ router.beforeEach((to, from, next) => {
   }
 
   next();
+});
+
+router.afterEach(() => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 });
 
 Vue.use(VueRouter);

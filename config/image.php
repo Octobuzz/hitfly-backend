@@ -47,13 +47,17 @@ return [
                 'width' => 32,
                 'height' => 32,
             ],
-            'size_214x160' => [
-                'width' => 214,
+            'size_160x160' => [
+                'width' => 160,
                 'height' => 160,
             ],
             'size_150x150' => [
                 'width' => 150,
                 'height' => 150,
+            ],
+            'size_290x290' => [
+                'width' => 290,
+                'height' => 290,
             ],
         ],
         'avatar' => [
@@ -64,6 +68,10 @@ return [
             'size_56x56' => [
                 'width' => 56,
                 'height' => 56,
+            ],
+            'size_72x72' => [
+                'width' => 72,
+                'height' => 72,
             ],
             'size_235x235' => [
                 'width' => 235,

@@ -54,8 +54,8 @@
 
   &__player {
     flex-grow: 1;
-    height: 95px;
-    background: $red_violet;
+    margin-top: 30px;
+    overflow: hidden;
   }
 
   &__button-section {

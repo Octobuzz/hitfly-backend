@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Kalnoy\Nestedset\NodeTrait;
 
 /**
  * Жанры музыки.
@@ -38,7 +39,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Genre extends Model
 {
-    use SoftDeletes, Itemable;
+    use SoftDeletes, Itemable, NodeTrait;
 
     protected $table = 'genres';
 
@@ -55,7 +56,9 @@ class Genre extends Model
 
     public function userFavourite()
     {
-        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', \Auth::user()->id);
+        $user = \Auth::user();
+
+        return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', null === $user ? null : $user->id);
     }
 
     public function group(): BelongsToMany

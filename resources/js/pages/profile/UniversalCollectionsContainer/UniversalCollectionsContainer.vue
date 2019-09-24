@@ -6,6 +6,7 @@
       :collection-id-list="collectionIdList"
       :has-more-data="hasMoreData"
     />
+    <slot v-else-if="!isLoading" name="no-data" />
     <p
       v-if="initialFetchError"
       class="universal-collections-container__error"
@@ -163,53 +164,61 @@ export default {
     removeCollectionFromStore(id) {
       const store = this.$apollo.provider.clients[this.apolloClient];
 
-      const { collections } = store.readQuery({
-        query: gql.query.COLLECTIONS,
+      try {
+        const { collections } = store.readQuery({
+          query: gql.query.COLLECTIONS,
 
-        // cause updateQuery does not update variables in cache entry
-        // we always refer to the first page
+          // cause updateQuery does not update variables in cache entry
+          // we always refer to the first page
 
-        variables: {
-          ...this.queryVars,
-          pageNumber: 1
-        }
-      });
+          variables: {
+            ...this.queryVars,
+            pageNumber: 1
+          }
+        });
 
-      const updatedCollections = {
-        collections: {
-          ...collections,
-          data: [
-            ...collections.data.filter(col => col.id !== id)
-          ]
-        }
-      };
+        const updatedCollections = {
+          collections: {
+            ...collections,
+            data: [
+              ...collections.data.filter(col => col.id !== id)
+            ]
+          }
+        };
 
-      store.writeQuery({
-        query: gql.query.COLLECTIONS,
-        variables: {
-          ...this.queryVars,
-          pageNumber: 1
-        },
-        data: updatedCollections
-      });
+        store.writeQuery({
+          query: gql.query.COLLECTIONS,
+          variables: {
+            ...this.queryVars,
+            pageNumber: 1
+          },
+          data: updatedCollections
+        });
+      } catch (e) {
+        // no data to read from store
+      }
 
-      const { collections: myCollections } = store.readQuery({
-        query: gql.query.MY_COLLECTIONS
-      });
+      try {
+        const { collections: myCollections } = store.readQuery({
+          query: gql.query.MY_COLLECTIONS
+        });
 
-      const updatedMyCollections = {
-        collections: {
-          ...myCollections,
-          data: [
-            ...myCollections.data.filter(col => col.id !== id)
-          ]
-        }
-      };
+        const updatedMyCollections = {
+          collections: {
+            ...myCollections,
+            data: [
+              ...myCollections.data.filter(col => col.id !== id)
+            ]
+          }
+        };
 
-      store.writeQuery({
-        query: gql.query.MY_COLLECTIONS,
-        data: updatedMyCollections
-      });
+        store.writeQuery({
+          query: gql.query.MY_COLLECTIONS,
+          data: updatedMyCollections
+        });
+      } catch (e) {
+        // no data to read from store
+      }
     }
   },
 

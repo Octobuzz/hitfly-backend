@@ -4,7 +4,6 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\MusicGroup;
 use App\Models\Watcheables;
-use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
@@ -32,7 +31,7 @@ class WatchingMusicGroupQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
         if (null === $user) {
             return null;
         }

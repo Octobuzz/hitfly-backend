@@ -1,0 +1,141 @@
+@import '~scss/_variables.scss';
+
+$cover-side-desktop-width: 142px;
+$cover-side-desktop-height: 142px;
+$cover-side-mobile-width: 100px;
+$cover-side-mobile-height: 100px;
+$cover-size-width: 142px;
+
+.stars-preview {
+  box-sizing: border-box;
+  position: relative;
+  width: $cover-side-desktop-width;
+
+  &__loader {
+
+  }
+
+  &__content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    position: relative;
+    height: $cover-side-desktop-height;
+    user-select: none;
+    background: none;
+  }
+
+  &__drape,
+  &__cover {
+    position: absolute;
+    width: $cover-size-width;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+    object-fit: cover;
+    user-select: none;
+  }
+
+  &__drape {
+    z-index: 200;
+    opacity: 0;
+    transition: .2s;
+    background: black;
+  }
+
+  &__cover {
+    z-index: 100;
+  }
+
+  &__button-section {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    opacity: 0;
+    z-index: 300;
+    transition: .2s;
+  }
+
+  &__play-button::v-deep {
+    svg {
+      transform: translate(-33%, -50%);
+    }
+  }
+
+  &__icon-button::v-deep {
+    svg {
+      fill: #fff;
+    }
+  }
+
+  &__footer {
+    font-size: 16px;
+    line-height: 20px;
+    padding-top: 6px;
+    user-select: none;
+    text-align: center;
+
+    &-description {
+      color: #A6A6A6;
+      font-size: 12px;
+      line-height: 14px;
+      margin-top: 4px;
+    }
+  }
+
+  &__title,
+  &__link {
+    color: #231F20;
+    display: block;
+    transition: .2s;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color:#b36fcb;
+    }
+  }
+
+  &__link {
+    position: absolute;
+    bottom: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 14px;
+    line-height: 16px;
+    width: 160px;
+    height: 40px;
+    left: 0;
+    right: 0;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  &__title {
+    font-family: 'Gotham Pro Bold', sans-serif;
+    margin-bottom: 4px;
+  }
+
+  &__author {
+    font-family: 'Gotham Pro', sans-serif;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .news-preview {
+    width: $cover-side-mobile-width;
+
+    &__content {
+      height: $cover-side-mobile-height;
+    }
+
+    &__title,
+    &__author {
+      font-size: 12px;
+    }
+  }
+}

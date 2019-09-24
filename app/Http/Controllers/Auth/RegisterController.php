@@ -57,7 +57,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             //'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'min:8', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i', 'confirmed'],
+            'password' => ['required', 'min:8', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/i', 'confirmed'],
 //            'month' => ['required_with:year,day'],
 //            'day' => ['required_with:month,year'],
 //            'year' => ['required_with:month,day'],
@@ -81,10 +81,12 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'birthday' => $data['birthday'] ? Carbon::createFromFormat('d.m.Y', $data['birthday'])->format('Y-m-d') : null,
         ];
+
         if (!empty($data['gender'])) {
             $create['gender'] = $data['gender'];
         }
-        $user = User::create($create);
+        $user = new User($create);
+
         $user->sendEmailVerificationNotification($user->email);
 
         return $user;
@@ -108,6 +110,16 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect('/register-genres');
+    }
+
+    public function registerAPI(array $request)
+    {
+        event(new Registered($user = $this->create($request)));
+
+        $this->guard()->login($user);
+        Auth::guard('json')->login($user);
+
+        return $user;
     }
 
     public function registerError(Request $request)

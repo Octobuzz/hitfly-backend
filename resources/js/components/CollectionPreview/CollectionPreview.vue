@@ -10,14 +10,17 @@
       v-if="!isLoading"
       class="collection-preview__content"
     >
-      <div class="collection-preview__drape" />
+      <div
+        class="collection-preview__drape"
+        @click="followTitleLink"
+      />
 
       <span class="collection-preview__title">
         <router-link
           :to="titleLink"
           class="collection-preview__title-link"
         >
-          {{ collection.title }}
+          {{ trimmedCollectionTitle }}
         </router-link>
       </span>
 
@@ -53,29 +56,31 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <IconButton
-          v-if="collection.countTracks > 0 && !currentPlaying"
-          :class="[
-            'collection-preview__icon-button',
-            'collection-preview__play-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playCollection"
-        >
-          <PlayIcon />
-        </IconButton>
-        <IconButton
-          v-else
-          :class="[
-            'collection-preview__icon-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playCollection"
-        >
+        <template v-if="collection.countTracks > 0">
+          <IconButton
+            v-if="!currentPlaying"
+            :class="[
+              'collection-preview__icon-button',
+              'collection-preview__play-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playCollection"
+          >
+            <PlayIcon />
+          </IconButton>
+          <IconButton
+            v-else
+            :class="[
+              'collection-preview__icon-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playCollection"
+          >
             <PauseIcon />
           </IconButton>
+        </template>
 
         <CollectionPopover
           :collection-id="collectionId"
@@ -137,7 +142,7 @@ export default {
       }
 
       return this.collection.image
-        .filter(image => image.size === 'size_214x160')[0].url;
+        .filter(image => image.size === 'size_160x160')[0].url;
     },
 
     titleLink() {
@@ -147,6 +152,14 @@ export default {
         this.$route,
         this.collectionId
       );
+    },
+
+    trimmedCollectionTitle() {
+      if (!this.collection) return '';
+
+      const { title } = this.collection;
+
+      return title.length > 95 ? `${title.slice(0, 95)}...` : title;
     },
 
     currentPlaying() {
@@ -161,11 +174,15 @@ export default {
   },
 
   methods: {
+    followTitleLink() {
+      this.$router.push(this.titleLink);
+    },
+
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
-    playCollection()
-    {
+
+    playCollection() {
       if (this.currentPlaying) {
         this.$store.commit('player/pausePlaying');
       } else {
@@ -183,22 +200,21 @@ export default {
               }
             },
           })
-            .then(response => {
-              let data = {
-                'type': 'collection',
-                'id': this.collectionId
-              };
-              this.$store.commit('player/pausePlaying');
-              this.$store.commit('player/changeCurrentType', data);
-              this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
-              let arrayTr = response.data.tracks.data.map(data => {
-                return data.id;
-              });
-              this.$store.commit('player/pickPlaylist', arrayTr);
-            })
-            .catch(error => {
-              console.log(error);
-            })
+          .then(response => {
+            let data = {
+              'type': 'collection',
+              'id': this.collectionId
+            };
+            this.$store.commit('player/changeCurrentType', data);
+            this.$store.commit('player/pickTrack', response.data.tracks.data[0]);
+            let arrayTr = response.data.tracks.data.map(data => {
+              return data.id;
+            });
+            this.$store.commit('player/pickPlaylist', arrayTr);
+          })
+          .catch(error => {
+            console.log(error);
+          })
         }
       }
     }

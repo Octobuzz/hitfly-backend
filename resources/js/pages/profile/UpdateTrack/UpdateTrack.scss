@@ -1,0 +1,196 @@
+@import '~scss/_variables.scss';
+
+.trackInfo{
+  margin-top: 20px;
+  padding: 0 32px;
+
+  & .album-input-checkbox{
+    display: block;
+    margin-top: 40px;
+    margin-bottom: 10px;
+  }
+}
+.trackInfoFooter{
+  padding: 30px 0;
+  border-top: 2px solid $layout_border_color;
+  display: flex;
+  justify-content: flex-end;
+
+  &__button{
+    width: auto;
+    margin-left: 20px;
+
+    &.disabled {
+      background: none;
+      background-color: #f6f6f6;
+      cursor: default;
+      color: $text_color_secondary;
+    }
+  }
+}
+$cover_side: 235px;
+$cover_right_margin: 30px;
+$description_max_width: 991px;
+$description_right_padding: 37px;
+
+.add-track {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-top: 20px;
+
+  &-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+  }
+
+  &-cover {
+    min-width: $cover_side;
+    width: $cover_side;
+    min-height: $cover_side;
+    height: $cover_side;
+    margin: {
+      right: $cover_right_margin;
+      bottom: 24px;
+    }
+  }
+
+  &-filename {
+    position: absolute;
+    top: 55px;
+    font-size: 12px;
+    color: $text_color_secondary;
+  }
+
+  &-description {
+    position: relative;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    max-width: $description_max_width;
+    padding: {
+      right: $description_right_padding;
+      bottom: 28px;
+    }
+
+    &__name-input,
+    &__year-input,
+    &__genre-list,
+    &__text-input {
+      max-width: 330px;
+    }
+
+    &__name-input {
+      display: block;
+      margin-bottom: 42px;
+    }
+
+    &__text-input {
+      display: block;
+      margin-bottom: 42px;
+    }
+
+    &__year-input {
+      display: block;
+      margin-bottom: 36px;
+    }
+
+    &__genre-tag-container {
+      margin-bottom: 32px;
+    }
+
+    &::v-deep &__dropdown {
+      max-width: 330px;
+    }
+
+    &__group-description-suggestion {
+      display: block;
+      margin: {
+        top: 18px;
+        bottom: 18px;
+      }
+    }
+
+    &__regular-text {
+      font-size: 14px;
+    }
+
+    &__header_h3 {
+      font-size: 20px;
+      margin: {
+        top: 0;
+        bottom: 18px;
+      }
+    }
+
+    &__subheader {
+      color: $text_color_secondary;
+      font-size: 14px;
+      line-height: 24px;
+      margin-bottom: 24px;
+    }
+  }
+}
+.addAlbumWrapper__buttons {
+  display: flex;
+  margin-bottom: 20px;
+
+  & .buttonSwitcher {
+    margin-right: 10px;
+    width: auto;
+    border-radius: 20px;
+    height: 32px;
+    padding: 0 20px;
+    border: 1px solid #f6f6f6;
+    display: flex;
+    font-size: 12px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    transition: .2s all ease;
+
+    &:hover {
+      background: $gradient_radial;
+      color: #fff;
+    }
+
+    &.active {
+      background: $gradient_radial;
+      color: #fff;
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .add-track {
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .add-track {
+    &-header {
+      margin-right: 0;
+    }
+
+    &-cover {
+      margin: {
+        left: auto;
+        right: auto;
+      }
+    }
+
+    &-description {
+      padding-right: 0;
+
+      &__name-input,
+      &__year-input,
+      &__genre-list,
+      &::v-deep &__dropdown {
+        max-width: 100%;
+      }
+    }
+  }
+}

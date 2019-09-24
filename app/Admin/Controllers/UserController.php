@@ -13,13 +13,18 @@ use App\Models\City;
 use App\Models\Genre;
 use App\User;
 use Carbon\Carbon;
+use Doctrine\DBAL\Driver\PDOException;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UserController extends \Encore\Admin\Controllers\UserController
 {
@@ -68,14 +73,18 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
     public function create(Content $content)
     {
-        return $content
+        $form = $this->form();
+        $form->setAction(route('add_user'));
+        $content
             ->header(trans('admin.administrator'))
             ->description(trans('admin.create'))
-            ->body($this->form())
+            ->body($form)
             ->breadcrumb(
                 ['text' => Lang::get('admin.breadcrumb.'.self::ROUTE_NAME), 'url' => \route(self::ROUTE_NAME.'.index')],
                 ['text' => 'Создать']
             );
+
+        return $content;
     }
 
     public function users(Request $request)
@@ -99,10 +108,6 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $grid->updated_at(trans('admin.updated_at'));
         $grid->deleted_at(trans('admin.deleted_at'));
         $grid->model()->withTrashed();
-
-//        $grid->actions(function (Grid\Displayers\Actions $actions) {
-//            $actions->disableDelete();
-//        });
 
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function (Grid\Tools\BatchActions $actions) {
@@ -154,14 +159,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
                 return '';
             }
         });
-        //}
-//        $show->model()->load('artistProfile');
-//        $savingUser = $show->model();
-//        if (true === $savingUser->isRole('star') || $savingUser->isRole('performer')) {
-//            $show->getRelations();
-//            $show->date('artist_profile.career_start', 'Дата начала карьеры')->format("YYYY");
-//            $show->textarea('artist_profile.description', 'Описание деятельности');
-//        }
+
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
 
@@ -186,7 +184,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
         $form->text('username', 'Имя пользователя')->rules('required');
         $form->text('email', 'Email (логин)')->rules('required');
         $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules(['confirmed', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*]).*$/i']);
+        $form->password('password', trans('admin.password'))->rules(['confirmed', 'regex:/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/i']);
         $form->password('password_confirmation', trans('admin.password_confirmation'))
             ->default(function ($form) {
                 return null;
@@ -237,23 +235,19 @@ class UserController extends \Encore\Admin\Controllers\UserController
             /** @var User $savingUser */
             $savingUser = $form->model();
 
-            if (null !== $savingUser->id) {
-                $savingUser->roles()->sync(array_filter($form->roles));
-                if (
-                    (
-                        true === $savingUser->isRole('star')
-                        || $savingUser->isRole('performer')
-                    )
+            $savingUser->roles()->sync(array_filter($form->roles));
+            if (
+                true === $savingUser->isRole(User::ROLE_STAR)
+                || $savingUser->isRole(User::ROLE_PERFORMER)
                 ) {
-                    $profile = $form->artist_profile;
-                    if (null == $profile) {
-                        $ap = new ArtistProfile([
+                $profile = $form->artist_profile;
+                if (null == $profile) {
+                    $ap = new ArtistProfile([
                             'user_id' => $savingUser->id,
                         ]);
-                        $ap->save();
-                    } else {
-                        ArtistProfile::updateOrCreate(['user_id' => $savingUser->id], $profile);
-                    }
+                    $ap->save();
+                } else {
+                    ArtistProfile::updateOrCreate(['user_id' => $savingUser->id], $profile);
                 }
             }
         });
@@ -264,5 +258,52 @@ class UserController extends \Encore\Admin\Controllers\UserController
         });
 
         return $form;
+    }
+
+    public function addUser(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = new User();
+            $user->username = $request->get('username');
+            $user->email = $request->get('email');
+            $user->password = bcrypt($request->get('password'));
+            $user->save();
+
+            $user->roles()->sync(array_filter($request->get('roles')));
+            $user->favouriteGenres()->sync(array_filter($request->get('favouritegenre')));
+
+            $user->save();
+
+            $user->load('roles');
+            if (true === $user->isRole(User::ROLE_STAR) || $user->isRole(User::ROLE_PERFORMER)) {
+                $artistProfile = new ArtistProfile(['user_id' => $user->id]);
+                $artistProfile->save();
+            }
+
+            if ($request->has('avatar')) {
+                $image = $request->file('avatar');
+                $nameFile = md5(microtime());
+                $imagePath = "avatars/$user->id/".$nameFile.'.'.$image->getClientOriginalExtension();
+                $image_resize = Image::make($image->getRealPath());
+                $image_resize->fit(config('image.size.avatar.default.width'), config('image.size.avatar.default.height'));
+                $path = Storage::disk('public')->getAdapter()->getPathPrefix();
+                //создадим папку, если несуществует
+                if (!file_exists($path.'avatars/'.$user->id)) {
+                    Storage::disk('public')->makeDirectory('avatars/'.$user->id);
+                }
+                $image_resize->save($path.$imagePath, 100);
+                $user->avatar = $imagePath;
+            }
+            $user->save();
+            DB::commit();
+        } catch (PDOException $e) {
+            Log::error($e->getMessage(), $e->getTrace());
+            DB::rollBack();
+        } catch (\Exception $e) {
+            Log::alert($e->getMessage(), $e->getTrace());
+        }
+
+        return redirect(route(self::ROUTE_NAME.'.index'));
     }
 }

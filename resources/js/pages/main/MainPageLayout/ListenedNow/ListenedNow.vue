@@ -3,9 +3,9 @@
     <div class="asideBlock__header">
       <h2 class="h2">Сейчас слушают</h2>
       <p v-show="!isLoading">{{ currentlyListening }} человек слушают эти песни</p>
-      <router-link to="currently-listening" class="asideBlock__button">Все</router-link>
+      <router-link to="listening_now" class="asideBlock__button">Все</router-link>
     </div>
-    <div class="asideBlock__body">
+    <div class="asideBlock__body" style="max-height: 168px; overflow: hidden;">
       <div
         v-show="isLoading"
         class="profile__user-card-loader_first"
@@ -14,6 +14,8 @@
       </div>
       <TrackList
         v-if="tracks.length > 0"
+        for-type="collection"
+        for-id="listening_now"
         :track-id-list="tracks.map(track => track.id)"
         :showTableHeader="false"
         :showRemoveButton="false"
@@ -61,6 +63,7 @@ import { mapGetters } from 'vuex';
       },
       quantityListening() {
         return {
+          client: this.apolloClient,
           query: gql.query.CURRENTLY_LISTENING,
           update(data) {
             this.currentlyListening = data.GetListenedNowUser;

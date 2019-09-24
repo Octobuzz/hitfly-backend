@@ -1,13 +1,14 @@
 <template>
   <span
     ref="wordRef"
-    v-tooltip="tooltipOptions"
     :class="[
       'word-trimmer-with-tooltip__word',
       $attrs.class
     ]"
+    v-tooltip="tooltipOptions"
     @mouseenter="calcWidthAndSetShown"
     @mouseleave="unsetShown"
+    @click="emitOnClick"
   >
     {{ word }}
     <span
@@ -24,7 +25,7 @@
 export default {
   props: {
     word: {
-      type: String,
+      type: null,
       required: true
     }
   },
@@ -45,12 +46,15 @@ export default {
       return this.wordWidth < this.checkerWidth;
     },
 
+    showTooltip() {
+      return this.shown && this.trimmed;
+    },
+
     tooltipOptions() {
       return {
         trigger: 'manual',
-        show: this.shown && this.trimmed,
         autoHide: false,
-        content: this.word,
+        content: this.word || '',
         template: `
           <div class="word-trimmer-with-tooltip__tooltip" role="tooltip">
             <div class="word-trimmer-with-tooltip__arrow"></div>
@@ -62,6 +66,7 @@ export default {
         arrowSelector: '.word-trimmer-with-tooltip__arrow',
         placement: 'top',
         hideOnTargetClick: false,
+        disposeTimeout: 0,
         popperOptions: {
           modifiers: {
             preventOverflow: {
@@ -74,7 +79,31 @@ export default {
     }
   },
 
+  watch: {
+    showTooltip: {
+      handler(shown) {
+        const { wordRef } = this.$refs;
+
+        if (!wordRef) return;
+
+        if (shown === true) {
+          // eslint-disable-next-line no-underscore-dangle
+          wordRef._tooltip.show();
+
+          return;
+        }
+        // eslint-disable-next-line no-underscore-dangle
+        wordRef._tooltip.hide();
+      },
+      immediate: true
+    }
+  },
+
   methods: {
+    emitOnClick() {
+      this.$emit('click');
+    },
+
     setShown() {
       if (this.shown || this.shownScheduled) {
         return;

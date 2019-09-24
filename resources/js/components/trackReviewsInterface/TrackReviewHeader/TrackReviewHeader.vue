@@ -15,7 +15,7 @@
     </span>
 
     <div class="track-review-header__cover-button-container">
-      <UnauthenticatedPopoverWrapper>
+      <UnauthenticatedPopoverWrapper v-if="!isStar">
         <template #auth-content>
           <TrackToPlaylistPopover
             :track-id="trackId"
@@ -64,10 +64,12 @@
       </UnauthenticatedPopoverWrapper>
 
       <TrackActionsPopover
+        :product-id="productId"
         :track-id="trackId"
         :show-remove-option="false"
         :position-change-breakpoint="1024"
         @press-favourite="onPressFavourite"
+        @review-added="onReviewAdded"
       >
         <IconButton
           passive="standard-passive"
@@ -104,6 +106,10 @@ export default {
   },
 
   props: {
+    productId: {
+      type: Number,
+      default: null
+    },
     trackId: {
       type: Number,
       required: true
@@ -132,12 +138,18 @@ export default {
       return this.track.cover
         .filter(cover => cover.size === 'size_150x150')[0].url;
     },
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
+    },
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
   methods: {
     onPressFavourite() {
       this.$refs.addToFavButton.$el.dispatchEvent(new Event('click'));
+    },
+    onReviewAdded() {
+      this.$emit('review-added');
     }
   },
 

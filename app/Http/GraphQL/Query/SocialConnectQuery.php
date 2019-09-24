@@ -31,21 +31,36 @@ class SocialConnectQuery extends Query
         ];
     }
 
+    public function args()
+    {
+        return [
+            'filters' => [
+                'type' => \GraphQL::type('SocialLinkFilterInput'),
+                'description' => 'Фильтры',
+            ],
+        ];
+    }
+
     public function resolve($root, $args)
     {
         /** @var User $User */
-        $User = Auth::user();
+        $User = Auth::guard('json')->user();
         if (null === $User) {
-            return null;
+            $socialsLink = null;
+        } else {
+            /** @var Collection $socialsLink */
+            $socialsLink = $User->socialsConnect;
         }
-        /** @var Collection $socialsLink */
-        $socialsLink = $User->socialsConnect;
+
         $response = [];
         foreach ($this->socialsTypes() as $socialsType) {
+            $link = (true === $args['filters']['mobile'])
+                ? route('link_socials', ['provider' => $socialsType])
+                : route('social_auth', ['provider' => $socialsType]);
             $response[] = [
                 'social_type' => $socialsType,
-                'link' => route('social_auth', ['provider' => $socialsType]),
-                'connected' => $socialsLink->contains('social_driver', $socialsType),
+                'link' => $link,
+                'connected' => null === $socialsLink ? null : $socialsLink->contains('social_driver', $socialsType),
             ];
         }
 

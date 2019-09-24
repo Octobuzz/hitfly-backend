@@ -3,7 +3,7 @@ query OtherUserCard_User($id: Int!, $isAuthenticated: Boolean!) {
         id
         username
         avatar(
-            sizes: [size_56x56]
+            sizes: [size_72x72]
         ) {
             size
             url

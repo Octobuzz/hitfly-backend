@@ -1,0 +1,20 @@
+mutation EditCollection_updateCollection(
+    $id: Int!,
+    $name: String,
+    $image: Upload
+) {
+    updateCollection(
+        id: $id,
+        name: $name,
+        image: $image
+    ) {
+        id
+        title
+        image(
+            sizes: [size_235x235]
+        ) {
+            size
+            url
+        }
+    }
+}

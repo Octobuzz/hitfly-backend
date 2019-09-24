@@ -23,7 +23,7 @@ class SocialConnectType extends GraphQLType
                 'description' => 'Сссылка на привязку соц сети ',
             ],
             'connected' => [
-                'type' => Type::nonNull(Type::boolean()),
+                'type' => Type::boolean(),
                 'description' => 'Привязана ли соц сеть',
             ],
         ];

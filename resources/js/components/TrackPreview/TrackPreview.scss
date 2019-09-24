@@ -86,6 +86,11 @@ $cover-side-mobile: 104px;
     }
   }
 
+  &__title:hover {
+    color: inherit;
+    cursor: default;
+  }
+
   &__title {
     font-family: 'Gotham Pro Bold', sans-serif;
     margin-bottom: 4px;

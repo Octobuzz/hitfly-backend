@@ -10,7 +10,10 @@
       v-if="!isLoading"
       class="album-preview__content"
     >
-      <div class="album-preview__drape" />
+      <div
+        class="album-preview__drape"
+        @click="followTitleLink"
+      />
 
       <img
         :key="albumId"
@@ -45,29 +48,31 @@
           </template>
         </UnauthenticatedPopoverWrapper>
 
-        <IconButton
-          v-if="tracksCount > 0 && !currentPlaying"
-          :class="[
-            'album-preview__icon-button',
-            'album-preview__play-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playAlbum"
-        >
-          <PlayIcon />
-        </IconButton>
-        <IconButton
-          v-else
-          :class="[
-            'album-preview__icon-button'
-          ]"
-          passive="mobile-passive"
-          hover="mobile-hover"
-          @press="playAlbum"
-        >
-          <PauseIcon />
-        </IconButton>
+        <template v-if="album.tracksCount > 0">
+          <IconButton
+            v-if="tracksCount > 0 && !currentPlaying"
+            :class="[
+              'album-preview__icon-button',
+              'album-preview__play-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playAlbum"
+          >
+            <PlayIcon />
+          </IconButton>
+          <IconButton
+            v-else
+            :class="[
+              'album-preview__icon-button'
+            ]"
+            passive="mobile-passive"
+            hover="mobile-hover"
+            @press="playAlbum"
+          >
+            <PauseIcon />
+          </IconButton>
+        </template>
 
         <AlbumPopover
           :album-id="albumId"
@@ -93,8 +98,8 @@
           {{ album.title }}
         </span>
       </router-link>
-      <span class="album-preview__author">
-        {{ album.author }}
+      <span class="album-preview__author album-preview__author_no-highlight">
+        author {{ album.author }}
       </span>
     </div>
   </div>
@@ -165,11 +170,15 @@ export default {
   },
 
   methods: {
+    followTitleLink() {
+      this.$router.push(this.titleLink);
+    },
+
     onPressFavourite() {
       this.$refs.addToFavouriteButton.$el.dispatchEvent(new Event('click'));
     },
 
-    playAlbum(){
+    playAlbum() {
       if(this.currentPlaying){
         this.$store.commit('player/pausePlaying');
       }else{
@@ -177,12 +186,13 @@ export default {
           this.$store.commit('player/startPlaying');
         }else{
           this.$apollo.provider.clients[this.apolloClient].query({
-            query: gql.query.TRACKS,
+            query: gql.query.QUEUE_TRACKS,
             variables: {
+              isAuthenticated: this.isAuthenticated,
               pageLimit: 30,
               pageNumber: 1,
               filters: {
-                albumId: this.albumId
+                albumId: this.album.id
               }
             },
           })

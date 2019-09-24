@@ -17,6 +17,7 @@ class EmailChangeJob implements ShouldQueue
     public $email;
     public $user;
     public $url;
+    public $newEmail;
 
     /**
      * Create a new job instance.
@@ -33,6 +34,6 @@ class EmailChangeJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->email)->send(new EmailChangeMail($this->user, $this->email, $this->url));
+        return Mail::to($this->user->email)->send(new EmailChangeMail($this->user, $this->email, $this->url));
     }
 }

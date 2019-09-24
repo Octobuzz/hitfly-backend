@@ -1,11 +1,11 @@
 <template>
   <section class="footerSection">
     <div class="footerSection__links">
-      <a href="javascript: void(0)">Пользовательское соглашение</a>
+      <a href="/policy" target="_blank">Пользовательское соглашение</a>
       <a href="javascript: void(0)">Авторам</a>
       <a href="javascript: void(0)">Помощь</a>
     </div>
-    <a href="javascript: void(0)">Сделано в ZeBrains</a>
+    <a href="https://zebrains.team/">Сделано в ZeBrains</a>
   </section>
 </template>
 <script>

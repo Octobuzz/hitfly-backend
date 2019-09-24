@@ -66,10 +66,28 @@
     color: #231f20;
     flex-grow: 1;
     transition: .2s;
+  }
+
+  &__track-name {
+    cursor: pointer;
+  }
+
+  &__track-author {
+    flex-grow: 1;
+    flex-basis: 0;
     cursor: pointer;
 
     &:hover {
       color:#b36fcb;
+    }
+
+    &_underline {
+      width: 100%;
+      margin-bottom: -5px;
+    }
+
+    &_no-highlight:hover {
+      color: initial;
     }
   }
 
@@ -79,12 +97,8 @@
     width: 0;
   }
 
-  &__track-author {
-    flex-grow: 1;
-    width: 0;
-  }
-
   &__album-title {
+    font-size: 14px;
     flex-grow: 1;
     width: 0;
     margin: 12px;

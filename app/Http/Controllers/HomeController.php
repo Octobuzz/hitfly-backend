@@ -29,4 +29,9 @@ class HomeController extends Controller
 
         return view('spa');
     }
+
+    public function policy($asdadsa = null)
+    {
+        return view('policy');
+    }
 }

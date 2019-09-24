@@ -2,6 +2,7 @@ fragment trackListEntryData on Track {
     trackName
     singer
     length
+    filename
     cover(
         sizes: [size_48x48, size_150x150]
     ) {
@@ -13,6 +14,10 @@ fragment trackListEntryData on Track {
         title
     }
     user {
+        id
+        username
+    }
+    musicGroup {
         id
     }
 }

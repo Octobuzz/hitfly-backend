@@ -49,7 +49,7 @@
       <span>
         <TrackToPlaylistPopover
           :isFooter="true"
-          v-if="!emptyTrack && desktop"
+          v-if="!emptyTrack && !isStar && desktop"
           :track-id="this.$store.getters['player/currentTrack'].id"
         >
           <IconButton
@@ -135,6 +135,7 @@ export default {
     fixedTime: null,
     toggleLoop: false,
     volumeToggle: false,
+    trackingTrigger: true,
     tooltip: {
       add: {
         content: 'Добавить в плейлист'
@@ -168,7 +169,7 @@ export default {
 		},
     startPause(){
       if(!this.emptyTrack){
-        if(this.playing === true){
+        if(this.playing === true && this.audio.currentTime > 0){
           this.audio.pause();
           this.$store.commit('player/pausePlaying');
         }else{
@@ -190,21 +191,6 @@ export default {
         }else{
           trackId = this.currentPlaylist[currentIndex - 1];
         };
-        this.$apollo.provider.defaultClient.mutate({
-          variables: {
-            id: this.currentTrack.id,
-            listening: this.percentage
-          },
-          mutation: gql`mutation($id: Int!, $listening: Int!){
-            listeningTrack(id: $id, listening: $listening){
-              trackName
-            }
-          }`
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
         this.getTrack(trackId);
       }
     },
@@ -243,7 +229,36 @@ export default {
     },
     update(e) {
       if(this.audio.duration){
-        this.percentage =  Math.floor(this.audio.played.end(0) / this.audio.duration * 100);
+        let ranges = this.audio.played.length;
+        let totalRange = 0;
+        for(let i = 0; i < ranges; i++){
+          totalRange = totalRange + (this.audio.played.end(i) - this.audio.played.start(i));
+        }
+        this.percentage =  Math.floor(totalRange / this.audio.duration * 100);
+        if((totalRange / this.audio.duration * 100) >= 50 && this.trackingTrigger == true){
+          this.trackingTrigger = false;
+          switch(this.percentage){
+            case 50:
+              this.$apollo.provider.defaultClient.mutate({
+                variables: {
+                  id: this.currentTrack.id,
+                  listening: this.percentage
+                },
+                mutation: gql`mutation($id: Int!, $listening: Int!){
+                  listeningTrack(id: $id, listening: $listening){
+                    trackName
+                  }
+                }`
+              })
+              .then(response => {
+
+              })
+              .catch(error => {
+                console.log('error');
+              });
+              break;
+          }
+        }
       };
 			this.currentTime = parseInt(this.audio.currentTime);
 	    let hhmmss = new Date(this.currentTime * 1000).toISOString().substr(11, 8);
@@ -271,10 +286,16 @@ export default {
         return this.audio.pause();
       }
 		},
+    currentTrackId: function(){
+      this.trackingTrigger = true;
+    }
   },
   computed: {
     desktop() {
       return this.windowWidth > MOBILE_WIDTH;
+    },
+    isStar() {
+      return this.$store.getters['profile/roles']('star');
     },
     percentComplete() {
 		  return this.currentTime / Math.floor(this.currentTrack.length) * 100 + '%';
@@ -285,12 +306,9 @@ export default {
     	return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
     ...mapState('player', {
-      playing: state => state.isPlaying
-    }),
-    ...mapState('player', {
-      currentTrack: state => state.currentTrack
-    }),
-    ...mapState('player', {
+      playing: state => state.isPlaying,
+      currentTrack: state => state.currentTrack,
+      currentTrackId: state => state.currentTrack.id,
       currentPlaylist: state => state.currentPlaylist
     }),
     emptyTrack() {
@@ -304,7 +322,6 @@ export default {
   mounted: function(){
     this.audio = this.$el.querySelectorAll('audio')[0];
 		this.audio.addEventListener('timeupdate', this.update);
-		// this.audio.addEventListener('loadeddata', this.load);
   }
 };
 </script>

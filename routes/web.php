@@ -144,5 +144,6 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback')->name('social_auth_callback');
 });
 
+Route::get('/policy', 'HomeController@policy')->name('policy');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/{parameter}', 'HomeController@index')->where('parameter', '.*');

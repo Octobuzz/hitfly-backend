@@ -37,9 +37,9 @@ class AlbumsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $query = Album::with($fields->getRelations());
+        $query = Album::with($fields->getRelations())->orderBy('created_at', 'DESC');
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
-            $user = Auth::user();
+            $user = Auth::guard('json')->user();
             if (null === $user) {
                 return null;
             }

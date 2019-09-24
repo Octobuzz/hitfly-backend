@@ -111,7 +111,6 @@ export default {
       const file = e.target.files[0];
       this.empty = false;
       this.fileName = file.name;
-      console.log(this.fileName + ' ' + this.empty);
       this.$emit('change', file)
     }
   }
