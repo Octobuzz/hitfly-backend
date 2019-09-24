@@ -21,6 +21,12 @@ use Illuminate\Support\Facades\Storage;
 class UserObserver
 {
     private $rolesToSearchIndex = ['critic', 'prof_critic', 'star', 'performer'];
+    protected $indexer;
+
+    public function __construct(SearchIndexer $indexer)
+    {
+        $this->indexer = $indexer;
+    }
 
     /**
      * Handle the user "created" event.
@@ -43,8 +49,7 @@ class UserObserver
             $purse->save();
         }
         if (!empty($user->username) && true === $user->inRoles($this->rolesToSearchIndex)) {
-            $indexer = new SearchIndexer();
-            $indexer->index(Collection::make([$user]), 'user');
+            $this->indexer->index(Collection::make([$user]), 'user');
         }
 
 //        //отправка письма о завершении регистрации
@@ -90,8 +95,7 @@ class UserObserver
         }
 
         if ($user->isDirty('username') && true === $user->inRoles($this->rolesToSearchIndex)) {
-            $indexer = new SearchIndexer();
-            $indexer->index(Collection::make([$user]), 'user');
+            $this->indexer->index(Collection::make([$user]), 'user');
         }
 
         return true;
@@ -115,8 +119,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        $indexer = new SearchIndexer();
-        $indexer->deleteFromIndex(Collection::make([$user]), 'user');
+        $this->indexer->deleteFromIndex(Collection::make([$user]), 'user');
     }
 
     /**
@@ -127,8 +130,7 @@ class UserObserver
     public function restored(User $user)
     {
         if ($user->isDirty('username') && true === $user->inRoles($this->rolesToSearchIndex)) {
-            $indexer = new SearchIndexer();
-            $indexer->index(Collection::make([$user]), 'user');
+            $this->indexer->index(Collection::make([$user]), 'user');
         }
     }
 
@@ -139,7 +141,6 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
-        $indexer = new SearchIndexer();
-        $indexer->deleteFromIndex(Collection::make([$user]), 'user');
+        $this->indexer->deleteFromIndex(Collection::make([$user]), 'user');
     }
 }

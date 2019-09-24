@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
 {
+    protected $indexer;
+
+    public function __construct(SearchIndexer $indexer)
+    {
+        $this->indexer = $indexer;
+    }
+
     /**
      * @param Track $track
      *
@@ -48,8 +55,7 @@ class TrackObserver
             Cache::tags(Track::class.$track->id)->flush();
         }
         if (Track::PUBLISHED === $track->state) {
-            $indexer = new SearchIndexer();
-            $indexer->index(Collection::make([$track]), 'track');
+            $this->indexer->index(Collection::make([$track]), 'track');
         }
     }
 
@@ -61,8 +67,7 @@ class TrackObserver
     public function deleted(Track $track)
     {
         Storage::delete('public/music/'.$track->user_id.DIRECTORY_SEPARATOR.$track->filename);
-        $indexer = new SearchIndexer();
-        $indexer->deleteFromIndex(Collection::make([$track]), 'track');
+        $this->indexer->deleteFromIndex(Collection::make([$track]), 'track');
     }
 
     /**
@@ -72,9 +77,8 @@ class TrackObserver
      */
     public function restored(Track $track)
     {
-        $indexer = new SearchIndexer();
         if (Track::PUBLISHED === $track->state) {
-            $indexer->index(Collection::make([$track]), 'track');
+            $this->indexer->index(Collection::make([$track]), 'track');
         }
     }
 
@@ -85,7 +89,6 @@ class TrackObserver
      */
     public function forceDeleted(Track $track)
     {
-        $indexer = new SearchIndexer();
-        $indexer->deleteFromIndex(Collection::make([$track]), 'track');
+        $this->indexer->deleteFromIndex(Collection::make([$track]), 'track');
     }
 }

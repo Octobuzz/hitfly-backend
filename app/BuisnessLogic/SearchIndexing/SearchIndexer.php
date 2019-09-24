@@ -28,13 +28,14 @@ class SearchIndexer
         $this->checkAndCreateAlias($indexName, self::POSTFIX_READ);
         $params = ['body' => []];
         $attribiteFiltering = new AttributeFiltering();
+        $filterName = 'filter'.(new \ReflectionClass($models->first()))->getShortName();
+        $typeIndex = get_class($models->first());
+        $indexNameWithPostfix = $indexName.self::POSTFIX_WRITE;
         foreach ($models as $model) {
-            $filterName = 'filter'.(new \ReflectionClass($model))->getShortName();
-
             $params['body'][] = [
                 'index' => [
-                    '_index' => $indexName.self::POSTFIX_WRITE,
-                    '_type' => get_class($model),
+                    '_index' => $indexNameWithPostfix,
+                    '_type' => $typeIndex,
                     '_id' => $model->id,
                 ],
             ];
@@ -54,34 +55,17 @@ class SearchIndexer
      */
     public function deleteFromIndex(Collection $models, string $indexName)
     {
+        if (true === $models->isEmpty()) {
+            return false;
+        }
+        $indexNameWrite = $indexName.self::POSTFIX_WRITE;
+        $indexNameRead = $indexName.self::POSTFIX_READ;
         foreach ($models as $model) {
-            $filterName = 'filter'.(new \ReflectionClass($model))->getShortName();
-
-            $params = [
-                    'index' => $indexName.self::POSTFIX_READ,
-                    'type' => get_class($model),
-                    'id' => $model->id,
-            ];
-            if (true === \Elasticsearch::exists($params)) {
-                try {
-                    \Elasticsearch::delete($params);
-                } catch (Missing404Exception $e) {
-                    Log::notice($e->getMessage(), $e->getTrace());
-                }
-            }
+            $paramsRead = $this->getIndexParams($indexNameRead, $model);
+            $e = $this->deleteElement($paramsRead);
             //удалим из из индекса WRITE
-            $params = [
-                'index' => $indexName.self::POSTFIX_WRITE,
-                'type' => get_class($model),
-                'id' => $model->id,
-            ];
-            if (true === \Elasticsearch::exists($params)) {
-                try {
-                    \Elasticsearch::delete($params);
-                } catch (Missing404Exception $e) {
-                    Log::notice($e->getMessage(), $e->getTrace());
-                }
-            }
+            $paramsWrite = $this->getIndexParams($indexNameWrite, $model);
+            $e = $this->deleteElement($paramsWrite);
         }
     }
 
@@ -130,13 +114,11 @@ class SearchIndexer
         ];
         try {
             $response = \Elasticsearch::indices()->updateAliases($params);
+            if (true === $response['acknowledged']) {
+                return true;
+            }
         } catch (\Exception $e) {
             Log::notice($e->getMessage(), $e->getTrace());
-
-            return false;
-        }
-        if (true === $response['acknowledged']) {
-            return true;
         }
 
         return false;
@@ -161,13 +143,11 @@ class SearchIndexer
         if (false === \Elasticsearch::indices()->exists($params)) {
             try {
                 $response = \Elasticsearch::indices()->create($params);
+                if (true === $response['acknowledged']) {
+                    return $response['index'];
+                }
             } catch (\Exception $e) {
                 Log::notice($e->getMessage(), $e->getTrace());
-
-                return null;
-            }
-            if (true === $response['acknowledged']) {
-                return $response['index'];
             }
         }
 
@@ -186,17 +166,17 @@ class SearchIndexer
         $params = [
             'index' => $nameIndex,
         ];
-        if (true === \Elasticsearch::indices()->exists($params)) {
-            try {
-                $response = \Elasticsearch::indices()->delete($params);
-            } catch (\Exception $e) {
-                Log::notice($e->getMessage(), $e->getTrace());
+        if (false === \Elasticsearch::indices()->exists($params)) {
+            return false;
+        }
 
-                return false;
-            }
+        try {
+            $response = \Elasticsearch::indices()->delete($params);
             if (true === $response['acknowledged']) {
                 return true;
             }
+        } catch (\Exception $e) {
+            Log::notice($e->getMessage(), $e->getTrace());
         }
 
         return false;
@@ -219,7 +199,6 @@ class SearchIndexer
         if (null !== $oldIndexName) {
             return $modelName.$postfix;
         }
-
         $namesOfindexes = $this->filterIndexesByName($modelName);
         if ($namesOfindexes->isNotEmpty()) {
             $newIndexName = $namesOfindexes->pop();
@@ -228,13 +207,48 @@ class SearchIndexer
         }
 
         if (null !== $newIndexName) {
-            if (false === $this->createAlias($newIndexName, $modelName, $postfix)) {
-                return null;
-            }
-
-            return $modelName.$postfix;
+            return null;
         }
 
-        return null;
+        if (false === $this->createAlias($newIndexName, $modelName, $postfix)) {
+            return null;
+        }
+
+        return $modelName.$postfix;
+    }
+
+    /**
+     * @param string $indexName
+     * @param $model
+     *
+     * @return array
+     */
+    private function getIndexParams(string $indexName, $model): array
+    {
+        $params = [
+            'index' => $indexName,
+            'type' => get_class($model),
+            'id' => $model->id,
+        ];
+
+        return $params;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return Missing404Exception|\Exception
+     */
+    private function deleteElement(array $params)
+    {
+        if (true === \Elasticsearch::exists($params)) {
+            try {
+                \Elasticsearch::delete($params);
+            } catch (Missing404Exception $e) {
+                Log::notice($e->getMessage(), $e->getTrace());
+            }
+        }
+
+        return $e;
     }
 }

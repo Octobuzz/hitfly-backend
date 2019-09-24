@@ -40,17 +40,29 @@ class SearchReindex extends Command
      */
     public function handle()
     {
-        $modelName = Str::snake(trim($this->argument('model')));
-        $config = config('search.models');
-        if (array_key_exists($modelName, $config)) {
-            $this->reindexModel($modelName, $config);
-        } elseif ('all' === $modelName) {
-            foreach ($config as $indexName => $modelClass) {
-                $this->reindexModel($indexName, $config);
+        try {
+            $modelName = Str::snake(trim($this->argument('model')));
+            $config = config('search.models');
+
+            if ('all' === $modelName) {//индекс всех моделей
+                foreach ($config as $indexName => $modelClass) {
+                    $this->reindexModel($indexName, $config[$indexName]);
+                }
+                $this->line('Переиндексирован весь индекс');
+
+                return;
             }
-            $this->line('Переиндексирован весь индекс');
-        } else {
-            $this->error('Ошибка в имени индексируемой сущности');
+
+            if (!array_key_exists($modelName, $config)) {//проверка существования имени модели в конфиге
+                $this->error('Ошибка в имени индексируемой сущности');
+
+                return;
+            }
+
+            //индекс конкретной модели
+            $this->reindexModel($modelName, $config[$modelName]);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage(), $e->getTrace());
         }
     }
 
@@ -82,18 +94,16 @@ class SearchReindex extends Command
         //создадим новый индекс(сюда будет вестись переиндексация)
         $newIndexName = $this->indexer->createIndex($modelName);
         if (null === $newIndexName) {
-            $this->error('Ошибка создания нового индекса');
-            die();
+            throw new \Exception('Ошибка создания нового индекса');
         }
         //создадим алиас для записи(write) для нового индекса с отвязкой алиаса для записи(write) со старого индекса
         if (false === $this->indexer->createAlias($newIndexName, $modelName, SearchIndexer::POSTFIX_WRITE, $oldIndexName)) {
-            $this->error('Ошибка создания алиаса для записи в новый индекс');
-            die();
+            throw new \Exception('Ошибка создания алиаса для записи в новый индекс');
         }
-        $query = $config[$modelName]['model']::query();
+        $query = $config['model']::query();
         //добавление scope если заданы в конфиге
-        if (isset($config[$modelName]['scopes']) && !empty($config[$modelName]['scopes'])) {
-            foreach ($config[$modelName]['scopes'] as $scope => $param) {
+        if (isset($config['scopes']) && !empty($config['scopes'])) {
+            foreach ($config['scopes'] as $scope => $param) {
                 if (!empty($param)) {
                     $query->$scope($param);
                 } else {
@@ -107,14 +117,12 @@ class SearchReindex extends Command
         );
         //установка алиаса на чтение на новый индекс
         if (false === $this->indexer->createAlias($newIndexName, $modelName, SearchIndexer::POSTFIX_READ, $oldIndexName)) {
-            $this->error('Ошибка создания алиаса чтения в новый индекс(переиндексированый)');
-            die();
+            throw new \Exception('Ошибка создания алиаса чтения в новый индекс(переиндексированый)');
         }
 
         //удаление старого индекса
         if (null !== $oldIndexName && false === $this->indexer->deleteIndex($oldIndexName)) {
-            $this->error('Ошибка создания алиаса чтения в новый индекс(переиндексированый)');
-            die();
+            throw new \Exception('Ошибка удаления старого индекса');
         }
         $this->line("<info>Переиндексирована модель:</info> {$modelName}");
     }
@@ -130,14 +138,16 @@ class SearchReindex extends Command
     {
         // получим имя индекса по алиасу
         $oldIndexName = $this->indexer->findIndexNameByAlias($modelName.SearchIndexer::POSTFIX_READ);
-        if (null === $oldIndexName) {//у индекса может не быть алиаса
-            $oldIndexName = $this->getLastIndexName($modelName); //получим имя самого последнего индекса
-            if (null === $oldIndexName) {//если индекса не существует
-                $this->info('Нет старого индекса. '.$modelName.'_***');
-            } elseif (false === $this->indexer->createAlias($oldIndexName, $modelName, SearchIndexer::POSTFIX_READ)) {
-                $this->error('Невозможно создать алиас '.$modelName.'_read');
-                die();
-            }
+        if (null !== $oldIndexName) {
+            return $oldIndexName;
+        }
+
+        //у индекса может не быть алиаса
+        $oldIndexName = $this->getLastIndexName($modelName); //получим имя самого последнего индекса
+        if (null === $oldIndexName) {//если индекса не существует, вывод сообщения и создание алиаса
+            $this->info('Нет старого индекса. '.$modelName.'_***');
+        } elseif (false === $this->indexer->createAlias($oldIndexName, $modelName, SearchIndexer::POSTFIX_READ)) {
+            throw new \Exception('Невозможно создать алиас '.$modelName.'_read');
         }
 
         return $oldIndexName;

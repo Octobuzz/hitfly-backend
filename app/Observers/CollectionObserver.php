@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Cache;
 
 class CollectionObserver
 {
+    protected $indexer;
+
+    public function __construct(SearchIndexer $indexer)
+    {
+        $this->indexer = $indexer;
+    }
+
     /**
      * Handle the collection "creating" event.
      *
@@ -17,8 +24,7 @@ class CollectionObserver
     public function creating(Collection $collection)
     {
         if (!empty($collection->title)) {
-            $indexer = new SearchIndexer();
-            $indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
+            $this->indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
         }
     }
 
@@ -33,8 +39,7 @@ class CollectionObserver
             Cache::tags(Collection::class.$collection->id)->flush();
         }
         if ($collection->isDirty('title')) {
-            $indexer = new SearchIndexer();
-            $indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
+            $this->indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
         }
     }
 
@@ -45,8 +50,7 @@ class CollectionObserver
      */
     public function deleted(Collection $collection)
     {
-        $indexer = new SearchIndexer();
-        $indexer->deleteFromIndex(\Illuminate\Support\Collection::make([$collection]), 'collection');
+        $this->indexer->deleteFromIndex(\Illuminate\Support\Collection::make([$collection]), 'collection');
     }
 
     /**
@@ -57,8 +61,7 @@ class CollectionObserver
     public function restored(Collection $collection)
     {
         if ($collection->isDirty('title')) {
-            $indexer = new SearchIndexer();
-            $indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
+            $this->indexer->index(\Illuminate\Support\Collection::make([$collection]), 'collection');
         }
     }
 
@@ -69,7 +72,6 @@ class CollectionObserver
      */
     public function forceDeleted(Collection $collection)
     {
-        $indexer = new SearchIndexer();
-        $indexer->deleteFromIndex(\Illuminate\Support\Collection::make([$collection]), 'collection');
+        $this->indexer->deleteFromIndex(\Illuminate\Support\Collection::make([$collection]), 'collection');
     }
 }
