@@ -203,8 +203,7 @@ class TrackController extends Controller
             }
         })->ajax('/admin/api/album');
         $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'))->required();
-
-        //$form->text('singer', 'Исполнитель')->rules(['required']);
+        
         $form->date('track_date', 'Дата трека')->default(date('Y'))->required(true);
         $form->textarea('song_text', 'Текст трека');
         $form->select('user_id', 'Пользователь')->options(function ($id) {

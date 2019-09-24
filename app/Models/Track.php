@@ -185,18 +185,6 @@ class Track extends Model
         return 'unknown';
     }
 
-    public function getauthorw(): ?string
-    {
-        if (null !== $this->musicGroup) {
-            return $this->musicGroup->name;
-        }
-        if (null !== $this->user) {
-            return $this->user->username;
-        }
-
-        return 'unknown';
-    }
-
     public function getPathTrack(): string
     {
         $user_id = $this->user_id;
