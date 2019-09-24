@@ -42,7 +42,6 @@ class Track extends Model
     protected $attributes = [
         'state' => self::FILE_UPLOAD,
         'track_name' => 'unknown',
-        'singer' => 'unknown',
         'song_text' => null,
     ];
 
@@ -51,7 +50,6 @@ class Track extends Model
         'album_id',
         'genre_id',
         'user_id',
-        'singer',
         'song_text',
         'filename',
         'track_date',
@@ -177,7 +175,26 @@ class Track extends Model
 
     public function getAuthor(): ?string
     {
-        return $this->singer;
+        if (null !== $this->musicGroup) {
+            return $this->musicGroup->name;
+        }
+        if (null !== $this->user) {
+            return $this->user->username;
+        }
+
+        return 'unknown';
+    }
+
+    public function getauthorw(): ?string
+    {
+        if (null !== $this->musicGroup) {
+            return $this->musicGroup->name;
+        }
+        if (null !== $this->user) {
+            return $this->user->username;
+        }
+
+        return 'unknown';
     }
 
     public function getPathTrack(): string

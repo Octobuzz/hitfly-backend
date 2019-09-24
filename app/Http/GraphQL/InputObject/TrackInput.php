@@ -39,12 +39,6 @@ class TrackInput extends GraphQLType
                 'type' => Type::nonNull(Type::listOf(Type::int())),
                 'rules' => ['required', 'array', 'min:1', 'max:5'],
             ],
-            'singer' => [
-                'name' => 'singer',
-                'description' => 'Испольнитель',
-                'type' => Type::string(),
-                'rules' => ['min:0', 'max:250'],
-            ],
             'musicGroup' => [
                 'name' => 'musicGroup',
                 'description' => 'Музыкальная группа, к которой принадлежит трек',
