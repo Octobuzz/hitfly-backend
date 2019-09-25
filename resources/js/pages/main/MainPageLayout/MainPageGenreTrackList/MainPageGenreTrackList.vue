@@ -339,6 +339,7 @@ export default {
           }
         },
         update(data) {
+
           this.tracks = data.tracks.data;
           this.collectionFetched = true;
           return data;
