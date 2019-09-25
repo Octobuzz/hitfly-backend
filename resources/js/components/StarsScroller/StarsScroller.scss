@@ -1,0 +1,97 @@
+@import '~scss/_variables.scss';
+
+$stars-height-desktop: 250px;
+$stars-height-mobile: 200px;
+
+$stars-cover-desktop: 142px;
+$stars-cover-mobile: 100px;
+
+$stars-left-padding-desktop: 24px;
+$stars-left-padding-mobile: 16px;
+
+.stars-scroll-horizontal {
+  height: calc($stars-height-desktop + 50px);
+  overflow-y: hidden;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  &__button-prev,
+  &__button-next {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e4e4e4;
+    border-radius: $input_border_radius 0 0 $input_border_radius;
+
+    &_disabled {
+      svg {
+        opacity: .5;
+      }
+    }
+  }
+
+  &__button-prev {
+    margin-left: auto;
+  }
+
+  &__button-next {
+    margin-left: -1px;
+    transform: rotate(180deg);
+  }
+
+  &__loader {
+    display: flex;
+    align-items: center;
+    width: 224px;
+    height: $stars-cover-desktop;
+  }
+
+  &__stars-preview {
+    box-sizing: content-box;
+    padding-left: $stars-left-padding-desktop;
+  }
+
+  &::v-deep .vue-recycle-scroller__item-wrapper {
+    height: $stars-height-desktop;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .stars-scroll-horizontal {
+    height: $stars-height-mobile;
+
+    &__stars-preview {
+      padding-left: $stars-left-padding-mobile;
+    }
+
+    &::v-deep .vue-recycle-scroller__item-wrapper {
+      height: $stars-height-mobile;
+    }
+
+    &__header {
+      margin-bottom: 12px;
+
+      & > *:first-child {
+        width: 100%;
+      }
+    }
+
+    &__button-prev,
+    &__button-next {
+      margin-bottom: 8px;
+      order: -1;
+    }
+
+    &__loader {
+      height: $stars-cover-mobile;
+    }
+  }
+}

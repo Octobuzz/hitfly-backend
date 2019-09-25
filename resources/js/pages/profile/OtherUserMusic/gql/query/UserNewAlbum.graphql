@@ -1,0 +1,14 @@
+query OtherUserMusic_albums($id: Int!) {
+    albums(
+        page: 1,
+        limit: 1,
+        filters: { userId: $id }
+    ) {
+        data {
+            id
+            title
+            tracksCount
+            tracksTime
+        }
+    }
+}

@@ -1,0 +1,21 @@
+#import "../fragments/trackListEntryData.graphql"
+
+query GetListenedNow(
+    $isAuthenticated: Boolean!,
+    $pageLimit: Int,
+    $pageNumber: Int
+) {
+    GetListenedNow(
+        page: $pageNumber,
+        limit: $pageLimit
+    ) {
+        total
+        to
+        data {
+            id
+            ...trackListEntryData
+            userFavourite @include(if: $isAuthenticated)
+            favouritesCount @include(if: $isAuthenticated)
+        }
+    }
+}

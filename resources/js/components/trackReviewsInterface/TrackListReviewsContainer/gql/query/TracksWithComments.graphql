@@ -1,0 +1,50 @@
+#import "gql/fragments/trackComment.graphql"
+
+query TrackListReviewsContainer_TracksWithComments(
+    $isAuthenticated: Boolean!,
+    $pageLimit: Int,
+    $pageNumber: Int,
+    $filters: TrackFilterInput,
+    $commentedInPeriod: CommentPeriodEnum!
+) {
+    tracks(
+        page: $pageNumber,
+        limit: $pageLimit,
+        commentPeriod: $commentedInPeriod,
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            id
+            trackName
+            singer
+            comments(commentPeriod: $commentedInPeriod) {
+                ...trackComment
+            }
+
+            #TrackReviewHeader #TrackActionsPopover #TrackToPlaylist
+            cover(
+                sizes: [size_48x48, size_150x150]
+            ) {
+                size
+                url
+            }
+
+            #TrackToPlaylistPopover #TrackActionsPopover
+            userFavourite @include (if: $isAuthenticated)
+            user @include (if: $isAuthenticated) {
+                id
+                avatar(sizes: [size_56x56]) {
+                    size
+                    url
+                }
+                iWatch
+            }
+            my @include (if: $isAuthenticated)
+
+            #AddToFavouriteButton
+            favouritesCount
+        }
+    }
+}

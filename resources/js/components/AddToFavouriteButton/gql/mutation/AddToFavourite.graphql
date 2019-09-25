@@ -1,0 +1,36 @@
+mutation AddToFavourite(
+    $id: Int!
+    $type: FavouriteTypeEnum
+) {
+    addToFavourites(
+        Favourite: {
+            favouriteableId: $id,
+            favouritableType: $type
+        }
+    ) {
+        ... on FavouriteTrack {
+            id
+            track {
+                id
+                userFavourite
+                favouritesCount
+            }
+        }
+        ... on FavouriteAlbum {
+            id
+            album {
+                id
+                userFavourite
+                favouritesCount
+            }
+        }
+        ... on FavouriteCollection {
+            id
+            collection {
+                id
+                userFavourite
+                favouritesCount
+            }
+        }
+    }
+}

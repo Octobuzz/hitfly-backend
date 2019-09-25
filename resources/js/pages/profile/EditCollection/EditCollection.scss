@@ -1,0 +1,56 @@
+@import '~scss/_variables.scss';
+
+$container_max_width: 595px;
+
+.edit-collection {
+  &__loader {
+    display: block;
+    margin: 32px auto;
+  }
+
+  &__return-header {
+    margin-bottom: 32px;
+  }
+
+  &__page-header {
+    margin-bottom: 16px;
+  }
+
+  &__form-body {
+    display: flex;
+    max-width: $container_max_width;
+    margin-bottom: 45px;
+  }
+
+  &__image-input {
+    width: 235px;
+    height: 235px;
+    margin-right: 32px;
+  }
+
+  &__title-input {
+    flex-grow: 1;
+  }
+
+  &__form-footer {
+    max-width: $container_max_width;
+  }
+
+  &__delimiter {
+    box-sizing: border-box;
+    width: 100%;
+    border: {
+      width: 1px 0 0 0;
+      style: solid;
+      color: $layout_border_color;
+    }
+    margin-bottom: 22px;
+  }
+
+  &__save-button {
+    display: block;
+    width: 204px;
+    height: 48px;
+    margin-left: auto;
+  }
+}

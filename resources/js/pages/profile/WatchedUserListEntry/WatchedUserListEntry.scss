@@ -1,0 +1,71 @@
+@import '~scss/_variables.scss';
+
+.watched-user-list-entry {
+  display: flex;
+  padding: 16px;
+  border-bottom: 1px solid $layout_border_color;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  &__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    margin-right: 16px;
+  }
+
+  &__user-info {
+    color: $text_color_secondary;
+    flex-grow: 1;
+  }
+
+  &__user-info-name {
+    color: $text_color_primary;
+    display: inline;
+    transition: .15s;
+
+    &:hover {
+      color: $link_color_active;
+    }
+  }
+
+  &__user-info-followers {
+    font-size: 12px;
+    padding-left: 8px;
+  }
+
+  &__user-info-location {
+    display: block;
+    margin: 8px 0;
+  }
+
+  &__user-info-genres {
+    display: block;
+    margin: 8px 0;
+  }
+
+  &__user-info-icon {
+    padding-right: 8px;
+  }
+
+  &__button-container {
+    display: flex;
+    padding-top: 16px;
+  }
+
+  &__follow-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 40px;
+    padding: 0;
+    margin-right: 16px;
+
+    &:hover {
+      padding: 1px;
+    }
+  }
+}

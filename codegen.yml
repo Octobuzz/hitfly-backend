@@ -1,0 +1,9 @@
+schema:
+    - http://localhost:9090/graphql/user:
+          headers:
+              X-TOKEN-AUTH: f3e3c3ab15f8d680fbbae718f0182fee
+overwrite: true
+generates:
+    ./graphql-fragment-types.json:
+        plugins:
+            - fragment-matcher

@@ -1,0 +1,34 @@
+@import '~scss/_variables.scss';
+
+$space_between_desktop: 24px;
+$album_width_desktop: 120px;
+
+$space_between_mobile: 16px;
+$album_width_mobile: 108px;
+
+.album-table {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: ($space_between_desktop + $album_width_desktop) * 5
+    + $space_between_desktop;
+  margin-top: 16px;
+
+  & > * {
+    margin: {
+      top: 16px;
+      right: $space_between_desktop / 2;
+      left: $space_between_desktop / 2;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .album-table {
+    max-width: ($space_between_mobile + $album_width_mobile) * 5
+      + $space_between_mobile;
+
+    & > * {
+      margin-left: $space_between_mobile;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+#import "gql/fragments/trackListEntryData.graphql"
+
+query OtherUserMusic_tracks(
+    $isAuthenticated: Boolean!,
+    $albumId: Int!
+) {
+    tracks(
+        page: 1,
+        limit: 5,
+        filters: {
+            albumId: $albumId
+        }
+    ) {
+        data {
+            id
+            ...trackListEntryData
+
+            #TrackToPlaylistPopover #TrackActionsPopover
+            userFavourite @include (if: $isAuthenticated)
+            user @include (if: $isAuthenticated) {
+                id
+                iWatch
+            }
+            my @include (if: $isAuthenticated)
+
+            #AddToFavouriteButton
+            favouritesCount
+        }
+    }
+}

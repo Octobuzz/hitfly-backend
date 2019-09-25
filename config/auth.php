@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -45,6 +44,10 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+        'json' => [
+            'driver' => 'json',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -70,10 +73,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'json' => [
+            'driver' => 'eloquent',
+            'model' => App\User::class,
+        ],
     ],
 
     /*
@@ -98,5 +101,4 @@ return [
             'expire' => 60,
         ],
     ],
-
 ];

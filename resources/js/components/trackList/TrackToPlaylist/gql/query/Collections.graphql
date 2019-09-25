@@ -1,0 +1,35 @@
+query TrackToPlaylist_collections(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $filters: CollectionFilterInput
+) {
+    collections(
+        limit: $pageLimit,
+        page: $pageNumber,
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            id
+            title
+
+            #UniversalCollectionContainer
+            image(
+                sizes: [size_48x48, size_150x150, size_160x160]
+            ) {
+                size
+                url
+            }
+            isSet
+            countTracks
+            user {
+                id
+                username
+            }
+            favouritesCount
+            userFavourite
+            my
+        }
+    }
+}

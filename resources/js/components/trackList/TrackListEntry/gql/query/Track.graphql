@@ -1,0 +1,12 @@
+#import "gql/fragments/trackListEntryData.graphql"
+
+query TrackListEntry_track(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    track(id: $id) {
+        id
+        ...trackListEntryData
+        userFavourite @include (if: $isAuthenticated)
+    }
+}

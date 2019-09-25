@@ -1,0 +1,131 @@
+// popover cannot use scoped styles
+// TODO: global popover styles
+$bg_color: #222;
+$text_color: #979797;
+$text_color_highlighted: white;
+$arrow_indentation: 5px;
+
+.unauthenticated-popover {
+  font-size: 14px;
+  display: block !important;
+  position: relative;
+  width: 312px;
+  border-radius: 5px;
+  z-index: 9999;
+  color: $text_color !important;
+  background: $bg_color;
+  box-shadow: 0 0 30px 5px rgba(black, .1);
+
+  &__wrapper {
+    padding: 16px;
+  }
+
+  &__inner {
+    border-radius: 5px;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    z-index: 9999;
+  }
+
+  &__text {
+    text-align: center;
+    width: 240px;
+    margin: 12px auto 22px;
+  }
+
+  &__button {
+    color: white !important;
+    display: block;
+    max-width: 240px;
+    padding: {
+      top: 14px !important;
+      bottom: 14px !important;
+    }
+    margin: 0 auto 18px auto;
+
+    &:hover {
+      padding: {
+        top: 13px !important;
+        bottom: 13px !important;
+      }
+    }
+  }
+
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s, visibility .2s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+
+  &[x-placement^="top"] {
+    margin-bottom: $arrow_indentation;
+
+    & .unauthenticated-popover__arrow {
+      bottom: -$arrow_indentation;
+      border: {
+        width: $arrow_indentation $arrow_indentation 0 $arrow_indentation;
+        top-color: $bg_color;
+        right-color: transparent;
+        bottom-color: transparent;
+        left-color: transparent;
+      }
+    }
+  }
+
+  &[x-placement^="right"] {
+    margin-left: $arrow_indentation;
+
+    & .unauthenticated-popover__arrow {
+      left: -$arrow_indentation;
+      border: {
+        width: $arrow_indentation $arrow_indentation $arrow_indentation 0;
+        top-color: transparent;
+        right-color: $bg_color;
+        bottom-color: transparent;
+        left-color: transparent;
+      }
+    }
+  }
+
+  &[x-placement^="left"] {
+    margin-right: $arrow_indentation;
+
+    & .unauthenticated-popover__arrow {
+      right: -$arrow_indentation;
+      border: {
+        width: $arrow_indentation 0 $arrow_indentation $arrow_indentation;
+        top-color: transparent;
+        right-color: transparent;
+        bottom-color: transparent;
+        left-color: $bg_color;
+      }
+    }
+  }
+
+  &[x-placement^="bottom"] {
+    margin-top: $arrow_indentation;
+
+    & .unauthenticated-popover__arrow {
+      top: -$arrow_indentation;
+      border: {
+        width: 0 $arrow_indentation $arrow_indentation $arrow_indentation;
+        top-color: transparent;
+        right-color: transparent;
+        bottom-color: $bg_color;
+        left-color: transparent;
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+@import '~scss/_variables.scss';
+
+.track-list-reviews-entry {
+  display: flex;
+
+  &__player-reviews-section {
+    width: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__d-track-name {
+
+  }
+
+  &__d-singer {
+    height: 32px;
+  }
+
+  &__singer {
+    box-sizing: border-box;
+    font-size: 15px;
+    display: block;
+    height: 32px;
+  }
+
+  &__player {
+    height: 130px;
+    margin-top: 30px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  &__track-review {
+    margin-bottom: 38px;
+  }
+
+  &__more-reviews-button {
+    color: $text_color_primary;
+    font-size: 14px;
+    align-self: flex-end;
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 4px;
+    border: 1px solid $layout_border_color;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .track-list-reviews-entry {
+    flex-direction: column;
+
+    &__player {
+      margin-top: 30px;
+    }
+
+    &__d-track-name {
+      display: none;
+    }
+
+    &__d-singer {
+      display: none;
+    }
+
+    &__track-review {
+      margin-bottom: 12px;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+#import "../fragments/collection.graphql"
+
+mutation AddToCollection(
+    $collectionId: Int!
+    $trackIds: [Int]!
+) {
+    addInCollection(
+        tracksId: $trackIds,
+        collectionId: $collectionId
+    ) {
+        ...collection
+    }
+}

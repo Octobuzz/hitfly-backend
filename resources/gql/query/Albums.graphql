@@ -1,0 +1,19 @@
+#import "../fragments/album.graphql"
+
+query Albums(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+    $filters: AlbumFilterInput
+) {
+    albums(
+        limit: $pageLimit,
+        page: $pageNumber
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            ...album
+        }
+    }
+}

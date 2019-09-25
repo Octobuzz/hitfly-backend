@@ -1,0 +1,32 @@
+#import "gql/fragments/trackListEntryData.graphql"
+
+query FavouriteTrackList_favouriteTrack(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+) {
+    favouriteTrack(
+        limit: $pageLimit,
+        page: $pageNumber
+    ){
+        total
+        to
+        data {
+            id
+            track {
+                id
+                ...trackListEntryData
+
+                #TrackToPlaylistPopover #TrackActionsPopover
+                userFavourite
+                user {
+                    id
+                    iWatch
+                }
+                my
+
+                #AddToFavouriteButton
+                favouritesCount
+            }
+        }
+    }
+}

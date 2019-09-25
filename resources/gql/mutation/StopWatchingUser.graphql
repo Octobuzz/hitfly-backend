@@ -1,0 +1,15 @@
+mutation StopWatchingUser($id: Int!) {
+    deleteFollow(Follow: {
+        FollowId: $id
+        FollowType: user
+    }) {
+        ... on FollowUser {
+            user {
+                id
+                username
+                iWatch
+                followersCount
+            }
+        }
+    }
+}

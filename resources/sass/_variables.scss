@@ -1,20 +1,25 @@
+$text : #313131;
+$borderColor : #e4e4e4;
+$color_1 : #000000;
+$color_2 : #ffffff;
+$color_3 : #a6a6a6;
+$color_4 : #606060;
+$color_5 : #f0f0f0;
+$color_6 : #231f20;
+$border-radius: 4px;
+$color_pink : #DD61B9;
+$color_blue : #4297FE;
+$color_purple: #8181e2;
+$color_red: red;
+$gradient : radial-gradient( at top left, $color_blue 0%, $color_pink 100%);
+$linear-gradient : linear-gradient( to right, $color_blue 0%, $color_pink 100%);
+$trns: .3s all ease;
 
-// Body
-$body-bg: #f8fafc;
+$font_main: 'Gotham Pro', serif;
+$font_medium: 'Gotham Pro Semibold', serif;
+$font_bold: 'Gotham Pro Bold', serif;
+$font_black: 'Gotham Pro Ton', serif;
 
-// Typography
-$font-family-sans-serif: "Nunito", sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
-
-// Colors
-$blue: #3490dc;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66D9b;
-$red: #e3342f;
-$orange: #f6993f;
-$yellow: #ffed4a;
-$green: #38c172;
-$teal: #4dc0b5;
-$cyan: #6cb2eb;
+$desktop : 1025px;
+$mobile_end : 1024px;
+$header_xl : 1200px;

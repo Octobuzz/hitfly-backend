@@ -1,0 +1,10 @@
+query AddToFavouriteButton_collection(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    collection(id: $id) {
+        id
+        favouritesCount
+        userFavourite @include(if: $isAuthenticated)
+    }
+}

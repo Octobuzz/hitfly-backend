@@ -1,0 +1,20 @@
+#import "gql/fragments/album.graphql"
+
+query FavouriteAlbums(
+    $pageLimit: Int!,
+    $pageNumber: Int!
+) {
+    favouriteAlbum(
+        limit: $pageLimit,
+        page: $pageNumber
+    ) {
+        total
+        to
+        data {
+            id
+            album {
+                ...album
+            }
+        }
+    }
+}

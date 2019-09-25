@@ -1,0 +1,109 @@
+// popover cannot use scoped styles
+
+$bg_color: #222;
+$text_color: #979797;
+$text_color_highlighted: white;
+
+.other-user-popover {
+  display: block !important;
+  position: relative;
+  width: 300px;
+  margin-left: 5px;
+  border-radius: 5px;
+  z-index: 9999;
+  color: $text_color;
+  background: $bg_color;
+  box-shadow: 0 0 30px 5px rgba(black, .1);
+
+  &__wrapper {
+    padding: 8px 16px;
+  }
+
+  &__inner {
+    background: $bg_color;
+    color: black;
+    border-radius: 5px;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    z-index: 900;
+  }
+
+  &__menu {
+    font-size: 14px;
+    color: #6e6e6e;
+    margin-top: 8px;
+  }
+
+  &__menu-item {
+    font-size: 13px;
+    display: flex;
+    padding: 12px 0 12px 0;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &__menu-item-icon {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 17px;
+    min-width: 30px;
+    width: 30px;
+    padding-left: 2px;
+  }
+
+  &[x-placement^="right"] {
+    margin-left: 5px;
+
+    .other-user-popover__arrow {
+      left: -5px;
+      border: {
+        width: 5px 5px 5px 0;
+        top-color: transparent;
+        right-color: $bg_color;
+        bottom-color: transparent;
+        left-color: transparent;
+      }
+    }
+  }
+
+  &[x-placement^="left"] {
+    margin-right: 5px;
+
+    .other-user-popover__arrow {
+      right: -5px;
+      border: {
+        width: 5px 0 5px 5px;
+        top-color: transparent;
+        right-color: transparent;
+        bottom-color: transparent;
+        left-color: $bg_color;
+      }
+    }
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s, visibility .2s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+
+  &.open {
+    transition: transform .2s !important;
+  }
+}

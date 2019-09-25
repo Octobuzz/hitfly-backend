@@ -1,0 +1,27 @@
+# TODO: use additional variables to fetch a particular user tracks
+
+#import "../fragments/track.graphql"
+#import "../fragments/trackComment.graphql"
+
+query TracksWithComments(
+    $pageLimit: Int,
+    $pageNumber: Int,
+    $filters: TrackFilterInput,
+    $commentedInPeriod: CommentPeriodEnum!
+) {
+    tracks(
+        page: $pageNumber,
+        limit: $pageLimit,
+        commentPeriod: $commentedInPeriod,
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            ...track
+            comments(commentPeriod: $commentedInPeriod) {
+                ...trackComment
+            }
+        }
+    }
+}

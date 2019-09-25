@@ -1,0 +1,16 @@
+@import '../MyMusic/MyMusic.scss';
+
+.favourite__albums-container {
+  max-width: 100%;
+  width: 100%;
+  padding-bottom: 32px;
+}
+
+.favourite__albums-title {
+  margin: 0;
+}
+
+.favourite__albums-title,
+.favourite__collections-title {
+  color: black;
+}

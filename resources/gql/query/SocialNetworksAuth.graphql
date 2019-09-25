@@ -1,0 +1,7 @@
+query SocialNetworksAuth {
+    SocialConnectQuery {
+        social_type
+        link
+        connected
+    }
+}

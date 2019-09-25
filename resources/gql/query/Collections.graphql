@@ -1,0 +1,19 @@
+#import "../fragments/collection.graphql"
+
+query Collections(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $filters: CollectionFilterInput
+) {
+    collections(
+        limit: $pageLimit,
+        page: $pageNumber,
+        filters: $filters
+    ){
+        total
+        to
+        data {
+            ...collection
+        }
+    }
+}

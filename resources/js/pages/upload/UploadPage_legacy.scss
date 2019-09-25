@@ -1,0 +1,34 @@
+@import '~scss/_variables.scss';
+
+.main{
+  flex: 1;
+  padding-top: 107px;
+  padding-bottom: 43px;
+  display: flex;
+  flex-direction: column;
+}
+
+.aside{
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 1025px) {
+  .main{
+    padding-top: 95px;
+    padding-bottom: 90px;
+    flex-direction: row;
+
+    &__info{
+      //width: 100%;
+      //padding-left: calc(100% / 3);
+    }
+    &__aside{
+      border-right: 1px solid $layout_border_color;
+    }
+  }
+
+  .aside{
+    width: 31.8%;
+    min-width: 31.8%;
+  }
+}

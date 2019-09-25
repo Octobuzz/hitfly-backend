@@ -1,14 +1,29 @@
+//@import "normalize";
+//@import 'fonts';
 
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
 @import 'variables';
+@import 'mixins';
+@import 'main-layout';
+@import 'components';
+@import 'styles';
+@import 'profile';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+body {
+  font-family: $font_main;
+  background-color: $color_2;
+  color: $text;
+}
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+a {
+  text-decoration: none;
+  color: $color_pink;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

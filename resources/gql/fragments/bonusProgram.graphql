@@ -1,0 +1,12 @@
+fragment bonusProgram on MyProfile {
+    bpDaysInProgram
+    bpLevelBonusProgram
+    bpPoints
+    countListenedTracks
+    bpListenedTracksByGenres {
+        id
+        name
+        image
+        countListenedByUser
+    }
+}

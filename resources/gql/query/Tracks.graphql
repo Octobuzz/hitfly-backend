@@ -1,0 +1,19 @@
+#import "../fragments/track.graphql"
+
+query Tracks(
+    $pageLimit: Int,
+    $pageNumber: Int,
+    $filters: TrackFilterInput
+) {
+    tracks(
+        page: $pageNumber,
+        limit: $pageLimit,
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            ...track
+        }
+    }
+}

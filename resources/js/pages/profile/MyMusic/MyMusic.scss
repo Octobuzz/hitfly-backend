@@ -1,0 +1,46 @@
+@import '~scss/_variables.scss';
+
+.my-music {
+  &__my-tracks {
+    margin-bottom: 48px;
+  }
+
+  &__my-tracks-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  &__my-tracks-header-button {
+    align-self: center;
+    font-size: 14px;
+    color: #231f20;
+    border: 1px solid #e4e4e4;
+    border-radius: $input_border_radius;
+    padding: 12px 28px;
+  }
+
+  &__my-tracks-download-text {
+    margin-bottom: 32px;
+  }
+
+  &__my-tracks-download-button {
+    max-width: 210px;
+    margin-bottom: 48px;
+  }
+
+  &__albums-container {
+    max-width: 100%;
+    width: 100%;
+    padding-bottom: 32px;
+  }
+
+  &__albums-title {
+    margin: 0;
+  }
+
+  &__albums-title,
+  &__collections-title {
+    color: black;
+  }
+}

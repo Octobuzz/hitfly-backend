@@ -1,2 +1,7 @@
 *
 !.gitignore
+!default.jpg
+!default_album.svg
+!default_playlist.svg
+!default_track.svg
+!default_musicgroup.svg

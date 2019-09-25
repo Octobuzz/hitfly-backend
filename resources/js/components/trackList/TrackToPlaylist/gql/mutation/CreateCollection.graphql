@@ -1,0 +1,29 @@
+mutation CreateCollection(
+    $title: String!
+    $trackIds: [Int]!
+) {
+    createCollection(
+        title: $title
+        tracksId: $trackIds
+    ) {
+        id
+        title
+
+        #UniversalCollectionContainer
+        image(
+            sizes: [size_48x48, size_150x150, size_160x160]
+        ) {
+            size
+            url
+        }
+        isSet
+        countTracks
+        user {
+            id
+            username
+        }
+        favouritesCount
+        userFavourite
+        my
+    }
+}

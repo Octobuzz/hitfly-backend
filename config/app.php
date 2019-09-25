@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -80,7 +79,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -135,7 +134,6 @@ return [
     */
 
     'providers' => [
-
         /*
          * Laravel Framework Service Providers...
          */
@@ -165,6 +163,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Intervention\Image\ImageServiceProvider::class,
+        Alfa6661\EloquentHasManySync\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -174,7 +174,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        //Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
+        App\Providers\CommentServiceProvider::class,
     ],
 
     /*
@@ -189,7 +191,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -223,7 +224,13 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        //JWT added
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        //Socialite added
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
+        'GraphQL' => Nuwave\Lighthouse\Support\Facades\GraphQLFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
-
 ];

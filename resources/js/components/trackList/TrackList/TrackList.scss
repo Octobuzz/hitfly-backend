@@ -1,0 +1,46 @@
+@import '~scss/_variables.scss';
+
+.track-list {
+  &__header {
+    font-size: 14px;
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid $layout_border_color;
+  }
+
+  &__header-number {
+    box-sizing: border-box;
+    width: 110px;
+    padding-left: 8px;
+  }
+
+  &__header-song {
+    flex-grow: 1;
+    width: 0;
+  }
+
+  &__header-singer {
+    flex-grow: 1;
+    width: 0;
+  }
+
+  &__header-album {
+    flex-grow: 1;
+    width: 0;
+    margin: 0 12px;
+  }
+
+  &__header-duration {
+    text-align: right;
+    width: 116px;
+    padding-right: 8px;
+
+    &_padded-l {
+      padding-left: 52px;
+    }
+
+    &_padded-r {
+      padding-right: 56px;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+#import "gql/fragments/trackComment.graphql"
+
+query TrackReviewsContainer_commentsTrack(
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $trackId: Int,
+    $commentPeriod: CommentPeriodEnum
+) {
+    commentsTrack(
+        limit: $pageLimit,
+        page: $pageNumber,
+        trackId: $trackId,
+        filters: {
+            commentPeriod: $commentPeriod
+        }
+    ) {
+        to
+        total
+        data {
+            ...trackComment
+        }
+    }
+}

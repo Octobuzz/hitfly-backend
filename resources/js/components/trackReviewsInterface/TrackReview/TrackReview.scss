@@ -1,0 +1,74 @@
+@import '~scss/_variables.scss';
+
+.track-review {
+  display: flex;
+
+  &__user-avatar {
+    min-width: 56px;
+    width: 56px;
+    min-height: 56px;
+    height: 56px;
+    margin: {
+      top: 14px;
+      right: 24px;
+    }
+    border-radius: 50%;
+  }
+
+  &__comment-section {
+    width: 100%;
+  }
+
+  &__comment-section-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__reviewer {
+    margin-bottom: 12px;
+  }
+
+  &__username {
+    color: $text_color_primary;
+  }
+
+  &__date {
+    font-size: 13px;
+    min-width: 85px;
+    margin-top: 18px;
+  }
+
+  &__comment {
+    font-size: 14px;
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .track-review {
+    &__user-avatar {
+      min-width: 24px;
+      width: 24px;
+      min-height: 24px;
+      height: 24px;
+      margin: {
+        top: 0;
+        right: 8px;
+      }
+    }
+
+    &__reviewer {
+      margin-top: 0;
+    }
+
+    &__date {
+      font-size: 12px;
+      margin-top: 0;
+    }
+
+    &__comment {
+      font-size: 12px;
+      margin-top: 0;
+    }
+  }
+}

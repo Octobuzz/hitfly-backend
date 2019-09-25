@@ -1,0 +1,7 @@
+query AlbumTrackList_album($id: Int!) {
+    album(id: $id) {
+        id
+        tracksCount
+        tracksTime
+    }
+}

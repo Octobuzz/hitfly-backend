@@ -1,0 +1,116 @@
+@import '~scss/_variables.scss';
+
+.choose-location {
+  font-family: 'Gotham Pro', sans-serif;
+  display: block;
+  width: 100%;
+  position: relative;
+
+  &__label {
+    font-size: 14px;
+    color: $medium_gray;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    top: 20px;
+    left: 16px;
+    z-index: -1;
+
+    &_top {
+      transform: translate(-13%, -14px) scale(.75);
+    }
+  }
+
+  &__secondary-text {
+    color: #8e8e8e;
+  }
+
+  &__icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 48px;
+    height: 100%;
+    right: 0;
+  }
+
+  .multiselect {
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: left;
+    display: block;
+    width: 100%;
+    min-height: 50px;
+    padding-right: 40px;
+    cursor: pointer;
+    border: 1px solid $layout_border_color;
+    border-radius: $input_border_radius;
+    background: transparent;
+
+    &--active::v-deep .multiselect {
+      &__content-wrapper {
+        position: absolute !important;
+        width: inherit;
+        top: 115%;
+        z-index: 900;
+        background: white;
+        box-shadow: 0 0 10px #f0f0f0;
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+.choose-location::v-deep {
+  ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li > span {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 8px 16px;
+    }
+  }
+
+  .multiselect {
+    &-leave-active {
+      display: none;
+    }
+
+    &__tags {
+      padding: 22px 16px 10px 16px;
+    }
+
+    &__element {
+      width: 100%;
+    }
+
+    &__option {
+      box-sizing: border-box;
+      padding: 6px;
+
+      &--selected {
+        color: $azure;
+      }
+
+      &--highlight {
+        color: $red-violet;
+      }
+    }
+
+    &__input {
+      box-sizing: border-box;
+      height: 16px;
+      background: transparent;
+      border-width: 0;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+}

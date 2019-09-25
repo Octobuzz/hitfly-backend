@@ -1,0 +1,21 @@
+@import '~scss/_variables.scss';
+
+.bonus-program-task-body {
+  color: $text_color_secondary;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 16px;
+
+  &__p {
+    line-height: 20px;
+  }
+
+  &__ul {
+    padding-left: 14px;
+  }
+
+  &__li {
+    line-height: 20px;
+    padding: 7px 0;
+  }
+}

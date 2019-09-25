@@ -1,0 +1,21 @@
+.other-user-card {
+  &__button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 176px;
+    margin-left: 96px;
+  }
+
+  &__follow-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 40px;
+    padding: 0;
+
+    &:hover {
+      padding: 1px;
+    }
+  }
+}

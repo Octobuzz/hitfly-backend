@@ -1,0 +1,96 @@
+@import '~scss/_variables.scss';
+
+$album-height-desktop: 280px;
+$album-height-mobile: 250px;
+
+$album-cover-desktop: 120px;
+$album-cover-mobile: 104px;
+
+$album-left-padding-desktop: 24px;
+$album-left-padding-mobile: 16px;
+
+.album-scroll-horizontal {
+  height: $album-height-desktop;
+  overflow-y: hidden;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  &__button-prev,
+  &__button-next {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e4e4e4;
+    border-radius: $input_border_radius 0 0 $input_border_radius;
+
+    &_disabled {
+      svg {
+        opacity: .5;
+      }
+    }
+  }
+
+  &__button-prev {
+    margin-left: auto;
+  }
+
+  &__button-next {
+    margin-left: -1px;
+    transform: rotate(180deg);
+  }
+
+  &__loader {
+    display: flex;
+    align-items: center;
+    width: 224px;
+    height: $album-cover-desktop;
+  }
+
+  &__album-preview {
+    box-sizing: content-box;
+    padding-left: $album-left-padding-desktop;
+  }
+
+  &::v-deep .vue-recycle-scroller__item-wrapper {
+    height: $album-height-desktop;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .album-scroll-horizontal {
+    height: $album-height-mobile;
+
+    &__album-preview {
+      padding-left: $album-left-padding-mobile;
+    }
+
+    &::v-deep .vue-recycle-scroller__item-wrapper {
+      height: $album-height-mobile;
+    }
+
+    &__header {
+      margin-bottom: 12px;
+
+      & > *:first-child {
+        width: 100%;
+      }
+    }
+
+    &__button-prev,
+    &__button-next {
+      margin-bottom: 8px;
+      order: -1;
+    }
+
+    &__loader {
+      height: $album-cover-mobile;
+    }
+  }
+}

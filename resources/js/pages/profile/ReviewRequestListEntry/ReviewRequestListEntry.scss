@@ -1,0 +1,29 @@
+.review-request-list-entry {
+  display: flex;
+  margin-top: 32px;
+
+  &__track-data {
+    width: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__singer {
+    height: 32px;
+  }
+
+  &__singer {
+    box-sizing: border-box;
+    font-size: 15px;
+    display: block;
+    height: 32px;
+  }
+
+  &__player {
+    height: 130px;
+    margin-top: 30px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+}

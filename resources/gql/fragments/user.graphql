@@ -1,0 +1,28 @@
+#import "./role.graphql"
+#import "./location.graphql"
+#import "./genre.graphql"
+
+fragment user on User {
+    id
+    username
+    avatar(
+        sizes: [size_56x56, size_235x235]
+    ) {
+        size
+        url
+    }
+    roles {
+        ...role
+    }
+    location {
+        ...location
+    }
+    genresPlay {
+        ...genre
+    }
+    bpDaysInProgram
+    followersCount
+    favouritesTrackCount
+    description
+    iWatch
+}

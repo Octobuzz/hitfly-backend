@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const webpackOverride = require('./webpack.config');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,5 +12,18 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+mix.js('resources/js/app.js', 'public/js');
+
+mix.sass('resources/scss/main.scss', 'public/css/app.css').options({
+  autoprefixer: {
+    options: {
+      browsers: ['last 10 versions']
+    }
+  }
+});
+
+mix.copyDirectory('resources/images', 'public/images');
+
+mix.browserSync('localhost:9090');
+
+mix.webpackConfig(webpackOverride);

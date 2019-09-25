@@ -1,0 +1,242 @@
+// popover cannot use scoped styles
+
+$bg_color: #222;
+
+.track-actions-popover {
+  display: block !important;
+  width: 340px;
+  margin: {
+    top: 100px;
+    bottom: 100px;
+  }
+  border-radius: 5px;
+  z-index: 9999;
+  background: $bg_color;
+  box-shadow: 0 0 30px 5px rgba(black, .1);
+
+  &__wrapper {
+    padding: 24px;
+  }
+
+  &__inner {
+    background: $bg_color;
+    color: black;
+    border-radius: 5px;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -5px;
+    top: calc(50% - 5px);
+    margin: 5px 0;
+    border: {
+      width: 5px 0 5px 5px;
+      style: solid;
+      top-color: transparent;
+      right-color: transparent;
+      bottom-color: transparent;
+      left-color: $bg_color;
+    }
+    z-index: 900;
+  }
+
+  &__header {
+    font-family: 'Gotham Pro Bold', sans-serif;
+    font-size: 14px;
+    color: white;
+    position: relative;
+    padding: {
+      top: 8px;
+      bottom: 6px;
+    }
+    overflow: hidden;
+  }
+
+  &__album-cover {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin: {
+      right: 12px;
+      bottom: 12px;
+    }
+    border-radius: 4px;
+    user-select: none;
+    object-fit: cover;
+    object-position: left;
+  }
+
+  &__album-song,
+  &__album-author {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__album-song {
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  &__album-author {
+    font-family: 'Gotham Pro', sans-serif;
+    display: block;
+  }
+
+  &__delimiter {
+    clear: both;
+    width: 100%;
+    height: 1px;
+    border: none;
+    background: #424242;
+
+    &_zero-on-top {
+      margin-top: 0;
+    }
+  }
+
+  &__menu {
+    font-size: 14px;
+    color: #6e6e6e;
+  }
+
+  &__menu-item {
+    font-size: 13px;
+    display: flex;
+    padding: 12px 0 12px 0;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &__menu-item-icon {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 17px;
+    min-width: 30px;
+    width: 30px;
+    padding-left: 2px;
+  }
+
+  &__review-item {
+    padding-bottom: 8px;
+  }
+
+  &__tell-problem {
+    font-size: 12px;
+    color: #6e6e6e;
+    display: block;
+    padding: 18px 0 0 0;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &__add-playlist-header,
+  &__go-back-button {
+    font-size: 14px;
+    color: white;
+    display: block;
+    user-select: none;
+  }
+
+  &__go-back-button {
+    padding-top: 18px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  &__cancel-button {
+    color: white !important;
+    padding: {
+      top: 11px !important;
+      bottom: 11px !important;
+    }
+
+    &:hover {
+      padding: {
+        top: 12px !important;
+        bottom: 12px !important;
+      }
+    }
+  }
+
+  &__add-playlist-header {
+    font-family: 'Gotham Pro Bold', sans-serif;
+    text-align: left;
+    padding-top: 12px;
+  }
+
+  &[x-placement^="left"] {
+    margin-right: 5px;
+  }
+
+  &[x-placement^="bottom"] {
+    margin-top: 5px;
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s, visibility .2s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+
+  &.open {
+    transition: transform .2s !important;
+  }
+}
+
+@mixin position-breakpoint($breakpoint) {
+  @media screen and (max-width: #{$breakpoint}px) {
+    .track-actions-popover_breakpoint-#{$breakpoint} {
+      width: 280px;
+      margin: {
+        top: 0;
+        bottom: 100px;
+      }
+
+      .track-actions-popover__wrapper {
+        padding:16px;
+      }
+
+      .track-actions-popover__arrow {
+        position: absolute;
+        width: 0;
+        height: 0;
+        top: -5px;
+        margin: 0;
+        border: {
+          width: 0 5px 5px 5px;
+          style: solid;
+          top-color: transparent;
+          right-color: transparent;
+          bottom-color: $bg_color;
+          left-color: transparent;
+        }
+        z-index: 900;
+      }
+
+      .track-actions-popover__add-playlist-header {
+        padding-left: 8px;
+      }
+    }
+  }
+}
+
+@include position-breakpoint(767);
+@include position-breakpoint(1024);

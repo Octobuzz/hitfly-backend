@@ -1,0 +1,15 @@
+#import "gql/fragments/myProfile.graphql"
+
+mutation UpdateMyProfile(
+    $profile: MyProfileInput!,
+    $artistProfile: ArtistProfileInput,
+    $avatar: Upload
+) {
+    updateMyProfile(
+        profile: $profile,
+        artistProfile: $artistProfile,
+        avatar: $avatar
+    ) {
+        ...myProfile
+    }
+}

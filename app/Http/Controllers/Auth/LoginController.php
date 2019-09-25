@@ -3,7 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\SocialAccountService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\User;
+use Exception;
+use App\Models\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\Auth;
+use Socialite;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -18,22 +26,104 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, ApiResponseTrait;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Redirect to provider for authentication.
+     *
+     * @param $driver
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function redirectToProvider($driver)
+    {
+        if (!config()->has("services.{$driver}")) {
+            return $this->sendFailedResponse("Драйвер {$driver} не поддерживается", 204);
+        }
+
+        try {
+            return Socialite::with($driver)->redirect();
+        } catch (Exception $e) {
+            return $this->sendFailedResponse($e->getMessage());
+        }
+    }
+
+    /**
+     * Login social user.
+     *
+     * @param string $provider
+     *
+     * @return
+     */
+    public function handleProviderCallback($provider, SocialAccountService $service, Request $request)
+    {
+        try {
+            switch ($provider) {
+                case 'vkontakte':
+                    $socialUser = Socialite::driver($provider)->fields(['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo', 'bdate', 'sex'])->stateless()->user();
+                    break;
+                default:
+                    $socialUser = Socialite::driver($provider)->stateless()->user();
+            }
+        } catch (Exception $e) {
+            return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
+        }
+
+        $user = $service->loginOrRegisterBySocials($socialUser, $provider);
+        Auth::login($user);
+        Auth::guard('json')->login($user);
+
+        /** @var User $user */
+        if (false === $user->hasVerifiedEmail()) {
+            event(new Registered($user));
+            if (null !== $user->email && false === $user->hasVerifiedEmail()) {
+                VerificationController::sendNotification($user);
+            }
+            $user->markEmailAsVerified();
+            //при регистрации редиректим на выбор жанров
+            return redirect()->to('/register-genres');
+        }
+
+        return redirect()->to('/profile');
+    }
+
+    public function loginApi(Request $request)
+    {
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            return $this->guard()->user();
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return null;
     }
 }

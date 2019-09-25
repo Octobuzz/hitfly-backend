@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Listeners\BonusProgramEventSubscriber;
+use App\Listeners\MainEventSubscriber;
+use App\Listeners\NotificationEventSubscriber;
+use App\Listeners\OrderEventSubscriber;
+use App\Listeners\TrackListenSubscriber;
+use App\Listeners\UserEventSubscriber;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,20 +18,44 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        //Registered::class => [
+        //    SendEmailVerificationNotification::class,
+        //],
+        'App\Events\Event' => [
+            'App\Listeners\EventListener',
+        ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // add your listeners (aka providers) here
+            'SocialiteProviders\VKontakte\VKontakteExtendSocialite@handle',
+            //'SocialiteProviders\Odnoklassniki\OdnoklassnikiExtendSocialite@handle',
+            \JhaoDa\SocialiteProviders\Odnoklassniki\OdnoklassnikiExtendSocialite::class,
+            'SocialiteProviders\Instagram\InstagramExtendSocialite@handle',
+            'SocialiteProviders\Facebook\FacebookExtendSocialite@handle',
+        ],
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\LastLoginLog',
         ],
     ];
 
     /**
-     * Register any events for your application.
+     * The subscriber classes to register.
      *
-     * @return void
+     * @var array
+     */
+    protected $subscribe = [
+        UserEventSubscriber::class,
+        BonusProgramEventSubscriber::class,
+        NotificationEventSubscriber::class,
+        MainEventSubscriber::class,
+        TrackListenSubscriber::class,
+        OrderEventSubscriber::class,
+    ];
+
+    /**
+     * Register any events for your application.
      */
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

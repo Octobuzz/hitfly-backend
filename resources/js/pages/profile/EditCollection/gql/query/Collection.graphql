@@ -1,0 +1,12 @@
+query EditCollection_collection($id: Int!) {
+    collection(id: $id) {
+        id
+        title
+        image(
+            sizes: [size_235x235]
+        ) {
+            size
+            url
+        }
+    }
+}

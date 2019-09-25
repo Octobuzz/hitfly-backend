@@ -1,0 +1,40 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST http://127.0.0.1:9090/api/v1/register
+Content-Type: application/json
+
+{
+  "name": "test",
+  "password": "content",
+  "password_confirmation": "content",
+  "email": "test@mail.ru"
+
+}
+
+###
+
+
+### Send a form with the text and file fields
+POST http://localhost:9090/graphql
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="operations"
+
+{ "query": "mutation ($track: Upload!) { trackUploadMutation(track: $track) { id } }", "variables": { "track": null } }
+--WebAppBoundary
+Content-Disposition: form-data; name="map"
+
+{ "0": ["variables.track"] }
+--WebAppBoundary
+Content-Disposition: form-data; name="0"; filename="imgupload.png"
+
+< ./tests/Data/imgupload.png
+--WebAppBoundary--
+
+###

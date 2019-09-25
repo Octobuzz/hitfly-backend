@@ -1,0 +1,22 @@
+#import "../fragments/queueTrack.graphql"
+
+query QueueTracks(
+    $isAuthenticated: Boolean!,
+    $pageLimit: Int!,
+    $pageNumber: Int!,
+    $filters: TrackFilterInput
+) {
+    tracks(
+        page: $pageNumber,
+        limit: $pageLimit,
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            id
+            ...queueTrack
+            userFavourite @include(if: $isAuthenticated)
+        }
+    }
+}

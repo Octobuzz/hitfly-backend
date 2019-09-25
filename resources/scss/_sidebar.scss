@@ -1,0 +1,72 @@
+@import './_variables.scss';
+.asideBlock::v-deep {
+  .track-list {
+    &-entry {
+      &__index {
+        min-width: 16px;
+      }
+
+      &__album {
+        min-width: 32px;
+      }
+
+      &__right {
+        min-width: 48px;
+      }
+
+      &__duration {
+        min-width: 50px;
+        width: 50px;
+      }
+
+      &__track-data {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    & .v-popover {
+      margin: 0;
+      min-width: 40px;
+    }
+  }
+}
+.asideBlock {
+  padding: 48px 16px 0;
+
+  .track-list {
+
+    &-entry__duration {
+      width: 50px;
+    }
+
+    & .v-popover {
+      margin: 0;
+    }
+  }
+
+  &__header {
+    position: relative;
+
+    & p {
+      font-size: 12px;
+      line-height: 14px;
+      color: $text_color_secondary;
+    }
+  }
+
+  &__button {
+    border-radius: 4px;
+    padding: 8px 12px;
+    background-color: #F0F0F0;
+    color: $text_color_secondary;
+    font-size: 10px;
+    line-height: 12px;
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    right: 0;
+  }
+
+}

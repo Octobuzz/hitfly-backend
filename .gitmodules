@@ -1,0 +1,3 @@
+[submodule "ssr"]
+	path = ssr
+	url = ssh://git@bitbucket.zebrains.team:7999/gyre/hitfly-frontend.git

@@ -1,3 +1,9 @@
 *
 !public/
 !.gitignore
+!/mp3/
+!/mp3/*.mp3
+!/default_image/
+!/default_image/*.png
+!/products/
+!/products/*.png

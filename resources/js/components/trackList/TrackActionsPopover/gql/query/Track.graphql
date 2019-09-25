@@ -1,0 +1,23 @@
+query TrackActionsPopover_track(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    track(id: $id) {
+        id
+        trackName
+        singer
+        cover(
+            sizes: [size_48x48, size_150x150]
+        ) {
+            size
+            url
+        }
+        userFavourite @include (if: $isAuthenticated)
+        user @include (if: $isAuthenticated) {
+            id
+            username
+            iWatch
+        }
+        my @include (if: $isAuthenticated)
+    }
+}

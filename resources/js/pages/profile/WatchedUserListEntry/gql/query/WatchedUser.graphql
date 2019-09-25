@@ -1,0 +1,25 @@
+query WatchedUserEntry_user($id: Int!) {
+    user(id: $id) {
+        id
+        username
+        iWatch
+        followersCount
+        avatar(
+            sizes: [size_56x56]
+        ) {
+            size
+            url
+        }
+        location {
+            id
+            title
+        }
+        genresPlay {
+            id
+            name
+        }
+        roles {
+            slug
+        }
+    }
+}

@@ -1,0 +1,7 @@
+#import "../fragments/myProfile.graphql"
+
+query MyProfile {
+    myProfile {
+        ...myProfile
+    }
+}

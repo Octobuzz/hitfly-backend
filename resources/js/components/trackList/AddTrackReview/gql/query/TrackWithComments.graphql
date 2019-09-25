@@ -1,0 +1,16 @@
+#import "gql/fragments/trackComment.graphql"
+
+query TrackListReviewsContainer_TracksWithComments(
+    $isAuthenticated: Boolean!,
+    $id: Int!,
+    $commentedInPeriod: CommentPeriodEnum!
+) {
+    track(
+        id: $id
+    ) {
+        id
+        comments(commentPeriod: $commentedInPeriod) {
+            ...trackComment
+        }
+    }
+}

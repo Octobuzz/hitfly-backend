@@ -1,0 +1,22 @@
+#import "gql/fragments/trackListEntryData.graphql"
+
+query OtherUserMusic_topTrackForUser(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    topTrackForUser(userId: $id) {
+        id
+        ...trackListEntryData
+
+        #TrackToPlaylistPopover #TrackActionsPopover
+        userFavourite @include (if: $isAuthenticated)
+        user @include (if: $isAuthenticated) {
+            id
+            iWatch
+        }
+        my @include (if: $isAuthenticated)
+
+        #AddToFavouriteButton
+        favouritesCount
+    }
+}

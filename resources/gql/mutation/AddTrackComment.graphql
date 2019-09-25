@@ -1,0 +1,29 @@
+mutation AddTrackComment(
+    $trackId: Int!,
+    $productId: Int,
+    $comment: String!
+) {
+    createComment(Comment: {
+        commentableType: track,
+        commentableId: $trackId,
+        orderId: $productId,
+        comment: $comment
+    }) {
+        ... on CommentTrack {
+            id
+            comment
+            createdAt
+            estimation
+            user {
+                id
+                username
+                avatar(
+                    sizes: [size_56x56]
+                ) {
+                    size
+                    url
+                }
+            }
+        }
+    }
+}

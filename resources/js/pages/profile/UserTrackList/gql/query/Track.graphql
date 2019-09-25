@@ -1,0 +1,18 @@
+#import "gql/fragments/trackListEntryData.graphql"
+
+query UserTrackList_track(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    track(id: $id) {
+        id
+        ...trackListEntryData
+        albumCover: cover(
+            sizes: [size_150x150]
+        ) {
+            size
+            url
+        }
+        userFavourite @include (if: $isAuthenticated)
+    }
+}

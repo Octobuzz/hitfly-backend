@@ -1,0 +1,5 @@
+mutation RemoveTrack($id: Int!) {
+    deleteTrackMutation(id: $id) {
+        id
+    }
+}

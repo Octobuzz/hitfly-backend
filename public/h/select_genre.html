@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Выберите жанр</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/app.js"></script>
+</head>
+<body class="body minimal-head">
+    <header class="head">
+        <div class="head__left">
+            <span class="menu-call is-close"> <!-- is-close / is-show -->
+                <span class="menu-call__rows"></span>
+            </span>
+            <a class="head__logo" href="">
+                <img src="/images/logo.svg" alt="logo">
+            </a>
+        </div>
+        <nav class="head__nav">
+            <a class="button head-nav-item active" href="/">Главная</a>
+            <a class="button head-nav-item g-border" href="/">Подборка</a>
+            <a class="button head-nav-item" href="/">Stream</a>
+            <a class="button head-nav-item" href="/">Блог</a>
+            <a class="button head-nav-item" href="/">О нас</a>
+        </nav>
+        <div class="head__right">
+            <a href="" class="button gradient head-right-item head-right-item_upload">Загрузить музыку</a>
+            <button class="button-icon head-right-item">
+                <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero"><path d="M11 16a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 3a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/><path d="M15.44 18.06a1.5 1.5 0 0 1 2.12-2.12l4.05 4.05a1.5 1.5 0 1 1-2.12 2.12l-4.05-4.05z"/></g></svg>
+            </button>
+            <button class="button-icon head-right-item hoverless">
+                <span class="button-icon__tips">4</span>
+                <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.09 13.76v-3.72a6 6 0 0 0-4.03-5.64c-.6-.3-1.3-.4-2.01-.4-.7 0-1.4.1-2.01.4A6 6 0 0 0 6 10.04v3.72l-1.1 1.51c-.6.7-.91 1.61-.91 2.62 0 .8.6 1.4 1.4 1.4h3.23c0 1.82 1.5 3.33 3.32 3.33 1.81 0 3.32-1.51 3.32-3.32h3.32c.8 0 1.41-.6 1.41-1.41 0-.9-.3-1.81-.9-2.62l-1.01-1.5z" fill-rule="nonzero"/></svg>
+            </button>
+            <img class="head__profile head-right-item" src="/images/test_ava.jpg" alt="logo">
+        </div>
+        <div class="drop-menu"> <!-- is-close / is-show -->
+            <div class="drop-menu-list">
+                <div class="drop-menu-list__item drop-menu-list__item_upload">
+                    <a class="button drop-menu-list__button-upload">Загрузить музыку</a>
+                </div>
+                <a class="drop-menu-list__item" href="/">
+                    <span>О проекте</span>
+                </a>
+                <a class="drop-menu-list__item" href="/">
+                    <span>Вопросы и ответы</span>
+                </a>
+                <a class="drop-menu-list__item" href="/">
+                    <span>Полезные статьи</span>
+                </a>
+                <a class="drop-menu-list__item" href="/">
+                    <span>Истории победителей</span>
+                </a>
+                <a class="drop-menu-list__item" href="/">
+                    <span>Звезды</span>
+                </a>
+                <a class="drop-menu-list__item" href="/">
+                    <span>Настройки</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <aside class="main__aside aside">
+            <div class="aside__content" data-scroll-speed="10">
+                <div class="s-genre-side">
+                    <h1 class="s-genre-side__title">Выберите любимые жанры</h1>
+                    <p class="s-genre-side__desc">
+                        Кликните по квадрату жанра, если он вам нравится. Это поможет получать более точные и интересные рекомендации
+                    </p>
+                    <button type="submit" form="select-genre-form" class="button gradient big s-genre-side__complete">Готово</button>
+                    <a href="/" class="s-genre-side__next">Пропустить</a>
+                </div>
+            </div>
+        </aside>
+        <div class="main__info">
+            <form action="" id="select-genre-form" class="s-genre">
+                <div class="s-genre-item">
+                    <input id="id1" name="genre1" class="s-genre-item__input" type="checkbox">
+                    <label for="id1" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id2" name="genre2" class="s-genre-item__input" type="checkbox">
+                    <label for="id2" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id3" name="genre3" class="s-genre-item__input" type="checkbox">
+                    <label for="id3" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id4" name="genre4" class="s-genre-item__input" type="checkbox">
+                    <label for="id4" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id5" name="genre5" class="s-genre-item__input" type="checkbox">
+                    <label for="id5" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+                <div class="s-genre-item">
+                    <input id="id6" name="genre6" class="s-genre-item__input" type="checkbox">
+                    <label for="id6" class="s-genre-item__label">
+                        <img class="s-genre-item__img" src="/images/test_ava.jpg" alt="Рок">
+                        <span class="s-genre-item__text">Рок</span>
+                    </label>
+                </div>
+
+            </form>
+        </div>
+    </main>
+    <footer class="footer"></footer>
+</body>
+</html>

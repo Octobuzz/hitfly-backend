@@ -1,0 +1,41 @@
+#import "./role.graphql"
+#import "./location.graphql"
+#import "./genre.graphql"
+#import "./musicGroup.graphql"
+#import "./user.graphql"
+#import "./bonusProgram.graphql"
+
+fragment myProfile on MyProfile {
+    id
+    username
+    email
+    gender
+    dateRegister
+    careerStart
+    description
+    followersCount
+    favoriteSongsCount
+    favoriteAlbumCount
+    avatar(
+        sizes: [size_56x56, size_72x72, size_235x235]
+    ) {
+        size
+        url
+    }
+    roles {
+        ...role
+    }
+    location {
+        ...location
+    }
+    favouriteGenres {
+        ...genre
+    }
+    genresPlay {
+        ...genre
+    }
+    musicGroups {
+        ...musicGroup
+    }
+    ...bonusProgram
+}

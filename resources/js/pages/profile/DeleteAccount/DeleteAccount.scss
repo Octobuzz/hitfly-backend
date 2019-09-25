@@ -1,0 +1,80 @@
+// as in ProfileEditAuth
+$header_width: 285px;
+$indent: 16px;
+$button_width: 160px;
+
+.delete-account {
+  &__suggestion {
+    display: inline-flex;
+    align-items: center;
+    padding: 36px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    border: 1px solid #f0f0f0;
+  }
+
+  &__suggestion-header {
+    max-width: $header_width;
+    margin-right: 16px;
+  }
+
+  &__suggestion-button {
+    width: 160px;
+    height: 50px;
+  }
+
+  &__modal {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__modal-header {
+    display: block;
+    max-width: 450px;
+    margin: {
+      top: 60px;
+      bottom: 24px;
+    }
+  }
+
+  &__modal-body {
+    line-height: 1.5;
+    max-width: 590px;
+    margin-bottom: 36px;
+  }
+
+  &__modal-button-container {
+    display: flex;
+    margin-bottom: 36px;
+  }
+
+  &__modal-button {
+    width: 160px;
+    margin: 8px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .delete-account {
+    &__suggestion,
+    &__modal-button-container {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    &__suggestion-header {
+      text-align: center;
+      margin: 0 0 12px 0;
+    }
+
+    &__modal-header {
+      margin-top: 32px;
+    }
+
+    &__modal-button-container {
+      margin-bottom: 24px;
+    }
+  }
+}

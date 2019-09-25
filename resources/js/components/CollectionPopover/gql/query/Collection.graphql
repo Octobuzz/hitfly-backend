@@ -1,0 +1,23 @@
+query CollectionPopover_collection(
+    $isAuthenticated: Boolean!,
+    $id: Int!
+) {
+    collection(id: $id){
+        id
+        title
+        image(
+            # the sizes are needed to support caching
+            sizes: [size_48x48, size_150x150, size_160x160]
+        ) {
+            size
+            url
+        }
+        user {
+            id
+            username
+        }
+        isSet
+        userFavourite @include(if: $isAuthenticated)
+        my @include(if: $isAuthenticated)
+    }
+}

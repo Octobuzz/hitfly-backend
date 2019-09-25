@@ -1,0 +1,89 @@
+@import '~scss/_variables.scss';
+
+@keyframes rotate{
+  from{
+    transform: rotateZ(0deg);
+  }
+  to{
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes width{
+  from{
+    width: 0px;
+  }
+  to{
+    width: 100%;
+  }
+}
+
+.progressBarWrapper{
+  width: calc(100% + 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+  left: -32px;
+
+  & .progressBarBody{
+    background-color: rgba(0,0,0,.1);
+    position: relative;
+    width: 100%;
+    height: 8px;
+    transition: .2s all ease;
+
+    & .progressBarBody__total{
+      background-image: url('/images/slash.png');
+      background-size: auto 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: .1;
+      z-index: 2;
+    }
+
+    & .progressBarBody__done{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: $gradient_linear;
+
+      &.animated {
+        animation: 5s width ease-in-out forwards;
+      }
+    }
+  }
+
+  & .progressBarNotice{
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    margin-right: 32px;
+
+    &.done {
+      & p {
+        color: #9ada9a;
+      }
+
+      & img {
+        display: none;
+      }
+    }
+
+    & p {
+      font-size: 14px;
+      color: $text_color_secondary;
+    }
+
+    & img{
+      margin-right: 15px;
+      animation: rotate 2s ease infinite;
+    }
+  }
+}

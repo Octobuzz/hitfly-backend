@@ -1,0 +1,31 @@
+#import "../fragments/queueTrack.graphql"
+
+query GetLastComments{
+  tracks(limit: 3, page: 1, filters: {lastCommented: true}){
+    data{
+      id
+      ...queueTrack
+      comments(commentPeriod: year){
+        comment
+        createdAt
+        user{
+          id
+          username
+          avatar(
+              sizes: [size_56x56, size_235x235]
+          ) {
+              size
+              url
+          }
+        }
+      }
+    }
+    total
+    per_page
+    current_page
+    from
+    to
+    last_page
+    has_more_pages
+  }
+}

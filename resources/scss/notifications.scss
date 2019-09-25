@@ -1,0 +1,69 @@
+@import './_variables.scss';
+
+.notification-body {
+  display: flex;
+
+  &__logo,
+  &__image {
+    width: 56px;
+    height: 56px;
+    margin: 20px 16px;
+  }
+
+  &__image {
+    border-radius: 50%;
+  }
+
+  &__content {
+    padding: 24px 16px 16px 0;
+  }
+
+  &__text {
+    font-size: 16px;
+    color: $text_color_primary;
+
+    &_highlighted {
+      color: $medium_purple;
+    }
+  }
+
+  &__date {
+    font-size: 13px;
+    color: $medium_gray;
+    display: block;
+    margin-top: 18px;
+  }
+
+  &_popover & {
+    &__logo,
+    &__image {
+      width: 24px;
+      height: 24px;
+      margin: 8px 8px 0 0;
+    }
+
+    &__image {
+      border-radius: 50%;
+    }
+
+    &__content {
+      padding: 4px;
+    }
+
+    &__text {
+      font-size: 13px;
+      color: $medium_gray;
+
+      &_highlighted {
+        color: white;
+      }
+    }
+
+    &__date {
+      font-size: 11px;
+      color: $medium_gray;
+      display: block;
+      margin-top: 12px;
+    }
+  }
+}

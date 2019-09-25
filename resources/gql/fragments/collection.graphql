@@ -1,0 +1,20 @@
+#import "./user.graphql"
+
+fragment collection on Collection {
+    id
+    title
+    image(
+        sizes: [size_48x48, size_150x150, size_160x160]
+    ) {
+        size
+        url
+    }
+    user {
+        ...user
+    }
+    isSet
+    countTracks
+    userFavourite
+    favouritesCount
+    my
+}

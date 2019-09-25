@@ -7,12 +7,20 @@
 
 Запуск проекта 
 
-    docker-compose up  
+    docker-compose build --build-arg base_env=$UID
+    
+Запуск дев режима для локальной разработки
 
+    docker-compose -f "./docker-compose.dev.yml" up -d
+
+Запуск сср для локальной разработки
+
+    docker-compose -f "./docker-compose.ssr.watch.yml" up -d
 
 Далее вам будет доступен сервер со следующими параметрами 
 
 Адрес сайта http://localhost:9090/
+Порт сокета: 2346
 
 База данных
     
@@ -28,3 +36,67 @@
     
     storage/logs/nginx/
     
+Добавление данных в бд 
+
+    docker exec -it php_docker sudo -u www-data php artisan migrate:refresh
+    docker exec -it php_docker sudo -u www-data php artisan db:seed
+
+##Админ панель
+
+Загрузка тестового администратора 
+        
+    php artisan db:seed --class=UserSeeder
+
+    Пользователь: admin
+    Пароль: admin
+
+
+## GraphQL 
+Usage
+By default, the playground is reachable at 
+
+http://<site_______name>/graphql
+
+for auth user add Header 
+
+    X-TOKEN-AUTH: <token>
+Url for auth user 
+
+    http://<site_______name>/graphql/user
+    
+Query
+ 
+    {
+      tracks(count: 51  ){
+        paginatorInfo{
+          count,
+          total
+        }
+        data{
+          id, track_name, song_text, 
+          genre {
+            name, 
+            created_at, 
+            image
+          }, 
+          user {
+            username, 
+            email
+          }, 
+          album{
+            title, 
+            author
+          }
+        }
+      }
+    }
+        
+        
+        
+## Запуск сокета для передачи сообщений
+
+    docker exec -it php_docker sudo -u www-data php artisan workman start 
+
+### WORKFLOW TRACK
+
+    docker exec -it php_docker  sudo -u www-data php artisan workflow:dump track --class App\\Models\\Track

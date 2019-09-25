@@ -1,0 +1,29 @@
+query OtherUserCard_User($id: Int!, $isAuthenticated: Boolean!) {
+    user(id: $id) {
+        id
+        username
+        avatar(
+            sizes: [size_72x72]
+        ) {
+            size
+            url
+        }
+        roles {
+            name
+            slug
+        }
+        location {
+            id
+            title
+        }
+        genresPlay {
+            id
+            name
+        }
+        bpDaysInProgram
+        followersCount
+        favouritesTrackCount
+        description
+        iWatch @include(if: $isAuthenticated)
+    }
+}
