@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Admin\Controllers\UserController;
+use App\Events\User\AttachingRolesEvent;
+use App\Events\User\DetachRolesEvent;
+use App\Events\User\SyncingRolesEvent;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
 use App\Jobs\EmailChangeJob;
@@ -119,5 +122,29 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
+    }
+
+    public function belongsToManyAttaching($relation, $parent, $ids): void
+    {
+        switch ($relation) {
+            case 'roles':
+                event(new AttachingRolesEvent($parent, $ids));
+        }
+    }
+
+    public function belongToManySyncing($relation, $parent, $ids): void
+    {
+        switch ($relation) {
+            case 'roles':
+                event(new SyncingRolesEvent($parent, $ids));
+        }
+    }
+
+    public function belongsToManyDetaching($relation, $parent, $ids): void
+    {
+        switch ($relation) {
+            case 'roles':
+                event(new DetachRolesEvent($parent, $ids));
+        }
     }
 }

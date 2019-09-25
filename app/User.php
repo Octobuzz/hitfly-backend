@@ -16,6 +16,8 @@ use App\Models\UserNotification;
 use App\Models\Watcheables;
 use App\Notifications\HitflyVerifyEmail;
 use Carbon\Carbon;
+use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
@@ -68,6 +70,8 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use CanResetPassword;
     use SoftDeletes;
     use CascadeSoftDeletes;
+    use HasRelationshipObservables;
+    use HasBelongsToManyEvents;
 
     protected $cascadeDeletes = [
         'socialsConnect',
@@ -175,7 +179,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function watchUser()
     {
-        return $this->hasMany(Watcheables::class)->where('watcheable_type', '=', User::class);
+        return $this->hasMany(Watcheables::class, 'watcheable_id');
     }
 
     public function watchMusicGroup()
@@ -185,7 +189,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function watchingUser()
     {
-        return $this->morphedByMany(User::class, 'watcheable');
+        return $this->morphMany(Watcheables::class, 'watcheable');
     }
 
     /**
