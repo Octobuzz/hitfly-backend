@@ -54,7 +54,7 @@ class SocialConnectQuery extends Query
 
         $response = [];
         foreach ($this->socialsTypes() as $socialsType) {
-            $link = (true === $args['filters']['mobile'])
+            $link = (isset($args['filters']['mobile']) && true === $args['filters']['mobile'])
                 ? route('link_socials', ['provider' => $socialsType])
                 : route('social_auth', ['provider' => $socialsType]);
             $response[] = [

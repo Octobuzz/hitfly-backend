@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Kalnoy\Nestedset\NodeTrait;
 
 /**
  * Жанры музыки.
@@ -38,7 +39,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Genre extends Model
 {
-    use SoftDeletes, Itemable;
+    use SoftDeletes, Itemable, NodeTrait;
 
     protected $table = 'genres';
 
