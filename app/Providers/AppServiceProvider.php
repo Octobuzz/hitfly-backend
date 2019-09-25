@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\BuisnessLogic\Top\TopWeekly;
 use App\Interfaces\Top\TopWeeklyInterface;
 use App\Models\Album;
@@ -51,6 +52,9 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('collection_delete_validate', 'App\Validation\CollectionValidator@validateDelete');
         Validator::extend('remove_track_from_album_validate', 'App\Validation\AlbumValidator@removeTrackFromAlbum');
         Validator::extend('remove_track_from_collection_validate', 'App\Validation\CollectionValidator@removeTrackFromCollection');
+        $this->app->singleton(SearchIndexer::class, function ($app) {
+            return new SearchIndexer();
+        });
 
         $table = config('admin.extensions.config.table', 'admin_config');
         if (Schema::hasTable($table)) {

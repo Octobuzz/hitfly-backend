@@ -40,6 +40,7 @@ services:
       - "2346:2346"
     links:
       - "maria:maria"
+      - "es01:es01"
     env_file:
       - docker_server.env
   redis_host:
@@ -50,3 +51,23 @@ services:
       - "6379:6379"
     volumes:
       - './docker/redis/redis.conf:/usr/local/etc/redis/redis.conf'
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - './docker/elasticsearch/data:/usr/share/elasticsearch/data'
+      - './docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+    #      - './docker/elasticsearch/logs::/usr/share/elasticsearch/logs'
+    ports:
+      - 9200:9200
+
+

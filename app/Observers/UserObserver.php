@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Admin\Controllers\UserController;
+use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
 use App\Jobs\EmailChangeJob;
@@ -11,6 +12,7 @@ use App\Models\EmailChange;
 use App\Models\Purse;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +20,14 @@ use Illuminate\Support\Facades\Storage;
 
 class UserObserver
 {
+    private $rolesToSearchIndex = ['critic', 'prof_critic', 'star', 'performer'];
+    protected $indexer;
+
+    public function __construct(SearchIndexer $indexer)
+    {
+        $this->indexer = $indexer;
+    }
+
     /**
      * Handle the user "created" event.
      *
@@ -38,6 +48,10 @@ class UserObserver
             $user->purse()->save($purse);
             $purse->save();
         }
+        if (!empty($user->username) && true === $user->inRoles($this->rolesToSearchIndex)) {
+            $this->indexer->index(Collection::make([$user]), 'user');
+        }
+
 //        //отправка письма о завершении регистрации
 //        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
 //            dispatch(new UserRegisterJob($user))->onQueue('low');
@@ -80,6 +94,10 @@ class UserObserver
             event(new ChangeLevelEvent($user, $user->level));
         }
 
+        if ($user->isDirty('username') && true === $user->inRoles($this->rolesToSearchIndex)) {
+            $this->indexer->index(Collection::make([$user]), 'user');
+        }
+
         return true;
     }
 
@@ -101,6 +119,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
+        $this->indexer->deleteFromIndex(Collection::make([$user]), 'user');
     }
 
     /**
@@ -110,6 +129,9 @@ class UserObserver
      */
     public function restored(User $user)
     {
+        if ($user->isDirty('username') && true === $user->inRoles($this->rolesToSearchIndex)) {
+            $this->indexer->index(Collection::make([$user]), 'user');
+        }
     }
 
     /**
@@ -119,5 +141,6 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
+        $this->indexer->deleteFromIndex(Collection::make([$user]), 'user');
     }
 }
