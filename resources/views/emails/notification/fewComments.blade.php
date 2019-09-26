@@ -22,7 +22,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <a href="{{ env('APP_URL') }}/profile/reviews" style="display: block; width: 208px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ env('APP_URL') }}/images/emails/icons/gradient-link.png'); margin: 0 0 40px;">@lang('emails.fewComments.createFeedback')</a>
+                                    <a href="{{ config('app.url') }}/profile/reviews" style="display: block; width: 208px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ config('app.url') }}/images/emails/icons/gradient-link.png'); margin: 0 0 40px;">@lang('emails.fewComments.createFeedback')</a>
                                 </td>
                             </tr>
                             <tr>

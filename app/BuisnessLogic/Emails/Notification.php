@@ -76,7 +76,7 @@ class Notification
         return [
             'url' => '/fake_url',
             'nameStar' => 'STAR_NAME', //имя звезды
-            'preview_img' => env('APP_URL').'/images/emails/img/video.png',
+            'preview_img' => config('app.url').'/images/emails/img/video.png',
         ];
     }
 
@@ -220,7 +220,7 @@ class Notification
         $tracks = $this->tracks->getTopTrack($topCount);
         foreach ($tracks as $track) {
             //TODO реальный урл к топ20
-            $topUrl = env('APP_URL').'/top50';
+            $topUrl = config('app.url').'/top50';
             dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }
     }
