@@ -16,7 +16,7 @@
                                         @lang('emails.newStatus.text', ['status'=>$status])
                                     </p>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.newStatus.more', ['link'=> env('APP_URL').'/profile/bonus-program'])
+                                        @lang('emails.newStatus.more', ['link'=> config('app.url').'/profile/bonus-program'])
                                     </p>
                                 </td>
                             </tr>
