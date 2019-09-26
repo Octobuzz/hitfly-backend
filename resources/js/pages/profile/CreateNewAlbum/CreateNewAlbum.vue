@@ -104,6 +104,7 @@
           value: 'single'
         }
       ],
+      myData: {},
       validation:{
         trackName: {
           message: '',
@@ -170,7 +171,7 @@
               musicGroup: bandId,
               year: this.albumInfo.year.input,
               genres: genres,
-              author: 'author'
+              author: this.myData.name
             },
             cover: this.albumInfo.cover
           },
@@ -239,9 +240,9 @@
             }
           }`,
           update(data) {
-            let myData = {id: 0, name: data.myProfile.username};
-            this.bands = [myData, ...data.myProfile.musicGroups];
-            this.albumInfo.selectedArtist = myData.name;
+            this.myData = {id: 0, name: data.myProfile.username};
+            this.bands = [this.myData, ...data.myProfile.musicGroups];
+            this.albumInfo.selectedArtist = this.myData.name;
             this.isLoading = false;
           }
         }
