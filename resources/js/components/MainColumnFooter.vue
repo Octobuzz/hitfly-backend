@@ -37,14 +37,12 @@
       }
     }
 
-    & .footerSection__links {
-      & a {
-        margin-right: 20px;
-        transition: .3s all ease;
+    & a {
+      margin-right: 20px;
+      transition: .3s all ease;
 
-        &:hover {
-          color: $link_color_active;
-        }
+      &:hover {
+        color: $link_color_active;
       }
     }
   }
