@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Dictionaries\RoleDictionary;
 use App\Models\Album;
 use App\Models\ArtistProfile;
 use App\Models\City;
@@ -99,11 +100,6 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         self::LEVEL_CONNOISSEUR_OF_THE_GENRE,
         self::LEVEL_SUPER_MUSIC_LOVER,
     ];
-
-    const ROLE_STAR = 'star';
-    const ROLE_CRITIC = 'critic';
-    const ROLE_PROF_CRITIC = 'prof_critic';
-    const ROLE_PERFORMER = 'performer';
 
     protected $attributes = [
         'level' => self::LEVEL_NOVICE,

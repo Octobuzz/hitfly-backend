@@ -132,14 +132,6 @@ class UserObserver
         }
     }
 
-    public function belongToManySyncing($relation, $parent, $ids): void
-    {
-        switch ($relation) {
-            case 'roles':
-                event(new SyncingRolesEvent($parent, $ids));
-        }
-    }
-
     public function belongsToManyDetaching($relation, $parent, $ids): void
     {
         switch ($relation) {
