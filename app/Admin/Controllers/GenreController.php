@@ -141,11 +141,17 @@ class GenreController extends Controller
 
         $form->text('name', 'Название');
         $form->image('image', 'Изображение')->move('genres')->uniqueName();
+        $form->select('parent_id')->options(function ($id) {
+            $user = Genre::find($id);
+            if ($user) {
+                return [$user->id => $user->name];
+            }
+        })->ajax('/admin/api/genres');
 
         $form->tools(function (Form\Tools $tools) {
             $tools->disableDelete();
         });
-
+        //Genre::fixTree();
         return $form;
     }
 

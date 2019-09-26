@@ -161,22 +161,31 @@ class NotificationEventSubscriber
         if (null !== $user->userNotification) {
             $exclude_client_id[] = $user->userNotification->token_web_socket;
         }
+        try {
+            $user = $track->user;
+            $messageData = [
+                'user' => [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'avatar' => $user->avatar,
+                ],
+                'music' => [
+                    'type' => 'Track',
+                    'id' => $track->id,
+                    'title' => $track->track_name,
+                ],
+            ];
 
-        $user = $track->user;
-        $messageData = [
-            'user' => [
-                'id' => $user->id,
-                'username' => $user->username,
-                'avatar' => $user->avatar,
-            ],
-            'music' => [
-                'type' => 'Track',
-                'id' => $track->id,
-                'title' => $track->track_name,
-            ],
-        ];
-        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
-        $this->notification->newFavouriteTrackNotification($track);
+            $messageNotify = new BaseNotifyMessage('new-music', $messageData);
+            $users = $this->notification->getWatchingUsers($user->id);
+            foreach ($users as $user) {
+                $user->notify($messageNotify);
+            }
+
+            $this->notification->newFavouriteTrackNotification($track);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), $exception);
+        }
     }
 
     public function createAlbum(Album $album)
@@ -200,7 +209,11 @@ class NotificationEventSubscriber
                 'title' => $album->title,
             ],
         ];
-        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
+        $messageNotify = new BaseNotifyMessage('new-music', $messageData);
+        $users = $this->notification->getWatchingUsers($user->id);
+        foreach ($users as $user) {
+            $user->notify($messageNotify);
+        }
         $this->notification->newFavouriteTrackNotification($album);
     }
 
@@ -210,10 +223,6 @@ class NotificationEventSubscriber
         $user = $collection->user;
         if (null === $user) {
             $user = $collection->load('user');
-        }
-        $exclude_client_id = [];
-        if (null !== $user->userNotification) {
-            $exclude_client_id[] = $user->userNotification->token_web_socket;
         }
         $messageData = [
             'user' => [
@@ -227,10 +236,11 @@ class NotificationEventSubscriber
                 'title' => $collection->title,
             ],
         ];
-        if (null !== $user->userNotification) {
-            $exclude_client_id[] = $user->userNotification->token_web_socket;
+        $messageNotify = new BaseNotifyMessage('new-music', $messageData);
+        $users = $this->notification->getWatchingUsers($user->id);
+        foreach ($users as $user) {
+            $user->notify($messageNotify);
         }
-        $this->sendBroadCast('new-music', $messageData, $exclude_client_id);
     }
 
     public function criticReview(Comment $comment)

@@ -47,8 +47,8 @@ return [
                 'width' => 32,
                 'height' => 32,
             ],
-            'size_214x160' => [
-                'width' => 214,
+            'size_160x160' => [
+                'width' => 160,
                 'height' => 160,
             ],
             'size_150x150' => [
