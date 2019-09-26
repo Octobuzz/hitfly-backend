@@ -13,12 +13,19 @@
 
 use App\BuisnessLogic\Playlist\Tracks;
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\BuisnessLogic\Services\SearchService\ElasticsearchService;
 use App\Models\Track;
 use App\User;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Support\Facades\Log;
 
 Route::redirect('/', 'login', 301);
+
+Route::get('/search', function () {
+    $s = new ElasticsearchService();
+    $result = $s->search('seodi');
+    dd($result);
+});
 Route::get('/s', function () {
 //    $q = User::query();
 //    $q->whereHas('roles', function ($query) {
