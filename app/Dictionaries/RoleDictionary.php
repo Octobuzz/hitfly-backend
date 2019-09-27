@@ -47,6 +47,10 @@ class RoleDictionary
             throw new LogicException("Не найдена роль: $role");
         }
         $oldKeyRole = $arraySearch - 1;
+        if (false === isset(self::hierarchyRoles[$oldKeyRole])) {
+            throw new LogicException('Не существующая роль');
+        }
+
         return self::hierarchyRoles[$oldKeyRole];
     }
 }

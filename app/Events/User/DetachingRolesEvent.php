@@ -17,9 +17,9 @@ class DetachingRolesEvent
     private $ids;
     private $user;
 
-    public function __construct(User $user, array $level)
+    public function __construct(User $user, array $ids)
     {
-        $this->ids = $level;
+        $this->ids = $ids;
         $this->user = $user;
     }
 
