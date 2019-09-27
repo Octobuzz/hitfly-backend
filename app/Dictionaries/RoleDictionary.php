@@ -37,7 +37,7 @@ class RoleDictionary
             throw new LogicException("Не найдена роль: $role");
         }
 
-        return false === $arraySearch ? null : $arraySearch;
+        return $arraySearch;
     }
 
     public static function getPreventRoleSlug(string $role): string
