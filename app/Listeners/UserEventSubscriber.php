@@ -8,6 +8,7 @@
 
 namespace App\Listeners;
 
+use App\BuisnessLogic\Emails\Notification;
 use App\Dictionaries\RoleDictionary;
 use App\Events\User\AttachingRolesEvent;
 use App\Events\User\IncreaseRoleEvent;

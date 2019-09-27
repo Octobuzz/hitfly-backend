@@ -351,5 +351,6 @@ class NotificationEventSubscriber
 
         $baseNotifyMessage = new BaseNotifyMessage('new-status', $messageData);
         $user->notify(new BaseNotification($baseNotifyMessage));
+        $this->notification->newStatusNotification($role->name, $user);
     }
 }
