@@ -67,5 +67,11 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+        'other' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/other'),
+            'url' => env('APP_URL').'/storage/other',
+            'visibility' => 'public',
+        ],
     ],
 ];
