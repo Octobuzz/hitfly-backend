@@ -2,60 +2,68 @@ const formatting = {
   TRACK: {
     1: 'песня',
     '2-4': 'песни',
-    '5-9': 'песен'
+    '5-20': 'песен'
   },
   BONUS: {
     1: 'балл',
     '2-4': 'балла',
-    '5-9': 'баллов'
+    '5-20': 'баллов'
   },
   DAY: {
     1: 'день в Hitfly',
     '2-4': 'дня в Hitfly',
-    '5-9': 'дней Hitfly'
+    '5-20': 'дней Hitfly'
   },
   FAVOURITE_SONG: {
     1: 'любимая песня',
     '2-4': 'любимые песни',
-    '5-9': 'любимых песен'
+    '5-20': 'любимых песен'
   },
   FOLLOWER: {
     1: 'поклонник',
     '2-4': 'поклонника',
-    '5-9': 'поклонников'
+    '5-20': 'поклонников'
   },
   NOVICE: {
     1: 'новичок',
     '2-4': 'новичка',
-    '5-9': 'новичков'
+    '5-20': 'новичков'
   },
   AMATEUR: {
     1: 'любитель',
     '2-4': 'любителя',
-    '5-9': 'любителей'
+    '5-20': 'любителей'
   },
   GENRE_CONNOISSEUR: {
     1: 'знаток жанра',
     '2-4': 'знатока жанра',
-    '5-9': 'знатоков жанра'
+    '5-20': 'знатоков жанра'
   },
   MUSIC_LOVER: {
     1: 'супер меломан',
     '2-4': 'супер меломана',
-    '5-9': 'супер меломанов'
+    '5-20': 'супер меломанов'
   }
 };
 
 export default (word, total) => {
-  const lastDigit = total % 10;
-  let lastDigitSet = '5-9';
+  let lastTwoDigits = total % 100;
+  let lastTwoDigitsSet;
+  const checkCap = 20;
 
-  if (lastDigit === 1) {
-    lastDigitSet = 1;
-  }
-  if (lastDigit >= 2 && lastDigit <= 4) {
-    lastDigitSet = '2-4';
+  if (lastTwoDigits > checkCap) {
+    lastTwoDigits %= 10;
   }
 
-  return formatting[word][lastDigitSet];
+  if (lastTwoDigits === 1) {
+    lastTwoDigitsSet = 1;
+  }
+  if (lastTwoDigits >= 2 && lastTwoDigits <= 4) {
+    lastTwoDigitsSet = '2-4';
+  }
+  if ((lastTwoDigits >= 5 && lastTwoDigits <= checkCap) || lastTwoDigits === 0) {
+    lastTwoDigitsSet = '5-20';
+  }
+
+  return formatting[word][lastTwoDigitsSet];
 };

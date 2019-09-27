@@ -170,7 +170,11 @@ class TrackController extends Controller
             $genre->setResource('/admin/genre');
             $genre->name('Имя');
         });
-        $show->singer('Исполнитель');
+        $singer = $show->getModel()->getAuthor();
+        $show->singer('Исполнитель')->as(function ($t) use ($singer) {
+            return $singer;
+        });
+        //$show->singer('Исполнитель');
         $show->song_text('Текст трека');
         $show->filename('Filename');
         $show->user('Пользователь', function ($user) {
@@ -189,6 +193,7 @@ class TrackController extends Controller
     protected function form()
     {
         $form = new Form(new Track());
+        $form->model()->load('musicGroup', 'user');
 
         $form->text('track_name', 'Название трека')->rules(['required']);
         $form->select('album_id', 'Альбом')->options(function ($id) {
@@ -198,8 +203,7 @@ class TrackController extends Controller
             }
         })->ajax('/admin/api/album');
         $form->multipleSelect('genres', 'Жанр')->options(Genre::all()->pluck('name', 'id'))->required();
-
-        $form->text('singer', 'Исполнитель')->rules(['required']);
+        
         $form->date('track_date', 'Дата трека')->default(date('Y'))->required(true);
         $form->textarea('song_text', 'Текст трека');
         $form->select('user_id', 'Пользователь')->options(function ($id) {
@@ -209,6 +213,9 @@ class TrackController extends Controller
                 return [$user->id => $user->username];
             }
         })->ajax('/admin/api/users')->rules(['required']);
+        $form->display('author', 'Исполнитель')->with(function ($e) {
+            return $this->getAuthor();
+        });
         $form->file('filename', 'Файл')
             ->rules('required|mimetypes:audio/ogg,audio/wave,audio/x-wav,audio/x-pn-wav,audio/aac,audio/mp4,audio/vnd.wave,audio/flac,audio/x-flac,audio/vnd.wave,audio/x-aiff,audio/aiff,audio/x-m4a,audio/mp3,audio/mpeg')
         ;

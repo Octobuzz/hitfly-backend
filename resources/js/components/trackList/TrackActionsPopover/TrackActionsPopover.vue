@@ -67,23 +67,23 @@
           >
         </template>
 
-        <span
-          class="track-actions-popover__menu-item"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <PlayNextIcon />
-          </span>
-          Слушать далее
-        </span>
-        <span class="track-actions-popover__menu-item">
-          <!--TODO: removing from queue should be available instead-->
-          <!--of this under corresponding conditions-->
+<!--        <span-->
+<!--          class="track-actions-popover__menu-item"-->
+<!--        >-->
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <PlayNextIcon />-->
+<!--          </span>-->
+<!--          Слушать далее-->
+<!--        </span>-->
+<!--        <span class="track-actions-popover__menu-item">-->
+<!--          &lt;!&ndash;TODO: removing from queue should be available instead&ndash;&gt;-->
+<!--          &lt;!&ndash;of this under corresponding conditions&ndash;&gt;-->
 
-          <span class="track-actions-popover__menu-item-icon">
-            <ListPlusIcon />
-          </span>
-          Добавить в список воспроизведения
-        </span>
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <ListPlusIcon />-->
+<!--          </span>-->
+<!--          Добавить в список воспроизведения-->
+<!--        </span>-->
         <span
           v-if="isAuthenticated && !isStar"
           class="track-actions-popover__menu-item"

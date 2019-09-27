@@ -265,6 +265,7 @@ export default {
 
 .app-header__profile-image {
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .block {

@@ -113,6 +113,10 @@ const routes = [
         component: profile.EditUser
       },
       {
+        path: 'create/album',
+        component: profile.CreateNewAlbum
+      },
+      {
         path: 'edit/playlist/:collectionId',
         component: profile.EditCollection
       },
@@ -413,6 +417,10 @@ const routes = [
         path: 'news/:newsId',
         component: main.MainPageNewsDetailed,
         props: true
+      },
+      {
+        path: 'reviews',
+        component: main.MainPageReviews
       },
       {
         path: 'bonus-program',

@@ -96,6 +96,7 @@
           Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим
           <router-link
             to="/policy"
+            target="_blank"
             class="about__link about__link_highlighted"
           >
             Условиям использования

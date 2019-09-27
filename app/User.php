@@ -338,4 +338,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     {
         return $this->hasMany(ListenedTrack::class, 'user_id', 'id');
     }
+
+    public function scopefilterRoles($query, array $roles)
+    {
+        return $query->whereHas('roles', function ($query) use ($roles) {
+            $query->whereIn('slug', $roles);
+        });
+    }
 }
