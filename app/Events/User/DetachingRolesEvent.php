@@ -1,15 +1,16 @@
 <?php
 
-
 namespace App\Events\User;
-
 
 use App\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DetachRolesEvent
+/**
+ * Class DetachingRolesEvent.
+ */
+class DetachingRolesEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

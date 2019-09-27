@@ -27,6 +27,7 @@ class RoleDictionary
      * @param string $role
      *
      * @return int
+     *
      * @throws LogicException
      */
     public static function getKeyRole(string $role): int
@@ -37,5 +38,15 @@ class RoleDictionary
         }
 
         return false === $arraySearch ? null : $arraySearch;
+    }
+
+    public static function getPreventRoleSlug(string $role): string
+    {
+        $arraySearch = array_search($role, self::hierarchyRoles, true);
+        if (false === $arraySearch) {
+            throw new LogicException("Не найдена роль: $role");
+        }
+        $oldKeyRole = $arraySearch - 1;
+        return self::hierarchyRoles[$oldKeyRole];
     }
 }

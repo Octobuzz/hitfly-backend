@@ -6,10 +6,10 @@ use App\Models\Role;
 use App\User;
 
 /**
- * Повышение роли пользователя
- * Class IncreaseRoleEvent.
+ * Понижение роли пользователя
+ * Class DecreaseRoleEvent.
  */
-class IncreaseRoleEvent
+class DecreaseRoleEvent
 {
     private $role;
     private $user;

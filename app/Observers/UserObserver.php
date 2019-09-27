@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Admin\Controllers\UserController;
 use App\Events\User\AttachingRolesEvent;
-use App\Events\User\DetachRolesEvent;
+use App\Events\User\DetachingRolesEvent;
 use App\Events\User\SyncingRolesEvent;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
@@ -136,7 +136,7 @@ class UserObserver
     {
         switch ($relation) {
             case 'roles':
-                event(new DetachRolesEvent($parent, $ids));
+                event(new DetachingRolesEvent($parent, $ids));
         }
     }
 }

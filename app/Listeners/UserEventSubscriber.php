@@ -8,9 +8,10 @@
 
 namespace App\Listeners;
 
-use App\BuisnessLogic\Emails\Notification;
 use App\Dictionaries\RoleDictionary;
 use App\Events\User\AttachingRolesEvent;
+use App\Events\User\DecreaseRoleEvent;
+use App\Events\User\DetachingRolesEvent;
 use App\Events\User\IncreaseRoleEvent;
 use App\Models\ArtistProfile;
 use App\Models\Track;
@@ -36,6 +37,7 @@ class UserEventSubscriber
         $events->listen(Logout::class, self::class.'@onUserLogout');
         $events->listen('eloquent.created: '.Track::class, self::class.'@uploadFirstTrack');
         $events->listen(AttachingRolesEvent::class, self::class.'@belongsToManyAttachingRoles');
+        $events->listen(DetachingRolesEvent::class, self::class.'@belongsToManyDetachingRoles');
     }
 
     /**
@@ -108,7 +110,7 @@ class UserEventSubscriber
             }
             $sortAttachedRoles = $roles;
             if (count($roles) > 1) {
-                $sortAttachedRoles = $userRoles->sort(function ($roleA, $roleB) {
+                $sortAttachedRoles = $roles->sort(function ($roleA, $roleB) {
                     return RoleDictionary::getKeyRole($roleB->slug) <=> RoleDictionary::getKeyRole($roleA->slug);
                 });
             }
@@ -119,6 +121,24 @@ class UserEventSubscriber
             if (RoleDictionary::getKeyRole($maxRole->slug) < RoleDictionary::getKeyRole($maxRoleAttached->slug)) {
                 event(new IncreaseRoleEvent($user, $maxRoleAttached));
             }
+        } catch (LogicException $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
+        }
+    }
+
+    public function belongsToManyDetachingRoles(DetachingRolesEvent $detachingRolesEvent): void
+    {
+        try {
+            $user = $detachingRolesEvent->getUser();
+            $roles = Role::query()->whereIn('id', $detachingRolesEvent->getIds())->get();
+            $minRolesDetach = $roles;
+            if (count($roles) > 1) {
+                $sortUserRoles = $roles->sort(function ($roleA, $roleB) {
+                    return  RoleDictionary::getKeyRole($roleA->slug) <=> RoleDictionary::getKeyRole($roleB->slug);
+                });
+            }
+            $minRoleDetach = $minRolesDetach->pop();
+            event(new DecreaseRoleEvent($user, $minRoleDetach));
         } catch (LogicException $exception) {
             Log::alert($exception->getMessage(), $exception->getTrace());
         }
