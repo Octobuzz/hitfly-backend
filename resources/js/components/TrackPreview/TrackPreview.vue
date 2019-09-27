@@ -70,6 +70,7 @@
         </IconButton>
 
         <TrackPopover
+          v-if="isAuthenticated"
           :track-id="trackId"
           @press-favourite="onPressFavourite"
         >
