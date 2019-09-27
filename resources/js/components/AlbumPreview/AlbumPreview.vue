@@ -75,6 +75,7 @@
         </template>
 
         <AlbumPopover
+          v-if="isAuthenticated"
           :album-id="albumId"
           @press-favourite="onPressFavourite"
         >
