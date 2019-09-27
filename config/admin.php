@@ -314,6 +314,9 @@ return [
             'config' => [
             ],
         ],
+        'media-manager' => [
+            'disk' => 'other',
+        ],
     ],
 
     'default_avatar' => '/images/default_account.png',
