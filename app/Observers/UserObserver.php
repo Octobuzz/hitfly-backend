@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Admin\Controllers\UserController;
+use App\Events\User\AttachingRolesEvent;
+use App\Events\User\DetachingRolesEvent;
+use App\Events\User\SyncingRolesEvent;
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
@@ -142,5 +145,21 @@ class UserObserver
     public function forceDeleted(User $user)
     {
         $this->indexer->deleteFromIndex(Collection::make([$user]), 'user');
+    }
+
+    public function belongsToManyAttaching($relation, $parent, $ids): void
+    {
+        switch ($relation) {
+            case 'roles':
+                event(new AttachingRolesEvent($parent, $ids));
+        }
+    }
+
+    public function belongsToManyDetaching($relation, $parent, $ids): void
+    {
+        switch ($relation) {
+            case 'roles':
+                event(new DetachingRolesEvent($parent, $ids));
+        }
     }
 }
