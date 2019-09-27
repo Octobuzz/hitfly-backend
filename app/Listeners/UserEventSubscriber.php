@@ -99,19 +99,22 @@ class UserEventSubscriber
             $user = $attachingRolesEvent->getUser();
             $userRoles = $user->roles;
             $sortUserRoles = $userRoles;
+
             if (count($userRoles) > 1) {
-                $sortUserRoles = usort($userRoles, static function ($roleA, $roleB) {
-                    return RoleDictionary::getKeyRole($roleA->slug) <=> RoleDictionary::getKeyRole($roleB->slug);
+                $sortUserRoles = $userRoles->sort(function ($roleA, $roleB) {
+                    return RoleDictionary::getKeyRole($roleB->slug) <=> RoleDictionary::getKeyRole($roleA->slug);
                 });
             }
             $sortAttachedRoles = $roles;
             if (count($roles) > 1) {
-                $sortAttachedRoles = usort($roles, static function ($roleA, $roleB) {
-                    return RoleDictionary::getKeyRole($roleA->slug) <=> RoleDictionary::getKeyRole($roleB->slug);
+                $sortAttachedRoles = $userRoles->sort(function ($roleA, $roleB) {
+                    return RoleDictionary::getKeyRole($roleB->slug) <=> RoleDictionary::getKeyRole($roleA->slug);
                 });
             }
-            $maxRole = array_pop($sortUserRoles);
-            $maxRoleAttached = array_pop($sortAttachedRoles);
+
+            $maxRole = $sortUserRoles->pop();
+            $maxRoleAttached = $sortAttachedRoles->pop();
+
             if (RoleDictionary::getKeyRole($maxRole->slug) < RoleDictionary::getKeyRole($maxRoleAttached->slug)) {
                 event(new IncreaseRoleEvent($user, $maxRoleAttached));
             }
