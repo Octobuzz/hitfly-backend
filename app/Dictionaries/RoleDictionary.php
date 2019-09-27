@@ -40,7 +40,7 @@ class RoleDictionary
         return $arraySearch;
     }
 
-    public static function getPreventRoleSlug(string $role): string
+    public static function getPreviousRoleSlug(string $role): string
     {
         $arraySearch = array_search($role, self::hierarchyRoles, true);
         if (false === $arraySearch) {
