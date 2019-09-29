@@ -5,13 +5,14 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-07-18 11:10:12.
+    * Generated on 2019-09-19 15:28:39.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
     */
     override(new \Illuminate\Contracts\Container\Container, map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -130,6 +131,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -145,6 +147,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -170,6 +173,7 @@ namespace PHPSTORM_META {
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -288,6 +292,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -303,6 +308,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -328,6 +334,7 @@ namespace PHPSTORM_META {
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -446,6 +453,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -461,6 +469,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -486,6 +495,7 @@ namespace PHPSTORM_META {
     ]));
     override(\App::make(0), map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -604,6 +614,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -619,6 +630,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -644,6 +656,7 @@ namespace PHPSTORM_META {
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -762,6 +775,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -777,6 +791,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -802,6 +817,7 @@ namespace PHPSTORM_META {
     ]));
     override(\app(0), map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -920,6 +936,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -935,6 +952,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -960,6 +978,7 @@ namespace PHPSTORM_META {
     ]));
     override(\resolve(0), map([
         '' => '@',
+        'App\Interfaces\Top\TopWeeklyInterface' => \App\BuisnessLogic\Top\TopWeekly::class,
         'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
         'Illuminate\Broadcasting\BroadcastManager' => \Illuminate\Broadcasting\BroadcastManager::class,
         'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
@@ -1078,6 +1097,7 @@ namespace PHPSTORM_META {
         'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
         'image' => \Intervention\Image\ImageManager::class,
         'log' => \Illuminate\Log\LogManager::class,
+        'mailer' => \Illuminate\Mail\Mailer::class,
         'memcached.connector' => \Illuminate\Cache\MemcachedConnector::class,
         'migration.creator' => \Illuminate\Database\Migrations\MigrationCreator::class,
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
@@ -1093,6 +1113,7 @@ namespace PHPSTORM_META {
         'router' => \Illuminate\Routing\Router::class,
         'session' => \Illuminate\Session\SessionManager::class,
         'session.store' => \Illuminate\Session\Store::class,
+        'swift.mailer' => \Swift_Mailer::class,
         'swift.transport' => \Illuminate\Mail\TransportManager::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,

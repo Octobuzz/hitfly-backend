@@ -2,14 +2,22 @@
 
 namespace App\Observers;
 
+use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Jobs\Track\CreatePlayTimeJob;
 use App\Models\Track;
-use Illuminate\Support\Facades\App;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
 {
+    protected $indexer;
+
+    public function __construct(SearchIndexer $indexer)
+    {
+        $this->indexer = $indexer;
+    }
+
     /**
      * @param Track $track
      *
@@ -46,6 +54,9 @@ class TrackObserver
         if ($track->isDirty('cover')) {
             Cache::tags(Track::class.$track->id)->flush();
         }
+        if (Track::PUBLISHED === $track->state) {
+            $this->indexer->index(Collection::make([$track]), 'track');
+        }
     }
 
     /**
@@ -56,6 +67,7 @@ class TrackObserver
     public function deleted(Track $track)
     {
         Storage::delete('public/music/'.$track->user_id.DIRECTORY_SEPARATOR.$track->filename);
+        $this->indexer->deleteFromIndex(Collection::make([$track]), 'track');
     }
 
     /**
@@ -63,8 +75,11 @@ class TrackObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function restored(Track $collection)
+    public function restored(Track $track)
     {
+        if (Track::PUBLISHED === $track->state) {
+            $this->indexer->index(Collection::make([$track]), 'track');
+        }
     }
 
     /**
@@ -72,7 +87,8 @@ class TrackObserver
      *
      * @param \App\Models\Track $collection
      */
-    public function forceDeleted(Track $collection)
+    public function forceDeleted(Track $track)
     {
+        $this->indexer->deleteFromIndex(Collection::make([$track]), 'track');
     }
 }

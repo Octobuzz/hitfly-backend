@@ -25,6 +25,10 @@ export default {
     query: {
       type: String,
       required: true
+    },
+    forId: {
+      type: Number,
+      required: false
     }
   },
   data() {
@@ -81,8 +85,8 @@ export default {
         query = gql.query.GET_LISTENED_NOW
       } else if (this.query === 'weekly_top') {
         query = gql.query.WEEKLY_TOP
-      } else if (this.query === 'new_songs') {
-        query = gql.query.QUEUE_TRACKS
+      } else if (this.query === 'new_songs' || this.query === 'genre') {
+        query = gql.query.TRACKS
       };
       this.$apollo.provider.clients[this.apolloClient].query({
         query: query,
@@ -96,11 +100,13 @@ export default {
         let collectionResponse = null;
         if(this.query === 'top50'){
           collectionResponse = response.data.GetTopFifty.data;
-        }else if (this.query === 'listening_now'){
+        } else if (this.query === 'listening_now'){
           collectionResponse = response.data.GetListenedNow.data;
-        }else if (this.query === 'weekly_top'){
+        } else if (this.query === 'weekly_top'){
           collectionResponse = response.data.TopWeeklyQuery.data;
-        }else if (this.query === 'new_songs'){
+        } else if (this.query === 'new_songs'){
+          collectionResponse = response.data.tracks.data;
+        } else if (this.query === 'genre'){
           collectionResponse = response.data.tracks.data;
         };
         this.trackList = collectionResponse;
@@ -202,7 +208,7 @@ export default {
   apollo: {
     trackList() {
       let query = null;
-      if(this.query === 'tracks' || this.query === 'new_songs') {
+      if(this.query === 'tracks' || this.query === 'new_songs' || this.query === 'genre') {
         query = gql.query.QUEUE_TRACKS
       } else if(this.query === 'TopWeeklyQuery' || this.query === 'weekly_top') {
         query = gql.query.WEEKLY_TOP
@@ -210,6 +216,9 @@ export default {
         query = gql.query.GET_TOP_FIFTY
       }else if(this.query === 'listening_now') {
         query = gql.query.GET_LISTENED_NOW
+      };
+      if(this.query === 'genre') {
+        this.queryVars.filters = {'genre': this.forId};
       };
       return {
         query: query,
@@ -231,12 +240,14 @@ export default {
             error: null
           });
           let currentType = null;
-          if(this.query === 'tracks') {
+          if(this.query === 'new_songs') {
             currentType = 'newTracks';
           } else if (this.query === 'TopWeeklyQuery'){
             currentType = 'weeklyTop';
           } else if (this.query === 'top50'){
             currentType = 'top50';
+          } else if (this.query === 'genre'){
+            currentType = 'genre';
           };
           this.notifyInitialization(true, currentType);
 

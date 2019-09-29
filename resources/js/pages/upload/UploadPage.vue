@@ -30,7 +30,7 @@
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
-              Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <a href="/">Условиям использования</a>, и вы не нарушаете авторские права.
+              Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <a href="/policy" target="_blank">Условиям использования</a>, и вы не нарушаете авторские права.
           </p>
           <div class="up-b-info">
             <div class="up-b-info__left">
@@ -118,7 +118,6 @@
           variables: {
             id: this.trackID,
             infoTrack: {
-              singer: info.singer,
               musicGroup: info.musicGroup,
               genres: info.genre,
               trackDate: info.trackDate,
@@ -132,7 +131,6 @@
             updateTrack (id: $id, infoTrack: $infoTrack) {
               id
               trackName
-              singer
               trackDate
               musicGroup{
                 id
