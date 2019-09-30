@@ -14,7 +14,7 @@ class IncreaseRoleEvent
     private $role;
     private $user;
 
-    public function __construct(User $user, Role $role)
+    public function __construct(User $user, $role)
     {
         $this->user = $user;
         $this->role = $role;
@@ -31,7 +31,7 @@ class IncreaseRoleEvent
     /**
      * @return Role
      */
-    public function getRole(): Role
+    public function getRole()
     {
         return $this->role;
     }
