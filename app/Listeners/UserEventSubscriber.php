@@ -101,6 +101,9 @@ class UserEventSubscriber
             $roles = Role::query()->whereIn('id', $attachingRolesEvent->getIds())->get();
             $user = $attachingRolesEvent->getUser();
             $userRoles = $user->roles;
+            if($userRoles->isEmpty()) {
+                return;
+            }
             $sortUserRoles = $userRoles;
 
             if (count($userRoles) > 1) {
