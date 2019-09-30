@@ -3,7 +3,7 @@
   <div
     :style="{
       height: '95px',
-      backgroundImage: 'url(~images/player-wave.svg)',
+      backgroundImage: 'url(/images/player-wave.svg)',
       backgroundRepeat: 'repeat-x'
     }"
   />
