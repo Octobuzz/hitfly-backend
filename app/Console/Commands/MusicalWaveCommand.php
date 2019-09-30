@@ -109,7 +109,7 @@ class MusicalWaveCommand extends Command
                 return [];
             }
         } catch (\Exception $exception) {
-            throw new ProcessFailedException($exception);
+            throw new ProcessFailedException($process);
         } finally {
             File::delete($tmpFile);
         }

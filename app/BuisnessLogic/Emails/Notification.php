@@ -5,6 +5,7 @@ namespace App\BuisnessLogic\Emails;
 use App\BuisnessLogic\Events\Event;
 use App\BuisnessLogic\Promo\PromoCode;
 use App\BuisnessLogic\Recommendation\Recommendation;
+use App\Dictionaries\RoleDictionary;
 use App\Jobs\BirthdayCongratulationsEmailJob;
 use App\Jobs\CommentCreatedJob;
 use App\Jobs\DecreaseLevelJob;
@@ -113,7 +114,7 @@ class Notification
             $query->select('user_id')->from('admin_role_users')->whereIn('role_id', function ($query2) use ($startPeriod, $commentCount) {
                 $query2->select('id')
                         ->from('admin_roles')
-                        ->whereIn('slug', [User::ROLE_CRITIC, User::ROLE_STAR]);
+                        ->whereIn('slug', [RoleDictionary::ROLE_CRITIC, RoleDictionary::ROLE_STAR]);
             }
                 )->whereNotIn('user_id', function ($query2) use ($startPeriod, $commentCount) {
                     $query2->select('user_id')
@@ -152,7 +153,7 @@ class Notification
         $return = [];
         $stars = User::query()->select('users.id')->leftJoin('admin_role_users', 'users.id', '=', 'admin_role_users.user_id')
             ->leftJoin('admin_roles', 'admin_role_users.role_id', '=', 'admin_roles.id')
-            ->where('admin_roles.slug', '=', User::ROLE_STAR);
+            ->where('admin_roles.slug', '=', RoleDictionary::ROLE_STAR);
         $query = User::query()->whereNotIn('users.id', $stars);
         $query2 = clone $query;
         $return['days7'] = $query->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->get();
@@ -176,7 +177,7 @@ class Notification
     {
         $stars = User::query()->select('users.id')->leftJoin('admin_role_users', 'users.id', '=', 'admin_role_users.user_id')
             ->leftJoin('admin_roles', 'admin_role_users.role_id', '=', 'admin_roles.id')
-            ->where('admin_roles.slug', '=', User::ROLE_STAR);
+            ->where('admin_roles.slug', '=', RoleDictionary::ROLE_STAR);
         $query = User::query()->whereNotIn('users.id', $stars);
 
         return $query->where('last_login', '<', Carbon::now()->subDays(30)->startOfDay())->get();

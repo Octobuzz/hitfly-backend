@@ -4,14 +4,18 @@ namespace App\Listeners;
 
 use App\BuisnessLogic\Emails\Notification;
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
+use App\Dictionaries\RoleDictionary;
 use App\Events\CompletedTaskEvent;
 use App\Events\CreatedTopFiftyEvent;
 use App\Events\Track\TrackPublishEvent;
 use App\Events\User\ChangeLevelEvent;
+use App\Events\User\DecreaseRoleEvent;
+use App\Events\User\IncreaseRoleEvent;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\Favourite;
+use App\Models\Role;
 use App\Models\Track;
 use App\Models\Watcheables;
 use App\Notifications\BaseNotification;
@@ -46,6 +50,8 @@ class NotificationEventSubscriber
         $events->listen(CompletedTaskEvent::class, self::class.'@completedTask'); // Вы выполнили задание Название и получили 300 бонусов
         $events->listen(ChangeLevelEvent::class, self::class.'@changeLevel'); // Поздравляем! Вы получили новый уровень/ статус Любитель
         $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Поздравляем! Ваша песня Название попала в ТОП 20
+        $events->listen(IncreaseRoleEvent::class, self::class.'@increaseRole'); // Поздравляем! Вы получили новый статус Критик
+        $events->listen(DecreaseRoleEvent::class, self::class.'@decreaseRole'); // К сожалению, мы были вынуждены понизить ваш статус
     }
 
     /**
@@ -333,5 +339,31 @@ class NotificationEventSubscriber
             $baseNotifyMessage = new BaseNotifyMessage('track-in-top', $messageData);
             $user->notify(new BaseNotification($baseNotifyMessage));
         }
+    }
+
+    public function increaseRole(IncreaseRoleEvent $increaseRoleEvent): void
+    {
+        $user = $increaseRoleEvent->getUser();
+        $role = $increaseRoleEvent->getRole();
+
+        $messageData = [
+            'status' => [
+                'name' => $role->name,
+                'slug' => $role->slug,
+            ],
+        ];
+
+        $baseNotifyMessage = new BaseNotifyMessage('new-status', $messageData);
+        $user->notify(new BaseNotification($baseNotifyMessage));
+        $this->notification->newStatusNotification($role->name, $user);
+    }
+
+    public function decreaseRole(DecreaseRoleEvent $event)
+    {
+        $role = $event->getRole();
+        $user = $event->getUser();
+        $newStatus = RoleDictionary::getPreviousRoleSlug($role->slug);
+        $oldRole = Role::query()->where('slug', '=', $newStatus)->first();
+        $this->notification->decreaseStatusNotification($role->slug, $oldRole, $user);
     }
 }
