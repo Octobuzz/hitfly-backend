@@ -223,7 +223,7 @@ export default {
             },
             star: {
               priority: 5,
-              title: 'звезда'
+              title: 'звездный эксперт'
             }
           };
 
