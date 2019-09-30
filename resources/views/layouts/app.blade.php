@@ -23,7 +23,7 @@
     </title>
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" sizes="16x16" href="{{ mix('/favicon.ico') }}">
+    <link rel="shortcut icon" sizes="16x16" href="{{ mix('favicon.ico') }}">
 </head>
 <body class="body">
 
