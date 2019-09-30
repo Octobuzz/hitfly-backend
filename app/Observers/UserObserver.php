@@ -42,6 +42,7 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
+        $user->sendEmailVerificationNotification($user->email);
         $purse = $user->purseBonus;
         if (null === $purse) {
             $purse = new Purse();

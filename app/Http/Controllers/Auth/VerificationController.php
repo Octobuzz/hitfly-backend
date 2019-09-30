@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class VerificationController extends Controller
 {
@@ -37,7 +38,7 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('verify');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
@@ -53,6 +54,17 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
+
+        $verifyUserId = $request->route('id');
+
+        if ($request->user() && $request->user() != $request->route('id')) {
+            Auth::logout();
+        }
+
+        if (! $request->user()) {
+            Auth::loginUsingId($request->route('id'), true); //todo не удается получить пользоватея из ссылки(но перед верификацией ссылка проходит свою верификацию)
+        }
+
         if ($request->route('id') != $request->user()->getKey()) {
             throw new AuthorizationException();
         }
