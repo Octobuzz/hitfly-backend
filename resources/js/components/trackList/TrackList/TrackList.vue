@@ -23,7 +23,8 @@
           'track-list__header-duration',
           {
             'track-list__header-duration_padded-l': !isStar,
-            'track-list__header-duration_padded-r': showRemoveButton
+            'track-list__header-duration_padded-r': showRemoveButton,
+            'track-list__header-duration_padded-l-zero': !isAuthenticated
           }
         ]"
       >
