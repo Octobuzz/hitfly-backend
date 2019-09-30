@@ -40,6 +40,16 @@
       >
         О нас
       </router-link>
+
+      <a
+        href="http://2rockmusic.com"
+        :class="[
+          'button',
+          'head-nav-item'
+        ]"
+      >
+        О cтудии
+      </a>
     </nav>
 
     <div class="head__right">
