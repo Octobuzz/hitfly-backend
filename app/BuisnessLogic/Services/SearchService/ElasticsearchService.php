@@ -8,7 +8,7 @@ class ElasticsearchService implements SearchContract
 {
     public function search(string $q)
     {
-        $result = [];
+        $data = [];
 
         $models = [
            ['index' => 'album_read', 'fields' => 'title'],
@@ -28,33 +28,37 @@ class ElasticsearchService implements SearchContract
                                     ],
                                 ];
         }
-        //echo"<pre>";var_dump($params);die();
+        $result = [];
         $result = \Elasticsearch::msearch($params);
-        //return $result;
         $idsArr = $this->extractionResult($result);
-        $data = $this->getDataFromDB($idsArr);
-
+        if (!empty($idsArr)) {
+            $data = $this->getDataFromDB($idsArr);
+        }
 
         return $data;
     }
 
-    private function extractionResult(array $result):array
+    private function extractionResult(array $result): array
     {
         $ids = [];
         foreach ($result['responses'] as $index) {
-            foreach ($index['hits']['hits'] as $hit){
-                $ids[$hit['_type']][] = $hit['_id'];
+            if (!empty($index['hits'])) {
+                foreach ($index['hits']['hits'] as $hit) {
+                    $ids[$hit['_type']][] = $hit['_id'];
+                }
             }
         }
+
         return $ids;
     }
 
     private function getDataFromDB(array $idsArr)
     {
         $data = [];
-        foreach ($idsArr as $model => $ids){
-            $data[$model] = $model::query()->whereIn('id',$ids)->orderByRaw("FIELD(`id`, ".implode(",", $ids).")")->get();
+        foreach ($idsArr as $model => $ids) {
+            $data[$model] = $model::query()->whereIn('id', $ids)->orderByRaw('FIELD(`id`, '.implode(',', $ids).')')->get();
         }
+
         return $data;
     }
 }

@@ -132,6 +132,7 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -192,6 +193,7 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -286,6 +288,7 @@ return [
         'OperationType' => \App\Http\GraphQL\Type\OperationType::class,
         'OrderType' => \App\Http\GraphQL\Type\OrderType::class,
         'ProductType' => \App\Http\GraphQL\Type\ProductType::class,
+        'SearchType' => \App\Http\GraphQL\Type\SearchType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -324,6 +327,7 @@ return [
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
         'FollowResult' => \App\Http\GraphQL\Unions\FollowUnion::class,
         'AttributeResult' => \App\Http\GraphQL\Unions\AttributesUnion::class,
+        'SearchResult' => \App\Http\GraphQL\Unions\SearchUnion::class,
 
         'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],
