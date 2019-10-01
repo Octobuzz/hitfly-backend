@@ -7,8 +7,8 @@
       loading expert...
     </div>
     <router-link
-    :to="`/user/${starId}/user-reviews`"
       v-if="!isLoading"
+      :to="`/user/${starId}/user-reviews`"
       class="stars-preview__content"
     >
       <img
@@ -24,9 +24,9 @@
       class="stars-preview__footer"
     >
       <router-link
-      :to="`/user/${starId}/user-reviews`"
-      class="stars-preview__title"
-      v-html="star.username"
+        :to="`/user/${starId}/user-reviews`"
+        class="stars-preview__title"
+        v-html="star.username"
       ></router-link>
       <!-- <span class="stars-preview__footer-description" v-html="star.description"></span> -->
     </div>

@@ -40,13 +40,23 @@
       >
         О нас
       </router-link>
+
+      <a
+        href="http://2rockmusic.com"
+        :class="[
+          'button',
+          'head-nav-item'
+        ]"
+      >
+        О cтудии
+      </a>
     </nav>
 
     <div class="head__right">
       <UnauthenticatedPopoverWrapper>
         <template #auth-content>
           <router-link
-            v-if="ableToPerform"
+            v-if="ableToPerform || roles.includes('listener')"
             to="/upload"
             class="button gradient head-right-item head-right-item_upload"
           >
@@ -204,7 +214,8 @@ export default {
       isAuthenticated: 'isAuthenticated',
       apolloClient: 'apolloClient',
       ableToPerform: 'profile/ableToPerform',
-      ableToComment: 'profile/ableToComment'
+      ableToComment: 'profile/ableToComment',
+      roles: 'profile/roles'
     })
   },
 
@@ -265,6 +276,7 @@ export default {
 
 .app-header__profile-image {
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .block {

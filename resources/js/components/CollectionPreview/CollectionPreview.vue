@@ -83,6 +83,7 @@
         </template>
 
         <CollectionPopover
+          v-if="isAuthenticated"
           :collection-id="collectionId"
           @press-favourite="onPressFavourite"
         >
