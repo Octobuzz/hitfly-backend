@@ -254,7 +254,6 @@
             singer = band[0].name;
           };
           let info = {
-            'singer': singer,
             'trackDate': this.trackInfo.year.input,
             'songText': this.trackInfo.text,
             'musicGroup': bandId,
