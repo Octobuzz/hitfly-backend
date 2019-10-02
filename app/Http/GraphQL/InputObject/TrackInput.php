@@ -60,6 +60,7 @@ class TrackInput extends GraphQLType
             'singer' => [
                 'name' => 'singer',
                 'description' => 'На удаление, больше не использется',
+                'type' => Type::string(),
                 'deprecationReason' => 'На удаление, больше не использется', //todo На удлание
             ],
             'cover' => [
