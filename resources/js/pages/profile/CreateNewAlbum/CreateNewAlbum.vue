@@ -63,7 +63,7 @@
         :class="{disabled: isLoading}"
         @press="createAlbum"
       >
-        Сохранить изменения
+        Создать альбом
       </FormButton>
     </div>
   </div>

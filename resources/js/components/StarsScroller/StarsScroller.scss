@@ -10,7 +10,7 @@ $stars-left-padding-desktop: 24px;
 $stars-left-padding-mobile: 16px;
 
 .stars-scroll-horizontal {
-  height: calc($stars-height-desktop + 50px);
+  height: calc(#{$stars-height-desktop} + 50px);
   overflow-y: hidden;
 
   &__header {
