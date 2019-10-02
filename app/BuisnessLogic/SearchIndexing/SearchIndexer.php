@@ -257,9 +257,10 @@ class SearchIndexer
                 \Elasticsearch::delete($params);
             } catch (Missing404Exception $e) {
                 Log::notice($e->getMessage(), $e->getTrace());
+                return $e->getMessage();
             }
         }
 
-        return $e;
+        return;
     }
 }
