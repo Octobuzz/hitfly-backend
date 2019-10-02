@@ -24,28 +24,32 @@ class SearchIndexer
      */
     public function index(Collection $models, string $indexName)
     {
-        if (true === $models->isEmpty()) {
-            return false;
-        }
-        $this->checkAndCreateAlias($indexName, self::POSTFIX_WRITE);
-        $this->checkAndCreateAlias($indexName, self::POSTFIX_READ);
-        $params = ['body' => []];
-        $attribiteFiltering = new AttributeFiltering();
-        $filterName = 'filter'.(new \ReflectionClass($models->first()))->getShortName();
-        $typeIndex = get_class($models->first());
-        $indexNameWithPostfix = $indexName.self::POSTFIX_WRITE;
-        foreach ($models as $model) {
-            $params['body'][] = [
-                'index' => [
-                    '_index' => $indexNameWithPostfix,
-                    '_type' => $typeIndex,
-                    '_id' => $model->id,
-                ],
-            ];
-            $params['body'][] = $attribiteFiltering->$filterName($model);
-        }
+        try {
+            if (true === $models->isEmpty()) {
+                return false;
+            }
+            $this->checkAndCreateAlias($indexName, self::POSTFIX_WRITE);
+            $this->checkAndCreateAlias($indexName, self::POSTFIX_READ);
+            $params = ['body' => []];
+            $attribiteFiltering = new AttributeFiltering();
+            $filterName = 'filter'.(new \ReflectionClass($models->first()))->getShortName();
+            $typeIndex = get_class($models->first());
+            $indexNameWithPostfix = $indexName.self::POSTFIX_WRITE;
+            foreach ($models as $model) {
+                $params['body'][] = [
+                    'index' => [
+                        '_index' => $indexNameWithPostfix,
+                        '_type' => $typeIndex,
+                        '_id' => $model->id,
+                    ],
+                ];
+                $params['body'][] = $attribiteFiltering->$filterName($model);
+            }
 
-        \Elasticsearch::bulk($params);
+            \Elasticsearch::bulk($params);
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
+        }
     }
 
     /**
