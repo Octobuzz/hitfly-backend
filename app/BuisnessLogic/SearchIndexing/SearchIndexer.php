@@ -62,17 +62,21 @@ class SearchIndexer
      */
     public function deleteFromIndex(Collection $models, string $indexName)
     {
-        if (true === $models->isEmpty()) {
-            return false;
-        }
-        $indexNameWrite = $indexName.self::POSTFIX_WRITE;
-        $indexNameRead = $indexName.self::POSTFIX_READ;
-        foreach ($models as $model) {
-            $paramsRead = $this->getIndexParams($indexNameRead, $model);
-            $e = $this->deleteElement($paramsRead);
-            //удалим из из индекса WRITE
-            $paramsWrite = $this->getIndexParams($indexNameWrite, $model);
-            $e = $this->deleteElement($paramsWrite);
+        try {
+            if (true === $models->isEmpty()) {
+                return false;
+            }
+            $indexNameWrite = $indexName.self::POSTFIX_WRITE;
+            $indexNameRead = $indexName.self::POSTFIX_READ;
+            foreach ($models as $model) {
+                $paramsRead = $this->getIndexParams($indexNameRead, $model);
+                $e = $this->deleteElement($paramsRead);
+                //удалим из из индекса WRITE
+                $paramsWrite = $this->getIndexParams($indexNameWrite, $model);
+                $e = $this->deleteElement($paramsWrite);
+            }
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
         }
     }
 
