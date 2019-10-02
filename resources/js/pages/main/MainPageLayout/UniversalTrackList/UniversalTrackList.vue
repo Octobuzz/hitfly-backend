@@ -57,7 +57,6 @@ export default {
       required: true
     },
     forId: {
-      type: Number,
       required: false
     },
     shownTracksCount: {
