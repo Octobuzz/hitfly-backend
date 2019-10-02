@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;

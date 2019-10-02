@@ -34,6 +34,7 @@ class AlbumObserver
      * Handle the album "updated" event.
      *
      * @param Album $album
+     *
      * @throws ReflectionException
      */
     public function updated(Album $album)
@@ -46,6 +47,7 @@ class AlbumObserver
 
     /**
      * Handle the album "deleted" event.
+     *
      * @param Album $album
      */
     public function deleted(Album $album): void
