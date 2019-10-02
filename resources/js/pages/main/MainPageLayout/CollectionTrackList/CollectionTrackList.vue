@@ -243,6 +243,7 @@ export default {
           ]) => {
             this.playingTrack = playingTrack;
             this.playingTrackBelongsToCollection = inCollection;
+            console.log(this.playingTrack);
 
             this.$nextTick(() => {
               this.updateShownTrack();
