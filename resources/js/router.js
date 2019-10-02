@@ -411,7 +411,7 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: main.CollectionTrackList
+        component: profile.CollectionTrackList
       },
       {
         path: 'news/:newsId',
