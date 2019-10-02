@@ -5,11 +5,12 @@ namespace App\BuisnessLogic\SearchIndexing;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use ReflectionException;
 
 class SearchIndexer
 {
-    const POSTFIX_READ = '_read';
-    const POSTFIX_WRITE = '_write';
+    public const POSTFIX_READ = '_read';
+    public const POSTFIX_WRITE = '_write';
 
     /**
      * Индексация сущности.
@@ -18,6 +19,8 @@ class SearchIndexer
      * @param string     $indexName
      *
      * @return mixed
+     *
+     * @throws ReflectionException
      */
     public function index(Collection $models, string $indexName)
     {
@@ -51,7 +54,7 @@ class SearchIndexer
      * @param Collection $models
      * @param string     $indexName
      *
-     * @throws \ReflectionException
+     * @return bool
      */
     public function deleteFromIndex(Collection $models, string $indexName)
     {

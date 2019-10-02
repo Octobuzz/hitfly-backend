@@ -6,6 +6,8 @@ use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Models\Album;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use ReflectionException;
 
 class AlbumObserver
 {
@@ -21,14 +23,18 @@ class AlbumObserver
      */
     public function created(Album $album)
     {
-        $this->indexer->index(Collection::make([$album]), 'album');
+        try {
+            $this->indexer->index(Collection::make([$album]), 'album');
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
+        }
     }
 
     /**
      * Handle the album "updated" event.
      *
-     * @param Album         $album
-     * @param SearchIndexer $indexer
+     * @param Album $album
+     * @throws ReflectionException
      */
     public function updated(Album $album)
     {
@@ -40,10 +46,15 @@ class AlbumObserver
 
     /**
      * Handle the album "deleted" event.
+     * @param Album $album
      */
-    public function deleted(Album $album)
+    public function deleted(Album $album): void
     {
-        $this->indexer->deleteFromIndex(Collection::make([$album]), 'album');
+        try {
+            $this->indexer->deleteFromIndex(Collection::make([$album]), 'album');
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
+        }
     }
 
     /**
