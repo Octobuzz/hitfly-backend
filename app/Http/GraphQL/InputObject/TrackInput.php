@@ -57,6 +57,11 @@ class TrackInput extends GraphQLType
                 'type' => UploadType::getInstance(),
                 'rules' => ['nullable', 'max:6000', new UploadDocAndTxtFile()],
             ],
+            'singer' => [
+                'name' => 'singer',
+                'description' => 'На удаление, больше не использется',
+                'deprecationReason' => 'На удаление, больше не использется', //todo На удлание
+            ],
             'cover' => [
                 'name' => 'cover',
                 'description' => 'Обложка трека',
