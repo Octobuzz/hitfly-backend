@@ -36,7 +36,7 @@
             <div class="up-b-info__left">
               <a href="/policy" target="_blank" class="up-b-info__link">Пользовательское соглашение</a>
               <a href="/" class="up-b-info__link">Авторам</a>
-              <a href="/" class="up-b-info__link">Помощь</a>
+              <a href="/faq" class="up-b-info__link">Помощь</a>
             </div>
             <div class="up-b-info__right">
               <a href="/" class="up-b-info__link">Как  загрузить песню?</a>
