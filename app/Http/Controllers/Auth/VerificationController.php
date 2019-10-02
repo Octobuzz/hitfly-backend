@@ -54,14 +54,13 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
-
         $verifyUserId = $request->route('id');
 
         if ($request->user() && $request->user() != $request->route('id')) {
             Auth::logout();
         }
 
-        if (! $request->user()) {
+        if (!$request->user()) {
             Auth::loginUsingId($request->route('id'), true); //todo не удается получить пользоватея из ссылки(но перед верификацией ссылка проходит свою верификацию)
         }
 
