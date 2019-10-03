@@ -205,7 +205,8 @@ export default {
 
   computed: {
     currentPlaying() {
-      return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
+      // return this.currentType.type === 'collection' && this.currentType.id === this.collectionId && this.$store.getters['player/isPlaying'];
+      return this.playingTrackBelongsToCollection && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {
@@ -256,6 +257,7 @@ export default {
             id
           }
         });
+
         const playingTrackBelongsToCollectionQuery = this.$apollo.query({
           query: gql.query.TRACK_BELONGS_TO_COLLECTION,
           variables: {

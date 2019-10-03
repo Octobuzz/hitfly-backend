@@ -37,6 +37,10 @@
     font-size: 14px;
     color: $text_color_secondary;
     line-height: 22px;
+
+    & a {
+      color: $red_violet;
+    }
   }
 }
 .up-b-info{
