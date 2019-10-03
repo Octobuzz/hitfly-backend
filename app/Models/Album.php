@@ -119,7 +119,11 @@ class Album extends Model
 
     public function getUser(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->user();
+    }
+    public function getMusicGroup(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
+    {
+        return $this->musicGroup();
     }
 
     public function userFavourite()
@@ -172,8 +176,8 @@ class Album extends Model
 
     public function getAuthor(): ?string
     {
-        if (null !== $this->musicGroup) {
-            return $this->musicGroup->name;
+        if (null !== $this->getMusicGroup) {
+            return $this->getMusicGroup->name;
         }
         if (null !== $this->getUser) {
             return $this->getUser->username;
