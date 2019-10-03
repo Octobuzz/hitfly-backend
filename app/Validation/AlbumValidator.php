@@ -49,7 +49,7 @@ class AlbumValidator extends Validator
             throw new \Exception('Такого трека не существует.');
         }
         /** @var Track $track */
-        if ($user->id === $album->user_id && $user->id === $track->user_id && $track->album_id === $data['albumId']) {
+        if ($user->id === $album->user_id && $user->id === $track->user_id && $track->album_id === $album->id) {
             return true;
         }
 

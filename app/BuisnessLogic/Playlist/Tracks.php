@@ -36,8 +36,8 @@ class Tracks implements TracksContract
                     'position' => $position + 1, //реальное место в плейлисте
                     'track_name' => $track->track_name,
                     'singer' => $track->singer,
-                    'album_img' => env('APP_URL').$track->getImageUrl(),
-                    'link' => env('APP_URL').'/top50', //todo реальный урл(пока неизвестно куда должна идти ссылка)
+                    'album_img' => config('app.url').$track->getImageUrl(),
+                    'link' => config('app.url').'/top50', //todo реальный урл(пока неизвестно куда должна идти ссылка)
                     'track_time' => '3:54', //todo получение времени трека
                     'user' => $track->user,
                 ];
@@ -56,7 +56,7 @@ class Tracks implements TracksContract
             $trackList[] = [
                 'track_name' => $track->track_name,
                 'singer' => $track->singer,
-                'album_img' => env('APP_URL').$track->getImageUrl(),
+                'album_img' => config('app.url').$track->getImageUrl(),
                 'link' => 'url', //todo реальный урл(пока неизвестно куда должна идти ссылка)
 //                'track_time' => '3:54', //todo получение времени трека
             ];

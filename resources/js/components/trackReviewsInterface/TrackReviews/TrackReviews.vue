@@ -24,6 +24,7 @@
           class="track-list-reviews-entry__track-review"
           :reviewer-id="review.user.id"
           :reviewer="review.user.username || 'Anonymous'"
+          :reviewer-roles="review.user.roles.map(role => role.slug)"
           :reviewer-avatar="
             review.user.avatar.filter(
               avatar => avatar.size === 'size_56x56'
