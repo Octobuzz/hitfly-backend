@@ -197,8 +197,7 @@ export default {
 
   computed: {
     currentPlaying() {
-      // return this.currentType.type === 'album' && this.currentType.id === this.albumId && this.$store.getters['player/isPlaying'];
-      return this.playingTrackBelongsToCollection && this.$store.getters['player/isPlaying'];
+      return this.$store.getters['player/getCurrentType'].type === 'album' && this.$store.getters['player/getCurrentType'].id === this.albumId && this.$store.getters['player/isPlaying'];
     },
     currentType() {
       return this.$store.getters['player/getCurrentType'];
