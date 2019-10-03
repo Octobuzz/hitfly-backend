@@ -25,13 +25,29 @@
                             <img class="s-genre-item__img" src="{{$genre->image}}" alt="{{$genre->name}}">
                             <span class="s-genre-item__text">{{$genre->name}}</span>
                         </label>
+                        <a href=".genre-selection" data-id="{{$genre->id}}" class="genre-selection-form s-genre-item__subgenres-link">Выбрать поджанры</a>
                     </div>
                     @endforeach
                 @endif
-
             </form>
         </div>
 
     </main>
+
+    <div class="genre-selection loading mfp-hide white-popup-block">
+      <div class="loader">
+        loading...
+      </div>
+      <div class="genre-selection__body">
+        <h2 class="genresForm__header"></h2>
+        <hr>
+        <ul class="genresForm__list">
+        </ul>
+        <div class="genresForm__footer">
+          <a href="javascript: void(0)" class="button gradient genres-deselect">Очистить</a>
+          <a href="javascript: void(0)" class="button gradient invert genres-select">Сохранить</a>
+        </div>
+      </div>
+    </div>
 
 @endsection

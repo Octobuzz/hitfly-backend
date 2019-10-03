@@ -194,10 +194,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit,136px);
   grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-row-gap: 32px;
   padding: 16px;
 }
 .s-genre-item{
+  position: relative;
+
   &__input{
     opacity: 0;
     position: absolute;
@@ -239,6 +241,22 @@
     font-family: $font_bold;
     margin-top: 8px;
     text-align: center;
+  }
+
+  &__subgenres-link{
+    display: none;
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    line-height: 14px;
+    color: #B36FCB;
+
+    &:hover{
+      color: #8181E2;
+    }
   }
 }
 .s-genre-side{
