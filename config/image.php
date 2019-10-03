@@ -80,20 +80,20 @@ return [
         ],
         'album' => [
             'default' => [
-                'width' => 120,
-                'height' => 120,
+                'width' => 880,
+                'height' => 800,
             ],
         ],
         'collection' => [
             'default' => [
-                'width' => 214,
-                'height' => 160,
+                'width' => 642,
+                'height' => 380,
             ],
         ],
         'music_group' => [
             'default' => [
-                'width' => 235,
-                'height' => 235,
+                'width' => 705,
+                'height' => 705,
             ],
         ],
     ],
