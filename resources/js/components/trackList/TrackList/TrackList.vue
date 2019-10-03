@@ -126,10 +126,9 @@ export default {
             id
           },
           query: gql.query.QUEUE_TRACK
-        })
-        .then(response => {
+        }).then(response => {
           let data = {};
-          if(this.forType && this.forType.length > 0){
+          if(this.forType !== undefined){
             data = {
               'type': this.forType,
               'id': this.forId
@@ -138,15 +137,14 @@ export default {
           this.$store.commit('player/changeCurrentType', data);
           this.$store.commit('player/pickTrack', response.data.track);
           this.$store.commit('player/pickPlaylist', this.trackIdList);
-        })
-        .catch(error => {
+        }).catch(error => {
           console.dir(error)
         })
       }else{
         this.$store.commit('player/togglePlaying');
       }
     }
-  }
+  },
 };
 </script>
 

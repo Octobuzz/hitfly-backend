@@ -187,7 +187,7 @@ export default {
     },
 
     currentPlaying() {
-      return this.currentType.type === 'collection' && this.currentType.id === this.currentCollectionPath && this.$store.getters['player/isPlaying'];
+      return this.$store.getters['player/getCurrentType'].id === 'collection' && this.$store.getters['player/getCurrentType'].type === this.currentCollectionPath && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {
