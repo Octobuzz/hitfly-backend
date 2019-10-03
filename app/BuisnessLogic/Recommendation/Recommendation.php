@@ -22,14 +22,14 @@ class Recommendation implements RecommendationList
                 'name' => 'Название плейлиста',
                 'date' => '7 декабря',
                 'count_tracks' => '256 '.DateHelpers::getNumEnding(256, ['трек', 'трека', 'треков']),
-                'list_img' => env('APP_URL').'/images/emails/img/new-year-playlist.png',
+                'list_img' => config('app.url').'/images/emails/img/new-year-playlist.png',
                 'link' => '/url',
             ],
             [
                 'name' => 'Плейлист 2',
                 'date' => '7 декабря',
                 'count_tracks' => '101 '.DateHelpers::getNumEnding(101, ['трек', 'трека', 'треков']),
-                'list_img' => env('APP_URL').'/images/emails/img/new-year-playlist.png',
+                'list_img' => config('app.url').'/images/emails/img/new-year-playlist.png',
                 'link' => '/url',
             ],
         ];

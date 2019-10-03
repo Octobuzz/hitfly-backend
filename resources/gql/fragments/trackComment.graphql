@@ -11,5 +11,8 @@ fragment trackComment on CommentTrack {
             size
             url
         }
+        roles {
+            slug
+        }
     }
 }

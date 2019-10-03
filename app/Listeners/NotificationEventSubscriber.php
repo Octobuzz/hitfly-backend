@@ -185,7 +185,7 @@ class NotificationEventSubscriber
             $messageNotify = new BaseNotifyMessage('new-music', $messageData);
             $users = $this->notification->getWatchingUsers($user->id);
             foreach ($users as $user) {
-                $user->notify($messageNotify);
+                $user->notify(new BaseNotification($messageNotify));
             }
 
             $this->notification->newFavouriteTrackNotification($track);
@@ -218,7 +218,7 @@ class NotificationEventSubscriber
         $messageNotify = new BaseNotifyMessage('new-music', $messageData);
         $users = $this->notification->getWatchingUsers($user->id);
         foreach ($users as $user) {
-            $user->notify($messageNotify);
+            $user->notify(new BaseNotification($messageNotify));
         }
         $this->notification->newFavouriteTrackNotification($album);
     }
@@ -245,7 +245,7 @@ class NotificationEventSubscriber
         $messageNotify = new BaseNotifyMessage('new-music', $messageData);
         $users = $this->notification->getWatchingUsers($user->id);
         foreach ($users as $user) {
-            $user->notify($messageNotify);
+            $user->notify(new BaseNotification($messageNotify));
         }
     }
 

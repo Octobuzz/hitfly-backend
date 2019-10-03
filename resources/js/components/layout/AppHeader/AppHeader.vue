@@ -43,6 +43,8 @@
 
       <a
         href="http://2rockmusic.com"
+        target="_blank"
+        rel="noopener noreferrer"
         :class="[
           'button',
           'head-nav-item'

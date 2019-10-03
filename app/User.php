@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Dictionaries\RoleDictionary;
 use App\Models\Album;
 use App\Models\ArtistProfile;
 use App\Models\City;

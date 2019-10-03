@@ -25,13 +25,13 @@ class Event implements EventsContract
         return [
 //            [
 //                'name' => 'Название',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/event/url',
 //                'participant' => 'The Beatles',
 //            ],
 //            [
 //                'name' => 'Название',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/event/url',
 //                'participant' => 'The Beatles',
 //            ],
@@ -51,17 +51,17 @@ class Event implements EventsContract
         return [
 //            [
 //                'name' => 'Название',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/fake_url',
 //            ],
 //            [
 //                'name' => 'Название2',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/fake_url',
 //            ],
 //            [
 //                'name' => 'Название3',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/fake_url',
 //            ],
         ];
@@ -95,7 +95,7 @@ class Event implements EventsContract
         // TODO: Implement getEventById() method.
         return[
             'name' => 'Название',
-            'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+            'img' => config('app.url').'/images/emails/img/disco-min.png',
             'url' => '/fake_url',
         ];
     }
@@ -111,17 +111,17 @@ class Event implements EventsContract
         return [
 //            [
 //                'name' => 'Название',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/fake_url',
 //            ],
 //            [
 //                'name' => 'Название2',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/fake_url',
 //            ],
 //            [
 //                'name' => 'Название3',
-//                'img' => env('APP_URL').'/images/emails/img/disco-min.png',
+//                'img' => config('app.url').'/images/emails/img/disco-min.png',
 //                'url' => '/fake_url',
 //            ],
         ];
@@ -140,7 +140,7 @@ class Event implements EventsContract
         return [
 //            [
 //                'name' => 'Битва музыкантов',
-//                'img' => env('APP_URL').'/images/emails/img/music-battle.png',
+//                'img' => config('app.url').'/images/emails/img/music-battle.png',
 //                'url' => '/fake_url',
 //            ],
         ];
