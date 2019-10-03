@@ -75,6 +75,7 @@
         </template>
 
         <AlbumPopover
+          v-if="isAuthenticated"
           :album-id="albumId"
           @press-favourite="onPressFavourite"
         >
@@ -99,7 +100,7 @@
         </span>
       </router-link>
       <span class="album-preview__author album-preview__author_no-highlight">
-        author {{ album.author }}
+        {{ album.author }}
       </span>
     </div>
   </div>

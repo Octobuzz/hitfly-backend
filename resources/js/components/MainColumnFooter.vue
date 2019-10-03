@@ -3,9 +3,9 @@
     <div class="footerSection__links">
       <a href="/policy" target="_blank">Пользовательское соглашение</a>
       <a href="javascript: void(0)">Авторам</a>
-      <a href="javascript: void(0)">Помощь</a>
+      <a href="/faq">Помощь</a>
     </div>
-    <a href="https://zebrains.team/">Сделано в ZeBrains</a>
+    <a href="https://zebrains.team/" target="_blank">Сделано в ZeBrains</a>
   </section>
 </template>
 <script>
@@ -37,9 +37,12 @@
       }
     }
 
-    & .footerSection__links {
-      & a {
-        margin-right: 20px;
+    & a {
+      margin-right: 20px;
+      transition: .3s all ease;
+
+      &:hover {
+        color: $link_color_active;
       }
     }
   }

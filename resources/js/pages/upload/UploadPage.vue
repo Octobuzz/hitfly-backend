@@ -30,13 +30,13 @@
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
-              Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <a href="/">Условиям использования</a>, и вы не нарушаете авторские права.
+              Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <a href="/policy" target="_blank">Условиям использования</a>, и вы не нарушаете авторские права.
           </p>
           <div class="up-b-info">
             <div class="up-b-info__left">
               <a href="/policy" target="_blank" class="up-b-info__link">Пользовательское соглашение</a>
               <a href="/" class="up-b-info__link">Авторам</a>
-              <a href="/" class="up-b-info__link">Помощь</a>
+              <a href="/faq" class="up-b-info__link">Помощь</a>
             </div>
             <div class="up-b-info__right">
               <a href="/" class="up-b-info__link">Как  загрузить песню?</a>

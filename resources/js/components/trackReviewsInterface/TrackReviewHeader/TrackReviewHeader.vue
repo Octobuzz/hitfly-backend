@@ -64,6 +64,7 @@
       </UnauthenticatedPopoverWrapper>
 
       <TrackActionsPopover
+        v-if="isAuthenticated"
         :product-id="productId"
         :track-id="trackId"
         :show-remove-option="false"

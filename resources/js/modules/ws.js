@@ -1,11 +1,9 @@
 import Sockette from './sockette-fork';
 
 function createWs(connHandlers) {
-  // TODO: manage host
-
   const host = process.env.NODE_ENV === 'development'
     ? 'ws://localhost:2346'
-    : 'wss://digico.itech-test.ru/ws/';
+    : `wss://${window.location.host}/ws/`;
 
   return new Sockette(host, {
     timeout: 2 * 6e4, // 2 min

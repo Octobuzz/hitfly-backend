@@ -113,6 +113,10 @@ const routes = [
         component: profile.EditUser
       },
       {
+        path: 'create/album',
+        component: profile.CreateNewAlbum
+      },
+      {
         path: 'edit/playlist/:collectionId',
         component: profile.EditCollection
       },
@@ -407,7 +411,7 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: main.CollectionTrackList
+        component: profile.CollectionTrackList
       },
       {
         path: 'news/:newsId',
@@ -415,8 +419,16 @@ const routes = [
         props: true
       },
       {
+        path: 'reviews',
+        component: main.MainPageReviews
+      },
+      {
         path: 'bonus-program',
         component: profile.BonusProgram
+      },
+      {
+        path: 'faq',
+        component: FaqPage
       },
       {
         path: '',
@@ -427,10 +439,6 @@ const routes = [
   {
     path: '/about',
     component: AboutPage
-  },
-  {
-    path: '/faq',
-    component: FaqPage
   },
   {
     path: '*',

@@ -96,6 +96,7 @@
           Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим
           <router-link
             to="/policy"
+            target="_blank"
             class="about__link about__link_highlighted"
           >
             Условиям использования
@@ -110,9 +111,9 @@
           <span class="about__footer-left-option about__link">
             Авторам
           </span>
-          <span class="about__footer-left-option about__link">
+          <a href="/faq" class="about__footer-left-option about__link">
             Помощь
-          </span>
+          </a>
 
           <span class="about__footer-right-option about__link">
             Как загрузить песню?

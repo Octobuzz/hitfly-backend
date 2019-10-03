@@ -37,7 +37,8 @@ class FavouriteTrackQuery extends Query
         if (null === $user) {
             return null;
         }
-        $query = Favourite::with($fields->getRelations());
+//        $query = Favourite::with($fields->getRelations());
+        $query = Favourite::query();
         $query->select($fields->getSelect());
         $query->where('favourites.favouriteable_type', '=', Track::class);
         if (isset($args['trackId'])) {

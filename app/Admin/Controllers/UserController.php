@@ -8,6 +8,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Dictionaries\RoleDictionary;
 use App\Models\ArtistProfile;
 use App\Models\City;
 use App\Models\Genre;
@@ -237,8 +238,8 @@ class UserController extends \Encore\Admin\Controllers\UserController
 
             $savingUser->roles()->sync(array_filter($form->roles));
             if (
-                true === $savingUser->isRole(User::ROLE_STAR)
-                || $savingUser->isRole(User::ROLE_PERFORMER)
+                true === $savingUser->isRole(RoleDictionary::ROLE_STAR)
+                || $savingUser->isRole(RoleDictionary::ROLE_PERFORMER)
                 ) {
                 $profile = $form->artist_profile;
                 if (null == $profile) {
@@ -276,7 +277,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
             $user->save();
 
             $user->load('roles');
-            if (true === $user->isRole(User::ROLE_STAR) || $user->isRole(User::ROLE_PERFORMER)) {
+            if (true === $user->isRole(RoleDictionary::ROLE_STAR) || $user->isRole(RoleDictionary::ROLE_PERFORMER)) {
                 $artistProfile = new ArtistProfile(['user_id' => $user->id]);
                 $artistProfile->save();
             }
