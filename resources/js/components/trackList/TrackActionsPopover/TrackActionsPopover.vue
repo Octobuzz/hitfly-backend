@@ -67,23 +67,23 @@
           >
         </template>
 
-        <span
-          class="track-actions-popover__menu-item"
-        >
-          <span class="track-actions-popover__menu-item-icon">
-            <PlayNextIcon />
-          </span>
-          Слушать далее
-        </span>
-        <span class="track-actions-popover__menu-item">
-          <!--TODO: removing from queue should be available instead-->
-          <!--of this under corresponding conditions-->
+<!--        <span-->
+<!--          class="track-actions-popover__menu-item"-->
+<!--        >-->
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <PlayNextIcon />-->
+<!--          </span>-->
+<!--          Слушать далее-->
+<!--        </span>-->
+<!--        <span class="track-actions-popover__menu-item">-->
+<!--          &lt;!&ndash;TODO: removing from queue should be available instead&ndash;&gt;-->
+<!--          &lt;!&ndash;of this under corresponding conditions&ndash;&gt;-->
 
-          <span class="track-actions-popover__menu-item-icon">
-            <ListPlusIcon />
-          </span>
-          Добавить в список воспроизведения
-        </span>
+<!--          <span class="track-actions-popover__menu-item-icon">-->
+<!--            <ListPlusIcon />-->
+<!--          </span>-->
+<!--          Добавить в список воспроизведения-->
+<!--        </span>-->
         <span
           v-if="isAuthenticated && !isStar"
           class="track-actions-popover__menu-item"
@@ -139,7 +139,7 @@
           <span class="track-actions-popover__menu-item-icon">
             <CrossIcon />
           </span>
-          Удалить песню из текущего альбома/плейлиста
+          {{ removeOptionText }}
         </span>
       </div>
 
@@ -316,9 +316,30 @@ export default {
       return this.$store.getters['profile/roles']('star');
     },
 
+    inMyAlbum() {
+      return this.$route.name === routeNames.profile.MY_MUSIC_ALBUM;
+    },
+
+    inMyPlaylist() {
+      return this.$route.name === routeNames.profile.MY_MUSIC_PLAYLIST;
+    },
+
     inMyAlbumOrPlaylist() {
-      return this.$route.name === routeNames.profile.MY_MUSIC_ALBUM
-        || this.$route.name === routeNames.profile.MY_MUSIC_PLAYLIST;
+      return this.inMyAlbum || this.inMyPlaylist;
+    },
+
+    removeOptionText() {
+      let entityInQuestion = 'списка';
+
+      if (this.inMyAlbum) {
+        entityInQuestion = 'альбома';
+      }
+
+      if (this.inMyPlaylist) {
+        entityInQuestion = 'плейлиста';
+      }
+
+      return `Удалить песню из текущего ${entityInQuestion}`;
     },
 
     ...mapGetters(['isAuthenticated', 'apolloClient'])

@@ -20,7 +20,7 @@
                             </tr>
                             {{--<tr>
                                 <td>
-                                    <a href="{{$topUrl}}" style="display: block; width: 208px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ env('APP_URL') }}/images/emails/icons/gradient-link.png');">ТОП-{{$topCount}}</a>
+                                    <a href="{{$topUrl}}" style="display: block; width: 208px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ config('app.url') }}/images/emails/icons/gradient-link.png');">ТОП-{{$topCount}}</a>
                                 </td>
                             </tr>--}}
                             </tbody>

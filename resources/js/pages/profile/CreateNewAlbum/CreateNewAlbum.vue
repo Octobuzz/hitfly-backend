@@ -1,6 +1,9 @@
 <template>
   <div class="trackInfo">
-    <ReturnHeader />
+    <ReturnHeader class="create-album-return" />
+    <PageHeader class="create-album-header">
+      Создание альбома
+    </PageHeader>
     <div class="add-track-loading" v-if="isLoading">
       <SpinnerLoader />
     </div>
@@ -63,12 +66,13 @@
         :class="{disabled: isLoading}"
         @press="createAlbum"
       >
-        Сохранить изменения
+        Создать альбом
       </FormButton>
     </div>
   </div>
 </template>
 <script>
+  import PageHeader from 'components/PageHeader.vue';
   import SpinnerLoader from 'components/SpinnerLoader.vue';
   import FormButton from 'components/FormButton.vue';
   import BaseDropdown from 'components/BaseDropdown.vue';
@@ -223,7 +227,8 @@
       NotepadIcon,
       ChooseYear,
       SpinnerLoader,
-      ReturnHeader
+      ReturnHeader,
+      PageHeader
     },
 
     apollo: {

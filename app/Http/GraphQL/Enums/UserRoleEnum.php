@@ -2,7 +2,7 @@
 
 namespace App\Http\GraphQL\Enums;
 
-use App\User;
+use App\Dictionaries\RoleDictionary;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class UserRoleEnum extends GraphQLType
@@ -13,9 +13,9 @@ class UserRoleEnum extends GraphQLType
         'name' => 'UserRoleEnum',
         'description' => 'Типы ролй пользователя',
         'values' => [
-            User::ROLE_STAR => User::ROLE_STAR,
-            User::ROLE_PROF_CRITIC => User::ROLE_PROF_CRITIC,
-            User::ROLE_CRITIC => User::ROLE_CRITIC,
+            RoleDictionary::ROLE_STAR => RoleDictionary::ROLE_STAR,
+            RoleDictionary::ROLE_PROF_CRITIC => RoleDictionary::ROLE_PROF_CRITIC,
+            RoleDictionary::ROLE_CRITIC => RoleDictionary::ROLE_CRITIC,
         ],
     ];
 }

@@ -33,6 +33,14 @@ class GenreType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'Логотип жанра',
             ],
+            'haveSubGenres' => [
+                'type' => Type::boolean(),
+                'description' => 'Есть вложенные жанры',
+                'resolve' => function ($model) {
+                    return $model->children()->count();
+                },
+                'selectable' => false,
+            ],
             'userFavourite' => [
                 'type' => Type::boolean(),
                 'description' => 'флаг избранного жанра',

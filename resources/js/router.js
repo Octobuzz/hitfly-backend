@@ -411,7 +411,7 @@ const routes = [
       },
       {
         path: 'playlist/:playlistId',
-        component: main.CollectionTrackList
+        component: profile.CollectionTrackList
       },
       {
         path: 'news/:newsId',
@@ -427,6 +427,10 @@ const routes = [
         component: profile.BonusProgram
       },
       {
+        path: 'faq',
+        component: FaqPage
+      },
+      {
         path: '',
         redirect: { name: 'main' }
       }
@@ -435,10 +439,6 @@ const routes = [
   {
     path: '/about',
     component: AboutPage
-  },
-  {
-    path: '/faq',
-    component: FaqPage
   },
   {
     path: '*',
