@@ -41,8 +41,13 @@ $('.genre-selection-form').magnificPopup({
               checkboxes.each(function(i, elem) {
                 $(elem).prop('checked', true);
               });
+              let checked = $('.genresForm__list input:checked');
+              checked.each(function(i, elem) {
+                $('input[id="id' + genreId + '"]').parent().append('<input name="genres[]" value="' + $(elem).attr('value') + '" hidden type="checkbox">');
+              });
               $('input[id="id' + genreId + '"]').parent().addClass('is-initialized');
             } else {
+              console.log('has class');
               let checkboxes = $('input[id="id' + genreId + '"]').siblings('input[hidden]');
               checkboxes.each(function(i, elem) {
                 $('.genresForm__list input:checkbox[value="' + $(elem).attr('value') + '"]').prop('checked', true);
@@ -70,7 +75,11 @@ $('.genre-selection-form').magnificPopup({
 			} else {
 				this.st.focus = '#name';
 			}
-		}
+		},
+    close: function() {
+      $('.genresForm__list').empty();
+      $('.genre-selection').addClass('loading');
+    }
 	}
 });
 
