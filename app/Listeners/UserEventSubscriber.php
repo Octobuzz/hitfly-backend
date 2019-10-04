@@ -98,7 +98,7 @@ class UserEventSubscriber
     public function belongsToManyAttachingRoles(AttachingRolesEvent $attachingRolesEvent): void
     {
         try {
-            $roles = Role::query()->whereIn('id', $attachingRolesEvent->getIds())->get();
+            $roles = \App\Models\Role::query()->whereIn('id', $attachingRolesEvent->getIds())->get();
             $user = $attachingRolesEvent->getUser();
             $userRoles = $user->roles;
             if ($userRoles->isEmpty()) {
@@ -133,7 +133,7 @@ class UserEventSubscriber
     {
         try {
             $user = $detachingRolesEvent->getUser();
-            $roles = Role::query()->whereIn('id', $detachingRolesEvent->getIds())->get();
+            $roles = \App\Models\Role::query()->whereIn('id', $detachingRolesEvent->getIds())->get();
             $minRolesDetach = $roles;
             if (count($roles) > 1) {
                 $sortUserRoles = $roles->sort(function ($roleA, $roleB) {
