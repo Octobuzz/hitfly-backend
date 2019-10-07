@@ -78,8 +78,7 @@ class UserEventSubscriber
     public function uploadFirstTrack(Track $track)
     {
         /** @var User $user */
-        $user = $track->user;
-
+        $user = User::query()->find($track->user_id);//$track->user возвращает null, так как трек еще не сохранен на данный момент(неопубликован)
         if (false === $user->isRole(RoleDictionary::ROLE_PERFORMER)) {
             $user->roles()->save(Role::query()->where('slug', '=', RoleDictionary::ROLE_PERFORMER)->first());
             //создаем профиль артиста
