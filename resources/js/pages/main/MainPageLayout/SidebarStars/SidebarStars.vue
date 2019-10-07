@@ -3,7 +3,7 @@
     <div class="asideBlock__header">
       <h2 class="h2">Звёздные эксперты</h2>
       <p>Комментарии наших критиков</p>
-      <router-link to="/" class="asideBlock__button">Все</router-link>
+      <router-link to="/reviews" class="asideBlock__button">Все</router-link>
     </div>
     <div class="asideBlock__body">
       <div

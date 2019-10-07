@@ -42,6 +42,9 @@ const getFilters = (vm) => {
       filters.musicGroupId = forId;
       break;
 
+    case 'tracks':
+      break;
+
     default:
       throw new Error(
         `Incorrect value for property "forType" passed to TrackListReviewsContainer: ${forType}`

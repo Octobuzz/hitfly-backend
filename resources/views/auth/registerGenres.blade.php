@@ -36,7 +36,7 @@
 
     <div class="genre-selection loading mfp-hide white-popup-block">
       <div class="loader">
-        loading...
+        Жанры загружаются...
       </div>
       <div class="genre-selection__body">
         <h2 class="genresForm__header"></h2>
