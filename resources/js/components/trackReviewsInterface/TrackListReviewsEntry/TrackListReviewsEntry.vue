@@ -33,7 +33,7 @@
       />
 
       <router-link
-        v-if="track.comments.length > 3"
+        v-if="track.comments.length > 0"
         :to="trackReviewsLink"
         class="track-list-reviews-entry__more-reviews-button"
       >
@@ -85,8 +85,11 @@ export default {
   computed: {
     trackReviewsLink() {
       const prefix = this.$route.fullPath.split('/').slice(0, -1).join('/');
-
-      return `${prefix}/reviews/${this.trackId}`;
+      if(prefix.length === 0) {
+        return `user/${this.track.user.id}/reviews/${this.trackId}`;
+      } else {
+        return `${prefix}/reviews/${this.trackId}`;
+      }
     },
 
     ...mapGetters(['apolloClient'])
