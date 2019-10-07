@@ -33,7 +33,7 @@
       />
 
       <router-link
-        v-if="track.comments.length > 0"
+        v-if="track.comments.length > 3"
         :to="trackReviewsLink"
         class="track-list-reviews-entry__more-reviews-button"
       >
