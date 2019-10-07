@@ -10,11 +10,12 @@ export const reviewFilterType = val => [
   'user-track-list',
   'commented-by-user-track-list',
   'music-group-track-list',
-  'track'
+  'track',
+  'tracks'
 ].includes(val);
 
 export const reviewFilterId = val => (
-  val === 'me' || typeof val === 'number'
+  val === 'me' || val === 'main' || typeof val === 'number'
 );
 
 export const commentPeriod = val => (

@@ -19,12 +19,12 @@ $('.genre-selection-form').magnificPopup({
 		beforeOpen: function() {
       $.ajax({
         method: "POST",
-        url: "http://localhost:9090/graphql",
+        url: "/graphql",
         contentType: "application/json",
         complete: function(data) {
           let checkboxes = $('.genre-selection ul li');
           if(data.fail.length > 0) {
-            console.log('ошибка');
+            console.log(error);
           } else if(data.responseJSON.data.genres.data.length === 0) {
             $('.genre-selection ul').append('<li>Список поджанров пуст</li>');
             $('.genre-selection').removeClass('loading');
@@ -47,7 +47,6 @@ $('.genre-selection-form').magnificPopup({
               });
               $('input[id="id' + genreId + '"]').parent().addClass('is-initialized');
             } else {
-              console.log('has class');
               let checkboxes = $('input[id="id' + genreId + '"]').siblings('input[hidden]');
               checkboxes.each(function(i, elem) {
                 $('.genresForm__list input:checkbox[value="' + $(elem).attr('value') + '"]').prop('checked', true);
