@@ -8,6 +8,9 @@ query TrackListReviewsEntry_track(
         id
         trackName
         singer
+        user {
+          id
+        }
         comments(commentPeriod: $commentedInPeriod) {
             ...trackComment
         }
