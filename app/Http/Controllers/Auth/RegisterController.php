@@ -129,6 +129,7 @@ class RegisterController extends Controller
 
     public function showGenreForm()
     {
+        /* @var Genre $genres */
         $genres = Genre::query()->whereIsRoot()->get();
 
         return view('auth.registerGenres', ['genres' => $genres]);
