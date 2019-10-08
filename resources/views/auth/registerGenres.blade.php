@@ -25,7 +25,9 @@
                             <img class="s-genre-item__img" src="{{$genre->image}}" alt="{{$genre->name}}">
                             <span class="s-genre-item__text">{{$genre->name}}</span>
                         </label>
-                        <a href=".genre-selection" data-id="{{$genre->id}}" class="genre-selection-form s-genre-item__subgenres-link">Выбрать поджанры</a>
+                        @if($genre->children()->count() > 0)
+                            <a href=".genre-selection" data-id="{{$genre->id}}" class="genre-selection-form s-genre-item__subgenres-link">Выбрать поджанры</a>
+                        @endif
                     </div>
                     @endforeach
                 @endif
