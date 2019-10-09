@@ -71,9 +71,8 @@ class PictureField extends Field
                 break;
         }
 
-        $keyCache = md5($this->model->id.json_encode($args));
-        $cacheValue = Cache::get($keyCache, null);
-
+        $keyCache = md5(serialize($root).serialize($args));
+        $cacheValue = Cache::tags([$class.$root->id])->get($keyCache, null);
         if (null !== $cacheValue) {
             return $cacheValue;
         }
