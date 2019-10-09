@@ -2,8 +2,8 @@
   <div class="asideBlock">
     <div class="asideBlock__header">
       <h2 class="h2">Сейчас слушают</h2>
-      <p v-show="!isLoading">{{ currentlyListening }} человек слушают эти песни</p>
-      <router-link to="listening_now" class="asideBlock__button">Все</router-link>
+      <p v-show="!isLoading && !noData">{{ currentlyListening }} человек слушают эти песни</p>
+      <router-link v-show="!isLoading && !noData" to="listening_now" class="asideBlock__button">Все</router-link>
     </div>
     <div class="asideBlock__body" style="max-height: 168px; overflow: hidden;">
       <div
@@ -12,17 +12,21 @@
       >
         <SpinnerLoader />
       </div>
-      <TrackList
-        v-if="tracks.length > 0"
-        for-type="collection"
-        for-id="listening_now"
-        :track-id-list="tracks.map(track => track.id)"
-        :showTableHeader="false"
-        :showRemoveButton="false"
-        :showAddToPlayList="false"
-        :columnLayout="true"
-      >
-      </TrackList>
+      <template v-if="!noData">
+        <TrackList
+          for-type="collection"
+          for-id="listening_now"
+          :track-id-list="tracks.map(track => track.id)"
+          :showTableHeader="false"
+          :showRemoveButton="false"
+          :showAddToPlayList="false"
+          :columnLayout="true"
+        >
+        </TrackList>
+      </template>
+      <template v-else>
+        <p>В данной категории нет песен</p>
+      </template>
     </div>
   </div>
 </template>
@@ -36,6 +40,7 @@ import { mapGetters } from 'vuex';
     data: () => ({
       isLoading: true,
       tracks: [],
+      noData: false,
       currentlyListening: Number
     }),
     components: {
@@ -56,8 +61,13 @@ import { mapGetters } from 'vuex';
             pageNumber: 1
           },
           update(data) {
-            this.tracks = data.GetListenedNow.data;
-            this.isLoading = false;
+            if(data.GetListenedNow !== null && data.GetListenedNow.data.length !== 0) {
+              this.tracks = data.GetListenedNow.data;
+              this.isLoading = false;
+            } else {
+              this.noData = true;
+              this.isLoading = false;
+            }
           }
         }
       },

@@ -78,8 +78,7 @@ class UserEventSubscriber
     public function uploadFirstTrack(Track $track)
     {
         /** @var User $user */
-        $user = $track->user;
-
+        $user = User::query()->find($track->user_id);//$track->user возвращает null, так как трек еще не сохранен на данный момент(неопубликован)
         if (false === $user->isRole(RoleDictionary::ROLE_PERFORMER)) {
             $user->roles()->save(Role::query()->where('slug', '=', RoleDictionary::ROLE_PERFORMER)->first());
             //создаем профиль артиста
@@ -98,7 +97,7 @@ class UserEventSubscriber
     public function belongsToManyAttachingRoles(AttachingRolesEvent $attachingRolesEvent): void
     {
         try {
-            $roles = Role::query()->whereIn('id', $attachingRolesEvent->getIds())->get();
+            $roles = \App\Models\Role::query()->whereIn('id', $attachingRolesEvent->getIds())->get();
             $user = $attachingRolesEvent->getUser();
             $userRoles = $user->roles;
             if ($userRoles->isEmpty()) {
@@ -133,7 +132,7 @@ class UserEventSubscriber
     {
         try {
             $user = $detachingRolesEvent->getUser();
-            $roles = Role::query()->whereIn('id', $detachingRolesEvent->getIds())->get();
+            $roles = \App\Models\Role::query()->whereIn('id', $detachingRolesEvent->getIds())->get();
             $minRolesDetach = $roles;
             if (count($roles) > 1) {
                 $sortUserRoles = $roles->sort(function ($roleA, $roleB) {

@@ -54,7 +54,11 @@ class TrackType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'Испольнитель',
                 'resolve' => function ($model) {
-                    return $model->getAuthor();
+                    $singer = $model->getAuthor();
+                    if(strtolower($singer) === 'admin'){
+                        $singer = '';
+                    }
+                    return $singer;
                 },
             ],
             'trackDate' => [

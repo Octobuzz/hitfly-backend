@@ -41,13 +41,11 @@ class AddInCollectionMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $tracks = Track::query()->whereIn('id', $args['tracksId'])->get();
+        $tracks = Track::query()->whereIn('id', $args['tracksId'])->pluck('id');
         /** @var Collection $collection */
         $collection = Collection::query()->find($args['collectionId']);
 
-        foreach ($tracks as $track) {
-            $collection->tracks()->attach($track);
-        }
+        $collection->tracks()->syncWithoutDetaching($tracks);
 
         return $collection;
     }

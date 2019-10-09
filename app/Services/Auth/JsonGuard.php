@@ -127,7 +127,7 @@ class JsonGuard implements Guard
             $token = $this->request->cookies->get(self::HEADER_NAME_TOKEN);
         }
 
-        return is_bool($token) ? null : $token;
+        return empty($token) ? null : $token;
     }
 
     public function login(User $user)

@@ -11,6 +11,8 @@ try {
 
   require('bootstrap');
   require('./jquery/auth-page');
+  require('./jquery/jquery.magnific-popup.min.js');
+  require('./jquery/genres-page');
   require('./jquery/side-menu');
 } catch (e) {console.log('error')}
 

@@ -129,7 +129,8 @@ class RegisterController extends Controller
 
     public function showGenreForm()
     {
-        $genres = Genre::all();
+        /* @var Genre $genres */
+        $genres = Genre::query()->whereIsRoot()->get();
 
         return view('auth.registerGenres', ['genres' => $genres]);
     }
@@ -143,8 +144,10 @@ class RegisterController extends Controller
     {
         $genres = $request->all();
         if (isset($genres['genres']) && null !== $genres['genres']) {
-            $user = Auth::user();
-            $user->favouriteGenres()->sync($genres['genres']);
+            $user = Auth::guard('json')->user();
+            if($user !== null) {
+                $user->favouriteGenres()->sync($genres['genres']);
+            }
         }
 
         return $this->registered($request, Auth::user())
