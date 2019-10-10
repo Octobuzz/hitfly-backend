@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>@if(empty($title) === false){{ $title }}@else Myhitfly @endif</title>
+    <title>@if(empty($title) === false){{ $title }}@else Hitfly @endif</title>
     @if(empty($description) === false)<meta name="description" content="{{ $description }}">@endif
 
     @if(\Auth::user() !== null)

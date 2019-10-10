@@ -504,7 +504,7 @@ const routes = [
         component: main.MainPageDefault,
         name: 'main',
         meta: {
-          title: 'Myhitfly'
+          title: 'Hitfly'
         }
       },
       {
