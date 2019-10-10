@@ -36,7 +36,7 @@ class GenresQuery extends Query
         $query = Genre::with($fields->getRelations())->select($fields->getSelect());
         if (false === empty($args['rootGenreId'])) {
             $query->descendantsOf($args['rootGenreId']);
-        }else{
+        } else {
             $query->whereIsRoot();
         }
 
