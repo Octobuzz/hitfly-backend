@@ -267,56 +267,56 @@ const routes = [
         path: 'favourite',
         component: profile.Favourite,
         meta: {
-          title: 'Избранное'
+          title: 'Любимая музыка'
         }
       },
       {
         path: 'favourite/tracks',
         component: profile.FavouriteTrackList,
         meta: {
-          title: 'Избранное треки'
+          title: 'Любимые треки'
         }
       },
       {
         path: 'favourite/albums',
         component: profile.AlbumTableContainer,
         meta: {
-          title: 'Избранное альбомы'
+          title: 'Любимые альбомы'
         }
       },
       {
         path: 'favourite/playlists',
         component: profile.CollectionTableContainer,
         meta: {
-          title: 'Избраное плейлисты'
+          title: 'Любимые плейлисты'
         }
       },
       {
         path: 'favourite/sets',
         component: profile.CollectionTableContainer,
         meta: {
-          title: 'Избранное коллекции'
+          title: 'Любимые коллекции'
         }
       },
       {
         path: 'favourite/album/:albumId',
         component: profile.AlbumTrackList,
         meta: {
-          title: 'Избранное'
+          title: 'Любимая музыка'
         }
       },
       {
         path: 'favourite/playlist/:playlistId',
         component: profile.CollectionTrackList,
         meta: {
-          title: 'Избранное'
+          title: 'Любимая музыка'
         }
       },
       {
         path: 'favourite/set/:setId',
         component: profile.CollectionTrackList,
         meta: {
-          title: 'Избраннное'
+          title: 'Любимая музыка'
         }
       },
       {
@@ -378,13 +378,13 @@ const routes = [
         path: 'notifications',
         component: profile.UserNotifications,
         meta: {
-          title: 'Оповещения'
+          title: 'Уведомления'
         }
       },
-      {
-        path: '',
-        redirect: { name: 'profile-my-music' }
-      }
+      // {
+      //   path: '',
+      //   redirect: { name: 'profile-my-music' }
+      // }
     ]
   },
   {
@@ -447,24 +447,36 @@ const routes = [
       },
       {
         path: 'user-reviews',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Оставленные отзывы'
+        }
       },
       {
         path: 'album/:albumId',
-        component: profile.AlbumTrackList
+        component: profile.AlbumTrackList,
+        meta: {
+          title: 'Альбом'
+        }
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        meta: {
+          title: 'Плейлист'
+        }
       },
       {
         path: 'reviews/:trackId',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Отзывы'
+        }
       },
-      {
-        path: '',
-        redirect: { name: 'user-music' }
-      },
+      // {
+      //   path: '',
+      //   redirect: { name: 'user-music' }
+      // },
     ]
   },
   {
@@ -480,7 +492,7 @@ const routes = [
       }
     }),
     meta: {
-      title: 'Загрузить трек'
+      title: 'Загрузить песню'
     }
   },
   {
@@ -579,7 +591,7 @@ const routes = [
         path: 'contacts',
         component: FaqPage,
         meta: {
-          title: 'FAQ'
+          title: 'Контакты'
         },
       },
       {
