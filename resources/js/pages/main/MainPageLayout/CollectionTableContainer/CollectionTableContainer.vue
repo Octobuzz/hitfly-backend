@@ -53,7 +53,7 @@ export default {
         case '/recommended':
           return 'Рекомендуем';
 
-        case '/superMelomaniac':
+        case '/super-melomaniac':
           return 'Супер меломан';
       }
     },
