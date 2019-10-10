@@ -44,7 +44,7 @@
       <a
         href="http://2rockmusic.com"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         :class="[
           'button',
           'head-nav-item'
