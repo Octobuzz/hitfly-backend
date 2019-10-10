@@ -30,7 +30,7 @@ class RedirectIfAuthenticated
                 && 'graphql.auth' !== $request->route()->getName()
             )
         ) {
-            return redirect('/profile');
+            return redirect('/');
         }
 
         return $next($request);
