@@ -19,11 +19,6 @@ use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Support\Facades\Log;
 
 Route::redirect('/', 'login', 301);
-Route::get('/sitemap', function () {
-    $sitemapGenerator = new \App\BuisnessLogic\Sitemap\SitemapGenerator();
-
-    return $sitemapGenerator->getMap();
-});
 //Route::get('/sitemap/sitemap-main.xml', function () {
 //    $sitemapGenerator = new \App\BuisnessLogic\Sitemap\SitemapGenerator();
 //    return $sitemapGenerator->generateMainPages();
