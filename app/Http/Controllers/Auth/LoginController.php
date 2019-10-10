@@ -99,7 +99,7 @@ class LoginController extends Controller
             return redirect()->to('/register-genres');
         }
 
-        return redirect()->to('/profile');
+        return redirect()->to('/');
     }
 
     public function loginApi(Request $request)
