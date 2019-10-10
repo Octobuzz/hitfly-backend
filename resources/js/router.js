@@ -579,7 +579,7 @@ const routes = [
         path: 'contacts',
         component: FaqPage,
         meta: {
-          title: 'FAQ'
+          title: 'Контакты'
         },
       },
       {
