@@ -331,7 +331,7 @@ class NotificationEventSubscriber
                     'title' => $track->track_name,
                     'cover' => $track->getImageUrl(),
                 ],
-                'top' => 20,
+                'top' => 50,
             ];
 
             /** @var User $user */
