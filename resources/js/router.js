@@ -576,7 +576,7 @@ const routes = [
         },
       },
       {
-        path: 'faq',
+        path: 'contacts',
         component: FaqPage,
         meta: {
           title: 'FAQ'
