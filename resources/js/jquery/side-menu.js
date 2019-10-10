@@ -48,6 +48,11 @@ $(document).ready(() => {
   menu = $('.drop-menu');
 });
 
+$(document).on('jquery-side-menu-update', () => {
+  trigger = $('.menu-call');
+  menu = $('.drop-menu');
+});
+
 $('.drop-menu-list__item').each((i, item) => {
   $(item).find('span').css('animation-delay', '.5s');
 });

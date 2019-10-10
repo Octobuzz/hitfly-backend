@@ -427,7 +427,7 @@ const routes = [
         component: profile.BonusProgram
       },
       {
-        path: 'faq',
+        path: 'contacts',
         component: FaqPage
       },
       {
