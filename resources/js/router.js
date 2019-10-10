@@ -539,7 +539,7 @@ const routes = [
         path: 'weekly_top',
         component: main.MainPageTrackList,
         meta: {
-          title: 'Топ недели'
+          title: 'Открытие недели'
         },
       },
       {

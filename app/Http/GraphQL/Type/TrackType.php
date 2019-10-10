@@ -55,9 +55,10 @@ class TrackType extends GraphQLType
                 'description' => 'Испольнитель',
                 'resolve' => function ($model) {
                     $singer = $model->getAuthor();
-                    if(strtolower($singer) === 'admin'){
+                    if ('admin' === strtolower($singer)) {
                         $singer = '';
                     }
+
                     return $singer;
                 },
             ],

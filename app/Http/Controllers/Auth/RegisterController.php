@@ -145,7 +145,7 @@ class RegisterController extends Controller
         $genres = $request->all();
         if (isset($genres['genres']) && null !== $genres['genres']) {
             $user = Auth::guard('json')->user();
-            if($user !== null) {
+            if (null !== $user) {
                 $user->favouriteGenres()->sync($genres['genres']);
             }
         }
