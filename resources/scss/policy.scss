@@ -17,13 +17,62 @@
 
       & > ul {
         margin-top: 10px;
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   }
 
   & h2 {
-    text-align: center;
+    text-align: left;
     margin-bottom: 20px;
+  }
+
+  OL {
+    padding-left: 0;
+    margin-bottom: 36px;
+  }
+
+  &__web-version {
+    display: inline-block;
+  }
+
+  &__top-list {
+    counter-reset: top-item;
+    list-style-type: none;
+
+    LI:before {
+      counter-increment: top-item;
+      content: "\2003" counter(top-item) ". ";
+      font-weight: 900;
+    }
+  }
+
+  &__main-list-nested {
+    list-style-type: none;
+  }
+
+  &__main-list-nested-counter:before {
+    content: "- ";
+  }
+
+  &__main-list {
+    OL {
+      counter-reset: item;
+      list-style-type: none;
+    }
+
+    h2:before {
+      content: counter(item) ". ";
+      font-weight: 900;
+    }
+
+    .policy__main-list-counter {
+      counter-increment: item;
+    }
+
+    .policy__main-list-counter:not(.policy__main-list-heading):before {
+      content: "\2003" counters(item, ".") ". ";
+      font-weight: 900;
+    }
   }
 }
