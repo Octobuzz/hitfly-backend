@@ -597,7 +597,10 @@ const routes = [
   },
   {
     path: '*',
-    name: 'asterisk'
+    name: 'asterisk',
+    meta: {
+      title: 'Стариница не найдена'
+    }
   },
 ];
 
@@ -609,6 +612,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // TODO: consider using after hook
   store.commit('history/push', to);
+  document.title = to.meta.title;
 
   if (to.name === 'asterisk') {
     store.commit('appColumns/set404', true);
