@@ -99,7 +99,7 @@ class LoginController extends Controller
             return redirect()->to('/register-genres');
         }
 
-Ж    }
+   }
 
     public function loginApi(Request $request)
     {
