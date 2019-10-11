@@ -3,9 +3,9 @@ import pluralFormEndingsFormatter from 'modules/plural-form-endings-formatter';
 export default {
   methods: {
     totalDurationInfo(type, sec) {
-      const mins = Math.ceil(sec / 60);
-      let duration = mins;
+      const mins = Math.floor(sec / 60);
       const word = type === 'mins' ? 'MINUTE' : 'HOUR';
+      let duration = mins;
 
       if (type === 'hours') {
         duration = Math.floor(mins / 60);
