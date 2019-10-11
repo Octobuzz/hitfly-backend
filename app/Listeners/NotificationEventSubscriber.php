@@ -364,6 +364,6 @@ class NotificationEventSubscriber
         $user = $event->getUser();
         $newStatus = RoleDictionary::getPreviousRoleSlug($role->slug);
         $oldRole = Role::query()->where('slug', '=', $newStatus)->first();
-        $this->notification->decreaseStatusNotification($role->slug, $oldRole, $user);
+        $this->notification->decreaseStatusNotification($role->name, $oldRole->name, $user);
     }
 }
