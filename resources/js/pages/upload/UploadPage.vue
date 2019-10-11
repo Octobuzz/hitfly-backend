@@ -39,7 +39,7 @@
               <a href="/contacts" class="up-b-info__link">Помощь</a>
             </div>
             <div class="up-b-info__right">
-              <a href="/" class="up-b-info__link">Как  загрузить песню?</a>
+<!--              <a href="/" class="up-b-info__link">Как загрузить песню?</a>-->
             </div>
           </div>
         </div>
@@ -141,7 +141,7 @@
         }).then((response) => {
           this.$router.push('/profile/my-music');
           this.$message(
-            'Ваша песня загружена и будет доступна через 10 минут',
+            'Мы обрабатываем ваш трек. Ваша песня проявится в профиле через несколько минут.',
             'info'
           );
         }).catch((error) => {
