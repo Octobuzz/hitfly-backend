@@ -1,0 +1,40 @@
+@import '~scss/_variables.scss';
+
+.scrollSubheader {
+  display: block;
+  margin-top: 6px;
+}
+
+.main-page-genres__header {
+  margin-bottom: 0;
+}
+
+.main-page-genres__header-text {
+  cursor: pointer;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    height: 12px;
+    width: 15px;
+    background-image: url('/images/arrow.svg');
+    transition: all .3s;
+  }
+
+  &:hover:after {
+    opacity: 1;
+    transform: translate(20px, -50%);
+  }
+}
+
+
+.universal-collections-container__subtitle {
+  font-size: 12px;
+  line-height: 14px;
+  color: $text_color_secondary;
+}

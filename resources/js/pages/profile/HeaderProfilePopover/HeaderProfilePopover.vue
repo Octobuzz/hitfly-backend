@@ -18,9 +18,12 @@
 
     <template v-if="fetchAllowed" #popover>
       <SpinnerLoaderWrapper :is-loading="isFetching" size="small">
-        <span class="header-profile-popover__header">
+        <router-link
+          class="header-profile-popover__header"
+          :to="profileLink"
+        >
           {{ myProfile.username }}
-        </span>
+        </router-link>
 
         <HeaderProfilePopoverBonusProgram
           v-if="isAuthenticated && !isStarOrProfCritic"
@@ -118,6 +121,13 @@ export default {
       }
 
       return null;
+    },
+
+    profileLink() {
+      if (!this.myMusicLink) {
+        return this.reviewsLink;
+      }
+      return this.myMusicLink;
     },
 
     isStarOrProfCritic() {

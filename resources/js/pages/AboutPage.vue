@@ -115,20 +115,20 @@
             Помощь
           </a>
 
-          <router-link
-            v-if="isAuthenticated"
-            class="about__footer-right-option about__link"
-            to="/upload"
-          >
-            Как загрузить песню?
-          </router-link>
-          <a
-            v-else
-            class="about__footer-right-option about__link"
-            href="/login"
-          >
-            Как загрузить песню?
-          </a>
+<!--          <router-link-->
+<!--            v-if="isAuthenticated"-->
+<!--            class="about__footer-right-option about__link"-->
+<!--            to="/upload"-->
+<!--          >-->
+<!--            Как загрузить песню?-->
+<!--          </router-link>-->
+<!--          <a-->
+<!--            v-else-->
+<!--            class="about__footer-right-option about__link"-->
+<!--            href="/login"-->
+<!--          >-->
+<!--            Как загрузить песню?-->
+<!--          </a>-->
         </div>
       </div>
     </template>
