@@ -413,7 +413,7 @@ const routes = [
         component: profile.OtherUserMusic,
         name: 'user-music',
         meta: {
-          title: 'Моя мызыка'
+          title: 'Моя музыка'
         }
       },
       {
