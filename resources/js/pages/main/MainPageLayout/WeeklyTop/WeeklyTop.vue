@@ -12,7 +12,9 @@
         <template #title>
           <router-link to="weekly_top">
             <span class="h2 other-user-music__albums-title">
-              Открытие недели
+              <span class="weekly-top__header-text">
+                Открытие недели
+              </span>
             </span>
             <span class="scrollSubheader">
               Песни, которые неожиданно поднялись в чарте

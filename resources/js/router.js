@@ -109,8 +109,7 @@ const routes = [
     }),
     meta: {
       title: 'Профиль'
-    }
-    ,
+    },
     children: [
       {
         path: 'edit',
@@ -414,7 +413,7 @@ const routes = [
         component: profile.OtherUserMusic,
         name: 'user-music',
         meta: {
-          title: 'Моя мызыка'
+          title: 'Моя музыка'
         }
       },
       {

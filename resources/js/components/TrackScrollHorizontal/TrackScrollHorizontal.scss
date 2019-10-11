@@ -12,12 +12,13 @@ $album-left-padding-mobile: 16px;
 .album-scroll-horizontal {
   height: $album-height-desktop;
   overflow-y: hidden;
+  margin-bottom: 0;
 
   &__header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 18px;
   }
 
   &__button-prev,

@@ -1,6 +1,6 @@
 @import '~scss/_variables.scss';
 
-$collection-height-desktop: 300px;
+$collection-height-desktop: 250px;
 $collection-height-mobile: 250px;
 
 $collection-cover-desktop: 160px;
@@ -17,7 +17,7 @@ $collection-left-padding-mobile: 16px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 22px;
   }
 
   &__button-prev,

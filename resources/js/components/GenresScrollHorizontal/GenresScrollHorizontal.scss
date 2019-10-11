@@ -1,7 +1,7 @@
 @import '~scss/_variables.scss';
 
-$album-height-desktop: 240px;
-$album-height-mobile: 210px;
+$album-height-desktop: 185px;
+$album-height-mobile: 185px;
 
 $album-cover-desktop: 120px;
 $album-cover-mobile: 104px;
@@ -17,7 +17,7 @@ $album-left-padding-mobile: 16px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
   }
 
   &__button-prev,
