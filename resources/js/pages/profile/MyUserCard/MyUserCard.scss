@@ -326,12 +326,21 @@ p {
 
   &__about {
     display: block;
+  }
 
-    &__text {
-      display: block;
-      font-size: 14px;
-      color: $text_color_secondary;
-    }
+  &__about-header {
+    display: block;
+    font-size: 20px;
+    line-height: 23px;
+    margin-bottom: 16px;
+    color: $text_color_primary;
+  }
+
+  &__about-text {
+    display: block;
+    font-size: 14px;
+    line-height: 24px;
+    color: $text_color_secondary;
   }
 }
 

@@ -545,7 +545,7 @@ const routes = [
         path: 'new_songs',
         component: main.MainPageTrackList,
         meta: {
-          title: 'Новое'
+          title: 'Новые песни'
         },
 
       },

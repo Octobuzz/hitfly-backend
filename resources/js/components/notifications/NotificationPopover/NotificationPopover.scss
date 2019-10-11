@@ -1,3 +1,5 @@
+@import '~scss/_variables.scss';
+
 // popover cannot use scoped styles
 
 $bg_color: #222;
@@ -53,6 +55,10 @@ $text_color_highlighted: white;
     color: $text_color;
     display: block;
     padding-top: 8px;
+
+    &:hover {
+      color: $red_violet;
+    }
   }
 
   &[aria-hidden='true'] {
