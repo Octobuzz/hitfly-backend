@@ -296,16 +296,18 @@ class Notification
         switch (get_class($track)) {
             case Track::class:
                 $essence = 'track';
+                $url = config('app.url').'/user/'.$track->user->id.'/music';
                 break;
             case Album::class:
                 $essence = 'album';
+                $url = config('app.url').'/user/'.$track->user->id.'/album/'.$track->id;
                 break;
             default:
                 throw new Exception('неизвестный тип');
         }
 
         foreach ($users as $user) {
-            dispatch(new NewFavouriteTrackJob($track->user->username, $track->getName(), $essence, $user))->onQueue('low');
+            dispatch(new NewFavouriteTrackJob($track->user->username, $track->getName(), $essence, $user, $url))->onQueue('low');
         }
     }
 

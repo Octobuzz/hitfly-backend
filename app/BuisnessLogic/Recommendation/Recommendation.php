@@ -10,14 +10,33 @@ namespace App\BuisnessLogic\Recommendation;
 
 use App\Contracts\Playlist\RecommendationList;
 use App\Helpers\DateHelpers;
+use App\Helpers\PictureHelpers;
+use App\Models\Collection;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Jenssegers\Date\Date;
 
 class Recommendation implements RecommendationList
 {
     public function getNewUserPlayList(int $count)
     {
         // TODO: Implement getRecommendPlaylist() method. получить реальные рекомендации
-        return null;
+        $collect = null;
+        $collection = Collection::query()
+            ->where('is_admin', '=', 1)
+            ->orderBy('created_at', 'DESC')->limit(2)->get();
+        foreach ($collection as $item){
+            /** @var Collection $item */
+            $collect[] = [
+                'name' => $item->title,
+                'date' => Date::createFromFormat('Y-m-d H:i:s', $item->created_at)->format('j F'),
+                'count_tracks' => $item->tracks->count().' '.DateHelpers::getNumEnding($item->tracks->count(), ['трек', 'трека', 'треков']),
+                'list_img' => PictureHelpers::resizePicture($item, 200, 200),//config('app.url').'/images/emails/img/new-year-playlist.png',
+                'link' => config('app.url').'/playlist/'.$item->id,
+            ];
+        }
+        return $collect;
 //        return [
 //            [
 //                'name' => 'Название плейлиста',
