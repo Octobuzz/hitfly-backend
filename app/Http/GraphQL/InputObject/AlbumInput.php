@@ -33,7 +33,7 @@ class AlbumInput extends GraphQLType
             'author' => [
                 'name' => 'author',
                 'description' => 'Автор max:250 символов',
-                'type' => Type::nonNull(Type::string()),
+                'type' => Type::string(),
                 //'rules' => ['max:250', 'required'],
                 'deprecationReason' => 'На удаление, больше не использется', //todo На удлание
             ],
