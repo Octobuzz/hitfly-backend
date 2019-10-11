@@ -124,10 +124,7 @@ export default {
     },
 
     profileLink() {
-      if (!this.myMusicLink) {
-        return this.reviewsLink;
-      }
-      return this.myMusicLink;
+      return this.myMusicLink || this.reviewsLink || '';
     },
 
     isStarOrProfCritic() {
