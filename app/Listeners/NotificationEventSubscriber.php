@@ -132,7 +132,7 @@ class NotificationEventSubscriber
     public function createWatcheables(Watcheables $watcheables)
     {
         /** @var User $user */
-        $user = $watcheables->user;
+        $user = $watcheables->watcher();
         /** @var User | null $notifyUser */
         $notifyUser = null;
 
