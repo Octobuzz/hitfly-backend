@@ -109,8 +109,7 @@ const routes = [
     }),
     meta: {
       title: 'Профиль'
-    }
-    ,
+    },
     children: [
       {
         path: 'edit',
