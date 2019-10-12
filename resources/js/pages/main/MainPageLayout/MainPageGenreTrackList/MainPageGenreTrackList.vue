@@ -3,7 +3,7 @@
     <ReturnHeader class="collection-track-list__return-button" />
 
     <PageHeader class="main-page-genre-track-list__header">
-      {{ genre.name.toUpperCase() }}
+      {{ genre.name && genre.name.toUpperCase() }}
     </PageHeader>
 
     <template v-if="!collectionFetched">
