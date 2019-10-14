@@ -13,7 +13,7 @@
                                 <td style="padding-bottom: 20px;">
                                     <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.longAgoNotVisited.hello'), {{$user->username}}</h3>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0 0 15px;">
-                                        @if(isset($days) && $days!== null)
+                                        @if(empty($days) && $days!== null)
                                             @lang('emails.longAgoNotVisited.text',['count'=>$days])
                                         @else
                                             @lang('emails.longAgoNotVisited.textMonth')
@@ -21,7 +21,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            @if(isset($events) && $events !== null)
+                            @if(empty($events) && $events !== null)
                             <tr>
                                 <td style="padding-bottom: 20px;">
                                     <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.recommend')</h3>
@@ -89,7 +89,7 @@
                         </table>
                     </td>
                 </tr>
-                @if( isset($importantEvents) && $importantEvents !== null)
+                @if( empty($importantEvents) && $importantEvents !== null)
                 <tr>
                     <td>
                         <table width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="padding-bottom: 40px;">
@@ -113,7 +113,7 @@
                     </td>
                 </tr>
                 @endif
-                @if(isset($tracks) && $tracks !== null)
+                @if(empty($tracks) && $tracks !== null)
                 <tr>
                     <td>
                         <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">

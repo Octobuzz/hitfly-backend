@@ -18,7 +18,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            @if(isset($events) && $events !== null)
+                            @if(empty($events) && $events !== null)
                             <tr>
                                 <td>
                                     <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">
