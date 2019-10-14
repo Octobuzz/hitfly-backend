@@ -4,6 +4,7 @@
 @import './headers.scss';
 @import './notifications.scss';
 @import './policy.scss';
+@import './magnific-popup.css';
 @import './bonus-program-task-body.scss';
 
 // TODO: refactor
@@ -16,6 +17,10 @@ body {
   font-family: 'Gotham Pro', sans-serif;
   color: $text_color_primary;
   height: 100vh;
+}
+
+*, *:focus, *:active {
+  outline: none;
 }
 
 a {

@@ -103,7 +103,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import TrackPopover from 'components/TrackPopover';
+import TrackPopover from 'components/trackList/TrackActionsPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';

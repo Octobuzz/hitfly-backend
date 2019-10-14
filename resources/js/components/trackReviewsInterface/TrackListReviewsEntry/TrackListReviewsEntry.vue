@@ -86,8 +86,11 @@ export default {
   computed: {
     trackReviewsLink() {
       const prefix = this.$route.fullPath.split('/').slice(0, -1).join('/');
-
-      return `${prefix}/reviews/${this.trackId}`;
+      if(prefix.length === 0) {
+        return `user/${this.track.user.id}/reviews/${this.trackId}`;
+      } else {
+        return `${prefix}/reviews/${this.trackId}`;
+      }
     },
 
     ...mapGetters(['apolloClient'])

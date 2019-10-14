@@ -39,8 +39,8 @@ class CommentCreatedMail extends Mailable
                 $this->commentableName = $comment->track->getName();
                 $this->commentableAuthor = $comment->track->getAuthor();
                 $this->commentableImageUrl = PictureHelpers::resizePicture($comment->track, 60, 60);
-                $this->link = env('APP_URL').'/profile/reviews/:'.$comment->track->id;
-                $this->allCommentsUrl = env('APP_URL').'/profile/reviews';
+                $this->link = config('app.url').'/profile/reviews/:'.$comment->track->id;
+                $this->allCommentsUrl = config('app.url').'/profile/reviews';
                 break;
             case Album::class:
                 $this->commentable = $comment->album();
@@ -48,15 +48,15 @@ class CommentCreatedMail extends Mailable
                 $this->commentableName = $comment->album->getName();
                 $this->commentableAuthor = $comment->album->getAuthor();
                 $this->commentableImageUrl = PictureHelpers::resizePicture($comment->album, 60, 60);
-                $this->link = env('APP_URL').'/profile/reviews/:'.$comment->album->id;
-                $this->allCommentsUrl = env('APP_URL').'/profile/reviews';
+                $this->link = config('app.url').'/profile/reviews/:'.$comment->album->id;
+                $this->allCommentsUrl = config('app.url').'/profile/reviews';
                 break;
             default:
                 throw new \Exception('Неизвестный тип комментария');
         }
 
         $this->commentator = $comment->user()->first();
-        $this->commentatorAvatar = PictureHelpers::resizePicture($comment->user, 60, 60); //env('APP_URL').$comment->user->getImageUrl();
+        $this->commentatorAvatar = PictureHelpers::resizePicture($comment->user, 60, 60); //config('app.url').$comment->user->getImageUrl();
     }
 
     /**

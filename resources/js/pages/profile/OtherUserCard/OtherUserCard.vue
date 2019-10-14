@@ -16,7 +16,7 @@
           </p>
           <p class="user-card__followers-count">
             {{ user.followersCount || '0' }}
-            {{ format('followers', user.followersCount || '0') }}
+            {{ format('FOLLOWER', user.followersCount || 0) }}
           </p>
 
           <p
@@ -89,20 +89,20 @@
         <BpFollowers />
         <span>
           {{ user.followersCount || '0' }}
-          {{ format('followers', user.followersCount || '0') }}
+          {{ format('FOLLOWER', user.followersCount || 0) }}
         </span>
       </span>
       <span class="user-card__bonus-program-days">
         <BpDaysPassed />
         <span>
           {{ user.bpDaysInProgram || '0' }}
-          {{ format('days', user.bpDaysInProgram || '0') }}
+          {{ format('DAY', user.bpDaysInProgram || 0) }}
         </span>
       </span>
       <span class="user-card__bonus-program-favourites">
         <BpFavouriteTracks />
         {{ user.favouritesTrackCount }}
-        {{ format('favourites', user.favouritesTrackCount) }}
+        {{ format('FAVOURITE_SONG', user.favouritesTrackCount || 0) }}
       </span>
     </div>
 
@@ -114,7 +114,7 @@
         'user-card__about'
       ]"
     >
-      <div class="user-card__item-header">
+      <div class="user-card__item-header user-card__about-header">
         <span>
           {{ user.roles.includes('star') ? 'Биография' : 'Обо мне' }}
         </span>
@@ -128,6 +128,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import pluralFormEndingsFormatter from 'mixins/pluralFormEndingsFormatter';
 import followMixin from 'mixins/followMixin';
 import anonymousAvatar from 'images/anonymous-avatar.png';
 import UserCardAvatar from 'pages/profile/UserCardAvatar';
@@ -142,24 +143,6 @@ import NoteIcon from 'components/icons/NoteIconGrey.vue';
 import OtherUserPopover from 'components/OtherUserPopover';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
-
-const formatting = {
-  followers: {
-    1: 'поклонник',
-    234: 'поклонника',
-    567890: 'поклонников'
-  },
-  days: {
-    1: 'день в Hitfly',
-    234: 'дня в Hitfly',
-    567890: 'дней Hitfly'
-  },
-  favourites: {
-    1: 'любимая песня',
-    234: 'любимые песни',
-    567890: 'любимых песен'
-  }
-};
 
 export default {
   components: {
@@ -176,7 +159,7 @@ export default {
     UnauthenticatedPopoverWrapper,
   },
 
-  mixins: [followMixin('user', 'user')],
+  mixins: [followMixin('user', 'user'), pluralFormEndingsFormatter],
 
   props: {
     itemContainerClass: {
@@ -223,17 +206,7 @@ export default {
     },
 
     format(type, count) {
-      const lastDigit = +count % 10;
-      let lastDigitSet = 567890;
-
-      if (lastDigit === 1) {
-        lastDigitSet = 1;
-      }
-      if (lastDigit >= 2 && lastDigit <= 4) {
-        lastDigitSet = 234;
-      }
-
-      return formatting[type][lastDigitSet];
+      return this.pluralFormEndingsFormatter(type, count);
     }
   },
 

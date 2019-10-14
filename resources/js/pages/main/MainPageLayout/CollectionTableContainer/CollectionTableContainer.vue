@@ -51,9 +51,9 @@ export default {
     header() {
       switch (this.currentPath) {
         case '/recommended':
-          return 'Рекоммендуем';
+          return 'Рекомендуем';
 
-        case '/superMelomaniac':
+        case '/super-melomaniac':
           return 'Супер меломан';
       }
     },

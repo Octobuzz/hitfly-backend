@@ -5,6 +5,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>@if(empty($title) === false){{ $title }}@else Hitfly @endif</title>
+    @if(empty($description) === false)<meta name="description" content="{{ $description }}">@endif
+
     @if(\Auth::user() !== null)
         <meta authuser="{{\Auth::user()->id}}" >
         <meta roles="{{\Auth::user()->roles}}" >
@@ -13,14 +17,6 @@
     @endif
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>
-        @hasSection ('title')
-            @yield('title')
-        @else
-           {{config('app.name', 'Laravel')}}
-        @endif
-    </title>
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" sizes="16x16" href="/favicon.ico">

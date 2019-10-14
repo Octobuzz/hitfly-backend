@@ -44,7 +44,7 @@
       <a
         href="http://2rockmusic.com"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         :class="[
           'button',
           'head-nav-item'
@@ -136,12 +136,6 @@
 <!--          </span>-->
 <!--        </router-link>-->
 
-        <router-link to="/faq" class="drop-menu-list__item">
-          <span>
-            Вопросы и ответы
-          </span>
-        </router-link>
-
 <!--        Commented button should be available in next release-->
 <!--        <router-link to="/" class="drop-menu-list__item">-->
 <!--          <span>-->
@@ -149,9 +143,9 @@
 <!--          </span>-->
 <!--        </router-link>-->
 
-        <router-link to="/" class="drop-menu-list__item">
+        <router-link to="/reviews" class="drop-menu-list__item">
           <span>
-            Звездные эксперты
+            Звёздные эксперты
           </span>
         </router-link>
         <router-link
@@ -170,6 +164,12 @@
 <!--            Форма обратной связи-->
 <!--          </span>-->
 <!--        </router-link>-->
+
+        <router-link to="/contacts" class="drop-menu-list__item">
+          <span>
+            Контакты
+          </span>
+        </router-link>
       </div>
     </div>
   </header>
@@ -219,6 +219,10 @@ export default {
       ableToComment: 'profile/ableToComment',
       roles: 'profile/roles'
     })
+  },
+
+  mounted() {
+    document.dispatchEvent(new Event('jquery-side-menu-update'));
   },
 
   methods: {

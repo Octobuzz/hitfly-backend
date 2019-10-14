@@ -18,16 +18,18 @@ class NewFavouriteTrackJob implements ShouldQueue
     public $essence;
     public $user;
     public $trackName;
+    public $url;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($singerName, $trackName, $essence, $user)
+    public function __construct($singerName, $trackName, $essence, $user, $url)
     {
         $this->essence = $essence;
         $this->singerName = $singerName;
         $this->user = $user;
         $this->trackName = $trackName;
+        $this->url = $url;
     }
 
     /**
@@ -35,6 +37,6 @@ class NewFavouriteTrackJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new NewFavouriteTrackMail($this->singerName, $this->trackName, $this->essence, $this->user));
+        return Mail::to($this->user->email)->send(new NewFavouriteTrackMail($this->singerName, $this->trackName, $this->essence, $this->user, $this->url));
     }
 }

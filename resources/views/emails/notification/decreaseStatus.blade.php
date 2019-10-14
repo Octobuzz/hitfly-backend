@@ -18,7 +18,7 @@
                                         @lang('emails.decreaseStatus.sorrow')
                                     </p>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.decreaseStatus.more', ['link'=>'/fake_url'])
+                                        @lang('emails.decreaseStatus.more', ['link'=>'mailto:info@myhitfly.ru'])
                                     </p>
                                 </td>
                             </tr>

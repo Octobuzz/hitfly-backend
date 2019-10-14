@@ -180,14 +180,14 @@ export default {
           tracklistName = "Открытие недели";
           break;
         case 'new_songs':
-          tracklistName = "Новое";
+          tracklistName = "Новые песни";
           break;
       };
       return tracklistName;
     },
 
     currentPlaying() {
-      return this.$store.getters['player/getCurrentType'].id === 'collection' && this.$store.getters['player/getCurrentType'].type === this.currentCollectionPath && this.$store.getters['player/isPlaying'];
+      return this.$store.getters['player/getCurrentType'].type === 'collection' && this.$store.getters['player/getCurrentType'].id === this.currentCollectionPath && this.$store.getters['player/isPlaying'];
     },
 
     currentType() {

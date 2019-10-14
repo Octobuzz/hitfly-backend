@@ -1,5 +1,4 @@
-
-import { mapGetters } from 'vuex';<template>
+<template>
   <div>
     <slot
       v-if="genresList.length > 0"
