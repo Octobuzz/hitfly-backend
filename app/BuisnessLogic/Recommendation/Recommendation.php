@@ -25,7 +25,7 @@ class Recommendation implements RecommendationList
         $collect = null;
         $collection = Collection::query()
             ->where('is_admin', '=', 1)
-            ->orderBy('created_at', 'DESC')->limit(2)->get();
+            ->orderBy('created_at', 'DESC')->limit($count)->get();
         foreach ($collection as $item){
             /** @var Collection $item */
             $collect[] = [
