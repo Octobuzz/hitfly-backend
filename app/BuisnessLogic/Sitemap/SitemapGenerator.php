@@ -39,6 +39,24 @@ class SitemapGenerator
         $this->sitemap->store('sitemapindex', 'sitemap');
     }
 
+    public function getHTMLMap()
+    {
+        $htmlMap = "<ul>";
+        $mapCfg = config('sitemappages.html');
+        foreach ($mapCfg as $item) {
+            if (!empty($item['sublevel'])) {
+                $htmlMap .= "<li><a href='{$item['url']}'>{$item['name']}</a><ul>";
+                $htmlMap .= $this->buildRoute($item['sublevel']);
+                $htmlMap .= '</ul></li>';
+            }else{
+                $htmlMap .= "<li><a href='{$item['url']}'>{$item['name']}</a></li>";
+            }
+        }
+        $htmlMap .= "</ul>";
+        return $htmlMap;
+
+    }
+
     public function generateStaticPages()
     {
         $this->sitemap = App::make('sitemap');

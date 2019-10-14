@@ -53,4 +53,25 @@ return [
         //плейлисты
         'playlists' => ['url' => 'user', 'postfix' => '/playlist', 'priority' => '0.2', 'freq' => 'monthly'],
         ],
+    'html' => [
+        ['url' => '/', 'name' => 'Главная'],
+        ['url' => '/recommended', 'name' => 'Рекомендации'],
+        ['url' => '/super-melomaniac', 'name' => 'Супер меломан'],
+        ['url' => '/top50', 'name' => 'Топ-50'],
+        ['url' => '/listening_now', 'name' => 'Сейчас слушают'],
+        ['url' => '/weekly_top', 'name' => 'Топ недели'],
+        ['url' => '/new_songs', 'name' => 'Новые треки'],
+        ['url' => '/bonus-program', 'name' => 'Бонусная программа'],
+        ['url' => '/faq', 'name' => 'Помощь'],
+        ['url' => '/about', 'name' => 'О нас'],
+        ['url' => '/reviews', 'name' => 'Отзывы'],
+        ['url' => '/register', 'name' => 'Регистрация'],
+        ['url' => '/login', 'name' => 'Авторизация'],
+//        ['url' => '/sub', 'name' => 'Второй уровень',
+//            'sublevel' =>   [
+//                                ['url' => '/sub1', 'name' => 'sub1'],
+//                                ['url' => '/sub2', 'name' => 'sub2']
+//                            ]
+//        ],
+    ]
 ];
