@@ -22,10 +22,11 @@
       v-if="!isLoading"
       class="news-preview__footer"
     >
-      <span class="news-preview__title" v-html="newsObj.title">
-      </span>
+      <router-link class="news-preview__title" :to="link">
+        {{ newsObj.title }}
+      </router-link>
     </div>
-    <router-link class="news-preview__link" :to="`news/${newsObj.id}`">
+    <router-link class="news-preview__link" :to="link">
       Подробнее
     </router-link>
   </div>
@@ -56,6 +57,12 @@ export default {
         pageLimit: 30
       }
     };
+  },
+
+  computed: {
+    link() {
+      return `news/${this.newsObj.id}`;
+    }
   }
 };
 </script>
