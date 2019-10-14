@@ -13,7 +13,7 @@
                                 <td style="padding-bottom: 20px;">
                                     <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.longAgoNotVisited.hello'), {{$user->username}}</h3>
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0 0 15px;">
-                                        @if(empty($days) && $days!== null)
+                                        @if(isset($days) && $days!== null)
                                             @lang('emails.longAgoNotVisited.text',['count'=>$days])
                                         @else
                                             @lang('emails.longAgoNotVisited.textMonth')
@@ -21,7 +21,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            @if(empty($events) && $events !== null)
+                            @if(false === empty($events) && $events !== null)
                             <tr>
                                 <td style="padding-bottom: 20px;">
                                     <h3 style="font-size: 24px; font-weight: 700; color: #2f2f2f; margin: 0 0 15px;">@lang('emails.recommend')</h3>

@@ -11,16 +11,11 @@
 |
 */
 
-use App\Jobs\UserRegisterJob;
-use App\Mail\RegistrationCompleted;
+
 
 Route::redirect('/', 'login', 301);
 Auth::routes(['verify' => true]);
 
-Route::get('/ss', function (\App\BuisnessLogic\Emails\Notification $not){
-    $user = \App\User::find(578);
-    return new RegistrationCompleted($user);
-})->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/register-error', 'Auth\RegisterController@registerError');
 Route::get('/register-genres', 'Auth\RegisterController@showGenreForm')->name('register.genres');
