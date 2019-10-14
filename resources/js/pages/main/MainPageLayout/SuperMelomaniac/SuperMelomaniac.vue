@@ -1,5 +1,6 @@
 <template>
   <UniversalCollectionsContainer
+    class="super-melomaniac"
     for-type="super-melomaniac"
     for-id="superMusicFan"
   >
@@ -12,8 +13,10 @@
       >
         <template #title>
           <router-link to="/super-melomaniac">
-            <span class="h2">
-              Супер меломан
+            <span class="h2 super-melomaniac__header">
+              <span class="super-melomaniac__header-text">
+                Супер меломан
+              </span>
             </span>
             <span class="universal-collections-container__subtitle">
               «Русская рулетка» песен

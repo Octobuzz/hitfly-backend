@@ -2,15 +2,15 @@
   <div :class="['collection-track-list', containerPaddingClass]">
     <ReturnHeader class="collection-track-list__return-button" />
 
+    <PageHeader class="main-page-genre-track-list__header">
+      {{ genre.name && genre.name.toUpperCase() }}
+    </PageHeader>
+
     <template v-if="!collectionFetched">
       <SpinnerLoader />
     </template>
     <template v-else>
       <template v-if="trackListDataExists && firstCollectionTrack">
-        <span class="collection-track-list__singer">
-          {{ genre.name }}
-        </span>
-
         <div class="collection-track-list__track-section">
           <img
             :src="shownTrack.cover.filter(
@@ -72,15 +72,15 @@
       <template v-else>
         <p>Данный список пуст</p>
       </template>
+    </template>
 
-      </template>
-      <UniversalTrackList
-        :for-id="genreId"
-        for-type="genre"
-        :show-table-header="false"
-        :show-remove-button="false"
-        @initialized="onTrackListInitialized"
-      />
+    <UniversalTrackList
+      :for-id="genreId"
+      for-type="genre"
+      :show-table-header="false"
+      :show-remove-button="false"
+      @initialized="onTrackListInitialized"
+    />
   </div>
 </template>
 
@@ -113,6 +113,7 @@ import UniversalTrackList from '../UniversalTrackList';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import CollectionPopover from 'components/CollectionPopover';
 import ReturnHeader from '../ReturnHeader.vue';
+import PageHeader from 'components/PageHeader.vue';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import gql from './gql';
 
@@ -129,6 +130,7 @@ export default {
     CirclePauseIcon,
     DotsIcon,
     AddToFavButton,
+    PageHeader,
     SpinnerLoader,
     UnauthenticatedPopoverWrapper
   },
@@ -316,11 +318,11 @@ export default {
         client: this.apolloClient,
         query: gql.query.GENRES,
         update(data) {
-          let genreData = data.genre.filter(genre => {
-            return genre.id === Number(this.genreId);
-          });
-          this.genre = genreData[0];
-          return data;
+          let genreData = data.genre.find(genre => (
+            genre.id === Number(this.genreId)
+          ));
+
+          return genreData;
         }
       }
     },

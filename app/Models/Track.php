@@ -83,6 +83,7 @@ class Track extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
     public function getUser(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
     {
         return $this->user();
@@ -92,6 +93,7 @@ class Track extends Model
     {
         return $this->belongsTo(MusicGroup::class, 'music_group_id');
     }
+
     public function getMusicGroup(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
     {
         return $this->musicGroup();

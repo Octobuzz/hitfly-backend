@@ -95,6 +95,8 @@ class PictureField extends Field
      */
     private function resize(int $width, int $height, string $picturePath, string $savePath, string $nameFile): bool
     {
+        $width = (int) ($width * 1.5); //todo костыль. на фронте подтягивали картинки меньшего размера а затем растягивали их
+        $height = (int) ($height * 1.5);
         $image_resize = Image::make(Storage::disk('public')->path($picturePath))
             ->fit($width, $height);
         Storage::disk('public')->makeDirectory($this->model->getPath());

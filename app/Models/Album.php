@@ -121,6 +121,7 @@ class Album extends Model
     {
         return $this->user();
     }
+
     public function getMusicGroup(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
     {
         return $this->musicGroup();

@@ -93,7 +93,7 @@
           v-if="renderNavBar"
           :class="['profile__page-header', paddingClass]"
         >
-          ПРОФИЛЬ
+          МОЙ ПРОФИЛЬ
         </PageHeader>
 
         <router-view v-show="!showSecondLoader" />

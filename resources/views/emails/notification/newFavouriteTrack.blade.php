@@ -16,7 +16,7 @@
                                     </p>
 
                                     <p style="font-size: 16px; line-height: 24px; color: #313131; margin: 0;">
-                                        @lang('emails.newFavouriteTrack.more', ['link'=>'/fake_url'])
+                                        @lang('emails.newFavouriteTrack.more', ['link'=> $url])
                                     </p>
                                 </td>
                             </tr>

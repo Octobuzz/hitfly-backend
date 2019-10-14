@@ -24,13 +24,11 @@ Vue.use(VueWindowSize, {
 
 Vue.config.productionTip = false;
 
-try {
+if (document.getElementById('app')) {
   new Vue({
     router,
     store,
     apolloProvider,
     render: h => h(AppLayout)
   }).$mount('#app');
-} catch (err) {
-  console.log(err);
 }
