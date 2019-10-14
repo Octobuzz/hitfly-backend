@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\Track\TrackMinimumListening;
 use App\Models\ListenedTrack;
-use Illuminate\Support\Facades\Auth;
 
 class TrackListenSubscriber
 {
@@ -28,13 +27,16 @@ class TrackListenSubscriber
         $track->count_listen = $track->count_listen + 1;
         $track->save();
 
+        if (null !== $trackListen->getUser()) {
+            $user = $trackListen->getUser();
+            $this->userListeningTrack($track, $user);
+        }
+
         //сохранение статистики прослушиваний
-        $this->userListeningTrack($track);
     }
 
-    private function userListeningTrack($track)
+    private function userListeningTrack($track, $user)
     {
-        $user = Auth::user();
         $listening = ListenedTrack::firstOrCreate(
             ['user_id' => $user->id, 'track_id' => $track->id]
         );
