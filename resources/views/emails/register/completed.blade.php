@@ -66,17 +66,17 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">
+                                    <table width="330" cellpadding="0" cellspacing="0" border="0" align="center">
                                         <tbody>
                                         <tr>
                                             @foreach ($playLists as $list)
                                             <td style="width: 50%;">
-                                                @if($list['link'])<a href="{{$list['link']}}" style="display: block; width: 247px; height: 160px; text-decoration: none; @if($list['list_img'])background-image: url('{{$list['list_img']}}');@endif margin-right: 5px;">@endif
-                                                    <p style="width: 227px; height: 120px; font-size: 12px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; margin: 0; padding: 10px;">
+                                                @if($list['link'])<a href="{{$list['link']}}" style="display: block; width: 160px; height: 160px; text-decoration: none; @if($list['list_img'])background-image: url('{{$list['list_img']}}');@endif margin-right: 5px;">@endif
+                                                    <p style="width: 140px; height: 120px; font-size: 12px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; margin: 0; padding: 10px;">
                                                         {{$list['name']}}<br>
                                                         <span style="font-size: 10px; line-height: 14px; color: #fff;">{{$list['date']}}</span>
                                                     </p>
-                                                    <p style="width: 227px; font-size: 10px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; margin: 0; padding: 0 10px 0 10px;">
+                                                    <p style="width: 140px; font-size: 10px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; margin: 0; padding: 0 10px 0 10px;">
                                                         {{$list['count_tracks']}}
                                                     </p>
                                                 @if($list['link'])</a>@endif

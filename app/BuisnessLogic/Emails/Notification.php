@@ -156,9 +156,9 @@ class Notification
             ->where('admin_roles.slug', '=', RoleDictionary::ROLE_STAR);
         $query = User::query()->whereNotIn('users.id', $stars);
         $query2 = clone $query;
-        $return['days7'] = $query->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->get();
-        $return['days30'] = $query2->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->get();
-
+        $return['days7'] = $query->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->subDays(7)->endOfDay()])
+            ->get();
+        $return['days30'] = $query2->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->subDays(30)->endOfDay()])->get();
         return $return;
     }
 

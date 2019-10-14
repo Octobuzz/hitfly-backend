@@ -27,7 +27,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            @if(isset($eventsList) && $eventsList !== null)
+                            @if(false === empty($eventsList) && $eventsList !== null)
                             <tr>
                                 <td>
                                     <table width="504" cellpadding="0" cellspacing="0" border="0" align="center">
