@@ -13,6 +13,7 @@
     <v-select
       placeholder=""
       :value="value"
+      no-options="Список пуст"
       v-bind="$attrs"
       v-on="$listeners"
       @open="closed = false"
