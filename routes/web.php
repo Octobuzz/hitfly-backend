@@ -11,8 +11,6 @@
 |
 */
 
-
-
 Route::redirect('/', 'login', 301);
 Auth::routes(['verify' => true]);
 

@@ -12,7 +12,6 @@ use Intervention\Image\Facades\Image;
 
 class PictureHelpers
 {
-
     public static function resizePicture($model, $width = 100, $height = 100): string
     {
         $class = $model;
@@ -31,7 +30,6 @@ class PictureHelpers
                 break;
         }
 
-
         if (null === $model) {
             $picturePath = $defaultImage;
         } else {
@@ -41,7 +39,6 @@ class PictureHelpers
             $picturePath = $defaultImage;
         }
         $path = Storage::disk('public')->path($model->getPath());
-
 
         $size = $width.'_'.$height;
 

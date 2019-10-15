@@ -18,7 +18,7 @@ class NewFavouriteTrackMail extends Mailable
     /**
      * новый альбом\трек у любимого исполнителя.
      */
-    public function __construct($singerName, $trackName, $essence, $user ,$url)
+    public function __construct($singerName, $trackName, $essence, $user, $url)
     {
         $this->essence = __('emails.'.$essence);
         $this->singerName = $singerName;
