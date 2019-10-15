@@ -2,13 +2,8 @@
   <div ref="container" class="app-columns">
     <div ref="left" class="app-columns__left-column">
       <div
-        ref="left-inner"
+        ref="leftInner"
         :class="{'app-columns__left-column-inner': isLeftLocked }"
-        :style="{
-          minHeight: containerContentHeight + 'px',
-          position: isLeftLocked ? 'fixed' : 'static',
-          bottom: isLeftLocked ? containerPaddingBottom + 'px' : 'auto',
-        }"
       >
         <slot
           name="left-column"
@@ -34,11 +29,53 @@ export default {
       isLeftLocked: false,
       leftHeight: 0,
       containerContentHeight: 0,
-      containerPaddingBottom: 0,
       scrollHeight: 0,
       haveSpaceAboveLeft: 0,
       haveSpaceBelowLeft: 0
     };
+  },
+
+  watch: {
+    isLeftLocked(flag) {
+      const { leftInner } = this.$refs;
+      const { leftHeight, containerContentHeight } = this;
+      const startOffset = this.getElOffset(leftInner).top;
+
+      leftInner.style.transition = 'transform 0s';
+
+      if (flag) {
+        leftInner.style.position = 'fixed';
+        leftInner.style.minHeight = `${containerContentHeight}px`;
+
+        const endOffset = this.getElOffset(leftInner).top;
+        const offsetDiff = endOffset - startOffset;
+
+        leftInner.style.transform = `translateY(${-offsetDiff}px)`;
+
+        window.setTimeout(() => {
+          leftInner.style.transition = 'transform .3s';
+          leftInner.style.transform = `translateY(${
+            containerContentHeight - Math.max(leftHeight, containerContentHeight)
+          }px)`;
+        }, 50);
+
+        return;
+      }
+
+      leftInner.style.transform = 'translateY(0)';
+      leftInner.style.position = 'static';
+      leftInner.minHeight = 'auto';
+
+      const endOffset = this.getElOffset(leftInner).top;
+      const offsetDiff = endOffset - startOffset;
+
+      leftInner.style.transform = `translateY(${-offsetDiff}px)`;
+
+      window.setTimeout(() => {
+        leftInner.style.transition = 'transform .3s';
+        leftInner.style.transform = 'translateY(0)';
+      }, 50);
+    }
   },
 
   beforeCreate() {
@@ -55,7 +92,8 @@ export default {
     observer.observe(
       this.$refs.left.children[0],
       {
-        childList: true,
+        attributes: true,
+        attributeFilter: ['height', 'min-height'],
         characterData: true,
         subtree: true
       }
@@ -63,7 +101,8 @@ export default {
     observer.observe(
       this.$refs.right.children[0],
       {
-        childList: true,
+        attributes: true,
+        attributeFilter: ['height', 'min-height'],
         characterData: true,
         subtree: true
       }
@@ -122,7 +161,6 @@ export default {
 
       this.leftHeight = leftClientHeight;
       this.containerContentHeight = containerContentHeight;
-      this.containerPaddingBottom = containerPaddingBottom;
       this.scrollHeight = window.pageYOffset + containerContentHeight;
 
       const leftTopOffset = this.getElOffset(leftInner).top
