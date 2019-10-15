@@ -97,11 +97,10 @@ class LoginController extends Controller
             $user->markEmailAsVerified();
             //при регистрации редиректим на выбор жанров
             return redirect()->to('/register-genres');
-        }else{
+        } else {
             return redirect()->to('/');
         }
-
-   }
+    }
 
     public function loginApi(Request $request)
     {

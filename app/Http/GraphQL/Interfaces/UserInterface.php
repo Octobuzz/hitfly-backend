@@ -168,6 +168,14 @@ class UserInterface extends InterfaceType
                     return Auth::user()->access_token;
                 },
             ],
+            'watchAvaliable' => [
+                'type' => Type::string(),
+                'description' => 'Можно ли следить за пользователем',
+                'resolve' => function ($model) {
+                    return !$model->roles->contains('slug', 'administrator');
+                },
+                'selectable' => false,
+            ],
         ];
     }
 
