@@ -136,13 +136,11 @@ class NotificationEventSubscriber
         /** @var User | null $notifyUser */
         $notifyUser = null;
 
-        switch (get_class($watcheables->watcheable()->getRelated())) {
-            case User::class:
-                $notifyUser = $watcheables->user()->first();
-                break;
-            default:
-                return;
+        if (User::class !== get_class($watcheables->watcheable()->getRelated())) {
+            return;
         }
+
+        $notifyUser = $watcheables->user()->first();
 
         if (null !== $notifyUser) {
             $messageData = [
