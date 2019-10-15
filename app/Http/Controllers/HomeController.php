@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BuisnessLogic\Sitemap\SitemapGenerator;
 use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
@@ -28,6 +29,13 @@ class HomeController extends Controller
         }
 
         return view('spa');
+    }
+
+    public function map()
+    {
+        $sitemap = new SitemapGenerator();
+        $htmlMap = $sitemap->getHTMLMap();
+        return view('map', ['htmlMap' =>$htmlMap]);
     }
 
     public function policy($asdadsa = null)
