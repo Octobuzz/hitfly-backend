@@ -169,7 +169,7 @@ class UserInterface extends InterfaceType
                     return Auth::user()->access_token;
                 },
             ],
-            'watchAvalia ble' => [
+            'watchAvaliable' => [
                 'type' => Type::string(),
                 'description' => 'Можно ли следить за пользователем',
                 'resolve' => function ($model) {
