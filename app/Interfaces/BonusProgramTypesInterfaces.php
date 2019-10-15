@@ -9,14 +9,6 @@ interface BonusProgramTypesInterfaces
     const CREATE_FIRST_PLAYLIST = 'CREATE_FIRST_PLAYLIST'; //+
 
     const USER_REGISTER = 'USER_REGISTER'; //+
-    const USER_PROFILE_PHOTO = 'USER_PROFILE_PHOTO';
-    const USER_PROFILE_USER_NAME = 'USER_PROFILE_USER_NAME';
-    const USER_PROFILE_LOGIN = 'USER_PROFILE_LOGIN';
-    const USER_PROFILE_CITY = 'USER_PROFILE_CITY';
-    const USER_PROFILE_STAR_YEAR_CAREER = 'USER_PROFILE_STAR_YEAR_CAREER';
-    const USER_PROFILE_GENRES = 'USER_PROFILE_GENRES';
-    const USER_PROFILE_DESCRIPTION = 'USER_PROFILE_DESCRIPTION';
-    const USER_PROFILE_SOCIAL_LINK = 'USER_PROFILE_SOCIAL_LINK';
 
     // Прослушка 10 песен
     const LISTENING_TEN_TRACKS = 'LISTENING_TEN_TRACKS'; //+
@@ -38,6 +30,8 @@ interface BonusProgramTypesInterfaces
 
     // Получение баллов за подписчиков
     const RECEIVING_POINTS_FOR_SUBSCRIBERS = 'RECEIVING_POINTS_FOR_SUBSCRIBERS';
+    // за первого поклонника начисляется  30  баллов
+    const RECEIVING_POINTS_FIRST_FOLLOWER = 'RECEIVING_POINTS_FIRST_FOLLOWER';
 
     // Победа в музыкальном баттле
     const VICTORY_IN_THE_MUSICAL_BATTLE = 'VICTORY_IN_THE_MUSICAL_BATTLE'; // Вручную

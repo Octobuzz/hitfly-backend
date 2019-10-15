@@ -18,6 +18,7 @@ use App\Models\Operation;
 use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
+use App\Models\Watcheables;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Carbon;
@@ -50,6 +51,7 @@ class BonusProgramEventSubscriber
         $events->listen('eloquent.saved: '.ArtistProfile::class, self::class.'@fillArtistGenres');
         $events->listen('eloquent.updated: '.Social::class, self::class.'@fillSocials');
         $events->listen(CompletedTaskEvent::class, self::class.'@changeLevel');
+        $events->listen('eloquent.created: '.Watcheables::class, self::class.'@createWatcheables');
     }
 
     /**
@@ -560,5 +562,30 @@ class BonusProgramEventSubscriber
         }
 
         return true;
+    }
+
+    public function createWatcheables(Watcheables $watcheables): void
+    {
+        /** @var User $user */
+        $user = $watcheables->user()->first();
+
+        if ($this->participatesInBonusProgram($user)) {
+            $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::RECEIVING_POINTS_FIRST_FOLLOWER)->first();
+            if (null === $bonusType) {
+                return;
+            }
+            $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
+            $countOperation = Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id)->count();
+            if (0 === $countOperation) {
+                $operation = new Operation([
+                    'direction' => Operation::DIRECTION_INCREASE,
+                    'amount' => $bonusType->bonus,
+                    'description' => $bonusType->name,
+                    'type_id' => $bonusType->id,
+                ]);
+                $user->purseBonus->processOperation($operation);
+                event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+            }
+        }
     }
 }
