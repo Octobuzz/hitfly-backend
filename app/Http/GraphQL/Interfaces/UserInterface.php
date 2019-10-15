@@ -170,7 +170,7 @@ class UserInterface extends InterfaceType
                 },
             ],
             'watchAvaliable' => [
-                'type' => Type::string(),
+                'type' => Type::boolean(),
                 'description' => 'Можно ли следить за пользователем',
                 'resolve' => function ($model) {
                     return !$model->roles->contains('slug', RoleDictionary::ROLE_ADMIN);
