@@ -303,6 +303,8 @@ export default {
     isWatchable() {
       if (!this.track) return false;
 
+      if (!this.track.user.watchAvaliable) return false;
+
       return !this.track.my;
     },
 
