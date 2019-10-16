@@ -17,6 +17,7 @@ query TrackActionsPopover_track(
             id
             username
             iWatch
+            watchAvaliable
         }
         my @include (if: $isAuthenticated)
     }

@@ -43,6 +43,7 @@ fragment track on Track {
         favouritesTrackCount
         description
         iWatch
+        watchAvaliableF
     }
     musicGroup {
         ...musicGroup
