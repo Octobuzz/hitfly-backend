@@ -227,6 +227,40 @@ export default {
         this.$store.commit('player/pickTrack', response.data.track);
       })
     },
+    getInitialTrack() {
+      this.$apollo.provider.defaultClient.query({
+        query: gql`query AppFooter_tracks {
+          tracks(page: 1, limit: 1) {
+            data {
+              id
+              filename
+              singer
+              trackName
+              length
+              userFavourite
+              favouritesCount
+              cover(
+                  sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
+              ) {
+                  size
+                  url
+              }
+            }
+          }
+        }`
+      }).then(({ data: { tracks: { data } } }) => {
+        const [track] = data;
+
+        if (!track) return;
+
+        this.$store.commit('player/changeCurrentType', {
+          type: 'track',
+          id: track.id
+        });
+        this.$store.commit('player/pickTrack', track);
+        this.$store.commit('player/pausePlaying');
+      });
+    },
     update(e) {
       if(this.audio.duration){
         let ranges = this.audio.played.length;
@@ -321,7 +355,8 @@ export default {
   },
   mounted: function(){
     this.audio = this.$el.querySelectorAll('audio')[0];
-		this.audio.addEventListener('timeupdate', this.update);
+    this.audio.addEventListener('timeupdate', this.update);
+    this.getInitialTrack();
   }
 };
 </script>
