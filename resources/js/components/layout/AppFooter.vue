@@ -228,7 +228,7 @@ export default {
       })
     },
     getInitialTrack() {
-      this.$apollo.provider.defaultClient.query({
+      this.$apollo.provider.clients.public.query({
         query: gql`query AppFooter_tracks {
           tracks(page: 1, limit: 1) {
             data {
