@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import notificationDate from 'modules/notification-date';
+
 export default {
   name: 'NotificationTrackInTop',
 
@@ -49,7 +51,7 @@ export default {
     },
 
     dateText() {
-      const date = new Date(this.data.date);
+      const date = new Date(notificationDate(this.data.date));
 
       return date.toLocaleString();
     },
