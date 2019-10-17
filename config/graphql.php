@@ -132,6 +132,8 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'lifehack' => \App\Http\GraphQL\Query\LifehacksQuery::class,
+                'tag' => \App\Http\GraphQL\Query\TagQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -286,6 +288,8 @@ return [
         'OperationType' => \App\Http\GraphQL\Type\OperationType::class,
         'OrderType' => \App\Http\GraphQL\Type\OrderType::class,
         'ProductType' => \App\Http\GraphQL\Type\ProductType::class,
+        'LifehackType' => \App\Http\GraphQL\Type\LifehackType::class,
+        'TagType' => \App\Http\GraphQL\Type\TagType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -306,6 +310,7 @@ return [
         'CollectionFilterInput' => \App\Http\GraphQL\InputObject\CollectionFilterInput::class,
         'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
         'SocialLinkFilterInput' => \App\Http\GraphQL\InputObject\Filter\SocialLinkFilterInput::class,
+        'LifehackFilterInput' => \App\Http\GraphQL\InputObject\Filter\LifehackFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
