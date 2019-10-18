@@ -69,4 +69,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  &__empty {
+    margin: {
+      right: 32px;
+      left: 32px;
+    }
+  }
 }

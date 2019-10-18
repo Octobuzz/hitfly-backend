@@ -35,7 +35,10 @@
       class="life-hacks-category-list__main-loader"
     />
 
-    <p v-if="!categories.length && !hasMoreData">
+    <p
+      v-if="!categories.length && !hasMoreData"
+      class="life-hacks-category-list__empty"
+    >
       Список лайфхаков пуст
     </p>
   </v-simplebar>
