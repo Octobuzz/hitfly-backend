@@ -1,0 +1,72 @@
+@import '~scss/_variables.scss';
+
+.life-hacks-category-list {
+  width: 100%;
+  height: 100%;
+
+  &__sidebar-header {
+    font-size: 20px;
+    margin: 32px 32px 24px;
+  }
+
+  &__list {
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: 0;
+    list-style-type: none;
+  }
+
+  &__list-item-wrapper {
+    display: block;
+    position: relative;
+    padding: 0 24px;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f0f0f0;
+      opacity: 0;
+      z-index: -10;
+      transition: .2s;
+    }
+
+    &:hover:before,
+    &_selected:before {
+      opacity: 1;
+    }
+
+    &_selected:hover {
+      background-color: #ddd;
+    }
+
+    &_selected {
+      font-family: 'Gotham Pro Semibold', serif;
+    }
+  }
+
+  &__list-item {
+    display: block;
+    font-size: 20px;
+    line-height: 23px;
+    padding: 22px 8px;
+    border-bottom: 1px solid $layout_border_color;
+  }
+
+  &__list-loader {
+    display: block;
+    margin: 12px auto 24px;
+  }
+
+  &__main-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

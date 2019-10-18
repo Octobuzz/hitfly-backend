@@ -1,0 +1,17 @@
+.life-hacks {
+  &__sidebar-wrapper {
+    box-sizing: border-box;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: none;
+  }
+
+  &__content-section-name {
+    margin: 32px 0 16px;
+  }
+
+  &__content-section-title {
+    margin-bottom: 32px;
+  }
+}

@@ -6,6 +6,7 @@ import { cache } from './apolloProvider';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
+import LifeHacks from './pages/lifehacks/LifeHacks';
 import AboutPage from './pages/AboutPage.vue';
 import FaqPage from './pages/FaqPage.vue';
 
@@ -598,6 +599,13 @@ const routes = [
         redirect: { name: 'main' }
       }
     ]
+  },
+  {
+    path: '/life-hacks',
+    component: LifeHacks,
+    meta: {
+      title: 'Лайфхаки'
+    },
   },
   {
     path: '/about',

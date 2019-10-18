@@ -1,0 +1,16 @@
+query LifeHacksCategoryContainer_tag(
+    $pageNumber: Int!,
+    $pageLimit: Int!
+) {
+    tag(
+        page: $pageNumber,
+        limit: $pageLimit
+    ) {
+        total
+        to
+        data {
+            id
+            name
+        }
+    }
+}
