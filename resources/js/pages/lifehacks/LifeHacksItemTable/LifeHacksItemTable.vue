@@ -28,7 +28,7 @@
     />
 
     <p v-if="!hacks.length && !hasMoreData">
-      Список лайфхаков пуст.
+      Список лайфхаков пуст
     </p>
 
     <BaseModal
