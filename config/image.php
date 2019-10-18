@@ -59,6 +59,14 @@ return [
                 'width' => 290,
                 'height' => 290,
             ],
+            'size_300x300' => [
+                'width' => 300,
+                'height' => 300,
+            ],
+            'size_800x800' => [
+                'width' => 800,
+                'height' => 800,
+            ],
         ],
         'avatar' => [
             'default' => [

@@ -1,0 +1,73 @@
+.life-hacks-item-table {
+  &__table {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 3 * 316px;
+    padding-left: 0;
+    list-style-type: none;
+  }
+
+  &__table-item {
+    line-height: 0;
+    display: block;
+    margin: 0 16px 16px 0;
+  }
+
+  &__table-item-img {
+    width: 300px;
+    height: 300px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &_big {
+      width: 800px;
+      height: 800px;
+      cursor: default;
+    }
+  }
+
+  &__table-loader {
+    display: block;
+    margin: 24px auto;
+  }
+
+  &__main-loader {
+    display: block;
+    margin: 220px auto;
+  }
+
+  // cross icon
+
+  &__cross-icon {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    width: 25px;
+    height: 25px;
+    opacity: 1;
+    transition: .2s;
+    cursor: pointer;
+  }
+
+  &__cross-icon:hover {
+    opacity: .8;
+  }
+
+  &__cross-icon:before, &__cross-icon:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 26px;
+    width: 3px;
+    background-color: #e4e4e4;
+  }
+
+  &__cross-icon:before {
+    transform: rotate(45deg);
+  }
+
+  &__cross-icon:after {
+    transform: rotate(-45deg);
+  }
+
+}
