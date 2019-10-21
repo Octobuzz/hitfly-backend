@@ -33,6 +33,17 @@
 <!--      </router-link>-->
 
       <router-link
+        to="/about"
+        :class="[
+          'button',
+          'head-nav-item',
+          { active: path === '/about' }
+        ]"
+      >
+        О нас
+      </router-link>
+
+      <router-link
         v-if="isAuthenticated"
         to="/life-hacks"
         :class="[
@@ -42,17 +53,6 @@
         ]"
       >
         Лайфхаки
-      </router-link>
-
-      <router-link
-        to="/about"
-        :class="[
-          'button',
-          'head-nav-item',
-          { active: path === '/about' }
-        ]"
-      >
-        О нас
       </router-link>
 
       <a
