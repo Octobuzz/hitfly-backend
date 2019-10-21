@@ -18,6 +18,7 @@ use App\Jobs\NewEventNotificationJob;
 use App\Jobs\NewFavouriteTrackJob;
 use App\Jobs\NewStatusJob;
 use App\Jobs\ReachTopJob;
+use App\Jobs\RegisterSocialsPasswordJob;
 use App\Jobs\RemindForEventJob;
 use App\Jobs\RequestForEventJob;
 use App\Mail\BirthdayCongratulation;
@@ -47,6 +48,15 @@ class Notification
         $this->recommendation = $recommendation;
         $this->tracks = $tracks;
         $this->events = $events;
+    }
+
+    /**
+     * отправка письма с паролем при регистрации через соцсети
+     */
+    public static function socialRegisterPassword($user, $pass)
+    {
+        dispatch(new RegisterSocialsPasswordJob($user, $pass))->onQueue('low');
+
     }
 
     /**
