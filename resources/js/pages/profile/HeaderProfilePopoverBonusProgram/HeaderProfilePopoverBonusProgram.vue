@@ -132,18 +132,21 @@ export default {
 
         const currentImg = level.image;
         const currentStatus = level.title;
-        const nextStatusListenedTracksDesc = level.levelListenedTracksDesc;
 
         let nextImg = null;
         let nextStatus = null;
         let pointsToNextLevel = null;
         let tracksToNextLevel = null;
+        let nextStatusListenedTracksDesc = null;
+
+        debugger;
 
         if (nextLevel) {
           nextImg = nextLevel.image;
           nextStatus = nextLevel.slug;
           pointsToNextLevel = Math.max(0, nextLevel.points - points);
           tracksToNextLevel = Math.max(0, nextLevel.listenedTracks - listenedTracks);
+          nextStatusListenedTracksDesc = nextLevel.levelListenedTracksDesc;
         }
 
         return {
