@@ -139,8 +139,6 @@ export default {
         let tracksToNextLevel = null;
         let nextStatusListenedTracksDesc = null;
 
-        debugger;
-
         if (nextLevel) {
           nextImg = nextLevel.image;
           nextStatus = nextLevel.slug;
