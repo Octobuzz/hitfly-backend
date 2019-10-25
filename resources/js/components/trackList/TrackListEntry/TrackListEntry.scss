@@ -79,10 +79,12 @@
     font-family: 'Gotham Pro Bold', sans-serif;
     display: flex;
     align-items: center;
+    width: 0;
     height: 100%;
     cursor: pointer;
 
     &_column-layout {
+      width: auto;
       height: 0;
     }
   }
