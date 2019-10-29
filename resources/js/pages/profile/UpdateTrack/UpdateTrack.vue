@@ -204,7 +204,7 @@
           variables: {
             id: this.trackId
           },
-          mutation: gql`mutation($id: Int!) {
+          mutation: gql`mutation deleteTrack($id: Int!) {
             deleteTrackMutation (id: $id) {
               id
             }

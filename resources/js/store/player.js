@@ -76,6 +76,7 @@ const actions = {
 
   setRandomTrack({ commit }) {
     apolloProvider.clients.public.query({
+      fetchPolicy: 'network-only',
       query: gql`query player_tracks {
           tracks(page: 1, limit: 1) {
               data {
@@ -99,8 +100,6 @@ const actions = {
       const [track] = data;
 
       if (!track) return;
-
-      console.log(track);
 
       commit('changeCurrentType', {
         type: 'track',
