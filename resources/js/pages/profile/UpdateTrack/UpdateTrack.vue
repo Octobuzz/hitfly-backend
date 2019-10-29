@@ -212,6 +212,7 @@
         })
         .then(response => {
           this.$router.push('/profile/my-music');
+          this.$store.dispatch('player/setRandomTrack');
           this.$message(
             'Ваша песня удалена',
             'info',

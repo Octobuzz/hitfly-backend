@@ -1,5 +1,8 @@
 /* eslint-disable no-param-reassign, no-shadow */
 
+import gql from 'graphql-tag';
+import apolloProvider from '../apolloProvider';
+
 const state = {
   currentTrackId: null,
   currentTrack: {},
@@ -69,6 +72,43 @@ const actions = {
 
   stop({ commit }) {
     commit('stopPlaying');
+  },
+
+  setRandomTrack({ commit }) {
+    apolloProvider.clients.public.query({
+      query: gql`query player_tracks {
+          tracks(page: 1, limit: 1) {
+              data {
+                  id
+                  filename
+                  singer
+                  trackName
+                  length
+                  userFavourite
+                  favouritesCount
+                  cover(
+                      sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
+                  ) {
+                      size
+                      url
+                  }
+              }
+          }
+      }`
+    }).then(({ data: { tracks: { data } } }) => {
+      const [track] = data;
+
+      if (!track) return;
+
+      console.log(track);
+
+      commit('changeCurrentType', {
+        type: 'track',
+        id: track.id
+      });
+      commit('pickTrack', track);
+      commit('pausePlaying');
+    });
   }
 };
 
