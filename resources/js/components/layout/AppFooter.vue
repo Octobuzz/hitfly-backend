@@ -321,7 +321,7 @@ export default {
   },
   mounted: function(){
     this.audio = this.$el.querySelectorAll('audio')[0];
-    this.audio.addEventListener('timeupdate', () => { this.update(); console.log('timeupdate'); });
+    this.audio.addEventListener('timeupdate', this.update);
     this.$store.dispatch('player/setRandomTrack');
   }
 };
