@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -62,6 +63,11 @@ class Purse extends Model
         return $this->hasMany(Operation::class);
     }
 
+    /**
+     * @param Operation $operation
+     * @return bool
+     * @throws Exception
+     */
     public function processOperation(Operation $operation): bool
     {
         switch ($operation->direction) {
@@ -75,7 +81,7 @@ class Purse extends Model
                 $this->increaseBalance($operation->amount);
                 break;
             default:
-                throw new \Exception('IncorrectOperation');
+                throw new Exception('IncorrectOperation');
         }
         $operation->purseBonus()->associate($this);
         $operation->save();

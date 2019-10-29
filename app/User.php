@@ -19,12 +19,17 @@ use Carbon\Carbon;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Auth\Database\Permission;
+use Encore\Admin\Auth\Database\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -35,20 +40,21 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
 /**
  * App\User.
  *
- * @property int                                                                                                       $id
- * @property string                                                                                                    $username
- * @property string                                                                                                    $email
- * @property string|null                                                                                               $email_verified_at
- * @property string                                                                                                    $password
- * @property string|null                                                                                               $remember_token
- * @property \Illuminate\Support\Carbon|null                                                                           $created_at
- * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property string                                                                                                    $avatar
- * @property string                                                                                                    $access_token
- * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Permission[]                         $permissions
- * @property \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Role[]                               $roles
- * @property \App\Models\Purse                                                                                         $purse
+ * @property int                                                   $id
+ * @property string                                                $username
+ * @property string                                                $email
+ * @property string|null                                           $email_verified_at
+ * @property string                                                $password
+ * @property string|null                                           $remember_token
+ * @property \Illuminate\Support\Carbon|null                       $created_at
+ * @property \Illuminate\Support\Carbon|null                       $updated_at
+ * @property string                                                $avatar
+ * @property string                                                $access_token
+ * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property Collection|Permission[]                               $permissions
+ * @property Collection|Role[]                                     $roles
+ * @property Purse                                                 $purse
+ * @property Purse                                                 $purseBonus
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
