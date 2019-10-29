@@ -103,11 +103,12 @@ class NewsController extends Controller
         $grid = new Grid(new News());
 
         $grid->id('Id');
-        $grid->image('Image');
-        $grid->title('Title');
-        $grid->content('Content');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+        $grid->image('Изображение');
+        $grid->title('Заголовок');
+        $grid->sort('Сортировка');
+        $grid->content('Контент');
+        $grid->created_at('Дата создания');
+        $grid->updated_at('Дата обновления');
 
         return $grid;
     }
@@ -124,11 +125,12 @@ class NewsController extends Controller
         $show = new Show(News::findOrFail($id));
 
         $show->id('Id');
-        $show->image('Image');
-        $show->title('Title');
-        $show->content('Content');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+        $show->image('Изображение');
+        $show->title('Заголовок');
+        $show->content('Контент');
+        $show->sort('Сортировка');
+        $show->created_at('Дата создания');
+        $show->updated_at('Дата обновления');
 
         return $show;
     }
@@ -142,9 +144,10 @@ class NewsController extends Controller
     {
         $form = new Form(new News());
 
-        $form->text('title', 'Title');
-        $form->ckeditor('content', 'Content');
-        $form->image('image', 'Image');
+        $form->text('title', 'Заголовок');
+        $form->text('sort', 'Сортировка (меньше-приоритетней)')->rules('integer')->default(500);
+        $form->ckeditor('content', 'Контент');
+        $form->image('image', 'Изображение');
 
         return $form;
     }

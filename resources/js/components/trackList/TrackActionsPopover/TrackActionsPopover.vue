@@ -301,9 +301,9 @@ export default {
     },
 
     isWatchable() {
-      if (!this.track) return false;
-
-      return !this.track.my;
+      return this.track
+        && this.track.user.watchAvaliable
+        && !this.track.my;
     },
 
     canAddReviews() {

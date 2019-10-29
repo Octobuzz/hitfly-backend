@@ -28,6 +28,8 @@ Route::group([
     $router->resource('/auth/artist', ArtistController::class)->names(\App\Admin\Controllers\ArtistController::ROUTE_NAME);
     $router->resource('/news', NewsController::class)->names(\App\Admin\Controllers\NewsController::ROUTE_NAME);
     $router->resource('/bonus/operations', BonusOperationController::class)->names(\App\Admin\Controllers\BonusOperationController::ROUTE_NAME);
+    $router->resource('/lifehacks', LifehackController::class)->names(\App\Admin\Controllers\LifehackController::ROUTE_NAME);
+    $router->resource('/tags', TagController::class)->names(\App\Admin\Controllers\TagController::ROUTE_NAME);
 
     $router->post('/auth/users/add-user', UserController::class.'@addUser')->name('add_user');
 
