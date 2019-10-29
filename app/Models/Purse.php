@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use App\User;
+use Eloquent;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Purse.
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse query()
- * @mixin \Eloquent
+ * @method static Builder|Purse newModelQuery()
+ * @method static Builder|Purse newQuery()
+ * @method static Builder|Purse query()
+ * @mixin Eloquent
  *
  * @property int    $id
  * @property int    $balance
@@ -21,18 +23,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int    $operation_id
  * @property string $name
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse whereBalance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse whereOperationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Purse whereUserId($value)
+ * @method static Builder|Purse whereBalance($value)
+ * @method static Builder|Purse whereCurrencyId($value)
+ * @method static Builder|Purse whereId($value)
+ * @method static Builder|Purse whereName($value)
+ * @method static Builder|Purse whereOperationId($value)
+ * @method static Builder|Purse whereUserId($value)
  *
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Operation[] $operations
+ * @property \Illuminate\Database\Eloquent\Collection|Operation[] $operations
  */
 class Purse extends Model
 {
-    const NAME_BONUS = 'bonus';
+    public const NAME_BONUS = 'bonus';
 
     protected $attributes = [
         'balance' => 0,
@@ -44,14 +46,14 @@ class Purse extends Model
 
     protected $fillable = ['user_id', 'currency_id', 'balance', 'name'];
 
-    public function increaseBalance($amount)
+    public function increaseBalance($amount): Purse
     {
         $this->balance += $amount;
 
         return $this;
     }
 
-    public function decreaseBalance($amount)
+    public function decreaseBalance($amount): Purse
     {
         $this->balance -= $amount;
 
@@ -65,7 +67,9 @@ class Purse extends Model
 
     /**
      * @param Operation $operation
+     *
      * @return bool
+     *
      * @throws Exception
      */
     public function processOperation(Operation $operation): bool
