@@ -32,17 +32,17 @@
 <!--        Подборки-->
 <!--      </router-link>-->
 
-      <router-link
-        v-if="isAuthenticated"
-        to="/life-hacks"
-        :class="[
-          'button',
-          'head-nav-item',
-          { active: path.startsWith('/life-hacks') }
-        ]"
-      >
-        Лайфхаки
-      </router-link>
+<!--      <router-link-->
+<!--        v-if="isAuthenticated"-->
+<!--        to="/life-hacks"-->
+<!--        :class="[-->
+<!--          'button',-->
+<!--          'head-nav-item',-->
+<!--          { active: path.startsWith('/life-hacks') }-->
+<!--        ]"-->
+<!--      >-->
+<!--        Лайфхаки-->
+<!--      </router-link>-->
 
       <router-link
         to="/about"

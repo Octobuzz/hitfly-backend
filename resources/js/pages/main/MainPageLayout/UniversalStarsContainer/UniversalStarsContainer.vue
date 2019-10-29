@@ -174,6 +174,7 @@ export default {
           if (to >= total) {
             this.hasMoreData = false;
           }
+
           return data;
         },
 
