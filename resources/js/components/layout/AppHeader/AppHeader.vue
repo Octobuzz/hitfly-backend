@@ -55,18 +55,6 @@
         О нас
       </router-link>
 
-      <router-link
-        v-if="isAuthenticated"
-        to="/life-hacks"
-        :class="[
-          'button',
-          'head-nav-item',
-          { active: path.startsWith('/life-hacks') }
-        ]"
-      >
-        Лайфхаки
-      </router-link>
-
       <a
         href="http://2rockmusic.com"
         target="_blank"
