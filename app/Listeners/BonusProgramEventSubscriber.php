@@ -570,6 +570,9 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = $watcheables->user;
+        if (null === $user) {
+            return;
+        }
         if (false === $this->participatesInBonusProgram($user)) {
             return;
         }
