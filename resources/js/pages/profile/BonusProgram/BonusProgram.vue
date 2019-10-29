@@ -311,7 +311,7 @@
 
     <div :class="['bonus-program__bottom-section', containerPaddingClass]">
       <span class="h2 bonus-program__header">
-        Понижение уровня и блокировка
+        Понижение статуса и блокировка
       </span>
 
       <p class="bonus-program__p">
