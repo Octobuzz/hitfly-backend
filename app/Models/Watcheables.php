@@ -12,12 +12,15 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property User user
+ */
 class Watcheables extends Model
 {
-    const TYPE_USER = 'user';
-    const TYPE_MUSIC_GROUP = 'music_group';
+    public const TYPE_USER = 'user';
+    public const TYPE_MUSIC_GROUP = 'music_group';
 
-    const CLASS_NAME = [
+    public const CLASS_NAME = [
         User::class => self::TYPE_USER,
         MusicGroup::class => self::TYPE_MUSIC_GROUP,
     ];

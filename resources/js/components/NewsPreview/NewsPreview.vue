@@ -10,25 +10,28 @@
       v-if="!isLoading"
       class="news-preview__content"
     >
+      <router-link
+        class="news-preview__backdrop"
+        :to="link"
+      />
       <img
         :key="newsObj.id"
         :src="newsObj.image"
         alt="news cover"
         class="news-preview__cover"
       >
-    </div>
 
-    <div
-      v-if="!isLoading"
-      class="news-preview__footer"
-    >
-      <router-link class="news-preview__title" :to="link">
-        {{ newsObj.title }}
+<!--      Hide title until it is necessary-->
+<!--      <div class="news-preview__footer">-->
+<!--        <router-link class="news-preview__title" :to="link">-->
+<!--          {{ newsObj.title }}-->
+<!--        </router-link>-->
+<!--      </div>-->
+
+      <router-link class="news-preview__link" :to="link">
+        Подробнее
       </router-link>
     </div>
-    <router-link class="news-preview__link" :to="link">
-      Подробнее
-    </router-link>
   </div>
 </template>
 

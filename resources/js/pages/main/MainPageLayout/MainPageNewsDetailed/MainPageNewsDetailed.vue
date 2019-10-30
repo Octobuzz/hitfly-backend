@@ -24,8 +24,7 @@
     computed: {
       ...mapGetters(['isAuthenticated', 'apolloClient']),
       newsId() {
-        const { newsId } = this.$route.params;
-        return newsId;
+        return +this.$route.params.newsId;
       },
       isLoading() {
         if(this.newsItem === null){
