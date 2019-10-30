@@ -46,7 +46,7 @@ class UserLevels
                 $balance >= config('bonus.levelBonusPoint.'.User::LEVEL_SUPER_MUSIC_LOVER)
                 && User::LEVEL_SUPER_MUSIC_LOVER !== $user->level
                 && $keyLevel < 3
-                && $this->checkGenresListeners($countListen, self::MAX_GENRE_COUNT, config('bonus.levelListenTrack.'.User::LEVEL_SUPER_MUSIC_LOVER))
+                && $this->checkListenTracksInGenres($countListen, self::MAX_GENRE_COUNT, config('bonus.levelListenTrack.'.User::LEVEL_SUPER_MUSIC_LOVER))
             ) {
                 $user->level = User::LEVEL_SUPER_MUSIC_LOVER;
                 $user->save();
@@ -92,6 +92,29 @@ class UserLevels
                 ++$condition;
             }
             if ($countGenres === $condition) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * вычисляет прослушал ли пользователь достаточно треков в Х жанрах.
+     *
+     * @param $countArray
+     * @param int $countGenres кол-во топовых жанров у пользователя, в которых можно будет учитываться
+     * @param int $countListen кол-во прослушиваний необходимое для прохождения условия
+     *
+     * @return bool
+     */
+    private function checkListenTracksInGenres(array $countArray, $countGenres = 1, $countListen = 100)
+    {
+        $countTrackListen = 0;
+        $countArray = array_slice($countArray, 0, $countGenres);
+        foreach ($countArray as $item) {
+            $countTrackListen += $item;
+            if ($countTrackListen >= $countListen) {
                 return true;
             }
         }
