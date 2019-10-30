@@ -636,7 +636,7 @@ class BonusProgramEventSubscriber
 
         try {
             $purse->processOperation($operation);
-            event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+            event(new CompletedTaskEvent($user, $bonusType->description, $bonus));
         } catch (\Exception $e) {
             Log::alert($e->getMessage(), $e->getTrace());
         }
