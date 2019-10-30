@@ -36,7 +36,7 @@
         "socialiteproviders/providers": "dev-master",
         "symfony/process": "^4.3",
         "tymon/jwt-auth": "1.0.0-rc.3",
-        "webonyx/graphql-php": "^0.13.0",
+        "webonyx/graphql-php": "^0.13",
         "workerman/gateway-worker": "^3.0"
     },
     "require-dev": {
@@ -51,6 +51,12 @@
         "nunomaduro/collision": "^2.0",
         "phpunit/phpunit": "^7.0"
     },
+    "repositories": [
+            {
+            "type": "github",
+            "url": "https://github.com/shader2k/graphql-php.git"
+            }
+        ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
