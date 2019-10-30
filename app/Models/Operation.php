@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Operation.
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation query()
+ * @method static Builder|Operation newModelQuery()
+ * @method static Builder|Operation newQuery()
+ * @method static Builder|Operation query()
  * @mixin \Eloquent
  *
- * @property \App\Models\Purse               $purse
+ * @property Purse                           $purse
  * @property int                             $id
  * @property string                          $direction
  * @property float                           $amount
@@ -24,35 +26,35 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                             $purse_id
  * @property string|null                     $transaction
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereDirection($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation wherePurseId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereTransaction($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereUpdatedAt($value)
+ * @method static Builder|Operation whereAmount($value)
+ * @method static Builder|Operation whereCreatedAt($value)
+ * @method static Builder|Operation whereDeletedAt($value)
+ * @method static Builder|Operation whereDescription($value)
+ * @method static Builder|Operation whereDirection($value)
+ * @method static Builder|Operation whereId($value)
+ * @method static Builder|Operation wherePurseId($value)
+ * @method static Builder|Operation whereTransaction($value)
+ * @method static Builder|Operation whereUpdatedAt($value)
  *
  * @property int|null $type_id
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereTypeId($value)
+ * @method static Builder|Operation whereTypeId($value)
  *
- * @property string|null       $extra_data
- * @property \App\Models\Purse $purseBonus
+ * @property string|null $extra_data
+ * @property Purse       $purseBonus
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Operation whereExtraData($value)
+ * @method static Builder|Operation whereExtraData($value)
  */
 class Operation extends Model
 {
-    const DIRECTION_INCREASE = '+';
-    const DIRECTION_DECREASE = '-';
+    public const DIRECTION_INCREASE = '+';
+    public const DIRECTION_DECREASE = '-';
 
     protected $table = 'operation';
 
     protected $fillable = ['direction', 'amount', 'description', 'type_id', 'extra_data'];
 
-    public function purseBonus()
+    public function purseBonus(): BelongsTo
     {
         return $this->belongsTo(Purse::class, 'purse_id');
     }

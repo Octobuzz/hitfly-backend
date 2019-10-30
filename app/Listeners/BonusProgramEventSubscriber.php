@@ -21,16 +21,17 @@ use App\Models\Track;
 use App\Models\Watcheables;
 use App\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class BonusProgramEventSubscriber
 {
     /**
      * Register the listeners for the subscriber.
      *
-     * @param \Illuminate\Events\Dispatcher $events
+     * @param Dispatcher $events
      */
     public function subscribe($events)
     {
@@ -120,6 +121,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = $track->user;
+
         if ($this->participatesInBonusProgram($user)) {
             //todo  cache for find
             $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::CREATE_FIRST_PLAYLIST)->first();
@@ -407,7 +409,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('avatar')) {
-            $this->accureBonus(BonusProgramTypesInterfaces::AVATAR, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::AVATAR, $user);
         }
     }
 
@@ -422,7 +424,7 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('username')) {
-            $this->accureBonus(BonusProgramTypesInterfaces::USER_NAME, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::USER_NAME, $user);
         }
     }
 
@@ -437,55 +439,55 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('city_id')) {
-            $this->accureBonus(BonusProgramTypesInterfaces::CITY, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::CITY, $user);
         }
     }
 
     /**
      * Заполнение Города.
      *
-     * @param User $user
+     * @param ArtistProfile $artist
      *
      * @return bool|void
      */
     public function fillCareerStart(ArtistProfile $artist)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = $artist->user;
         if (null !== $user && $this->participatesInBonusProgram($user) && false !== $artist->isDirty('career_start')) {
-            $this->accureBonus(BonusProgramTypesInterfaces::CAREER_START, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::CAREER_START, $user);
         }
     }
 
     /**
      * Заполнение описания.
      *
-     * @param User $user
+     * @param ArtistProfile $artist
      *
      * @return bool|void
      */
     public function fillArtistDescription(ArtistProfile $artist)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = $artist->user;
         if (null !== $user && $this->participatesInBonusProgram($user) && false !== $artist->isDirty('description')) {
-            $this->accureBonus(BonusProgramTypesInterfaces::ARTIST_DESCRIPTION, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::ARTIST_DESCRIPTION, $user);
         }
     }
 
     /**
      * Заполнение жанров в которых играет.
      *
-     * @param User $user
+     * @param ArtistProfile $artist
      *
      * @return bool|void
      */
     public function fillArtistGenres(ArtistProfile $artist)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = $artist->user;
         if (null !== $user && $this->participatesInBonusProgram($user) && 0 !== $artist->genres->count()) {
-            $this->accureBonus(BonusProgramTypesInterfaces::ARTIST_GENRES, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::ARTIST_GENRES, $user);
         }
     }
 
@@ -501,7 +503,7 @@ class BonusProgramEventSubscriber
         /** @var User $user */
         $user = $social->user;
         if (null !== $user && $this->participatesInBonusProgram($user)) {
-            $this->accureBonus(BonusProgramTypesInterfaces::SOCIALS, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::SOCIALS, $user);
         }
     }
 
@@ -519,7 +521,7 @@ class BonusProgramEventSubscriber
      * @param $bonusName
      * @param User $user
      */
-    public function accureBonus($bonusName, User $user)
+    public function accrueBonus($bonusName, User $user): void
     {
         $bonusType = Cache::get(BonusType::BONUS_TYPE.'_'.$bonusName);
         if (null === $bonusType) {
@@ -567,25 +569,76 @@ class BonusProgramEventSubscriber
     public function createWatcheables(Watcheables $watcheables): void
     {
         /** @var User $user */
-        $user = $watcheables->user()->first();
+        $user = $watcheables->user;
+        if (null === $user) {
+            return;
+        }
+        if (false === $this->participatesInBonusProgram($user)) {
+            return;
+        }
+        $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::RECEIVING_POINTS_FOR_SUBSCRIBERS)->first();
+        if (null === $bonusType) {
+            return;
+        }
 
-        if ($this->participatesInBonusProgram($user)) {
-            $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::RECEIVING_POINTS_FIRST_FOLLOWER)->first();
-            if (null === $bonusType) {
-                return;
-            }
-            $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
-            $countOperation = Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id)->count();
-            if (0 === $countOperation) {
-                $operation = new Operation([
-                    'direction' => Operation::DIRECTION_INCREASE,
-                    'amount' => $bonusType->bonus,
-                    'description' => $bonusType->name,
-                    'type_id' => $bonusType->id,
-                ]);
-                $user->purseBonus->processOperation($operation);
-                event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
-            }
+        $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
+
+        $count = $user->watchingUser()->count();
+
+        switch ($count) {
+            case 1:
+                $bonus = 30;
+                break;
+            case 10:
+                $bonus = 50;
+                break;
+            case 50:
+                $bonus = 120;
+                break;
+            case 100:
+                $bonus = 150;
+                break;
+            case 500:
+                $bonus = 1200;
+                break;
+            case 1000:
+                $bonus = 1500;
+                break;
+            case 5000:
+                $bonus = 12000;
+                break;
+            default:
+                $bonus = 0;
+        }
+
+        if (0 === $bonus) {
+            return;
+        }
+
+        $countOperation = Operation::query()
+            ->where('type_id', '=', $bonusType->id)
+            ->where('extra_data', '=', $count)
+            ->where('purse_id', '=', $purse->id)
+            ->get()
+        ;
+
+        if ($countOperation->count() > 0) {
+            return;
+        }
+
+        $operation = new Operation([
+            'direction' => Operation::DIRECTION_INCREASE,
+            'amount' => $bonus,
+            'description' => $bonusType->name,
+            'type_id' => $bonusType->id,
+            'extra_data' => $count,
+        ]);
+
+        try {
+            $purse->processOperation($operation);
+            event(new CompletedTaskEvent($user, $bonusType->description, $bonus));
+        } catch (\Exception $e) {
+            Log::alert($e->getMessage(), $e->getTrace());
         }
     }
 }
