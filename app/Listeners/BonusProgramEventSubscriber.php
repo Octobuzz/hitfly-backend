@@ -581,6 +581,8 @@ class BonusProgramEventSubscriber
             return;
         }
 
+        $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
+
         $count = $user->watchingUser()->count();
 
         switch ($count) {
@@ -612,7 +614,6 @@ class BonusProgramEventSubscriber
         if (0 === $bonus) {
             return;
         }
-        $purse = $user->purseBonus;
 
         $countOperation = Operation::query()
             ->where('type_id', '=', $bonusType->id)
