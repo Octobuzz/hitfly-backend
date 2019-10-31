@@ -1,6 +1,6 @@
 query Track($id: Int!) {
     track(id: $id) {
-        id,
+        id
         userFavourite
     }
 }

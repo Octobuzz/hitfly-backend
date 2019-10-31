@@ -578,7 +578,6 @@ const routes = [
         meta: {
           title: 'Отзывы'
         },
-
       },
       {
         path: 'bonus-program',
