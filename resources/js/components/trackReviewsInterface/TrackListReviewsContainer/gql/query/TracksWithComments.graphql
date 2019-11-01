@@ -43,6 +43,7 @@ query TrackListReviewsContainer_TracksWithComments(
                     slug
                 }
                 iWatch @include (if: $isAuthenticated)
+                watchAvaliable
             }
             my @include (if: $isAuthenticated)
 

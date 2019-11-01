@@ -36,9 +36,9 @@ class NewsQuery extends Query
             $args['limit'] = 100;
         }
         $query = News::with($fields->getRelations())
+            ->orderBy('sort', 'ASC')
             ->orderBy('created_at', 'DESC')
         ;
-
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;

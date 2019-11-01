@@ -13,8 +13,6 @@ use App\Helpers\DateHelpers;
 use App\Helpers\PictureHelpers;
 use App\Models\Collection;
 use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Jenssegers\Date\Date;
 
 class Recommendation implements RecommendationList
@@ -26,16 +24,17 @@ class Recommendation implements RecommendationList
         $collection = Collection::query()
             ->where('is_admin', '=', 1)
             ->orderBy('created_at', 'DESC')->limit($count)->get();
-        foreach ($collection as $item){
-            /** @var Collection $item */
+        foreach ($collection as $item) {
+            /* @var Collection $item */
             $collect[] = [
                 'name' => $item->title,
                 'date' => Date::createFromFormat('Y-m-d H:i:s', $item->created_at)->format('j F'),
                 'count_tracks' => $item->tracks->count().' '.DateHelpers::getNumEnding($item->tracks->count(), ['трек', 'трека', 'треков']),
-                'list_img' => PictureHelpers::resizePicture($item, 200, 200),//config('app.url').'/images/emails/img/new-year-playlist.png',
+                'list_img' => PictureHelpers::resizePicture($item, 200, 200), //config('app.url').'/images/emails/img/new-year-playlist.png',
                 'link' => config('app.url').'/playlist/'.$item->id,
             ];
         }
+
         return $collect;
 //        return [
 //            [

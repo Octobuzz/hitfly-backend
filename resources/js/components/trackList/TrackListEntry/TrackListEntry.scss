@@ -12,6 +12,13 @@
 
   &__track-data {
     flex-grow: 1;
+
+    &_column-layout {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 70%;
+    }
   }
 
   &__index {
@@ -69,7 +76,17 @@
   }
 
   &__track-name {
+    font-family: 'Gotham Pro Bold', sans-serif;
+    display: flex;
+    align-items: center;
+    width: 0;
+    height: 100%;
     cursor: pointer;
+
+    &_column-layout {
+      width: auto;
+      height: 0;
+    }
   }
 
   &__track-author {
@@ -90,12 +107,6 @@
       color: initial;
       cursor: default;
     }
-  }
-
-  &__track-name {
-    font-family: 'Gotham Pro Bold', sans-serif;
-    flex-grow: 1;
-    width: 0;
   }
 
   &__album-title {

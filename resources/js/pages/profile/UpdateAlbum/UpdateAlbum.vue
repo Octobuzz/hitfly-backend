@@ -210,7 +210,7 @@
           };
           let info = {
             'type': format[0].value,
-            'year': this.albumInfo.year.input,
+            'year': +this.albumInfo.year.input,
             'musicGroup': bandId,
             'genres': genres,
             'author': this.albumInfo.selectedArtist,

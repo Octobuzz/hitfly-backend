@@ -133,7 +133,7 @@
               title: this.newAlbum.name,
               author: singer,
               musicGroup: bandId,
-              year: this.newAlbum.year,
+              year: +this.newAlbum.year,
               genres: genres,
               author: this.newAlbum.author,
             },
@@ -158,7 +158,7 @@
         })
       },
       handleFormatChoice() {
-        
+
       }
     },
     components: {
