@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations\User;
 
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
@@ -42,7 +43,10 @@ class LoginMutation extends Mutation
     public function resolve($root, $args)
     {
         $login = new LoginController();
-
-        return $login->loginApi(new Request($args));
+        $user = $login->loginApi(new Request($args));
+        if(false === $user){
+            throw new AuthenticationException(__('auth.failed'));
+        }
+        return $user;
     }
 }
