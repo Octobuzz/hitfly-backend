@@ -21,14 +21,14 @@
         class="news-preview__cover"
       >
 
-<!--      Hide title until it is necessary-->
-<!--      <div class="news-preview__footer">-->
-<!--        <router-link class="news-preview__title" :to="link">-->
-<!--          {{ newsObj.title }}-->
-<!--        </router-link>-->
-<!--      </div>-->
+      <!--      Hide title until it is necessary-->
+      <!--      <div class="news-preview__footer">-->
+      <!--        <router-link class="news-preview__title" :to="link">-->
+      <!--          {{ newsObj.title }}-->
+      <!--        </router-link>-->
+      <!--      </div>-->
 
-      <router-link class="news-preview__link" :to="link">
+      <router-link class="news-preview__link" :to="`news/${newsObj.id}`">
         Подробнее
       </router-link>
     </div>
@@ -36,15 +36,7 @@
 </template>
 
 <script>
-import gql from './gql';
-
-const MOBILE_WIDTH = 767;
-
 export default {
-  components: {
-
-  },
-
   props: {
     newsObj: {
       type: Object,

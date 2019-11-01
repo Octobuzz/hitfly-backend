@@ -52,11 +52,12 @@
     </UnauthenticatedPopoverWrapper>
 
     <template v-if="!columnLayout">
-      <WordTrimmedWithTooltip
-        class="track-list-entry__track-name"
-        :word="track.trackName"
-        @click="playTrack"
-      />
+      <span class="track-list-entry__track-name">
+        <WordTrimmedWithTooltip
+          :word="track.trackName"
+          @click="playTrack"
+        />
+      </span>
 
       <WordTrimmedWithTooltip
         :class="[
