@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @property User user
+ * @property int id
  */
 class Track extends Model
 {

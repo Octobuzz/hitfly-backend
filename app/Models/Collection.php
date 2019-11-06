@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property int id
+ */
 class Collection extends Model
 {
     use Itemable, PictureField;

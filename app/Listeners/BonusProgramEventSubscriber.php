@@ -62,8 +62,9 @@ class BonusProgramEventSubscriber
 
     /**
      * @param TrackPublishEvent $trackPublishEvent
+     * @throws Exception
      */
-    public function uploadFirstTrack(TrackPublishEvent $trackPublishEvent)
+    public function uploadFirstTrack(TrackPublishEvent $trackPublishEvent): void
     {
         /** @var User $user */
         $user = $trackPublishEvent->getTrack()->user;
@@ -93,8 +94,9 @@ class BonusProgramEventSubscriber
 
     /**
      * @param Album $track
+     * @throws Exception
      */
-    public function createFirstAlbum(Album $track)
+    public function createFirstAlbum(Album $track): void
     {
         /** @var User $user */
         $user = $track->user;
@@ -121,8 +123,9 @@ class BonusProgramEventSubscriber
 
     /**
      * @param Collection $track
+     * @throws Exception
      */
-    public function createFirstCollection(Collection $track)
+    public function createFirstCollection(Collection $track): void
     {
         /** @var User $user */
         $user = $track->user;
@@ -154,8 +157,10 @@ class BonusProgramEventSubscriber
      * Популярный плейлист
      *
      * @param Favourite $favourite
+     *
+     * @throws Exception
      */
-    public function favourite(Favourite $favourite)
+    public function favourite(Favourite $favourite): void
     {
         /** @var User $user */
         $user = $favourite->user;
@@ -200,20 +205,19 @@ class BonusProgramEventSubscriber
                     }
                     $bonusTypeConstant = BonusProgramTypesInterfaces::GETTING_TEN_LIKES_FROM_OTHER_USERS_PER_TRACK;
                     break;
-//            case Collection::class:
-//                $modelId = $favourite->collection->id;
-//                $countFavorite =
-//                    Favourite::query()
-//                        ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
-//                        ->where($favoriteId, $modelId)
-//                        ->count()
-//                ;
-//                if ($countFavorite < 50) {
-//                    return;
-//                }
-//                $bonusTypeConstant = BonusProgramTypesInterfaces::GETTING_TEN_LIKES_FROM_OTHER_USERS_PER;
-//                break;
-//                break;
+            case Collection::class:
+                $modelId = $favourite->collection->id;
+                $countFavorite =
+                    Favourite::query()
+                        ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
+                        ->where($favoriteId, $modelId)
+                        ->count()
+                ;
+                if ($countFavorite < 50) {
+                    return;
+                }
+                $bonusTypeConstant = BonusProgramTypesInterfaces::POPULATE_PLAY_LIST;
+                break;
                 default:
                     return;
             }
@@ -254,31 +258,19 @@ class BonusProgramEventSubscriber
      * Рецензия от критика.
      *
      * @param Comment $comment
+     *
+     * @throws Exception
      */
-    public function criticReview(Comment $comment)
+    public function criticReview(Comment $comment): void
     {
         /** @var User $user */
         $user = $comment->user;
         if ($this->participatesInBonusProgram($user)) {
-            $bonusType = BonusType::query()
-                ->where('constant_name', '=', BonusProgramTypesInterfaces::CRITIC_REVIEW)
-                ->first();
-
-            if (null === $bonusType) {
-                return;
-            }
-            $operation = new Operation([
-                'direction' => Operation::DIRECTION_INCREASE,
-                'amount' => $bonusType->bonus,
-                'description' => $bonusType->name,
-                'type_id' => $bonusType->id,
-            ]);
-            $user->purseBonus->processOperation($operation);
-            event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+            $this->accrueBonus(BonusProgramTypesInterfaces::CRITIC_REVIEW, $user);
         }
     }
 
-    public function registerUser(Registered $registered)
+    public function registerUser(Registered $registered): void
     {
         $user = $registered->user;
         if ($this->participatesInBonusProgram($user)) {
@@ -315,8 +307,10 @@ class BonusProgramEventSubscriber
      * Ежедневный вход в приложение.
      *
      * @param User $user
+     *
+     * @throws Exception
      */
-    public function entranceInApp(User $user)
+    public function entranceInApp(User $user): void
     {
         if ($this->participatesInBonusProgram($user)) {
             $bonusType = BonusType::query()
@@ -381,7 +375,7 @@ class BonusProgramEventSubscriber
         }
     }
 
-    public function listeningTenTrack(ListeningTenTrackEvent $listeningTenTrackEvent)
+    public function listeningTenTrack(ListeningTenTrackEvent $listeningTenTrackEvent): void
     {
         $user = $listeningTenTrackEvent->getUser();
         if (null !== $user && $this->participatesInBonusProgram($user)) {
@@ -409,8 +403,10 @@ class BonusProgramEventSubscriber
      * Загрузка аватарки.
      *
      * @param User $user
+     *
+     * @throws Exception
      */
-    public function uploadAvatar(User $user)
+    public function uploadAvatar(User $user): void
     {
         /** @var User $user */
         if (null !== $user && $this->participatesInBonusProgram($user) && false !== $user->isDirty('avatar')) {
@@ -424,6 +420,7 @@ class BonusProgramEventSubscriber
      * @param User $user
      *
      * @return bool|void
+     *
      * @throws Exception
      */
     public function fillUsername(User $user)
@@ -440,6 +437,7 @@ class BonusProgramEventSubscriber
      * @param User $user
      *
      * @return bool|void
+     *
      * @throws Exception
      */
     public function fillCity(User $user)
@@ -456,6 +454,7 @@ class BonusProgramEventSubscriber
      * @param ArtistProfile $artist
      *
      * @return bool|void
+     *
      * @throws Exception
      */
     public function fillCareerStart(ArtistProfile $artist)
@@ -473,6 +472,7 @@ class BonusProgramEventSubscriber
      * @param ArtistProfile $artist
      *
      * @return bool|void
+     *
      * @throws Exception
      */
     public function fillArtistDescription(ArtistProfile $artist)
@@ -490,6 +490,7 @@ class BonusProgramEventSubscriber
      * @param ArtistProfile $artist
      *
      * @return bool|void
+     *
      * @throws Exception
      */
     public function fillArtistGenres(ArtistProfile $artist)
@@ -505,7 +506,9 @@ class BonusProgramEventSubscriber
      * Заполнение соц. сети.
      *
      * @param Social $social
+     *
      * @return bool|void
+     *
      * @throws Exception
      */
     public function fillSocials(Social $social)
@@ -573,12 +576,8 @@ class BonusProgramEventSubscriber
      */
     private function participatesInBonusProgram(User $user): bool
     {
-        /** @var User $user */
-        if (true === $user->inRoles(['prof_critic', 'star'])) {
-            return false;
-        }
-
-        return true;
+        /* @var User $user */
+        return !(true === $user->inRoles(['prof_critic', 'star']));
     }
 
     public function createWatcheables(Watcheables $watcheables): void
