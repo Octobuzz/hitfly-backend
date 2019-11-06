@@ -752,9 +752,9 @@ class BonusProgramEventSubscriber
         }
     }
 
-    public function topFiveMonthUser(TopFiveMonthEvent $fiveWeekEvent): void
+    public function topFiveMonthUser(TopFiveMonthEvent $fiveMonthEvent): void
     {
-        $user = User::find($fiveWeekEvent->getIdUser());
+        $user = User::find($fiveMonthEvent->getIdUser());
         if (false === $this->participatesInBonusProgram($user)) {
             return;
         }
