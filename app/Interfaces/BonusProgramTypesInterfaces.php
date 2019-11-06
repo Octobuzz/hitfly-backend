@@ -30,6 +30,7 @@ interface BonusProgramTypesInterfaces
 
     // Получение баллов за подписчиков
     public const RECEIVING_POINTS_FOR_SUBSCRIBERS = 'RECEIVING_POINTS_FOR_SUBSCRIBERS';
+
     // за первого поклонника начисляется  30  баллов
     public const RECEIVING_POINTS_FIRST_FOLLOWER = 'RECEIVING_POINTS_FIRST_FOLLOWER';
 
@@ -37,7 +38,7 @@ interface BonusProgramTypesInterfaces
     public const VICTORY_IN_THE_MUSICAL_BATTLE = 'VICTORY_IN_THE_MUSICAL_BATTLE'; // Вручную
 
     // Попадание в плейлист ТОП-50 (обновление ежедневно)
-    public const HIT_IN_PLAYLIST_TOP_TWENTY = 'HIT_IN_PLAYLIST_TOP_TWENTY';
+    public const ENTRY_IN_PLAYLIST_TOP_FIFTY = 'ENTRY_IN_PLAYLIST_TOP_FIFTY';
 
     // Непрерывное нахождение в ТОП-5
     public const CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE = 'CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE';

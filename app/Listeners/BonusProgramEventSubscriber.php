@@ -4,8 +4,10 @@ namespace App\Listeners;
 
 use App\BuisnessLogic\BonusProgram\UserLevels;
 use App\Events\CompletedTaskEvent;
+use App\Events\CreatedTopFiftyEvent;
 use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
+use App\Events\Track\EntryTrackInTopFiftyEvent;
 use App\Events\Track\TrackPublishEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
@@ -20,6 +22,7 @@ use App\Models\Social;
 use App\Models\Track;
 use App\Models\Watcheables;
 use App\User;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Carbon;
@@ -53,6 +56,8 @@ class BonusProgramEventSubscriber
         $events->listen('eloquent.updated: '.Social::class, self::class.'@fillSocials');
         $events->listen(CompletedTaskEvent::class, self::class.'@changeLevel');
         $events->listen('eloquent.created: '.Watcheables::class, self::class.'@createWatcheables');
+        $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Попадание в плейлист ТОП-50 (обновление ежедневно)
+        $events->listen(EntryTrackInTopFiftyEvent::class, self::class.'@entryTrackInTopFifty'); // Попадание в плейлист ТОП-50 (обновление ежедневно)
     }
 
     /**
@@ -419,6 +424,7 @@ class BonusProgramEventSubscriber
      * @param User $user
      *
      * @return bool|void
+     * @throws Exception
      */
     public function fillUsername(User $user)
     {
@@ -434,6 +440,7 @@ class BonusProgramEventSubscriber
      * @param User $user
      *
      * @return bool|void
+     * @throws Exception
      */
     public function fillCity(User $user)
     {
@@ -449,6 +456,7 @@ class BonusProgramEventSubscriber
      * @param ArtistProfile $artist
      *
      * @return bool|void
+     * @throws Exception
      */
     public function fillCareerStart(ArtistProfile $artist)
     {
@@ -465,6 +473,7 @@ class BonusProgramEventSubscriber
      * @param ArtistProfile $artist
      *
      * @return bool|void
+     * @throws Exception
      */
     public function fillArtistDescription(ArtistProfile $artist)
     {
@@ -481,6 +490,7 @@ class BonusProgramEventSubscriber
      * @param ArtistProfile $artist
      *
      * @return bool|void
+     * @throws Exception
      */
     public function fillArtistGenres(ArtistProfile $artist)
     {
@@ -494,9 +504,9 @@ class BonusProgramEventSubscriber
     /**
      * Заполнение соц. сети.
      *
-     * @param User $user
-     *
+     * @param Social $social
      * @return bool|void
+     * @throws Exception
      */
     public function fillSocials(Social $social)
     {
@@ -507,7 +517,7 @@ class BonusProgramEventSubscriber
         }
     }
 
-    public function changeLevel(CompletedTaskEvent $event)
+    public function changeLevel(CompletedTaskEvent $event): void
     {
         /** @var User $user */
         $user = $event->getUser();
@@ -518,10 +528,13 @@ class BonusProgramEventSubscriber
     /**
      * начисление бонуса.
      *
-     * @param $bonusName
-     * @param User $user
+     * @param string $bonusName
+     * @param User   $user
+     * @param int    $bonusBall
+     *
+     * @throws Exception
      */
-    public function accrueBonus($bonusName, User $user): void
+    public function accrueBonus(string $bonusName, User $user, int $bonusBall = null): void
     {
         $bonusType = Cache::get(BonusType::BONUS_TYPE.'_'.$bonusName);
         if (null === $bonusType) {
@@ -535,15 +548,17 @@ class BonusProgramEventSubscriber
                 $purse = $user->purseBonus()->firstOrCreate(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
             }
             $countOperation = Operation::countOperation($bonusType, $user);
+            $bonus = $bonusBall ?? $bonusType->bonus;
+
             if (0 === $countOperation) {
                 $operation = new Operation([
                     'direction' => Operation::DIRECTION_INCREASE,
-                    'amount' => $bonusType->bonus,
+                    'amount' => $bonus,
                     'description' => $bonusType->name,
                     'type_id' => $bonusType->id,
                 ]);
                 $purse->processOperation($operation);
-                event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+                event(new CompletedTaskEvent($user, $bonusType->description, $bonus));
             }
         }
     }
@@ -581,8 +596,6 @@ class BonusProgramEventSubscriber
             return;
         }
 
-        $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
-
         $count = $user->watchingUser()->count();
 
         switch ($count) {
@@ -615,30 +628,49 @@ class BonusProgramEventSubscriber
             return;
         }
 
-        $countOperation = Operation::query()
-            ->where('type_id', '=', $bonusType->id)
-            ->where('extra_data', '=', $count)
-            ->where('purse_id', '=', $purse->id)
-            ->get()
-        ;
+        try {
+            $this->accrueBonus(BonusProgramTypesInterfaces::RECEIVING_POINTS_FOR_SUBSCRIBERS, $user, $bonus);
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
+        }
+    }
 
-        if ($countOperation->count() > 0) {
+    public function createdTopFifty(CreatedTopFiftyEvent $createdTopFiftyEvent): void
+    {
+        $trackIds = array_slice($createdTopFiftyEvent->getIdsTrack(), 0, 3);
+        $tracks = Track::query()->findMany($trackIds)->all();
+
+        foreach ($tracks as $place => $track) {
+            event(new EntryTrackInTopFiftyEvent($track, $place));
+        }
+    }
+
+    public function entryTrackInTopFifty(EntryTrackInTopFiftyEvent $entryTrackInTopFifty): void
+    {
+        $track = $entryTrackInTopFifty->getTrack();
+        $user = $track->user;
+        if (false === $this->participatesInBonusProgram($user)) {
             return;
         }
 
-        $operation = new Operation([
-            'direction' => Operation::DIRECTION_INCREASE,
-            'amount' => $bonus,
-            'description' => $bonusType->name,
-            'type_id' => $bonusType->id,
-            'extra_data' => $count,
-        ]);
+        $place = $entryTrackInTopFifty->getPlace();
+
+        $bonusType = BonusType::query()->where('constant_name', '=', BonusProgramTypesInterfaces::ENTRY_IN_PLAYLIST_TOP_FIFTY)->first();
+        if (null === $bonusType) {
+            return;
+        }
+        /** @var array $topFiftyPlacesConfig */
+        $topFiftyPlacesConfig = config('topFiftyPlaces');
+        $bonus = $topFiftyPlacesConfig($place);
+
+        if (null === $bonus) {
+            return;
+        }
 
         try {
-            $purse->processOperation($operation);
-            event(new CompletedTaskEvent($user, $bonusType->description, $bonus));
-        } catch (\Exception $e) {
-            Log::alert($e->getMessage(), $e->getTrace());
+            $this->accrueBonus(BonusProgramTypesInterfaces::ENTRY_IN_PLAYLIST_TOP_FIFTY, $user, $bonus);
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
         }
     }
 }

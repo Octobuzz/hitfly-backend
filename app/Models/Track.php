@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property User user
+ */
 class Track extends Model
 {
     use SoftDeletes, Itemable, PictureField;
