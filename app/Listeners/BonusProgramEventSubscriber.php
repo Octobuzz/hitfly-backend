@@ -726,8 +726,8 @@ class BonusProgramEventSubscriber
 
     public function topFiveWeekUser(TopFiveWeekEvent $fiveWeekEvent): void
     {
-        $user  = User::find($fiveWeekEvent->getIdUser());
-        if($this->participatesInBonusProgram($user) === false){
+        $user = User::find($fiveWeekEvent->getIdUser());
+        if (false === $this->participatesInBonusProgram($user)) {
             return;
         }
         try {
@@ -739,8 +739,8 @@ class BonusProgramEventSubscriber
 
     public function topFiveMonthUser(TopFiveWeekEvent $fiveWeekEvent): void
     {
-        $user  = User::find($fiveWeekEvent->getIdUser());
-        if($this->participatesInBonusProgram($user) === false){
+        $user = User::find($fiveWeekEvent->getIdUser());
+        if (false === $this->participatesInBonusProgram($user)) {
             return;
         }
         try {
