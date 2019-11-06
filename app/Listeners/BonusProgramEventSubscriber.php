@@ -541,12 +541,14 @@ class BonusProgramEventSubscriber
      * начисление бонуса.
      *
      * @param string $bonusName
-     * @param User   $user
-     * @param int    $bonusBall
+     * @param User   $user       Пользователь
+     * @param int    $operations кол-во выполнений если 1 то только 1 раз зачисляется если -1 то при каждом выполнении задния
+     * @param int    $bonusBall  начисляемые баллы
+     * @param mixed  $extraData
      *
      * @throws Exception
      */
-    public function accrueBonus(string $bonusName, User $user, int $bonusBall = null): void
+    public function accrueBonus(string $bonusName, User $user, int $operations = 1, int $bonusBall = null, $extraData = null): void
     {
         $bonusType = Cache::get(BonusType::BONUS_TYPE.'_'.$bonusName);
         if (null === $bonusType) {
@@ -556,22 +558,24 @@ class BonusProgramEventSubscriber
 
         if (null !== $bonusType) {
             $purse = $user->purseBonus;
-            if (null === $purse) {//при регистрации через соцсети может не быть кошелька
+            if (null === $purse) { //при регистрации через соцсети может не быть кошелька
                 $purse = $user->purseBonus()->firstOrCreate(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
             }
-            $countOperation = Operation::countOperation($bonusType, $user);
+            $countOperation = Operation::countOperation($bonusType, $user, $extraData);
             $bonus = $bonusBall ?? $bonusType->bonus;
 
-            if (0 === $countOperation) {
-                $operation = new Operation([
-                    'direction' => Operation::DIRECTION_INCREASE,
-                    'amount' => $bonus,
-                    'description' => $bonusType->name,
-                    'type_id' => $bonusType->id,
-                ]);
-                $purse->processOperation($operation);
-                event(new CompletedTaskEvent($user, $bonusType->description, $bonus));
+            if ($operations === $countOperation && -1 != $operations) {
+                return;
             }
+            $operation = new Operation([
+                'direction' => Operation::DIRECTION_INCREASE,
+                'amount' => $bonus,
+                'description' => $bonusType->name,
+                'type_id' => $bonusType->id,
+                'extra_data' => $extraData,
+            ]);
+            $purse->processOperation($operation);
+            event(new CompletedTaskEvent($user, $bonusType->description, $bonus));
         }
     }
 
@@ -605,28 +609,35 @@ class BonusProgramEventSubscriber
         }
 
         $count = $user->watchingUser()->count();
-
+        $extraData = null;
         switch ($count) {
             case 1:
                 $bonus = 30;
+                $extraData = 1;
                 break;
             case 10:
                 $bonus = 50;
+                $extraData = 10;
                 break;
             case 50:
                 $bonus = 120;
+                $extraData = 50;
                 break;
             case 100:
                 $bonus = 150;
+                $extraData = 100;
                 break;
             case 500:
                 $bonus = 1200;
+                $extraData = 500;
                 break;
             case 1000:
                 $bonus = 1500;
+                $extraData = 1000;
                 break;
             case 5000:
                 $bonus = 12000;
+                $extraData = 5000;
                 break;
             default:
                 $bonus = 0;
@@ -637,7 +648,7 @@ class BonusProgramEventSubscriber
         }
 
         try {
-            $this->accrueBonus(BonusProgramTypesInterfaces::RECEIVING_POINTS_FOR_SUBSCRIBERS, $user, $bonus);
+            $this->accrueBonus(BonusProgramTypesInterfaces::RECEIVING_POINTS_FOR_SUBSCRIBERS, $user, 1, $bonus, $extraData);
         } catch (Exception $e) {
             Log::alert($e->getMessage());
         }
@@ -689,11 +700,11 @@ class BonusProgramEventSubscriber
     public function calculateTopFiveUser(CreatedTopFiveTrack $createdTopFiveTrack): void
     {
         $users = User::query()
-            ->select('id')
-            ->leftJoin('track', 'user.id', '=', 'track.user_id')
-            ->whereIn('track.id', $createdTopFiveTrack->getTracksId())
+            ->select('users.id')
+            ->leftJoin('tracks', 'users.id', '=', 'tracks.user_id')
+            ->whereIn('tracks.id', $createdTopFiveTrack->getTracksId())
             ->distinct()
-            ->get()
+            ->get()->pluck('id')->toArray()
         ;
         $keyCacheTopFive = 'ids_users_in_top_five';
         $userInCache = Cache::get($keyCacheTopFive, []);
@@ -709,10 +720,10 @@ class BonusProgramEventSubscriber
             $diffInDays = Carbon::now()->diffInDays($date);
             $checkDateWeek = $diffInDays % 7;
             $checkDateMonth = $diffInDays % 30;
-            if ($diffInDays > 7 && 0 === $checkDateWeek) {
+            if ($diffInDays >= 7 && 0 === $checkDateWeek) {
                 event(new TopFiveWeekEvent($userId));
             }
-            if ($diffInDays > 30 && 0 === $checkDateMonth) {
+            if ($diffInDays >= 30 && 0 === $checkDateMonth) {
                 event(new TopFiveMonthEvent($userId));
             }
         }
@@ -721,7 +732,7 @@ class BonusProgramEventSubscriber
             $userInCache[$userId] = new \DateTime();
         }
 
-        Cache::forever($keyCacheTopFive, $userInCache);
+        Cache::forever($keyCacheTopFive, (array) $userInCache);
     }
 
     public function topFiveWeekUser(TopFiveWeekEvent $fiveWeekEvent): void
@@ -731,20 +742,20 @@ class BonusProgramEventSubscriber
             return;
         }
         try {
-            $this->accrueBonus(BonusProgramTypesInterfaces::CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_WEEK, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_WEEK, $user, -1);
         } catch (Exception $e) {
             Log::alert($e->getMessage());
         }
     }
 
-    public function topFiveMonthUser(TopFiveWeekEvent $fiveWeekEvent): void
+    public function topFiveMonthUser(TopFiveMonthEvent $fiveWeekEvent): void
     {
         $user = User::find($fiveWeekEvent->getIdUser());
         if (false === $this->participatesInBonusProgram($user)) {
             return;
         }
         try {
-            $this->accrueBonus(BonusProgramTypesInterfaces::CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_MONTH, $user);
+            $this->accrueBonus(BonusProgramTypesInterfaces::CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_MONTH, $user, -1);
         } catch (Exception $e) {
             Log::alert($e->getMessage());
         }
