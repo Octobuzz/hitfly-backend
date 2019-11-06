@@ -40,8 +40,11 @@ interface BonusProgramTypesInterfaces
     // Попадание в плейлист ТОП-50 (обновление ежедневно)
     public const ENTRY_IN_PLAYLIST_TOP_FIFTY = 'ENTRY_IN_PLAYLIST_TOP_FIFTY';
 
-    // Непрерывное нахождение в ТОП-5
-    public const CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE = 'CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE';
+    // Непрерывное нахождение в ТОП-5 Неделя
+    public const CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_WEEK = 'CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_WEEK';
+
+    // Непрерывное нахождение в ТОП-5 Месяц
+    public const CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_MONTH = 'CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_MONTH';
 
     // Рецензия от критика
     public const CRITIC_REVIEW = 'CRITIC_REVIEW';

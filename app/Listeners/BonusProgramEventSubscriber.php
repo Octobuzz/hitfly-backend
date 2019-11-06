@@ -9,6 +9,9 @@ use App\Events\EntranceInAppEvent;
 use App\Events\ListeningTenTrackEvent;
 use App\Events\Track\EntryTrackInTopFiftyEvent;
 use App\Events\Track\TrackPublishEvent;
+use App\Events\User\CreatedTopFiveTrack;
+use App\Events\User\TopFiveMonthEvent;
+use App\Events\User\TopFiveWeekEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
 use App\Models\ArtistProfile;
@@ -58,10 +61,14 @@ class BonusProgramEventSubscriber
         $events->listen('eloquent.created: '.Watcheables::class, self::class.'@createWatcheables');
         $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Попадание в плейлист ТОП-50 (обновление ежедневно)
         $events->listen(EntryTrackInTopFiftyEvent::class, self::class.'@entryTrackInTopFifty'); // Попадание в плейлист ТОП-50 (обновление ежедневно)
+        $events->listen(CreatedTopFiveTrack::class, self::class.'@calculateTopFiveUser');
+        $events->listen(TopFiveWeekEvent::class, self::class.'@topFiveWeekUser');
+        $events->listen(TopFiveMonthEvent::class, self::class.'@topFiveMonthUser');
     }
 
     /**
      * @param TrackPublishEvent $trackPublishEvent
+     *
      * @throws Exception
      */
     public function uploadFirstTrack(TrackPublishEvent $trackPublishEvent): void
@@ -94,6 +101,7 @@ class BonusProgramEventSubscriber
 
     /**
      * @param Album $track
+     *
      * @throws Exception
      */
     public function createFirstAlbum(Album $track): void
@@ -123,6 +131,7 @@ class BonusProgramEventSubscriber
 
     /**
      * @param Collection $track
+     *
      * @throws Exception
      */
     public function createFirstCollection(Collection $track): void
@@ -636,8 +645,12 @@ class BonusProgramEventSubscriber
 
     public function createdTopFifty(CreatedTopFiftyEvent $createdTopFiftyEvent): void
     {
-        $trackIds = array_slice($createdTopFiftyEvent->getIdsTrack(), 0, 3);
-        $tracks = Track::query()->findMany($trackIds)->all();
+        $trackIdsThree = array_slice($createdTopFiftyEvent->getIdsTrack(), 0, 3);
+
+        $trackIdsFive = array_slice($createdTopFiftyEvent->getIdsTrack(), 0, 5);
+        event(new CreatedTopFiveTrack($trackIdsFive));
+
+        $tracks = Track::query()->findMany($trackIdsThree)->all();
 
         foreach ($tracks as $place => $track) {
             event(new EntryTrackInTopFiftyEvent($track, $place));
@@ -668,6 +681,70 @@ class BonusProgramEventSubscriber
 
         try {
             $this->accrueBonus(BonusProgramTypesInterfaces::ENTRY_IN_PLAYLIST_TOP_FIFTY, $user, $bonus);
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
+        }
+    }
+
+    public function calculateTopFiveUser(CreatedTopFiveTrack $createdTopFiveTrack): void
+    {
+        $users = User::query()
+            ->select('id')
+            ->leftJoin('track', 'user.id', '=', 'track.user_id')
+            ->whereIn('track.id', $createdTopFiveTrack->getTracksId())
+            ->distinct()
+            ->get()
+        ;
+        $keyCacheTopFive = 'ids_users_in_top_five';
+        $userInCache = Cache::get($keyCacheTopFive, []);
+        foreach ($userInCache  as $userId => $date) {
+            $key = array_search($userId, $users);
+            if (false === $key) {
+                unset($userInCache[$userId]);
+                continue;
+            }
+
+            unset($users[$key]);
+
+            $diffInDays = Carbon::now()->diffInDays($date);
+            $checkDateWeek = $diffInDays % 7;
+            $checkDateMonth = $diffInDays % 30;
+            if ($diffInDays > 7 && 0 === $checkDateWeek) {
+                event(new TopFiveWeekEvent($userId));
+            }
+            if ($diffInDays > 30 && 0 === $checkDateMonth) {
+                event(new TopFiveMonthEvent($userId));
+            }
+        }
+
+        foreach ($users as $userId) {
+            $userInCache[$userId] = new \DateTime();
+        }
+
+        Cache::forever($keyCacheTopFive, $userInCache);
+    }
+
+    public function topFiveWeekUser(TopFiveWeekEvent $fiveWeekEvent): void
+    {
+        $user  = User::find($fiveWeekEvent->getIdUser());
+        if($this->participatesInBonusProgram($user) === false){
+            return;
+        }
+        try {
+            $this->accrueBonus(BonusProgramTypesInterfaces::CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_WEEK, $user);
+        } catch (Exception $e) {
+            Log::alert($e->getMessage());
+        }
+    }
+
+    public function topFiveMonthUser(TopFiveWeekEvent $fiveWeekEvent): void
+    {
+        $user  = User::find($fiveWeekEvent->getIdUser());
+        if($this->participatesInBonusProgram($user) === false){
+            return;
+        }
+        try {
+            $this->accrueBonus(BonusProgramTypesInterfaces::CONTINUOUS_PRESENCE_IN_THE_TOP_FIVE_MONTH, $user);
         } catch (Exception $e) {
             Log::alert($e->getMessage());
         }
