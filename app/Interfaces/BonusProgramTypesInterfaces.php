@@ -31,9 +31,6 @@ interface BonusProgramTypesInterfaces
     // Получение баллов за подписчиков
     public const RECEIVING_POINTS_FOR_SUBSCRIBERS = 'RECEIVING_POINTS_FOR_SUBSCRIBERS';
 
-    // за первого поклонника начисляется  30  баллов
-    public const RECEIVING_POINTS_FIRST_FOLLOWER = 'RECEIVING_POINTS_FIRST_FOLLOWER';
-
     // Победа в музыкальном баттле
     public const VICTORY_IN_THE_MUSICAL_BATTLE = 'VICTORY_IN_THE_MUSICAL_BATTLE'; // Вручную
 

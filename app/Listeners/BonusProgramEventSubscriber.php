@@ -664,7 +664,7 @@ class BonusProgramEventSubscriber
         $tracks = Track::query()->findMany($trackIdsThree)->all();
 
         foreach ($tracks as $place => $track) {
-            event(new EntryTrackInTopFiftyEvent($track, $place));
+            event(new EntryTrackInTopFiftyEvent($track, $place + 1));
         }
     }
 
@@ -683,15 +683,19 @@ class BonusProgramEventSubscriber
             return;
         }
         /** @var array $topFiftyPlacesConfig */
-        $topFiftyPlacesConfig = config('topFiftyPlaces');
-        $bonus = $topFiftyPlacesConfig($place);
+        $topFiftyPlacesConfig = config('bonus.topFiftyPlaces');
+        if (null === $topFiftyPlacesConfig) {
+            return;
+        }
+
+        $bonus = $topFiftyPlacesConfig[$place];
 
         if (null === $bonus) {
             return;
         }
 
         try {
-            $this->accrueBonus(BonusProgramTypesInterfaces::ENTRY_IN_PLAYLIST_TOP_FIFTY, $user, $bonus);
+            $this->accrueBonus(BonusProgramTypesInterfaces::ENTRY_IN_PLAYLIST_TOP_FIFTY, $user, 1, $bonus, $track->id);
         } catch (Exception $e) {
             Log::alert($e->getMessage());
         }
