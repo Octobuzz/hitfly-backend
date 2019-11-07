@@ -609,35 +609,28 @@ class BonusProgramEventSubscriber
         }
 
         $count = $user->watchingUser()->count();
-        $extraData = null;
+        $extraData = $count;
         switch ($count) {
             case 1:
                 $bonus = 30;
-                $extraData = 1;
                 break;
             case 10:
                 $bonus = 50;
-                $extraData = 10;
                 break;
             case 50:
                 $bonus = 120;
-                $extraData = 50;
                 break;
             case 100:
                 $bonus = 150;
-                $extraData = 100;
                 break;
             case 500:
                 $bonus = 1200;
-                $extraData = 500;
                 break;
             case 1000:
                 $bonus = 1500;
-                $extraData = 1000;
                 break;
             case 5000:
                 $bonus = 12000;
-                $extraData = 5000;
                 break;
             default:
                 $bonus = 0;

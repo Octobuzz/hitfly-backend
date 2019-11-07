@@ -11,7 +11,7 @@ class CreatedTopFiveTrack
      *
      * @param int[] $tracks
      */
-    public function __construct($tracks)
+    public function __construct(array $tracks)
     {
         $this->tracks = $tracks;
     }
