@@ -29,7 +29,7 @@ class UpdateMyProfileMutation extends Mutation
     {
         return [
             'profile' => [
-                'type' => Type::nonNull(\GraphQL::type('MyProfileInput')),
+                'type' => \GraphQL::type('MyProfileInput'),
                 'description' => 'профиль обычного пользователя',
             ],
             'artistProfile' => [
