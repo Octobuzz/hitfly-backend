@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Log;
 
 class AccrueBonusService
 {
+    /**
+     * @param string    $bonusName  Контанта название бонуса
+     * @param User|null $user
+     * @param int       $operations Количество возможный операций по бонусной программе указать -1 для многократных операций
+     * @param int|null  $bonusBall  кол-во балов , если не указано берет из БД
+     * @param null      $extraData  дополнительные данные
+     *
+     * @return bool
+     */
     public function process(
         string $bonusName,
         ?User $user = null,
