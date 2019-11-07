@@ -14,4 +14,9 @@ return [
         \App\User::LEVEL_CONNOISSEUR_OF_THE_GENRE => 2500,
         \App\User::LEVEL_SUPER_MUSIC_LOVER => 10000,
     ],
+    'topFiftyPlaces' => [
+        1 => 5000,
+        2 => 4000,
+        3 => 3000,
+    ],
 ];
