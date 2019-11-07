@@ -16,7 +16,7 @@ class LoginMutation extends Mutation
 
     public function type()
     {
-        return \GraphQL::type('User');
+        return Type::nonNull(\GraphQL::type('User'));
     }
 
     public function args()
