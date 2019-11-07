@@ -46,9 +46,11 @@ class AccrueBonusService
         $purse = $this->getPurse($user);
         $bonus = $bonusBall ?? $bonusType->bonus;
 
-        $countOperation = Operation::countOperation($bonusType, $user, $extraData);
-        if ($operations === $countOperation && -1 !== $operations) {
-            return false;
+        if (-1 !== $operations) {
+            $countOperation = Operation::countOperation($bonusType, $user, $extraData);
+            if ($operations === $countOperation) {
+                return false;
+            }
         }
 
         $process = $this->processOperation($bonusType, $bonus, $purse, $extraData);
