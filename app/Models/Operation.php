@@ -61,6 +61,7 @@ class Operation extends Model
 
     public static function countOperation(BonusType $bonusType, User $user, $extraData = null): int
     {
+        //todo repository
         $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
         $query = Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id);
 

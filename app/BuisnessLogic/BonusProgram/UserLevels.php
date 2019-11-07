@@ -12,9 +12,9 @@ use App\User;
  */
 class UserLevels
 {
-    const MAX_GENRE_COUNT = 5; //максимальное количество жанров, которое понадобится для рассчета
+    public const MAX_GENRE_COUNT = 5; //максимальное количество жанров, которое понадобится для рассчета
 
-    public function changeUserLevel(User $user)
+    public function changeUserLevel(User $user): void
     {
         if (null === $user->purseBonus) {
             $user->load('purseBonus');

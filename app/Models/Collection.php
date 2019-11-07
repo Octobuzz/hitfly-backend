@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int id
+ * @property User user
  */
 class Collection extends Model
 {
