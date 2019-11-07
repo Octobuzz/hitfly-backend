@@ -57,6 +57,7 @@ use App\Notifications\ResetPassword as ResetPasswordNotification;
  * @property Collection|Role[]                                     $roles
  * @property Purse                                                 $purse
  * @property Purse                                                 $purseBonus
+ * @property Carbon                                                $last_entrance_app
  *
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()

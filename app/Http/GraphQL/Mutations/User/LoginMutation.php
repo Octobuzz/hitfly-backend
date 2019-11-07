@@ -44,9 +44,10 @@ class LoginMutation extends Mutation
     {
         $login = new LoginController();
         $user = $login->loginApi(new Request($args));
-        if(false === $user){
+        if (false === $user) {
             throw new AuthenticationException(__('auth.failed'));
         }
+
         return $user;
     }
 }

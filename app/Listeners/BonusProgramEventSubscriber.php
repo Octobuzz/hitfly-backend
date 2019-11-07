@@ -16,15 +16,13 @@ use App\Events\User\TopFiveWeekEvent;
 use App\Interfaces\BonusProgramTypesInterfaces;
 use App\Models\Album;
 use App\Models\ArtistProfile;
-use App\Models\BonusType;
 use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\Favourite;
-use App\Models\Operation;
-use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
 use App\Models\Watcheables;
+use App\Repositories\FavoriteRepositories;
 use App\User;
 use Exception;
 use Illuminate\Auth\Events\Registered;
@@ -35,10 +33,12 @@ use Illuminate\Support\Facades\Cache;
 class BonusProgramEventSubscriber
 {
     private $accrueBonusService;
+    private $favoriteRepositories;
 
-    public function __construct(AccrueBonusService $accrueBonusService)
+    public function __construct(AccrueBonusService $accrueBonusService, FavoriteRepositories $favoriteRepositories)
     {
         $this->accrueBonusService = $accrueBonusService;
+        $this->favoriteRepositories = $favoriteRepositories;
     }
 
     /**
@@ -118,23 +118,16 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = $favourite->user;
-        if ($this->participatesInBonusProgram($user)) {
-            $favoriteType = 'favouriteable_type';
-            $favoriteId = 'favouriteable_id';
 
-            switch (get_class($favourite->favouriteable()->getRelated())) {
+        $classFavourite = get_class($favourite->favouriteable()->getRelated());
+        switch ($classFavourite) {
                 case Album::class:
                     $modelId = $favourite->album->id;
                     $albumUser = $favourite->album->user;
                     if ($user->id === $albumUser->id) {
                         return;
                     }
-                    $countFavorite =
-                        Favourite::query()
-                            ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
-                            ->where($favoriteId, $modelId)
-                            ->where('user_id', '<>', $user->id)
-                            ->count();
+                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $user);
 
                     if ($countFavorite < 10) {
                         return;
@@ -148,12 +141,7 @@ class BonusProgramEventSubscriber
                     if ($user->id === $trackUser->id) {
                         return;
                     }
-                    $countFavorite =
-                        Favourite::query()
-                            ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
-                            ->where($favoriteId, $modelId)
-                            ->where('user_id', '<>', $user->id)
-                            ->count();
+                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $user);
                     if ($countFavorite < 10) {
                         return;
                     }
@@ -161,51 +149,17 @@ class BonusProgramEventSubscriber
                     break;
                 case Collection::class:
                     $modelId = $favourite->collection->id;
-                    $countFavorite =
-                        Favourite::query()
-                            ->where($favoriteType, '=', get_class($favourite->favouriteable()->getRelated()))
-                            ->where($favoriteId, $modelId)
-                            ->count()
-                    ;
+                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $user);
                     if ($countFavorite < 50) {
                         return;
                     }
                     $bonusTypeConstant = BonusProgramTypesInterfaces::POPULATE_PLAY_LIST;
                     break;
-                    default:
-                        return;
-                }
-
-            $bonusType = BonusType::query()
-                ->where('constant_name', '=', $bonusTypeConstant)
-                ->first();
-
-            if (null === $bonusType) {
-                return;
-            }
-
-            $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
-            $countOperation = Operation::query()
-                ->where('purse_id', '=', $purse->id)
-                ->where('type_id', '=', $bonusType->id)
-                ->where('extra_data', '=', $modelId)
-                ->count();
-
-            if ($countOperation > 0) {
-                return;
-            }
-
-            $operation = new Operation([
-                'direction' => Operation::DIRECTION_INCREASE,
-                'amount' => $bonusType->bonus,
-                'description' => $bonusType->name,
-                'type_id' => $bonusType->id,
-                'extra_data' => $modelId,
-            ]);
-
-            $user->purseBonus->processOperation($operation);
-            event(new CompletedTaskEvent($user, $bonusType->description, $bonusType->bonus));
+                default:
+                    return;
         }
+
+        $this->accrueBonusService->process($bonusTypeConstant, $user, 1, null, $modelId);
     }
 
     /**
@@ -241,42 +195,33 @@ class BonusProgramEventSubscriber
         if ($diffDate <= 0) {
             return;
         }
+        $countEntranceApp = $user->count_entrance_app;
         if ($diffDate > 1) {
             $user->last_entrance_app = Carbon::now();
-            $user->count_entrance_app = 0;
             $user->save();
 
             return;
         }
 
         $user->last_entrance_app = Carbon::now();
-        ++$user->count_entrance_app;
+        ++$countEntranceApp;
         $user->save();
 
         // Первый день
-        if (1 === $user->count_entrance_app) {
+        if (1 === $countEntranceApp) {
             return;
         }
 
-        switch ($user->count_entrance_app) { //todo config
-                case 2:
-                    $bonus = 3;
-                    break;
-                case 3:
-                    $bonus = 6;
-                    break;
-                case 4:
-                    $bonus = 12;
-                    break;
-                case 5:
-                    $bonus = 20;
-                    break;
-                case 6:
-                    $bonus = 35;
-                    break;
-                default:
-                    $bonus = 50;
-            }
+        if ($countEntranceApp >= 7) {
+            $bonus = 50;
+        } else {
+            $config = config('bonus.entranceApp');
+            $bonus = $config[$countEntranceApp] ?? null;
+        }
+
+        if (null === $bonus) {
+            return;
+        }
 
         $this->accrueBonusService->process(BonusProgramTypesInterfaces::DAILY_ENTRANCE_TO_THE_APP, $user, -1, $bonus);
     }
@@ -414,35 +359,14 @@ class BonusProgramEventSubscriber
 
         $count = $user->watchingUser()->count();
         $extraData = $count;
-        switch ($count) { //todo config
-            case 1:
-                $bonus = 30;
-                break;
-            case 10:
-                $bonus = 50;
-                break;
-            case 50:
-                $bonus = 120;
-                break;
-            case 100:
-                $bonus = 150;
-                break;
-            case 500:
-                $bonus = 1200;
-                break;
-            case 1000:
-                $bonus = 1500;
-                break;
-            case 5000:
-                $bonus = 12000;
-                break;
-            default:
-                $bonus = 0;
-        }
 
-        if (0 === $bonus) {
+        $config = config('bonus.watchingUser');
+
+        if (false === isset($config[$count])) {
             return;
         }
+
+        $bonus = $config[$count];
 
         $this->accrueBonusService->process(BonusProgramTypesInterfaces::RECEIVING_POINTS_FOR_SUBSCRIBERS, $user, 1, $bonus, $extraData);
     }
