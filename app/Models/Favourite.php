@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property Collection collection
  * @property Track track
+ * @property Album album
  */
 class Favourite extends Model
 {
