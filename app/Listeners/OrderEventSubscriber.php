@@ -18,7 +18,7 @@ class OrderEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen(CreateOrder::class, self::class.'@buyComment');
+        $events->listen(CreateOrder::class, self::class.'@createOrder');
         $events->listen(DoneOrder::class, self::class.'@doneOrder');
     }
 
@@ -64,8 +64,6 @@ class OrderEventSubscriber
      */
     public function doneOrder($doneOrder)
     {
-        $order = $doneOrder->getOrder();
-        $order->status = Order::STATUS_DONE;
-        $order->save();
+        //todo: отиравлять уведомление владельцу о выполнении заказа
     }
 }
