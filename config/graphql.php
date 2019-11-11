@@ -241,7 +241,7 @@ return [
 
                 'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
 
-                'buyStudioService' => \App\Http\GraphQL\Mutations\Store\BuyStudioServiceMutation::class,
+                'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -323,7 +323,7 @@ return [
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
-        'ProductStudioTypeEnum' => \App\Http\GraphQL\Enums\ProductStudioTypeEnum::class,
+        'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

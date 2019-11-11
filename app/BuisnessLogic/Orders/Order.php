@@ -41,7 +41,7 @@ class Order
         try {
             $operationResult = $user->purseBonus->processOperation($operation);
             if (false === $operationResult) {
-                throw new ValidationError('На вашем счете недостаточно бонусов');
+                throw new ValidationError('На вашем счету недостаточно бонусов');
             }
             $order = new \App\Models\Order([
                 'name' => $product->name,
@@ -50,10 +50,6 @@ class Order
                 'product_id' => $product->id,
             ]);
             $order->save();
-            switch ($product->alias) {
-                case 'COMMENT_FROM_STAR'://покупка комментария от звезды
-                    $this->commentStar($product, $attributes, $order);
-            }
             \DB::commit();
         } catch (ValidationError $error) {
             $errorMessage = $error->getMessage();

@@ -8,7 +8,7 @@ use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
 
-class BuyStudioServiceMutation extends Mutation
+class BuyProductMutation extends Mutation
 {
     private $order;
 
@@ -19,8 +19,8 @@ class BuyStudioServiceMutation extends Mutation
     }
 
     protected $attributes = [
-        'name' => 'BuyStudioMutation',
-        'description' => 'Покупка услуг студии',
+        'name' => 'BuyProductMutation',
+        'description' => 'Покупка товаров',
     ];
 
     public function type()
@@ -32,7 +32,7 @@ class BuyStudioServiceMutation extends Mutation
     {
         return [
             'studioProduct' => [
-                'type' => Type::nonNull(\GraphQL::type('ProductStudioTypeEnum')),
+                'type' => Type::nonNull(\GraphQL::type('ProductTypeEnum')),
                 'description' => 'Товар Услуга на студии',
                 'rules' => ['required', new CanBuyProduct()],
             ],
