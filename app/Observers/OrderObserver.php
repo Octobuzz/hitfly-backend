@@ -2,13 +2,11 @@
 
 namespace App\Observers;
 
-use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\Dictionaries\OrderStatusDictionary;
+use App\Events\Order\CreateOrder;
 use App\Events\Order\DoneOrder;
 use App\Models\Album;
 use App\Models\Order;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use ReflectionException;
 
 class OrderObserver
@@ -22,10 +20,15 @@ class OrderObserver
      */
     public function updated(Order $order)
     {
-        if ($order->status === Order::STATUS_DONE) {
+        if (OrderStatusDictionary::STATUS_DONE === $order->status) {
             event(new DoneOrder($order));
         }
-
     }
 
+    public function created(Order $order)
+    {
+        if (OrderStatusDictionary::STATUS_NEW === $order->status) {
+            event(new CreateOrder($order));
+        }
+    }
 }

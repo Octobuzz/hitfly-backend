@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Dictionaries\OrderStatusDictionary;
 use App\Models\Order;
 use App\Models\Product;
 use App\User;
@@ -61,7 +62,7 @@ class RequestsForCommentsQuery extends Query
     public function getOrderList($attrId, $productId)
     {
         $query = Order::query()->select('orders.*', 'value.value');
-        $query->where('orders.status', Order::STATUS_NEW);
+        $query->where('orders.status', OrderStatusDictionary::STATUS_NEW);
         $query->where('orders.product_id', $productId);
 
         $query->leftJoin('order_attribute_value as value', function ($join) {
