@@ -36,9 +36,9 @@ class RegistrationCompleted extends Mailable
 
         return $this->view('emails.register.completed',
             [
-                'topList' => $topPlayList->getTopTrack(5),
-                'playLists' => $recommend->getNewUserPlayList(2),
-                'linkToProfile' => env('APP_URL').'/profile/my-music',
+                'topList' => $topPlayList->getTopTrack(3),
+                'playLists' => $recommend->getNewUserPlayList(3),
+                'linkToProfile' => config('app.url').'/profile/my-music',
                 'importantEvents' => $events->getImportantEvents(1),
                 'star' => false,
             ]

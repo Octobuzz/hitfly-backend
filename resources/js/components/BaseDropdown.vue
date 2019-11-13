@@ -17,7 +17,11 @@
       v-on="$listeners"
       @open="closed = false"
       @close="closed = true"
-    />
+    >
+      <template #noOptions>
+        Список пуст
+      </template>
+    </v-select>
   </label>
 </template>
 

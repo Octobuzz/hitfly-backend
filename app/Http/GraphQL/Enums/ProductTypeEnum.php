@@ -5,7 +5,7 @@ namespace App\Http\GraphQL\Enums;
 use App\Models\Product;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class ProductStudioTypeEnum extends GraphQLType
+class ProductTypeEnum extends GraphQLType
 {
     protected $enumObject = true;
 
@@ -14,15 +14,15 @@ class ProductStudioTypeEnum extends GraphQLType
         parent::__construct($attributes);
         $products = $this->getStudiaProducts();
         $this->attributes = [
-            'name' => 'ProductStudioTypeEnum',
-            'description' => 'Услуги студии(товары)',
+            'name' => 'ProductTypeEnum',
+            'description' => 'Товары',
             'values' => $products,
         ];
     }
 
     private function getStudiaProducts()
     {
-        return Product::query()->select('alias')->where('alias', 'like', 'STUDIO_%')
+        return Product::query()->select('alias')
             ->get()->pluck('alias', 'alias')->toArray();
     }
 }

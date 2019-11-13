@@ -359,7 +359,7 @@
         'user-card__about'
       ]"
     >
-      <div class="user-card__item-header">
+      <div class="user-card__item-header user-card__about-header">
         <span>
           {{ isStar ? 'Биография' : 'Обо мне' }}
         </span>

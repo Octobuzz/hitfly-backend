@@ -61,6 +61,7 @@ use Illuminate\Support\Facades\Storage;
  * @mixin Eloquent
  *
  * @property int|null $music_group_id
+ * @property User user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereMusicGroupId($value)
  */
@@ -117,6 +118,16 @@ class Album extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getUser(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
+    {
+        return $this->user();
+    }
+
+    public function getMusicGroup(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
+    {
+        return $this->musicGroup();
+    }
+
     public function userFavourite()
     {
         $user = \Auth::user();
@@ -167,7 +178,14 @@ class Album extends Model
 
     public function getAuthor(): ?string
     {
-        return $this->author;
+        if (null !== $this->getMusicGroup) {
+            return $this->getMusicGroup->name;
+        }
+        if (null !== $this->getUser) {
+            return $this->getUser->username;
+        }
+
+        return 'unknown';
     }
 
     public function tracks(): HasMany

@@ -75,6 +75,7 @@
         </template>
 
         <AlbumPopover
+          v-if="isAuthenticated"
           :album-id="albumId"
           @press-favourite="onPressFavourite"
         >
@@ -95,11 +96,11 @@
     >
       <router-link :to="titleLink">
         <span class="album-preview__title">
-          {{ album.title }}
+          <WordTrimmedWithTooltip :word="album.title" />
         </span>
       </router-link>
       <span class="album-preview__author album-preview__author_no-highlight">
-        author {{ album.author }}
+        <WordTrimmedWithTooltip :word="album.author" />
       </span>
     </div>
   </div>
@@ -113,6 +114,7 @@ import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import PauseIcon from 'components/icons/PauseIcon.vue';
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from './gql';
 
@@ -124,6 +126,7 @@ export default {
     DotsIcon,
     PlayIcon,
     PauseIcon,
+    WordTrimmedWithTooltip,
     UnauthenticatedPopoverWrapper
   },
 
@@ -137,7 +140,9 @@ export default {
   data() {
     return {
       isLoading: true,
-      album: null
+      album: null,
+      useTrimmedTitle: false,
+      useTrimmedAuthor: false
     };
   },
 

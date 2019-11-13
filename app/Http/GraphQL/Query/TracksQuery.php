@@ -6,6 +6,7 @@ use App\Helpers\DBHelpers;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
@@ -128,6 +129,9 @@ class TracksQuery extends Query
                 ->where('genres_bindings.genre_id', '=', $args['filters']['genre'])
                 ->where('genres_bindings.genreable_type', '=', Track::class)
             ;
+        }
+        if (false === empty($args['filters']['new']) && true === $args['filters']['new']) {
+            $query->where('tracks.created_at', '>=', Carbon::now()->subDays(14)->startOfDay());
         }
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);

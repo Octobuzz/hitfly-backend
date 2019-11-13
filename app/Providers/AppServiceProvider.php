@@ -53,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('collection_delete_validate', 'App\Validation\CollectionValidator@validateDelete');
         Validator::extend('remove_track_from_album_validate', 'App\Validation\AlbumValidator@removeTrackFromAlbum');
         Validator::extend('remove_track_from_collection_validate', 'App\Validation\CollectionValidator@removeTrackFromCollection');
+        Validator::extend('login_password_correct', 'App\Validation\LoginPasswordCorrect@validate');
         $this->app->singleton(SearchIndexer::class, function ($app) {
             return new SearchIndexer();
         });

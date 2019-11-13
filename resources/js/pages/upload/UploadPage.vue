@@ -30,16 +30,16 @@
       <div class="up-page">
         <div class="up-page__bottom">
           <p class="up-page__agree">
-              Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <a href="/">Условиям использования</a>, и вы не нарушаете авторские права.
+              Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим <a href="/policy" target="_blank">Условиям использования</a>, и вы не нарушаете авторские права.
           </p>
           <div class="up-b-info">
             <div class="up-b-info__left">
               <a href="/policy" target="_blank" class="up-b-info__link">Пользовательское соглашение</a>
-              <a href="/" class="up-b-info__link">Авторам</a>
-              <a href="/" class="up-b-info__link">Помощь</a>
+<!--              <a href="/" class="up-b-info__link">Авторам</a>-->
+              <a href="/contacts" class="up-b-info__link">Помощь</a>
             </div>
             <div class="up-b-info__right">
-              <a href="/" class="up-b-info__link">Как  загрузить песню?</a>
+<!--              <a href="/" class="up-b-info__link">Как загрузить песню?</a>-->
             </div>
           </div>
         </div>
@@ -141,7 +141,7 @@
         }).then((response) => {
           this.$router.push('/profile/my-music');
           this.$message(
-            'Ваша песня загружена и будет доступна через 10 минут',
+            'Мы обрабатываем ваш трек. Ваша песня проявится в профиле через несколько минут.',
             'info'
           );
         }).catch((error) => {

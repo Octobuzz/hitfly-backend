@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\BuisnessLogic\Notify\BaseNotifyMessage;
+use App\Dictionaries\RoleDictionary;
 use App\Events\Order\CreateOrder;
 use App\Events\Order\DoneOrder;
+use App\Jobs\NewOrderAdminJob;
 use App\Models\Order;
 use App\Notifications\BaseNotification;
 use App\User;
@@ -18,8 +20,17 @@ class OrderEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen(CreateOrder::class, self::class.'@buyComment');
+        $events->listen(CreateOrder::class, self::class.'@createOrder');
         $events->listen(DoneOrder::class, self::class.'@doneOrder');
+    }
+
+    public function createOrder($createOrder)
+    {
+        $order = $createOrder->getOrder();
+        $adminList = User::filterRoles([RoleDictionary::ROLE_ADMIN])->get();
+        foreach ($adminList as $admin) {
+            dispatch(new NewOrderAdminJob($admin, $order))->onQueue('low');
+        }
     }
 
     /**
@@ -64,8 +75,6 @@ class OrderEventSubscriber
      */
     public function doneOrder($doneOrder)
     {
-        $order = $doneOrder->getOrder();
-        $order->status = Order::STATUS_DONE;
-        $order->save();
+        //todo: отиравлять уведомление владельцу о выполнении заказа
     }
 }

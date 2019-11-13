@@ -32,15 +32,19 @@
 
   &__header-duration {
     text-align: right;
-    width: 116px;
+    width: 105px;
     padding-right: 8px;
 
     &_padded-l {
-      padding-left: 52px;
+      padding-left: 56px;
+    }
+
+    &_padded-l-zero {
+      padding-left: 0;
     }
 
     &_padded-r {
-      padding-right: 56px;
+      padding-right: 55px;
     }
   }
 }

@@ -16,7 +16,7 @@ class LoginMutation extends Mutation
 
     public function type()
     {
-        return \GraphQL::type('User');
+        return Type::nonNull(\GraphQL::type('User'));
     }
 
     public function args()
@@ -25,12 +25,12 @@ class LoginMutation extends Mutation
             'email' => [
                 'description' => 'Почта',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email'],
+                'rules' => ['required', 'email', 'login_password_correct'],
             ],
             'password' => [
                 'description' => 'Пароль',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['required'],
+                'rules' => ['required', 'login_password_correct'],
             ],
             'remember' => [
                 'description' => 'Запомнить меня',
@@ -42,7 +42,8 @@ class LoginMutation extends Mutation
     public function resolve($root, $args)
     {
         $login = new LoginController();
+        $user = $login->loginApi(new Request($args));
 
-        return $login->loginApi(new Request($args));
+        return $user;
     }
 }

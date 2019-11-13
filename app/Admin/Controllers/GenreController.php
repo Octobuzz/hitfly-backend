@@ -141,7 +141,7 @@ class GenreController extends Controller
 
         $form->text('name', 'Название');
         $form->image('image', 'Изображение')->move('genres')->uniqueName();
-        $form->select('parent_id')->options(function ($id) {
+        $form->select('parent_id', 'Родительский жанр')->options(function ($id) {
             $user = Genre::find($id);
             if ($user) {
                 return [$user->id => $user->name];

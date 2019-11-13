@@ -17,13 +17,16 @@ query TrackReviews_track(
 
         #TrackToPlaylistPopover #TrackActionsPopover
         userFavourite @include (if: $isAuthenticated)
-        user @include (if: $isAuthenticated) {
+        user {
             id
-            iWatch
             avatar(sizes: [size_56x56]) {
                 size
                 url
             }
+            roles {
+                slug
+            }
+            iWatch @include (if: $isAuthenticated)
         }
         my @include (if: $isAuthenticated)
 

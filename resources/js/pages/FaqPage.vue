@@ -1,65 +1,81 @@
 <template>
-  <AppColumns>
-    <template #left-column="{ itemContainerClass }">
-      <div
-        v-show="showLoader"
-        class="profile__user-card-loader_first"
+  <div class="contacts">
+    <span class="h2 contacts__header">
+      Контакты
+    </span>
+    <ul class="contacts__info-block contacts__communication">
+      <li>Tel: +7 499 322 81 43</li>
+      <li>Whatsupp/Viber/Telegram: +7 985 773 86 71</li>
+      <li>
+        E-mail:
+        <a
+          class="contacts__link"
+          href="mailto:info@myhitfly.ru"
+        >
+          info@myhitfly.ru
+        </a>
+        |
+        <a
+          class="contacts__link"
+          href="mailto:info@myhitfly.ru"
+        >
+          studio@2rockmusic.com
+        </a>
+      </li>
+    </ul>
+
+    <ul class="contacts__info-block contacts__address">
+      <li>Наш адрес:</li>
+      <li>Космодамианская набережная, дом 38 строение 1,</li>
+      <li>(Метро Таганская/Павелецкая)</li>
+      <li>Пн — Вс: 10:00 — 22:00</li>
+    </ul>
+
+    <span>
+      Если у вас есть вопросы, направляйте их к нам на почту
+      <a
+        class="contacts__link"
+        href="mailto:info@myhitfly.ru"
       >
-        <SpinnerLoader />
-      </div>
-
-      <MyUserCard
-        v-show="!showLoader"
-        :item-container-class="itemContainerClass"
-      />
-    </template>
-
-    <template
-      v-if="!showLoader"
-      #right-column="{ paddingClass }"
-    >
-      <span :class="['h2', paddingClass]">
-        Раздел в разработке
-      </span>
-      <span :class="paddingClass">
-        Если у вас есть вопросы, направляйте их к нам на почту.
-      </span>
-    </template>
-  </AppColumns>
+        info@myhitfly.ru
+      </a>.
+    </span>
+  </div>
 </template>
-
-<script>
-import MyUserCard from 'pages/profile/MyUserCard';
-import AppColumns from 'components/layout/AppColumns.vue';
-import SpinnerLoader from 'components/SpinnerLoader.vue';
-
-export default {
-  components: {
-    AppColumns,
-    SpinnerLoader,
-    MyUserCard
-  },
-
-  computed: {
-    showLoader() {
-      const {
-        personalInfo,
-        watchedUsers,
-        watchedGroups
-      } = this.$store.getters['loading/userCard'];
-
-      return !(
-        personalInfo.initialized
-        && watchedUsers.initialized
-        && watchedGroups.initialized
-      );
-    }
-  }
-};
-</script>
 
 <style
   scoped
   lang="scss"
-  src="./profile/MyProfileLayout/MyProfileLayout.scss"
 >
+@import "~scss/_variables.scss";
+
+.contacts {
+  padding: 32px;
+
+  &__link {
+    color: $link_color_active;
+  }
+
+  &__info-block {
+    line-height: 24px;
+    list-style-type: none;
+    padding-left: 0;
+    margin: {
+      top: 0;
+      bottom: 48px;
+    }
+  }
+
+  &__header {
+    padding-bottom: 0;
+  }
+
+  &__communication {
+    margin-bottom: 24px;
+  }
+
+  &__address {
+    margin-bottom: 24px;
+  }
+}
+</style>

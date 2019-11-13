@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5377ebc0661ce9a2c33629e34f5bf1a",
+    "content-hash": "ebf422febbe1777e010580dc6af87269",
     "packages": [
         {
             "name": "alfa6661/laravel-has-many-sync",
@@ -48,6 +48,64 @@
             ],
             "description": "Laravel has many sync",
             "time": "2018-08-13T09:35:37+00:00"
+        },
+        {
+            "name": "chelout/laravel-relationship-events",
+            "version": "v0.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chelout/laravel-relationship-events.git",
+                "reference": "b28e63ec67627497d26adf42b67af2fc35c734fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chelout/laravel-relationship-events/zipball/b28e63ec67627497d26adf42b67af2fc35c734fc",
+                "reference": "b28e63ec67627497d26adf42b67af2fc35c734fc",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "~5.5.0|~5.6.0|~5.7.0",
+                "illuminate/database": "~5.5.0|~5.6.0|~5.7.0",
+                "illuminate/events": "~5.5.0|~5.6.0|~5.7.0",
+                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5.4|3.6.0",
+                "phpunit/phpunit": "~6.0|~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Chelout\\RelationshipEvents\\RelationshipEventsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Chelout\\RelationshipEvents\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "chelout",
+                    "email": "chelout@gmail.com"
+                }
+            ],
+            "description": "Missing relationship events for Laravel",
+            "homepage": "https://github.com/chelout/laravel-relationship-events",
+            "keywords": [
+                "events",
+                "laravel",
+                "relations",
+                "relationship"
+            ],
+            "time": "2019-01-31T05:48:03+00:00"
         },
         {
             "name": "cviebrock/laravel-elasticsearch",
@@ -1698,6 +1756,61 @@
                 "setting"
             ],
             "time": "2018-12-12T04:03:36+00:00"
+        },
+        {
+            "name": "laravel-admin-ext/media-manager",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-admin-extensions/media-manager.git",
+                "reference": "3545f3b88893ad4787ba89925503678b55b689c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-admin-extensions/media-manager/zipball/3545f3b88893ad4787ba89925503678b55b689c8",
+                "reference": "3545f3b88893ad4787ba89925503678b55b689c8",
+                "shasum": ""
+            },
+            "require": {
+                "encore/laravel-admin": "~1.5",
+                "laravel/framework": "~5.5",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "laravel/laravel": "~5.5",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Encore\\Admin\\Media\\MediaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Encore\\Admin\\Media\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "z-song",
+                    "email": "zosong@126.com"
+                }
+            ],
+            "description": "Media manager for laravel",
+            "homepage": "https://github.com/laravel-admin-extensions/media-manager",
+            "keywords": [
+                "laravel-admin",
+                "manager",
+                "media"
+            ],
+            "time": "2018-09-23T06:02:37+00:00"
         },
         {
             "name": "laravel-admin-ext/redis-manager",
@@ -5241,32 +5354,34 @@
         },
         {
             "name": "webonyx/graphql-php",
-            "version": "v0.13.0",
+            "version": "v0.13.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "9bb8e7327748fdc828f801001161e6b586ca96e5"
+                "url": "https://github.com/shader2k/graphql-php.git",
+                "reference": "8d8c518f63533836d2565bad87f4de2eec34dc0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/9bb8e7327748fdc828f801001161e6b586ca96e5",
-                "reference": "9bb8e7327748fdc828f801001161e6b586ca96e5",
+                "url": "https://api.github.com/repos/shader2k/graphql-php/zipball/8d8c518f63533836d2565bad87f4de2eec34dc0d",
+                "reference": "8d8c518f63533836d2565bad87f4de2eec34dc0d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^7.1"
+                "php": "^7.1||^8.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^5.0",
+                "doctrine/coding-standard": "^6.0",
                 "phpbench/phpbench": "^0.14.0",
-                "phpstan/phpstan": "0.10.5",
-                "phpstan/phpstan-phpunit": "0.10.0",
-                "phpstan/phpstan-strict-rules": "0.10.1",
+                "phpstan/phpstan": "0.11.16",
+                "phpstan/phpstan-phpunit": "0.11.2",
+                "phpstan/phpstan-strict-rules": "0.11.1",
+                "phpunit/phpcov": "^5.0",
                 "phpunit/phpunit": "^7.2",
                 "psr/http-message": "^1.0",
-                "react/promise": "2.*"
+                "react/promise": "2.*",
+                "squizlabs/php_codesniffer": "~3.4.0"
             },
             "suggest": {
                 "psr/http-message": "To use standard GraphQL server",
@@ -5278,17 +5393,49 @@
                     "GraphQL\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "GraphQL\\Tests\\": "tests/",
+                    "GraphQL\\Benchmarks\\": "benchmarks/",
+                    "GraphQL\\Examples\\Blog\\": "examples/01-blog/Blog/"
+                }
+            },
+            "scripts": {
+                "api-docs": [
+                    "php tools/gendocs.php"
+                ],
+                "bench": [
+                    "phpbench run ."
+                ],
+                "test": [
+                    "phpunit"
+                ],
+                "lint": [
+                    "phpcs"
+                ],
+                "fix-style": [
+                    "phpcbf"
+                ],
+                "static-analysis": [
+                    "phpstan analyse --ansi --memory-limit 256M"
+                ],
+                "check-all": [
+                    "composer lint && composer static-analysis && composer test"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "description": "A PHP port of GraphQL reference implementation",
             "homepage": "https://github.com/webonyx/graphql-php",
             "keywords": [
-                "api",
+                "API",
                 "graphql"
             ],
-            "time": "2018-11-27T10:23:58+00:00"
+            "support": {
+                "source": "https://github.com/shader2k/graphql-php/tree/v0.13.9"
+            },
+            "time": "2019-10-22T15:43:58+00:00"
         },
         {
             "name": "workerman/gateway-worker",

@@ -3,7 +3,10 @@
     <transition name="base-modal">
       <div v-if="open" class="base-modal__mask">
         <div class="base-modal__wrapper" @click.self="emitOpenUpdate(false)">
-          <div class="base-modal__container">
+          <div
+            class="base-modal__container"
+            :style="containerStyle"
+          >
             <slot />
           </div>
         </div>
@@ -22,6 +25,14 @@ export default {
     autoClose: {
       type: Boolean,
       default: true
+    },
+    containerStyle: {
+      type: Object,
+      default: () => {}
+    },
+    bgEffect: {
+      validator: filter => ['blur', 'whiten'].includes(filter),
+      default: 'blur'
     }
   },
 
@@ -44,13 +55,27 @@ export default {
 
   methods: {
     onOpen() {
-      this.$store.commit('layout/blur', true);
+      switch (this.bgEffect) {
+        case 'whiten':
+          this.$store.commit('layout/whiten', true);
+          break;
+
+        default:
+          this.$store.commit('layout/blur', true);
+      }
       window.document.body.classList.add('base-modal__body');
       this.$emit('open');
     },
 
     onClose() {
-      this.$store.commit('layout/blur', false);
+      switch (this.bgEffect) {
+        case 'whiten':
+          this.$store.commit('layout/whiten', false);
+          break;
+
+        default:
+          this.$store.commit('layout/blur', false);
+      }
       window.document.body.classList.remove('base-modal__body');
       this.$emit('close');
     },
@@ -103,6 +128,10 @@ export default {
   border-radius: 4px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
   transition: all .3s ease;
+
+  &_no-padding {
+    padding: 0;
+  }
 }
 
 .base-modal-enter {

@@ -33,17 +33,20 @@ query TrackListReviewsContainer_TracksWithComments(
 
             #TrackToPlaylistPopover #TrackActionsPopover
             userFavourite @include (if: $isAuthenticated)
-            user @include (if: $isAuthenticated) {
+            user {
                 id
                 avatar(sizes: [size_56x56]) {
                     size
                     url
                 }
-                iWatch
+                roles {
+                    slug
+                }
+                iWatch @include (if: $isAuthenticated)
+                watchAvaliable
             }
             my @include (if: $isAuthenticated)
 
-            #AddToFavouriteButton
             favouritesCount
         }
     }

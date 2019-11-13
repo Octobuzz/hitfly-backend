@@ -126,5 +126,8 @@ return [
         \App\Admin\Controllers\ArtistController::ROUTE_NAME => 'Профили артистов',
         \App\Admin\Controllers\NewsController::ROUTE_NAME => 'Новости',
         \App\Admin\Controllers\BonusOperationController::ROUTE_NAME => 'История операций с бонусами',
+        \App\Admin\Controllers\LifehackController::ROUTE_NAME => 'Лайфхаки',
+        \App\Admin\Controllers\TagController::ROUTE_NAME => 'Тэги',
+        \App\Admin\Controllers\OrderController::ROUTE_NAME => 'Заказы',
     ]
 ];

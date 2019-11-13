@@ -11,6 +11,8 @@
       <template #default="container">
         <TrackList
           v-if="container.trackIdList.length > 0"
+          :for-type="forType"
+          :for-id="forId"
           :track-id-list="container.trackIdList"
           :show-remove-button="showRemoveButton"
           :show-table-header="showTableHeader"

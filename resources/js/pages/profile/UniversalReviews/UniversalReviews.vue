@@ -62,6 +62,12 @@ const getProps = (vm) => {
         forId: +params.trackId
       };
 
+    case '/reviews':
+      return {
+        forType: 'tracks',
+        forId: 'main'
+      };
+
     default:
       return {};
   }
@@ -95,6 +101,7 @@ export default {
         case '/profile/my-reviews':
         case '/user/:userId/reviews':
         case '/user/:userId/user-reviews':
+        case '/reviews':
           return false;
 
         default:

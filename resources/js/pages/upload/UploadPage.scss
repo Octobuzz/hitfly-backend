@@ -19,7 +19,7 @@
   }
 }
 .up-page{
-  margin: 20px auto 0;
+  margin: 20px 0 0;
   max-width: 910px;
   padding: 0;
   padding-bottom: 75px;
@@ -37,6 +37,10 @@
     font-size: 14px;
     color: $text_color_secondary;
     line-height: 22px;
+
+    & a {
+      color: $red_violet;
+    }
   }
 }
 .up-b-info{
@@ -47,6 +51,11 @@
     color: $text_color_primary;
     display: block;
     margin-top: 10px;
+    transition: .3s all ease;
+
+    &:hover {
+      color: $link_color_active;
+    }
   }
 }
 .main.notDropped{

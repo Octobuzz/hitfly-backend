@@ -96,6 +96,7 @@
           Загружая файл, вы подтверждаете, что ваши песни соответствуют нашим
           <router-link
             to="/policy"
+            target="_blank"
             class="about__link about__link_highlighted"
           >
             Условиям использования
@@ -107,16 +108,27 @@
           <a href="/policy" target="_blank" class="about__footer-left-option about__link">
             Пользовательское соглашение
           </a>
-          <span class="about__footer-left-option about__link">
-            Авторам
-          </span>
-          <span class="about__footer-left-option about__link">
+<!--          <span class="about__footer-left-option about__link">-->
+<!--            Авторам-->
+<!--          </span>-->
+          <a href="/contacts" class="about__footer-left-option about__link">
             Помощь
-          </span>
+          </a>
 
-          <span class="about__footer-right-option about__link">
-            Как загрузить песню?
-          </span>
+<!--          <router-link-->
+<!--            v-if="isAuthenticated"-->
+<!--            class="about__footer-right-option about__link"-->
+<!--            to="/upload"-->
+<!--          >-->
+<!--            Как загрузить песню?-->
+<!--          </router-link>-->
+<!--          <a-->
+<!--            v-else-->
+<!--            class="about__footer-right-option about__link"-->
+<!--            href="/login"-->
+<!--          >-->
+<!--            Как загрузить песню?-->
+<!--          </a>-->
         </div>
       </div>
     </template>

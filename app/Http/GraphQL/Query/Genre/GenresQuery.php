@@ -36,6 +36,8 @@ class GenresQuery extends Query
         $query = Genre::with($fields->getRelations())->select($fields->getSelect());
         if (false === empty($args['rootGenreId'])) {
             $query->descendantsOf($args['rootGenreId']);
+        } else {
+            $query->whereIsRoot();
         }
 
         return $query->paginate($args['limit'], ['*'], 'page', $args['page']);

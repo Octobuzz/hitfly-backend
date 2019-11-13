@@ -66,7 +66,7 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <a href="{{$allCommentsUrl}}" style="display: block; width: 255px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ env('APP_URL') }}/images/emails/icons/gradient-link-big.png');">
+                                    <a href="{{$allCommentsUrl}}" style="display: block; width: 255px; height: 40px; font-size: 14px; line-height: 40px; text-decoration: none; text-align: center; color: #fff; background-image: url('{{ config('app.url') }}/images/emails/icons/gradient-link-big.png');">
                                         @lang('emails.commentCreated.seeAllComments')
                                     </a>
                                 </td>

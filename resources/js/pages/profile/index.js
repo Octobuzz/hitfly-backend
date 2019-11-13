@@ -5,6 +5,7 @@ export { default as CreateGroup } from './CreateGroup';
 export { default as UpdateGroup } from './UpdateGroup';
 export { default as UpdateTrack } from './UpdateTrack';
 export { default as UpdateAlbum } from './UpdateAlbum';
+export { default as CreateNewAlbum } from './CreateNewAlbum';
 export { default as MyMusic } from './MyMusic';
 export { default as Favourite } from './Favourite';
 export { default as UniversalReviews } from './UniversalReviews';

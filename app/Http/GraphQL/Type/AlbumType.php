@@ -44,6 +44,9 @@ class AlbumType extends GraphQLType
             'author' => [
                 'type' => Type::string(),
                 'description' => 'Автор',
+                'resolve' => function ($model) {
+                    return $model->getAuthor();
+                },
             ],
             'year' => [
                 'type' => Type::string(),

@@ -18,12 +18,12 @@
                                     <tr>
                                         <td width="50%">
                                             <a href="#" style="display: block; text-decoration: none;">
-                                                <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/app_store.png">
+                                                <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/app_store.png">
                                             </a>
                                         </td>
                                         <td align="right" width="50%">
                                             <a href="#" style="display: block; text-decoration: none;">
-                                                <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/google_play.png">
+                                                <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/google_play.png">
                                             </a>
                                         </td>
                                     </tr>
@@ -54,23 +54,23 @@
                         <tbody>
                         <tr>
                             <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
-                                    <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/fb.png">
+                                <a href="https://www.facebook.com/myhitfly" style="display: block; text-decoration: none;">
+                                    <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/fb.png">
+                                </a>
+                            </td>
+                            <td align="center">
+                                <a href="https://vk.com/myhitfly" style="display: block; text-decoration: none;">
+                                    <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/vk.png">
+                                </a>
+                            </td>
+                            <td align="center">
+                                <a href="https://www.instagram.com/myhitfly/" style="display: block; text-decoration: none;">
+                                    <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/in.png">
                                 </a>
                             </td>
                             <td align="center">
                                 <a href="#" style="display: block; text-decoration: none;">
-                                    <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/vk.png">
-                                </a>
-                            </td>
-                            <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
-                                    <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/in.png">
-                                </a>
-                            </td>
-                            <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
-                                    <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/ok.png">
+                                    <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/ok.png">
                                 </a>
                             </td>
                         </tr>

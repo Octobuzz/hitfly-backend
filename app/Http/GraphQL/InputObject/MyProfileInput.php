@@ -20,8 +20,8 @@ class MyProfileInput extends GraphQLType
             'username' => [
                 'name' => 'username',
                 'description' => 'Имя пользователя',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['max:250'],
+                'type' => Type::string(),
+                'rules' => ['max:250', 'sometimes', 'required'],
             ],
             'cityId' => [
                 'name' => 'cityId',

@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property User user
+ * @property int id
+ */
 class Track extends Model
 {
     use SoftDeletes, Itemable, PictureField;
@@ -84,9 +88,19 @@ class Track extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getUser(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
+    {
+        return $this->user();
+    }
+
     public function musicGroup(): BelongsTo
     {
         return $this->belongsTo(MusicGroup::class, 'music_group_id');
+    }
+
+    public function getMusicGroup(): BelongsTo //при совпадении названия поля в GraphQL и метода в модели, на выходе получается мешанина
+    {
+        return $this->musicGroup();
     }
 
     public function album(): BelongsTo
@@ -175,11 +189,11 @@ class Track extends Model
 
     public function getAuthor(): ?string
     {
-        if (null !== $this->musicGroup) {
-            return $this->musicGroup->name;
+        if (null !== $this->getMusicGroup) {
+            return $this->getMusicGroup->name;
         }
-        if (null !== $this->user) {
-            return $this->user->username;
+        if (null !== $this->getUser) {
+            return $this->getUser->username;
         }
 
         return 'unknown';

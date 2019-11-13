@@ -5,11 +5,12 @@ namespace App\BuisnessLogic\SearchIndexing;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use ReflectionException;
 
 class SearchIndexer
 {
-    const POSTFIX_READ = '_read';
-    const POSTFIX_WRITE = '_write';
+    public const POSTFIX_READ = '_read';
+    public const POSTFIX_WRITE = '_write';
 
     /**
      * Индексация сущности.
@@ -18,31 +19,37 @@ class SearchIndexer
      * @param string     $indexName
      *
      * @return mixed
+     *
+     * @throws ReflectionException
      */
     public function index(Collection $models, string $indexName)
     {
-        if (true === $models->isEmpty()) {
-            return false;
-        }
-        $this->checkAndCreateAlias($indexName, self::POSTFIX_WRITE);
-        $this->checkAndCreateAlias($indexName, self::POSTFIX_READ);
-        $params = ['body' => []];
-        $attribiteFiltering = new AttributeFiltering();
-        $filterName = 'filter'.(new \ReflectionClass($models->first()))->getShortName();
-        $typeIndex = get_class($models->first());
-        $indexNameWithPostfix = $indexName.self::POSTFIX_WRITE;
-        foreach ($models as $model) {
-            $params['body'][] = [
-                'index' => [
-                    '_index' => $indexNameWithPostfix,
-                    '_type' => $typeIndex,
-                    '_id' => $model->id,
-                ],
-            ];
-            $params['body'][] = $attribiteFiltering->$filterName($model);
-        }
+        try {
+            if (true === $models->isEmpty()) {
+                return false;
+            }
+            $this->checkAndCreateAlias($indexName, self::POSTFIX_WRITE);
+            $this->checkAndCreateAlias($indexName, self::POSTFIX_READ);
+            $params = ['body' => []];
+            $attribiteFiltering = new AttributeFiltering();
+            $filterName = 'filter'.(new \ReflectionClass($models->first()))->getShortName();
+            $typeIndex = get_class($models->first());
+            $indexNameWithPostfix = $indexName.self::POSTFIX_WRITE;
+            foreach ($models as $model) {
+                $params['body'][] = [
+                    'index' => [
+                        '_index' => $indexNameWithPostfix,
+                        '_type' => $typeIndex,
+                        '_id' => $model->id,
+                    ],
+                ];
+                $params['body'][] = $attribiteFiltering->$filterName($model);
+            }
 
-        \Elasticsearch::bulk($params);
+            \Elasticsearch::bulk($params);
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
+        }
     }
 
     /**
@@ -51,21 +58,25 @@ class SearchIndexer
      * @param Collection $models
      * @param string     $indexName
      *
-     * @throws \ReflectionException
+     * @return bool
      */
     public function deleteFromIndex(Collection $models, string $indexName)
     {
-        if (true === $models->isEmpty()) {
-            return false;
-        }
-        $indexNameWrite = $indexName.self::POSTFIX_WRITE;
-        $indexNameRead = $indexName.self::POSTFIX_READ;
-        foreach ($models as $model) {
-            $paramsRead = $this->getIndexParams($indexNameRead, $model);
-            $e = $this->deleteElement($paramsRead);
-            //удалим из из индекса WRITE
-            $paramsWrite = $this->getIndexParams($indexNameWrite, $model);
-            $e = $this->deleteElement($paramsWrite);
+        try {
+            if (true === $models->isEmpty()) {
+                return false;
+            }
+            $indexNameWrite = $indexName.self::POSTFIX_WRITE;
+            $indexNameRead = $indexName.self::POSTFIX_READ;
+            foreach ($models as $model) {
+                $paramsRead = $this->getIndexParams($indexNameRead, $model);
+                $e = $this->deleteElement($paramsRead);
+                //удалим из из индекса WRITE
+                $paramsWrite = $this->getIndexParams($indexNameWrite, $model);
+                $e = $this->deleteElement($paramsWrite);
+            }
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage(), $exception->getTrace());
         }
     }
 
@@ -246,9 +257,11 @@ class SearchIndexer
                 \Elasticsearch::delete($params);
             } catch (Missing404Exception $e) {
                 Log::notice($e->getMessage(), $e->getTrace());
+
+                return $e->getMessage();
             }
         }
 
-        return $e;
+        return;
     }
 }

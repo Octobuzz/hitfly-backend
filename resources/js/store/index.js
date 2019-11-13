@@ -29,7 +29,8 @@ const state = {
     collection: []
   },
   isFavouriteRemoveOptionHidden: false,
-  editGroupId: null
+  editGroupId: null,
+  selectedLifeHacksCategoryId: null
 };
 
 const getters = {
@@ -54,6 +55,10 @@ const getters = {
 
     return currentRoute.split('/').slice(1, 3)
       .join('-') === 'profile-favourite';
+  },
+
+  selectedLifeHacksCategoryId({ selectedLifeHacksCategoryId }) {
+    return selectedLifeHacksCategoryId;
   }
 };
 
@@ -66,6 +71,10 @@ const mutations = {
     favInProcess[type] = favInProcess[type].filter(
       idInStore => idInStore !== id
     );
+  },
+
+  setSelectedLifeHacksCategoryId(state, id) {
+    state.selectedLifeHacksCategoryId = id;
   }
 };
 

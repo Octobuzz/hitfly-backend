@@ -11,13 +11,11 @@ $collection_width_mobile: 150px;
   flex-wrap: wrap;
   max-width: ($space_between_desktop + $collection_width_desktop) * 4
     + $space_between_desktop;
-  margin-top: 16px;
 
   & > * {
     margin: {
       top: 16px;
-      right: $space_between_desktop / 2;
-      left: $space_between_desktop / 2;
+      right: $space_between_desktop;
     }
   }
 }
@@ -28,7 +26,7 @@ $collection_width_mobile: 150px;
       + $space_between_mobile;
 
     & > * {
-      margin-left: $space_between_mobile;
+      margin-right: $space_between_mobile;
     }
   }
 }

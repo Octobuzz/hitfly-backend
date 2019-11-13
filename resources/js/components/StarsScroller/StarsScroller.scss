@@ -10,15 +10,16 @@ $stars-left-padding-desktop: 24px;
 $stars-left-padding-mobile: 16px;
 
 .stars-scroll-horizontal {
-  height: calc($stars-height-desktop + 50px);
+  height: calc(#{$stars-height-desktop} + 50px);
   overflow-y: hidden;
+  margin-bottom: 32px;
 
   &__header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-top: 32px;
-    margin-bottom: 32px;
+    margin-top: 26px;
+    margin-bottom: 20px;
   }
 
   &__button-prev,

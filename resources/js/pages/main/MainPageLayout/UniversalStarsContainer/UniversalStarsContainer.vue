@@ -10,7 +10,7 @@
       v-if="initialFetchError"
       class="universal-news-container__error"
     >
-      На сервере произошла ошибка. Не удалось загрузить данные звёзд.
+      На сервере произошла ошибка. Не удалось загрузить данные звёздных экспертов.
       Пожалуйста, попробуйте позже или обратитесь к администратору.
     </p>
   </div>
@@ -174,6 +174,7 @@ export default {
           if (to >= total) {
             this.hasMoreData = false;
           }
+
           return data;
         },
 

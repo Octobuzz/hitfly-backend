@@ -52,11 +52,12 @@
     </UnauthenticatedPopoverWrapper>
 
     <template v-if="!columnLayout">
-      <WordTrimmedWithTooltip
-        class="track-list-entry__track-name"
-        :word="track.trackName"
-        @click="playTrack"
-      />
+      <span class="track-list-entry__track-name">
+        <WordTrimmedWithTooltip
+          :word="track.trackName"
+          @click="playTrack"
+        />
+      </span>
 
       <WordTrimmedWithTooltip
         :class="[
@@ -76,16 +77,25 @@
 
     <div
       v-show="!desktop || columnLayout"
-      class="track-list-entry__track-data"
+      :class="[
+        'track-list-entry__track-data',
+        'track-list-entry__track-data_column-layout'
+      ]"
     >
       <span
-        class="track-list-entry__track-name"
-        @click="playTrack"
+        :class="[
+          'track-list-entry__track-name',
+          'track-list-entry__track-name_column-layout'
+        ]"
       >
-        {{ track.trackName }}
+        <WordTrimmedWithTooltip
+          :word="track.trackName"
+          @click.native="playTrack"
+        />
       </span>
-      <br>
+
       <WordTrimmedWithTooltip
+        v-if="track.singer"
         :class="[
           'track-list-entry__track-author',
           'track-list-entry__track-author_underline'
@@ -95,7 +105,10 @@
       />
     </div>
 
-    <UnauthenticatedPopoverWrapper placement="left">
+    <UnauthenticatedPopoverWrapper
+      v-if="!columnLayout"
+      placement="left"
+    >
       <template #auth-content>
         <TrackToPlaylistPopover
           v-if="desktop && !isStar && showAddToPlaylist"
@@ -124,6 +137,7 @@
     </UnauthenticatedPopoverWrapper>
 
     <TrackActionsPopover
+      v-if="isAuthenticated"
       :track-id="trackId"
       :show-remove-option="showRemoveButton"
       @press-favourite="pressFavourite"

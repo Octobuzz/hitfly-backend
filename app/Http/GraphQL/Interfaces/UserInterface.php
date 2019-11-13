@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
+use App\Dictionaries\RoleDictionary;
 
 class UserInterface extends InterfaceType
 {
@@ -167,6 +168,14 @@ class UserInterface extends InterfaceType
                 'resolve' => function () {
                     return Auth::user()->access_token;
                 },
+            ],
+            'watchAvaliable' => [
+                'type' => Type::boolean(),
+                'description' => 'Можно ли следить за пользователем',
+                'resolve' => function ($model) {
+                    return !$model->roles->contains('slug', RoleDictionary::ROLE_ADMIN);
+                },
+                'selectable' => false,
             ],
         ];
     }

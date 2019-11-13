@@ -8,8 +8,13 @@
         :has-more-data="container.hasMoreData"
       >
         <template #title>
-          <span class="h2 other-user-music__albums-title">
-            Жанры<br>
+          <span class="h2 other-user-music__albums-title main-page-genres__header">
+            <span class="main-page-genres__header">
+              <span class="main-page-genres__header-text">
+                Жанры
+              </span>
+            </span>
+            <br>
             <span class="scrollSubheader">
               Музыка по жанрам и настроению
             </span>

@@ -132,6 +132,8 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'lifehack' => \App\Http\GraphQL\Query\LifehacksQuery::class,
+                'tag' => \App\Http\GraphQL\Query\TagQuery::class,
                 'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
                 'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
@@ -243,7 +245,7 @@ return [
 
                 'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
 
-                'buyStudioService' => \App\Http\GraphQL\Mutations\Store\BuyStudioServiceMutation::class,
+                'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -291,6 +293,8 @@ return [
         'OrderType' => \App\Http\GraphQL\Type\OrderType::class,
         'ProductType' => \App\Http\GraphQL\Type\ProductType::class,
         'SearchType' => \App\Http\GraphQL\Type\SearchType::class,
+        'LifehackType' => \App\Http\GraphQL\Type\LifehackType::class,
+        'TagType' => \App\Http\GraphQL\Type\TagType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -325,6 +329,7 @@ return [
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
         'ProductStudioTypeEnum' => \App\Http\GraphQL\Enums\ProductStudioTypeEnum::class,
         'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
+        'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

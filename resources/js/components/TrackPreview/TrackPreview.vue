@@ -70,6 +70,7 @@
         </IconButton>
 
         <TrackPopover
+          v-if="isAuthenticated"
           :track-id="trackId"
           @press-favourite="onPressFavourite"
         >
@@ -90,11 +91,11 @@
     >
       <span>
         <span class="album-preview__title">
-          {{ track.trackName }}
+          <WordTrimmedWithTooltip :word="track.trackName" />
         </span>
       </span>
       <router-link :to="`/user/${track.user.id}/music`" class="album-preview__author">
-        {{ track.singer }}
+        <WordTrimmedWithTooltip :word="track.singer" />
       </router-link>
     </div>
   </div>
@@ -102,13 +103,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import TrackPopover from 'components/TrackPopover';
+import TrackPopover from 'components/trackList/TrackActionsPopover';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
 import IconButton from 'components/IconButton.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import PlayIcon from 'components/icons/PlayIcon.vue';
 import PauseIcon from 'components/icons/PauseIcon.vue';
+import WordTrimmedWithTooltip from 'components/WordTrimmedWithTooltip';
 import gql from './gql';
 
 const MOBILE_WIDTH = 767;
@@ -121,7 +123,8 @@ export default {
     DotsIcon,
     PlayIcon,
     PauseIcon,
-    UnauthenticatedPopoverWrapper
+    UnauthenticatedPopoverWrapper,
+    WordTrimmedWithTooltip
   },
 
   props: {

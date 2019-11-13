@@ -9,10 +9,10 @@
                             <tbody>
                             <tr>
                                 <td width="50%">
-                                    <img style="display: block; max-width: 100%;" src="{{ env('APP_URL') }}/images/emails/icons/logo.png">
+                                    <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/logo.png">
                                 </td>
                                 <td width="50%" align="right">
-                                    <a href="{{ env('APP_URL') }}" style="display: block; width: 160px; height: 40px; font-size: 14px; line-height: 40px; text-align: center; color: #231f20; text-decoration: none; background-image: url('{{ env('APP_URL') }}/images/emails/icons/site-link.png');">
+                                    <a href="{{ config('app.url') }}" style="display: block; width: 160px; height: 40px; font-size: 14px; line-height: 40px; text-align: center; color: #231f20; text-decoration: none; background-image: url('{{ config('app.url') }}/images/emails/icons/site-link.png');">
                                         @lang('emails.visitSite')
                                     </a>
                                 </td>

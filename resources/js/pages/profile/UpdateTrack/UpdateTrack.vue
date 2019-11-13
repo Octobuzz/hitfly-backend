@@ -204,7 +204,7 @@
           variables: {
             id: this.trackId
           },
-          mutation: gql`mutation($id: Int!) {
+          mutation: gql`mutation deleteTrack($id: Int!) {
             deleteTrackMutation (id: $id) {
               id
             }
@@ -212,6 +212,7 @@
         })
         .then(response => {
           this.$router.push('/profile/my-music');
+          this.$store.dispatch('player/setRandomTrack');
           this.$message(
             'Ваша песня удалена',
             'info',
@@ -254,7 +255,6 @@
             singer = band[0].name;
           };
           let info = {
-            'singer': singer,
             'trackDate': this.trackInfo.year.input,
             'songText': this.trackInfo.text,
             'musicGroup': bandId,

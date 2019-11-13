@@ -15,6 +15,8 @@ class TrackPublishEvent
 
     /**
      * Create a new event instance.
+     *
+     * @param Track $track
      */
     public function __construct(Track $track)
     {

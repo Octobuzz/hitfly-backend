@@ -68,6 +68,10 @@ class TrackFilterInput extends GraphQLType
                 'description' => 'Фильтрация по жанру',
                 'rules' => ['nullable', 'int'],
             ],
+            'new' => [
+                'type' => Type::boolean(),
+                'description' => 'Фильтрация Новые песни',
+            ],
         ];
     }
 }
