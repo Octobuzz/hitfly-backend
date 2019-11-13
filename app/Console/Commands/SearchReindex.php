@@ -141,7 +141,6 @@ class SearchReindex extends Command
         if (null !== $oldIndexName) {
             return $oldIndexName;
         }
-
         //у индекса может не быть алиаса
         $oldIndexName = $this->getLastIndexName($modelName); //получим имя самого последнего индекса
         if (null === $oldIndexName) {//если индекса не существует, вывод сообщения и создание алиаса

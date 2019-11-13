@@ -133,6 +133,7 @@ return [
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
                 'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
+                'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -194,6 +195,7 @@ return [
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
                 'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
+                'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -322,6 +324,7 @@ return [
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
         'ProductStudioTypeEnum' => \App\Http\GraphQL\Enums\ProductStudioTypeEnum::class,
+        'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,

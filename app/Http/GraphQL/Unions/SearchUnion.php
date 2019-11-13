@@ -38,8 +38,7 @@ class SearchUnion extends UnionType
      */
     public function resolveType($value)
     {
-        die(var_dump($value));
-        switch ($value->favouriteable_type) {
+        switch (get_class($value)) {
             case Track::class:
                 return \GraphQL::type('Track');
                 break;

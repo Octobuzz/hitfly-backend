@@ -19,11 +19,6 @@ class SearchQuery extends Query
     public function type()
     {
         return \GraphQL::type('SearchType');
-//        return [Type::listOf( \GraphQL::type('Album')),
-//            Type::listOf( \GraphQL::type('Track')),
-//            Type::listOf( \GraphQL::type('User')),
-//
-//        ];
     }
 
     public function args()
@@ -31,7 +26,13 @@ class SearchQuery extends Query
         return [
             'q' => [
                 'name' => 'q',
+                'description' => 'поисковый запрос',
                 'type' => Type::nonNull(Type::string()),
+            ],
+            'limit' => [
+                'limit' => 'limit',
+                'description' => 'ограничение количества результатов',
+                'type' => Type::int(),
             ],
         ];
     }
@@ -41,7 +42,12 @@ class SearchQuery extends Query
         if (isset($args['q'])) {
             $result = [];
             $s = App::make('SearchService');
-            $rawResult = $s->search($args['q']);
+            if (!empty($args['limit'])) {
+                $limit = $args['limit'];
+            } else {
+                $limit = 3;
+            }
+            $rawResult = $s->search($args['q'], $limit);
 
             foreach ($rawResult as $type => $value) {
                 $className = (new \ReflectionClass($type))->getShortName();

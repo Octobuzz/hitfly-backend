@@ -16,15 +16,15 @@ class SearchType extends GraphQLType
         return [
             'Album' => [
                 'type' => Type::listOf(\GraphQL::type('Album')),
-                'description' => 'Тип социальной сети',
+                'description' => 'Альбомы',
             ],
             'Track' => [
                 'type' => Type::listOf(\GraphQL::type('Track')),
-                'description' => 'Сссылка на привязку соц сети ',
+                'description' => 'Треки ',
             ],
             'User' => [
                 'type' => Type::listOf(\GraphQL::type('User')),
-                'description' => 'Привязана ли соц сеть',
+                'description' => 'Пользователи',
             ],
         ];
     }
