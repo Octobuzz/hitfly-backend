@@ -145,16 +145,7 @@ return [
             'middleware' => ['api', 'guest'],
             'method' => ['get', 'post'],
         ],
-        'auth' => [
-            'mutation' => [
-//                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
-                //'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
-                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
-                'logoutMutation' => \App\Http\GraphQL\Mutations\User\LogoutMutation::class,
-            ],
-            'middleware' => ['api', 'guest'],
-            'method' => ['get', 'post'],
-        ],
+        
         'user' => [
             'query' => [
                 'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
