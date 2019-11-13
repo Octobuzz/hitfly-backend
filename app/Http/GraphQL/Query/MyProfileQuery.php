@@ -13,7 +13,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
-use GraphQL\Type\Definition\Type;
 
 class MyProfileQuery extends Query
 {
@@ -33,12 +32,14 @@ class MyProfileQuery extends Query
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::guard('json')->check();
+    }
+
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info)
     {
         $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
 
         return User::with($fields->getRelations())->where('id', '=', $user->id)->first();
     }
