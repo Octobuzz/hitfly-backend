@@ -11,6 +11,7 @@ use Rebing\GraphQL\Support\Query;
  */
 class SearchQuery extends Query
 {
+    private const DEFAULT_QUERY_LIMIT = 3;
     protected $attributes = [
         'name' => 'SearchQuery',
         'description' => 'Запрос поиска по трекам, альбомам, пользователям',
@@ -24,8 +25,8 @@ class SearchQuery extends Query
     public function args()
     {
         return [
-            'q' => [
-                'name' => 'q',
+            'query' => [
+                'name' => 'query',
                 'description' => 'поисковый запрос',
                 'type' => Type::nonNull(Type::string()),
             ],
@@ -39,15 +40,15 @@ class SearchQuery extends Query
 
     public function resolve($root, $args)
     {
-        if (isset($args['q'])) {
+        if (isset($args['query'])) {
             $result = [];
-            $s = App::make('SearchService');
+            $searchService = App::make('SearchService');
             if (!empty($args['limit'])) {
                 $limit = $args['limit'];
             } else {
-                $limit = 3;
+                $limit = self::DEFAULT_QUERY_LIMIT;
             }
-            $rawResult = $s->search($args['q'], $limit);
+            $rawResult = $searchService->search($args['query'], $limit);
 
             foreach ($rawResult as $type => $value) {
                 $className = (new \ReflectionClass($type))->getShortName();

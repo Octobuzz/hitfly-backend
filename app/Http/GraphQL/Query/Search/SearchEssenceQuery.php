@@ -25,8 +25,8 @@ class SearchEssenceQuery extends Query
     public function args()
     {
         return [
-            'q' => [
-                'name' => 'q',
+            'query' => [
+                'name' => 'query',
                 'description' => 'поисковый запрос',
                 'type' => Type::nonNull(Type::string()),
             ],
@@ -42,10 +42,10 @@ class SearchEssenceQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        if (isset($args['q'])) {
+        if (isset($args['query'])) {
             $result = [];
-            $s = App::make('SearchService');
-            $result = $s->searchEssence($args, $fields);
+            $searchService = App::make('SearchService');
+            $result = $searchService->searchEssence($args, $fields);
 
             return $result;
         }

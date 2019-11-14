@@ -3,6 +3,7 @@
 namespace App\BuisnessLogic\Services\SearchService;
 
 use App\Contracts\Search\SearchContract;
+use App\Factories\RepositoryFactory;
 use Rebing\GraphQL\Support\SelectFields;
 
 class ElasticsearchService implements SearchContract
@@ -10,14 +11,13 @@ class ElasticsearchService implements SearchContract
     public $args;
     public $fields;
     const POSTFIX_READ = '_read';
-    //настройки моделей и полей для поиска
     const MODELS = [
             'album' => ['index' => 'album_read', 'fields' => 'title'],
             'track' => ['index' => 'track_read', 'fields' => 'track_name'],
             'user' => ['index' => 'user_read', 'fields' => 'username'],
         ];
 
-    public function search(string $q, int $limit = 3)
+    public function search(string $query, int $limit = 3)
     {
         $data = [];
 
@@ -28,13 +28,14 @@ class ElasticsearchService implements SearchContract
             $params['body'][] = ['query' => [
                                         'multi_match' => [
                                             'fuzziness' => 'AUTO',
-                                            'query' => $q,
+                                            'query' => $query,
                                             'fields' => $model['fields'],
                                         ],
                                     ],
                                 'size' => $limit,
                                 ];
         }
+
         $result = [];
         $result = \Elasticsearch::msearch($params);
         $idsArr = $this->extractionMultiSearchResult($result);
@@ -57,7 +58,7 @@ class ElasticsearchService implements SearchContract
                 'query' => [
                     'multi_match' => [
                         'fuzziness' => 'AUTO',
-                        'query' => $this->args['q'],
+                        'query' => $this->args['query'],
                         'fields' => self::MODELS[$this->args['essence']]['fields'],
                                 ],
                         ],
@@ -119,7 +120,8 @@ class ElasticsearchService implements SearchContract
     {
         $data = [];
         foreach ($idsArr as $model => $ids) {
-            $data[$model] = $model::query()->whereIn('id', $ids)->orderByRaw('FIELD(`id`, '.implode(',', $ids).')')->get();
+            $modelRepository = RepositoryFactory::getRepository($model);
+            $data[$model] = $modelRepository->getDataFromModelWithRelevance($ids);
         }
 
         return $data;
@@ -129,8 +131,8 @@ class ElasticsearchService implements SearchContract
     {
         $ids = reset($idsArr);
         $model = key($idsArr);
-        $data = $model::with($this->fields->getRelations())->whereIn('id', $ids)->orderByRaw('FIELD(`id`, '.implode(',', $ids).')')
-            ->paginate($this->args['limit'], ['*'], 'page', $this->args['page']);
+        $modelRepository = RepositoryFactory::getRepository($model);
+        $data = $modelRepository->getDataFromModelWithRelevance($ids, $this->args['limit'], $this->args['page']);
 
         return $data;
     }

@@ -147,7 +147,7 @@ return [
             'middleware' => ['api', 'guest'],
             'method' => ['get', 'post'],
         ],
-        
+
         'user' => [
             'query' => [
                 'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
@@ -308,6 +308,7 @@ return [
         'CollectionFilterInput' => \App\Http\GraphQL\InputObject\CollectionFilterInput::class,
         'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
         'SocialLinkFilterInput' => \App\Http\GraphQL\InputObject\Filter\SocialLinkFilterInput::class,
+        'LifehackFilterInput' => \App\Http\GraphQL\InputObject\Filter\LifehackFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
@@ -320,7 +321,6 @@ return [
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
-        'ProductStudioTypeEnum' => \App\Http\GraphQL\Enums\ProductStudioTypeEnum::class,
         'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
         'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
 
