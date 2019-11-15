@@ -15,16 +15,16 @@ class RepositoryFactory
     {
         switch ($modelName) {
             case Album::class:
-                $repository = new AlbumRepository();
+                $repository = app()->make(AlbumRepository::class);
                 break;
             case Track::class:
-                $repository = new TrackRepository();
+                $repository = app()->make(TrackRepository::class);
                 break;
             case User::class:
-                $repository = new UserRepository();
+                $repository = app()->make(UserRepository::class);
                 break;
             default:
-                throw new \Exception('Нет репозитория нужного типа');
+                throw new \InvalidArgumentException('Нет репозитория нужного типа');
                 break;
         }
 

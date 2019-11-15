@@ -16,6 +16,9 @@ use App\Observers\MusicGroupObserver;
 use App\Models\Collection;
 use App\Observers\CollectionObserver;
 use App\Observers\UserObserver;
+use App\Repositories\AlbumRepository;
+use App\Repositories\TrackRepository;
+use App\Repositories\UserRepository;
 use App\User;
 use App\Observers\TrackObserver;
 use Illuminate\Support\Facades\Validator;
@@ -28,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public $singletons = [
         TopWeeklyInterface::class => TopWeekly::class,
+        AlbumRepository::class => AlbumRepository::class,
+        UserRepository::class => UserRepository::class,
+        TrackRepository::class => TrackRepository::class,
     ];
 
     /**
