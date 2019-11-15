@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\BuisnessLogic\Services\SearchService\ElasticsearchService;
 use App\BuisnessLogic\Top\TopWeekly;
 use App\Interfaces\Top\TopWeeklyInterface;
 use App\Models\Album;
@@ -15,6 +16,9 @@ use App\Observers\MusicGroupObserver;
 use App\Models\Collection;
 use App\Observers\CollectionObserver;
 use App\Observers\UserObserver;
+use App\Repositories\AlbumRepository;
+use App\Repositories\TrackRepository;
+use App\Repositories\UserRepository;
 use App\User;
 use App\Observers\TrackObserver;
 use Illuminate\Support\Facades\Validator;
@@ -27,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public $singletons = [
         TopWeeklyInterface::class => TopWeekly::class,
+        AlbumRepository::class => AlbumRepository::class,
+        UserRepository::class => UserRepository::class,
+        TrackRepository::class => TrackRepository::class,
     ];
 
     /**
@@ -55,6 +62,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('login_password_correct', 'App\Validation\LoginPasswordCorrect@validate');
         $this->app->singleton(SearchIndexer::class, function ($app) {
             return new SearchIndexer();
+        });
+
+        $this->app->singleton('SearchService', function ($app) {
+            return new ElasticsearchService();
         });
 
         $table = config('admin.extensions.config.table', 'admin_config');

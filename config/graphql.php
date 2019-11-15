@@ -134,6 +134,8 @@ return [
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
                 'lifehack' => \App\Http\GraphQL\Query\LifehacksQuery::class,
                 'tag' => \App\Http\GraphQL\Query\TagQuery::class,
+                'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
+                'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
             'mutation' => [
 //                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
@@ -145,7 +147,7 @@ return [
             'middleware' => ['api', 'guest'],
             'method' => ['get', 'post'],
         ],
-        
+
         'user' => [
             'query' => [
                 'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
@@ -187,6 +189,8 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
+                'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -281,6 +285,7 @@ return [
         'OperationType' => \App\Http\GraphQL\Type\OperationType::class,
         'OrderType' => \App\Http\GraphQL\Type\OrderType::class,
         'ProductType' => \App\Http\GraphQL\Type\ProductType::class,
+        'SearchType' => \App\Http\GraphQL\Type\SearchType::class,
         'LifehackType' => \App\Http\GraphQL\Type\LifehackType::class,
         'TagType' => \App\Http\GraphQL\Type\TagType::class,
 
@@ -316,12 +321,14 @@ return [
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
+        'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
         'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
         'FollowResult' => \App\Http\GraphQL\Unions\FollowUnion::class,
         'AttributeResult' => \App\Http\GraphQL\Unions\AttributesUnion::class,
+        'SearchResult' => \App\Http\GraphQL\Unions\SearchUnion::class,
 
         'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],
