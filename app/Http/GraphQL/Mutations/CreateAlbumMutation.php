@@ -5,6 +5,7 @@ namespace App\Http\GraphQL\Mutations;
 use App\Models\Album;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
@@ -36,10 +37,15 @@ class CreateAlbumMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $album = new Album();
         $album->setUser($user);

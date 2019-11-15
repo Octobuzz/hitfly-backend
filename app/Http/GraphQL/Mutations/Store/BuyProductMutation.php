@@ -4,6 +4,7 @@ namespace App\Http\GraphQL\Mutations\Store;
 
 use App\Models\Product;
 use App\Rules\CanBuyProduct;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
@@ -37,6 +38,11 @@ class BuyProductMutation extends Mutation
                 'rules' => ['required', new CanBuyProduct()],
             ],
         ];
+    }
+
+    public function authorize(array $args)
+    {
+        return Auth::check();
     }
 
     public function resolve($root, $args)

@@ -9,7 +9,6 @@ use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
-use GraphQL;
 use Exception;
 
 class UseBonusesMutation extends Mutation
@@ -21,7 +20,7 @@ class UseBonusesMutation extends Mutation
 
     public function type()
     {
-        return GraphQL::type('BonusTypes');
+        return \GraphQL::type('BonusTypes');
     }
 
     public function args()
@@ -33,6 +32,11 @@ class UseBonusesMutation extends Mutation
                 'rules' => ['required', 'string', 'max:255'],
             ],
         ];
+    }
+
+    public function authorize(array $args)
+    {
+        return Auth::check();
     }
 
     public function resolve($root, $args)

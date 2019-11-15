@@ -12,6 +12,7 @@ use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
 use App\Models\Track;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FavouritesValidator extends Validator
@@ -31,12 +32,12 @@ class FavouritesValidator extends Validator
                 $class = Collection::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип избранного');
+                throw new \InvalidArgumentException('Не удалось определить тип избранного');
         }
         $favourite = Favourite::query()
             ->where('favouriteable_type', '=', $class)
             ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
-            ->where('user_id', \Auth::user()->id)->first();
+            ->where('user_id', Auth::user()->id)->first();
         if (null === $favourite) {
             return true;
         } else {
@@ -59,12 +60,12 @@ class FavouritesValidator extends Validator
                 $class = Collection::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип избранного');
+                throw new \InvalidArgumentException('Не удалось определить тип избранного');
         }
         $favourite = Favourite::query()
             ->where('favouriteable_type', '=', $class)
             ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
-            ->where('user_id', \Auth::user()->id)->first();
+            ->where('user_id', Auth::user()->id)->first();
         if (null === $favourite) {
             return false;
         } else {

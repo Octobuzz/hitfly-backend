@@ -9,6 +9,7 @@
 namespace App\Http\GraphQL\Mutations\Track;
 
 use App\Models\Track;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
@@ -34,6 +35,11 @@ class DeleteTrackMutation extends Mutation
                 'description' => 'Индетификатор удаляемого трека',
             ],
         ];
+    }
+
+    public function authorize(array $args)
+    {
+        return Auth::check();
     }
 
     public function resolve($root, $args)

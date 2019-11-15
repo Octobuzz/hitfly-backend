@@ -10,6 +10,7 @@ namespace App\Validation;
 
 use App\Models\Collection;
 use App\Models\Track;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CollectionValidator extends Validator
@@ -18,7 +19,7 @@ class CollectionValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $collection = Collection::query()->find($data['collectionId']);
 
@@ -37,7 +38,7 @@ class CollectionValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $collection = Collection::query()->find($data['collectionId']);
 

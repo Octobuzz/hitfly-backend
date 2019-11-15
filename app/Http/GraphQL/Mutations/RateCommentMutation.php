@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class RateCommentMutation extends Mutation
@@ -15,6 +16,11 @@ class RateCommentMutation extends Mutation
     public function type()
     {
         return \GraphQL::type('CommentResult');
+    }
+
+    public function authorize(array $args)
+    {
+        return Auth::check();
     }
 
     public function args()

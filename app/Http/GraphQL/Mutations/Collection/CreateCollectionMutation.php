@@ -7,6 +7,7 @@ use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\UploadType;
 
@@ -42,9 +43,14 @@ class CreateCollectionMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         if (null === $user) {
             return JsonResponse::create();

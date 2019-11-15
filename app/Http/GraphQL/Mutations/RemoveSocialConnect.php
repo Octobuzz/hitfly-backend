@@ -6,6 +6,7 @@ use App\Models\Social;
 use App\User;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class RemoveSocialConnect extends Mutation
@@ -30,12 +31,17 @@ class RemoveSocialConnect extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         /** @var Social $social */
         $social = Social::query()
             ->where('social_driver', '=', $args['social'])
-            ->where('user_id', '=', \Auth::user()->id)
+            ->where('user_id', '=', Auth::user()->id)
             ->first()
         ;
         if (empty($social)) {
@@ -43,6 +49,6 @@ class RemoveSocialConnect extends Mutation
         }
         $social->forceDelete();
 
-        return \Auth::user();
+        return Auth::user();
     }
 }

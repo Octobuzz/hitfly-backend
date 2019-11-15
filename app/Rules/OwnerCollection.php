@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Collection;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class OwnerCollection implements Rule
@@ -35,7 +36,7 @@ class OwnerCollection implements Rule
         if (null === $collection) {
             return false;
         }
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         if ($collection->user_id === $user->id) {
             return true;

@@ -18,6 +18,11 @@ class RemoveMeMutation extends Mutation
         return \GraphQL::type('MyProfile');
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         /** @var User $user */

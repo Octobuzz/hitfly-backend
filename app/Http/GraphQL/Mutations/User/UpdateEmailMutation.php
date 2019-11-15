@@ -4,7 +4,6 @@ namespace App\Http\GraphQL\Mutations\User;
 
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -31,13 +30,17 @@ class UpdateEmailMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         $user = Auth::user();
 
         if (!empty($args['email']) && $args['email']) {
             $user->email = $args['email'];
-//            $user->password = Hash::make($args['email']);
             $user->save();
 
             return $user;

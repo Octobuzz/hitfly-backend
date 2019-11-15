@@ -5,6 +5,7 @@ namespace App\Http\GraphQL\Mutations;
 use App\Models\Product;
 use App\Rules\IsStar;
 use App\Rules\OwnerTrack;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
@@ -27,6 +28,11 @@ class RequestForCommentMutation extends Mutation
     public function type()
     {
         return \GraphQL::type('OperationType');
+    }
+
+    public function authorize(array $args)
+    {
+        return Auth::check();
     }
 
     public function args()

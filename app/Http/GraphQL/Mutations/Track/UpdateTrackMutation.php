@@ -6,6 +6,7 @@ use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use PhpOffice\PhpWord\IOFactory;
@@ -38,11 +39,16 @@ class UpdateTrackMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function rules(array $args = [])
     {
         return [
             'id' => ['required', function ($attribute, $value, $fail) {
-                $user = \Auth::user();
+                $user = Auth::user();
                 $track = Track::query()->withoutGlobalScope('state')->find($value);
                 if (true === empty($track)) {
                     $fail('Трек  не найден');

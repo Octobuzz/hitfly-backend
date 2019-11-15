@@ -6,6 +6,7 @@ use App\Models\MusicGroup;
 use App\Models\Watcheables;
 use App\User;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteFollowMutation extends Mutation
@@ -29,6 +30,11 @@ class DeleteFollowMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         switch ($args['Follow']['FollowType']) {
@@ -39,10 +45,10 @@ class DeleteFollowMutation extends Mutation
                 $class = MusicGroup::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип Подписки');
+                throw new \InvalidArgumentException('Не удалось определить тип Подписки');
         }
 
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $favourite = Watcheables::query()
             ->where('watcheable_id', $args['Follow']['FollowId'])

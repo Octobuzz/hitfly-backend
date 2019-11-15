@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class CriticOrStarComment implements Rule
 {
@@ -23,7 +24,7 @@ class CriticOrStarComment implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (\Auth::user()->can('comment.сricic') || \Auth::user()->can('comment.star')) ? true : false;
+        return (Auth::user()->can('comment.сricic') || Auth::user()->can('comment.star')) ? true : false;
     }
 
     /**

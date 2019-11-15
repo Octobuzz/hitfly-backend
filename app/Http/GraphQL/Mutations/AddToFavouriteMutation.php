@@ -31,6 +31,11 @@ class AddToFavouriteMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         switch ($args['Favourite']['favouritableType']) {
@@ -44,7 +49,7 @@ class AddToFavouriteMutation extends Mutation
                 $class = Collection::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип избранного');
+                throw new \InvalidArgumentException('Не удалось определить тип избранного');
         }
 
         $tmp = [];

@@ -7,6 +7,7 @@ use App\Models\Collection;
 use App\Models\Favourite;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteFromFavouriteMutation extends Mutation
@@ -31,6 +32,11 @@ class DeleteFromFavouriteMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         switch ($args['Favourite']['favouritableType']) {
@@ -47,7 +53,7 @@ class DeleteFromFavouriteMutation extends Mutation
                 throw new \Exception('Не удалось определить тип избранного');
         }
 
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $favourite = Favourite::query()
             ->where('favouriteable_id', $args['Favourite']['favouriteableId'])

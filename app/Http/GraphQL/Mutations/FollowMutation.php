@@ -30,6 +30,11 @@ class FollowMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         switch ($args['Follow']['FollowType']) {

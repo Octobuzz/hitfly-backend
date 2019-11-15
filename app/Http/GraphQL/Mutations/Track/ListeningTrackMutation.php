@@ -39,6 +39,11 @@ class ListeningTrackMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         if ($args['listening'] < Track::MIN_LISTENING) {
@@ -51,7 +56,7 @@ class ListeningTrackMutation extends Mutation
         $minutes = $date->diffInMinutes($dateTomorrow);
 
         /** @var User $user */
-        $user = \Auth::user();
+        $user = Auth::user();
         $keyUser = md5($date->format('Y-m-d').'_'.$user->id);
         $keyTracks = md5($date->format('Y-m-d').'_'.$user->id.'_tracks');
 
@@ -62,9 +67,9 @@ class ListeningTrackMutation extends Mutation
         }
         //проверка на прослушивание одного трека только один раз, иначе бонусы неположены
         //получить данные надо перед вызовом события TrackMinimumListening, пока в бд не записалось текущее прослушивание
-        $listenedTrack = ListenedTrack::query()->select('id')->where('user_id', Auth::user()->id)
+        $listenedTrack = ListenedTrack::query()->select('id')->where('user_id', $user->id)
             ->where('track_id', $track->id)->first();
-        event(new TrackMinimumListening($track, Auth::user()));
+        event(new TrackMinimumListening($track, $user));
 
         //если уже прослушивал этот трек, не засчитываем прослушивание
         if (null !== $listenedTrack) {

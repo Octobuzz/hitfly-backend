@@ -6,6 +6,7 @@ use App\Models\Album;
 use App\Rules\AuthorUpdateAlbum;
 use Carbon\Carbon;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
@@ -38,6 +39,11 @@ class UpdateAlbumMutation extends Mutation
                 'type' => UploadType::getInstance(),
             ],
         ];
+    }
+
+    public function authorize(array $args)
+    {
+        return Auth::check();
     }
 
     public function resolve($root, $args)

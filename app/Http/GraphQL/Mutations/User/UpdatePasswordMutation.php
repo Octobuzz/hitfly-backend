@@ -30,6 +30,11 @@ class UpdatePasswordMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         $user = Auth::user();

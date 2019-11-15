@@ -10,6 +10,7 @@ namespace App\Validation;
 
 use App\Models\Album;
 use App\Models\Track;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AlbumValidator extends Validator
@@ -18,7 +19,7 @@ class AlbumValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $album = Album::query()->find($data['albumId']);
 
@@ -37,7 +38,7 @@ class AlbumValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = \Auth::guard('json')->user();
+        $user = Auth::user();
 
         $album = Album::query()->find($data['albumId']);
         $track = Track::query()->find($data['trackId']);

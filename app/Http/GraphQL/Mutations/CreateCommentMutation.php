@@ -32,6 +32,11 @@ class CreateCommentMutation extends Mutation
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::check();
+    }
+
     public function resolve($root, $args)
     {
         switch ($args['Comment']['commentableType']) {
