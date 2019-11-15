@@ -22,7 +22,7 @@ class RemoveTrackFromCollectionMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function args()

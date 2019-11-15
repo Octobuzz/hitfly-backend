@@ -32,7 +32,7 @@ class DeleteFollowMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -48,7 +48,7 @@ class DeleteFollowMutation extends Mutation
                 throw new \InvalidArgumentException('Не удалось определить тип Подписки');
         }
 
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $favourite = Watcheables::query()
             ->where('watcheable_id', $args['Follow']['FollowId'])

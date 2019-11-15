@@ -50,10 +50,10 @@ class TracksQuery extends Query
         $query->select('tracks.*');
 
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
-            if (null === \Auth::guard('json')->user()) {
+            if (null === Auth::guard('json')->user()) {
                 return null;
             }
-            $query->where('tracks.user_id', '=', \Auth::guard('json')->user()->id);
+            $query->where('tracks.user_id', '=', Auth::guard('json')->user()->id);
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('tracks.user_id', '=', $args['filters']['userId']);

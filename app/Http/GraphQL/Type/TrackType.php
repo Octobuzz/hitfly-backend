@@ -128,7 +128,7 @@ class TrackType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Мой трек',
                 'resolve' => function ($model) {
-                    if ($model->user_id === Auth::user()->id) {
+                    if ($model->user_id === Auth::guard('json')->user()->id) {
                         return true;
                     } else {
                         return false;
@@ -141,7 +141,7 @@ class TrackType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Откомментирован мной',
                 'resolve' => function ($model) {
-                    if ($model->comments()->where('user_id', Auth::user()->id)->count() > 0) {
+                    if ($model->comments()->where('user_id', Auth::guard('json')->user()->id)->count() > 0) {
                         return true;
                     } else {
                         return false;

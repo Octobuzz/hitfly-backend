@@ -27,7 +27,7 @@ class AuthorUpdateAlbum implements Rule
     {
         $album = Album::query()->find($value);
 
-        return Auth::user()->id === $album->user_id;
+        return Auth::guard('json')->user()->id === $album->user_id;
     }
 
     /**

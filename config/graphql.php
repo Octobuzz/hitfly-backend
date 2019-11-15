@@ -182,7 +182,7 @@ return [
                 'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
                 'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
             ],
-            'middleware' => ['auth:json', 'guest'],
+            'middleware' => ['guest'],
             'method' => ['get', 'post'],
         ],
 

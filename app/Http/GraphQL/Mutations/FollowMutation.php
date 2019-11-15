@@ -32,7 +32,7 @@ class FollowMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -51,7 +51,7 @@ class FollowMutation extends Mutation
         $tmp = [];
         $tmp['watcheable_type'] = $class;
         $tmp['watcheable_id'] = $args['Follow']['FollowId'];
-        $tmp['user_id'] = Auth::user()->id;
+        $tmp['user_id'] = Auth::guard('json')->user()->id;
         $follow = Watcheables::create($tmp);
         $follow->save();
 

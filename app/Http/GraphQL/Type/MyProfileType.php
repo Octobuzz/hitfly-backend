@@ -95,7 +95,7 @@ class MyProfileType extends GraphQLType
                     'type' => Type::listOf(GraphQL::type('Genre')),
                     'description' => 'получить количество прослушанных треков по жанрам',
                     'resolve' => function ($model) {
-                        $user = Auth::user();
+                        $user = Auth::guard('json')->user();
                         $userLevels = new UserLevels();
                         $keyCache = $user->id.'_getCountListenedTracksByGenres';
                         $listenGenres = Cache::tags(['countListenedTracksByGenres'])->get($keyCache, null);

@@ -24,7 +24,7 @@ class UpdateCommentMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function args()
@@ -77,7 +77,7 @@ class UpdateCommentMutation extends Mutation
         $comment->comment = $args['Comment']['comment'];
         $comment->commentable_type = $class;
         $comment->commentable_id = $args['Comment']['commentableId'];
-        $comment->user_id = Auth::user()->id;
+        $comment->user_id = Auth::guard('json')->user()->id;
         $comment->save();
 
         return $comment;

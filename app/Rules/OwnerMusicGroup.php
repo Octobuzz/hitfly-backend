@@ -36,7 +36,7 @@ class OwnerMusicGroup implements Rule
         if (null === $musicGroup) {
             return false;
         }
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         if ($musicGroup->creator_group_id === $user->id) {
             return true;

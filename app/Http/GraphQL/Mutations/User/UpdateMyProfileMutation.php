@@ -45,12 +45,12 @@ class UpdateMyProfileMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
         if (!empty($args['profile'])) {
             if (!empty($args['profile']['password']) && $args['profile']['password']) {
                 $args['profile']['password'] = Hash::make($args['profile']['password']);

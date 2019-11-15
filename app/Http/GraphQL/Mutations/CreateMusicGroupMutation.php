@@ -40,13 +40,13 @@ class CreateMusicGroupMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $countgroup = MusicGroup::query()->where('creator_group_id', '=', $user->id)->count();
 

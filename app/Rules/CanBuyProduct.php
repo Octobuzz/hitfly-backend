@@ -24,7 +24,7 @@ class CanBuyProduct implements Rule
      */
     public function passes($attribute, $value)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         return ($user->inRoles(['prof_critic', 'star'])) ? false : true;
     }

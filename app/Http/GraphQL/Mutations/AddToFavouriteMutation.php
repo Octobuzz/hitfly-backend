@@ -33,7 +33,7 @@ class AddToFavouriteMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -55,7 +55,7 @@ class AddToFavouriteMutation extends Mutation
         $tmp = [];
         $tmp['favouriteable_type'] = $class;
         $tmp['favouriteable_id'] = $args['Favourite']['favouriteableId'];
-        $tmp['user_id'] = Auth::user()->id;
+        $tmp['user_id'] = Auth::guard('json')->user()->id;
         $favourite = Favourite::create($tmp);
         $favourite->save();
 

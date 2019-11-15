@@ -45,12 +45,12 @@ class CreateCollectionMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
     {
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         if (null === $user) {
             return JsonResponse::create();

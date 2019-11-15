@@ -20,13 +20,13 @@ class RemoveMeMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $user->delete();
 

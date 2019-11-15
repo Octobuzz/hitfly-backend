@@ -30,12 +30,15 @@ class FavouriteGenreQuery extends Query
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::guard('json')->check();
+    }
+
     public function resolve($root, $args, SelectFields $fields)
     {
         $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
+
         $query = Favourite::with($fields->getRelations());
         $query->select($fields->getSelect());
         $query->where('favouriteable_type', '=', Genre::class);

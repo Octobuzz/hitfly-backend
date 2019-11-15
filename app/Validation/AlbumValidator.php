@@ -19,7 +19,7 @@ class AlbumValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $album = Album::query()->find($data['albumId']);
 
@@ -38,7 +38,7 @@ class AlbumValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $album = Album::query()->find($data['albumId']);
         $track = Track::query()->find($data['trackId']);

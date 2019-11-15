@@ -36,7 +36,7 @@ class UseBonusesMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -48,7 +48,7 @@ class UseBonusesMutation extends Mutation
         }
         try {
             /** @var User $user */
-            $user = Auth::user();
+            $user = Auth::guard('json')->user();
             /** @var Purse $purse */
             $purse = $user->purseBonus()->first();
             if (null === $purse) {

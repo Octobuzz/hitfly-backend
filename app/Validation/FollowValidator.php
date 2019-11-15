@@ -33,7 +33,7 @@ class FollowValidator extends Validator
         $follow = Watcheables::query()
             ->where('watcheable_type', '=', $class)
             ->where('watcheable_id', '=', $data['Follow']['FollowId'])
-            ->where('user_id', Auth::user()->id)->first();
+            ->where('user_id', Auth::guard('json')->user()->id)->first();
         if (null === $follow) {
             return true;
         } else {
@@ -45,7 +45,7 @@ class FollowValidator extends Validator
     {
         $data = $validator->getData();
 
-        if (Watcheables::TYPE_MUSIC_GROUP === $data['Follow']['FollowType'] || ($data['Follow']['FollowId'] !== Auth::user()->id && Watcheables::TYPE_USER === $data['Follow']['FollowType'])) {
+        if (Watcheables::TYPE_MUSIC_GROUP === $data['Follow']['FollowType'] || ($data['Follow']['FollowId'] !== Auth::guard('json')->user()->id && Watcheables::TYPE_USER === $data['Follow']['FollowType'])) {
             return true;
         } else {
             return false;
@@ -69,7 +69,7 @@ class FollowValidator extends Validator
         $follow = Watcheables::query()
             ->where('watcheable_type', '=', $class)
             ->where('watcheable_id', '=', $data['Follow']['FollowId'])
-            ->where('user_id', Auth::user()->id)->first();
+            ->where('user_id', Auth::guard('json')->user()->id)->first();
         if (null === $follow) {
             return false;
         } else {

@@ -19,7 +19,7 @@ class CollectionValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $collection = Collection::query()->find($data['collectionId']);
 
@@ -38,7 +38,7 @@ class CollectionValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $collection = Collection::query()->find($data['collectionId']);
 

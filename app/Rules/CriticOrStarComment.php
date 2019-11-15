@@ -24,7 +24,7 @@ class CriticOrStarComment implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (Auth::user()->can('comment.сricic') || Auth::user()->can('comment.star')) ? true : false;
+        return (Auth::guard('json')->user()->can('comment.сricic') || Auth::guard('json')->user()->can('comment.star')) ? true : false;
     }
 
     /**

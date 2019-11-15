@@ -41,14 +41,14 @@ class UpdateTrackMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function rules(array $args = [])
     {
         return [
             'id' => ['required', function ($attribute, $value, $fail) {
-                $user = Auth::user();
+                $user = Auth::guard('json')->user();
                 $track = Track::query()->withoutGlobalScope('state')->find($value);
                 if (true === empty($track)) {
                     $fail('Трек  не найден');

@@ -41,7 +41,7 @@ class ListeningTrackMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -56,7 +56,8 @@ class ListeningTrackMutation extends Mutation
         $minutes = $date->diffInMinutes($dateTomorrow);
 
         /** @var User $user */
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
+
         $keyUser = md5($date->format('Y-m-d').'_'.$user->id);
         $keyTracks = md5($date->format('Y-m-d').'_'.$user->id.'_tracks');
 

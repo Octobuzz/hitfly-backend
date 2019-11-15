@@ -34,6 +34,11 @@ class RequestsForCommentsQuery extends Query
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::guard('json')->check();
+    }
+
     public function resolve($root, $args, SelectFields $fields)
     {
         $user = Auth::guard('json')->user();

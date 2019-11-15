@@ -5,6 +5,7 @@ namespace App\Http\GraphQL\Type;
 use App\Http\GraphQL\Fields\PictureField;
 use App\Models\MusicGroup;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
@@ -84,8 +85,8 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Владелец группы (создатель) текущий пользователь',
                 'resolve' => function ($model) {
-                    if (null !== \Auth::user()) {
-                        if (\Auth::user()->id === $model->creator_group_id) {
+                    if (null !== Auth::guard('json')->user()) {
+                        if (Auth::guard('json')->user()->id === $model->creator_group_id) {
                             return true;
                         } else {
                             return false;

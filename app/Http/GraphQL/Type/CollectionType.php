@@ -90,7 +90,7 @@ class CollectionType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'мой альбом',
                 'resolve' => function ($model) {
-                    return $model->user_id === Auth::user()->id ? true : false;
+                    return $model->user_id === Auth::guard('json')->user()->id ? true : false;
                 },
                 'selectable' => false,
                 'privacy' => IsAuthPrivacy::class,

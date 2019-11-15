@@ -37,7 +37,7 @@ class FavouritesValidator extends Validator
         $favourite = Favourite::query()
             ->where('favouriteable_type', '=', $class)
             ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
-            ->where('user_id', Auth::user()->id)->first();
+            ->where('user_id', Auth::guard('json')->user()->id)->first();
         if (null === $favourite) {
             return true;
         } else {
@@ -65,7 +65,7 @@ class FavouritesValidator extends Validator
         $favourite = Favourite::query()
             ->where('favouriteable_type', '=', $class)
             ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
-            ->where('user_id', Auth::user()->id)->first();
+            ->where('user_id', Auth::guard('json')->user()->id)->first();
         if (null === $favourite) {
             return false;
         } else {

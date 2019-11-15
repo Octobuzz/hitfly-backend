@@ -166,7 +166,7 @@ class UserInterface extends InterfaceType
                 'type' => Type::string(),
                 'description' => 'Токен авторизации',
                 'resolve' => function () {
-                    return Auth::user()->access_token;
+                    return Auth::guard('json')->user()->access_token;
                 },
             ],
             'watchAvaliable' => [

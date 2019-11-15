@@ -33,7 +33,7 @@ class RemoveSocialConnect extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -41,7 +41,7 @@ class RemoveSocialConnect extends Mutation
         /** @var Social $social */
         $social = Social::query()
             ->where('social_driver', '=', $args['social'])
-            ->where('user_id', '=', Auth::user()->id)
+            ->where('user_id', '=', Auth::guard('json')->user()->id)
             ->first()
         ;
         if (empty($social)) {
@@ -49,6 +49,6 @@ class RemoveSocialConnect extends Mutation
         }
         $social->forceDelete();
 
-        return Auth::user();
+        return Auth::guard('json')->user();
     }
 }

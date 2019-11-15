@@ -36,7 +36,7 @@ class OwnerCollection implements Rule
         if (null === $collection) {
             return false;
         }
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         if ($collection->user_id === $user->id) {
             return true;

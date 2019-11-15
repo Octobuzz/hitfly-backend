@@ -34,7 +34,7 @@ class DeleteFromFavouriteMutation extends Mutation
 
     public function authorize(array $args)
     {
-        return Auth::check();
+        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -53,7 +53,7 @@ class DeleteFromFavouriteMutation extends Mutation
                 throw new \Exception('Не удалось определить тип избранного');
         }
 
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         $favourite = Favourite::query()
             ->where('favouriteable_id', $args['Favourite']['favouriteableId'])

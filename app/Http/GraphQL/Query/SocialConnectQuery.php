@@ -41,6 +41,11 @@ class SocialConnectQuery extends Query
         ];
     }
 
+    public function authorize(array $args)
+    {
+        return Auth::guard('json')->check();
+    }
+
     public function resolve($root, $args)
     {
         /** @var User $User */

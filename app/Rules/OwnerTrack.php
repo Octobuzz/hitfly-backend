@@ -30,7 +30,7 @@ class OwnerTrack implements Rule
             return false;
         }
 
-        return Auth::user()->id === $track->user_id;
+        return Auth::guard('json')->user()->id === $track->user_id;
     }
 
     /**

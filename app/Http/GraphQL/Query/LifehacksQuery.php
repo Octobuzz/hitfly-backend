@@ -4,6 +4,7 @@ namespace App\Http\GraphQL\Query;
 
 use App\Models\Lifehack;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -36,7 +37,7 @@ class LifehacksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        if (null === \Auth::guard('json')->user()) {
+        if (null === Auth::guard('json')->user()) {
             return null;
         }
         $query = $query = Lifehack::with($fields->getRelations())

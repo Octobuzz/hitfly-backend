@@ -36,7 +36,7 @@ class OwnerAlbum implements Rule
         if (null === $album) {
             return false;
         }
-        $user = Auth::user();
+        $user = Auth::guard('json')->user();
 
         if ($album->user_id === $user->id) {
             return true;
