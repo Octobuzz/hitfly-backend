@@ -210,7 +210,7 @@ class JsonGuard implements Guard
         $user->save();
         $this->setUser($user);
 
-        Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token, 60 * 60 * 60);
+        Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token);
     }
 
     public function logout()
