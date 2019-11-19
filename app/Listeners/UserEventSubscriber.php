@@ -15,12 +15,8 @@ use App\Events\User\DetachingRolesEvent;
 use App\Events\User\IncreaseRoleEvent;
 use App\Models\ArtistProfile;
 use App\Models\Track;
-use App\Services\Auth\JsonGuard;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Logout;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use LogicException;
 
@@ -37,7 +33,6 @@ class UserEventSubscriber
         $events->listen(AttachingRolesEvent::class, self::class.'@belongsToManyAttachingRoles');
         $events->listen(DetachingRolesEvent::class, self::class.'@belongsToManyDetachingRoles');
     }
-
 
     /**
      * при загрузке трека слушателем не меняется роль в админке на испольнительы.

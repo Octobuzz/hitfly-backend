@@ -22,6 +22,7 @@ class SocialController extends Controller
     {
         return Auth::guard('json');
     }
+
     /**
      * Redirect to provider for authentication.
      *

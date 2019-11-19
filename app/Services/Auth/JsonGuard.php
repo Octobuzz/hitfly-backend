@@ -208,6 +208,7 @@ class JsonGuard implements Guard
 
         $user->generateAccessToken();
         $user->save();
+        $this->setUser($user);
 
         Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token, 60 * 60 * 60);
     }
