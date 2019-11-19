@@ -15,7 +15,7 @@ class IsAuthPrivacy extends Privacy
 {
     public function validate(array $args)
     {
-        if (null === Auth::id()) {
+        if (null === Auth::user()->id) {
             return false;
         } else {
             return true;

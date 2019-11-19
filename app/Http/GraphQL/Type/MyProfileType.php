@@ -33,15 +33,15 @@ class MyProfileType extends GraphQLType
                     'type' => Type::string(),
                     'description' => 'Email пользователя',
                 ],
-                'accessToken' => [
-                    'type' => Type::string(),
-                    'description' => 'The access token',
-                    'alias' => 'access_token',
-                    'resolve' => function (User $model) {
-                        return $model->access_token;
-                    },
-                    'privacy' => UserPrivacy::class,
-                ],
+//                'accessToken' => [
+//                    'type' => Type::string(),
+//                    'description' => 'The access token',
+//                    'alias' => 'access_token',
+//                    'resolve' => function (User $model) {
+//                        return $model->access_token;
+//                    },
+//                    'privacy' => UserPrivacy::class,
+//                ],
                 'favoriteSongsCount' => [
                     'type' => Type::int(),
                     'description' => 'Количество любимых песен',
