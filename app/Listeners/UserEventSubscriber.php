@@ -33,42 +33,11 @@ class UserEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen(Login::class, self::class.'@onUserLogin');
-        $events->listen(Logout::class, self::class.'@onUserLogout');
         $events->listen('eloquent.created: '.Track::class, self::class.'@uploadFirstTrack');
         $events->listen(AttachingRolesEvent::class, self::class.'@belongsToManyAttachingRoles');
         $events->listen(DetachingRolesEvent::class, self::class.'@belongsToManyDetachingRoles');
     }
 
-    /**
-     * Handle user login events.
-     *
-     * @param Login $event
-     */
-    public function onUserLogin($event)
-    {
-        /** @var User $user */
-        $user = $event->user;
-
-        if (Cookie::has(JsonGuard::HEADER_NAME_TOKEN)) {
-            Cookie::queue(Cookie::forget(JsonGuard::HEADER_NAME_TOKEN));
-        }
-
-        $user->generateAccessToken();
-        $user->save();
-
-        Cookie::queue(JsonGuard::HEADER_NAME_TOKEN, $user->access_token);
-    }
-
-    /**
-     * Handle user logout events.
-     *
-     * @param Logout $event
-     */
-    public function onUserLogout($event)
-    {
-        Cookie::queue(Cookie::forget(JsonGuard::HEADER_NAME_TOKEN));
-    }
 
     /**
      * при загрузке трека слушателем не меняется роль в админке на испольнительы.

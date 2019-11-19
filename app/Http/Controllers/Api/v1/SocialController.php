@@ -18,6 +18,10 @@ class SocialController extends Controller
 {
     use ApiResponseTrait;
 
+    protected function guard()
+    {
+        return Auth::guard('json');
+    }
     /**
      * Redirect to provider for authentication.
      *
@@ -68,8 +72,7 @@ class SocialController extends Controller
         /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
-        //Auth::login($user);
-        Auth::guard('json')->login($user);
+        Auth::login($user);
         if (null !== $user->email && false === $user->hasVerifiedEmail()) {
             VerificationController::sendNotification($user);
         }
