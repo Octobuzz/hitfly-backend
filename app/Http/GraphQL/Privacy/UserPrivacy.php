@@ -15,7 +15,7 @@ class UserPrivacy extends Privacy
 {
     public function validate(array $args)
     {
-        if (null === Auth::user()->id) {
+        if (null === Auth::user()) {
             return false;
         }
 
