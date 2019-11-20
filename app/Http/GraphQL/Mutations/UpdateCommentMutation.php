@@ -2,16 +2,17 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Comment;
 use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class UpdateCommentMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'CreateComment',
         'description' => 'Изменение комментария(отзыва)',
@@ -20,11 +21,6 @@ class UpdateCommentMutation extends Mutation
     public function type()
     {
         return \GraphQL::type('CommentResult');
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function args()
@@ -77,7 +73,7 @@ class UpdateCommentMutation extends Mutation
         $comment->comment = $args['Comment']['comment'];
         $comment->commentable_type = $class;
         $comment->commentable_id = $args['Comment']['commentableId'];
-        $comment->user_id = Auth::guard('json')->user()->id;
+        $comment->user_id = $this->getGuard()->user()->id;
         $comment->save();
 
         return $comment;

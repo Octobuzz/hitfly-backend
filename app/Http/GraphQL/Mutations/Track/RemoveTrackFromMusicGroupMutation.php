@@ -8,14 +8,15 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use App\Rules\OwnerTrack;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
 
 class RemoveTrackFromMusicGroupMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RemoveTrackFromMusicGroup',
         'description' => 'Отвязка трека от группы',
@@ -24,11 +25,6 @@ class RemoveTrackFromMusicGroupMutation extends Mutation
     public function type()
     {
         return \GraphQL::type('Track');
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function args()

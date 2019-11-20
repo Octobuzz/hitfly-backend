@@ -2,16 +2,17 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use App\Models\Favourite;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class FavouriteCollectionQuery extends Query
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Favourite Collection Query',
         'description' => 'Запрос любимых плейлистов',
@@ -31,14 +32,9 @@ class FavouriteCollectionQuery extends Query
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
         if (null === $user) {
             return null;
         }

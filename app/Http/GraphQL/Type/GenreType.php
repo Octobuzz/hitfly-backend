@@ -4,14 +4,15 @@ namespace App\Http\GraphQL\Type;
 
 use App\BuisnessLogic\BonusProgram\UserLevels;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class GenreType extends GraphQLType
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Genre',
         'model' => Genre::class,
@@ -75,7 +76,7 @@ class GenreType extends GraphQLType
                 'type' => Type::int(),
                 'description' => 'Количество прослушиваний жанра текущим пользователем(вернет NULL если не попадает в топ прослушивания)',
                 'resolve' => function ($model) {
-                    $user = Auth::guard('json')->user();
+                    $user = $this->getGuard()->user();
                     $userLevels = new UserLevels();
                     $keyCache = $user->id.'_getCountListenedTracksByGenres';
                     $listenGenres = Cache::tags(['countListenedTracksByGenres'])->get($keyCache, null);

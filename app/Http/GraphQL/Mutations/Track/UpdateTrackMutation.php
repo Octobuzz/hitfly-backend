@@ -2,11 +2,11 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use Carbon\Carbon;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use PhpOffice\PhpWord\IOFactory;
@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateTrackMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateTrack',
         'description' => 'Обновление информации о треке',
@@ -39,16 +40,11 @@ class UpdateTrackMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function rules(array $args = [])
     {
         return [
             'id' => ['required', function ($attribute, $value, $fail) {
-                $user = Auth::guard('json')->user();
+                $user = $this->getGuard()->user();
                 $track = Track::query()->withoutGlobalScope('state')->find($value);
                 if (true === empty($track)) {
                     $fail('Трек  не найден');

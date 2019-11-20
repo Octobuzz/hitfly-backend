@@ -2,10 +2,10 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
@@ -13,6 +13,7 @@ use Rebing\GraphQL\Support\UploadType;
 
 class CreateAlbumMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'CreateAlbumMutation',
         'description' => 'Создание альбома',
@@ -37,15 +38,10 @@ class CreateAlbumMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $album = new Album();
         $album->setUser($user);

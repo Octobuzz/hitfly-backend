@@ -3,11 +3,11 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Dictionaries\OrderStatusDictionary;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Order;
 use App\Models\Product;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -16,6 +16,7 @@ use Rebing\GraphQL\Support\SelectFields;
  */
 class RequestsForCommentsQuery extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RequestsForComments',
         'description' => 'Запросы на отзывы',
@@ -34,14 +35,9 @@ class RequestsForCommentsQuery extends Query
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
         if (null === $user) {
             return null;
         }
@@ -74,7 +70,7 @@ class RequestsForCommentsQuery extends Query
             $join->on('orders.id', '=', 'value.order_id');
         });
         $query->where('value.attribute_id', $attrId);
-        $query->where('value.value', Auth::guard('json')->user()->id);
+        $query->where('value.value', $this->getGuard()->user()->id);
         $query->orderBy('orders.created_at');
 
         return $query;

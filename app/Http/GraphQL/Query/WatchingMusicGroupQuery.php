@@ -2,15 +2,16 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\MusicGroup;
 use App\Models\Watcheables;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class WatchingMusicGroupQuery extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'WatchingMusicGroup',
         'description' => 'Следит за группой',
@@ -31,10 +32,7 @@ class WatchingMusicGroupQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
+        $user = $this->getGuard()->user();
 
         return Watcheables::with('watcheable')
             ->where('watcheable_type', MusicGroup::class)

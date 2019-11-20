@@ -2,12 +2,13 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class RateCommentMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RateComment',
         'description' => 'Оценить отзыв',
@@ -16,11 +17,6 @@ class RateCommentMutation extends Mutation
     public function type()
     {
         return \GraphQL::type('CommentResult');
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function args()

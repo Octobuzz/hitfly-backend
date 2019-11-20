@@ -2,17 +2,18 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Notification;
 use App\Notifications\BaseNotification;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class NotificationQuery extends Query
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'MyProfile',
         'description' => 'Мой профиль',
@@ -33,10 +34,7 @@ class NotificationQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info)
     {
-        $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
+        $user = $this->getGuard()->user();
         $query = Notification::query()
             ->where('notifiable_id', '=', $user->id)
             ->where('notifiable_type', '=', User::class)

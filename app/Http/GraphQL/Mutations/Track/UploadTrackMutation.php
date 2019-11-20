@@ -2,9 +2,9 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use GraphQL;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\UploadType;
 use Rebing\GraphQL\Support\Mutation;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadTrackMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UploadTrack',
         'description' => 'Загрузка трека',
@@ -33,16 +34,11 @@ class UploadTrackMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         /** @var UploadedFile $file */
         $file = $args['track'];
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
         $name = Storage::disk('public')->putFile("tracks/$user->id", $file);
 
         $track = Track::query()->create([

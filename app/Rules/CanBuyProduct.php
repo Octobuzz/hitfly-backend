@@ -2,11 +2,13 @@
 
 namespace App\Rules;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 class CanBuyProduct implements Rule
 {
+    use GraphQLAuthTrait;
+
     /**
      * разрешено ли покупать товары пользователю.
      */
@@ -24,7 +26,7 @@ class CanBuyProduct implements Rule
      */
     public function passes($attribute, $value)
     {
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         return ($user->inRoles(['prof_critic', 'star'])) ? false : true;
     }

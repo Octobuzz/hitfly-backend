@@ -2,11 +2,11 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\GroupLinks;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Error\ValidationError;
@@ -15,6 +15,7 @@ use Rebing\GraphQL\Support\UploadType;
 
 class CreateMusicGroupMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'CreateMusicGroup',
         'description' => 'Создание музыкальной группы',
@@ -38,15 +39,10 @@ class CreateMusicGroupMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $countgroup = MusicGroup::query()->where('creator_group_id', '=', $user->id)->count();
 

@@ -2,15 +2,16 @@
 
 namespace App\Http\GraphQL\Mutations\Store;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Product;
 use App\Rules\CanBuyProduct;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
 
 class BuyProductMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     private $order;
 
     public function __construct($attributes = [], \App\BuisnessLogic\Orders\Order $order)
@@ -38,11 +39,6 @@ class BuyProductMutation extends Mutation
                 'rules' => ['required', new CanBuyProduct()],
             ],
         ];
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)

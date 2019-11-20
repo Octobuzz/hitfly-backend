@@ -2,14 +2,15 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\MusicGroup;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteMusicGroupMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateMusicGroup',
         'description' => 'Удаление музыкальной группы',
@@ -31,15 +32,10 @@ class DeleteMusicGroupMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $musicGroup = MusicGroup::query()->find($args['id']);
         $musicGroup->delete();

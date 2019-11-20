@@ -3,11 +3,11 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Helpers\DBHelpers;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use App\Rules\AuthorUpdateMusicGroup;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
@@ -15,6 +15,7 @@ use Rebing\GraphQL\Support\UploadType;
 
 class UpdateMusicGroupMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateMusicGroup',
         'description' => 'обновление музыкальной группы',
@@ -41,11 +42,6 @@ class UpdateMusicGroupMutation extends Mutation
                 'type' => UploadType::getInstance(),
             ],
         ];
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)

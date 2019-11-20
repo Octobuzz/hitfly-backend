@@ -8,17 +8,15 @@
 
 namespace App\Http\GraphQL\Privacy;
 
-use Illuminate\Support\Facades\Auth;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use Rebing\GraphQL\Support\Privacy;
 
 class IsAuthPrivacy extends Privacy
 {
+    use GraphQLAuthTrait;
+
     public function validate(array $args)
     {
-        if (null === Auth::user()) {
-            return false;
-        } else {
-            return true;
-        }
+        return null !== $this->getGuard()->user();
     }
 }

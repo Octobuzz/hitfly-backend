@@ -2,9 +2,9 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Lifehack;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -13,6 +13,8 @@ use Rebing\GraphQL\Support\SelectFields;
  */
 class LifehacksQuery extends Query
 {
+    use GraphQLAuthTrait;
+    public $authorize = true;
     protected $attributes = [
         'name' => 'LifehacksQuery',
         'description' => 'Запрос лайфхаков',
@@ -37,9 +39,6 @@ class LifehacksQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        if (null === Auth::guard('json')->user()) {
-            return null;
-        }
         $query = $query = Lifehack::with($fields->getRelations())
             ->orderBy('sort', 'ASC')
             ->orderBy('created_at', 'DESC');

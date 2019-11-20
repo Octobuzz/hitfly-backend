@@ -4,17 +4,18 @@ namespace App\Http\GraphQL\Mutations\Track;
 
 use App\Events\ListeningTenTrackEvent;
 use App\Events\Track\TrackMinimumListening;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\ListenedTrack;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Mutation;
 
 class ListeningTrackMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'ListeningTrackMutation',
         'description' => 'Прослушивание трека',
@@ -39,11 +40,6 @@ class ListeningTrackMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         if ($args['listening'] < Track::MIN_LISTENING) {
@@ -56,7 +52,7 @@ class ListeningTrackMutation extends Mutation
         $minutes = $date->diffInMinutes($dateTomorrow);
 
         /** @var User $user */
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $keyUser = md5($date->format('Y-m-d').'_'.$user->id);
         $keyTracks = md5($date->format('Y-m-d').'_'.$user->id.'_tracks');

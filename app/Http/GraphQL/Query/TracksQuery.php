@@ -3,11 +3,11 @@
 namespace App\Http\GraphQL\Query;
 
 use App\Helpers\DBHelpers;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -16,6 +16,8 @@ use Rebing\GraphQL\Support\SelectFields;
  */
 class TracksQuery extends Query
 {
+    use GraphQLAuthTrait;
+    public $authorize = true;
     protected $attributes = [
         'name' => 'Music Group Query',
         'description' => 'Запрос треков',
@@ -50,10 +52,10 @@ class TracksQuery extends Query
         $query->select('tracks.*');
 
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
-            if (null === Auth::guard('json')->user()) {
+            if (null === $this->getGuard()->user()) {
                 return null;
             }
-            $query->where('tracks.user_id', '=', Auth::guard('json')->user()->id);
+            $query->where('tracks.user_id', '=', $this->getGuard()->user()->id);
         }
         if (false === empty($args['filters']['userId'])) {
             $query->where('tracks.user_id', '=', $args['filters']['userId']);
@@ -91,7 +93,7 @@ class TracksQuery extends Query
 
             /// Треки откоментированные мною
             /** @var User $user */
-            $user = Auth::guard('json')->user();
+            $user = $this->getGuard()->user();
             if (
                 false === empty($args['filters']['iCommented'])
                 && true === (bool) $args['filters']['iCommented']

@@ -8,18 +8,20 @@
 
 namespace App\Validation;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Track;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AlbumValidator extends Validator
 {
+    use GraphQLAuthTrait;
+
     public function validateDelete(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
     {
         $data = $validator->getData();
 
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $album = Album::query()->find($data['albumId']);
 
@@ -38,7 +40,7 @@ class AlbumValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $album = Album::query()->find($data['albumId']);
         $track = Track::query()->find($data['trackId']);

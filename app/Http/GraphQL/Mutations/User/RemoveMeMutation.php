@@ -2,12 +2,13 @@
 
 namespace App\Http\GraphQL\Mutations\User;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class RemoveMeMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RemoveMeMutation',
         'description' => 'Удалить самого себя',
@@ -18,15 +19,10 @@ class RemoveMeMutation extends Mutation
         return \GraphQL::type('MyProfile');
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $user->delete();
 

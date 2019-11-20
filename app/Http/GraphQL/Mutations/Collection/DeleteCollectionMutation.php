@@ -8,13 +8,14 @@
 
 namespace App\Http\GraphQL\Mutations\Collection;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteCollectionMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'DeleteCollection',
         'description' => 'Удаление коллекции поользователя',
@@ -34,11 +35,6 @@ class DeleteCollectionMutation extends Mutation
                 'rules' => 'collection_delete_validate',
             ],
         ];
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)

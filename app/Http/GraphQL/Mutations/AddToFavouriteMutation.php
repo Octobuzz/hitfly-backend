@@ -2,15 +2,16 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
 use App\Models\Track;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class AddToFavouriteMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'AddToFavourite',
         'description' => 'Добавить в избранное',
@@ -29,11 +30,6 @@ class AddToFavouriteMutation extends Mutation
                 'rules' => 'favourites_unique_validate',
             ],
         ];
-    }
-
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
     }
 
     public function resolve($root, $args)
@@ -55,7 +51,7 @@ class AddToFavouriteMutation extends Mutation
         $tmp = [];
         $tmp['favouriteable_type'] = $class;
         $tmp['favouriteable_id'] = $args['Favourite']['favouriteableId'];
-        $tmp['user_id'] = Auth::guard('json')->user()->id;
+        $tmp['user_id'] = $this->getGuard()->user()->id;
         $favourite = Favourite::create($tmp);
         $favourite->save();
 

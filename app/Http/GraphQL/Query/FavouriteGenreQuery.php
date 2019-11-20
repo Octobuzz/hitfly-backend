@@ -2,15 +2,16 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Favourite;
 use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class FavouriteGenreQuery extends Query
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Избранные жанры',
         'description' => 'Запрос любимых жанров',
@@ -30,14 +31,9 @@ class FavouriteGenreQuery extends Query
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $query = Favourite::with($fields->getRelations());
         $query->select($fields->getSelect());

@@ -2,14 +2,15 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\MusicGroup;
 use App\Models\Watcheables;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class FollowMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'AddToFollow',
         'description' => 'Подписаться(Follow)',
@@ -30,11 +31,6 @@ class FollowMutation extends Mutation
         ];
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
         switch ($args['Follow']['FollowType']) {
@@ -51,7 +47,7 @@ class FollowMutation extends Mutation
         $tmp = [];
         $tmp['watcheable_type'] = $class;
         $tmp['watcheable_id'] = $args['Follow']['FollowId'];
-        $tmp['user_id'] = Auth::guard('json')->user()->id;
+        $tmp['user_id'] = $this->getGuard()->user()->id;
         $follow = Watcheables::create($tmp);
         $follow->save();
 

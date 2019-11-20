@@ -4,18 +4,18 @@ namespace App\Http\GraphQL\Type;
 
 use App\BuisnessLogic\BonusProgram\UserLevels;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
-use App\Http\GraphQL\Privacy\UserPrivacy;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Genre;
 use App\Models\Purse;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use GraphQL;
 
 class MyProfileType extends GraphQLType
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'MyProfile',
         'description' => 'Получение самого себя',
@@ -33,15 +33,17 @@ class MyProfileType extends GraphQLType
                     'type' => Type::string(),
                     'description' => 'Email пользователя',
                 ],
-//                'accessToken' => [
-//                    'type' => Type::string(),
-//                    'description' => 'The access token',
-//                    'alias' => 'access_token',
-//                    'resolve' => function (User $model) {
-//                        return $model->access_token;
-//                    },
-//                    'privacy' => UserPrivacy::class,
-//                ],
+                'accessToken' => [
+                    'type' => Type::string(),
+                    'description' => 'Токен авторизации',
+                    'resolve' => function () {
+                        if (null === $this->getGuard()->user()) {
+                            return null;
+                        }
+
+                        return $this->getGuard()->user()->access_token;
+                    },
+                ],
                 'favoriteSongsCount' => [
                     'type' => Type::int(),
                     'description' => 'Количество любимых песен',
@@ -95,7 +97,7 @@ class MyProfileType extends GraphQLType
                     'type' => Type::listOf(GraphQL::type('Genre')),
                     'description' => 'получить количество прослушанных треков по жанрам',
                     'resolve' => function ($model) {
-                        $user = Auth::guard('json')->user();
+                        $user = $this->getGuard()->user();
                         $userLevels = new UserLevels();
                         $keyCache = $user->id.'_getCountListenedTracksByGenres';
                         $listenGenres = Cache::tags(['countListenedTracksByGenres'])->get($keyCache, null);

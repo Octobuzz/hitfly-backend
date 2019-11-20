@@ -4,14 +4,16 @@ namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class AlbumType extends GraphQLType
 {
+    public $authorize = true;
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Album',
         'model' => Album::class,
@@ -83,7 +85,7 @@ class AlbumType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'мой альбом',
                 'resolve' => function ($model) {
-                    return $model->user_id === Auth::guard('json')->user()->id ? true : false;
+                    return $model->user_id === $this->getGuard()->user()->id ? true : false;
                 },
                 'selectable' => false,
                 'privacy' => IsAuthPrivacy::class,

@@ -8,18 +8,20 @@
 
 namespace App\Validation;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use App\Models\Track;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CollectionValidator extends Validator
 {
+    use GraphQLAuthTrait;
+
     public function validateDelete(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
     {
         $data = $validator->getData();
 
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $collection = Collection::query()->find($data['collectionId']);
 
@@ -38,7 +40,7 @@ class CollectionValidator extends Validator
     {
         $data = $validator->getData();
 
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         $collection = Collection::query()->find($data['collectionId']);
 

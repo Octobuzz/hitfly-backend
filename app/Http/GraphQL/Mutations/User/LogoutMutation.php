@@ -2,12 +2,13 @@
 
 namespace App\Http\GraphQL\Mutations\User;
 
-use Illuminate\Support\Facades\Auth;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
 
 class LogoutMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'LogoutMutation',
         'description' => 'Logout',
@@ -18,14 +19,9 @@ class LogoutMutation extends Mutation
         return Type::boolean();
     }
 
-    public function authorize(array $args)
-    {
-        return Auth::guard('json')->check();
-    }
-
     public function resolve($root, $args)
     {
-        Auth::logout();
+        $this->getGuard()->logout();
 
         return true;
     }
