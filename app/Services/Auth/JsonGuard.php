@@ -9,6 +9,8 @@
 namespace App\Services\Auth;
 
 use App\User;
+use Illuminate\Auth\Events\Attempting;
+use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -57,6 +59,74 @@ class JsonGuard implements Guard
         $this->name = $name;
         $this->request = $request;
         $this->provider = $provider;
+    }
+
+    /**
+     * Attempt to authenticate a user using the given credentials.
+     *
+     * @param array $credentials
+     * @param bool  $remember
+     *
+     * @return bool
+     */
+    public function attempt(array $credentials = [], $remember = false)
+    {
+        $this->fireAttemptEvent($credentials, $remember);
+
+        $user = $this->provider->retrieveByCredentials($credentials);
+
+        if ($this->hasValidCredentials($user, $credentials)) {
+            $this->login($user); //todo: доделать запоминание $remember
+
+            return true;
+        }
+
+        $this->fireFailedEvent($user, $credentials);
+
+        return false;
+    }
+
+    /**
+     * Fire the attempt event with the arguments.
+     *
+     * @param array $credentials
+     * @param bool  $remember
+     */
+    protected function fireAttemptEvent(array $credentials, $remember = false)
+    {
+        if (isset($this->events)) {
+            $this->events->dispatch(new Attempting(
+                $this->name, $credentials, $remember
+            ));
+        }
+    }
+
+    /**
+     * Fire the failed authentication attempt event with the given arguments.
+     *
+     * @param \Illuminate\Contracts\Auth\Authenticatable|null $user
+     * @param array                                           $credentials
+     */
+    protected function fireFailedEvent($user, array $credentials)
+    {
+        if (isset($this->events)) {
+            $this->events->dispatch(new Failed(
+                $this->name, $user, $credentials
+            ));
+        }
+    }
+
+    /**
+     * Determine if the user matches the credentials.
+     *
+     * @param mixed $user
+     * @param array $credentials
+     *
+     * @return bool
+     */
+    protected function hasValidCredentials($user, $credentials)
+    {
+        return !is_null($user) && $this->provider->validateCredentials($user, $credentials);
     }
 
     /**
@@ -138,19 +208,20 @@ class JsonGuard implements Guard
 
         $user->generateAccessToken();
         $user->save();
+        $this->setUser($user);
 
-        Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token, 60 * 60 * 60);
+        Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token);
     }
 
     public function logout()
     {
         $user = $this->user();
-        if (null !== $user) {
-            $this->request->cookies->remove(self::HEADER_NAME_TOKEN);
 
+        if (null !== $user) {
             $user->access_token = null;
             $user->save();
             $this->request->session()->invalidate();
+            Cookie::queue(Cookie::forget(self::HEADER_NAME_TOKEN));
         }
     }
 }

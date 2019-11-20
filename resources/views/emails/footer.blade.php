@@ -69,7 +69,7 @@
                                 </a>
                             </td>
                             <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
+                                <a href="https://ok.ru/group/56737120714863" style="display: block; text-decoration: none;">
                                     <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/ok.png">
                                 </a>
                             </td>
