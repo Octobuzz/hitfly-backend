@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use App\Models\Genre;
 use App\Models\News;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
+    use GraphQLAuthTrait;
     /**
      * Show the application dashboard.
      *
@@ -23,8 +25,8 @@ class HomeController extends Controller
      */
     public function index(Request $request): Renderable
     {
-        if (null !== Auth::user()) {
-            Cookie::queue(JsonGuard::HEADER_NAME_TOKEN, Auth::user()->access_token, 864000);
+        if (null !== $this->getGuard()->user()) {
+            Cookie::queue(JsonGuard::HEADER_NAME_TOKEN, $this->getGuard()->getCurrentToken(), 864000);
         }
 
         $title = 'Hitfly';

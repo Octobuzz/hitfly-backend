@@ -13,6 +13,7 @@ use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
 use App\Models\UserNotification;
+use App\Models\UserToken;
 use App\Models\Watcheables;
 use App\Notifications\HitflyVerifyEmail;
 use Carbon\Carbon;
@@ -151,9 +152,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         return [];
     }
 
-    public function generateAccessToken()
+    public function userTokens(): HasMany
     {
-        $this->access_token = md5(microtime());
+        return $this->hasMany(UserToken::class, 'user_id');
     }
 
     public function tracks(): HasMany

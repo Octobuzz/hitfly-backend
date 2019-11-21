@@ -79,7 +79,7 @@ class SocialController extends Controller
         }
         $user->markEmailAsVerified();
 
-        return redirect()->to('/register-success?token='.$user->access_token);
+        return redirect()->to('/register-success?token='.$this->guard()->getCurrentToken());
     }
 
     /**
