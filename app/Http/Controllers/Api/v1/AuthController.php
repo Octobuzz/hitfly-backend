@@ -25,7 +25,7 @@ class AuthController extends Controller
 
     public function getAuthenticatedUser()
     {
-        $user = Auth::user();
+        $user = $this->guard()->user();
 
         return response()->json($user);
     }
