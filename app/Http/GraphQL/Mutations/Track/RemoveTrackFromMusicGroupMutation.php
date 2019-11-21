@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use App\Rules\OwnerTrack;
 use Rebing\GraphQL\Support\Mutation;
@@ -15,6 +16,7 @@ use GraphQL\Type\Definition\Type;
 
 class RemoveTrackFromMusicGroupMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RemoveTrackFromMusicGroup',
         'description' => 'Отвязка трека от группы',

@@ -8,12 +8,14 @@
 
 namespace App\Http\GraphQL\Mutations\Collection;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteCollectionMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'DeleteCollection',
         'description' => 'Удаление коллекции поользователя',

@@ -5,14 +5,15 @@ namespace App\Http\GraphQL\Type;
 use App\Http\GraphQL\Fields\CommentsTrackField;
 use App\Http\GraphQL\Fields\PictureField;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class TrackType extends GraphQLType
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Track',
         'model' => Track::class,
@@ -128,7 +129,7 @@ class TrackType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Мой трек',
                 'resolve' => function ($model) {
-                    if ($model->user_id === Auth::user()->id) {
+                    if ($model->user_id === $this->getGuard()->user()->id) {
                         return true;
                     } else {
                         return false;
@@ -141,7 +142,7 @@ class TrackType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Откомментирован мной',
                 'resolve' => function ($model) {
-                    if ($model->comments()->where('user_id', Auth::user()->id)->count() > 0) {
+                    if ($model->comments()->where('user_id', $this->getGuard()->user()->id)->count() > 0) {
                         return true;
                     } else {
                         return false;

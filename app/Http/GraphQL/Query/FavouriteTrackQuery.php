@@ -2,16 +2,17 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Favourite;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class FavouriteTrackQuery extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Favourite track Query',
         'description' => 'Запрос любимых треков',
@@ -33,11 +34,11 @@ class FavouriteTrackQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
         if (null === $user) {
             return null;
         }
-//        $query = Favourite::with($fields->getRelations());
+
         $query = Favourite::query();
         $query->select($fields->getSelect());
         $query->where('favourites.favouriteable_type', '=', Track::class);

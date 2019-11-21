@@ -8,6 +8,7 @@
 
 namespace App\Validation;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Validator;
 
 class FavouritesValidator extends Validator
 {
+    use GraphQLAuthTrait;
+
     public function validate(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
     {
         $data = $validator->getData();
@@ -31,12 +34,12 @@ class FavouritesValidator extends Validator
                 $class = Collection::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип избранного');
+                throw new \InvalidArgumentException('Не удалось определить тип избранного');
         }
         $favourite = Favourite::query()
             ->where('favouriteable_type', '=', $class)
             ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
-            ->where('user_id', \Auth::user()->id)->first();
+            ->where('user_id', $this->getGuard()->user()->id)->first();
         if (null === $favourite) {
             return true;
         } else {
@@ -59,12 +62,12 @@ class FavouritesValidator extends Validator
                 $class = Collection::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип избранного');
+                throw new \InvalidArgumentException('Не удалось определить тип избранного');
         }
         $favourite = Favourite::query()
             ->where('favouriteable_type', '=', $class)
             ->where('favouriteable_id', '=', $data['Favourite']['favouriteableId'])
-            ->where('user_id', \Auth::user()->id)->first();
+            ->where('user_id', $this->getGuard()->user()->id)->first();
         if (null === $favourite) {
             return false;
         } else {

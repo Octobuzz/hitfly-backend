@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\MusicGroup;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class OwnerMusicGroup implements Rule
@@ -35,7 +36,7 @@ class OwnerMusicGroup implements Rule
         if (null === $musicGroup) {
             return false;
         }
-        $user = \Auth::guard('json')->user();
+        $user = Auth::guard('json')->user();
 
         if ($musicGroup->creator_group_id === $user->id) {
             return true;

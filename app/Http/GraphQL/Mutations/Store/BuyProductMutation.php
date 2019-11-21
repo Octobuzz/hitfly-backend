@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations\Store;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Product;
 use App\Rules\CanBuyProduct;
 use Rebing\GraphQL\Error\ValidationError;
@@ -10,6 +11,7 @@ use GraphQL\Type\Definition\Type;
 
 class BuyProductMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     private $order;
 
     public function __construct($attributes = [], \App\BuisnessLogic\Orders\Order $order)

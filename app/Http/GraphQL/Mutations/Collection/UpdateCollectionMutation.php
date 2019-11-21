@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Mutations\Collection;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use App\Rules\OwnerCollection;
 use GraphQL\Type\Definition\Type;
@@ -20,6 +21,7 @@ use Intervention\Image\Facades\Image;
 
 class UpdateCollectionMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateCollection',
         'description' => 'Обновление коллекции поользователя',
@@ -52,7 +54,7 @@ class UpdateCollectionMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $user = \Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         if (null === $user) {
             return JsonResponse::create();
