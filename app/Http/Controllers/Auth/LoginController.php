@@ -90,7 +90,7 @@ class LoginController extends Controller
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
-        Auth::login($user);
+        $this->guard()->login($user);
 
         /** @var User $user */
         if (false === $user->hasVerifiedEmail()) {

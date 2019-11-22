@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
@@ -67,7 +68,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Album extends Model
 {
-    use SoftDeletes, Itemable, PictureField, CascadeSoftDeletes;
+    use SoftDeletes, Itemable, PictureField, CascadeSoftDeletes, GraphQLAuthTrait;
 
     protected $cascadeDeletes = ['tracks', 'comments', 'favourites'];
 
@@ -130,7 +131,7 @@ class Album extends Model
 
     public function userFavourite()
     {
-        $user = \Auth::user();
+        $user = $this->getGuard()->user();
 
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', null === $user ? null : $user->id);
     }

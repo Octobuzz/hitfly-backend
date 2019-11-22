@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Traits\Itemable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,7 +40,7 @@ use Kalnoy\Nestedset\NodeTrait;
  */
 class Genre extends Model
 {
-    use SoftDeletes, Itemable, NodeTrait;
+    use SoftDeletes, Itemable, NodeTrait, GraphQLAuthTrait;
 
     protected $table = 'genres';
 
@@ -56,7 +57,7 @@ class Genre extends Model
 
     public function userFavourite()
     {
-        $user = \Auth::user();
+        $user = $this->getGuard()->user();
 
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', null === $user ? null : $user->id);
     }
