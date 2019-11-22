@@ -39,7 +39,7 @@ class GenerateSitemap extends Command
         try {
             $sitemapGenerator = new SitemapGenerator();
 
-            $sitemapGenerator->getMap();
+            $sitemapGenerator->generateMap();
             $this->line('Создана карта сайта XML');
         } catch (\Exception $e) {
             $this->error($e->getMessage(), $e->getTrace());

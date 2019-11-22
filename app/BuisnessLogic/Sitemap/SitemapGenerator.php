@@ -15,7 +15,7 @@ class SitemapGenerator
 {
     public $sitemap;
 
-    public function getMap()
+    public function generateMap()
     {
         $this->generateStaticPages();
         $this->generateGenres();
@@ -147,25 +147,34 @@ class SitemapGenerator
 
     private function generateTwoIds($data, $conf)
     {
-        $fullpath = URL::to($conf['url']).'/';
-        $postfix = '';
-        if (!empty($conf['postfix'])) {
-            $postfix = $conf['postfix'];
-        }
+        $params = $this->extractConfParams($conf);
         foreach ($data as $page) {
-            $this->sitemap->add($fullpath.$page->user_id.$postfix.'/'.$page->id, $page->updated_at, $conf['priority'], $conf['freq']);
+            $this->sitemap->add($params['fullpath'].$page->user_id.$params['postfix'].'/'.$page->id, $page->updated_at, $conf['priority'], $conf['freq']);
         }
     }
 
     private function generateDynamicPages($data, $conf)
     {
-        $fullpath = URL::to($conf['url']).'/';
-        $postfix = '';
-        if (!empty($conf['postfix'])) {
-            $postfix = $conf['postfix'];
-        }
+        $params = $this->extractConfParams($conf);
         foreach ($data as $page) {
-            $this->sitemap->add($fullpath.$page->id.$postfix, $page->updated_at, $conf['priority'], $conf['freq']);
+            $this->sitemap->add($params['fullpath'].$page->id.$params['postfix'], $page->updated_at, $conf['priority'], $conf['freq']);
         }
+    }
+
+    /**
+     * @param $conf
+     *
+     * @return array
+     */
+    private function extractConfParams($conf): array
+    {
+        $params = [];
+        $params['fullpath'] = URL::to($conf['url']).'/';
+        $params['postfix'] = '';
+        if (!empty($conf['postfix'])) {
+            $params['postfix'] = $conf['postfix'];
+        }
+
+        return $params;
     }
 }
