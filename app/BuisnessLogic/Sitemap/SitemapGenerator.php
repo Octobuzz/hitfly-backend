@@ -41,20 +41,20 @@ class SitemapGenerator
 
     public function getHTMLMap()
     {
-        $htmlMap = "<ul>";
+        $htmlMap = '<ul>';
         $mapCfg = config('sitemappages.html');
         foreach ($mapCfg as $item) {
             if (!empty($item['sublevel'])) {
                 $htmlMap .= "<li><a href='{$item['url']}'>{$item['name']}</a><ul>";
                 $htmlMap .= $this->buildRoute($item['sublevel']);
                 $htmlMap .= '</ul></li>';
-            }else{
+            } else {
                 $htmlMap .= "<li><a href='{$item['url']}'>{$item['name']}</a></li>";
             }
         }
-        $htmlMap .= "</ul>";
-        return $htmlMap;
+        $htmlMap .= '</ul>';
 
+        return $htmlMap;
     }
 
     public function generateStaticPages()

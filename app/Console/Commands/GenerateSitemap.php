@@ -37,7 +37,6 @@ class GenerateSitemap extends Command
     public function handle()
     {
         try {
-
             $sitemapGenerator = new SitemapGenerator();
 
             $sitemapGenerator->getMap();

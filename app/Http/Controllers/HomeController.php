@@ -251,11 +251,13 @@ class HomeController extends Controller
             'description' => $description,
         ]);
     }
+
     public function map()
     {
         $sitemap = new SitemapGenerator();
         $htmlMap = $sitemap->getHTMLMap();
-        return view('map', ['htmlMap' =>$htmlMap]);
+
+        return view('map', ['htmlMap' => $htmlMap]);
     }
 
     public function policy()
