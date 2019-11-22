@@ -22,6 +22,12 @@ class GenresQuery extends Query
             'rootGenreId' => [
                 'type' => Type::int(),
                 'description' => 'Корневой жанр(отдаст вложенные жанры)',
+                'rules' => ['mutually_exclusive_args:all'],
+            ],
+            'all' => [
+                'type' => Type::boolean(),
+                'description' => 'Все жанры',
+                'rules' => ['mutually_exclusive_args:rootGenreId'],
             ],
         ];
     }
@@ -34,6 +40,9 @@ class GenresQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $query = Genre::with($fields->getRelations())->select($fields->getSelect());
+        if (false === empty($args['all']) && true === $args['all']) {
+            return $query->paginate($args['limit'], ['*'], 'page', $args['page']);
+        }
         if (false === empty($args['rootGenreId'])) {
             $query->descendantsOf($args['rootGenreId']);
         } else {
