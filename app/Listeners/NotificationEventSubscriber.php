@@ -132,17 +132,15 @@ class NotificationEventSubscriber
     public function createWatcheables(Watcheables $watcheables)
     {
         /** @var User $user */
-        $user = $watcheables->user;
+        $user = $watcheables->watcher()->first();
         /** @var User | null $notifyUser */
         $notifyUser = null;
 
-        switch (get_class($watcheables->watcheable()->getRelated())) {
-            case User::class:
-                $notifyUser = $watcheables->user()->first();
-                break;
-            default:
-                return;
+        if (User::class !== get_class($watcheables->watcheable()->getRelated())) {
+            return;
         }
+
+        $notifyUser = $watcheables->user()->first();
 
         if (null !== $notifyUser) {
             $messageData = [
@@ -331,7 +329,7 @@ class NotificationEventSubscriber
                     'title' => $track->track_name,
                     'cover' => $track->getImageUrl(),
                 ],
-                'top' => 20,
+                'top' => 50,
             ];
 
             /** @var User $user */
@@ -364,6 +362,6 @@ class NotificationEventSubscriber
         $user = $event->getUser();
         $newStatus = RoleDictionary::getPreviousRoleSlug($role->slug);
         $oldRole = Role::query()->where('slug', '=', $newStatus)->first();
-        $this->notification->decreaseStatusNotification($role->slug, $oldRole, $user);
+        $this->notification->decreaseStatusNotification($role->name, $oldRole->name, $user);
     }
 }

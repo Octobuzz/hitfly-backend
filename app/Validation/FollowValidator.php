@@ -8,14 +8,16 @@
 
 namespace App\Validation;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\MusicGroup;
 use App\Models\Watcheables;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FollowValidator extends Validator
 {
+    use GraphQLAuthTrait;
+
     public function validate(string  $attr, $value, $params, \Illuminate\Validation\Validator $validator)
     {
         $data = $validator->getData();
@@ -33,7 +35,7 @@ class FollowValidator extends Validator
         $follow = Watcheables::query()
             ->where('watcheable_type', '=', $class)
             ->where('watcheable_id', '=', $data['Follow']['FollowId'])
-            ->where('user_id', \Auth::user()->id)->first();
+            ->where('user_id', $this->getGuard()->user()->id)->first();
         if (null === $follow) {
             return true;
         } else {
@@ -45,7 +47,7 @@ class FollowValidator extends Validator
     {
         $data = $validator->getData();
 
-        if (Watcheables::TYPE_MUSIC_GROUP === $data['Follow']['FollowType'] || ($data['Follow']['FollowId'] !== Auth::user()->id && Watcheables::TYPE_USER === $data['Follow']['FollowType'])) {
+        if (Watcheables::TYPE_MUSIC_GROUP === $data['Follow']['FollowType'] || ($data['Follow']['FollowId'] !== $this->getGuard()->user()->id && Watcheables::TYPE_USER === $data['Follow']['FollowType'])) {
             return true;
         } else {
             return false;
@@ -69,7 +71,7 @@ class FollowValidator extends Validator
         $follow = Watcheables::query()
             ->where('watcheable_type', '=', $class)
             ->where('watcheable_id', '=', $data['Follow']['FollowId'])
-            ->where('user_id', \Auth::user()->id)->first();
+            ->where('user_id', $this->getGuard()->user()->id)->first();
         if (null === $follow) {
             return false;
         } else {

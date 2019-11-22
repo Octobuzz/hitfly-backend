@@ -3,6 +3,7 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Helpers\DBHelpers;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\InviteToGroup;
 use App\Models\MusicGroup;
 use App\Rules\AuthorUpdateMusicGroup;
@@ -14,6 +15,7 @@ use Rebing\GraphQL\Support\UploadType;
 
 class UpdateMusicGroupMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateMusicGroup',
         'description' => 'обновление музыкальной группы',

@@ -54,22 +54,22 @@
                         <tbody>
                         <tr>
                             <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
+                                <a href="https://www.facebook.com/myhitfly" style="display: block; text-decoration: none;">
                                     <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/fb.png">
                                 </a>
                             </td>
                             <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
+                                <a href="https://vk.com/myhitfly" style="display: block; text-decoration: none;">
                                     <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/vk.png">
                                 </a>
                             </td>
                             <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
+                                <a href="https://www.instagram.com/myhitfly/" style="display: block; text-decoration: none;">
                                     <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/in.png">
                                 </a>
                             </td>
                             <td align="center">
-                                <a href="#" style="display: block; text-decoration: none;">
+                                <a href="https://ok.ru/group/56737120714863" style="display: block; text-decoration: none;">
                                     <img style="display: block; max-width: 100%;" src="{{ config('app.url') }}/images/emails/icons/ok.png">
                                 </a>
                             </td>

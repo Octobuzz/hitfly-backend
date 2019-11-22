@@ -132,6 +132,13 @@ class JsonGuard implements Guard
 
     public function login(User $user)
     {
+        if (Cookie::has(JsonGuard::HEADER_NAME_TOKEN)) {
+            Cookie::queue(Cookie::forget(JsonGuard::HEADER_NAME_TOKEN));
+        }
+
+        $user->generateAccessToken();
+        $user->save();
+
         Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token, 60 * 60 * 60);
     }
 

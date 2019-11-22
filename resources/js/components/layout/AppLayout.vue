@@ -4,10 +4,16 @@
       <portal-target name="root" />
       <IconGradientRadial />
       <FlashMessage />
+      <div
+        v-if="whitened"
+        class="app-body_whitened"
+      />
       <Page404 v-if="if404" />
-      <AppHeader :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
-      <router-view :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
-      <AppFooter :class="{ 'app-layout_blurred': blurred }" v-if="!if404" />
+      <template v-else>
+        <AppHeader :class="{ 'app-layout_blurred': blurred }" />
+        <router-view :class="{ 'app-layout_blurred': blurred }" />
+        <AppFooter :class="{ 'app-layout_blurred': blurred }" />
+      </template>
     </div>
   </ProfileDataProvider>
 </template>
@@ -35,6 +41,9 @@ export default {
     },
     blurred() {
       return this.$store.getters['layout/blurred'];
+    },
+    whitened() {
+      return this.$store.getters['layout/whitened'];
     }
   }
 };
@@ -52,5 +61,14 @@ export default {
 >
 .app-layout_blurred {
   filter: blur(5px);
+}
+
+.app-body_whitened {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  z-index: 1500;
+  background-color: white;
+  opacity: .5;
 }
 </style>

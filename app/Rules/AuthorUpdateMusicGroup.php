@@ -27,7 +27,7 @@ class AuthorUpdateMusicGroup implements Rule
     {
         $musicGroup = MusicGroup::query()->find($value);
 
-        return Auth::user()->id === $musicGroup->creator_group_id;
+        return Auth::guard('json')->user()->id === $musicGroup->creator_group_id;
     }
 
     /**

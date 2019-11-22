@@ -54,8 +54,6 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
-        $verifyUserId = $request->route('id');
-
         if ($request->user() && $request->user() != $request->route('id')) {
             Auth::logout();
         }
@@ -84,7 +82,7 @@ class VerificationController extends Controller
     {
         //отправка письма о завершении регистрации
 
-        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
+        if ($user->email) {
             dispatch(new UserRegisterJob($user))->onQueue('low');
         }
     }

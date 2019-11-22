@@ -5,15 +5,17 @@
   >
     <template #default="container">
       <CollectionScrollHorizontal
-        class="my-music__collections-container"
+        class="my-music__collections-container recommended-tracks"
         :header-class="containerPaddingClass"
         :collection-id-list="container.collectionIdList"
         :has-more-data="container.hasMoreData"
       >
         <template #title>
           <router-link to="/recommended">
-            <span class="h2">
-              Рекомендуем
+            <span class="h2 recommended-tracks__header">
+              <span class="recommended-tracks__header-text">
+                Рекомендуем
+              </span>
             </span>
             <span class="universal-collections-container__subtitle">
               Плейлисты, собранные специально для тебя

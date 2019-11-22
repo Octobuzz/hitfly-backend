@@ -2,14 +2,14 @@
 
 namespace App\Http\GraphQL\Mutations\User;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 
 class UpdateEmailMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateMyEmail',
         'description' => 'Обновление email текущего пользователя',
@@ -33,11 +33,10 @@ class UpdateEmailMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $user = Auth::user();
+        $user = $this->getGuard()->user();
 
         if (!empty($args['email']) && $args['email']) {
             $user->email = $args['email'];
-//            $user->password = Hash::make($args['email']);
             $user->save();
 
             return $user;

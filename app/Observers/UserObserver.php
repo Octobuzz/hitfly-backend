@@ -79,7 +79,7 @@ class UserObserver
         if ($user->isDirty('email') && null !== $user->getOriginal('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
             $hash = md5($user->id.$user->email.microtime());
             $emailChange = EmailChange::updateOrCreate(
-                ['new_email' => $user->email],
+                ['user_id' => $user->id],
                 [
                    'user_id' => $user->id,
                    'new_email' => $user->email,

@@ -156,8 +156,9 @@ class Notification
             ->where('admin_roles.slug', '=', RoleDictionary::ROLE_STAR);
         $query = User::query()->whereNotIn('users.id', $stars);
         $query2 = clone $query;
-        $return['days7'] = $query->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->get();
-        $return['days30'] = $query2->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->get();
+        $return['days7'] = $query->whereBetween('last_login', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->subDays(7)->endOfDay()])
+            ->get();
+        $return['days30'] = $query2->whereBetween('last_login', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->subDays(30)->endOfDay()])->get();
 
         return $return;
     }
@@ -296,16 +297,18 @@ class Notification
         switch (get_class($track)) {
             case Track::class:
                 $essence = 'track';
+                $url = config('app.url').'/user/'.$track->user->id.'/music';
                 break;
             case Album::class:
                 $essence = 'album';
+                $url = config('app.url').'/user/'.$track->user->id.'/album/'.$track->id;
                 break;
             default:
                 throw new Exception('неизвестный тип');
         }
 
         foreach ($users as $user) {
-            dispatch(new NewFavouriteTrackJob($track->user->username, $track->getName(), $essence, $user))->onQueue('low');
+            dispatch(new NewFavouriteTrackJob($track->user->username, $track->getName(), $essence, $user, $url))->onQueue('low');
         }
     }
 

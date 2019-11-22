@@ -180,7 +180,7 @@ export default {
           tracklistName = "Открытие недели";
           break;
         case 'new_songs':
-          tracklistName = "Новое";
+          tracklistName = "Новые песни";
           break;
       };
       return tracklistName;

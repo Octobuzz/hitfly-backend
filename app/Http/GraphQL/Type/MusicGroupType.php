@@ -3,6 +3,8 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
+use App\Http\GraphQL\Privacy\IsAuthPrivacy;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\MusicGroup;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -10,6 +12,7 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class MusicGroupType extends GraphQLType
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'MusicGroup',
         'description' => 'Музыкальная группа',
@@ -84,16 +87,13 @@ class MusicGroupType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'Владелец группы (создатель) текущий пользователь',
                 'resolve' => function ($model) {
-                    if (null !== \Auth::user()) {
-                        if (\Auth::user()->id === $model->creator_group_id) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        throw new \Exception('Пользователь не авторизован');
+                    if (null === $this->getGuard()->user() || $this->getGuard()->user()->id !== $model->creator_group_id) {
+                        return false;
                     }
+
+                    return true;
                 },
+                'privacy' => IsAuthPrivacy::class,
                 'selectable' => false,
             ],
             'iWatch' => [

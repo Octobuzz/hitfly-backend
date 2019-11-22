@@ -11,8 +11,8 @@
       >
         <template #title>
           <router-link to="new_songs">
-            <span class="h2 other-user-music__albums-title">
-              Новое
+            <span class="h2 other-user-music__albums-title new-tracks__header">
+              Новые песни
             </span>
           </router-link>
         </template>

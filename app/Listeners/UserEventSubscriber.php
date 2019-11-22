@@ -140,7 +140,9 @@ class UserEventSubscriber
                 });
             }
             $minRoleDetach = $minRolesDetach->pop();
-            event(new DecreaseRoleEvent($user, $minRoleDetach));
+            if (null !== $minRoleDetach) {
+                event(new DecreaseRoleEvent($user, $minRoleDetach));
+            }
         } catch (LogicException $exception) {
             Log::alert($exception->getMessage(), $exception->getTrace());
         }

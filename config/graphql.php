@@ -132,25 +132,60 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'lifehack' => \App\Http\GraphQL\Query\LifehacksQuery::class,
+                'tag' => \App\Http\GraphQL\Query\TagQuery::class,
+                'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
+                'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
             'mutation' => [
-//                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
+                'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
+                'updateTrack' => \App\Http\GraphQL\Mutations\Track\UpdateTrackMutation::class,
+                'listeningTrack' => \App\Http\GraphQL\Mutations\Track\ListeningTrackMutation::class,
+                'removeTrackFromMusicGroup' => \App\Http\GraphQL\Mutations\Track\RemoveTrackFromMusicGroupMutation::class,
+
+                'createMusicGroup' => \App\Http\GraphQL\Mutations\CreateMusicGroupMutation::class,
+                'updateMusicGroup' => \App\Http\GraphQL\Mutations\UpdateMusicGroupMutation::class,
+                'deletedMusicGroup' => \App\Http\GraphQL\Mutations\DeleteMusicGroupMutation::class,
+
+                'createComment' => \App\Http\GraphQL\Mutations\CreateCommentMutation::class,
+                'updateComment' => \App\Http\GraphQL\Mutations\UpdateCommentMutation::class,
+                'rateComment' => \App\Http\GraphQL\Mutations\RateCommentMutation::class,
+                'requestForComment' => \App\Http\GraphQL\Mutations\RequestForCommentMutation::class,
+
+                'createCollection' => \App\Http\GraphQL\Mutations\Collection\CreateCollectionMutation::class,
+                'updateCollection' => \App\Http\GraphQL\Mutations\Collection\UpdateCollectionMutation::class,
+
+                'updateMyProfile' => \App\Http\GraphQL\Mutations\User\UpdateMyProfileMutation::class,
+                'updatePassword' => \App\Http\GraphQL\Mutations\User\UpdatePasswordMutation::class,
+                'updateEmail' => \App\Http\GraphQL\Mutations\User\UpdateEmailMutation::class,
+                'removeMeMutation' => \App\Http\GraphQL\Mutations\User\RemoveMeMutation::class,
                 'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
+                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
                 'resetPasswordMutation' => \App\Http\GraphQL\Mutations\User\ResetPasswordMutation::class,
+                'logoutMutation' => \App\Http\GraphQL\Mutations\User\LogoutMutation::class,
+
+                'addInCollection' => \App\Http\GraphQL\Mutations\Collection\AddInCollectionMutation::class,
+                'deleteCollection' => \App\Http\GraphQL\Mutations\Collection\DeleteCollectionMutation::class,
+                'removeTrackFromCollection' => \App\Http\GraphQL\Mutations\RemoveTrackFromCollectionMutation::class,
+
+                'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
+                'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
+
+                'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
+                'createAlbum' => \App\Http\GraphQL\Mutations\CreateAlbumMutation::class,
+                'updateAlbum' => \App\Http\GraphQL\Mutations\UpdateAlbumMutation::class,
+                'deleteAlbum' => \App\Http\GraphQL\Mutations\DeleteAlbumMutation::class,
+                'removeTrackFromAlbum' => \App\Http\GraphQL\Mutations\RemoveTrackFromAlbumMutation::class,
+                'addFollow' => \App\Http\GraphQL\Mutations\FollowMutation::class,
+                'deleteFollow' => \App\Http\GraphQL\Mutations\DeleteFollowMutation::class,
+                'UseBonusesMutation' => \App\Http\GraphQL\Mutations\UseBonusesMutation::class,
+                'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
+                'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
             ],
             'middleware' => ['guest'],
             'method' => ['get', 'post'],
         ],
-        'auth' => [
-            'mutation' => [
-//                'register' => \App\Http\GraphQL\Mutations\RegisterMutation::class,
-                //'registrationMutation' => \App\Http\GraphQL\Mutations\User\RegistrationMutation::class,
-                'loginMutation' => \App\Http\GraphQL\Mutations\User\LoginMutation::class,
-                'logoutMutation' => \App\Http\GraphQL\Mutations\User\LogoutMutation::class,
-            ],
-            'middleware' => ['api', 'guest'],
-            'method' => ['get', 'post'],
-        ],
+
         'user' => [
             'query' => [
                 'genre' => \App\Http\GraphQL\Query\GenreQuery::class,
@@ -192,6 +227,8 @@ return [
                 'product' => \App\Http\GraphQL\Query\Store\ProductQuery::class,
                 'products' => \App\Http\GraphQL\Query\Store\ProductsQuery::class,
                 'genres' => \App\Http\GraphQL\Query\Genre\GenresQuery::class,
+                'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
+                'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -239,7 +276,7 @@ return [
 
                 'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
 
-                'buyStudioService' => \App\Http\GraphQL\Mutations\Store\BuyStudioServiceMutation::class,
+                'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
             ],
             'middleware' => ['auth:json'],
             'method' => ['get', 'post'],
@@ -286,6 +323,9 @@ return [
         'OperationType' => \App\Http\GraphQL\Type\OperationType::class,
         'OrderType' => \App\Http\GraphQL\Type\OrderType::class,
         'ProductType' => \App\Http\GraphQL\Type\ProductType::class,
+        'SearchType' => \App\Http\GraphQL\Type\SearchType::class,
+        'LifehackType' => \App\Http\GraphQL\Type\LifehackType::class,
+        'TagType' => \App\Http\GraphQL\Type\TagType::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -306,6 +346,7 @@ return [
         'CollectionFilterInput' => \App\Http\GraphQL\InputObject\CollectionFilterInput::class,
         'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
         'SocialLinkFilterInput' => \App\Http\GraphQL\InputObject\Filter\SocialLinkFilterInput::class,
+        'LifehackFilterInput' => \App\Http\GraphQL\InputObject\Filter\LifehackFilterInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
@@ -318,12 +359,14 @@ return [
         'FollowTypeEnum' => \App\Http\GraphQL\Enums\FollowTypeEnum::class,
         'BonusProgramUserStatusEnum' => \App\Http\GraphQL\Enums\BonusProgramUserStatusEnum::class,
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
-        'ProductStudioTypeEnum' => \App\Http\GraphQL\Enums\ProductStudioTypeEnum::class,
+        'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
+        'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
         'FollowResult' => \App\Http\GraphQL\Unions\FollowUnion::class,
         'AttributeResult' => \App\Http\GraphQL\Unions\AttributesUnion::class,
+        'SearchResult' => \App\Http\GraphQL\Unions\SearchUnion::class,
 
         'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],

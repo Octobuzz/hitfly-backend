@@ -1,0 +1,22 @@
+query LifeHacksItemTable_lifehack(
+    $pageNumber: Int!,
+    $pageLimit: Int!,
+    $filters: LifehackFilterInput
+) {
+    lifehack(
+        page: $pageNumber,
+        limit: $pageLimit
+        filters: $filters
+    ) {
+        total
+        to
+        data {
+            id
+            title
+            image(sizes: [size_300x300, size_800x800]) {
+                size
+                url
+            }
+        }
+    }
+}

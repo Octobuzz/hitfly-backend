@@ -2,6 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Models\Album;
+use App\Models\Collection;
+use App\Models\MusicGroup;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -11,10 +14,33 @@ class PictureHelpers
 {
     public static function resizePicture($model, $width = 100, $height = 100): string
     {
-        $size = $width.'_'.$height;
-        $defaultImage = 'default.jpg';
-        $picturePath = $model->getImage();
+        $class = $model;
+        switch ($class) {
+            case Album::class:
+                $defaultImage = 'default_album.svg';
+                break;
+            case Collection::class:
+                $defaultImage = 'default_playlist.svg';
+                break;
+            case MusicGroup::class:
+                $defaultImage = 'default_musicgroup.svg';
+                break;
+            default:
+                $defaultImage = 'default_track.svg';
+                break;
+        }
+
+        if (null === $model) {
+            $picturePath = $defaultImage;
+        } else {
+            $picturePath = $model->getImage();
+        }
+        if (false === self::isBitmapImage($picturePath)) {
+            $picturePath = $defaultImage;
+        }
         $path = Storage::disk('public')->path($model->getPath());
+
+        $size = $width.'_'.$height;
 
         if (false === Storage::disk('public')->exists($picturePath)) {
             $picturePath = $defaultImage;
@@ -28,8 +54,12 @@ class PictureHelpers
         $savePicturePath = $model->getPath().$saveName;
         $url = Storage::disk('public')->url($savePicturePath);
 
-        if (false === Storage::disk('public')->exists($savePicturePath)) {
-            self::resize($width, $height, $picturePath, $path, $saveName);
+        if (false === self::isBitmapImage($picturePath)) {//$defaultImage может оказаться не растровым изображением
+            $url = Storage::disk('public')->url($defaultImage);
+        } else {
+            if (false === Storage::disk('public')->exists($savePicturePath)) {
+                self::resize($width, $height, $picturePath, $path, $saveName);
+            }
         }
 
         return $url;

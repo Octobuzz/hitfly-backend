@@ -2,18 +2,18 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\BonusType;
 use App\Models\Operation;
 use App\Models\Purse;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
-use GraphQL;
 use Exception;
 
 class UseBonusesMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UseBonusesMutation',
         'description' => 'Мутация для растраты бонусов',
@@ -21,7 +21,7 @@ class UseBonusesMutation extends Mutation
 
     public function type()
     {
-        return GraphQL::type('BonusTypes');
+        return \GraphQL::type('BonusTypes');
     }
 
     public function args()
@@ -44,7 +44,7 @@ class UseBonusesMutation extends Mutation
         }
         try {
             /** @var User $user */
-            $user = Auth::user();
+            $user = $this->getGuard()->user();
             /** @var Purse $purse */
             $purse = $user->purseBonus()->first();
             if (null === $purse) {

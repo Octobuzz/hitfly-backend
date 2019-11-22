@@ -14,4 +14,25 @@ return [
         \App\User::LEVEL_CONNOISSEUR_OF_THE_GENRE => 2500,
         \App\User::LEVEL_SUPER_MUSIC_LOVER => 10000,
     ],
+    'topFiftyPlaces' => [
+        1 => 5000,
+        2 => 4000,
+        3 => 3000,
+    ],
+    'entranceApp' => [
+        2 => 3,
+        3 => 6,
+        4 => 12,
+        5 => 20,
+        6 => 35,
+    ],
+    'watchingUser' => [
+        1 => 30,
+        10 => 50,
+        50 => 120,
+        100 => 150,
+        500 => 1200,
+        1000 => 1500,
+        5000 => 12000,
+    ],
 ];

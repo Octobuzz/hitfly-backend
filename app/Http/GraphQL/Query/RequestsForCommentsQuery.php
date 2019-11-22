@@ -2,11 +2,12 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Dictionaries\OrderStatusDictionary;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Order;
 use App\Models\Product;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -15,6 +16,7 @@ use Rebing\GraphQL\Support\SelectFields;
  */
 class RequestsForCommentsQuery extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RequestsForComments',
         'description' => 'Запросы на отзывы',
@@ -35,7 +37,7 @@ class RequestsForCommentsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
         if (null === $user) {
             return null;
         }
@@ -61,14 +63,14 @@ class RequestsForCommentsQuery extends Query
     public function getOrderList($attrId, $productId)
     {
         $query = Order::query()->select('orders.*', 'value.value');
-        $query->where('orders.status', Order::STATUS_NEW);
+        $query->where('orders.status', OrderStatusDictionary::STATUS_NEW);
         $query->where('orders.product_id', $productId);
 
         $query->leftJoin('order_attribute_value as value', function ($join) {
             $join->on('orders.id', '=', 'value.order_id');
         });
         $query->where('value.attribute_id', $attrId);
-        $query->where('value.value', Auth::guard('json')->user()->id);
+        $query->where('value.value', $this->getGuard()->user()->id);
         $query->orderBy('orders.created_at');
 
         return $query;

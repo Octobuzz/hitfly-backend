@@ -2,8 +2,8 @@
   <section class="footerSection">
     <div class="footerSection__links">
       <a href="/policy" target="_blank">Пользовательское соглашение</a>
-      <a href="javascript: void(0)">Авторам</a>
-      <a href="/faq">Помощь</a>
+<!--      <a href="javascript: void(0)">Авторам</a>-->
+      <a href="/contacts">Помощь</a>
     </div>
     <a href="https://zebrains.team/" target="_blank">Сделано в ZeBrains</a>
   </section>

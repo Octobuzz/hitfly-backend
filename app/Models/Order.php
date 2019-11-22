@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    const STATUS_NEW = 'NEW';
-    const STATUS_DONE = 'DONE';
     protected $table = 'orders';
 
     protected $fillable = ['name', 'description', 'user_id', 'product_id'];

@@ -97,9 +97,9 @@ class LoginController extends Controller
             $user->markEmailAsVerified();
             //при регистрации редиректим на выбор жанров
             return redirect()->to('/register-genres');
+        } else {
+            return redirect()->to('/');
         }
-
-        return redirect()->to('/profile');
     }
 
     public function loginApi(Request $request)
@@ -117,13 +117,13 @@ class LoginController extends Controller
 
         if ($this->attemptLogin($request)) {
             return $this->guard()->user();
+        } else {
+            return false;
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
-
-        return null;
     }
 }

@@ -79,7 +79,7 @@
               <template #header>
                 <div class="other-user-music__new-album-tracks-header">
                   <span class="h2">
-                    {{ newAlbum.title }}
+                    Новый альбом «{{ newAlbum.title }}»
                   </span>
                   <router-link
                     :to="`/user/${userId}/album/${newAlbum.id}`"

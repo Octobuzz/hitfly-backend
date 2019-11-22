@@ -2,12 +2,14 @@
 
 namespace App\Rules;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 class OwnerTrack implements Rule
 {
+    use GraphQLAuthTrait;
+
     /**
      * является ли пользователь владельцем трека.
      */
@@ -30,7 +32,7 @@ class OwnerTrack implements Rule
             return false;
         }
 
-        return Auth::user()->id === $track->user_id;
+        return $this->getGuard()->user()->id === $track->user_id;
     }
 
     /**

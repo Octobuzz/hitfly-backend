@@ -42,10 +42,22 @@ const handleMenu = ({ target }) => {
   }
 };
 
-$(document).mouseup(handleMenu);
-$(document).ready(() => {
+const menuOnMouseleave = () => {
+  hideMenu();
+};
+
+const init = () => {
   trigger = $('.menu-call');
   menu = $('.drop-menu');
+  menu.on('mouseleave', menuOnMouseleave);
+};
+
+$(document).mouseup(handleMenu);
+$(document).ready(() => {
+  init();
+});
+$(document).on('jquery-side-menu-update', () => {
+  init();
 });
 
 $('.drop-menu-list__item').each((i, item) => {

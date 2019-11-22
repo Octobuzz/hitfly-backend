@@ -45,34 +45,63 @@
       </div>
     </div>
     <div class="footer__right">
-
       <span>
-        <TrackToPlaylistPopover
-          :isFooter="true"
-          v-if="!emptyTrack && !isStar && desktop"
-          :track-id="this.$store.getters['player/currentTrack'].id"
+        <UnauthenticatedPopoverWrapper
+          v-if="!emptyTrack && !isStar"
+          placement="top"
         >
-          <IconButton
-            :tooltip="tooltip.add"
-          >
-            <PlusIcon />
-          </IconButton>
-        </TrackToPlaylistPopover>
+          <template #auth-content>
+            <TrackToPlaylistPopover
+              :isFooter="true"
+              :track-id="$store.getters['player/currentTrack'].id"
+            >
+              <IconButton
+                :tooltip="tooltip.add"
+              >
+                <PlusIcon />
+              </IconButton>
+            </TrackToPlaylistPopover>
+          </template>
+
+          <template #unauth-popover-trigger>
+            <IconButton
+              :tooltip="tooltip.add"
+            >
+              <PlusIcon />
+            </IconButton>
+          </template>
+        </UnauthenticatedPopoverWrapper>
       </span>
 
-      <AddToFavouriteButton
+      <UnauthenticatedPopoverWrapper
         v-if="!emptyTrack"
-        item-type="track"
-        :item-id="currentTrack.id"
-        :with-counter="true"
-        :tooltip="tooltip.like"
-      />
+        placement="top"
+      >
+        <template #auth-content>
+          <AddToFavouriteButton
+            item-type="track"
+            :item-id="currentTrack.id"
+            :with-counter="true"
+            :tooltip="tooltip.like"
+          />
+        </template>
+
+        <template #unauth-popover-trigger>
+          <AddToFavouriteButton
+            item-type="track"
+            :item-id="currentTrack.id"
+            :with-counter="true"
+            :tooltip="tooltip.like"
+            :fake="true"
+          />
+        </template>
+      </UnauthenticatedPopoverWrapper>
 
       <span @click="toggleLoop = !toggleLoop">
         <IconButton
-        v-if="!emptyTrack"
-        :active="toggleLoop"
-        :tooltip="tooltip.loop"
+          v-if="!emptyTrack"
+          :active="toggleLoop"
+          :tooltip="tooltip.loop"
         >
           <LoopIcon />
         </IconButton>
@@ -107,6 +136,7 @@ import SpeakerIcon from 'components/icons/SpeakerIcon.vue';
 import AudioVolumePopover from 'components/AudioVolume/AudioVolumePopover.vue';
 import PlayPreviousIcon from 'components/icons/PlayPreviousIcon.vue';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from 'graphql-tag';
 import { mapState } from 'vuex';
 import TrackToPlaylistPopover from '../trackList/TrackToPlaylistPopover/TrackToPlaylistPopover.vue';
@@ -126,6 +156,7 @@ export default {
     SpeakerIcon,
     TrackToPlaylistPopover,
     AddToFavouriteButton,
+    UnauthenticatedPopoverWrapper,
     AudioVolumePopover
   },
   data: () => ({
@@ -321,11 +352,11 @@ export default {
   },
   mounted: function(){
     this.audio = this.$el.querySelectorAll('audio')[0];
-		this.audio.addEventListener('timeupdate', this.update);
+    this.audio.addEventListener('timeupdate', this.update);
+    this.$store.dispatch('player/setRandomTrack');
   }
 };
 </script>
-
 
 <style
   scoped

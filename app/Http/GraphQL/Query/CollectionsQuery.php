@@ -8,14 +8,16 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class CollectionsQuery extends Query
 {
+    use GraphQLAuthTrait;
+    public $authorize = true;
     protected $attributes = [
         'name' => 'Collections Query',
         'description' => 'Коллекции(Playlist)',
@@ -40,10 +42,7 @@ class CollectionsQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
-        // if (null === $user) {
-        //     return null;
-        // }
+        $user = $this->getGuard()->user();
         $query = Collection::with($fields->getRelations())
             ->orderBy('created_at', 'DESC');
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {

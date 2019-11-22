@@ -61,6 +61,7 @@ use Illuminate\Support\Facades\Storage;
  * @mixin Eloquent
  *
  * @property int|null $music_group_id
+ * @property User user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereMusicGroupId($value)
  */

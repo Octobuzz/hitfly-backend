@@ -3,10 +3,10 @@
 namespace App\Http\GraphQL\Mutations\User;
 
 use App\Helpers\DBHelpers;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\ArtistProfile;
 use App\Models\Genre;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Rebing\GraphQL\Support\Mutation;
@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UpdateMyProfileMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateMyProfile',
         'description' => 'Обновление профиля текущего пользователя',
@@ -29,7 +30,7 @@ class UpdateMyProfileMutation extends Mutation
     {
         return [
             'profile' => [
-                'type' => Type::nonNull(\GraphQL::type('MyProfileInput')),
+                'type' => \GraphQL::type('MyProfileInput'),
                 'description' => 'профиль обычного пользователя',
             ],
             'artistProfile' => [
@@ -45,7 +46,7 @@ class UpdateMyProfileMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $user = Auth::user();
+        $user = $this->getGuard()->user();
         if (!empty($args['profile'])) {
             if (!empty($args['profile']['password']) && $args['profile']['password']) {
                 $args['profile']['password'] = Hash::make($args['profile']['password']);

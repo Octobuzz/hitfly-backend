@@ -8,6 +8,7 @@
 
 namespace App\Http\GraphQL\Mutations\Track;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use Illuminate\Support\Facades\Gate;
 use Rebing\GraphQL\Error\ValidationError;
@@ -16,6 +17,7 @@ use GraphQL\Type\Definition\Type;
 
 class DeleteTrackMutation extends Mutation
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RemoveTrack',
         'description' => 'Удаление трека',

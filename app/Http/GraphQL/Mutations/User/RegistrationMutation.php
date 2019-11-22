@@ -16,7 +16,7 @@ class RegistrationMutation extends Mutation
 
     public function type()
     {
-        return \GraphQL::type('User');
+        return \GraphQL::type('MyProfile');
     }
 
     public function args()

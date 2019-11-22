@@ -2,9 +2,9 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
@@ -13,6 +13,8 @@ use Rebing\GraphQL\Support\SelectFields;
  */
 class AlbumsQuery extends Query
 {
+    use GraphQLAuthTrait;
+    public $authorize = true;
     protected $attributes = [
         'name' => 'Music Group Query',
         'description' => 'Список музыкальных альбомов',
@@ -39,7 +41,7 @@ class AlbumsQuery extends Query
     {
         $query = Album::with($fields->getRelations())->orderBy('created_at', 'DESC');
         if (false === empty($args['filters']['my']) && true === $args['filters']['my']) {
-            $user = Auth::guard('json')->user();
+            $user = $this->getGuard()->user();
             if (null === $user) {
                 return null;
             }

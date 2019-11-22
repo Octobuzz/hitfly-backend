@@ -2,14 +2,15 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Social;
-use App\User;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
 
 class RemoveSocialConnect extends Mutation
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RemoveSocialConnect',
         'description' => 'Удаление привязки к социальной сети',
@@ -35,7 +36,7 @@ class RemoveSocialConnect extends Mutation
         /** @var Social $social */
         $social = Social::query()
             ->where('social_driver', '=', $args['social'])
-            ->where('user_id', '=', \Auth::user()->id)
+            ->where('user_id', '=', $this->getGuard()->user()->id)
             ->first()
         ;
         if (empty($social)) {
@@ -43,6 +44,6 @@ class RemoveSocialConnect extends Mutation
         }
         $social->forceDelete();
 
-        return \Auth::user();
+        return $this->getGuard()->user();
     }
 }

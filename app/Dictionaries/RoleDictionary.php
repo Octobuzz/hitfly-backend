@@ -11,6 +11,7 @@ class RoleDictionary
     public const ROLE_PROF_CRITIC = 'prof_critic'; // Проф критик
     public const ROLE_PERFORMER = 'performer'; // исполнитель
     public const ROLE_LISTENER = 'listener'; // Слушатель
+    public const ROLE_ADMIN = 'administrator'; // Администратор
 
     /**
      * Иерархия ролей, поиск идёт по ключам чем больше ключ у роли тем она выше.

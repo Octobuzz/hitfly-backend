@@ -15,7 +15,7 @@ class OrderStatuses extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('status')->default(\App\Models\Order::STATUS_NEW);
+            $table->string('status')->default(\App\Dictionaries\OrderStatusDictionary::STATUS_NEW);
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('product_id');
             $table->timestamps();

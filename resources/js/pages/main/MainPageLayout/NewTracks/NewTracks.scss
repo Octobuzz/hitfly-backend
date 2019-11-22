@@ -1,0 +1,21 @@
+.new-tracks__header {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    height: 12px;
+    width: 15px;
+    background-image: url('/images/arrow.svg');
+    transition: all .3s;
+  }
+
+  &:hover:after {
+    opacity: 1;
+    transform: translate(20px, -50%);
+  }
+}

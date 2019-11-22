@@ -6,6 +6,7 @@ import { cache } from './apolloProvider';
 import * as profile from './pages/profile';
 import UploadPage from './pages/upload/UploadPage.vue';
 import * as main from './pages/main';
+// import LifeHacks from './pages/lifehacks/LifeHacks';
 import AboutPage from './pages/AboutPage.vue';
 import FaqPage from './pages/FaqPage.vue';
 
@@ -107,18 +108,30 @@ const routes = [
         renderNotFound: true
       },
     }),
+    meta: {
+      title: 'Профиль'
+    },
     children: [
       {
         path: 'edit',
-        component: profile.EditUser
+        component: profile.EditUser,
+        meta: {
+          title: 'Редактировать профиль'
+        }
       },
       {
         path: 'create/album',
-        component: profile.CreateNewAlbum
+        component: profile.CreateNewAlbum,
+        meta: {
+          title: 'Создать альбом'
+        }
       },
       {
         path: 'edit/playlist/:collectionId',
-        component: profile.EditCollection
+        component: profile.EditCollection,
+        meta: {
+          title: 'Редактирование коллекции'
+        }
       },
       {
         path: 'create-group',
@@ -128,7 +141,10 @@ const routes = [
             rolesNotToHave: [PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Создать группу'
+        }
       },
       {
         path: 'edit-group/:editGroupId',
@@ -138,7 +154,10 @@ const routes = [
             rolesNotToHave: [PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Редактирование группы'
+        }
       },
       {
         path: 'edit/track/:editTrackId',
@@ -148,7 +167,10 @@ const routes = [
             rolesNotToHave: [PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Редактирование трека'
+        }
       },
       {
         path: 'edit/album/:editAlbumId',
@@ -158,7 +180,10 @@ const routes = [
             rolesNotToHave: [PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Редактирование альбома'
+        }
       },
       {
         path: 'my-music',
@@ -170,6 +195,10 @@ const routes = [
             renderNotFound: true
           }
         })
+        ,
+        meta: {
+          title: 'Моя музыка'
+        }
       },
       {
         path: 'my-music/tracks',
@@ -179,7 +208,10 @@ const routes = [
             rolesNotToHave: [PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Мои треки'
+        }
       },
       {
         path: 'my-music/albums',
@@ -190,6 +222,10 @@ const routes = [
             renderNotFound: true
           }
         })
+        ,
+        meta: {
+          title: 'Мои альбомы'
+        }
       },
       {
         path: 'my-music/playlists',
@@ -199,57 +235,96 @@ const routes = [
             rolesNotToHave: [PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Мои плейлисты'
+        }
       },
       {
         path: 'my-music/album/:albumId',
         component: profile.AlbumTrackList,
-        name: routeNames.profile.MY_MUSIC_ALBUM
+        name: routeNames.profile.MY_MUSIC_ALBUM,
+        meta: {
+          title: 'Моя музыка'
+        }
       },
       {
         path: 'my-music/playlist/:playlistId',
         component: profile.CollectionTrackList,
-        name: routeNames.profile.MY_MUSIC_PLAYLIST
+        name: routeNames.profile.MY_MUSIC_PLAYLIST,
+        meta: {
+          title: 'Моя музыка'
+        }
       },
       {
         path: 'my-music/set/:setId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        meta: {
+          title: 'Моя музыка'
+        }
       },
       {
         path: 'favourite',
-        component: profile.Favourite
+        component: profile.Favourite,
+        meta: {
+          title: 'Любимая музыка'
+        }
       },
       {
         path: 'favourite/tracks',
-        component: profile.FavouriteTrackList
+        component: profile.FavouriteTrackList,
+        meta: {
+          title: 'Любимые треки'
+        }
       },
       {
         path: 'favourite/albums',
-        component: profile.AlbumTableContainer
+        component: profile.AlbumTableContainer,
+        meta: {
+          title: 'Любимые альбомы'
+        }
       },
       {
         path: 'favourite/playlists',
-        component: profile.CollectionTableContainer
+        component: profile.CollectionTableContainer,
+        meta: {
+          title: 'Любимые плейлисты'
+        }
       },
       {
         path: 'favourite/sets',
-        component: profile.CollectionTableContainer
+        component: profile.CollectionTableContainer,
+        meta: {
+          title: 'Любимые коллекции'
+        }
       },
       {
         path: 'favourite/album/:albumId',
-        component: profile.AlbumTrackList
+        component: profile.AlbumTrackList,
+        meta: {
+          title: 'Любимая музыка'
+        }
       },
       {
         path: 'favourite/playlist/:playlistId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        meta: {
+          title: 'Любимая музыка'
+        }
       },
       {
         path: 'favourite/set/:setId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        meta: {
+          title: 'Любимая музыка'
+        }
       },
       {
         path: 'reviews',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Отзывы'
+        }
       },
       {
         path: 'my-reviews',
@@ -260,15 +335,24 @@ const routes = [
             rolesToHave: [CRITIC, PROF_CRITIC, STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Мои отзывы'
+        }
       },
       {
         path: 'reviews/:trackId',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Отзывы на трек'
+        }
       },
       {
         path: 'watched-users',
-        component: profile.WatchedUsersContainer
+        component: profile.WatchedUsersContainer,
+        meta: {
+          title: 'Слежу'
+        }
       },
       {
         path: 'review-requests',
@@ -278,20 +362,29 @@ const routes = [
             rolesToHave: [STAR],
             renderNotFound: true
           }
-        })
+        }),
+        meta: {
+          title: 'Запросы отзывов'
+        }
       },
       {
         path: 'bonus-program',
-        component: profile.BonusProgram
+        component: profile.BonusProgram,
+        meta: {
+          title: 'Бонусная программа'
+        }
       },
       {
         path: 'notifications',
-        component: profile.UserNotifications
+        component: profile.UserNotifications,
+        meta: {
+          title: 'Уведомления'
+        }
       },
-      {
-        path: '',
-        redirect: { name: 'profile-my-music' }
-      }
+      // {
+      //   path: '',
+      //   redirect: { name: 'profile-my-music' }
+      // }
     ]
   },
   {
@@ -319,44 +412,71 @@ const routes = [
       {
         path: 'music',
         component: profile.OtherUserMusic,
-        name: 'user-music'
+        name: 'user-music',
+        meta: {
+          title: 'Моя музыка'
+        }
       },
       {
         path: 'music/tracks',
-        component: profile.UserTrackList
+        component: profile.UserTrackList,
+        meta: {
+          title: 'Мои треки'
+        }
       },
       {
         path: 'music/albums',
-        component: profile.AlbumTableContainer
+        component: profile.AlbumTableContainer,
+        meta: {
+          title: 'Мои альбомы'
+        }
       },
       {
         path: 'music/playlists',
-        component: profile.CollectionTableContainer
+        component: profile.CollectionTableContainer,
+        meta: {
+          title: 'Мои плейлисты'
+        }
       },
       {
         path: 'reviews',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Отзывы'
+        }
       },
       {
         path: 'user-reviews',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Оставленные отзывы'
+        }
       },
       {
         path: 'album/:albumId',
-        component: profile.AlbumTrackList
+        component: profile.AlbumTrackList,
+        meta: {
+          title: 'Альбом'
+        }
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        meta: {
+          title: 'Плейлист'
+        }
       },
       {
         path: 'reviews/:trackId',
-        component: profile.UniversalReviews
+        component: profile.UniversalReviews,
+        meta: {
+          title: 'Отзывы'
+        }
       },
-      {
-        path: '',
-        redirect: { name: 'user-music' }
-      },
+      // {
+      //   path: '',
+      //   redirect: { name: 'user-music' }
+      // },
     ]
   },
   {
@@ -370,7 +490,10 @@ const routes = [
         rolesNotToHave: [PROF_CRITIC, STAR],
         renderNotFound: true
       }
-    })
+    }),
+    meta: {
+      title: 'Загрузить песню'
+    }
   },
   {
     path: '/',
@@ -379,56 +502,96 @@ const routes = [
       {
         path: '/',
         component: main.MainPageDefault,
-        name: 'main'
+        name: 'main',
+        meta: {
+          title: 'Hitfly'
+        }
       },
       {
         path: 'recommended',
+        meta: {
+          title: 'Рекомендации'
+        },
         component: main.CollectionTableContainer,
       },
       {
         path: 'super-melomaniac',
         component: main.CollectionTableContainer,
+        meta: {
+          title: 'Супермеломан'
+        },
       },
       {
         path: 'top50',
-        component: main.MainPageTrackList
+        component: main.MainPageTrackList,
+        meta: {
+          title: 'ТОП 50'
+        },
       },
       {
         path: 'listening_now',
-        component: main.MainPageTrackList
+        component: main.MainPageTrackList,
+        meta: {
+          title: 'Слушают сейчас'
+        },
       },
       {
         path: 'weekly_top',
         component: main.MainPageTrackList,
+        meta: {
+          title: 'Открытие недели'
+        },
       },
       {
         path: 'new_songs',
         component: main.MainPageTrackList,
+        meta: {
+          title: 'Новые песни'
+        },
+
       },
       {
         path: 'genre/:genreId',
-        component: main.MainPageGenreTrackList
+        component: main.MainPageGenreTrackList,
+        meta: {
+          title: 'Жанр'
+        },
       },
       {
         path: 'playlist/:playlistId',
-        component: profile.CollectionTrackList
+        component: profile.CollectionTrackList,
+        meta: {
+          title: 'Плейлист'
+        },
       },
       {
         path: 'news/:newsId',
         component: main.MainPageNewsDetailed,
-        props: true
+        props: true,
+        meta: {
+          title: 'Новости'
+        },
       },
       {
         path: 'reviews',
-        component: main.MainPageReviews
+        component: main.MainPageReviews,
+        meta: {
+          title: 'Отзывы'
+        },
       },
       {
         path: 'bonus-program',
-        component: profile.BonusProgram
+        component: profile.BonusProgram,
+        meta: {
+          title: 'Бонусная программа'
+        },
       },
       {
-        path: 'faq',
-        component: FaqPage
+        path: 'contacts',
+        component: FaqPage,
+        meta: {
+          title: 'Контакты'
+        },
       },
       {
         path: '',
@@ -436,13 +599,26 @@ const routes = [
       }
     ]
   },
+  // {
+  //   path: '/life-hacks',
+  //   component: LifeHacks,
+  //   meta: {
+  //     title: 'Лайфхаки'
+  //   },
+  // },
   {
     path: '/about',
-    component: AboutPage
+    component: AboutPage,
+    meta: {
+      title: 'О нас'
+    },
   },
   {
     path: '*',
-    name: 'asterisk'
+    name: 'asterisk',
+    meta: {
+      title: 'Стариница не найдена'
+    }
   },
 ];
 
@@ -454,6 +630,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // TODO: consider using after hook
   store.commit('history/push', to);
+  document.title = to.meta.title;
 
   if (to.name === 'asterisk') {
     store.commit('appColumns/set404', true);
