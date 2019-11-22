@@ -8,14 +8,13 @@ use App\Models\Genre;
 use App\Models\News;
 use App\Services\Auth\JsonGuard;
 use App\User;
-use Auth;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
-    use GraphQLAuthTrait;
     /**
      * Show the application dashboard.
      *
@@ -25,8 +24,8 @@ class HomeController extends Controller
      */
     public function index(Request $request): Renderable
     {
-        if (null !== $this->getGuard()->user()) {
-            Cookie::queue(JsonGuard::HEADER_NAME_TOKEN, $this->getGuard()->getCurrentToken(), 864000);
+        if (null !== Auth::guard('json')->user()) {
+            Cookie::queue(JsonGuard::HEADER_NAME_TOKEN, Auth::guard('json')->getCurrentToken(), 864000);
         }
 
         $title = 'Hitfly';
