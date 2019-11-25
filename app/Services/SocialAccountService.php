@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\BuisnessLogic\Emails\Notification;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use App\Models\Social;
 use App\Models\Traits\ApiResponseTrait;
@@ -13,6 +16,7 @@ class SocialAccountService
 
     public function createOrGetUser(ProviderUser $providerUser, $provider, $authSocial = null)
     {
+        $pass = false;
         $currentUser = \Auth::user();
         if (null !== $currentUser) {
             $authSocial->user()->associate($currentUser);
@@ -30,10 +34,11 @@ class SocialAccountService
             $user = User::query()->withTrashed()->whereEmail($providerUser->getEmail())->first();
 
             if (!$user) {
+                $pass = Str::random(10);
                 $tmpUser = [
                     'email' => $providerUser->getEmail(),
                     'username' => $providerUser->getName(),
-                    'password' => md5(rand(1, 10000)),
+                    'password' => Hash::make($pass),
                 ];
 
                 switch ($provider) {
@@ -84,6 +89,11 @@ class SocialAccountService
                     }
                 }
                 $user = User::create($tmpUser);
+
+                if($user->email !== null) {
+                    Notification::socialRegisterPassword($user, $pass);
+                }
+
             }
             if (null != $authSocial) {
                 $user->deleted_at = null;
