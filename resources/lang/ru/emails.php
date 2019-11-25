@@ -184,6 +184,12 @@ return [
         'subject' => 'Новый :essence у любимого исполнителя',
     ],
 
+    'newOrderAdmin' => [
+        'hello' => 'Приветствуем',
+        'text' => 'Новая заявка на услугу :product от пользователя:<br>имя: :name <br>email: :email  <br>ID: :id<br>',
+        'subject' => 'Новый заказ :product',
+    ],
+
 
 
 

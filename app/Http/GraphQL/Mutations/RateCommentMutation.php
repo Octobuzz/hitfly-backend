@@ -2,11 +2,13 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Comment;
 use Rebing\GraphQL\Support\Mutation;
 
 class RateCommentMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'RateComment',
         'description' => 'Оценить отзыв',

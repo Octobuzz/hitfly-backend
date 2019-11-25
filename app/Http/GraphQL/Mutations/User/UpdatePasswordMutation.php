@@ -2,14 +2,15 @@
 
 namespace App\Http\GraphQL\Mutations\User;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 
 class UpdatePasswordMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateMyPasswoed',
         'description' => 'Обновление пароля текущего пользователя',
@@ -32,7 +33,7 @@ class UpdatePasswordMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $user = Auth::user();
+        $user = $this->getGuard()->user();
 
         if (!empty($args['password']['password']) && $args['password']['password']) {
             $args['profile']['password'] = Hash::make($args['password']['password']);

@@ -25,11 +25,16 @@ class ProductType extends GraphQLType
             ],
             'name' => [
                 'type' => Type::string(),
-                'description' => 'название заказа',
+                'description' => 'название товара',
             ],
             'description' => [
                 'type' => Type::string(),
-                'description' => 'Описание заказа',
+                'description' => 'Описание товара',
+            ],
+            'detailDescription' => [
+                'type' => Type::string(),
+                'description' => 'Детальное описание товара',
+                'alias' => 'detail_description',
             ],
             'alias' => [
                 'type' => Type::string(),

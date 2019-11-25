@@ -8,15 +8,15 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
-use GraphQL\Type\Definition\Type;
 
 class MyProfileQuery extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'MyProfile',
         'description' => 'Мой профиль',
@@ -35,10 +35,7 @@ class MyProfileQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info)
     {
-        $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
+        $user = $this->getGuard()->user();
 
         return User::with($fields->getRelations())->where('id', '=', $user->id)->first();
     }

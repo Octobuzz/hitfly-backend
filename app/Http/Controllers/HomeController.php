@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BuisnessLogic\Sitemap\SitemapGenerator;
 use App\Models\Collection;
 use App\Models\Genre;
 use App\Models\News;
@@ -249,6 +250,14 @@ class HomeController extends Controller
             'title' => $title,
             'description' => $description,
         ]);
+    }
+
+    public function map()
+    {
+        $sitemap = new SitemapGenerator();
+        $htmlMap = $sitemap->getHTMLMap();
+
+        return view('map', ['htmlMap' => $htmlMap]);
     }
 
     public function policy()

@@ -4,17 +4,18 @@ namespace App\Http\GraphQL\Mutations\Track;
 
 use App\Events\ListeningTenTrackEvent;
 use App\Events\Track\TrackMinimumListening;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\ListenedTrack;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Mutation;
 
 class ListeningTrackMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'ListeningTrackMutation',
         'description' => 'Прослушивание трека',
@@ -51,7 +52,8 @@ class ListeningTrackMutation extends Mutation
         $minutes = $date->diffInMinutes($dateTomorrow);
 
         /** @var User $user */
-        $user = \Auth::user();
+        $user = $this->getGuard()->user();
+
         $keyUser = md5($date->format('Y-m-d').'_'.$user->id);
         $keyTracks = md5($date->format('Y-m-d').'_'.$user->id.'_tracks');
 
@@ -62,9 +64,9 @@ class ListeningTrackMutation extends Mutation
         }
         //проверка на прослушивание одного трека только один раз, иначе бонусы неположены
         //получить данные надо перед вызовом события TrackMinimumListening, пока в бд не записалось текущее прослушивание
-        $listenedTrack = ListenedTrack::query()->select('id')->where('user_id', Auth::user()->id)
+        $listenedTrack = ListenedTrack::query()->select('id')->where('user_id', $user->id)
             ->where('track_id', $track->id)->first();
-        event(new TrackMinimumListening($track, Auth::user()));
+        event(new TrackMinimumListening($track, $user));
 
         //если уже прослушивал этот трек, не засчитываем прослушивание
         if (null !== $listenedTrack) {

@@ -39,7 +39,8 @@ class TopWeeklyQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $query = Track::with($fields->getRelations());
-        $query->whereIn('id', $this->topWeekly->get());
+        $query->whereIn('id', $this->topWeekly->get())
+                ->orderBy('created_at', 'DESC');
 
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 

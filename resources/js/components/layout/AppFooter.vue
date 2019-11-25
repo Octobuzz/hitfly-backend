@@ -45,34 +45,63 @@
       </div>
     </div>
     <div class="footer__right">
-
       <span>
-        <TrackToPlaylistPopover
-          :isFooter="true"
-          v-if="!emptyTrack && !isStar && desktop"
-          :track-id="this.$store.getters['player/currentTrack'].id"
+        <UnauthenticatedPopoverWrapper
+          v-if="!emptyTrack && !isStar"
+          placement="top"
         >
-          <IconButton
-            :tooltip="tooltip.add"
-          >
-            <PlusIcon />
-          </IconButton>
-        </TrackToPlaylistPopover>
+          <template #auth-content>
+            <TrackToPlaylistPopover
+              :isFooter="true"
+              :track-id="$store.getters['player/currentTrack'].id"
+            >
+              <IconButton
+                :tooltip="tooltip.add"
+              >
+                <PlusIcon />
+              </IconButton>
+            </TrackToPlaylistPopover>
+          </template>
+
+          <template #unauth-popover-trigger>
+            <IconButton
+              :tooltip="tooltip.add"
+            >
+              <PlusIcon />
+            </IconButton>
+          </template>
+        </UnauthenticatedPopoverWrapper>
       </span>
 
-      <AddToFavouriteButton
+      <UnauthenticatedPopoverWrapper
         v-if="!emptyTrack"
-        item-type="track"
-        :item-id="currentTrack.id"
-        :with-counter="true"
-        :tooltip="tooltip.like"
-      />
+        placement="top"
+      >
+        <template #auth-content>
+          <AddToFavouriteButton
+            item-type="track"
+            :item-id="currentTrack.id"
+            :with-counter="true"
+            :tooltip="tooltip.like"
+          />
+        </template>
+
+        <template #unauth-popover-trigger>
+          <AddToFavouriteButton
+            item-type="track"
+            :item-id="currentTrack.id"
+            :with-counter="true"
+            :tooltip="tooltip.like"
+            :fake="true"
+          />
+        </template>
+      </UnauthenticatedPopoverWrapper>
 
       <span @click="toggleLoop = !toggleLoop">
         <IconButton
-        v-if="!emptyTrack"
-        :active="toggleLoop"
-        :tooltip="tooltip.loop"
+          v-if="!emptyTrack"
+          :active="toggleLoop"
+          :tooltip="tooltip.loop"
         >
           <LoopIcon />
         </IconButton>
@@ -107,6 +136,7 @@ import SpeakerIcon from 'components/icons/SpeakerIcon.vue';
 import AudioVolumePopover from 'components/AudioVolume/AudioVolumePopover.vue';
 import PlayPreviousIcon from 'components/icons/PlayPreviousIcon.vue';
 import AddToFavouriteButton from 'components/AddToFavouriteButton/AddToFavouriteButton.vue';
+import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import gql from 'graphql-tag';
 import { mapState } from 'vuex';
 import TrackToPlaylistPopover from '../trackList/TrackToPlaylistPopover/TrackToPlaylistPopover.vue';
@@ -126,6 +156,7 @@ export default {
     SpeakerIcon,
     TrackToPlaylistPopover,
     AddToFavouriteButton,
+    UnauthenticatedPopoverWrapper,
     AudioVolumePopover
   },
   data: () => ({
@@ -227,40 +258,6 @@ export default {
         this.$store.commit('player/pickTrack', response.data.track);
       })
     },
-    getInitialTrack() {
-      this.$apollo.provider.clients.public.query({
-        query: gql`query AppFooter_tracks {
-          tracks(page: 1, limit: 1) {
-            data {
-              id
-              filename
-              singer
-              trackName
-              length
-              userFavourite
-              favouritesCount
-              cover(
-                  sizes: [size_32x32, size_48x48, size_104x104, size_120x120, size_150x150]
-              ) {
-                  size
-                  url
-              }
-            }
-          }
-        }`
-      }).then(({ data: { tracks: { data } } }) => {
-        const [track] = data;
-
-        if (!track) return;
-
-        this.$store.commit('player/changeCurrentType', {
-          type: 'track',
-          id: track.id
-        });
-        this.$store.commit('player/pickTrack', track);
-        this.$store.commit('player/pausePlaying');
-      });
-    },
     update(e) {
       if(this.audio.duration){
         let ranges = this.audio.played.length;
@@ -356,11 +353,10 @@ export default {
   mounted: function(){
     this.audio = this.$el.querySelectorAll('audio')[0];
     this.audio.addEventListener('timeupdate', this.update);
-    this.getInitialTrack();
+    this.$store.dispatch('player/setRandomTrack');
   }
 };
 </script>
-
 
 <style
   scoped

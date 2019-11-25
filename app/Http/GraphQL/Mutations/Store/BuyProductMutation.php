@@ -2,14 +2,16 @@
 
 namespace App\Http\GraphQL\Mutations\Store;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Product;
 use App\Rules\CanBuyProduct;
 use Rebing\GraphQL\Error\ValidationError;
 use Rebing\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\Type;
 
-class BuyStudioServiceMutation extends Mutation
+class BuyProductMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     private $order;
 
     public function __construct($attributes = [], \App\BuisnessLogic\Orders\Order $order)
@@ -19,8 +21,8 @@ class BuyStudioServiceMutation extends Mutation
     }
 
     protected $attributes = [
-        'name' => 'BuyStudioMutation',
-        'description' => 'Покупка услуг студии',
+        'name' => 'BuyProductMutation',
+        'description' => 'Покупка товаров',
     ];
 
     public function type()
@@ -32,7 +34,7 @@ class BuyStudioServiceMutation extends Mutation
     {
         return [
             'studioProduct' => [
-                'type' => Type::nonNull(\GraphQL::type('ProductStudioTypeEnum')),
+                'type' => Type::nonNull(\GraphQL::type('ProductTypeEnum')),
                 'description' => 'Товар Услуга на студии',
                 'rules' => ['required', new CanBuyProduct()],
             ],

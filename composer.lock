@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d29d5f2df6163753c76e48dd5dcc52fc",
+    "content-hash": "ebf422febbe1777e010580dc6af87269",
     "packages": [
         {
             "name": "alfa6661/laravel-has-many-sync",

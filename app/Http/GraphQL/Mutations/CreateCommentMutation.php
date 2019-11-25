@@ -3,16 +3,16 @@
 namespace App\Http\GraphQL\Mutations;
 
 use App\Events\Order\DoneOrder;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Comment;
 use App\Models\Order;
 use App\Models\Track;
-use App\User;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Mutation;
 
 class CreateCommentMutation extends Mutation
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'CreateComment',
         'description' => 'Создать отзыв',
@@ -48,11 +48,11 @@ class CreateCommentMutation extends Mutation
         $comment->comment = $args['Comment']['comment'];
         $comment->commentable_type = $class;
         $comment->commentable_id = $args['Comment']['commentableId'];
-        $comment->user_id = Auth::user()->id;
+        $comment->user_id = $this->getGuard()->user()->id;
         $comment->save();
         if (!empty($args['Comment']['orderId'])) {
             $order = Order::with(['attributes' => function ($query) {
-                $query->wherePivot('value', Auth::user()->id);
+                $query->wherePivot('value', $this->getGuard()->user()->id);
             }])->find($args['Comment']['orderId']);
             if ($order->attributes->isNotEmpty()) {
                 event(new DoneOrder($order));

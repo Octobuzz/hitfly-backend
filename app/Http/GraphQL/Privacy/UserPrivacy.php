@@ -8,14 +8,16 @@
 
 namespace App\Http\GraphQL\Privacy;
 
-use Illuminate\Support\Facades\Auth;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use Rebing\GraphQL\Support\Privacy;
 
 class UserPrivacy extends Privacy
 {
+    use GraphQLAuthTrait;
+
     public function validate(array $args)
     {
-        if (null === Auth::id()) {
+        if (null === $this->getGuard()->user()) {
             return false;
         }
 
@@ -23,6 +25,6 @@ class UserPrivacy extends Privacy
             return false;
         }
 
-        return $args['id'] == Auth::id();
+        return $args['id'] == $this->getGuard()->user()->id;
     }
 }

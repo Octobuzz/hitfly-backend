@@ -22,29 +22,29 @@ class MainEventSubscriber
         $events->listen(TrackMinimumListening::class, self::class.'@topWeekly');
     }
 
-    public function minimumListening(TrackMinimumListening $trackMinimumListening)
+    public function minimumListening(TrackMinimumListening $trackMinimumListening): void
     {
         $topFifty = Cache::get(TopFifty::TOP_FIFTY_KEY, []);
         $track = $trackMinimumListening->getTrack();
 
-        $lestenedTrack = Cache::get(TopFifty::LISTENED_TRACK_KEY, []);
-        $lestenedTrack[$track->id] = new \DateTime();
-        Cache::forever(TopFifty::LISTENED_TRACK_KEY, $lestenedTrack);
+        $listenedTrack = Cache::get(TopFifty::LISTENED_TRACK_KEY, []);
+        $listenedTrack[$track->id] = new \DateTime();
+        Cache::forever(TopFifty::LISTENED_TRACK_KEY, $listenedTrack);
 
         $user = $trackMinimumListening->getUser();
         if (null === $user) {
             return;
         }
 
-        $lestenedUser = Cache::get(TopFifty::LISTENED_USER_KEY, []);
-        $lestenedUser[$user->id] = new \DateTime();
-        Cache::forever(TopFifty::LISTENED_USER_KEY, $lestenedUser);
+        $listenedUser = Cache::get(TopFifty::LISTENED_USER_KEY, []);
+        $listenedUser[$user->id] = new \DateTime();
+        Cache::forever(TopFifty::LISTENED_USER_KEY, $listenedUser);
 
         $topFifty[$track->id][$user->id] = new \DateTime();
         Cache::forever(TopFifty::TOP_FIFTY_KEY, $topFifty);
     }
 
-    public function topWeekly(TrackMinimumListening $trackMinimumListening)
+    public function topWeekly(TrackMinimumListening $trackMinimumListening): void
     {
         $this->topWeekly->add($trackMinimumListening->getTrack());
     }

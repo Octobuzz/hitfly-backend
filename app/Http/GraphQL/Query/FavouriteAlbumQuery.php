@@ -2,16 +2,17 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Favourite;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
 class FavouriteAlbumQuery extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Favourite album Query',
         'description' => 'Запрос пользователя системы',
@@ -33,10 +34,7 @@ class FavouriteAlbumQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
-        $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
+        $user = $this->getGuard()->user();
         $query = Favourite::with($fields->getRelations());
         $query->select($fields->getSelect());
         $query->where('favourites.favouriteable_type', '=', Album::class);
