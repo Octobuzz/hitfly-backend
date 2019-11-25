@@ -9,6 +9,9 @@
           name="left-column"
           :item-container-class="'app-columns__left-column-item'"
         />
+
+        <!--the hr is needed to tackle with nested elements that has margin-->
+        <hr class="app-columns__left-bottom-line">
       </div>
     </div>
     <div ref="right" class="app-columns__right-column">
@@ -253,6 +256,12 @@ export default {
         right: 32px;
       }
     }
+  }
+
+  &__left-bottom-line {
+    height: 1px;
+    background-color: transparent;
+    border: none;
   }
 }
 
