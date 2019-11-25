@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property User user
+ * @property Genre[] | BelongsToMany genres
  */
 class ArtistProfile extends Model
 {

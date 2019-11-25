@@ -9,9 +9,9 @@
 namespace App\Http\GraphQL\Interfaces;
 
 use App\Http\GraphQL\Fields\AvatarSizesField;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\InterfaceType;
 use GraphQL\Type\Definition\Type;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
@@ -19,6 +19,7 @@ use App\Dictionaries\RoleDictionary;
 
 class UserInterface extends InterfaceType
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UserInterface',
         'description' => 'Пользовательский инетерфейс',
@@ -162,13 +163,7 @@ class UserInterface extends InterfaceType
                 },
                 'selectable' => false,
             ],
-            'accessToken' => [
-                'type' => Type::string(),
-                'description' => 'Токен авторизации',
-                'resolve' => function () {
-                    return Auth::user()->access_token;
-                },
-            ],
+
             'watchAvaliable' => [
                 'type' => Type::boolean(),
                 'description' => 'Можно ли следить за пользователем',

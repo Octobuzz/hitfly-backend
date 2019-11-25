@@ -10,14 +10,15 @@ namespace App\Http\GraphQL\Type;
 
 use App\Http\GraphQL\Fields\PictureField;
 use App\Http\GraphQL\Privacy\IsAuthPrivacy;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
-use Illuminate\Support\Facades\Auth;
 
 class CollectionType extends GraphQLType
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'Collection',
         'model' => Collection::class,
@@ -90,7 +91,7 @@ class CollectionType extends GraphQLType
                 'type' => Type::boolean(),
                 'description' => 'мой альбом',
                 'resolve' => function ($model) {
-                    return $model->user_id === Auth::user()->id ? true : false;
+                    return $model->user_id === $this->getGuard()->user()->id ? true : false;
                 },
                 'selectable' => false,
                 'privacy' => IsAuthPrivacy::class,

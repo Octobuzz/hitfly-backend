@@ -59,10 +59,16 @@ class Operation extends Model
         return $this->belongsTo(Purse::class, 'purse_id');
     }
 
-    public static function countOperation(BonusType $bonusType, User $user): int
+    public static function countOperation(BonusType $bonusType, User $user, $extraData = null): int
     {
+        //todo repository
         $purse = $user->purse()->firstOrNew(['user_id' => $user->id, 'name' => Purse::NAME_BONUS]);
+        $query = Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id);
 
-        return Operation::query()->where('purse_id', '=', $purse->id)->where('type_id', '=', $bonusType->id)->count();
+        if (null !== $extraData) {
+            $query->where('extra_data', '=', $extraData);
+        }
+
+        return $query->count();
     }
 }

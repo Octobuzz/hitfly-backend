@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations\Collection;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Collection;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
@@ -12,6 +13,7 @@ use Rebing\GraphQL\Support\UploadType;
 
 class CreateCollectionMutation extends Mutation
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'CreateCollectionMutation',
         'description' => 'Создание коллекции пользователя',
@@ -44,7 +46,7 @@ class CreateCollectionMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $user = \Auth::guard('json')->user();
+        $user = $this->getGuard()->user();
 
         if (null === $user) {
             return JsonResponse::create();

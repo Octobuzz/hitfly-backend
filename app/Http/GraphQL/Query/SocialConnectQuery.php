@@ -2,15 +2,17 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\GroupLinks;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
 use Rebing\GraphQL\Support\Query;
 
 class SocialConnectQuery extends Query
 {
+    use GraphQLAuthTrait;
+    public $authorize = true;
     protected $attributes = [
         'name' => 'SocialConnectQuery',
         'description' => 'Социальные ссылки',
@@ -44,7 +46,7 @@ class SocialConnectQuery extends Query
     public function resolve($root, $args)
     {
         /** @var User $User */
-        $User = Auth::guard('json')->user();
+        $User = $this->getGuard()->user();
         if (null === $User) {
             $socialsLink = null;
         } else {

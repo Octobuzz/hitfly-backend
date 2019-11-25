@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class StarComment implements Rule
 {
@@ -23,7 +24,7 @@ class StarComment implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (\Auth::user()->can('comment.star')) ? true : false;
+        return (Auth::guard('json')->user()->can('comment.star')) ? true : false;
     }
 
     /**

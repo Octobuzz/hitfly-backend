@@ -2,6 +2,7 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Rules\AuthorUpdateAlbum;
 use Carbon\Carbon;
@@ -13,6 +14,7 @@ use Rebing\GraphQL\Support\UploadType;
 
 class UpdateAlbumMutation extends Mutation
 {
+    use  GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'UpdateAlbumMutation',
         'description' => 'обновление альбома',

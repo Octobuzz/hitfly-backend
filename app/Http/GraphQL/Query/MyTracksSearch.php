@@ -2,10 +2,10 @@
 
 namespace App\Http\GraphQL\Query;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Track;
 use App\User;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Rebing\GraphQL\Support\Query;
 
@@ -14,6 +14,7 @@ use Rebing\GraphQL\Support\Query;
  */
 class MyTracksSearch extends Query
 {
+    use GraphQLAuthTrait;
     protected $attributes = [
         'name' => 'MyTracksSearch',
         'description' => 'Поиск своих треков',
@@ -38,10 +39,7 @@ class MyTracksSearch extends Query
     public function resolve($root, $args)
     {
         /** @var User $user */
-        $user = Auth::guard('json')->user();
-        if (null === $user) {
-            return null;
-        }
+        $user = $this->getGuard()->user();
         if (isset($args['q'])) {
             $keyCache = md5(json_encode($args).json_encode($user));
 

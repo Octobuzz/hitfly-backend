@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Comment;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class AuthorRateComment implements Rule
@@ -35,7 +36,7 @@ class AuthorRateComment implements Rule
         if (null === $comment) {
             return false;
         }
-        $user = \Auth::guard('json')->user();
+        $user = Auth::guard('json')->user();
 
         if ($comment->commentable->user_id === $user->id) {
             return true;
