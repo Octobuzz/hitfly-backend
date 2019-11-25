@@ -9,6 +9,7 @@ use App\Console\Commands\CalculateTopWeeklyCommand;
 use App\Console\Commands\ConvertTrackCommand;
 use App\Console\Commands\CreatePlayTimeTrackCommand;
 use App\Console\Commands\CreateTopFiftyCommand;
+use App\Console\Commands\GenerateSitemap;
 use App\Console\Commands\MusicalWaveCommand;
 use App\Jobs\CheckUserNewLevelJob;
 use Illuminate\Console\Scheduling\Schedule;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     const TIME_CREATE_TOP_FIFTY = '01:00';
+    const TIME_GENERATE_SITEMAP = '01:10';
     private $notification;
 
     public function __construct(Application $app, Dispatcher $events, Notification $notification)
@@ -75,6 +77,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(MusicalWaveCommand::class)->everyMinute()->name('create_music_wave')->withoutOverlapping();
         $schedule->command(ConvertTrackCommand::class)->everyMinute()->name('convert_track')->withoutOverlapping();
         $schedule->command(CalculateTopWeeklyCommand::class)->weeklyOn(1);
+        $schedule->command(GenerateSitemap::class)->dailyAt(self::TIME_GENERATE_SITEMAP);
 
         $schedule->job(new CheckUserNewLevelJob())->name('check_user_new_level')->dailyAt('01:00');
     }
