@@ -90,10 +90,9 @@ class SocialAccountService
                 }
                 $user = User::create($tmpUser);
 
-                if($user->email !== null) {
+                if (null !== $user->email) {
                     Notification::socialRegisterPassword($user, $pass);
                 }
-
             }
             if (null != $authSocial) {
                 $user->deleted_at = null;
