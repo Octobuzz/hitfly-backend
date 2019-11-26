@@ -8,6 +8,7 @@ use App\Models\Collection;
 use App\Models\Favourite;
 use App\Models\Track;
 use GraphQL\Type\Definition\Type;
+use http\Exception\InvalidArgumentException;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteFromFavouriteMutation extends Mutation
@@ -46,7 +47,7 @@ class DeleteFromFavouriteMutation extends Mutation
                 $class = Collection::class;
                 break;
             default:
-                throw new \Exception('Не удалось определить тип избранного');
+                throw new InvalidArgumentException('Не удалось определить тип избранного');
         }
 
         $user = $this->getGuard()->user();
@@ -56,13 +57,13 @@ class DeleteFromFavouriteMutation extends Mutation
             ->where('favouriteable_type', $class)
             ->where('user_id', $user->id)
             ->first();
-
+        $entity = $favourite->belongsTo($class, 'favouriteable_id')->first();
         if (null === $favourite) {
             throw new \Exception('inncorect');
         } else {
             $favourite->delete();
         }
 
-        return null;
+        return $entity;
     }
 }

@@ -23,9 +23,9 @@ class FavouriteUnion extends UnionType
     public function types()
     {
         return [
-            \GraphQL::type('FavouriteAlbum'),
-            \GraphQL::type('FavouriteTrack'),
-            \GraphQL::type('FavouriteCollection'),
+            \GraphQL::type('Album'),
+            \GraphQL::type('Track'),
+            \GraphQL::type('Collection'),
         ];
     }
 
@@ -38,15 +38,15 @@ class FavouriteUnion extends UnionType
      */
     public function resolveType($value)
     {
-        switch ($value->favouriteable_type) {
+        switch (get_class($value)) {
             case Track::class:
-                return \GraphQL::type('FavouriteTrack');
+                return \GraphQL::type('Track');
                 break;
             case Album::class:
-                return \GraphQL::type('FavouriteAlbum');
+                return \GraphQL::type('Album');
                 break;
             case Collection::class:
-                return \GraphQL::type('FavouriteCollection');
+                return \GraphQL::type('Collection');
                 break;
             default:
                 throw new \Exception('exeption');

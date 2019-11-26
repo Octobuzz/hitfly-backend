@@ -51,12 +51,11 @@ class Notification
     }
 
     /**
-     * отправка письма с паролем при регистрации через соцсети
+     * отправка письма с паролем при регистрации через соцсети.
      */
     public static function socialRegisterPassword($user, $pass)
     {
         dispatch(new RegisterSocialsPasswordJob($user, $pass))->onQueue('low');
-
     }
 
     /**
