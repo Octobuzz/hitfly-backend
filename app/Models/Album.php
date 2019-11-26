@@ -179,6 +179,7 @@ class Album extends Model
 
     public function getAuthor(): ?string
     {
+        $this->refresh();
         if (null !== $this->getMusicGroup) {
             return $this->getMusicGroup->name;
         }

@@ -168,3 +168,16 @@ sw.*
 /track.png
 /get-pip.py
 /_ide_helper.php
+/public/sitemap.xml
+/public/sitemap-genres.xml
+/public/sitemap-main.xml
+/public/sitemap-user-music-star.xml
+/public/sitemap-user-music-reviews.xml
+/public/sitemap-user-music-playlists.xml
+/public/sitemap-user-music-listener.xml
+/public/sitemap-playlists.xml
+/public/sitemap-static.xml
+/public/sitemap-user-music-albums.xml
+/public/sitemap-user-music-performer.xml
+/public/sitemap-news.xml
+/public/sitemap-user-music-critic.xml

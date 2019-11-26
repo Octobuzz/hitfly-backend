@@ -12,6 +12,7 @@
 */
 
 Route::redirect('/', 'login', 301);
+Route::get('/map', 'HomeController@map')->name('map');
 Auth::routes(['verify' => true]);
 
 Route::get('/', 'HomeController@index')->name('home');
