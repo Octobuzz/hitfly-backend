@@ -61,14 +61,11 @@ class SocialController extends Controller
                         ->fields(['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo', 'bdate', 'sex'])->stateless()->user();
                     break;
                 default:
-                    $socialUser = Socialite::driver($provider)->stateless()->user();
+                    $socialUser = Socialite::driver($provider)->redirectUrl(config('app.url')."/api/v1/login/{$provider}/callback")
+                        ->stateless()->user();
             }
         } catch (Exception $e) {
-            if ('application/json' === $request->header()['accept']) {
-                return $this->sendFailedResponse($e->getMessage());
-            } else {
                 return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
-            }
         }
         /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
