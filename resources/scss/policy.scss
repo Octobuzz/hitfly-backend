@@ -27,7 +27,7 @@
     margin-bottom: 20px;
   }
 
-  OL {
+  ol {
     padding-left: 0;
     margin-bottom: 36px;
   }
@@ -44,7 +44,7 @@
     counter-reset: top-item;
     list-style-type: none;
 
-    LI:before {
+    li:before {
       counter-increment: top-item;
       content: "\2003" counter(top-item) ". ";
       font-weight: 900;
@@ -60,7 +60,7 @@
   }
 
   &__main-list {
-    OL {
+    ol {
       counter-reset: item;
       list-style-type: none;
     }
