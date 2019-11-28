@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\BuisnessLogic\Emails\Notification;
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -12,12 +13,12 @@ use App\Models\Traits\ApiResponseTrait;
 
 class SocialAccountService
 {
-    use ApiResponseTrait;
+    use ApiResponseTrait,GraphQLAuthTrait;
 
     public function createOrGetUser(ProviderUser $providerUser, $provider, $authSocial = null)
     {
         $pass = false;
-        $currentUser = \Auth::user();
+        $currentUser = $this->getGuard()->user();
         if (null !== $currentUser) {
             $authSocial->user()->associate($currentUser);
             $authSocial->save();
