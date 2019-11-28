@@ -30,9 +30,9 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 RUN pip3 install numpy
 RUN apt install ffmpeg -y
-ARG base_env
-RUN usermod --non-unique --uid ${base_env} www-data
-RUN groupmod -g ${base_env} www-data
+#ARG base_env
+#RUN usermod --non-unique --uid ${base_env} www-data
+#RUN groupmod -g ${base_env} www-data
 RUN apt-get install graphviz -y
 RUN pecl install apcu && docker-php-ext-enable apcu
 RUN pecl install -o -f redis \
