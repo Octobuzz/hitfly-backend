@@ -16,7 +16,7 @@ class EmailChangeController extends Controller
 
         foreach ($tokenCollection as $row) {
 
-            if (null !== $row && $row->token == $token && Carbon::now() < $row->updated_at->addMinute(60)) {
+            if (null !== $row && $row->token == $token && Carbon::now()->lt($row->updated_at->addMinute(60))) {
                 $user = User::find($id);
                 $oldEmail = $user->email;
                 $user->email = $row->new_email;

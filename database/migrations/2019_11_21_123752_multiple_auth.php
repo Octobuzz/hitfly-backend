@@ -15,7 +15,7 @@ class MultipleAuth extends Migration
     {
         Schema::create('user_token', function (Blueprint $table) {
             $table->uuid('id');
-            $table->unsignedInteger('user_id')->unsigned();
+            $table->unsignedInteger('user_id');
             $table->string('access_token', 171)->nullable()->unique();
             $table->timestamps();
         });
