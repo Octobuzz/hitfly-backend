@@ -12,17 +12,20 @@ class EmailChangeController extends Controller
 {
     public function changeEmail($id, $token)
     {
-        $row = EmailChange::query()->where('user_id', '=', $id)->first();
+        $tokenCollection = EmailChange::query()->where('user_id', '=', $id)->get();
 
-        if (null !== $row && $row->token == $token && Carbon::now() < $row->updated_at->addMinute(60)) {
-            $user = User::find($id);
-            $oldEmail = $user->email;
-            $user->email = $row->new_email;
-            $user->save();
-            $row->delete();
-            dispatch(new EmailChangedJob($user, $oldEmail))->onQueue('low');
+        foreach ($tokenCollection as $row) {
 
-            return redirect('/email-change');
+            if (null !== $row && $row->token == $token && Carbon::now()->lt($row->updated_at->addMinute(60))) {
+                $user = User::find($id);
+                $oldEmail = $user->email;
+                $user->email = $row->new_email;
+                $user->save();
+                EmailChange::query()->where('user_id', '=', $id)->delete();
+                dispatch(new EmailChangedJob($user, $oldEmail))->onQueue('low');
+
+                return redirect('/email-change');
+            }
         }
 
         return redirect('/email-change-failed');

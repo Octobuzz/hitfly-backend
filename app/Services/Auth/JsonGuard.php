@@ -8,7 +8,10 @@
 
 namespace App\Services\Auth;
 
+use App\Models\UserToken;
 use App\User;
+use Illuminate\Auth\Events\Attempting;
+use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -32,6 +35,7 @@ class JsonGuard implements Guard
      * @var string
      */
     protected $name;
+    protected $currentToken;
 
     /**
      * The request instance.
@@ -57,6 +61,73 @@ class JsonGuard implements Guard
         $this->name = $name;
         $this->request = $request;
         $this->provider = $provider;
+    }
+
+    /**
+     * Attempt to authenticate a user using the given credentials.
+     *
+     * @param array $credentials
+     * @param bool  $remember
+     *
+     * @return bool
+     */
+    public function attempt(array $credentials = [], $remember = false)
+    {
+        $this->fireAttemptEvent($credentials, $remember);
+
+        $user = $this->provider->retrieveByCredentials($credentials);
+        if ($this->hasValidCredentials($user, $credentials)) {
+            $this->login($user); //todo: доделать запоминание $remember
+
+            return true;
+        }
+
+        $this->fireFailedEvent($user, $credentials);
+
+        return false;
+    }
+
+    /**
+     * Fire the attempt event with the arguments.
+     *
+     * @param array $credentials
+     * @param bool  $remember
+     */
+    protected function fireAttemptEvent(array $credentials, $remember = false)
+    {
+        if (isset($this->events)) {
+            $this->events->dispatch(new Attempting(
+                $this->name, $credentials, $remember
+            ));
+        }
+    }
+
+    /**
+     * Fire the failed authentication attempt event with the given arguments.
+     *
+     * @param \Illuminate\Contracts\Auth\Authenticatable|null $user
+     * @param array                                           $credentials
+     */
+    protected function fireFailedEvent($user, array $credentials)
+    {
+        if (isset($this->events)) {
+            $this->events->dispatch(new Failed(
+                $this->name, $user, $credentials
+            ));
+        }
+    }
+
+    /**
+     * Determine if the user matches the credentials.
+     *
+     * @param mixed $user
+     * @param array $credentials
+     *
+     * @return bool
+     */
+    protected function hasValidCredentials($user, $credentials)
+    {
+        return !is_null($user) && $this->provider->validateCredentials($user, $credentials);
     }
 
     /**
@@ -88,13 +159,22 @@ class JsonGuard implements Guard
 
         $token = $this->getTokenForRequest();
 
-        if (!empty($token)) {
-            $user = $this->provider->retrieveByCredentials(
-                [self::COLUMN_NAME => $token]
-            );
+        if (empty($token)) {
+            return null;
         }
 
-        return $this->user = $user;
+        $userToken = UserToken::token($this->getTokenForRequest())->first();
+        if (empty($userToken)) {
+            return null;
+        }
+        $this->currentToken = $token;
+
+        return $this->user = $userToken->user;
+    }
+
+    public function getCurrentToken():string
+    {
+        return $this->currentToken;
     }
 
     /**
@@ -136,21 +216,31 @@ class JsonGuard implements Guard
             Cookie::queue(Cookie::forget(JsonGuard::HEADER_NAME_TOKEN));
         }
 
-        $user->generateAccessToken();
-        $user->save();
+        $token = $this->generateAccessToken();
+        $userToken = new UserToken([
+            'user_id' => $user->id,
+            self::COLUMN_NAME => $token,
+        ]);
+        $userToken->save();
+        $this->setUser($user);
 
-        Cookie::queue(self::HEADER_NAME_TOKEN, $user->access_token, 60 * 60 * 60);
+        $this->currentToken = $token;
+        Cookie::queue(self::HEADER_NAME_TOKEN, $token);
     }
 
     public function logout()
     {
-        $user = $this->user();
-        if (null !== $user) {
-            $this->request->cookies->remove(self::HEADER_NAME_TOKEN);
-
-            $user->access_token = null;
-            $user->save();
+        $userToken = UserToken::token($this->getTokenForRequest())->first();
+        if (null !== $userToken) {
+            $userToken->delete();
             $this->request->session()->invalidate();
+            Cookie::queue(Cookie::forget(self::HEADER_NAME_TOKEN));
+            $this->currentToken = null;
         }
+    }
+
+    public function generateAccessToken()
+    {
+        return md5(microtime().rand(0, 255));
     }
 }

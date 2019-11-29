@@ -9,9 +9,9 @@
     <title>@if(empty($title) === false){{ $title }}@else Hitfly @endif</title>
     @if(empty($description) === false)<meta name="description" content="{{ $description }}">@endif
 
-    @if(\Auth::user() !== null)
-        <meta authuser="{{\Auth::user()->id}}" >
-        <meta roles="{{\Auth::user()->roles}}" >
+    @if(Auth::guard('json')->user() !== null)
+        <meta authuser="{{Auth::guard('json')->user()->id}}" >
+        <meta roles="{{Auth::guard('json')->user()->roles}}" >
     @else
         <meta authuser="null" >
     @endif

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\ArtistProfile;
 use App\Models\City;
@@ -13,6 +14,7 @@ use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
 use App\Models\UserNotification;
+use App\Models\UserToken;
 use App\Models\Watcheables;
 use App\Notifications\HitflyVerifyEmail;
 use Carbon\Carbon;
@@ -81,6 +83,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use CascadeSoftDeletes;
     use HasRelationshipObservables;
     use HasBelongsToManyEvents;
+    use GraphQLAuthTrait;
 
     protected $cascadeDeletes = [
         'socialsConnect',
@@ -151,9 +154,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         return [];
     }
 
-    public function generateAccessToken()
+    public function userTokens(): HasMany
     {
-        $this->access_token = md5(microtime());
+        return $this->hasMany(UserToken::class, 'user_id');
     }
 
     public function tracks(): HasMany
@@ -204,7 +207,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function iWatch()
     {
         $watch = Watcheables::query()->where('watcheable_type', '=', User::class)
-            ->where('user_id', '=', Auth::user()->id)
+            ->where('user_id', '=', $this->getGuard()->user()->id)
             ->where('watcheable_id', '=', $this->id)->exists();
 
         return $watch;

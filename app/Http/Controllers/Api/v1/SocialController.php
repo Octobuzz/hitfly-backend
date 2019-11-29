@@ -18,6 +18,11 @@ class SocialController extends Controller
 {
     use ApiResponseTrait;
 
+    protected function guard()
+    {
+        return Auth::guard('json');
+    }
+
     /**
      * Redirect to provider for authentication.
      *
@@ -56,26 +61,22 @@ class SocialController extends Controller
                         ->fields(['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo', 'bdate', 'sex'])->stateless()->user();
                     break;
                 default:
-                    $socialUser = Socialite::driver($provider)->stateless()->user();
+                    $socialUser = Socialite::driver($provider)->redirectUrl(config('app.url')."/api/v1/login/{$provider}/callback")
+                        ->stateless()->user();
             }
         } catch (Exception $e) {
-            if ('application/json' === $request->header()['accept']) {
-                return $this->sendFailedResponse($e->getMessage());
-            } else {
                 return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
-            }
         }
         /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
-        //Auth::login($user);
-        Auth::guard('json')->login($user);
+        $this->guard()->login($user);
         if (null !== $user->email && false === $user->hasVerifiedEmail()) {
             VerificationController::sendNotification($user);
         }
         $user->markEmailAsVerified();
 
-        return redirect()->to('/register-success?token='.$user->access_token);
+        return redirect()->to('/register-success?token='.$this->guard()->getCurrentToken());
     }
 
     /**
