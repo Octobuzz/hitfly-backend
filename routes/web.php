@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Auth'], function () {
 });
 
 Route::get('/policy', 'HomeController@policy')->name('policy');
+Route::get('/policy-mobile', 'HomeController@policyMobile')->name('policy_mobile');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/recommended', 'HomeController@recommended');

@@ -65,7 +65,7 @@ class SocialController extends Controller
                         ->stateless()->user();
             }
         } catch (Exception $e) {
-                return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
+            return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
         }
         /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);

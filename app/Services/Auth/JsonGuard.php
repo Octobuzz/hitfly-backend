@@ -172,7 +172,7 @@ class JsonGuard implements Guard
         return $this->user = $userToken->user;
     }
 
-    public function getCurrentToken():string
+    public function getCurrentToken(): string
     {
         return $this->currentToken;
     }

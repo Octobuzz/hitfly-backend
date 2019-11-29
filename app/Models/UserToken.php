@@ -32,5 +32,4 @@ class UserToken extends Model
     {
         return $query->where('access_token', $token);
     }
-
 }
