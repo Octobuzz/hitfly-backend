@@ -172,7 +172,7 @@ class BonusProgramEventSubscriber
     public function criticReview(Comment $comment): void
     {
         $user = $comment->user;
-        $this->accrueBonusService->process(BonusProgramTypesInterfaces::CRITIC_REVIEW, $user);
+        $this->accrueBonusService->process(BonusProgramTypesInterfaces::CRITIC_REVIEW, $user, -1);
     }
 
     public function registerUser(Registered $registered): void
