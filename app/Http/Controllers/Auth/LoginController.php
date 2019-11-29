@@ -35,6 +35,11 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/';
 
+    protected function guard()
+    {
+        return Auth::guard('json');
+    }
+
     /**
      * Create a new controller instance.
      */
@@ -85,8 +90,7 @@ class LoginController extends Controller
         }
 
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
-        Auth::login($user);
-        Auth::guard('json')->login($user);
+        $this->guard()->login($user);
 
         /** @var User $user */
         if (false === $user->hasVerifiedEmail()) {

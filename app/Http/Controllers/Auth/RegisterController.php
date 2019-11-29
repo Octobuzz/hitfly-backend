@@ -36,6 +36,11 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/email/verify';
 
+    protected function guard()
+    {
+        return Auth::guard('json');
+    }
+
     /**
      * Create a new controller instance.
      */
@@ -86,7 +91,7 @@ class RegisterController extends Controller
             $create['gender'] = $data['gender'];
         }
         $user = new User($create);
-
+        $user->save();
         //$user->sendEmailVerificationNotification($user->email);
 
         return $user;
@@ -106,7 +111,6 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
         $this->guard()->login($user);
-        Auth::guard('json')->login($user);
 
         return $this->registered($request, $user)
             ?: redirect('/register-genres');
@@ -117,7 +121,6 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request)));
 
         $this->guard()->login($user);
-        Auth::guard('json')->login($user);
 
         return $user;
     }
@@ -144,13 +147,13 @@ class RegisterController extends Controller
     {
         $genres = $request->all();
         if (isset($genres['genres']) && null !== $genres['genres']) {
-            $user = Auth::guard('json')->user();
+            $user = $this->guard()->user();
             if (null !== $user) {
                 $user->favouriteGenres()->sync($genres['genres']);
             }
         }
 
-        return $this->registered($request, Auth::user())
+        return $this->registered($request, $this->guard()->user())
             ?: redirect($this->redirectPath());
     }
 }

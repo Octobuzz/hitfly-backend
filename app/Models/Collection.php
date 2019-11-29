@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Collection extends Model
 {
-    use Itemable, PictureField;
+    use Itemable, PictureField, GraphQLAuthTrait;
 
     protected $nameFolder = 'collection';
 
@@ -49,7 +50,7 @@ class Collection extends Model
 
     public function userFavourite()
     {
-        $user = \Auth::user();
+        $user = $this->getGuard()->user();
 
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', null === $user ? null : $user->id);
     }

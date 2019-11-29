@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Traits\Itemable;
 use App\Models\Traits\PictureField;
 use App\User;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Track extends Model
 {
-    use SoftDeletes, Itemable, PictureField;
+    use SoftDeletes, Itemable, PictureField, GraphQLAuthTrait;
 
     const FILE_UPLOAD = 'file_upload';
     const CREATE_WAVE = 'create_wave';
@@ -130,7 +131,7 @@ class Track extends Model
 
     public function userFavourite()
     {
-        $user = \Auth::user();
+        $user = $this->getGuard()->user();
 
         return $this->morphMany(Favourite::class, 'favouriteable')->where('user_id', null === $user ? null : $user->id);
     }
@@ -143,12 +144,12 @@ class Track extends Model
     public function userPlayLists()
     {
         return $this->belongsToMany(Collection::class, 'collection_track')
-            ->where('collections.user_id', '=', \Auth::user()->id);
+            ->where('collections.user_id', '=', $this->getGuard()->user()->id);
     }
 
     public function getUrl()
     {
-        if (null !== Auth::user() && null !== $this->bitrate_hight) {
+        if (null !== $this->getGuard()->user() && null !== $this->bitrate_hight) {
             return Storage::disk('admin')->url($this->bitrate_hight);
         }
 
@@ -189,6 +190,7 @@ class Track extends Model
 
     public function getAuthor(): ?string
     {
+        $this->refresh();
         if (null !== $this->getMusicGroup) {
             return $this->getMusicGroup->name;
         }

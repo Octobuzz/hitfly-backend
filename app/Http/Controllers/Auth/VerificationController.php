@@ -33,12 +33,17 @@ class VerificationController extends Controller
      */
     protected $redirectTo = '/';
 
+    protected function guard()
+    {
+        return Auth::guard('json');
+    }
+
     /**
      * Create a new controller instance.
      */
     public function __construct()
     {
-        $this->middleware('auth')->except('verify');
+        $this->middleware('auth:json')->except('verify');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
@@ -55,11 +60,11 @@ class VerificationController extends Controller
     public function verify(Request $request)
     {
         if ($request->user() && $request->user() != $request->route('id')) {
-            Auth::logout();
+            Auth::guard()->logout();
         }
 
         if (!$request->user()) {
-            Auth::loginUsingId($request->route('id'), true); //todo не удается получить пользоватея из ссылки(но перед верификацией ссылка проходит свою верификацию)
+            Auth::guard()->loginUsingId($request->route('id'), true); //todo не удается получить пользоватея из ссылки(но перед верификацией ссылка проходит свою верификацию)
         }
 
         if ($request->route('id') != $request->user()->getKey()) {

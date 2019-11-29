@@ -18,9 +18,14 @@ class AuthController extends Controller
     use AuthenticatesUsers;
     protected $guard = 'json';
 
+    protected function guard()
+    {
+        return Auth::guard('json');
+    }
+
     public function getAuthenticatedUser()
     {
-        $user = Auth::user();
+        $user = $this->guard()->user();
 
         return response()->json($user);
     }

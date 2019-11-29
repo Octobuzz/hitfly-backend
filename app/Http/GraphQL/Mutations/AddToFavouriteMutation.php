@@ -54,7 +54,8 @@ class AddToFavouriteMutation extends Mutation
         $tmp['user_id'] = $this->getGuard()->user()->id;
         $favourite = Favourite::create($tmp);
         $favourite->save();
+        $entity = $favourite->belongsTo($class, 'favouriteable_id')->first();
 
-        return $favourite;
+        return $entity;
     }
 }

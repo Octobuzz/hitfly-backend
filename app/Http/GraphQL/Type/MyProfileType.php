@@ -41,7 +41,7 @@ class MyProfileType extends GraphQLType
                             return null;
                         }
 
-                        return $this->getGuard()->user()->access_token;
+                        return $this->getGuard()->getCurrentToken();
                     },
                 ],
                 'favoriteSongsCount' => [

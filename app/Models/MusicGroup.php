@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Traits\PictureField;
 use App\User;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
@@ -55,7 +56,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class MusicGroup extends Model
 {
-    use SoftDeletes, PictureField, CascadeSoftDeletes;
+    use SoftDeletes, PictureField, CascadeSoftDeletes, GraphQLAuthTrait;
 
     protected $cascadeDeletes = ['tracks', 'albums'];
 
@@ -147,7 +148,7 @@ class MusicGroup extends Model
     public function iWatch()
     {
         $watch = Watcheables::query()->where('watcheable_type', '=', MusicGroup::class)
-            ->where('user_id', '=', Auth::user()->id)
+            ->where('user_id', '=', $this->getGuard()->user()->id)
             ->where('watcheable_id', '=', $this->id)->exists();
 
         return $watch;
