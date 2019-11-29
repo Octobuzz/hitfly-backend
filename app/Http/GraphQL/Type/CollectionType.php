@@ -77,7 +77,6 @@ class CollectionType extends GraphQLType
                     return $model->favourites->count();
                 },
                 'selectable' => false,
-                'privacy' => IsAuthPrivacy::class,
             ],
             'isSet' => [
                 'type' => Type::boolean(),
