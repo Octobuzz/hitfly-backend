@@ -13,7 +13,6 @@ use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
-
 class AvatarSizesField extends BasicPictureField
 {
     protected $attributes = [
@@ -113,6 +112,4 @@ class AvatarSizesField extends BasicPictureField
 
         return $path.$imagePath;
     }
-
-
 }

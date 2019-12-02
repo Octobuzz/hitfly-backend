@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Http\GraphQL\Fields;
-
 
 use Rebing\GraphQL\Support\Field;
 
 class BasicPictureField extends Field
 {
-
     protected function setFactor($args)
     {
         if (!empty($args['factor'])) {
@@ -25,5 +22,4 @@ class BasicPictureField extends Field
 
         $this->factor = 1;
     }
-
 }
