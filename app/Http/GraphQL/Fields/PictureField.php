@@ -26,6 +26,7 @@ class PictureField extends Field
      * @var Album | Collection | Track | MusicGroup
      */
     private $model;
+    protected $factor;
     protected $attributes = [
         'description' => 'Получение изображений',
         'selectable' => false,
@@ -43,6 +44,10 @@ class PictureField extends Field
                 'type' => Type::nonNull(Type::listOf(\GraphQL::type('PictureSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
+            'factor' => [
+                'type' => Type::float(),
+                'description' => 'Множитель',
+            ],
         ];
     }
 
@@ -54,6 +59,7 @@ class PictureField extends Field
      */
     protected function resolve($root, $args)
     {
+        $this->setFactor($args);
         $this->model = $root;
         $class = get_class($root);
         switch ($class) {
@@ -95,8 +101,8 @@ class PictureField extends Field
      */
     private function resize(int $width, int $height, string $picturePath, string $savePath, string $nameFile): bool
     {
-        $width = (int) ($width * 1.5); //todo костыль. на фронте подтягивали картинки меньшего размера а затем растягивали их
-        $height = (int) ($height * 1.5);
+        $width = (int) ($width * $this->factor);
+        $height = (int) ($height * $this->factor);
         $image_resize = Image::make(Storage::disk('public')->path($picturePath))
             ->fit($width, $height);
         Storage::disk('public')->makeDirectory($this->model->getPath());
@@ -166,5 +172,20 @@ class PictureField extends Field
         }
 
         return $return;
+    }
+
+    protected function setFactor($args)
+    {
+        if (!empty($args['factor'])) {
+            $this->factor = $args['factor'];
+
+            return;
+        }
+        if (!empty(config('image.factor'))) {
+            $this->factor = config('image.factor');
+
+            return;
+        }
+        $this->factor = 1;
     }
 }

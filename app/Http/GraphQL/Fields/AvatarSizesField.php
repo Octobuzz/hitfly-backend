@@ -20,6 +20,7 @@ class AvatarSizesField extends Field
         'description' => 'Аватар',
         'selectable' => false,
     ];
+    protected $factor;
 
     public function type()
     {
@@ -43,6 +44,7 @@ class AvatarSizesField extends Field
      */
     protected function resolve($root, $args)
     {
+        $this->setFactor($args);
         $return = [];
 
         //при запросе через commentsTrack - приходит не полный объект User
@@ -105,5 +107,20 @@ class AvatarSizesField extends Field
         $image_resize->save(Storage::disk('public')->path($path.$imagePath), 100);
 
         return $path.$imagePath;
+    }
+
+    protected function setFactor($args)
+    {
+        if (!empty($args['factor'])) {
+            $this->factor = $args['factor'];
+
+            return;
+        }
+        if (!empty(config('image.factor'))) {
+            $this->factor = config('image.factor');
+
+            return;
+        }
+        $this->factor = 1;
     }
 }

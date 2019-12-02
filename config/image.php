@@ -15,6 +15,7 @@ return [
     */
 
     'driver' => 'gd',
+    'factor' => 1.5,
 
     //размеры изображений
     'size' => [
@@ -70,8 +71,8 @@ return [
         ],
         'avatar' => [
             'default' => [
-                'width' => 235,
-                'height' => 235,
+                'width' => 1500,
+                'height' => 1500,
             ],
             'size_56x56' => [
                 'width' => 56,
@@ -88,20 +89,20 @@ return [
         ],
         'album' => [
             'default' => [
-                'width' => 880,
-                'height' => 800,
+                'width' => 1500,
+                'height' => 1500,
             ],
         ],
         'collection' => [
             'default' => [
-                'width' => 642,
-                'height' => 380,
+                'width' => 1500,
+                'height' => 1500,
             ],
         ],
         'music_group' => [
             'default' => [
-                'width' => 705,
-                'height' => 705,
+                'width' => 1500,
+                'height' => 1500,
             ],
         ],
     ],
