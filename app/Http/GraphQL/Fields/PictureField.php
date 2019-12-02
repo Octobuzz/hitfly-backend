@@ -18,14 +18,14 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use Rebing\GraphQL\Support\Field;
 
-class PictureField extends Field
+class PictureField extends BasicPictureField
 {
     /**
      * @var Album | Collection | Track | MusicGroup
      */
     private $model;
+    protected $factor;
     protected $attributes = [
         'description' => 'Получение изображений',
         'selectable' => false,
@@ -43,6 +43,10 @@ class PictureField extends Field
                 'type' => Type::nonNull(Type::listOf(\GraphQL::type('PictureSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
+            'factor' => [
+                'type' => Type::float(),
+                'description' => 'Множитель',
+            ],
         ];
     }
 
@@ -54,6 +58,7 @@ class PictureField extends Field
      */
     protected function resolve($root, $args)
     {
+        $this->setFactor($args);
         $this->model = $root;
         $class = get_class($root);
         switch ($class) {
@@ -95,8 +100,8 @@ class PictureField extends Field
      */
     private function resize(int $width, int $height, string $picturePath, string $savePath, string $nameFile): bool
     {
-        $width = (int) ($width * 1.5); //todo костыль. на фронте подтягивали картинки меньшего размера а затем растягивали их
-        $height = (int) ($height * 1.5);
+        $width = (int) ($width * $this->factor);
+        $height = (int) ($height * $this->factor);
         $image_resize = Image::make(Storage::disk('public')->path($picturePath))
             ->fit($width, $height);
         Storage::disk('public')->makeDirectory($this->model->getPath());

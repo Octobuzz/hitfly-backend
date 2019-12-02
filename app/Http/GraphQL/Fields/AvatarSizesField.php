@@ -12,14 +12,15 @@ use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use Rebing\GraphQL\Support\Field;
 
-class AvatarSizesField extends Field
+class AvatarSizesField extends BasicPictureField
 {
     protected $attributes = [
         'description' => 'Аватар',
         'selectable' => false,
     ];
+
+    protected $factor;
 
     public function type()
     {
@@ -33,6 +34,10 @@ class AvatarSizesField extends Field
                 'type' => Type::nonNull(Type::listOf(\GraphQL::type('AvatarSizeEnum'))),
                 'description' => 'Размеры изображений',
             ],
+            'factor' => [
+                'type' => Type::float(),
+                'description' => 'Множитель',
+            ],
         ];
     }
 
@@ -43,6 +48,7 @@ class AvatarSizesField extends Field
      */
     protected function resolve($root, $args)
     {
+        $this->setFactor($args);
         $return = [];
 
         //при запросе через commentsTrack - приходит не полный объект User
