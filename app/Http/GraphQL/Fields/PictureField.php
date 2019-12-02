@@ -18,9 +18,8 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use Rebing\GraphQL\Support\Field;
 
-class PictureField extends Field
+class PictureField extends BasicPictureField
 {
     /**
      * @var Album | Collection | Track | MusicGroup
@@ -172,20 +171,5 @@ class PictureField extends Field
         }
 
         return $return;
-    }
-
-    protected function setFactor($args)
-    {
-        if (!empty($args['factor'])) {
-            $this->factor = $args['factor'];
-
-            return;
-        }
-        if (!empty(config('image.factor'))) {
-            $this->factor = config('image.factor');
-
-            return;
-        }
-        $this->factor = 1;
     }
 }

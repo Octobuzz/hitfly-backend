@@ -12,14 +12,15 @@ use App\User;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use Rebing\GraphQL\Support\Field;
 
-class AvatarSizesField extends Field
+
+class AvatarSizesField extends BasicPictureField
 {
     protected $attributes = [
         'description' => 'Аватар',
         'selectable' => false,
     ];
+
     protected $factor;
 
     public function type()
@@ -113,18 +114,5 @@ class AvatarSizesField extends Field
         return $path.$imagePath;
     }
 
-    protected function setFactor($args)
-    {
-        if (!empty($args['factor'])) {
-            $this->factor = $args['factor'];
 
-            return;
-        }
-        if (!empty(config('image.factor'))) {
-            $this->factor = config('image.factor');
-
-            return;
-        }
-        $this->factor = 1;
-    }
 }
