@@ -13,6 +13,7 @@ use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
+use App\Models\Traits\PictureField;
 use App\Models\UserNotification;
 use App\Models\UserToken;
 use App\Models\Watcheables;
@@ -83,6 +84,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use HasRelationshipObservables;
     use HasBelongsToManyEvents;
     use GraphQLAuthTrait;
+    use PictureField;
 
     protected $cascadeDeletes = [
         'socialsConnect',
@@ -326,7 +328,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function getPath(): string
     {
-        return 'avatars/'.$this->user_id.'/';
+        return 'avatars/'.$this->id.'/';
     }
 
     public function followers()
