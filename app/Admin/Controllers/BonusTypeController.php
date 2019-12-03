@@ -142,7 +142,7 @@ class BonusTypeController extends Controller
         $form->text('name', 'Название');
         $form->text('constant_name', 'Контанта');
         $form->text('bonus', 'Кол-во балов');
-        $form->textarea('description', 'Описание');
+        $form->textarea('description', 'Описание')->required();
         $form->image('img', 'Картинка');
 
         $states = [
