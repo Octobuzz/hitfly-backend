@@ -48,7 +48,7 @@ class FavouriteAlbumQuery extends Query
         $query->where('albums.id', '<>', null);
         $query->where('favourites.user_id', $user->id);
 
-        //$query->orderBy('created_at', 'desc');
+        $query->orderBy('favourites.created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;

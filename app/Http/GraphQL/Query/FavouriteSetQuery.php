@@ -47,7 +47,7 @@ class FavouriteSetQuery extends Query
         });
         $query->where('collections.is_admin', '=', 1);
 
-        //$query->orderBy('created_at', 'desc');
+        $query->orderBy('favourites.created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;
