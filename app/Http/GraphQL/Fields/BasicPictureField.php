@@ -47,6 +47,12 @@ class BasicPictureField extends Field
         $this->model = $root;
         $class = get_class($root);
 
+        $keyCache = md5(serialize($root).serialize($args));
+        $cacheValue = Cache::tags([$class.$root->id])->get($keyCache, null);
+        if (null !== $cacheValue) {
+            return $cacheValue;
+        }
+
         switch ($class) {
             case Album::class:
                 $defaultImage = 'default_album.svg';
@@ -63,12 +69,6 @@ class BasicPictureField extends Field
             default:
                 $defaultImage = 'default_track.svg';
                 break;
-        }
-
-        $keyCache = md5(serialize($root).serialize($args));
-        $cacheValue = Cache::tags([$class.$root->id])->get($keyCache, null);
-        if (null !== $cacheValue) {
-            return $cacheValue;
         }
 
         $return = $this->getArrayResizedImage($args, $defaultImage);
@@ -90,11 +90,11 @@ class BasicPictureField extends Field
     {
         $width = (int) ($width * $this->factor);
         $height = (int) ($height * $this->factor);
-        $image_resize = Image::make(Storage::disk('public')->path($picturePath))
+        $imageResize = Image::make(Storage::disk('public')->path($picturePath))
             ->fit($width, $height);
         Storage::disk('public')->makeDirectory($this->model->getPath());
 
-        $image_resize->save($savePath.$nameFile, 100);
+        $imageResize->save($savePath.$nameFile, 100);
 
         return true;
     }
@@ -106,7 +106,7 @@ class BasicPictureField extends Field
      *
      * @return mixed
      */
-    protected function resizeImage(string $picturePath, $size, $path)
+    protected function resizeImage(string $picturePath, string $size, string $path)
     {
         $image = new File(Storage::disk('public')->path($picturePath));
 
@@ -130,7 +130,7 @@ class BasicPictureField extends Field
      *
      * @return array
      */
-    protected function getArrayResizedImage($args, string $defaultImage): array
+    protected function getArrayResizedImage(array $args, string $defaultImage): array
     {
         $model = $this->model::find($this->model->id);
         if (null === $model) {

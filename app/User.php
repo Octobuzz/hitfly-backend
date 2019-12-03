@@ -357,4 +357,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
             $query->whereIn('slug', $roles);
         });
     }
+
+    public function getSizePicture($size): array
+    {
+        return [config('image.size.avatar.'.$size.'.width'), config('image.size.avatar.'.$size.'.height')];
+    }
 }
