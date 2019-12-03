@@ -42,7 +42,7 @@ class FavouriteGenreQuery extends Query
             $query->where('favouriteable_id', $args['genreId']);
         }
         $query->where('user_id', $user->id);
-        //$query->orderBy('created_at', 'desc');
+        $query->orderBy('favourites.created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;
