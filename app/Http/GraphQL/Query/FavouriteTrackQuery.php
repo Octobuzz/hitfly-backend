@@ -53,7 +53,7 @@ class FavouriteTrackQuery extends Query
         $query->where('tracks.state', '=', 'published');
         $query->where('favourites.user_id', $user->id);
 
-        //$query->orderBy('created_at', 'desc');
+        $query->orderBy('created_at', 'desc');
         $response = $query->paginate($args['limit'], ['*'], 'page', $args['page']);
 
         return $response;
