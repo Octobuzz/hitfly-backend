@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (env('SECURE_CONNECTION', false)) {
+        if (config('app.scheme') === true) {
             URL::forceScheme('https');
         }
         MusicGroup::observe(MusicGroupObserver::class);
