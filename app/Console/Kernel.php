@@ -70,8 +70,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $this->notification->reachTop(50);
         })->dailyAt('10:00');
-        // Создание топ 50 каждый день в 1 час ночи
-        $schedule->command(CreateTopFiftyCommand::class)->dailyAt(self::TIME_CREATE_TOP_FIFTY);
+        // Создание топ 50 по понедельникам в 1 час ночи
+        $schedule->command(CreateTopFiftyCommand::class)->weeklyOn(1, self::TIME_CREATE_TOP_FIFTY);
         $schedule->command(CalculateListeningTrackCommand::class)->everyTenMinutes();
         $schedule->command(CalculateListenedUserCommand::class)->everyTenMinutes();
         $schedule->command(MusicalWaveCommand::class)->everyMinute()->name('create_music_wave')->withoutOverlapping();
