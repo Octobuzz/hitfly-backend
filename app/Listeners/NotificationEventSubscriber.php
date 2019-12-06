@@ -49,7 +49,7 @@ class NotificationEventSubscriber
         $events->listen('eloquent.created: '.Watcheables::class, self::class.'@createWatcheables'); // У вас новый поклонник Имя пользователя
         $events->listen(CompletedTaskEvent::class, self::class.'@completedTask'); // Вы выполнили задание Название и получили 300 бонусов
         $events->listen(ChangeLevelEvent::class, self::class.'@changeLevel'); // Поздравляем! Вы получили новый уровень/ статус Любитель
-        $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Поздравляем! Ваша песня Название попала в ТОП 20
+//        $events->listen(CreatedTopFiftyEvent::class, self::class.'@createdTopFifty'); // Поздравляем! Ваша песня Название попала в ТОП 20
         $events->listen(IncreaseRoleEvent::class, self::class.'@increaseRole'); // Поздравляем! Вы получили новый статус Критик
         $events->listen(DecreaseRoleEvent::class, self::class.'@decreaseRole'); // К сожалению, мы были вынуждены понизить ваш статус
     }
