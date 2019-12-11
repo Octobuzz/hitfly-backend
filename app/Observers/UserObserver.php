@@ -41,7 +41,7 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
-        $user->sendEmailVerificationNotification($user->email);
+        $user->sendEmailVerificationNotification();
         $purse = $user->purseBonus;
         if (null === $purse) {
             $purse = new Purse();
@@ -76,21 +76,18 @@ class UserObserver
             return true;
         }
         $requestParams = Route::current()->parameters();
-        if ($user->isDirty('email') && null !== $user->getOriginal('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
-            $hash = md5($user->id.$user->email.microtime());
-            $emailChange = EmailChange::updateOrCreate(
-                ['user_id' => $user->id],
-                [
-                   'user_id' => $user->id,
-                   'new_email' => $user->email,
-                   'token' => $hash,
-                ]
-            );
-            $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
-
-            dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
-
-            return false;
+        if ($user->isDirty('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
+            if (null !== $user->getOriginal('email')) {
+                return $this->doChangeEmailProcedure($user);
+            } else {
+                switch ($user->redirect) {
+                    case 'TRACK_UPLOAD':  $redirectTo = '/upload'; break;
+                    case 'SPEND_BONUSES':  $redirectTo = '/spend-bonuses'; break;
+                    case 'HOME':  $redirectTo = '/'; break;
+                    default: $redirectTo = '/';
+                }
+                $user->sendEmailVerificationNotification($redirectTo); //в случае если емейл изначально был пустой, нужно верифицировать
+            }
         }
 
         if (true === $user->wasChanged('level')) {
@@ -161,5 +158,28 @@ class UserObserver
             case 'roles':
                 event(new DetachingRolesEvent($parent, $ids));
         }
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    private function doChangeEmailProcedure(User $user): bool
+    {
+        $hash = md5($user->id.$user->email.microtime());
+        $emailChange = EmailChange::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'user_id' => $user->id,
+                'new_email' => $user->email,
+                'token' => $hash,
+            ]
+        );
+        $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
+
+        dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+
+        return false;
     }
 }

@@ -59,6 +59,9 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
+        if ($request->filled('redirect')) {
+            $this->redirectTo = $request->redirect;
+        }
         if ($request->user() && $request->user() != $request->route('id')) {
             Auth::guard()->logout();
         }

@@ -361,6 +361,7 @@ return [
         'UserRoleEnum' => \App\Http\GraphQL\Enums\UserRoleEnum::class,
         'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
         'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
+        'RedirectEnum' => \App\Http\GraphQL\Enums\RedirectEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
