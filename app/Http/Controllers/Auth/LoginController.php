@@ -96,9 +96,9 @@ class LoginController extends Controller
         if (false === $user->hasVerifiedEmail()) {
             event(new Registered($user));
             if (null !== $user->email && false === $user->hasVerifiedEmail()) {
+                $user->sendEmailVerificationNotification();
                 VerificationController::sendNotification($user);
             }
-            $user->markEmailAsVerified();
             //при регистрации редиректим на выбор жанров
             return redirect()->to('/register-genres');
         } else {

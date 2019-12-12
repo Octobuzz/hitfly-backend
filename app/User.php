@@ -13,6 +13,7 @@ use App\Models\MusicGroup;
 use App\Models\Purse;
 use App\Models\Social;
 use App\Models\Track;
+use App\Models\Traits\PictureField;
 use App\Models\UserNotification;
 use App\Models\UserToken;
 use App\Models\Watcheables;
@@ -35,7 +36,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use  Illuminate\Auth\Passwords\CanResetPassword;
@@ -84,6 +84,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     use HasRelationshipObservables;
     use HasBelongsToManyEvents;
     use GraphQLAuthTrait;
+    use PictureField;
 
     protected $cascadeDeletes = [
         'socialsConnect',
@@ -104,6 +105,8 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const LEVEL_AMATEUR = 'LEVEL_AMATEUR'; // Любитель
     const LEVEL_CONNOISSEUR_OF_THE_GENRE = 'LEVEL_CONNOISSEUR_OF_THE_GENRE'; // Знаток жанра
     const LEVEL_SUPER_MUSIC_LOVER = 'LEVEL_SUPER_MUSIC_LOVER'; // Супер меломан
+
+    public $redirect; //используется для редиректа на нужную страницу после добавления email в UserObserver(сбор почтовых адресов)
 
     public $levels = [
         self::LEVEL_NOVICE,
@@ -299,9 +302,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     /**
      * Send the email verification notification.
      */
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification($redirectTo = '')
     {
-        $this->notify(new HitflyVerifyEmail());
+        $this->notify(new HitflyVerifyEmail($redirectTo));
     }
 
     public function getImage(): ?string
@@ -327,7 +330,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
 
     public function getPath(): string
     {
-        return 'avatars/'.$this->user_id.'/';
+        return 'avatars/'.$this->id.'/';
     }
 
     public function followers()
@@ -355,5 +358,10 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         return $query->whereHas('roles', function ($query) use ($roles) {
             $query->whereIn('slug', $roles);
         });
+    }
+
+    public function getSizePicture($size): array
+    {
+        return [config('image.size.avatar.'.$size.'.width'), config('image.size.avatar.'.$size.'.height')];
     }
 }

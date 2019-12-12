@@ -4,6 +4,7 @@ namespace App\Workerman;
 
 use App\Models\Notification;
 use App\Models\UserNotification;
+use App\Models\UserToken;
 use App\Notifications\BaseNotification;
 use App\Services\Auth\JsonGuard;
 use App\User;
@@ -29,9 +30,12 @@ class Events
     public static function onWebSocketConnect($client_id, $data)
     {
         try {
-            $user = User::query()->where(JsonGuard::COLUMN_NAME, '=', $data['cookie'][JsonGuard::HEADER_NAME_TOKEN])->firstOrFail();
+            $userToken = UserToken::query()->where(JsonGuard::COLUMN_NAME, '=', $data['cookie'][JsonGuard::HEADER_NAME_TOKEN])->firstOrFail();
+            $user = $userToken->user()->first();
         } catch (ModelNotFoundException $exception) {
             Gateway::sendToClient($client_id, '{"error_code":401}');
+
+            return;
         }
         $user->userNotification()->updateOrCreate(['user_id' => $user->id], ['token_web_socket' => $client_id]);
     }

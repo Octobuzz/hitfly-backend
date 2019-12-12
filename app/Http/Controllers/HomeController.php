@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\BuisnessLogic\Sitemap\SitemapGenerator;
 use App\Models\Collection;
 use App\Models\Genre;
@@ -264,5 +263,10 @@ class HomeController extends Controller
     public function policy()
     {
         return view('policy');
+    }
+
+    public function policyMobile()
+    {
+        return view('policyMobile');
     }
 }

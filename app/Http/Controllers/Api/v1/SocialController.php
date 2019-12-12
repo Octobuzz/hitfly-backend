@@ -65,16 +65,16 @@ class SocialController extends Controller
                         ->stateless()->user();
             }
         } catch (Exception $e) {
-                return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
+            return redirect()->to('/register-error')->with('message-reg', $e->getMessage());
         }
         /** @var User $user */
         $user = $service->loginOrRegisterBySocials($socialUser, $provider);
 
         $this->guard()->login($user);
         if (null !== $user->email && false === $user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
             VerificationController::sendNotification($user);
         }
-        $user->markEmailAsVerified();
 
         return redirect()->to('/register-success?token='.$this->guard()->getCurrentToken());
     }

@@ -9,14 +9,12 @@ use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
 use App\Jobs\EmailChangeJob;
-use App\Jobs\UserRegisterJob;
 use App\Models\EmailChange;
 use App\Models\Purse;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,7 +39,7 @@ class UserObserver
         //добавление роли "слушатель"
         $user->roles()->attach($role->id);
         $user->save();
-        $user->sendEmailVerificationNotification($user->email);
+        $user->sendEmailVerificationNotification();
         $purse = $user->purseBonus;
         if (null === $purse) {
             $purse = new Purse();
@@ -54,43 +52,40 @@ class UserObserver
         if (!empty($user->username) && true === $user->inRoles($this->rolesToSearchIndex)) {
             $this->indexer->index(Collection::make([$user]), 'user');
         }
-
-//        //отправка письма о завершении регистрации
-//        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
-//            dispatch(new UserRegisterJob($user))->onQueue('low');
-//        }
     }
 
     /**
      * Handle the user "updated" event.
      *
      * @param User $user
-     *
-     * @return bool
      */
     public function updating(User $user)
     {
         if (null === Route::current() ||
             Route::current()->controller instanceof RegisterController ||
             Route::current()->controller instanceof UserController) {
-            return true;
+            return;
         }
+
         $requestParams = Route::current()->parameters();
-        if ($user->isDirty('email') && null !== $user->getOriginal('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
-            $hash = md5($user->id.$user->email.microtime());
-            $emailChange = EmailChange::updateOrCreate(
-                ['user_id' => $user->id],
-                [
-                   'user_id' => $user->id,
-                   'new_email' => $user->email,
-                   'token' => $hash,
-                ]
-            );
-            $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
+        if (isset($requestParams['token']) && isset($requestParams['provider'])) {//при регистрации чрез соцсети
+            return;
+        }
 
-            dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+        if ($user->isDirty('email')) {
+            if (null !== $user->getOriginal('email')) {
+                $this->doChangeEmailProcedure($user);
 
-            return false;
+                return false;
+            } else {
+                switch ($user->redirect) {
+                    case 'TRACK_UPLOAD':  $redirectTo = '/upload'; break;
+                    case 'SPEND_BONUSES':  $redirectTo = '/spend-bonuses'; break;
+                    case 'HOME':  $redirectTo = '/'; break;
+                    default: $redirectTo = '/';
+                }
+                $user->sendEmailVerificationNotification($redirectTo); //в случае если емейл изначально был пустой, нужно верифицировать
+            }
         }
 
         if (true === $user->wasChanged('level')) {
@@ -100,8 +95,6 @@ class UserObserver
         if ($user->isDirty('username') && true === $user->inRoles($this->rolesToSearchIndex)) {
             $this->indexer->index(Collection::make([$user]), 'user');
         }
-
-        return true;
     }
 
     public function saving(User $user)
@@ -161,5 +154,28 @@ class UserObserver
             case 'roles':
                 event(new DetachingRolesEvent($parent, $ids));
         }
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    private function doChangeEmailProcedure(User $user): bool
+    {
+        $hash = md5($user->id.$user->email.microtime());
+        $emailChange = EmailChange::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'user_id' => $user->id,
+                'new_email' => $user->email,
+                'token' => $hash,
+            ]
+        );
+        $url = config('app.url').'/email-change/'.$user->id.'/'.$hash;
+
+        dispatch(new EmailChangeJob($user, $user->email, $url))->onQueue('low');
+
+        return false;
     }
 }

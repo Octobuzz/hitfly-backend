@@ -233,4 +233,6 @@ return [
         'GraphQL' => Nuwave\Lighthouse\Support\Facades\GraphQLFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
     ],
+
+    'scheme' => env('SECURE_CONNECTION', false),
 ];

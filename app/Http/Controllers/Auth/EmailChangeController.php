@@ -15,7 +15,6 @@ class EmailChangeController extends Controller
         $tokenCollection = EmailChange::query()->where('user_id', '=', $id)->get();
 
         foreach ($tokenCollection as $row) {
-
             if (null !== $row && $row->token == $token && Carbon::now()->lt($row->updated_at->addMinute(60))) {
                 $user = User::find($id);
                 $oldEmail = $user->email;

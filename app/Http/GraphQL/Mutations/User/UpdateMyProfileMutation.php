@@ -55,6 +55,9 @@ class UpdateMyProfileMutation extends Mutation
             if (!empty($args['avatar']) && null !== $args['avatar']) {
                 $user->avatar = $this->setAvatar($user, $args['avatar']);
             }
+            if (!empty($args['profile']['redirect'])) {
+                $user->redirect = $args['profile']['redirect'];
+            }
 
             $user->update(DBHelpers::arrayKeysToSnakeCase($args['profile']));
             $user->save();

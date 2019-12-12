@@ -21,6 +21,7 @@ use App\Repositories\TrackRepository;
 use App\Repositories\UserRepository;
 use App\User;
 use App\Observers\TrackObserver;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Jenssegers\Date\Date;
@@ -41,6 +42,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (true === config('app.scheme')) {
+            URL::forceScheme('https');
+        }
         MusicGroup::observe(MusicGroupObserver::class);
         Collection::observe(CollectionObserver::class);
         User::observe(UserObserver::class);

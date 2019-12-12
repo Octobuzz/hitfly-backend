@@ -128,6 +128,14 @@ class MyProfileType extends GraphQLType
                     },
                     'selectable' => false,
                 ],
+                'emailVerified' => [
+                    'type' => Type::boolean(),
+                    'description' => 'подтвержден ли емейл',
+                    'resolve' => function ($model) {
+                        return (bool) $model->email_verified_at;
+                    },
+                    'selectable' => false,
+                ],
             ]
         );
     }

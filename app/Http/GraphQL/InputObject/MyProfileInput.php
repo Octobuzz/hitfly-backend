@@ -35,6 +35,11 @@ class MyProfileInput extends GraphQLType
                 'type' => Type::string(),
                 'rules' => ['max:250', 'email'],
             ],
+            'redirect' => [
+                'name' => 'redirect',
+                'description' => 'Редирект при смене email',
+                'type' => \GraphQL::type('RedirectEnum'),
+            ],
             'password' => [
                 'name' => 'password',
                 'description' => 'Пароль',
