@@ -9,14 +9,12 @@ use App\BuisnessLogic\SearchIndexing\SearchIndexer;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
 use App\Jobs\EmailChangeJob;
-use App\Jobs\UserRegisterJob;
 use App\Models\EmailChange;
 use App\Models\Purse;
 use App\User;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -54,31 +52,31 @@ class UserObserver
         if (!empty($user->username) && true === $user->inRoles($this->rolesToSearchIndex)) {
             $this->indexer->index(Collection::make([$user]), 'user');
         }
-
-//        //отправка письма о завершении регистрации
-//        if ($user->email && App::environment('local') /*&& null !== Auth::user()*/) {
-//            dispatch(new UserRegisterJob($user))->onQueue('low');
-//        }
     }
 
     /**
      * Handle the user "updated" event.
      *
      * @param User $user
-     *
-     * @return bool
      */
     public function updating(User $user)
     {
         if (null === Route::current() ||
             Route::current()->controller instanceof RegisterController ||
             Route::current()->controller instanceof UserController) {
-            return true;
+            return;
         }
+
         $requestParams = Route::current()->parameters();
-        if ($user->isDirty('email') && !isset($requestParams['token']) && !isset($requestParams['provider'])) {
+        if (isset($requestParams['token']) && isset($requestParams['provider'])) {//при регистрации чрез соцсети
+            return;
+        }
+
+        if ($user->isDirty('email')) {
             if (null !== $user->getOriginal('email')) {
-                return $this->doChangeEmailProcedure($user);
+                $this->doChangeEmailProcedure($user);
+
+                return false;
             } else {
                 switch ($user->redirect) {
                     case 'TRACK_UPLOAD':  $redirectTo = '/upload'; break;
@@ -97,8 +95,6 @@ class UserObserver
         if ($user->isDirty('username') && true === $user->inRoles($this->rolesToSearchIndex)) {
             $this->indexer->index(Collection::make([$user]), 'user');
         }
-
-        return true;
     }
 
     public function saving(User $user)

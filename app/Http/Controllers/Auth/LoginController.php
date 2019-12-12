@@ -99,7 +99,6 @@ class LoginController extends Controller
                 $user->sendEmailVerificationNotification();
                 VerificationController::sendNotification($user);
             }
-            //$user->markEmailAsVerified();
             //при регистрации редиректим на выбор жанров
             return redirect()->to('/register-genres');
         } else {

@@ -75,7 +75,6 @@ class SocialController extends Controller
             $user->sendEmailVerificationNotification();
             VerificationController::sendNotification($user);
         }
-        //$user->markEmailAsVerified();
 
         return redirect()->to('/register-success?token='.$this->guard()->getCurrentToken());
     }
