@@ -106,6 +106,8 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const LEVEL_CONNOISSEUR_OF_THE_GENRE = 'LEVEL_CONNOISSEUR_OF_THE_GENRE'; // Знаток жанра
     const LEVEL_SUPER_MUSIC_LOVER = 'LEVEL_SUPER_MUSIC_LOVER'; // Супер меломан
 
+    public $redirect; //используется для редиректа на нужную страницу после добавления email в UserObserver(сбор почтовых адресов)
+
     public $levels = [
         self::LEVEL_NOVICE,
         self::LEVEL_AMATEUR,
@@ -300,9 +302,9 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     /**
      * Send the email verification notification.
      */
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification($redirectTo = '')
     {
-        $this->notify(new HitflyVerifyEmail());
+        $this->notify(new HitflyVerifyEmail($redirectTo));
     }
 
     public function getImage(): ?string

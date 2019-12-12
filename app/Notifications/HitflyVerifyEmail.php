@@ -10,6 +10,13 @@ use Mail;
 
 class HitflyVerifyEmail extends VerifyEmailBase
 {
+    public $redirectTo;
+
+    public function __construct($redirectTo)
+    {
+        $this->redirectTo = $redirectTo;
+    }
+
     /**
      * @param mixed $notifiable
      *
@@ -29,7 +36,7 @@ class HitflyVerifyEmail extends VerifyEmailBase
     protected function verificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
-            'verification.verify', Carbon::now()->addMinutes(1440), ['id' => $notifiable->getKey()]
+            'verification.verify', Carbon::now()->addMinutes(1440), ['id' => $notifiable->getKey(), 'redirect' => $this->redirectTo]
         );
     }
 }
