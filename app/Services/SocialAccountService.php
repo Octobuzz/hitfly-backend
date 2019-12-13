@@ -32,8 +32,7 @@ class SocialAccountService
         if ($account->user) {
             return $account->user;
         } else {
-            $user = User::query()->withTrashed()->whereEmail($providerUser->getEmail())->first();
-
+            $user = $this->getUserFromEmail($providerUser);
             if (!$user) {
                 $pass = Str::random(10);
                 $tmpUser = [
@@ -155,5 +154,18 @@ class SocialAccountService
             'user' => $user->username,
             'avatar' => $user->avatar,
         ];
+    }
+
+    /**
+     * @param ProviderUser $providerUser
+     * @return mixed
+     */
+    private function getUserFromEmail(ProviderUser $providerUser)
+    {
+        if(null === $providerUser->getEmail()){
+            return null;
+        }
+        $user = User::query()->withTrashed()->whereEmail($providerUser->getEmail())->first();
+        return $user;
     }
 }
