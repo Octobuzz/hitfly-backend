@@ -18,7 +18,7 @@ Auth::routes(['verify' => true]);
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/register-error', 'Auth\RegisterController@registerError');
 Route::get('/register-genres', 'Auth\RegisterController@showGenreForm')->name('register.genres');
-Route::get('/skip-set-genres', 'Auth\RegisterController@finishRegisterRedirect')->name('register.slip.genres');
+Route::get('/skip-set-genres', 'Auth\RegisterController@finishRegisterRedirect')->name('register.skip.genres');
 Route::post('/register-genres', 'Auth\RegisterController@setGenres')->name('register.set.genres');
 Route::get('/email-change/{id}/{token}', 'Auth\EmailChangeController@changeEmail');
 Route::get('/email-change', 'Auth\EmailChangeController@emailChanged');
