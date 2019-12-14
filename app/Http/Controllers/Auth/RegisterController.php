@@ -156,10 +156,9 @@ class RegisterController extends Controller
         return $this->finishRegisterRedirect();
     }
 
-
     public function finishRegisterRedirect()
     {
         return null === $this->guard()->user()->email
-            ? redirect()->route('home'): redirect($this->redirectPath());
+            ? redirect()->route('home') : redirect($this->redirectPath());
     }
 }

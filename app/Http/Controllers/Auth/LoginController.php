@@ -93,7 +93,7 @@ class LoginController extends Controller
         $this->guard()->login($user);
 
         /** @var User $user */
-        if (false === $user->hasVerifiedEmail()) {
+        if (true === $user->wasRecentlyCreated) {
             event(new Registered($user));
             if (null !== $user->email && false === $user->hasVerifiedEmail()) {
                 $user->sendEmailVerificationNotification();
