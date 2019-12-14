@@ -4024,17 +4024,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SocialiteProviders/Providers.git",
-                "reference": "08502817eec7597c36a146c530280c7cab46a575"
+                "reference": "8b866102fc34d2c1450318025e268f858ec8a5db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SocialiteProviders/Providers/zipball/08502817eec7597c36a146c530280c7cab46a575",
-                "reference": "08502817eec7597c36a146c530280c7cab46a575",
+                "url": "https://api.github.com/repos/SocialiteProviders/Providers/zipball/8b866102fc34d2c1450318025e268f858ec8a5db",
+                "reference": "8b866102fc34d2c1450318025e268f858ec8a5db",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "php": "^5.6 || ^7.0",
                 "socialiteproviders/manager": "~2.0 || ~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0",
+                "symplify/monorepo-builder": "^6.1"
             },
             "type": "library",
             "autoload": {
@@ -4047,7 +4052,7 @@
                 "MIT"
             ],
             "description": "Collection of all OAuth2 Providers for Laravel Socialite",
-            "time": "2019-03-04T10:45:42+00:00"
+            "time": "2019-12-12T08:20:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

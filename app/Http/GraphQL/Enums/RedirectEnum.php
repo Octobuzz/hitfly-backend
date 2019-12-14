@@ -12,9 +12,9 @@ class RedirectEnum extends GraphQLType
         'name' => 'RedirectEnum',
         'description' => 'Редирект',
         'values' => [
-            'TRACK_UPLOAD' => 'TRACK_UPLOAD',
-            'SPEND_BONUSES' => 'SPEND_BONUSES',
-            'HOME' => 'HOME',
-            ],
+                        'TRACK_UPLOAD' => 'TRACK_UPLOAD',
+                        'SPEND_BONUSES' => 'SPEND_BONUSES',
+                        'HOME' => 'HOME',
+                    ],
     ];
 }

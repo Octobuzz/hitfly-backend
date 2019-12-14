@@ -10,7 +10,7 @@
                         {{ __('auth.genreText') }}
                     </p>
                     <button type="submit" form="select-genre-form" class="button gradient big s-genre-side__complete">{{ __('auth.ready') }}</button>
-                    <a href="{{ route('verification.notice') }}" class="s-genre-side__next">{{ __('auth.skip') }}</a>
+                    <a href="{{ route('register.skip.genres') }}" class="s-genre-side__next">{{ __('auth.skip') }}</a>
                 </div>
             </div>
         </aside>
