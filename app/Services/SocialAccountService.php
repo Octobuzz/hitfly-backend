@@ -158,14 +158,16 @@ class SocialAccountService
 
     /**
      * @param ProviderUser $providerUser
+     *
      * @return mixed
      */
     private function getUserFromEmail(ProviderUser $providerUser)
     {
-        if(null === $providerUser->getEmail()){
+        if (null === $providerUser->getEmail()) {
             return null;
         }
         $user = User::query()->withTrashed()->whereEmail($providerUser->getEmail())->first();
+
         return $user;
     }
 }
