@@ -30,13 +30,21 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 RUN pip3 install numpy
 RUN apt install ffmpeg -y
-#ARG base_env
-#RUN usermod --non-unique --uid ${base_env} www-data
-#RUN groupmod -g ${base_env} www-data
 RUN apt-get install graphviz -y
 RUN pecl install apcu && docker-php-ext-enable apcu
 RUN pecl install -o -f redis \
   &&  rm -rf /tmp/pear \
   &&  docker-php-ext-enable redis
+
+RUN curl -sS https://getcomposer.org/installer | php -- \
+        --filename=composer \
+        --install-dir=/usr/local/bin && \
+        echo "alias composer='composer'" >> /root/.bashrc && \
+        composer
+
+ARG user_uid
+RUN usermod -u ${user_uid? invalid argument} www-data
+RUN groupmod -g ${user_uid? invalid argument} www-data
+
 
 
