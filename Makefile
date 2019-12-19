@@ -41,8 +41,11 @@ cache: ## clear cache
 	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan config:clear
 	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan config:cache
 
-bash:
+bash: ## Run bash ssh php continer
 	@docker exec -it $(COMPOSE_PROJECT_NAME)_php bash
 
-socket:
-	@docker exec $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan workman start -d
+socket: ## Run socket
+	@docker exec $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan workman start --d
+
+seed: ## run seeder
+	docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan db:seed
