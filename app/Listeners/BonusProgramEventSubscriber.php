@@ -118,16 +118,16 @@ class BonusProgramEventSubscriber
     {
         /** @var User $user */
         $user = $favourite->user;
-
+        $userBonuses = null;
         $classFavourite = get_class($favourite->favouriteable()->getRelated());
         switch ($classFavourite) {
                 case Album::class:
                     $modelId = $favourite->album->id;
-                    $albumUser = $favourite->album->user;
-                    if ($user->id === $albumUser->id) {
+                    $userBonuses = $favourite->album->user;
+                    if ($user->id === $userBonuses->id) {
                         return;
                     }
-                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $user);
+                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $userBonuses);
 
                     if ($countFavorite < 10) {
                         return;
@@ -137,11 +137,11 @@ class BonusProgramEventSubscriber
                     break;
                 case Track::class:
                     $modelId = $favourite->track->id;
-                    $trackUser = $favourite->track->user;
-                    if ($user->id === $trackUser->id) {
+                    $userBonuses = $favourite->track->user;
+                    if ($user->id === $userBonuses->id) {
                         return;
                     }
-                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $user);
+                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $userBonuses);
                     if ($countFavorite < 10) {
                         return;
                     }
@@ -149,7 +149,8 @@ class BonusProgramEventSubscriber
                     break;
                 case Collection::class:
                     $modelId = $favourite->collection->id;
-                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $user);
+                    $userBonuses = $favourite->collection->user;
+                    $countFavorite = $this->favoriteRepositories->countFavorite($favourite, $modelId, $userBonuses);
                     if ($countFavorite < 50) {
                         return;
                     }
@@ -159,7 +160,7 @@ class BonusProgramEventSubscriber
                     return;
         }
 
-        $this->accrueBonusService->process($bonusTypeConstant, $user, 1, null, $modelId);
+        $this->accrueBonusService->process($bonusTypeConstant, $userBonuses, 1, null, $modelId);
     }
 
     /**
