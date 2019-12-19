@@ -106,7 +106,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     const LEVEL_CONNOISSEUR_OF_THE_GENRE = 'LEVEL_CONNOISSEUR_OF_THE_GENRE'; // Знаток жанра
     const LEVEL_SUPER_MUSIC_LOVER = 'LEVEL_SUPER_MUSIC_LOVER'; // Супер меломан
 
-    public $redirect; //используется для редиректа на нужную страницу после добавления email в UserObserver(сбор почтовых адресов)
+//    public $redirect; //используется для редиректа на нужную страницу после добавления email в UserObserver(сбор почтовых адресов)
 
     public $levels = [
         self::LEVEL_NOVICE,

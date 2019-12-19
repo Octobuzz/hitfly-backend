@@ -24,7 +24,7 @@ npm: ## npm install
 app-install: up composer npm ## Install
 
 up: ## start project
-	@docker-compose up -d
+	@docker-compose up -d --remove-orphans
 
 down: ## stop project
 	@docker-compose down --remove-orphans
@@ -49,3 +49,6 @@ socket: ## Run socket
 
 seed: ## run seeder
 	docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan db:seed
+
+logs: ## Show docker containers logs
+	@docker-compose  -p ${COMPOSE_PROJECT_NAME} logs --follow

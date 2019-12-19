@@ -28,6 +28,11 @@ class UpdateEmailMutation extends Mutation
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'max:255', 'email', 'unique:users,email'],
             ],
+            'redirect' => [
+                'name' => 'redirect',
+                'description' => 'Редирект при смене email',
+                'type' => \GraphQL::type('RedirectEnum'),
+            ],
         ];
     }
 
@@ -35,12 +40,27 @@ class UpdateEmailMutation extends Mutation
     {
         $user = $this->getGuard()->user();
 
+        if($user === null){
+            return new ValidationError(trans('validation.emailIsBad'));
+        }
+
+        if(!empty($args['redirect'])){
+            $user->redirect = $args['redirect'];
+            $user->save();
+        }
+
         if (!empty($args['email']) && $args['email']) {
             $user->email = $args['email'];
+
+            if(!empty($args['redirect'])){
+                $user->redirect = $args['redirect'];
+            }
+
             $user->save();
 
             return $user;
         }
+
 
         return new ValidationError(trans('validation.emailIsBad'));
     }
