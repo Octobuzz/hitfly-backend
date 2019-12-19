@@ -179,6 +179,9 @@ class BonusProgramEventSubscriber
     public function registerUser(Registered $registered): void
     {
         $user = User::query()->find($registered->user->getAuthIdentifier());
+        if(empty($user->username) === false){
+            $this->accrueBonusService->process(BonusProgramTypesInterfaces::USER_NAME, $user);
+        }
         $this->accrueBonusService->process(BonusProgramTypesInterfaces::USER_REGISTER, $user); //todo
     }
 
