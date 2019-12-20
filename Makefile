@@ -18,8 +18,8 @@ composer: ## composer install
 	@docker exec -i hitfly_php sudo -u www-data composer install --dev
 
 npm: ## npm install
-	@npm i -D
-	cd ssr && npm install
+	npm i
+	cd ssr && npm i
 
 app-install: up composer npm ## Install
 
@@ -35,7 +35,7 @@ code-style: ## Код сатйл
 	@composer fix
 
 submodule-update:
-	git submodule update --remote
+	git submodule update --remote --force  --rebase
 
 cache: ## clear cache
 	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan config:clear
