@@ -22,14 +22,14 @@
     User:  root
     Password: digico
     dbName: digico
-    host(из проекта):  maria_db:3306
+    host(из проекта):  hitfly_db:3306
     host(из вне):  localhost:53306
     
     
 Добавление данных в бд 
 
-    docker exec -it php_docker sudo -u www-data php artisan migrate:refresh
-    docker exec -it php_docker sudo -u www-data php artisan db:seed
+    make mirgate
+    make seed
 
 ##Админ панель
 
