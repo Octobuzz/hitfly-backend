@@ -58,7 +58,7 @@ class BaseNotification extends Notification
                 'data' => $this->baseUserNotification->getMessageData(),
             ]));
         } catch (\Exception $exception) {
-            Log::alert($exception->getMessage(), $exception);
+            Log::alert($exception->getMessage(), $exception->getTrace());
         }
     }
 

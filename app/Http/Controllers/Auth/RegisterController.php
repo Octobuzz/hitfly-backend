@@ -127,7 +127,7 @@ class RegisterController extends Controller
 
     public function registerError(Request $request)
     {
-        return view('auth.error');
+        return view('auth.error401');
     }
 
     public function showGenreForm()
