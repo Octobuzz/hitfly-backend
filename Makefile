@@ -12,7 +12,7 @@ migrate: ## run migration
 	@docker exec -i hitfly_php sudo -u www-data php artisan migrate --force
 
 build: ## Билд проекта
-	@docker-compose -p ${COMPOSE_PROJECT_NAME} build --build-arg user_uid=$$(id -u)
+	@docker-compose build --build-arg user_uid=$$(id -u)
 
 composer: ## composer install
 	@docker exec -i hitfly_php sudo -u www-data composer install --dev
@@ -24,10 +24,10 @@ npm: ## npm install
 app-install: up composer npm ## Install
 
 up: ## start project
-	@docker-compose up -d --remove-orphans
+	@docker-compose up -d
 
 down: ## stop project
-	@docker-compose down --remove-orphans
+	@docker-compose down
 
 restart: down up ## Restart project
 
@@ -39,7 +39,7 @@ submodule-update:
 
 cache: ## clear cache
 	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan config:clear
-	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan config:cache
+#	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan config:cache
 
 bash: ## Run bash ssh php continer
 	@docker exec -it $(COMPOSE_PROJECT_NAME)_php bash
@@ -51,4 +51,4 @@ seed: ## run seeder
 	docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data php artisan db:seed
 
 logs: ## Show docker containers logs
-	@docker-compose  -p ${COMPOSE_PROJECT_NAME} logs --follow
+	@docker-compose logs --follow
