@@ -16,13 +16,13 @@ class SocialRepository extends BaseRepository
 
     public function getSocialConnect($args)
     {
-        /** @var User $User */
-        $User = $this->getGuard()->user();
-        if (null === $User) {
+        /** @var User $user */
+        $user = $this->getGuard()->user();
+        if (null === $user) {
             $socialsLink = null;
         } else {
             /** @var Collection $socialsLink */
-            $socialsLink = $User->socialsConnect;
+            $socialsLink = $user->socialsConnect;
         }
 
         $response = [];
