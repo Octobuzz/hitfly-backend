@@ -40,11 +40,11 @@ class UpdateEmailMutation extends Mutation
     {
         $user = $this->getGuard()->user();
 
-        if($user === null){
+        if (null === $user) {
             return new ValidationError(trans('validation.emailIsBad'));
         }
 
-        if(!empty($args['redirect'])){
+        if (!empty($args['redirect'])) {
             $user->redirect = $args['redirect'];
             $user->save();
         }
@@ -52,7 +52,7 @@ class UpdateEmailMutation extends Mutation
         if (!empty($args['email']) && $args['email']) {
             $user->email = $args['email'];
 
-            if(!empty($args['redirect'])){
+            if (!empty($args['redirect'])) {
                 $user->redirect = $args['redirect'];
             }
 
@@ -60,7 +60,6 @@ class UpdateEmailMutation extends Mutation
 
             return $user;
         }
-
 
         return new ValidationError(trans('validation.emailIsBad'));
     }

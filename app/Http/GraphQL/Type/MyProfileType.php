@@ -132,7 +132,7 @@ class MyProfileType extends GraphQLType
                     'type' => Type::boolean(),
                     'description' => 'подтвержден ли емейл',
                     'resolve' => function ($model) {
-                        return $model->email_verified_at !== null;
+                        return null !== $model->email_verified_at;
                     },
                     'selectable' => false,
                 ],
