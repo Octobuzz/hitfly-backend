@@ -4,7 +4,7 @@ namespace App\Http\GraphQL\Mutations;
 
 use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Social;
-use GraphQL;
+use App\Repositories\SocialRepository;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -18,7 +18,7 @@ class RemoveSocialConnect extends Mutation
 
     public function type()
     {
-        return GraphQL::type('User');
+        return Type::listOf(\GraphQL::type('SocialConnectType'));
     }
 
     public function args()
@@ -27,6 +27,10 @@ class RemoveSocialConnect extends Mutation
             'social' => [
                 'type' => \GraphQL::type('SocialLinksTypeEnum'),
                 'description' => 'Тип социальной сети',
+            ],
+            'filters' => [
+                'type' => \GraphQL::type('SocialLinkFilterInput'),
+                'description' => 'Фильтры',
             ],
         ];
     }
@@ -44,6 +48,8 @@ class RemoveSocialConnect extends Mutation
         }
         $social->forceDelete();
 
-        return $this->getGuard()->user();
+        $socialRepository = new SocialRepository();
+
+        return $socialRepository->getSocialConnect($args);
     }
 }
