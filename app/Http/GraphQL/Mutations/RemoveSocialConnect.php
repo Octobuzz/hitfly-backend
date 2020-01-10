@@ -43,10 +43,7 @@ class RemoveSocialConnect extends Mutation
             ->where('user_id', '=', $this->getGuard()->user()->id)
             ->first()
         ;
-//        if (empty($social)) {
-//            return null;
-//        }
-        //$social->forceDelete();
+        $social->forceDelete();
 
         $socialRepository = new SocialRepository();
 
