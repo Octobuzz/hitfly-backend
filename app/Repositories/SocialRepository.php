@@ -8,7 +8,7 @@ use App\Models\Social;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
 
-class SocialRepository extends SearchRepository
+class SocialRepository extends BaseRepository
 {
     use  GraphQLAuthTrait;
 
