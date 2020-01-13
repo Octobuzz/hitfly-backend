@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\Helpers\FileHelpers;
 use App\Models\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -72,6 +73,7 @@ class CollectionObserver
      */
     public function forceDeleted(Collection $collection)
     {
+        FileHelpers::clearingStorage($collection);
         $this->indexer->deleteFromIndex(\Illuminate\Support\Collection::make([$collection]), 'collection');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\Helpers\FileHelpers;
 use App\Jobs\Track\CreatePlayTimeJob;
 use App\Models\Track;
 use Illuminate\Support\Collection;
@@ -89,6 +90,7 @@ class TrackObserver
      */
     public function forceDeleted(Track $track)
     {
+        FileHelpers::clearingStorage($track);
         $this->indexer->deleteFromIndex(Collection::make([$track]), 'track');
     }
 }
