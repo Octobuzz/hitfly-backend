@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\Helpers\FileHelpers;
 use App\Models\Album;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -72,6 +73,7 @@ class AlbumObserver
      */
     public function forceDeleted(Album $album)
     {
+        FileHelpers::clearingStorage($album);
         $this->indexer->deleteFromIndex(Collection::make([$album]), 'album');
     }
 }

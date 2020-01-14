@@ -6,6 +6,7 @@ use App\Admin\Controllers\UserController;
 use App\Events\User\AttachingRolesEvent;
 use App\Events\User\DetachingRolesEvent;
 use App\BuisnessLogic\SearchIndexing\SearchIndexer;
+use App\Helpers\FileHelpers;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Events\User\ChangeLevelEvent;
 use App\Jobs\EmailChangeJob;
@@ -137,6 +138,7 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
+        FileHelpers::clearingStorage($user);
         $this->indexer->deleteFromIndex(Collection::make([$user]), 'user');
     }
 
