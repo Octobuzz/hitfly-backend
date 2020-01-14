@@ -48,9 +48,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         //Поздравления с днем рождения
-        $schedule->call(function () {
-            $this->notification->birthdayCongratulation();
-        })->dailyAt('10:00');
+//        $schedule->call(function () {
+//            $this->notification->birthdayCongratulation();
+//        })->dailyAt('10:00');
         $schedule->call(function () {
             $this->notification->fewComments('week');
         })->weekly()->at('10:00');
