@@ -7,22 +7,24 @@ use Illuminate\Support\Facades\Storage;
 
 class FileHelpers
 {
+    /**
+     * @param $entity
+     */
     public static function clearingStorage($entity)
     {
-        switch ($entity) {
-            case Track::class:
-                self::clearingTrackStorage($entity);
-                break;
-            default:
-                if (null !== $entity->getImage()) {
-                    self::removeByMask($entity->getImage());
-                }
+        if ($entity instanceof Track) {
+            self::clearingTrackStorage($entity);
+        } elseif (null !== $entity->getImage()) {
+            self::removeByMask($entity->getImage());
         }
     }
 
+    /**
+     * @param Track $track
+     */
     public static function clearingTrackStorage(Track $track)
     {
-        if (!empty($track->filename)) {
+        if (false === empty($track->filename)) {
             Storage::disk('public')->delete($track->filename);
         }
 
