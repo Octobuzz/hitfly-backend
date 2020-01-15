@@ -18,6 +18,8 @@ class DeleteColumnCommentTable extends Migration
         });
         Schema::table('comments', function (Blueprint $table) {
             $table->renameColumn('track_id', 'commentable_id');
+        });
+        Schema::table('comments', function (Blueprint $table) {
             $table->renameColumn('album_id', 'commentable_type');
         });
         Schema::table('comments', function (Blueprint $table) {

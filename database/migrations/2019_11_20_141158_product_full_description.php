@@ -12,7 +12,10 @@ class ProductFullDescription extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->mediumText('detail_description');
+            $table->mediumText('detail_description')->nullable();
+        });
+        Schema::table('products', function (Blueprint $table) {
+            $table->mediumText('detail_description')->nullable(false)->change();
         });
     }
 

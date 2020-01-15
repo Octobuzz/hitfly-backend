@@ -13,6 +13,7 @@
         "alfa6661/laravel-has-many-sync": "^1.1",
         "chelout/laravel-relationship-events": "v0.6.3",
         "cviebrock/laravel-elasticsearch": "~3.6",
+        "doctrine/dbal": "^2.10",
         "encore/laravel-admin": "1.6.13",
         "ezyang/htmlpurifier": "^4.10",
         "fideloper/proxy": "^4.0",

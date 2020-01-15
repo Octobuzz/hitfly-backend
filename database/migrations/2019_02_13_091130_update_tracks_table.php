@@ -12,17 +12,28 @@ class UpdateTracksTable extends Migration
     public function up()
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->string('track_name', 180)->nullable(false);
+            $table->string('track_name', 180)->nullable();
             $table->integer('album_id')->unsigned()->nullable(true);
             $table->integer('genre_id')->unsigned()->nullable(true);
-            $table->string('singer', 180)->nullable(false);
-            $table->dateTime('track_date')->nullable(false); //todo remove
-            $table->text('song_text')->nullable(false);
-            $table->string('track_hash')->nullable(false);
-            $table->string('filename')->nullable(false);
-            $table->string('state')->nullable(false);
-            $table->integer('user_id')->unsigned()->nullable(false);
+            $table->string('singer', 180)->nullable();
+            $table->dateTime('track_date')->nullable(); //todo remove
+            $table->text('song_text')->nullable();
+            $table->string('track_hash')->nullable();
+            $table->string('filename')->nullable();
+            $table->string('state')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->softDeletes(); //todo remove
+        });
+        //добавил костыль с nullable из-за тестов и особеностей sqlite. SQLite General error: 1 Cannot add a NOT NULL column with default value NULL
+        Schema::table('tracks', function (Blueprint $table) {
+            $table->string('track_name', 180)->nullable(false)->change();
+            $table->string('singer', 180)->nullable(false)->change();
+            $table->dateTime('track_date')->nullable(false)->change();
+            $table->text('song_text')->nullable(false)->change();
+            $table->string('track_hash')->nullable(false)->change();
+            $table->string('filename')->nullable(false)->change();
+            $table->string('state')->nullable(false)->change();
+            $table->integer('user_id')->nullable(false)->change();
         });
 
         Schema::table('tracks', function (Blueprint $table) {

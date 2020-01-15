@@ -49,8 +49,8 @@ class UpdateCommentMutation extends Mutation
                $commentCreated = Carbon::createFromTimeString($comment->created_at);
                $now = Carbon::now();
                $diff_in_hours = $commentCreated->diffInHours($now);
-               if ((int) config('comment_edit', 5) < $diff_in_hours) {
-                   $fail(__('validation.editCommentTime', ['hours' => config('comment_edit')]));
+               if ((int) config('buisness.comment_edit', 5) < $diff_in_hours) {
+                   $fail(__('validation.editCommentTime', ['hours' => config('buisness.comment_edit')]));
                }
            },
             ],

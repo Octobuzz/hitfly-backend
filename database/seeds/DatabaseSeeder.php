@@ -49,7 +49,6 @@ class DatabaseSeeder extends Seeder
 //                LikesSeeder::class,
 //                WatchingSeeder::class,
 //                FavouritesSeeder::class,
-                ConfigSeeder::class,
                 ProductsSeeder::class,
             ]);
         }
@@ -60,7 +59,6 @@ class DatabaseSeeder extends Seeder
                 RoleSeeder::class,
                 MenuSeeder::class,
                 UserSeeder::class,
-                ConfigSeeder::class,
                 ProductsSeeder::class,
             ]);
         }
