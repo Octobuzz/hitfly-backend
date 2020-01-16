@@ -4,7 +4,7 @@ use Faker\Generator as Faker;
 
 $factory->define(\App\Models\City::class, function (Faker $faker) {
     return [
-        'title' => $faker->name,
-        'area_region' => $faker->name,
+        'title' => $faker->city,
+        'area_region' => $faker->region,
     ];
 });

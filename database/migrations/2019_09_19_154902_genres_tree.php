@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class GenresTree extends Migration
 {
-    use \Migrations\Traits\MigrationIndex;
+    use \App\Models\Traits\MigrationIndex;
 
     /**
      * Run the migrations.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Migrations\Traits;
+namespace App\Models\Traits;
 
 trait MigrationIndex
 {
