@@ -24,6 +24,9 @@ class BonusTypeUpdate extends Migration
     {
         Schema::table('bonus_types', function (Blueprint $table) {
             $table->dropColumn('description');
+        });
+
+        Schema::table('bonus_types', function (Blueprint $table) {
             $table->dropColumn('img');
         });
     }

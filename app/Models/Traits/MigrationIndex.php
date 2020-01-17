@@ -2,6 +2,9 @@
 
 namespace App\Models\Traits;
 
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
 trait MigrationIndex
 {
     /**

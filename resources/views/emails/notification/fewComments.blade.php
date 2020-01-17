@@ -38,7 +38,7 @@
                                             @forelse ($tracks as $track)
                                                 <td style="width: 110px; vertical-align: text-bottom; padding-right: 22px; padding-bottom: 15px;">
                                                     @if($track['link'])<a href="{{$track['link']}}" style="display: block; text-decoration: none;">@endif
-                                                        @if($track['album_img'])<img style="display: block; max-width: 100%; margin: 0 0 10px;" src="{{$track['album_img']}}">@endif
+                                                        @if($track->getImageUrl())<img style="display: block; max-width: 100%; margin: 0 0 10px;" src="{{config('app.url').$track->getImageUrl()}}">@endif
                                                         <p style="font-size: 12px; line-height: 14px; font-weight: 700; color: #231f20; margin: 0 0 5px;">{{$track['track_name']}}</p>
                                                         <p style="font-size: 12px; line-height: 14px; color: #231f20; margin: 0;">{{$track['singer']}}</p>
                                                     @if($track['link'])</a>@endif

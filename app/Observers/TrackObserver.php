@@ -67,7 +67,6 @@ class TrackObserver
      */
     public function deleted(Track $track)
     {
-        Storage::delete('public/music/'.$track->user_id.DIRECTORY_SEPARATOR.$track->filename);
         $this->indexer->deleteFromIndex(Collection::make([$track]), 'track');
     }
 

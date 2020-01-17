@@ -60,11 +60,30 @@ class UpdateTracksTable extends Migration
 
         Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('track_name');
+        });
+
+        Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('album_id');
+
+        });
+
+        Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('genre_id');
+        });
+
+        Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('singer');
+        });
+
+        Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('track_date');
+        });
+
+        Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('song_text');
+        });
+
+        Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('user_id');
         });
     }

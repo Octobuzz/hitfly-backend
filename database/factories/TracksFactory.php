@@ -15,7 +15,8 @@ $factory->define(\App\Models\Track::class, function (Faker $faker) {
         'track_date' => $faker->dateTimeAD,
         'track_hash' => $faker->md5,
         'song_text' => $faker->paragraph,
-        'state' => \App\Models\Track::CREATE_WAVE,
+        'length' => $faker->randomFloat(2, 100, 500),
+        'state' => \App\Models\Track::PUBLISHED,
         'user_id' => function () {
             return \App\User::inRandomOrder()->first()->id;
         },
@@ -25,7 +26,7 @@ $factory->define(\App\Models\Track::class, function (Faker $faker) {
 $factory->afterMaking(\App\Models\Track::class, function (\App\Models\Track $track, Faker $faker) {
     if (App::environment('testing')) {
         $track->filename = '/' . implode('/', $faker->words($faker->numberBetween(1, 4))).$faker->word . '.jpg';
-        $track->cover = '/' . implode('/', $faker->words($faker->numberBetween(1, 4))).$faker->word . '.jpg';
+        //$track->cover = '/' . implode('/', $faker->words($faker->numberBetween(1, 4))).$faker->word . '.jpg';
 
     }else {
         $file = new \Illuminate\Http\File($faker->file(Storage::disk('local')->path('mp3'), Storage::disk('local')->path('tmp')));
