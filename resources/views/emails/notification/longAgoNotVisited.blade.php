@@ -64,7 +64,7 @@
                                                 <tr>
                                                     @endif
                                                     <td @if ($loop->iteration%2 === 0)align="right" @endif style="width: 50%;">
-                                                        <a href="{{$list['link']}}" style="display: block; max-width: 100%; margin: 0 0 10px;">
+                                                        <a href="{{$list['link']}}" style="display: block; position: relative; max-width: 100%; margin: 0 0 10px;">
                                                             <img style="display: block; max-width: 100%; margin: 0 0 10px;" src="{{$list['list_img']}}">
                                                             <p style="position: absolute; width: 120px; font-size: 12px; line-height: 14px; font-weight: 700; text-align: right; color: #fff; top: 10px; right: 20px; margin: 0;">
                                                                 {{$list['name']}}<br>
