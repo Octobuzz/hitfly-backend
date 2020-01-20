@@ -8,7 +8,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
 
 class NewStatusJob implements ShouldQueue
 {
@@ -31,6 +30,6 @@ class NewStatusJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new NewStatusMail($this->status, $this->user->username));
+        return \Mail::send(new NewStatusMail($this->status, $this->user));
     }
 }

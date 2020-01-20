@@ -230,7 +230,6 @@ class Notification
     {
         $tracks = $this->tracks->getTopTrack($topCount);
         foreach ($tracks as $track) {
-            //TODO реальный урл к топ20
             $topUrl = config('app.url').'/top50';
             dispatch(new ReachTopJob($track, $topUrl, $topCount))->onQueue('low');
         }

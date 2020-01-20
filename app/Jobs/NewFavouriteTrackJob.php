@@ -8,7 +8,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
 
 class NewFavouriteTrackJob implements ShouldQueue
 {
@@ -37,6 +36,6 @@ class NewFavouriteTrackJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new NewFavouriteTrackMail($this->singerName, $this->trackName, $this->essence, $this->user, $this->url));
+        return \Mail::send(new NewFavouriteTrackMail($this->singerName, $this->trackName, $this->essence, $this->user, $this->url));
     }
 }

@@ -25,6 +25,7 @@ class NewFavouriteTrackMail extends Mailable
         $this->user = $user;
         $this->trackName = $trackName;
         $this->url = $url;
+        $this->to($user->email);
     }
 
     /**

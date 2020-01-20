@@ -29,7 +29,7 @@ class GroupLinks extends Model
             self::TYPE_SOCIAL_VK,
             self::TYPE_SOCIAL_FB,
             self::TYPE_SOCIAL_IN,
-            self::TYPE_SOCIAL_OD
+            self::TYPE_SOCIAL_OD,
         ];
     }
 

@@ -35,6 +35,5 @@ class FewComments extends Mailable
     public function build()
     {
         return $this->view('emails.notification.fewComments');
-
     }
 }

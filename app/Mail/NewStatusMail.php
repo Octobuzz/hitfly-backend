@@ -18,7 +18,8 @@ class NewStatusMail extends Mailable
     public function __construct($status, $user)
     {
         $this->status = $status;
-        $this->user = $user;
+        $this->user = $user->username;
+        $this->to($user->email);
     }
 
     /**

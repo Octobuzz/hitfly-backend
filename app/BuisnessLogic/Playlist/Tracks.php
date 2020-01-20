@@ -58,9 +58,10 @@ class Tracks implements TracksContract
      * @param  $track
      * @param $idsTracks
      * @param array $topList
+     *
      * @return array
      */
-    public  static function getTopTrackFormatted($track, $idsTracks, array $topList): array
+    public static function getTopTrackFormatted($track, $idsTracks, array $topList): array
     {
         $position = array_search($track->id, $idsTracks);
         if (false !== $position) {
@@ -68,12 +69,13 @@ class Tracks implements TracksContract
                 'position' => $position + 1, //реальное место в плейлисте
                 'track_name' => $track->track_name,
                 'singer' => $track->singer,
-                'album_img' => config('app.url') . $track->getImageUrl(),
-                'link' => config('app.url') . '/top50',
+                'album_img' => config('app.url').$track->getImageUrl(),
+                'link' => config('app.url').'/top50',
                 'track_time' => '3:54', //todo получение времени трека
                 'user' => $track->user,
             ];
         }
+
         return $topList;
     }
 }

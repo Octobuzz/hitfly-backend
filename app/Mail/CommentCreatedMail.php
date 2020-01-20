@@ -30,6 +30,7 @@ class CommentCreatedMail extends Mailable
     public function __construct($username, $comment)
     {
         $this->comment = $comment->comment;
+        $this->to($comment->commentable->user->email);
 
         $this->username = $username;
         switch ($comment->commentable_type) {

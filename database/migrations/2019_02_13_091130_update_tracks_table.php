@@ -64,7 +64,6 @@ class UpdateTracksTable extends Migration
 
         Schema::table('tracks', function (Blueprint $table) {
             $table->dropColumn('album_id');
-
         });
 
         Schema::table('tracks', function (Blueprint $table) {

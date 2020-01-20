@@ -8,7 +8,6 @@ use App\Jobs\Track\CreatePlayTimeJob;
 use App\Models\Track;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 class TrackObserver
 {

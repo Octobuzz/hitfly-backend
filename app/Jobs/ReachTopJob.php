@@ -31,6 +31,6 @@ class ReachTopJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->track['user']->email)->send(new ReachTopMail($this->track, $this->topUrl, $this->topCount));
+        return \Mail::send(new ReachTopMail($this->track, $this->topUrl, $this->topCount));
     }
 }
