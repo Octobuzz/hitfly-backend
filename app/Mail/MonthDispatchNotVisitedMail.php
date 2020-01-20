@@ -30,6 +30,7 @@ class MonthDispatchNotVisitedMail extends Mailable
         $this->user = $user;
         $this->events = $events;
         $this->recommendation = $recommendation;
+        $this->to($user->email);
     }
 
     /**
@@ -39,7 +40,7 @@ class MonthDispatchNotVisitedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.notification.longAgoNotVisited')
+        return $this->view('emails.notification.monthDispatchNotVisited')
             ->subject(__('emails.monthDispatchNotVisited.subject'));
     }
 }

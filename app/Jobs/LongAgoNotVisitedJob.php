@@ -41,6 +41,6 @@ class LongAgoNotVisitedJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new LongAgoNotVisited($this->days, $this->user, $this->events, $this->importantEvents, $this->tracks));
+        return \Mail::send(new LongAgoNotVisited($this->days, $this->user, $this->events, $this->importantEvents, $this->tracks));
     }
 }
