@@ -85,7 +85,7 @@ class NotificationTest extends TestCase
         $user = PrepareData::createUsers(1);
         $tracks = PrepareData::createTracks(4);
         $events = new Event();
-        $idsTracks[]  = $tracks->pluck('id')->toArray();
+        $idsTracks[] = $tracks->pluck('id')->toArray();
         $topList = [];
         foreach ($tracks as $track){
             $topList = Tracks::getTopTrackFormatted($track, $idsTracks, $topList);
@@ -114,7 +114,7 @@ class NotificationTest extends TestCase
         $events = new Event();
         factory(Collection::class, 3)->create();
         $recomendation = new Recommendation();
-        $idsTracks[]  = $tracks->pluck('id')->toArray();
+        $idsTracks[] = $tracks->pluck('id')->toArray();
 
         Mail::send(new MonthDispatchNotVisitedMail($user, $events->getUpcomingEvents(3), $recomendation->getNewUserPlayList(2), $tracks));
         Mail::assertSent(MonthDispatchNotVisitedMail::class, function ($mail) use ($user) {
