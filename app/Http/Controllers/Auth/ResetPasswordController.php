@@ -92,7 +92,7 @@ class ResetPasswordController extends Controller
         );
         //отправка уведомления о смене пароля
         if (null !== $request->request->get('email')) {
-            Mail::to($request->request->get('email'))->send(new PasswordChanged($request->request->get('email')));
+            Mail::send(new PasswordChanged($request->request->get('email')));
         }
 
         // If the password was successfully reset, we will redirect the user back to

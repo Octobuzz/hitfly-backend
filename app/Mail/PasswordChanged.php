@@ -18,6 +18,7 @@ class PasswordChanged extends Mailable
     public function __construct($login)
     {
         $this->login = $login;
+        $this->to($login);
     }
 
     /**

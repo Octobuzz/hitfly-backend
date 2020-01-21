@@ -13,13 +13,16 @@ use App\Mail\LongAgoNotVisited;
 use App\Mail\MonthDispatchNotVisitedMail;
 use App\Mail\NewFavouriteTrackMail;
 use App\Mail\NewStatusMail;
+use App\Mail\PasswordChanged;
 use App\Mail\ReachTopMail;
 use App\Mail\RegisterSocialspasswordMail;
 use App\Models\Collection;
 use App\Models\Comment;
-use App\User;
+use App\Notifications\HitflyVerifyEmail;
+use App\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 use Tests\PrepareData;
 
@@ -125,9 +128,9 @@ class NotificationTest extends TestCase
     }
 
     /**
-     *  давно не посещал сайт ежемесячное письмо
+     *  попадание в топ
      */
-    public function testEveryMonthDispatchNotVisited(): void
+    public function testReachTop(): void
     {
         Mail::fake();
         Bus::fake();
@@ -206,5 +209,57 @@ class NotificationTest extends TestCase
         Mail::assertSent(NewFavouriteTrackMail::class, function ($mail) use ($user) {
             return $mail->hasTo($user->email);
         });
+    }
+
+    /**
+     *  пароль изменен
+     */
+    public function testPasswordChanged(): void
+    {
+        Mail::fake();
+        Bus::fake();
+        $user = PrepareData::createUsers(1);
+
+        Mail::send(new PasswordChanged($user->email));
+        Mail::assertSent(PasswordChanged::class, function ($mail) use ($user) {
+            return $mail->hasTo($user->email);
+        });
+    }
+
+    /**
+     *  запрос на сброс пароля
+     */
+    public function testResetPasswordNotification(): void
+    {
+        Notification::fake();
+        Bus::fake();
+        $user = PrepareData::createUsers(1);
+
+        $user->notify(new ResetPassword($user->access_token));
+        Notification::assertSentTo(
+            $user,
+            ResetPassword::class
+        );
+
+    }
+
+    /**
+     *  верификация почты.
+     */
+    public function testHitflyVerifyEmail(): void
+    {
+        Notification::fake();
+        Bus::fake();
+        $user = PrepareData::createUsers(1);
+
+
+        $user->notify(new HitflyVerifyEmail(config('app.url').'/fakeUrl'));
+        Notification::assertSentTo(
+            $user,
+            HitflyVerifyEmail::class,
+            function ($notification, $channels) {
+                return in_array('mail', $channels);
+            }
+        );
     }
 }
