@@ -78,17 +78,14 @@ class NotificationTest extends TestCase
     /**
      *  давно не посещал сайт
      */
-    public function testLongAgoNotVisiteSendMail(): void
+    public function testLongAgoNotVisitedSendMail(): void
     {
         Mail::fake();
         Bus::fake();
         $user = PrepareData::createUsers(1);
         $tracks = PrepareData::createTracks(4);
         $events = new Event();
-        foreach ($tracks as $track){
-            $idsTracks[]  = $track->id;
-        }
-        //$playlistTracks = new Tracks();
+        $idsTracks[]  = $tracks->pluck('id')->toArray();
         $topList = [];
         foreach ($tracks as $track){
             $topList = Tracks::getTopTrackFormatted($track, $idsTracks, $topList);
@@ -117,9 +114,7 @@ class NotificationTest extends TestCase
         $events = new Event();
         factory(Collection::class, 3)->create();
         $recomendation = new Recommendation();
-        foreach ($tracks as $track){
-            $idsTracks[]  = $track->id;
-        }
+        $idsTracks[]  = $tracks->pluck('id')->toArray();
 
         Mail::send(new MonthDispatchNotVisitedMail($user, $events->getUpcomingEvents(3), $recomendation->getNewUserPlayList(2), $tracks));
         Mail::assertSent(MonthDispatchNotVisitedMail::class, function ($mail) use ($user) {
@@ -140,7 +135,6 @@ class NotificationTest extends TestCase
         $topList = [];
         $topList = Tracks::getTopTrackFormatted($track, $idsTracks, $topList);
 
-
         Mail::send(new ReachTopMail($topList[0], '/top50', 50));
         Mail::assertSent(ReachTopMail::class, function ($mail) use ($user) {
             return $mail->hasTo($user->email);
@@ -155,7 +149,7 @@ class NotificationTest extends TestCase
         Mail::fake();
         Bus::fake();
         $user = PrepareData::createUsers(1);
-        $track = PrepareData::createTracks()->first();
+        $track = PrepareData::createTracks(1);
         /** @var Comment $comment */
         $comment = factory(Comment::class)->create();
 
@@ -203,7 +197,7 @@ class NotificationTest extends TestCase
         Mail::fake();
         Bus::fake();
         $user = PrepareData::createUsers(1);
-        $track = PrepareData::createTracks()->first();
+        $track = PrepareData::createTracks(1);
         $url = config('app.url').'/user/'.$track->user->id.'/music';
         Mail::send(new NewFavouriteTrackMail('Филипп Киркоров', $track->getName(), 'track', $user, $url));
         Mail::assertSent(NewFavouriteTrackMail::class, function ($mail) use ($user) {
@@ -251,7 +245,6 @@ class NotificationTest extends TestCase
         Notification::fake();
         Bus::fake();
         $user = PrepareData::createUsers(1);
-
 
         $user->notify(new HitflyVerifyEmail(config('app.url').'/fakeUrl'));
         Notification::assertSentTo(

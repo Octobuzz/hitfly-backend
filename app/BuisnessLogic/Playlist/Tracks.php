@@ -30,7 +30,7 @@ class Tracks implements TracksContract
         $idsTracksChanks = array_chunk($idsTracks, $count, true);
         $trackList = Track::query()->select('*')->whereIn('id', $idsTracksChanks[0])->get();
         foreach ($trackList as $track) {
-            $topList = $this->getTopTrackFormatted($track, $idsTracks, $topList);
+            $topList = self::getTopTrackFormatted($track, $idsTracks, $topList);
         }
 
         return $topList;
@@ -55,13 +55,13 @@ class Tracks implements TracksContract
     }
 
     /**
-     * @param  $track
-     * @param $idsTracks
+     * @param Track $track
+     * @param array $idsTracks
      * @param array $topList
      *
      * @return array
      */
-    public static function getTopTrackFormatted($track, $idsTracks, array $topList): array
+    public static function getTopTrackFormatted(Track $track, array $idsTracks, array $topList): array
     {
         $position = array_search($track->id, $idsTracks);
         if (false !== $position) {
