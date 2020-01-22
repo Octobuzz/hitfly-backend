@@ -39,6 +39,6 @@ class MonthDispatchNotVisitedJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new MonthDispatchNotVisitedMail($this->user, $this->events, $this->recommendation, $this->tracks));
+        return \Mail::send(new MonthDispatchNotVisitedMail($this->user, $this->events, $this->recommendation, $this->tracks));
     }
 }

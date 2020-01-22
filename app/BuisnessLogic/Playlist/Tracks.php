@@ -30,18 +30,7 @@ class Tracks implements TracksContract
         $idsTracksChanks = array_chunk($idsTracks, $count, true);
         $trackList = Track::query()->select('*')->whereIn('id', $idsTracksChanks[0])->get();
         foreach ($trackList as $track) {
-            $position = array_search($track->id, $idsTracks);
-            if (false !== $position) {
-                $topList[$position] = [
-                    'position' => $position + 1, //реальное место в плейлисте
-                    'track_name' => $track->track_name,
-                    'singer' => $track->singer,
-                    'album_img' => config('app.url').$track->getImageUrl(),
-                    'link' => config('app.url').'/top50', //todo реальный урл(пока неизвестно куда должна идти ссылка)
-                    'track_time' => '3:54', //todo получение времени трека
-                    'user' => $track->user,
-                ];
-            }
+            $topList = self::getTopTrackFormatted($track, $idsTracks, $topList);
         }
 
         return $topList;
@@ -63,5 +52,30 @@ class Tracks implements TracksContract
         }
 
         return $trackList;
+    }
+
+    /**
+     * @param Track $track
+     * @param array $idsTracks
+     * @param array $topList
+     *
+     * @return array
+     */
+    public static function getTopTrackFormatted(Track $track, array $idsTracks, array $topList): array
+    {
+        $position = array_search($track->id, $idsTracks);
+        if (false !== $position) {
+            $topList[$position] = [
+                'position' => $position + 1, //реальное место в плейлисте
+                'track_name' => $track->track_name,
+                'singer' => $track->singer,
+                'album_img' => config('app.url').$track->getImageUrl(),
+                'link' => config('app.url').'/top50',
+                'track_time' => '3:54', //todo получение времени трека
+                'user' => $track->user,
+            ];
+        }
+
+        return $topList;
     }
 }

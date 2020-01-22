@@ -39,4 +39,9 @@ class HitflyVerifyEmail extends VerifyEmailBase
             'verification.verify', Carbon::now()->addMinutes(1440), ['id' => $notifiable->getKey(), 'redirect' => $this->redirectTo]
         );
     }
+
+    public function via($notifiable)
+    {
+        return ['mail'];
+    }
 }

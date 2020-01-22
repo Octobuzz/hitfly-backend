@@ -31,6 +31,6 @@ class RegisterSocialsPasswordJob implements ShouldQueue
      */
     public function handle()
     {
-        return Mail::to($this->user->email)->send(new RegisterSocialspasswordMail($this->user, $this->pass));
+        return Mail::send(new RegisterSocialspasswordMail($this->user, $this->pass));
     }
 }

@@ -95,8 +95,13 @@ class CreateAdminTables extends Migration
 
         Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table) {
             $table->renameColumn('username', 'name');
-            $table->dropColumn('avatar');
         });
+
+        if (Schema::hasColumn(config('admin.database.users_table'), 'avatar')) {
+            Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table) {
+                $table->dropColumn('avatar');
+            });
+        }
 
         Schema::connection($connection)->table(config('admin.database.users_table'), function (Blueprint $table) {
             $table->string('name', 190)->change();

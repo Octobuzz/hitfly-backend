@@ -22,7 +22,7 @@ class TrackBitrate320 extends Migration
     public function down()
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->removeColumn();
+            $table->removeColumn('bitrate_hight');
         });
     }
 }

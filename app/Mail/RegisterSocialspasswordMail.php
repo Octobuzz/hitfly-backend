@@ -20,6 +20,7 @@ class RegisterSocialspasswordMail extends Mailable
     {
         $this->user = $user;
         $this->pass = $pass;
+        $this->to($user->email);
     }
 
     /**

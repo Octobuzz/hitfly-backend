@@ -19,7 +19,6 @@ class Recommendation implements RecommendationList
 {
     public function getNewUserPlayList(int $count)
     {
-        // TODO: Implement getRecommendPlaylist() method. получить реальные рекомендации
         $collect = null;
         $collection = Collection::query()
             ->where('is_admin', '=', 1)

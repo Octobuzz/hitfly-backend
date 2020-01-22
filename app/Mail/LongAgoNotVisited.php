@@ -32,6 +32,7 @@ class LongAgoNotVisited extends Mailable
         $this->events = $events;
         $this->importantEvents = $importantEvents;
         $this->days = $days;
+        $this->to($user->email);
     }
 
     /**

@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class GenresTree extends Migration
 {
+    use \App\Models\Traits\MigrationIndex;
+
     /**
      * Run the migrations.
      */
@@ -21,8 +23,6 @@ class GenresTree extends Migration
      */
     public function down()
     {
-        Schema::table('genres', function (Blueprint $table) {
-            $table->dropNestedSet();
-        });
+        $this->_dropIndexIfExist('genres', 'category_id');
     }
 }

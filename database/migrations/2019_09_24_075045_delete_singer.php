@@ -22,7 +22,7 @@ class DeleteSinger extends Migration
     public function down()
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->string('singer')->nullable(true);
+            $table->string('singer')->nullable(true)->default('');
         });
     }
 }

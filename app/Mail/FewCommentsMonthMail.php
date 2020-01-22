@@ -23,6 +23,8 @@ class FewCommentsMonthMail extends Mailable
     {
         $this->tracks = $tracks;
         $this->user = $user;
+        $this->to($this->user->email);
+        $this->subject(__('emails.fewCommentsMonth.subject'));
     }
 
     /**
@@ -32,7 +34,6 @@ class FewCommentsMonthMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.notification.fewCommentsMonth')
-            ->subject(__('emails.fewCommentsMonth.subject'));
+        return $this->view('emails.notification.fewCommentsMonth');
     }
 }

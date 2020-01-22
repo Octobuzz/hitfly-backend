@@ -20,7 +20,8 @@ class DecreaseStatusMail extends Mailable
     {
         $this->oldStatus = $oldStatus;
         $this->decreaseStatus = $decreaseStatus;
-        $this->user = $user;
+        $this->user = $user->username;
+        $this->to($user->email);
     }
 
     /**

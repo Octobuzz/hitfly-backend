@@ -25,14 +25,12 @@ class GroupLinks extends Model
 
     public static function getPossibleTypes()
     {
-        $type = \DB::select(\DB::raw('SHOW COLUMNS FROM group_links WHERE Field = "social_type"'))[0]->Type;
-        preg_match('/^enum\((.*)\)$/', $type, $matches);
-        $values = [];
-        foreach (explode(',', $matches[1]) as $value) {
-            $values[] = trim($value, "'");
-        }
-
-        return $values;
+        return [
+            self::TYPE_SOCIAL_VK,
+            self::TYPE_SOCIAL_FB,
+            self::TYPE_SOCIAL_IN,
+            self::TYPE_SOCIAL_OD,
+        ];
     }
 
     public function musicGroup(): BelongsTo

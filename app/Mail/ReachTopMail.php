@@ -21,6 +21,7 @@ class ReachTopMail extends Mailable
         $this->track = $track;
         $this->topUrl = $topUrl;
         $this->topCount = $topCount;
+        $this->to($track['user']->email);
     }
 
     /**

@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Storage;
 
 $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->name,
-        'description' => $faker->paragraph,
+        'name' => $faker->words($faker->numberBetween(1, 3), true),
+        'description' => $faker->word,
         'career_start_year' => $faker->dateTime,
         'creator_group_id' => function () {
             return \App\User::inRandomOrder()->first()->id;
@@ -19,14 +19,18 @@ $factory->define(\App\Models\MusicGroup::class, function (Faker $faker) {
 });
 
 $factory->afterMaking(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
-    $image = new File($faker->image());
-    $musicGroup->avatar_group = Storage::disk('public')->putFile($musicGroup->getPath(), $image);
+    if (App::environment('testing')) {
+        $musicGroup->avatar_group = '/'.implode('/', $faker->words($faker->numberBetween(1, 4))).$faker->word.'.jpg';
+    } else {
+        $image = new File($faker->image());
+        $musicGroup->avatar_group = Storage::disk('public')->putFile($musicGroup->getPath(), $image);
+    }
 });
 $factory->afterCreating(\App\Models\MusicGroup::class, function (\App\Models\MusicGroup $musicGroup, Faker $faker) {
     $groupLink = new \App\Models\GroupLinks();
     $groupLink->music_group_id = $musicGroup->id;
     $types = $groupLink->getPossibleTypes();
-    $groupLink->social_type = $types[array_rand($types)];
+    $groupLink->social_type = $faker->randomElement($types);
     $groupLink->link = $faker->url;
     $groupLink->save();
 

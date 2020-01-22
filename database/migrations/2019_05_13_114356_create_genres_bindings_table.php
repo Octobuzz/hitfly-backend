@@ -24,9 +24,11 @@ class CreateGenresBindingsTable extends Migration
         Schema::table('albums', function (Blueprint $table) {
             $table->dropColumn('album_img');
             $table->dropForeign('albums_genre_id_foreign');
-            $table->dropColumn('genre_id');
             $table->date('year')->change();
             $table->string('cover')->nullable()->change();
+        });
+        Schema::table('albums', function (Blueprint $table) {
+            $table->dropColumn('genre_id');
         });
     }
 

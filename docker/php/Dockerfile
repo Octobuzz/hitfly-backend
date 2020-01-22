@@ -18,8 +18,10 @@ RUN apt-get update && apt-get upgrade -y \
     zlib1g-dev \
     apt-utils \
     libmagickwand-dev \
-    imagemagick
-RUN docker-php-ext-install  bz2 iconv mbstring pdo_mysql mysqli pgsql pdo_pgsql zip sockets bcmath \
+    imagemagick \
+    sqlite
+RUN apt-get install libsqlite3-dev -y
+RUN docker-php-ext-install  bz2 iconv mbstring pdo_mysql pdo_sqlite mysqli pgsql pdo_pgsql zip sockets bcmath \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
 RUN pecl install xdebug imagick  && docker-php-ext-enable xdebug imagick

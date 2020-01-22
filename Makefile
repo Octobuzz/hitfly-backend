@@ -52,3 +52,6 @@ seed: ## run seeder
 
 logs: ## Show docker containers logs
 	@docker-compose logs --follow
+
+testing: ## run tests
+	@docker exec -it $(COMPOSE_PROJECT_NAME)_php sudo -u www-data vendor/bin/phpunit

@@ -35,7 +35,7 @@ class CommentCreatedJob implements ShouldQueue
         try {
             $message = new CommentCreatedMail($this->comment->commentable->user->username, $this->comment);
 
-            return Mail::to($this->comment->commentable->user->email)->send($message);
+            return Mail::send($message);
         } catch (\Exception $exception) {
             Log::alert($exception->getMessage());
         }

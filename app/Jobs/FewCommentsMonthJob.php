@@ -32,6 +32,6 @@ class FewCommentsMonthJob implements ShouldQueue
      */
     public function handle()
     {
-        return \Mail::to($this->user->email)->send(new FewCommentsMonthMail($this->user, $this->tracks));
+        return \Mail::send(new FewCommentsMonthMail($this->user, $this->tracks));
     }
 }
