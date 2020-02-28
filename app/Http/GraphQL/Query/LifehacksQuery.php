@@ -14,6 +14,7 @@ use Rebing\GraphQL\Support\SelectFields;
 class LifehacksQuery extends Query
 {
     use GraphQLAuthTrait;
+
     public $authorize = true;
     protected $attributes = [
         'name' => 'LifehacksQuery',
