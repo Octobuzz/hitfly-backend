@@ -8,6 +8,7 @@ use App\Models\ArtistProfile;
 use App\Models\City;
 use App\Models\Favourite;
 use App\Models\Genre;
+use App\Models\Lifehack;
 use App\Models\ListenedTrack;
 use App\Models\MusicGroup;
 use App\Models\Purse;
@@ -346,6 +347,11 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
     public function favouritesTracks()
     {
         return $this->morphedByMany(Track::class, 'favouriteable', 'favourites')->withTimestamps();
+    }
+
+    public function favouritesLifehacks()
+    {
+        return $this->morphedByMany(Lifehack::class, 'favouriteable', 'favourites');
     }
 
     public function listenedTracks()

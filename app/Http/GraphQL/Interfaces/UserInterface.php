@@ -155,6 +155,14 @@ class UserInterface extends InterfaceType
                 },
                 'selectable' => false,
             ],
+            'favouritesLifehackCount' => [
+                'type' => Type::int(),
+                'description' => 'Количество добавленых лайфхаков в избранное',
+                'resolve' => function (User $model) {
+                    return $model->favouritesLifehacks()->count();
+                },
+                'selectable' => false,
+            ],
             'countListenedTracks' => [
                 'type' => Type::int(),
                 'description' => 'Количество прослушаных треков',
