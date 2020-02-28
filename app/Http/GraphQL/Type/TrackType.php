@@ -94,12 +94,11 @@ class TrackType extends GraphQLType
                 'resolve' => function ($model) {
                     if ($model->userFavourite->count()) {
                         return true;
-                    } else {
-                        return false;
                     }
+
+                    return false;
                 },
                 'selectable' => false,
-                'privacy' => IsAuthPrivacy::class,
             ],
             'favouritesCount' => [
                 'type' => Type::int(),

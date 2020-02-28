@@ -28,6 +28,14 @@ class LifehackType extends GraphQLType
             ],
 
             'image' => PictureField::class,
+            'hasFavorite' => [
+                'type' => Type::boolean(),
+                'description' => 'В избранном',
+                'resolve' => function ($model) {
+                    return $model->favorite->count() > 0;
+                },
+                'selectable' => false,
+            ],
         ];
     }
 }

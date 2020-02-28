@@ -17,26 +17,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Favourite extends Model
 {
     use SoftDeletes;
-    const TYPE_ALBUM = 'album';
-    const TYPE_TRACK = 'track';
-    const TYPE_GENRE = 'genre';
-    const TYPE_COLLECTION = 'collection';
+    public const TYPE_ALBUM = 'album';
+    public const TYPE_TRACK = 'track';
+    public const TYPE_GENRE = 'genre';
+    public const TYPE_COLLECTION = 'collection';
+    public const TYPE_LIFE_HACK = 'life_hack';
 
-    const CLASS_NAME = [
+    public const CLASS_NAME = [
         Album::class => self::TYPE_ALBUM,
         Track::class => self::TYPE_TRACK,
         Genre::class => self::TYPE_GENRE,
         Collection::class => self::TYPE_COLLECTION,
+        Lifehack::class => self::TYPE_LIFE_HACK,
     ];
     protected $fillable = [
         'favouriteable_type',
         'favouriteable_id',
         'user_id',
     ];
-    /*protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];*/
 
     public function favouriteable(): MorphTo
     {
@@ -66,5 +64,10 @@ class Favourite extends Model
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class, 'favouriteable_id');
+    }
+
+    public function lifehack(): BelongsTo
+    {
+        return $this->belongsTo(Lifehack::class, 'favouriteable_id');
     }
 }

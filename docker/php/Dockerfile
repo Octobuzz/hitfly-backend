@@ -24,7 +24,7 @@ RUN apt-get install libsqlite3-dev -y
 RUN docker-php-ext-install  bz2 iconv mbstring pdo_mysql pdo_sqlite mysqli pgsql pdo_pgsql zip sockets bcmath \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
-RUN pecl install xdebug imagick  && docker-php-ext-enable xdebug imagick
+#RUN pecl install xdebug imagick  && docker-php-ext-enable xdebug imagick
 RUN apt-get install sudo -y
 RUN docker-php-ext-install pcntl
 RUN apt-get install sudo python -y
@@ -47,6 +47,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 ARG user_uid
 RUN usermod -u ${user_uid? invalid argument} www-data
 RUN groupmod -g ${user_uid? invalid argument} www-data
+RUN curl -LsS https://codeception.com/codecept.phar -o /usr/local/bin/codecept && \
+ chmod a+x /usr/local/bin/codecept
 
 
 
