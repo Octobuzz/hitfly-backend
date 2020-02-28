@@ -3,7 +3,6 @@
 namespace App\Http\GraphQL\Type;
 
 use App\Models\Favourite;
-use App\Models\Lifehack;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
