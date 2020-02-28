@@ -312,7 +312,7 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         return $this->getOriginal('avatar');
     }
 
-    public function getImageUrl(): ?string
+        public function getImageUrl(): ?string
     {
         if (null === $this->getImage()) {
             $img = 'avatars/user2-160x160_size_235x235.jpg';

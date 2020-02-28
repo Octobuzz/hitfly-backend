@@ -136,6 +136,7 @@ return [
                 'tag' => \App\Http\GraphQL\Query\TagQuery::class,
                 'search' => \App\Http\GraphQL\Query\Search\SearchQuery::class,
                 'searchEssence' => \App\Http\GraphQL\Query\Search\SearchEssenceQuery::class,
+                'favoriteLifehackQuery' => \App\Http\GraphQL\Query\FavoriteLifehackQuery::class,
             ],
             'mutation' => [
                 'uploadTrack' => \App\Http\GraphQL\Mutations\Track\UploadTrackMutation::class,
@@ -307,6 +308,7 @@ return [
         'FavouriteAlbum' => \App\Http\GraphQL\Type\FavouriteAlbumType::class,
         'FavouriteGenre' => \App\Http\GraphQL\Type\FavouriteGenreType::class,
         'FavouriteCollection' => \App\Http\GraphQL\Type\FavouriteCollectionType::class,
+        'FavouriteLifehack' => \App\Http\GraphQL\Type\FavouriteLifehack::class,
         'SocialLinks' => \App\Http\GraphQL\Type\SocialLinksType::class,
         'GroupMembersType' => \App\Http\GraphQL\Type\GroupMembersType::class,
         'ImageSizesType' => \App\Http\GraphQL\Type\ImageSizesType::class,

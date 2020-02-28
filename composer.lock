@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55c11cbc2a1f7b7b2e6d8afd783d0d25",
+    "content-hash": "6c34bc68d832859c6f6705d22315878c",
     "packages": [
         {
             "name": "alfa6661/laravel-has-many-sync",
@@ -1183,6 +1183,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "abandoned": true,
             "time": "2018-07-31T13:22:33+00:00"
         },
         {
@@ -1233,6 +1234,7 @@
                 "Guzzle",
                 "stream"
             ],
+            "abandoned": true,
             "time": "2014-10-12T19:18:40+00:00"
         },
         {
@@ -6669,6 +6671,52 @@
                 "schema"
             ],
             "time": "2019-01-14T23:55:14+00:00"
+        },
+        {
+            "name": "marvinrabe/laravel-graphql-test",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marvinrabe/laravel-graphql-test.git",
+                "reference": "f4130c46bd4ba609274a4416c6a244b5bd92c55c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marvinrabe/laravel-graphql-test/zipball/f4130c46bd4ba609274a4416c6a244b5bd92c55c",
+                "reference": "f4130c46bd4ba609274a4416c6a244b5bd92c55c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": ">=5.5.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MarvinRabe\\LaravelGraphQLTest\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marvin Rabe",
+                    "email": "marvin.rabe@gmail.com"
+                }
+            ],
+            "description": "Provides you with a simple GraphQL testing trait.",
+            "keywords": [
+                "graphql",
+                "laravel",
+                "php",
+                "testing"
+            ],
+            "time": "2019-05-25T10:25:32+00:00"
         },
         {
             "name": "maximebf/debugbar",

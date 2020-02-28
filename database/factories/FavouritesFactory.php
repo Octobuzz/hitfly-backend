@@ -3,13 +3,12 @@
 use Faker\Generator as Faker;
 
 $factory->define(\App\Models\Favourite::class, function (Faker $faker) {
-    $favouriteable = [
-        App\Models\Track::class,
-        App\Models\Album::class,
-        App\Models\Genre::class,
-    ];
-    $favouriteableType = $faker->randomElement($favouriteable);
-    $favouriteableId = $favouriteableType::inRandomOrder()->first()->id;
+    return[];
+});
+
+$factory->state(\App\Models\Favourite::class, 'life_hack', function (Faker $faker) {
+    $favouriteableType = \App\Models\Lifehack::class;
+    $favouriteableId = factory(\App\Models\Lifehack::class)->create()->id;
 
     return [
         'favouriteable_id' => $favouriteableId,
