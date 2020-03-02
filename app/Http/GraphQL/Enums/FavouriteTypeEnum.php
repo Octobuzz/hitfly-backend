@@ -16,6 +16,7 @@ class FavouriteTypeEnum extends GraphQLType
             Favourite::TYPE_ALBUM => Favourite::TYPE_ALBUM,
             Favourite::TYPE_TRACK => Favourite::TYPE_TRACK,
             Favourite::TYPE_COLLECTION => Favourite::TYPE_COLLECTION,
+            Favourite::TYPE_LIFE_HACK => Favourite::TYPE_LIFE_HACK,
         ],
     ];
 }
