@@ -11,6 +11,7 @@ namespace App\Http\GraphQL\Unions;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Comment;
+use App\Models\Lifehack;
 use App\Models\Track;
 use Rebing\GraphQL\Support\UnionType;
 
@@ -26,6 +27,7 @@ class FavouriteUnion extends UnionType
             \GraphQL::type('Album'),
             \GraphQL::type('Track'),
             \GraphQL::type('Collection'),
+            \GraphQL::type('LifehackType'),
         ];
     }
 
@@ -47,6 +49,9 @@ class FavouriteUnion extends UnionType
                 break;
             case Collection::class:
                 return \GraphQL::type('Collection');
+                break;
+            case Lifehack::class:
+                return \GraphQL::type('LifehackType');
                 break;
             default:
                 throw new \Exception('exeption');
