@@ -349,11 +349,6 @@ class User extends Administrator implements JWTSubject, CanResetPasswordContract
         return $this->morphedByMany(Track::class, 'favouriteable', 'favourites')->withTimestamps();
     }
 
-    public function favouritesLifehacks()
-    {
-        return $this->morphedByMany(Lifehack::class, 'favouriteable', 'favourites');
-    }
-
     public function listenedTracks()
     {
         return $this->hasMany(ListenedTrack::class, 'user_id', 'id');
