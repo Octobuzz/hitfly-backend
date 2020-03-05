@@ -1,12 +1,33 @@
+## Требования
+Проверенно и работает на:
+ - ОС: Ubuntu 16/18
+ - docker: 19.03.7
+ - docker-compose: 1.25.4,
+
+Установить docker-compose:
+
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+если что-то пошло не так, то полная инструкция тут [Install Compose](https://docs.docker.com/compose/install/#install-compose)
+
+Установить Altair GraphQL Client клиент (для работы с API GraphQL):
+
+    sudo snap install altairal
+
 ## Digico project
 Список доступных команд 
     
     make help
 
+Сборка (разовый запуск при установке либо изменениях в docker):
 
-Запуск проекта 
+    make build
 
-    make build && make up
+Запуск проекта:
+
+    make up
     
 Далее вам будет доступен сервер со следующими параметрами 
 

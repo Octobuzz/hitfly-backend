@@ -12,11 +12,8 @@ class UpdateAlbumTable extends Migration
     public function up()
     {
         Schema::table('albums', function (Blueprint $table) {
-            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->foreign('user_id', 'foreign_user_id_albums')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        });
-        Schema::table('albums', function (Blueprint $table) {
-            $table->unsignedInteger('user_id')->nullable(false)->change();
         });
     }
 
