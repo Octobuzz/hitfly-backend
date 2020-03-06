@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\GraphQL\Enums\LikeTypeEnum;
+use App\Http\GraphQL\InputObject\LikeInput;
+use App\Http\GraphQL\Mutations\AddLikeMutation;
+use App\Http\GraphQL\Type\LikeLifehack;
+use App\Http\GraphQL\Unions\LikeUnion;
+
 return [
     // The prefix for routes
     'prefix' => 'graphql',
@@ -182,6 +188,8 @@ return [
                 'UseBonusesMutation' => \App\Http\GraphQL\Mutations\UseBonusesMutation::class,
                 'RemoveSocialConnect' => \App\Http\GraphQL\Mutations\RemoveSocialConnect::class,
                 'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
+
+                'addLike' => AddLikeMutation::class,
             ],
             'middleware' => ['guest'],
             'method' => ['get', 'post'],
@@ -263,6 +271,8 @@ return [
                 'addToFavourites' => \App\Http\GraphQL\Mutations\AddToFavouriteMutation::class,
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
 
+                'addLike' => AddLikeMutation::class,
+
                 'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
 
                 'createAlbum' => \App\Http\GraphQL\Mutations\CreateAlbumMutation::class,
@@ -328,6 +338,7 @@ return [
         'SearchType' => \App\Http\GraphQL\Type\SearchType::class,
         'LifehackType' => \App\Http\GraphQL\Type\LifehackType::class,
         'TagType' => \App\Http\GraphQL\Type\TagType::class,
+        'LikeLifehack' => LikeLifehack::class,
 
         'MusicGroupInput' => \App\Http\GraphQL\InputObject\MusicGroupInput::class,
         'TrackInput' => \App\Http\GraphQL\InputObject\TrackInput::class,
@@ -349,6 +360,7 @@ return [
         'CommentsTrackFilterInput' => \App\Http\GraphQL\InputObject\CommentsTrackFilterInput::class,
         'SocialLinkFilterInput' => \App\Http\GraphQL\InputObject\Filter\SocialLinkFilterInput::class,
         'LifehackFilterInput' => \App\Http\GraphQL\InputObject\Filter\LifehackFilterInput::class,
+        'LikeInput' => LikeInput::class,
 
         'CommentTypeEnum' => \App\Http\GraphQL\Enums\CommentTypeEnum::class,
         'FavouriteTypeEnum' => \App\Http\GraphQL\Enums\FavouriteTypeEnum::class,
@@ -364,12 +376,14 @@ return [
         'SearchTypeEnum' => \App\Http\GraphQL\Enums\SearchTypeEnum::class,
         'ProductTypeEnum' => \App\Http\GraphQL\Enums\ProductTypeEnum::class,
         'RedirectEnum' => \App\Http\GraphQL\Enums\RedirectEnum::class,
+        'LikeTypeEnum' => LikeTypeEnum::class,
 
         'CommentResult' => \App\Http\GraphQL\Unions\CommentUnion::class,
         'FavouriteResult' => \App\Http\GraphQL\Unions\FavouriteUnion::class,
         'FollowResult' => \App\Http\GraphQL\Unions\FollowUnion::class,
         'AttributeResult' => \App\Http\GraphQL\Unions\AttributesUnion::class,
         'SearchResult' => \App\Http\GraphQL\Unions\SearchUnion::class,
+        'LikeResult' => LikeUnion::class,
 
         'UserInterface' => \App\Http\GraphQL\Interfaces\UserInterface::class,
     ],

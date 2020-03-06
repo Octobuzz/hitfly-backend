@@ -10,6 +10,7 @@ return [
     'required_with' => 'Обязательно заполнение нескольких связаных полей',
     'date' => 'Неверный формат даты',
     'before' => 'Введите дату в прошлом',
+    'like_unique_validate' => 'Ранее уже лайкнули',
     'favourites_unique_validate' => 'Ранее было добавлено в избранное',
     'favourites_delete_validate' => 'Такой сущности нет в избранном',
     'album_delete_validate' => 'У вас нет прав на удаление альбома',
