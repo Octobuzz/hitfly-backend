@@ -3,6 +3,7 @@
 use App\Http\GraphQL\Enums\LikeTypeEnum;
 use App\Http\GraphQL\InputObject\LikeInput;
 use App\Http\GraphQL\Mutations\AddLikeMutation;
+use App\Http\GraphQL\Mutations\UnLikeMutation;
 use App\Http\GraphQL\Type\LikeLifehack;
 use App\Http\GraphQL\Unions\LikeUnion;
 
@@ -190,6 +191,7 @@ return [
                 'buyProductMutation' => \App\Http\GraphQL\Mutations\Store\BuyProductMutation::class,
 
                 'addLike' => AddLikeMutation::class,
+                'unLikeMutation' => UnLikeMutation::class,
             ],
             'middleware' => ['guest'],
             'method' => ['get', 'post'],
@@ -272,6 +274,7 @@ return [
                 'deleteFromFavourite' => \App\Http\GraphQL\Mutations\DeleteFromFavouriteMutation::class,
 
                 'addLike' => AddLikeMutation::class,
+                'unLikeMutation' => UnLikeMutation::class,
 
                 'deleteTrackMutation' => \App\Http\GraphQL\Mutations\Track\DeleteTrackMutation::class,
 

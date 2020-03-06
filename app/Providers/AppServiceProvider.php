@@ -51,7 +51,8 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
         Album::observe(AlbumObserver::class);
         Date::setlocale(config('app.locale'));
-        Validator::extend('like_unique_validate', 'App\Validation\LikeValidator@validate');
+        Validator::extend('like_unique_validate', 'App\Validation\LikeValidator@unique');
+        Validator::extend('like_delete_validate', 'App\Validation\LikeValidator@delete');
         Validator::extend('favourites_unique_validate', 'App\Validation\FavouritesValidator@validate');
         Validator::extend('follow_unique_validate', 'App\Validation\FollowValidator@validate');
         Validator::extend('follow_myself_validate', 'App\Validation\FollowValidator@followMyself');
