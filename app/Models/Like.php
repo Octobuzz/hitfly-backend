@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
+use InvalidArgumentException;
 
 /**
  * App\Models\Like.
@@ -36,6 +37,7 @@ use Illuminate\Support\Carbon;
  */
 class Like extends Model
 {
+    /** @var string Типы лайков, при добавлении нового типа дополнить метод self::getTypeClass() */
     public const TYPE_LIFE_HACK = 'life_hack';
 
     protected $fillable = [
@@ -67,5 +69,25 @@ class Like extends Model
     public function lifehack(): BelongsTo
     {
         return $this->belongsTo(Lifehack::class, 'likeable_id');
+    }
+
+    /**
+     * По заданному типу лайка $type вернет связанное имя класса.
+     *
+     * @param string $type Тип лайка (одна из self::TYPE_*) констант.
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    public static function getTypeClass(string $type): string
+    {
+        switch ($type) {
+            case Like::TYPE_LIFE_HACK:
+                /** @var Lifehack $class */
+                $class = Lifehack::class;
+                break;
+            default:
+                throw new InvalidArgumentException('Не удалось определить тип лайка');
+        }
+        return  $class;
     }
 }

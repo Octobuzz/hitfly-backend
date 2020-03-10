@@ -44,18 +44,12 @@ class UnLikeMutation extends Mutation
      */
     public function resolve($root, $args)
     {
-        switch ($args['Like']['likeableType']) {
-            case Like::TYPE_LIFE_HACK:
-                $class = Lifehack::class;
-                break;
-            default:
-                throw new InvalidArgumentException('Не удалось определить тип лайка');
-        }
-
+        /** @var Lifehack $class */
+        $class = Like::getTypeClass($args['Like']['likeableType']);
         $user = $this->getGuard()->user();
 
         $like = Like::query()
-            ->where('likeable_id', $args['Favourite']['likeableId'])
+            ->where('likeable_id', $args['Like']['likeableId'])
             ->where('likeable_type', $class)
             ->where('user_id', $user->id)
             ->first();

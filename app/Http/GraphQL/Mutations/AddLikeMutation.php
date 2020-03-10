@@ -6,6 +6,8 @@ use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Lifehack;
 use App\Models\Like;
 use GraphQL;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use InvalidArgumentException;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -33,15 +35,16 @@ class AddLikeMutation extends Mutation
         ];
     }
 
+    /**
+     * @param mixed $root
+     * @param array $args
+     * @return Model|BelongsTo|object|null
+     * @throws InvalidArgumentException
+     */
     public function resolve($root, $args)
     {
-        switch ($args['Like']['likeableType']) {
-            case Like::TYPE_LIFE_HACK:
-                $class = Lifehack::class;
-                break;
-            default:
-                throw new InvalidArgumentException('Не удалось определить тип лайка');
-        }
+        /** @var Lifehack $class */
+        $class = Like::getTypeClass($args['Like']['likeableType']);
 
         $like = Like::create([
             'likeable_type' => $class,
