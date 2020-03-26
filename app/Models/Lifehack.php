@@ -46,4 +46,18 @@ class Lifehack extends Model
             ->morphMany(Favourite::class, 'favouriteable')
             ->where('user_id', null === $user ? null : $user->id);
     }
+
+    public function like(): MorphMany
+    {
+        $user = $this->getGuard()->user();
+
+        return $this
+            ->morphMany(Like::class, 'likeable')
+            ->where('user_id', null === $user ? null : $user->id);
+    }
+
+    public function likeCount(): int
+    {
+        return $this->morphMany(Like::class, 'likeable')->count();
+    }
 }
