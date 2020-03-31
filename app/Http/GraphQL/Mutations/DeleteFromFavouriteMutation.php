@@ -6,9 +6,8 @@ use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
+use App\Models\Lifehack;
 use App\Models\Track;
-use GraphQL\Type\Definition\Type;
-use http\Exception\InvalidArgumentException;
 use Rebing\GraphQL\Support\Mutation;
 
 class DeleteFromFavouriteMutation extends Mutation
@@ -46,8 +45,11 @@ class DeleteFromFavouriteMutation extends Mutation
             case Favourite::TYPE_COLLECTION:
                 $class = Collection::class;
                 break;
+            case Favourite::TYPE_LIFE_HACK:
+                $class = Lifehack::class;
+                break;
             default:
-                throw new InvalidArgumentException('Не удалось определить тип избранного');
+                throw new \InvalidArgumentException('Не удалось определить тип избранного');
         }
 
         $user = $this->getGuard()->user();
