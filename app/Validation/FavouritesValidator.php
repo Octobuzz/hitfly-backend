@@ -12,6 +12,7 @@ use App\Http\GraphQL\Traits\GraphQLAuthTrait;
 use App\Models\Album;
 use App\Models\Collection;
 use App\Models\Favourite;
+use App\Models\Lifehack;
 use App\Models\Track;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,6 +33,9 @@ class FavouritesValidator extends Validator
                 break;
             case Favourite::TYPE_COLLECTION:
                 $class = Collection::class;
+                break;
+            case Favourite::TYPE_LIFE_HACK:
+                $class = Lifehack::class;
                 break;
             default:
                 throw new \InvalidArgumentException('Не удалось определить тип избранного');
@@ -60,6 +64,9 @@ class FavouritesValidator extends Validator
                 break;
             case Favourite::TYPE_COLLECTION:
                 $class = Collection::class;
+                break;
+            case Favourite::TYPE_LIFE_HACK:
+                $class = Lifehack::class;
                 break;
             default:
                 throw new \InvalidArgumentException('Не удалось определить тип избранного');
