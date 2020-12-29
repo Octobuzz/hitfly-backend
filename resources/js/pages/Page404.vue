@@ -6,6 +6,7 @@
     <div class="block404">
       <img src="../../images/logo.svg" alt="" class="logo404">
       <p>404</p>
+      что-то
       <span>К сожалению, нам не удалось найти запрашиваемую вами страницу</span>
       <div class="buttons404">
         <a href="/" class="form-button form-button_secondary">Главная</a>
@@ -19,7 +20,7 @@
 </template>
 <script>
   export default {
-    
+
   }
 </script>
 <style scoped lang="scss">

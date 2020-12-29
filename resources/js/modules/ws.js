@@ -2,7 +2,7 @@ import Sockette from './sockette-fork';
 
 function createWs(connHandlers) {
   const host = process.env.NODE_ENV === 'development'
-    ? 'ws://localhost:2346'
+    ? `wss://${window.location.host}:2346`
     : `wss://${window.location.host}/ws/`;
 
   return new Sockette(host, {

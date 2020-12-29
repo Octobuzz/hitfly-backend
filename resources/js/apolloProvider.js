@@ -11,10 +11,10 @@ const prod = process.env.NODE_ENV === 'production';
 
 const publicUri = prod
   ? '/graphql'
-  : 'http://localhost:9090/graphql';
+  : '/graphql';
 const privateUri = prod
   ? '/graphql/user'
-  : 'http://localhost:9090/graphql/user';
+  : '/graphql/user';
 
 
 const publicHttpLink = new HttpLink({

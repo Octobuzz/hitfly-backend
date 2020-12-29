@@ -68,11 +68,21 @@ class WorkermanCommand extends Command
 
     private function startGateWay()
     {
-        $gateway = new Gateway('websocket://0.0.0.0:2346');
+      $context = array(
+          'ssl' => array(
+              'local_cert'  => '/var/ssl/hitfly/0.crt',
+              'local_pk'    => '/var/ssl/hitfly/0.key',
+              'verify_peer' => false,
+          )
+        );
+
+
+        $gateway = new Gateway('websocket://0.0.0.0:2346', $context);
         $gateway->name = 'Gateway';
         $gateway->count = 1;
         $gateway->lanIp = '127.0.0.1';
         $gateway->startPort = 2300;
+        $gateway->transport = 'ssl';
         $gateway->registerAddress = '127.0.0.1:1236';
     }
 

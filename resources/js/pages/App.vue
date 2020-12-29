@@ -6,6 +6,7 @@
       transition-name="flash"
     />
     <Header />
+    что-то странное
     <router-view />
     <Footer />
   </div>
