@@ -1,31 +1,27 @@
 <template>
   <div id="main">
-    <IconGradientRadial/>
-    <flash-message
-      class="flashpool"
-      transition-name="flash"
-    />
+    <IconGradientRadial />
+    <flash-message class="flashpool" transition-name="flash" />
     <Header />
-    что-то странное
     <router-view />
     <Footer />
   </div>
 </template>
 
 <script>
-import IconGradientRadial from 'components/IconGradientRadial.vue';
-import Header from './Header.vue';
-import Footer from './Footer.vue';
+import IconGradientRadial from "components/IconGradientRadial.vue";
+import Header from "./Header.vue";
+import Footer from "./Footer.vue";
 
 export default {
   components: {
     IconGradientRadial,
     Header,
-    Footer
+    Footer,
   },
   data() {
     return {};
-  }
+  },
 };
 </script>
 
@@ -51,25 +47,21 @@ export default {
     padding: 15px 60px 15px 15px;
     margin-bottom: 10px;
     border-radius: 3px;
-    transition: opacity .4s, transform .4s;
+    transition: opacity 0.4s, transform 0.4s;
     background: #313131;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .flash__message.success {
-
   }
 
   .flash__message.warning {
-
   }
 
   .flash__message.error {
-
   }
 
   .flash__message.info {
-
   }
 
   .flash__close-button {
@@ -104,5 +96,4 @@ export default {
     min-width: 260px;
   }
 }
-
 </style>
