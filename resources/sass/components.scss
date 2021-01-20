@@ -353,8 +353,8 @@
   }
 }
 .menu-call{
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   border-radius: $border-radius;
   border: 1px solid $borderColor;
   margin-right: 8px;
@@ -419,6 +419,7 @@
   }
 }
 .drop-menu-list{
+  margin-top: 5px;
 
   &__item{
     display: block;
@@ -428,6 +429,12 @@
     color: $text;
     font-family: $font_bold;
     position: relative;
+    margin: 16px 0 0;
+    &_upload {
+      display: flex;
+      align-items: center;
+      margin: 32px 0;
+    }
     span{
       position: relative;
       top: 50px;
@@ -460,9 +467,13 @@
     width: 100%;
     font-size: 14px;
     font-family: $font_main;
-    padding: 15px 80px;
+    padding: 5px 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    @media(min-width: 600px){
+    @media(min-width: 610px){
       display: none;
     }
   }
@@ -500,8 +511,6 @@
     height: 19px;
   }
   .menu-call{
-    width: 40px;
-    height: 40px;
     margin-right: 24px;
 
     &__rows{
