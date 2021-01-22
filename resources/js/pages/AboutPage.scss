@@ -12,6 +12,7 @@
     padding-bottom: 60px;
     min-width: 270px;
     max-width: 50%;
+    margin: auto;
   }
 
   &__info {
@@ -28,6 +29,7 @@
     flex-grow: .35;
     width: 0;
     padding-right: 100px;
+    margin-bottom: auto;
   }
 
   &__info-entry-content {
@@ -119,5 +121,29 @@
     display: block;
     padding-top: 10px;
     padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 770px) {
+  .about {
+    font-size: 14px;
+    &__header-question {
+      font-size: 20px;
+      max-width: 100%;
+      padding: 0;
+      margin: 50px 0;
+      text-align: left;
+    }
+
+    &__info-entry {
+      display: block;
+    }
+
+    &__info-entry-title {
+      font-size: 14px;
+      width: 100%;
+      margin-bottom: 30px;
+      padding-right: 0;
+    }
   }
 }
