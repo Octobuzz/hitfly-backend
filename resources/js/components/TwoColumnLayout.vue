@@ -22,6 +22,7 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
+  padding-bottom: 50px;
   // consider header and footer
   margin: {
     top: 95px;
