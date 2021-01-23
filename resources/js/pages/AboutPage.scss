@@ -90,7 +90,11 @@
   }
 
   &__footer-left-option {
-    padding-right: 20px;
+    padding-right: 30px;
+
+    &:last-child {
+      padding-right: 0;
+    }
   }
 
   &__footer-right-option {
