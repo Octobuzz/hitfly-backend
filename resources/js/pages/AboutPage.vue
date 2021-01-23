@@ -9,7 +9,7 @@
     </template>
 
     <template #right-column="{ paddingClass }">
-      <div :class="paddingClass">
+      <div :class="paddingClass" class="about">
         <PageHeader class="about__page-header">
           О проекте
         </PageHeader>

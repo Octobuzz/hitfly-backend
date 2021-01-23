@@ -47,8 +47,8 @@ export default {
       leftInner.style.transition = 'transform 0s';
 
       if (flag) {
-        leftInner.style.position = 'fixed';
-        leftInner.style.minHeight = `${containerContentHeight}px`;
+        leftInner.style.position = 'relative';
+        leftInner.style.minHeight = `${containerContentHeight/2}px`;
 
         const endOffset = this.getElOffset(leftInner).top;
         const offsetDiff = endOffset - startOffset;
@@ -274,7 +274,6 @@ export default {
     &__left-column,
     &__right-column {
       width: 100%;
-      min-height: auto;
       border: none;
     }
 
