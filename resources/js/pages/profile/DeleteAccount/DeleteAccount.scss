@@ -58,6 +58,7 @@ $button_width: 160px;
 
 @media screen and (max-width: 767px) {
   .delete-account {
+
     &__suggestion,
     &__modal-button-container {
       flex-wrap: wrap;
@@ -65,16 +66,30 @@ $button_width: 160px;
     }
 
     &__suggestion-header {
-      text-align: center;
+      font-size: 18px;
       margin: 0 0 12px 0;
     }
 
     &__modal-header {
+      font-size: 18px;
       margin-top: 32px;
     }
 
     &__modal-button-container {
       margin-bottom: 24px;
+    }
+  }
+}
+
+@media screen and (max-width: 551px) {
+  .delete-account {
+    &__suggestion {
+      padding: 25px;
+    }
+
+    &__suggestion-header {
+      margin: 0 0 30px 0;
+      text-align: center;
     }
   }
 }

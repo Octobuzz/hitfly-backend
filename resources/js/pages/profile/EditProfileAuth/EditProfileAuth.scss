@@ -57,9 +57,17 @@ $section-width: $input-folded-width + $indent + $button-width;
     max-width: 100%;
     width: 100%;
 
+    &__title {
+      font-size: 20px;
+    }
+
     &__input-group {
       flex-wrap: wrap;
-      flex-direction: row-reverse;
+    }
+
+    &__save-button,
+    &__change-button {
+      margin-left: 0;
     }
 
     &__email-input,
@@ -71,17 +79,6 @@ $section-width: $input-folded-width + $indent + $button-width;
         right: 0;
         bottom: 16px;
       }
-    }
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .edit-profile-auth {
-    &__save-button,
-    &__change-button {
-      max-width: 120px;
-      width: 120px;
-      margin-left: 12px;
     }
   }
 }
