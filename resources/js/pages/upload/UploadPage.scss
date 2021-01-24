@@ -37,6 +37,8 @@
     font-size: 14px;
     color: $text_color_secondary;
     line-height: 22px;
+    margin-left: 20px;
+    margin-right: 20px;
 
     & a {
       color: $red_violet;
@@ -44,6 +46,7 @@
   }
 }
 .up-b-info{
+  font-size: 14px;
   display: flex;
   flex-direction: column;
 
@@ -71,9 +74,6 @@
   & .aside__content{
     padding: 0;
   }
-  & .up-page__top{
-    padding: 48px 60px;
-  }
   & .main__aside{
     border: none;
   }
@@ -85,7 +85,16 @@
   }
 }
 
+@media (max-width: 770px) {
+  .up-b-info {
+    font-size: 12px;
+  }
+}
+
 @media (min-width: 1025px) {
+    .up-page__agree {
+      margin-left: 0;
+    }
     .up-b-info {
         flex-direction: row;
         justify-content: space-between;
