@@ -67,7 +67,6 @@ $stars-left-padding-mobile: 16px;
 
 @media screen and (max-width: 767px) {
   .stars-scroll-horizontal {
-    height: $stars-height-mobile;
 
     &__stars-preview {
       padding-left: $stars-left-padding-mobile;

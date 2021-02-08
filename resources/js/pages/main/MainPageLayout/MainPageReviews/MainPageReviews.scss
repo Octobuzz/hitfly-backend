@@ -1,5 +1,8 @@
 .reviewsContainer {
   padding: 0 32px;
+  @media (max-width: 560px) {
+    padding: 0;
+  }
   
   .stars-scroll-horizontal {
     margin-bottom: 60px;
