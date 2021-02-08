@@ -75,13 +75,3 @@ $section-width: $input-folded-width + $indent + $button-width;
   }
 }
 
-@media screen and (max-width: 576px) {
-  .edit-profile-auth {
-    &__save-button,
-    &__change-button {
-      max-width: 120px;
-      width: 120px;
-      margin-left: 12px;
-    }
-  }
-}
