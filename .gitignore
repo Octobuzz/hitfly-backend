@@ -182,3 +182,4 @@ sw.*
 /public/sitemap-user-music-performer.xml
 /public/sitemap-news.xml
 /public/sitemap-user-music-critic.xml
+/public/.well-known/pki-validation
