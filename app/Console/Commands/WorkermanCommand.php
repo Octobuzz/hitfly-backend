@@ -70,8 +70,8 @@ class WorkermanCommand extends Command
     {
       $context = array(
           'ssl' => array(
-              'local_cert'  => '/var/ssl/hitfly/0.crt',
-              'local_pk'    => '/var/ssl/hitfly/0.key',
+              'local_cert'  => '/etc/letsencrypt/live/hitfly.maxinteam.ru/fullchain.pem',
+              'local_pk'    => '/etc/letsencrypt/live/hitfly.maxinteam.ru/privkey.pem',
               'verify_peer' => false,
           )
         );
