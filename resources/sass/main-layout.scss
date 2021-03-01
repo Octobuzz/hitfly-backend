@@ -56,7 +56,7 @@
   width: 100%;
   box-sizing: border-box;
   background-color: $color_2;
-  height: 107px;
+  height: 120px;
 
   z-index: 1100;
   position: fixed;
@@ -65,7 +65,7 @@
   &__left{
     grid-area: left;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     position: relative;
     z-index: 4;
   }
@@ -78,6 +78,13 @@
   &__nav{
     grid-area: nav;
     align-items: center;
+    margin-top: 16px;
+    @media(min-width: 610px) {
+      margin: 0 0 0 25px;
+    }
+    @media(min-width: 680px) {
+      margin: 0 0 0 70px;
+    }
   }
   &__profile{
     cursor: pointer;
@@ -89,7 +96,7 @@
     height: 40px;
 
     img{
-      height: 100%;
+      height: 40px;
     }
   }
 }
@@ -108,7 +115,7 @@
   }
 
   &_upload {
-    margin-right: 12px;
+    display: none;
   }
 
   &:last-child:not(&_upload) {
@@ -121,9 +128,9 @@
   }
 }
 .head-nav-item{
-  margin-right: 1px;
-  margin-top: 15px;
+  margin-right: 8px;
   display: inline-block;
+  font-size: 12px !important;
 
   &:last-child{
     margin-right: 0;
@@ -254,7 +261,40 @@
 .footer-l-icon{
   display: none;
 }
+/*стили для хэдэра*/
+@media(min-width: 610px) {
+  .head{
+    grid-template-columns: min-content auto auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: "left nav right";
+    min-height: 90px;
+    height: 95px;
+    padding: 24px 32px;
 
+    &__left{
+      align-items: center;
+    }
+    &__nav{
+      align-items: center;
+    }
+    &__profile{
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .head-nav-item{
+    margin-right: 8px;
+    margin-top: 0;
+  }
+  .head-right-item{
+    margin-right: 25px;
+
+    &_upload{
+      margin-right: 12px;
+      display: inline-block;
+    }
+  }
+}
 @media (min-width: $desktop) {
   .body{
     &.templateless{
@@ -280,38 +320,6 @@
   }
   main.main-genre .main__info {
     flex-grow: 1;
-  }
-  .head{
-    grid-template-columns: min-content auto auto;
-    grid-template-rows: 1fr;
-    grid-template-areas: "left nav right";
-    padding: 24px 16px;
-    min-height: 90px;
-
-    &__logo{
-      width: 40px;
-      height: 40px;
-    }
-    &__nav{
-      margin-left: 10px;
-      align-items: center;
-    }
-    &__profile{
-      width: 40px;
-      height: 40px;
-    }
-  }
-  .head-nav-item{
-    margin-right: 8px;
-    margin-top: 0;
-  }
-  .head-right-item{
-    margin-right: 5px;
-
-    &_upload{
-      margin-right: 12px;
-      display: inline-block;
-    }
   }
   .main{
     padding-top: 95px;
@@ -406,25 +414,5 @@
 .footer__playButton::v-deep {
   svg {
     left: 55% !important;
-  }
-}
-@media (min-width: $header_xl) {
-  .head{
-    height: 95px;
-    padding: 24px 32px;
-
-    &__nav{
-      margin-left: 70px;
-    }
-  }
-  .head-nav-item{
-    margin-right: 8px;
-  }
-  .head-right-item{
-    margin-right: 25px;
-
-    &_upload {
-      margin-right: 12px;
-    }
   }
 }

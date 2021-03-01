@@ -84,8 +84,8 @@
     <div class="drop-menu">
       <div class="drop-menu-list">
         <div class="drop-menu-list__item drop-menu-list__item_upload">
-          <router-link to="/upload" class="button drop-menu-list__button-upload">
-            <img :src="logo" alt="logo">
+          <router-link to="/upload" class="button gradient drop-menu-list__button-upload">
+            Загрузить музыку
           </router-link>
         </div>
         <router-link to="/profile/bonus-program" class="drop-menu-list__item">
