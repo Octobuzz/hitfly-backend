@@ -5,7 +5,7 @@
     </span>
     <ul class="contacts__info-block contacts__communication">
       <li>Tel: +7 499 322 81 43</li>
-      <li>Whatsupp/Viber/Telegram: +7 985 773 86 71</li>
+      <li>Whatsupp/Viber/Telegram: <span class="contacts__phone">+7 985 773 86 71</span></li>
       <li>
         E-mail:
         <a
@@ -76,6 +76,23 @@
 
   &__address {
     margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .contacts {
+    padding: 16px;
+    font-size: 14px;
+
+    &__header {
+      font-size: 20px;
+    }
+  }
+}
+
+@media (max-width: 345px) {
+  .contacts__phone {
+    display: block;
   }
 }
 </style>
