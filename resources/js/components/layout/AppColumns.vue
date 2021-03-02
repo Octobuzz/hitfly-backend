@@ -48,7 +48,7 @@ export default {
 
       if (flag) {
         leftInner.style.position = 'relative';
-        leftInner.style.minHeight = `${containerContentHeight/2}px`;
+        leftInner.style.minHeight = `${containerContentHeight / 2}px`;
 
         const endOffset = this.getElOffset(leftInner).top;
         const offsetDiff = endOffset - startOffset;
@@ -234,7 +234,6 @@ export default {
 
   &__left-column-inner {
     min-width: inherit;
-    width: inherit;
     border-right: 1px solid transparent;
   }
 
