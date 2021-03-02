@@ -50,10 +50,7 @@ export default {
   display: flex;
   align-items: center;
   height: 32px;
-  padding: {
-    top: 16px;
-    bottom: 16px;
-  }
+  padding: 16px 0 16px 16px;
   box-shadow: 0 1px 0 $layout_border_color;
 
   &__arrow-button {

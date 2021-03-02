@@ -22,6 +22,9 @@
     display: block;
     margin-left: auto;
     max-width: 180px;
+    @media (max-width: 767px) {
+      margin: 0;
+    }
   }
 
   &__close-button-row {
