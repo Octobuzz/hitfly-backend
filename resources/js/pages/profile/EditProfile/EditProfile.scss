@@ -113,12 +113,7 @@ $formRightPadding: 40px;
       display: block;
       max-width: 190px;
       height: 50px;
-      margin-left: auto;
     }
-  }
-
-  &__auth-input-group {
-    margin-left: $avatarSide + $avatarRightMargin;
   }
 
   &__external-auth {
@@ -154,6 +149,7 @@ $formRightPadding: 40px;
 
 @media screen and (max-width: 767px) {
   .edit-profile {
+
     &-container {
       &__return-header {
         margin-bottom: 14px;
@@ -185,11 +181,11 @@ $formRightPadding: 40px;
 
       &__save-button {
         max-width: 100%;
-        margin: {
-          right: auto;
-          left: auto;
-        }
       }
     }
+  }
+
+  .h2 {
+    font-size: 20px;
   }
 }

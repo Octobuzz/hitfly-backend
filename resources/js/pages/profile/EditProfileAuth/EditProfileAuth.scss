@@ -57,9 +57,17 @@ $section-width: $input-folded-width + $indent + $button-width;
     max-width: 100%;
     width: 100%;
 
+    &__title {
+      font-size: 20px;
+    }
+
     &__input-group {
       flex-wrap: wrap;
-      flex-direction: row-reverse;
+    }
+
+    &__save-button,
+    &__change-button {
+      margin-left: 0;
     }
 
     &__email-input,
@@ -74,4 +82,3 @@ $section-width: $input-folded-width + $indent + $button-width;
     }
   }
 }
-
