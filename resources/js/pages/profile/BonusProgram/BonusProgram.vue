@@ -43,7 +43,7 @@
           </div>
         </template>
         <template #title>
-          Статусы
+          <h2 class="bonus-program__header">Статусы</h2> 
         </template>
       </UniversalScrollHorizontal>
     </div>
@@ -149,14 +149,14 @@
           </div>
         </div>
 
-        <p class="bonus-program__level-description-text">
+        <p class="bonus-program__level-description-text bonus-program__level-description-text--info">
           При получении уровня мы не списываем заработанные Вами баллы.
         </p>
       </div>
     </div>
 
     <div :class="['bonus-program__task-section', containerPaddingClass]">
-      <span class="h2 bonus-program__task-section-title">
+      <span class="h2 bonus-program__task-section-title bonus-program__header">
         Выполнение заданий
       </span>
       <span class="h3 bonus-program__task-section-subtitle">
@@ -304,7 +304,7 @@
           </div>
         </template>
         <template #title>
-          На что потратить баллы
+          <h2 class="bonus-program__header">Потратить баллы</h2>  
         </template>
       </UniversalScrollHorizontal>
     </div>

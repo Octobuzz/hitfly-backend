@@ -2,10 +2,16 @@
 @import '~scss/_variables.scss';
 
 .bonus-program {
+  @media (max-width: 700px) {
+    font-size: 14px;
+  }
   &__header {
     margin: {
       top: 32px;
       bottom: 24px;
+    }
+    @media (max-width: 700px) {
+    font-size: 20px;
     }
   }
 
@@ -177,6 +183,12 @@
     color: $text_color_secondary;
     display: block;
     padding-right: 24px;
+
+    &--info {
+      @media (max-width: 530px) {
+      width: 270px;
+    }
+    }
   }
 
   &__paid-options::v-deep {
@@ -268,9 +280,7 @@
     justify-content: space-between;
     vertical-align: top;
     padding-left: 82px;
-
-    @media screen and (max-width: 1024px) {
-      display: inline-block;
+    @media(max-width: 754px) {
       padding-left: 0;
     }
   }
