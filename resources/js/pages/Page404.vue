@@ -26,104 +26,166 @@
   @import '~scss/_variables.scss';
 
   .container404 {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    padding: 60px 30px 0;
 
     & .block404 {
-      width: calc(100% / 3);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-height: 75%;
-      height: 100%;
+    }
+
+    & .logo404 {
+      margin-bottom: 60px;
+    }
+
+    & p {
+      font-size: 100px;
+      color: #000;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-top: 0;
+    }
+    
+    & span {
+      font-size: 16px;
+      line-height: 28px;
+      color: #000;
+      max-width: 350px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    & .artist404 {
+      display: none;
+    }
+
+    & .buttons404 {
+      width: 210px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    & .form-button {
+      width: 210px;
+      box-sizing: border-box;
+      font-size: 14px;
+      color: #000;
+      text-align: center;
+      position: relative;
+      border-radius: $input_border_radius;
+      cursor: pointer;
+      user-select: none;
+      transition: color .2s;
 
       &:first-child {
-        margin-bottom: 10%;
-      }
-
-      &:last-child {
-        margin-top: 10%;
-      }
-
-      & .artist404 {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        object-position: center center;
-      }
-
-      & .logo404 {
-        width: 68px;
-        height: 60px;
-        margin-bottom: 10%;
-      }
-
-      & p {
-        font-size: 200px;
-        color: #000;
-        text-align: center;
         margin-bottom: 16px;
-        margin-top: 0;
       }
 
-      & span {
-        font-size: 20px;
-        line-height: 32px;
-        color: #000;
-        max-width: 350px;
-        text-align: center;
-        margin-bottom: 5%;
-      }
+      &_secondary {
+        color: #231f20;
+        padding: 14px 7px;
+        border: 1px solid $red-violet;
 
-      & .buttons404 {
-        width: 100%;
-        max-width: 350px;
+        &:hover {
+          color: white;
+          padding: 15px 8px;
+          border: none;
+          background: $gradient-linear;
+
+          .form-button__loader::v-deep div:after {
+            background: white !important;
+          }
+        }
+
+          .form-button__loader::v-deep div:after {
+            background: #999 !important;
+          }
+        }
+    }
+  }
+
+  @media (min-width: 750px) {
+     .container404 {
+        width: 100vw;
+        height: 100vh;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
+        align-items: center;
 
-        & .form-button {
-          display: -webkit-flex;
-          display: -ms-flex;
+      & .block404 {
+          width: calc(100% / 3);
+          max-height: 75%;
+          height: 100%;
+
+          &:first-child {
+            margin-bottom: 10%;
+          }
+
+          &:last-child {
+            margin-top: 10%;
+          }
+
+        & .artist404 {
+          display: inline;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center center;
+        }
+
+        & .logo404 {
+          display: inline;
+          width: 68px;
+          height: 60px;
+          margin-bottom: 10%;
+        }
+
+        & p {
+          font-size: 200px;
+          margin-bottom: 16px;
+        }
+
+        & span {
+          font-size: 20px;
+          line-height: 32px;
+          margin-bottom: 5%;
+        }
+
+        & .buttons404 {
+          width: 100%;
+          max-width: 350px;
           display: flex;
-          -ms-align-items: center;
-          align-items: center;
-          justify-content: center;
-          width: calc(50% - 8px);
-          box-sizing: border-box;
-          font-family: 'Gotham Pro', sans-serif;
-          font-size: 14px;
-          position: relative;
-          border-radius: $input_border_radius;
-          cursor: pointer;
-          user-select: none;
-          transition: color .2s;
+          flex-direction: row;
+          justify-content: space-between;
 
-          &_secondary {
-            color: #231f20;
-            padding: 16px 14px 16px 14px;
-            border: 1px solid $red-violet;
+          & .form-button {
+            display: -webkit-flex;
+            display: -ms-flex;
+            display: flex;
+            -ms-align-items: center;
+            align-items: center;
+            justify-content: center;
+            width: calc(50% - 8px);
 
-            &:hover {
-              color: white;
-              padding: 17px 15px 17px 15px;
-              border: none;
-              background: $gradient-linear;
+            &:first-child {
+              margin-bottom: 0;
+            }
 
-              .form-button__loader::v-deep div:after {
-                background: white !important;
+            &_secondary {
+              padding: 16px 14px;
+
+              &:hover {
+                padding: 17px 15px 17px 15px;
               }
             }
-
-            .form-button__loader::v-deep div:after {
-              background: #999 !important;
-            }
-          }
         }
       }
     }
   }
+  }
+ 
 </style>

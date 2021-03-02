@@ -3,7 +3,7 @@
     <template #left-column="{ itemContainerClass }">
       <div class="about__left-section" style="padding-top: 46px;">
         <span class="h4 about__left-section-header">
-          О проекте
+          О проекте 
         </span>
       </div>
     </template>
@@ -11,7 +11,7 @@
     <template #right-column="{ paddingClass }">
       <div :class="paddingClass" class="about">
         <PageHeader class="about__page-header">
-          О проекте
+          О проекте лаваш 111 наверное потому что это мои чувства-чувства
         </PageHeader>
 
         Это уникальная площадка, которая даёт возможность начинающим
