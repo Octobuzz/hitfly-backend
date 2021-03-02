@@ -3,10 +3,11 @@
 $border_radius: 4px;
 
 .up-page__top{
-  padding: 15px;
+  padding: 25px;
   border-radius: $border_radius;
   text-align: center;
   border: 1px dashed $layout_border_color;
+  margin: 0 20px;
 
   &.dragging {
     z-index: 9999;
@@ -16,6 +17,7 @@ $border_radius: 4px;
     display: flex;
     position: absolute;
     background-color: #fff;
+    min-width: 280px;
     max-width: 910px;
     box-sizing: border-box;
 
@@ -33,7 +35,12 @@ $border_radius: 4px;
   }
 }
 .up-page{
-
+  &__title{
+    font-size: 24px;
+    @media (max-width: 500px) {
+      font-size: 20px;
+    }
+  }
   &__top-wrapper{
       max-width: 550px;
       margin: 0 auto;
@@ -51,8 +58,10 @@ $border_radius: 4px;
     justify-content: center;
     align-items: center;
     display: flex;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 32px auto;
+    @media (max-width: 390px) {
+      width: 230px;
+    }
   }
   & .radio-pair{
     display: flex;
@@ -61,7 +70,7 @@ $border_radius: 4px;
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 770px) {
   .radio-pair{
     flex-direction: row;
     justify-content: space-around;
@@ -73,9 +82,6 @@ $border_radius: 4px;
     }
     &__top{
       padding: 40px 32px;
-    }
-    &__button{
-      margin-top: 32px;
     }
     &__info{
       padding: 16px 50px;
