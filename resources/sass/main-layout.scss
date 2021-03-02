@@ -149,7 +149,6 @@
   width: 100%;
   bottom: 0;
   display: flex;
-  min-height: 90px;
   padding: 1em 8px;
   box-sizing: border-box;
   justify-content: space-between;
@@ -336,6 +335,7 @@
   }
   .footer{
     padding: 0;
+    min-height: 90px;
 
     &__right{
       display: flex;

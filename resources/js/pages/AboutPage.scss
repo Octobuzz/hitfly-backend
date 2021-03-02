@@ -81,10 +81,18 @@
     display: flex;
     margin-top: 40px;
     margin-bottom: 60px;
+    font-size: 14px;
+    @media (max-width: 770px) {
+      font-size: 12px;
+    }
   }
 
   &__footer-left-option {
-    padding-right: 20px;
+    padding-right: 30px;
+
+    &:last-child {
+      padding-right: 0;
+    }
   }
 
   &__footer-right-option {
