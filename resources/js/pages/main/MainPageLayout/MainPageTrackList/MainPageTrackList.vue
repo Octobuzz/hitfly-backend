@@ -41,12 +41,12 @@
 
       <div class="collection-track-list__button-section">
         <button
-          @click="playCollection"
           :class="[
             'collection-track-list__button',
             'collection-track-list__button_listen',
             { 'collection-track-list__button_disabled': !trackListDataExists }
           ]"
+          @click="playCollection"
         >
           <template v-if="currentPlaying">
             <CirclePauseIcon />
@@ -112,9 +112,9 @@ import CirclePauseIcon from 'components/icons/CirclePauseIcon.vue';
 import DotsIcon from 'components/icons/DotsIcon.vue';
 import AddToFavButton from 'components/AddToFavouriteButton';
 import WavePlayer from 'components/WavePlayer';
-import UniversalTrackList from '../UniversalTrackList';
 import UnauthenticatedPopoverWrapper from 'components/UnauthenticatedPopoverWrapper';
 import CollectionPopover from 'components/CollectionPopover';
+import UniversalTrackList from '../UniversalTrackList';
 import ReturnHeader from '../ReturnHeader.vue';
 import gql from './gql';
 
@@ -169,20 +169,20 @@ export default {
       let tracklistName = '';
       const pathPrefix = this.currentPath.split('/')[1];
       this.pathChanged = !this.pathChanged;
-      switch(pathPrefix){
+      switch (pathPrefix) {
         case 'top50':
-          tracklistName = "Топ 50";
+          tracklistName = 'Топ 50';
           break;
         case 'listening_now':
-          tracklistName = "Сейчас слушают";
+          tracklistName = 'Сейчас слушают';
           break;
         case 'weekly_top':
-          tracklistName = "Открытие недели";
+          tracklistName = 'Открытие недели';
           break;
         case 'new_songs':
-          tracklistName = "Новые песни";
+          tracklistName = 'Новые песни';
           break;
-      };
+      }
       return tracklistName;
     },
 
@@ -198,44 +198,44 @@ export default {
   },
 
   watch: {
-    '$route': function fetchNewTracks() {
+    $route: function fetchNewTracks() {
       this.collectionFetched = false;
       let query = null;
-      if(this.currentCollectionPath === 'top50') {
-        query = gql.query.GET_TOP_FIFTY
+      if (this.currentCollectionPath === 'top50') {
+        query = gql.query.GET_TOP_FIFTY;
       } else if (this.currentCollectionPath === 'listening_now') {
-        query = gql.query.GET_LISTENED_NOW
+        query = gql.query.GET_LISTENED_NOW;
       } else if (this.currentCollectionPath === 'weekly_top') {
-        query = gql.query.WEEKLY_TOP
+        query = gql.query.WEEKLY_TOP;
       } else if (this.currentCollectionPath === 'new_songs') {
-        query = gql.query.QUEUE_TRACKS
-      };
+        query = gql.query.QUEUE_TRACKS;
+      }
       this.$apollo.provider.clients[this.apolloClient].query({
-        query: query,
+        query,
         variables: {
           isAuthenticated: this.isAuthenticated,
           pageLimit: 50,
           pageNumber: 1,
         },
       })
-      .then(response => {
-        let collectionResponse = null;
-        if(this.currentCollectionPath === 'top50'){
-          collectionResponse = response.data.GetTopFifty.data;
-        }else if (this.currentCollectionPath === 'listening_now'){
-          collectionResponse = response.data.GetListenedNow.data;
-        }else if (this.currentCollectionPath === 'weekly_top'){
-          collectionResponse = response.data.TopWeeklyQuery.data;
-        }else if (this.currentCollectionPath === 'new_songs'){
-          collectionResponse = response.data.tracks.data;
-        };
-        this.tracks = collectionResponse;
-        this.collectionFetched = true;
-        return collectionResponse;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        .then((response) => {
+          let collectionResponse = null;
+          if (this.currentCollectionPath === 'top50') {
+            collectionResponse = response.data.GetTopFifty.data;
+          } else if (this.currentCollectionPath === 'listening_now') {
+            collectionResponse = response.data.GetListenedNow.data;
+          } else if (this.currentCollectionPath === 'weekly_top') {
+            collectionResponse = response.data.TopWeeklyQuery.data;
+          } else if (this.currentCollectionPath === 'new_songs') {
+            collectionResponse = response.data.tracks.data;
+          }
+          this.tracks = collectionResponse;
+          this.collectionFetched = true;
+          return collectionResponse;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     playingTrackId: {
@@ -311,7 +311,7 @@ export default {
           collection
         } = this;
 
-        let idCollection = collection.map(item => item.id);
+        const idCollection = collection.map(item => item.id);
 
         // collection and its first track aren't fetched yet
         if (!firstCollectionTrack) {
@@ -328,68 +328,64 @@ export default {
       this.shownTrack = getShownTrack();
     },
 
-    playCollection(){
+    playCollection() {
       // prevent attempt to listen nonexistent track
       if (!this.shownTrack) return;
 
-      if(this.currentPlaying){
+      if (this.currentPlaying) {
         this.$store.commit('player/pausePlaying');
-      }else{
-        if(this.currentType.type === 'collection' && this.currentType.id === this.currentCollectionPath) {
-          this.$store.commit('player/startPlaying');
-        }else{
-          let query = null;
-          let filters = null;
-          if(this.currentCollectionPath === 'top50'){
-            query = gql.query.GET_TOP_FIFTY;
-          } else if (this.currentCollectionPath === 'listening_now') {
-            query = gql.query.GET_LISTENED_NOW
-          } else if (this.currentCollectionPath === 'weekly_top') {
-            query = gql.query.WEEKLY_TOP
-          } else if (this.currentCollectionPath === 'new_songs') {
-            query = gql.query.QUEUE_TRACKS
-          };
-          this.$apollo.provider.clients[this.apolloClient].query({
-            query: query,
-            variables: {
-              isAuthenticated: this.isAuthenticated,
-              pageLimit: 30,
-              pageNumber: 1,
-              filters: filters
-            },
-          })
-          .then(response => {
+      } else if (this.currentType.type === 'collection' && this.currentType.id === this.currentCollectionPath) {
+        this.$store.commit('player/startPlaying');
+      } else {
+        let query = null;
+        const filters = null;
+        if (this.currentCollectionPath === 'top50') {
+          query = gql.query.GET_TOP_FIFTY;
+        } else if (this.currentCollectionPath === 'listening_now') {
+          query = gql.query.GET_LISTENED_NOW;
+        } else if (this.currentCollectionPath === 'weekly_top') {
+          query = gql.query.WEEKLY_TOP;
+        } else if (this.currentCollectionPath === 'new_songs') {
+          query = gql.query.QUEUE_TRACKS;
+        }
+        this.$apollo.provider.clients[this.apolloClient].query({
+          query,
+          variables: {
+            isAuthenticated: this.isAuthenticated,
+            pageLimit: 30,
+            pageNumber: 1,
+            filters
+          },
+        })
+          .then((response) => {
             let collectionId = null;
             let collectionResponse = null;
-            if(this.currentCollectionPath === 'top50'){
+            if (this.currentCollectionPath === 'top50') {
               collectionId = 'top50';
               collectionResponse = response.data.GetTopFifty;
-            }else if (this.currentCollectionPath === 'listening_now'){
+            } else if (this.currentCollectionPath === 'listening_now') {
               collectionId = 'listening_now';
               collectionResponse = response.data.GetListenedNow;
-            }else if (this.currentCollectionPath === 'weekly_top'){
+            } else if (this.currentCollectionPath === 'weekly_top') {
               collectionId = 'weekly_top';
               collectionResponse = response.data.TopWeeklyQuery;
-            }else if (this.currentCollectionPath === 'new_songs'){
+            } else if (this.currentCollectionPath === 'new_songs') {
               collectionId = 'new_songs';
               collectionResponse = response.data.tracks;
-            };
-            let data = {
-              'type': 'collection',
-              'id': collectionId
+            }
+            const data = {
+              type: 'collection',
+              id: collectionId
             };
             this.$store.commit('player/pausePlaying');
             this.$store.commit('player/changeCurrentType', data);
             this.$store.commit('player/pickTrack', collectionResponse.data[0]);
-            let arrayTr = collectionResponse.data.map(data => {
-              return data.id;
-            });
+            const arrayTr = collectionResponse.data.map(data => data.id);
             this.$store.commit('player/pickPlaylist', arrayTr);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
-          })
-        }
+          });
       }
     }
   },
@@ -397,18 +393,18 @@ export default {
   apollo: {
     collection() {
       let query = null;
-      if(this.currentCollectionPath === 'top50') {
-        query = gql.query.GET_TOP_FIFTY
+      if (this.currentCollectionPath === 'top50') {
+        query = gql.query.GET_TOP_FIFTY;
       } else if (this.currentCollectionPath === 'listening_now') {
-        query = gql.query.GET_LISTENED_NOW
+        query = gql.query.GET_LISTENED_NOW;
       } else if (this.currentCollectionPath === 'weekly_top') {
-        query = gql.query.WEEKLY_TOP
+        query = gql.query.WEEKLY_TOP;
       } else if (this.currentCollectionPath === 'new_songs') {
-        query = gql.query.QUEUE_TRACKS
-      };
+        query = gql.query.QUEUE_TRACKS;
+      }
       return {
         client: this.apolloClient,
-        query: query,
+        query,
         variables: {
           isAuthenticated: this.isAuthenticated,
           pageLimit: 50,
@@ -416,20 +412,20 @@ export default {
         },
         update(data) {
           let collectionResponse = null;
-          if(this.currentCollectionPath === 'top50'){
+          if (this.currentCollectionPath === 'top50') {
             collectionResponse = data.GetTopFifty.data;
-          }else if (this.currentCollectionPath === 'listening_now'){
+          } else if (this.currentCollectionPath === 'listening_now') {
             collectionResponse = data.GetListenedNow.data;
-          }else if (this.currentCollectionPath === 'weekly_top'){
+          } else if (this.currentCollectionPath === 'weekly_top') {
             collectionResponse = data.TopWeeklyQuery.data;
-          }else if (this.currentCollectionPath === 'new_songs'){
+          } else if (this.currentCollectionPath === 'new_songs') {
             collectionResponse = data.tracks.data;
-          };
+          }
           this.tracks = collectionResponse;
           this.collectionFetched = true;
           return collectionResponse;
         }
-      }
+      };
     },
 
     firstCollectionTrack() {
