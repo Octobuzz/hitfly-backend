@@ -347,3 +347,9 @@
     padding: 7px 0;
   }
 }
+
+.section-margin-bottom {
+  @media (max-width: 767px) {
+    margin-bottom: 40px;
+  }
+}

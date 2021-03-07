@@ -15,10 +15,16 @@ $news-left-padding-mobile: 16px;
 
   &__header {
     display: flex;
-    flex-direction: row;
     margin-top: 40px;
     margin-bottom: 24px;
-    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: space-around;
+    align-self: flex-end;
   }
 
   &__button-prev,
@@ -71,11 +77,11 @@ $news-left-padding-mobile: 16px;
     &__news-preview {
       padding-left: $news-left-padding-mobile;
     }
-
+    
     &::v-deep .vue-recycle-scroller__item-wrapper {
-      height: $news-height-mobile;
+      height: 125px;
     }
-
+    
     &__header {
       margin-bottom: 12px;
     }

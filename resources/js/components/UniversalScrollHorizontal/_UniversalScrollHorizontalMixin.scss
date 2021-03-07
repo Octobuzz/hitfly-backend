@@ -7,6 +7,7 @@
 
   .universal-scroll-horizontal {
     height: $item_height_desktop;
+    height: fit-content;
 
     .vue-recycle-scroller__item-wrapper {
       height: $item_height_desktop;
@@ -15,7 +16,9 @@
 
   @media screen and (max-width: 767px) {
     .universal-scroll-horizontal {
-      height: $item_height_mobile;
+      min-height: $item_height_mobile;
+      height: fit-content;
+
 
       .vue-recycle-scroller__item-wrapper {
         height: $item_height_mobile;

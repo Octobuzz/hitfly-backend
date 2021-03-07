@@ -2,16 +2,16 @@
   <section class="footerSection">
     <div class="footerSection__links">
       <a href="/policy" target="_blank">Пользовательское соглашение</a>
-<!--      <a href="javascript: void(0)">Авторам</a>-->
+      <!--      <a href="javascript: void(0)">Авторам</a>-->
       <a href="/contacts">Помощь</a>
     </div>
     <a href="https://zebrains.team/" target="_blank">Сделано в ZeBrains</a>
   </section>
 </template>
 <script>
-  export default {
+export default {
 
-  }
+};
 </script>
 <style scoped lang="scss">
   @import '~scss/_variables.scss';
@@ -43,6 +43,26 @@
 
       &:hover {
         color: $link_color_active;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .footerSection {
+      margin: 0 16px;
+      flex-direction: column;
+
+      & a {
+        font-size: 12px;
+        margin-right: 0;
+      }
+
+      &__links {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 25px;
       }
     }
   }

@@ -9,60 +9,65 @@
         :news-list="container.newsList"
         :has-more-data="container.hasMoreData"
       >
+        <template #title>
+          <span class="h2" style="margin: 0">
+            Новости
+          </span>
+        </template>
       </NewsScroller>
     </template>
   </UniversalNewsContainer>
 </template>
 <script>
-  import NewsScroller from 'components/NewsScroller/NewsScroller.vue';
-  import UniversalNewsContainer from '../UniversalNewsContainer';
-  import containerPaddingClass from 'mixins/containerPaddingClass';
+import NewsScroller from 'components/NewsScroller/NewsScroller.vue';
+import containerPaddingClass from 'mixins/containerPaddingClass';
+import UniversalNewsContainer from '../UniversalNewsContainer';
 
-  export default {
-    mixins: [containerPaddingClass],
-    components: {
-      NewsScroller,
-      UniversalNewsContainer
+export default {
+  components: {
+    NewsScroller,
+    UniversalNewsContainer
+  },
+  mixins: [containerPaddingClass],
+  data: () => ({
+
+  }),
+
+  computed: {
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     },
-    data: () => ({
+    mobileUser() {
+      return /Mobi|Android/i.test(navigator.userAgent);
+    },
+    newsContainerInitialized() {
+      return this.$store.getters['loading/mainPage'].news;
+    }
+  },
 
-    }),
-
-    computed: {
-      containerPaddingClass() {
-        return this.$store.getters['appColumns/paddingClass'];
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('loading/setMainPage', {
+      news: {
+        initialized: false
       },
-      mobileUser() {
-        return /Mobi|Android/i.test(navigator.userAgent);
+      recommended: {
+        initialized: false
       },
-      newsContainerInitialized() {
-        return this.$store.getters['loading/mainPage'].news;
-      }
-    },
+      genres: {
+        initialized: false
+      },
+      newTracks: {
+        initialized: false
+      },
+      superMelomaniac: {
+        initialized: false
+      },
+      weeklyTop: {
+        initialized: false
+      },
+    });
 
-    beforeRouteLeave(to, from, next) {
-      this.$store.commit('loading/setMainPage', {
-        news: {
-          initialized: false
-        },
-        recommended: {
-          initialized: false
-        },
-        genres: {
-          initialized: false
-        },
-        newTracks: {
-          initialized: false
-        },
-        superMelomaniac: {
-          initialized: false
-        },
-        weeklyTop: {
-          initialized: false
-        },
-      });
-
-      next();
-    },
-  }
+    next();
+  },
+};
 </script>

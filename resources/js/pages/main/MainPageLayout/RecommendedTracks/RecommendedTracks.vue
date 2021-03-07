@@ -27,18 +27,18 @@
   </UniversalCollectionsContainer>
 </template>
 <script>
-import UniversalCollectionsContainer from '../UniversalCollectionsContainer/UniversalCollectionsContainer.vue';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
+import UniversalCollectionsContainer from '../UniversalCollectionsContainer/UniversalCollectionsContainer.vue';
 
 export default {
-  data: () => ({
-
-  }),
 
   components: {
     UniversalCollectionsContainer,
     CollectionScrollHorizontal
   },
+  data: () => ({
+
+  }),
 
   computed: {
     containerPaddingClass() {
@@ -87,7 +87,7 @@ export default {
       });
     },
   },
-}
+};
 </script>
 <style
   scoped

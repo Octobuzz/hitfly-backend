@@ -13,31 +13,33 @@
     >
       <slot name="title" />
 
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'collection-scroll-horizontal__button-prev',
-          {
-            'collection-scroll-horizontal__button-prev_disabled': cantGoBack
-          }
-        ]"
-        @click="goBack"
-      >
-        <ArrowIcon />
-      </button>
+      <div class="collection-scroll-horizontal__button-container">
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'collection-scroll-horizontal__button-prev',
+            {
+              'collection-scroll-horizontal__button-prev_disabled': cantGoBack
+            }
+          ]"
+          @click="goBack"
+        >
+          <ArrowIcon />
+        </button>
 
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'collection-scroll-horizontal__button-next',
-          {
-            'collection-scroll-horizontal__button-next_disabled': cantGoForward
-          }
-        ]"
-        @click="goForward"
-      >
-        <ArrowIcon />
-      </button>
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'collection-scroll-horizontal__button-next',
+            {
+              'collection-scroll-horizontal__button-next_disabled': cantGoForward
+            }
+          ]"
+          @click="goForward"
+        >
+          <ArrowIcon />
+        </button>
+      </div>
     </div>
 
     <recycle-scroller
@@ -66,7 +68,8 @@
         <!-- We better ave some place to insert one more item -->
         <span
           v-else
-          :style="{ display: 'block', width: desktop ? '262px' : '188px' }" />
+          :style="{ display: 'block', width: desktop ? '262px' : '188px' }"
+        />
       </template>
     </recycle-scroller>
   </div>

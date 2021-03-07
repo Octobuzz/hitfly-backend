@@ -26,6 +26,8 @@
 <script>
 import debounce from 'lodash.throttle';
 
+const MOBILE_WIDTH = 767;
+
 export default {
   data() {
     return {
@@ -36,6 +38,12 @@ export default {
       haveSpaceAboveLeft: 0,
       haveSpaceBelowLeft: 0
     };
+  },
+
+  computed: {
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
+    },
   },
 
   watch: {
@@ -188,24 +196,26 @@ export default {
     },
 
     handleLeft() {
-      this.recalculateMetrics();
+      if (this.desktop) {
+        this.recalculateMetrics();
 
-      if (
-        !this.isLeftLocked
+        if (
+          !this.isLeftLocked
         && !this.haveSpaceAboveLeft
         && this.haveSpaceBelowLeft
         && this.scrollHeight > this.leftHeight
-      ) {
-        this.lockLeftToScreenBottom();
+        ) {
+          this.lockLeftToScreenBottom();
 
-        return;
-      }
+          return;
+        }
 
-      if (
-        this.isLeftLocked
+        if (
+          this.isLeftLocked
         && this.scrollHeight < this.leftHeight
-      ) {
-        this.unlockLeftFromScreenBottom();
+        ) {
+          this.unlockLeftFromScreenBottom();
+        }
       }
     }
   }

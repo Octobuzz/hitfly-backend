@@ -17,57 +17,57 @@
   </UniversalStarsContainer>
 </template>
 <script>
-  import UniversalStarsContainer from '../UniversalStarsContainer';
-  import StarsScroller from 'components/StarsScroller';
+import StarsScroller from 'components/StarsScroller';
+import UniversalStarsContainer from '../UniversalStarsContainer';
 
-  export default{
-    data: () => ({
+export default {
 
-    }),
+  components: {
+    UniversalStarsContainer,
+    StarsScroller
+  },
+  data: () => ({
 
-    components: {
-      UniversalStarsContainer,
-      StarsScroller
+  }),
+
+  computed: {
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     },
+    mobileUser() {
+      return /Mobi|Android/i.test(navigator.userAgent);
+    },
+    starsContainerInitialized() {
+      return this.$store.getters['loading/mainPage'].stars;
+    }
+  },
 
-    computed: {
-      containerPaddingClass() {
-        return this.$store.getters['appColumns/paddingClass'];
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('loading/setMainPage', {
+      news: {
+        initialized: false
       },
-      mobileUser() {
-        return /Mobi|Android/i.test(navigator.userAgent);
+      recommended: {
+        initialized: false
       },
-      starsContainerInitialized() {
-        return this.$store.getters['loading/mainPage'].stars;
-      }
-    },
+      genres: {
+        initialized: false
+      },
+      stars: {
+        initialized: false
+      },
+      newTracks: {
+        initialized: false
+      },
+      superMelomaniac: {
+        initialized: false
+      },
+      weeklyTop: {
+        initialized: false
+      },
+    });
 
-    beforeRouteLeave(to, from, next) {
-      this.$store.commit('loading/setMainPage', {
-        news: {
-          initialized: false
-        },
-        recommended: {
-          initialized: false
-        },
-        genres: {
-          initialized: false
-        },
-        stars: {
-          initialized: false
-        },
-        newTracks: {
-          initialized: false
-        },
-        superMelomaniac: {
-          initialized: false
-        },
-        weeklyTop: {
-          initialized: false
-        },
-      });
-
-      next();
-    },
-  }
+    next();
+  },
+};
 </script>

@@ -12,32 +12,33 @@
       ]"
     >
       <slot name="title" />
+      <div class="album-scroll-horizontal__button-container">
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'album-scroll-horizontal__button-prev',
+            {
+              'album-scroll-horizontal__button-prev_disabled': cantGoBack
+            }
+          ]"
+          @click="goBack"
+        >
+          <ArrowIcon />
+        </button>
 
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'album-scroll-horizontal__button-prev',
-          {
-            'album-scroll-horizontal__button-prev_disabled': cantGoBack
-          }
-        ]"
-        @click="goBack"
-      >
-        <ArrowIcon />
-      </button>
-
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'album-scroll-horizontal__button-next',
-          {
-            'album-scroll-horizontal__button-next_disabled': cantGoForward
-          }
-        ]"
-        @click="goForward"
-      >
-        <ArrowIcon />
-      </button>
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'album-scroll-horizontal__button-next',
+            {
+              'album-scroll-horizontal__button-next_disabled': cantGoForward
+            }
+          ]"
+          @click="goForward"
+        >
+          <ArrowIcon />
+        </button>
+      </div>
     </div>
 
     <recycle-scroller

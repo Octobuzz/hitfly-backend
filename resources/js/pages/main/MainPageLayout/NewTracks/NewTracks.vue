@@ -21,67 +21,67 @@
   </UniversalTracksContainer>
 </template>
 <script>
-  import UniversalTracksContainer from '../UniversalTracksContainer';
-  import TrackScrollHorizontal from 'components/TrackScrollHorizontal';
+import TrackScrollHorizontal from 'components/TrackScrollHorizontal';
+import UniversalTracksContainer from '../UniversalTracksContainer';
 
-  export default{
-    data: () => ({
+export default {
 
-    }),
+  components: {
+    UniversalTracksContainer,
+    TrackScrollHorizontal
+  },
+  data: () => ({
 
-    components: {
-      UniversalTracksContainer,
-      TrackScrollHorizontal
+  }),
+
+  computed: {
+    containerPaddingClass() {
+      return this.$store.getters['appColumns/paddingClass'];
     },
-
-    computed: {
-      containerPaddingClass() {
-        return this.$store.getters['appColumns/paddingClass'];
-      },
-      mobileUser() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-      },
-      tracksContainerInitialized() {
-        return this.$store.getters['loading/mainPage'].newTracks;
-      }
+    mobileUser() {
+      return /Mobi|Android/i.test(navigator.userAgent);
     },
+    tracksContainerInitialized() {
+      return this.$store.getters['loading/mainPage'].newTracks;
+    }
+  },
 
-    beforeRouteLeave(to, from, next) {
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('loading/setMainPage', {
+      news: {
+        initialized: false
+      },
+      recommended: {
+        initialized: false
+      },
+      genres: {
+        initialized: false
+      },
+      newTracks: {
+        initialized: false
+      },
+      superMelomaniac: {
+        initialized: false
+      },
+      weeklyTop: {
+        initialized: false
+      },
+    });
+
+    next();
+  },
+
+  methods: {
+    onTracksContainerInitialized({ success }) {
       this.$store.commit('loading/setMainPage', {
-        news: {
-          initialized: false
-        },
-        recommended: {
-          initialized: false
-        },
-        genres: {
-          initialized: false
-        },
         newTracks: {
-          initialized: false
-        },
-        superMelomaniac: {
-          initialized: false
-        },
-        weeklyTop: {
-          initialized: false
-        },
+          success,
+          initialized: true
+        }
       });
-
-      next();
     },
-
-    methods: {
-      onTracksContainerInitialized({ success }) {
-        this.$store.commit('loading/setMainPage', {
-          newTracks: {
-            success,
-            initialized: true
-          }
-        });
-      },
-    },
-  }
+  },
+};
 </script>
 <style
   scoped

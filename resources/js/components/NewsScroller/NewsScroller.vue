@@ -12,32 +12,33 @@
       ]"
     >
       <slot name="title" />
+      <div class="news-scroll-horizontal__button-container">
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'news-scroll-horizontal__button-prev',
+            {
+              'news-scroll-horizontal__button-prev_disabled': cantGoBack
+            }
+          ]"
+          @click="goBack"
+        >
+          <ArrowIcon />
+        </button>
 
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'news-scroll-horizontal__button-prev',
-          {
-            'news-scroll-horizontal__button-prev_disabled': cantGoBack
-          }
-        ]"
-        @click="goBack"
-      >
-        <ArrowIcon />
-      </button>
-
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'news-scroll-horizontal__button-next',
-          {
-            'news-scroll-horizontal__button-next_disabled': cantGoForward
-          }
-        ]"
-        @click="goForward"
-      >
-        <ArrowIcon />
-      </button>
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'news-scroll-horizontal__button-next',
+            {
+              'news-scroll-horizontal__button-next_disabled': cantGoForward
+            }
+          ]"
+          @click="goForward"
+        >
+          <ArrowIcon />
+        </button>
+      </div>
     </div>
 
     <recycle-scroller
@@ -45,8 +46,8 @@
       class="news-scroll-horizontal__scroller"
       direction="horizontal"
       :items="newsList"
-      :buffer="3 * (newsWidth + spaceBetween)"
-      :item-size="newsWidth + spaceBetween"
+      :buffer="3 * newsItemWidth"
+      :item-size="newsItemWidth"
     >
       <template #default="{ item: item }">
         <NewsPreview
@@ -137,6 +138,10 @@ export default {
 
     newsListLength() {
       return this.newsList.length;
+    },
+
+    newsItemWidth() {
+      return this.desktop ? this.newsWidth + this.spaceBetween : (this.newsWidth + this.spaceBetween) / 2;
     }
   },
 
@@ -185,10 +190,9 @@ export default {
     },
 
     maybeLoadMore() {
-      const { scroller, newsWidth, spaceBetween } = this;
-      const newsSpacedWidth = newsWidth + spaceBetween;
+      const { scroller } = this;
 
-      if (scroller.scrollWidth - scroller.scrollLeft < 20 * newsSpacedWidth) {
+      if (scroller.scrollWidth - scroller.scrollLeft < 20 * this.newsItemWidth) {
         this.$parent.$emit('load-more');
       }
     },
@@ -196,12 +200,10 @@ export default {
     addOffset() {
       const {
         scroller,
-        newsWidth,
-        spaceBetween,
         $data
       } = this;
 
-      const spacedNewsWidth = newsWidth + spaceBetween;
+      const spacedNewsWidth = this.newsItemWidth;
       const currentOffset = scroller.scrollLeft;
       const newsTimesIncluded = (
         currentOffset + scroller.clientWidth
@@ -219,12 +221,11 @@ export default {
     reduceOffset() {
       const {
         scroller,
-        newsWidth,
         spaceBetween,
         $data
       } = this;
 
-      const spacedNewsWidth = newsWidth + spaceBetween;
+      const spacedNewsWidth = this.newsItemWidth;
       const currentOffset = scroller.scrollLeft;
 
       // BLE - before left edge
@@ -274,12 +275,10 @@ export default {
 
         const {
           newsList: { length: newsCount },
-          newsWidth,
-          spaceBetween,
           scroller,
           hasMoreData
         } = this;
-        const spacedWidth = newsWidth + spaceBetween;
+        const spacedWidth = this.newsItemWidth;
 
         if (newsCount * spacedWidth > scroller.clientWidth) {
           this.cantGoBack = scroller.scrollLeft === 0;

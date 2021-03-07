@@ -43,7 +43,9 @@
           </div>
         </template>
         <template #title>
-          <h2 class="bonus-program__header">Статусы</h2> 
+          <h2 class="bonus-program__header">
+            Статусы
+          </h2>
         </template>
       </UniversalScrollHorizontal>
     </div>
@@ -163,7 +165,7 @@
         Разовые
       </span>
 
-      <div class="bonus-program__task-oneoff-section-top">
+      <div class="bonus-program__task-oneoff-section-top section-margin-bottom">
         <span class="bonus-program__task-index">
           1
         </span>
@@ -250,7 +252,7 @@
                 {{ task.title }}
               </span>
             </span>
-            <component :is="task.body"/>
+            <component :is="task.body" />
           </div>
         </template>
 
@@ -296,15 +298,16 @@
               {{ option.cost }}
             </span>
 
-<!--            Commented button should be available in next release-->
-<!--            <button class="bonus-program__paid-card-button">-->
-<!--              {{ option.button }}-->
-<!--            </button>-->
-
+            <!--            Commented button should be available in next release-->
+            <!--            <button class="bonus-program__paid-card-button">-->
+            <!--              {{ option.button }}-->
+            <!--            </button>-->
           </div>
         </template>
         <template #title>
-          <h2 class="bonus-program__header">Потратить баллы</h2>  
+          <h2 class="bonus-program__header">
+            Потратить баллы
+          </h2>
         </template>
       </UniversalScrollHorizontal>
     </div>

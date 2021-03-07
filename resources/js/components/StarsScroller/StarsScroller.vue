@@ -12,32 +12,33 @@
       ]"
     >
       <slot name="title" />
+      <div class="stars-scroll-horizontal__button-container">
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'stars-scroll-horizontal__button-prev',
+            {
+              'stars-scroll-horizontal__button-prev_disabled': cantGoBack
+            }
+          ]"
+          @click="goBack"
+        >
+          <ArrowIcon />
+        </button>
 
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'stars-scroll-horizontal__button-prev',
-          {
-            'stars-scroll-horizontal__button-prev_disabled': cantGoBack
-          }
-        ]"
-        @click="goBack"
-      >
-        <ArrowIcon />
-      </button>
-
-      <button
-        v-if="!cantGoBack || !cantGoForward"
-        :class="[
-          'stars-scroll-horizontal__button-next',
-          {
-            'stars-scroll-horizontal__button-next_disabled': cantGoForward
-          }
-        ]"
-        @click="goForward"
-      >
-        <ArrowIcon />
-      </button>
+        <button
+          v-if="!cantGoBack || !cantGoForward"
+          :class="[
+            'stars-scroll-horizontal__button-next',
+            {
+              'stars-scroll-horizontal__button-next_disabled': cantGoForward
+            }
+          ]"
+          @click="goForward"
+        >
+          <ArrowIcon />
+        </button>
+      </div>
     </div>
 
     <recycle-scroller
@@ -51,7 +52,7 @@
       <template #default="{ item: id }">
         <StarsPreview
           class="stars-scroll-horizontal__stars-preview"
-          :starId="id"
+          :star-id="id"
         />
       </template>
 
@@ -65,6 +66,7 @@
         <span v-else style="display: block; width: 120px;" />
       </template>
     </recycle-scroller>
+  </div>
   </div>
 </template>
 

@@ -16,10 +16,15 @@ $stars-left-padding-mobile: 16px;
 
   &__header {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: 26px;
     margin-bottom: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: space-around;
+    align-self: flex-end;
   }
 
   &__button-prev,
