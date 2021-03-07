@@ -1,18 +1,29 @@
 <template>
   <TwoColumnLayout>
     <template #left-column="{ itemContainerClass }">
-      <div class="about__left-section" style="padding-top: 46px;">
+      <div
+        v-if="desktop"
+        class="about__left-section"
+        style="padding-top: 46px;"
+      >
         <span class="h4 about__left-section-header">
-          О проекте 
+          О проекте
         </span>
       </div>
     </template>
 
     <template #right-column="{ paddingClass }">
       <div :class="paddingClass" class="about">
-        <PageHeader class="about__page-header">
-          О проекте лаваш 111 наверное потому что это мои чувства-чувства
+        <PageHeader v-if="desktop" class="about__page-header">
+          О проекте
         </PageHeader>
+        <span
+          v-if="!desktop"
+          class="h2"
+          style="margin-top: 30px"
+        >
+          О проекте
+        </span>
 
         Это уникальная площадка, которая даёт возможность начинающим
         артистам по-настоящему быть услышанными, получить действительно
@@ -105,30 +116,34 @@
         </span>
 
         <div class="about__footer">
-          <a href="/policy" target="_blank" class="about__footer-left-option about__link">
+          <a
+            href="/policy"
+            target="_blank"
+            class="about__footer-left-option about__link"
+          >
             Пользовательское соглашение
           </a>
-<!--          <span class="about__footer-left-option about__link">-->
-<!--            Авторам-->
-<!--          </span>-->
+          <!--          <span class="about__footer-left-option about__link">-->
+          <!--            Авторам-->
+          <!--          </span>-->
           <a href="/contacts" class="about__footer-left-option about__link">
             Помощь
           </a>
 
-<!--          <router-link-->
-<!--            v-if="isAuthenticated"-->
-<!--            class="about__footer-right-option about__link"-->
-<!--            to="/upload"-->
-<!--          >-->
-<!--            Как загрузить песню?-->
-<!--          </router-link>-->
-<!--          <a-->
-<!--            v-else-->
-<!--            class="about__footer-right-option about__link"-->
-<!--            href="/login"-->
-<!--          >-->
-<!--            Как загрузить песню?-->
-<!--          </a>-->
+          <!--          <router-link-->
+          <!--            v-if="isAuthenticated"-->
+          <!--            class="about__footer-right-option about__link"-->
+          <!--            to="/upload"-->
+          <!--          >-->
+          <!--            Как загрузить песню?-->
+          <!--          </router-link>-->
+          <!--          <a-->
+          <!--            v-else-->
+          <!--            class="about__footer-right-option about__link"-->
+          <!--            href="/login"-->
+          <!--          >-->
+          <!--            Как загрузить песню?-->
+          <!--          </a>-->
         </div>
       </div>
     </template>

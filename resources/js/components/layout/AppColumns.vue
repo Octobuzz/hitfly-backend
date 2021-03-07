@@ -278,12 +278,13 @@ export default {
   .app-columns {
     flex-wrap: wrap;
     height: auto;
-    padding-top: $header_height_mobile;
+    padding-top: $header_height_tablet;
 
     &__left-column,
     &__right-column {
       width: 100%;
       border: none;
+      min-height: fit-content;
     }
 
     &__left-column-item {
@@ -297,6 +298,7 @@ export default {
 
 @media screen and (max-width: 767px) {
   .app-columns {
+    padding-top: $header_height_mobile;
     &__left-column-item {
       padding: 16px;
     }

@@ -1,26 +1,37 @@
 <template>
   <div class="container404">
     <div class="block404">
-      <img src="../../images/404left.png" alt="" class="artist404">
+      <img
+        src="../../images/404left.png"
+        alt=""
+        class="artist404"
+      >
     </div>
     <div class="block404">
-      <img src="../../images/logo.svg" alt="" class="logo404">
+      <img
+        src="../../images/logo.svg"
+        alt=""
+        class="logo404"
+      >
       <p>404</p>
       <span>К сожалению, нам не удалось найти запрашиваемую вами страницу</span>
       <div class="buttons404">
         <a href="/" class="form-button form-button_secondary">Главная</a>
-        <a href="javascript: void(0)" class="form-button form-button_secondary">Карта сайта</a>
       </div>
     </div>
     <div class="block404">
-      <img src="../../images/404right.png" alt="" class="artist404">
+      <img
+        src="../../images/404right.png"
+        alt=""
+        class="artist404"
+      >
     </div>
   </div>
 </template>
 <script>
-  export default {
+export default {
 
-  }
+};
 </script>
 <style scoped lang="scss">
   @import '~scss/_variables.scss';
@@ -47,7 +58,7 @@
       margin-bottom: 8px;
       margin-top: 0;
     }
-    
+
     & span {
       font-size: 16px;
       line-height: 28px;
@@ -62,15 +73,14 @@
     }
 
     & .buttons404 {
-      width: 210px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      margin: 0 auto;
+      width: 50%;
     }
 
     & .form-button {
-      width: 210px;
+      width: 100%;
       box-sizing: border-box;
       font-size: 14px;
       color: #000;
@@ -80,10 +90,6 @@
       cursor: pointer;
       user-select: none;
       transition: color .2s;
-
-      &:first-child {
-        margin-bottom: 16px;
-      }
 
       &_secondary {
         color: #231f20;
@@ -157,10 +163,6 @@
 
         & .buttons404 {
           width: 100%;
-          max-width: 350px;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
 
           & .form-button {
             display: -webkit-flex;
@@ -170,10 +172,7 @@
             align-items: center;
             justify-content: center;
             width: calc(50% - 8px);
-
-            &:first-child {
-              margin-bottom: 0;
-            }
+            margin: 0 auto;
 
             &_secondary {
               padding: 16px 14px;
@@ -187,5 +186,5 @@
     }
   }
   }
- 
+
 </style>
