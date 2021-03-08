@@ -21,28 +21,28 @@
         Главная
       </router-link>
 
-<!--      <router-link-->
-<!--        to="/sets"-->
-<!--        :class="[-->
-<!--          'button',-->
-<!--          'head-nav-item',-->
-<!--          { active: path === '/sets' }-->
-<!--        ]"-->
-<!--      >-->
-<!--        Подборки-->
-<!--      </router-link>-->
+      <!--      <router-link-->
+      <!--        to="/sets"-->
+      <!--        :class="[-->
+      <!--          'button',-->
+      <!--          'head-nav-item',-->
+      <!--          { active: path === '/sets' }-->
+      <!--        ]"-->
+      <!--      >-->
+      <!--        Подборки-->
+      <!--      </router-link>-->
 
-<!--      <router-link-->
-<!--        v-if="isAuthenticated"-->
-<!--        to="/life-hacks"-->
-<!--        :class="[-->
-<!--          'button',-->
-<!--          'head-nav-item',-->
-<!--          { active: path.startsWith('/life-hacks') }-->
-<!--        ]"-->
-<!--      >-->
-<!--        Лайфхаки-->
-<!--      </router-link>-->
+      <!--      <router-link-->
+      <!--        v-if="isAuthenticated"-->
+      <!--        to="/life-hacks"-->
+      <!--        :class="[-->
+      <!--          'button',-->
+      <!--          'head-nav-item',-->
+      <!--          { active: path.startsWith('/life-hacks') }-->
+      <!--        ]"-->
+      <!--      >-->
+      <!--        Лайфхаки-->
+      <!--      </router-link>-->
 
       <router-link
         to="/about"
@@ -71,13 +71,13 @@
     <div class="head__right">
       <UnauthenticatedPopoverWrapper>
         <template #auth-content>
-          <router-link
+          <a
             v-if="ableToPerform || roles.includes('listener')"
-            to="/upload"
             class="button gradient head-right-item head-right-item_upload"
+            @click="toUpload"
           >
             Загрузить музыку
-          </router-link>
+          </a>
         </template>
 
         <template #unauth-popover-trigger>
@@ -87,11 +87,11 @@
         </template>
       </UnauthenticatedPopoverWrapper>
 
-<!--      <span class="head-right-item app-header__loupe-icon">-->
-<!--        <IconButton class="head-right-item__button">-->
-<!--          <LoupeIcon />-->
-<!--        </IconButton>-->
-<!--      </span>-->
+      <!--      <span class="head-right-item app-header__loupe-icon">-->
+      <!--        <IconButton class="head-right-item__button">-->
+      <!--          <LoupeIcon />-->
+      <!--        </IconButton>-->
+      <!--      </span>-->
 
       <span class="head-right-item">
         <UnauthenticatedPopoverWrapper>
@@ -133,57 +133,57 @@
     <div class="drop-menu">
       <div class="drop-menu-list">
         <div class="drop-menu-list__item drop-menu-list__item_upload">
-          <router-link to="/upload" class="button gradient drop-menu-list__button-upload">
+          <a class="button gradient drop-menu-list__button-upload" @click="toUpload">
             Загрузить музыку
-          </router-link>
+          </a>
         </div>
-        <router-link to="/bonus-program" class="drop-menu-list__item">
+        <a class="drop-menu-list__item" @click="goToPage('/bonus-program')">
           <span>
             Бонусная программа
           </span>
-        </router-link>
+        </a>
 
-<!--        Commented button should be available in next release-->
-<!--        <router-link to="/" class="drop-menu-list__item">-->
-<!--          <span>-->
-<!--            Мои покупки-->
-<!--          </span>-->
-<!--        </router-link>-->
+        <!--        Commented button should be available in next release-->
+        <!--        <router-link to="/" class="drop-menu-list__item">-->
+        <!--          <span>-->
+        <!--            Мои покупки-->
+        <!--          </span>-->
+        <!--        </router-link>-->
 
-<!--        Commented button should be available in next release-->
-<!--        <router-link to="/" class="drop-menu-list__item">-->
-<!--          <span>-->
-<!--            Истории победителей-->
-<!--          </span>-->
-<!--        </router-link>-->
+        <!--        Commented button should be available in next release-->
+        <!--        <router-link to="/" class="drop-menu-list__item">-->
+        <!--          <span>-->
+        <!--            Истории победителей-->
+        <!--          </span>-->
+        <!--        </router-link>-->
 
-        <router-link to="/reviews" class="drop-menu-list__item">
+        <a class="drop-menu-list__item" @click="goToPage('/reviews')">
           <span>
             Звёздные эксперты
           </span>
-        </router-link>
-        <router-link
+        </a>
+        <a
           v-if="isAuthenticated"
-          to="/profile/edit"
           class="drop-menu-list__item"
+          @click="goToPage('/profile/edit')"
         >
           <span>
             Настройки
           </span>
-        </router-link>
+        </a>
 
-<!--        Commented button should be available in next release-->
-<!--        <router-link to="/" class="drop-menu-list__item">-->
-<!--          <span>-->
-<!--            Форма обратной связи-->
-<!--          </span>-->
-<!--        </router-link>-->
+        <!--        Commented button should be available in next release-->
+        <!--        <a to="/" class="drop-menu-list__item">-->
+        <!--          <span>-->
+        <!--            Форма обратной связи-->
+        <!--          </span>-->
+        <!--        </a>-->
 
-        <router-link to="/contacts" class="drop-menu-list__item">
+        <a class="drop-menu-list__item" @click="goToPage('/contacts')">
           <span>
             Контакты
           </span>
-        </router-link>
+        </a>
       </div>
     </div>
   </header>
@@ -252,6 +252,18 @@ export default {
       if (this.ableToComment) {
         this.$router.push('/profile/my-reviews');
       }
+    },
+
+    toUpload() {
+      if (this.isAuthenticated) {
+        window.location = '/upload';
+      } else {
+        window.location = '/login';
+      }
+    },
+
+    goToPage(location) {
+      window.location = location;
     }
   },
 

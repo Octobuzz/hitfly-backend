@@ -56,6 +56,7 @@
 import TrackList from 'components/trackList/TrackList';
 import SpinnerLoader from 'components/SpinnerLoader.vue';
 import FormButton from 'components/FormButton.vue';
+import { mapGetters } from 'vuex';
 import gql from './gql';
 
 const MOBILE_WIDTH = 767;
@@ -109,7 +110,11 @@ export default {
 
     dataInitialized() {
       return this.$store.getters['loading/music'].tracks.initialized;
-    }
+    },
+
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+    })
   },
 
   watch: {
@@ -138,7 +143,11 @@ export default {
     },
 
     onDownloadPress() {
-      this.$router.push('/upload');
+      if (this.isAuthenticated) {
+        this.$router.push('/upload');
+      } else {
+        window.location = '/login';
+      }
     },
 
     fetchMoreTracks(vars) {

@@ -1,7 +1,7 @@
 <template>
-  <div class="track-list-entry" v-if="trackLoaded">
+  <div v-if="trackLoaded" class="track-list-entry">
     <span
-      v-if="showTrackIndex"
+      v-if="showTrackIndex && desktop"
       class="track-list-entry__index"
     >
       {{ index }}
@@ -51,7 +51,7 @@
       </template>
     </UnauthenticatedPopoverWrapper>
 
-    <template v-if="!columnLayout">
+    <template v-if="!columnLayout && desktop">
       <span class="track-list-entry__track-name">
         <WordTrimmedWithTooltip
           :word="track.trackName"
@@ -89,13 +89,13 @@
         ]"
       >
         <WordTrimmedWithTooltip
+          class="track-list-entry__track-name"
           :word="track.trackName"
           @click.native="playTrack"
         />
       </span>
 
       <WordTrimmedWithTooltip
-        v-if="track.singer"
         :class="[
           'track-list-entry__track-author',
           'track-list-entry__track-author_underline'

@@ -2,7 +2,7 @@
 @import './UploadPage_legacy.scss';
 
 .aside__content{
-  padding: 75px 32px;
+  padding: 0; 
 }
 .main__info{
   padding: 0 32px;
@@ -88,6 +88,19 @@
 @media (max-width: 770px) {
   .up-b-info {
     font-size: 12px;
+
+    &__left {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+  }
+
+  .up-page{
+    &__bottom {
+      margin-bottom: 70px;
+    }
   }
 }
 

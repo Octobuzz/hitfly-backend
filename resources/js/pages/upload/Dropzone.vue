@@ -1,14 +1,17 @@
 <template>
-  <div class="up-page__top"
+  <div
+    class="up-page__top"
     :class="{dragging: dragState}"
     @drop="onDrop"
-    >
+  >
     <div class="up-page__top-wrapper">
-      <h1 class="up-page__title">Переместите сюда свою песню</h1>
+      <h1 class="up-page__title">
+        Переместите сюда свою песню
+      </h1>
       <UploadButton
         class="up-page__button"
         modifier="secondary"
-        inputValue="или загрузите файл с устройства"
+        input-value="или загрузите файл с устройства"
         @changed="fileInput"
       >
         или загрузите файл с устройства
@@ -32,47 +35,47 @@
   </div>
 </template>
 <script>
-  import UploadButton from './UploadButton.vue';
+import UploadButton from './UploadButton.vue';
 
-  export default {
-    props: ['dragState'],
-    data: () => ({
+export default {
+  components: {
+    UploadButton
+  },
+  props: ['dragState'],
+  data: () => ({
 
-    }),
-    methods: {
-      onDrop(e){
-        e.preventDefault();
-        e.stopPropagation();
-        if(e.dataTransfer.files[0].type.match('audio/x-flac|audio/flac|audio/mp3|audio/mpeg|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
-          const track = e.dataTransfer.files;
-          this.$emit('droppedTrack', track);
+  }),
+  methods: {
+    onDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer.files[0].type.match('audio/x-flac|audio/flac|audio/mp3|audio/mpeg|audio/vnd.wave|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')) {
+        const track = e.dataTransfer.files;
+        this.$emit('droppedTrack', track);
+      } else {
+        this.$message(
+          'Выберите корректный формат файла',
+        );
+        this.$emit('droppedTrack', null);
+      }
+    },
+    fileInput(track) {
+      if (track !== undefined) {
+        if (track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/mp3|audio/mpeg|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')) {
+          this.$emit('trackInput', track);
         } else {
           this.$message(
             'Выберите корректный формат файла',
+            'info',
           );
-          this.$emit('droppedTrack', null);
         }
-      },
-      fileInput(track){
-        if(track !== undefined){
-          if(track.type.match('audio/x-flac|audio/flac|audio/vnd.wave|audio/mp3|audio/mpeg|audio/x-aiff|audio/aiff|audio/x-m4a|audio/wave|audio/wav|audio/x-wav|audio/x-pn-wav')){
-            this.$emit('trackInput', track);
-          }else{
-            this.$message(
-              'Выберите корректный формат файла',
-              'info',
-            );
-          }
-        }
-      },
-      changeAccess(state){
-        this.$emit('accessChanged', state);
-      },
+      }
     },
-    components: {
-      UploadButton
-    }
+    changeAccess(state) {
+      this.$emit('accessChanged', state);
+    },
   }
+};
 </script>
 <style
   scoped

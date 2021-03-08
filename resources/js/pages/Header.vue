@@ -53,12 +53,12 @@
     </nav>
 
     <div class="head__right">
-      <router-link
-        to="/upload"
+      <a
         class="button gradient head-right-item head-right-item_upload"
+        @click="toUpload"
       >
         Загрузить музыку
-      </router-link>
+      </a>
 
       <span class="head-right-item">
         <IconButton>
@@ -84,9 +84,9 @@
     <div class="drop-menu">
       <div class="drop-menu-list">
         <div class="drop-menu-list__item drop-menu-list__item_upload">
-          <router-link to="/upload" class="button gradient drop-menu-list__button-upload">
+          <a class="button gradient drop-menu-list__button-upload" @click="toUpload">
             Загрузить музыку
-          </router-link>
+          </a>
         </div>
         <router-link to="/profile/bonus-program" class="drop-menu-list__item">
           <span>
@@ -134,6 +134,7 @@ import anonymousAvatar from 'images/anonymous-avatar.png';
 import IconButton from 'components/IconButton.vue';
 import LoupeIcon from 'components/icons/LoupeIcon.vue';
 import BellIcon from 'components/icons/BellIcon.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -152,12 +153,24 @@ export default {
   computed: {
     path() {
       return this.$route.fullPath;
-    }
+    },
+
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+    })
   },
 
   methods: {
     goToProfilePage() {
       this.$router.push('/profile/my-music');
+    },
+
+    toUpload() {
+      if (this.isAuthenticated) {
+        this.$router.push('/upload');
+      } else {
+        window.location = '/login';
+      }
     }
   },
 

@@ -6,16 +6,16 @@
       v-if="showTableHeader"
       class="track-list__header"
     >
-      <span class="track-list__header-number">
+      <span v-if="desktop" class="track-list__header-number">
         №
       </span>
       <span class="track-list__header-song">
         Песня
       </span>
-      <span class="track-list__header-singer">
+      <span v-if="desktop" class="track-list__header-singer">
         Музыкант
       </span>
-      <span class="track-list__header-album">
+      <span v-if="desktop" class="track-list__header-album">
         Альбом
       </span>
       <span
@@ -56,6 +56,8 @@
 import { mapGetters } from 'vuex';
 import TrackListEntry from '../TrackListEntry';
 import gql from './gql';
+
+const MOBILE_WIDTH = 767;
 
 export default {
   components: {
@@ -108,6 +110,10 @@ export default {
     isStar() {
       return this.$store.getters['profile/roles']('star');
     },
+
+    desktop() {
+      return this.windowWidth > MOBILE_WIDTH;
+    },
     ...mapGetters(['isAuthenticated', 'apolloClient'])
   },
 
@@ -119,7 +125,7 @@ export default {
       this.$emit('press-favourite', id);
     },
     playTrack(id) {
-      if(this.$store.getters['player/currentTrack'].id !== id){
+      if (this.$store.getters['player/currentTrack'].id !== id) {
         this.$store.commit('player/pausePlaying');
         this.$apollo.provider.clients[this.apolloClient].query({
           variables: {
@@ -127,21 +133,21 @@ export default {
             id
           },
           query: gql.query.QUEUE_TRACK
-        }).then(response => {
+        }).then((response) => {
           let data = {};
-          if(this.forType !== undefined){
+          if (this.forType !== undefined) {
             data = {
-              'type': this.forType,
-              'id': this.forId
+              type: this.forType,
+              id: this.forId
             };
-          };
+          }
           this.$store.commit('player/changeCurrentType', data);
           this.$store.commit('player/pickTrack', response.data.track);
           this.$store.commit('player/pickPlaylist', this.trackIdList);
-        }).catch(error => {
-          console.dir(error)
-        })
-      }else{
+        }).catch((error) => {
+          console.dir(error);
+        });
+      } else {
         this.$store.commit('player/togglePlaying');
       }
     }

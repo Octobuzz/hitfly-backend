@@ -106,6 +106,7 @@ import TrackList from 'components/trackList/TrackList';
 import UniversalTracksContainer from 'components/UniversalTracksContainer';
 import AlbumScrollHorizontal from 'components/AlbumScrollHorizontal';
 import CollectionScrollHorizontal from 'components/CollectionScrollHorizontal';
+import { mapGetters } from 'vuex';
 import UniversalAlbumsContainer from '../UniversalAlbumsContainer';
 import UniversalCollectionsContainer from '../UniversalCollectionsContainer';
 
@@ -141,7 +142,10 @@ export default {
     },
     tracksContainerInitialized() {
       return this.$store.getters['loading/music'].tracks;
-    }
+    },
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+    })
   },
 
   beforeRouteLeave(to, from, next) {
@@ -180,7 +184,11 @@ export default {
       }
     },
     onDownloadPress() {
-      this.$router.push('/upload');
+      if (this.isAuthenticated) {
+        this.$router.push('/upload');
+      } else {
+        window.location = '/login';
+      }
     },
   }
 };
